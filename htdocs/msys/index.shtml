@@ -1,9 +1,9 @@
-<!-- $Id: index.shtml,v 1.3 2002-08-06 16:31:18 earnie Exp $ -->
+<!-- $Id: index.shtml,v 1.4 2002-08-06 18:51:56 earnie Exp $ -->
 
 <html>
 <head>
  <title>Minimal SYStem</title>
- <base href="`pwd`/..">
+ <base href="http://www.mingw.org/index.shtml">
 </head>
 <body bgcolor="white" text="black" link="#0000EE" vlink="#551A8B" alink="red">
 
@@ -69,7 +69,7 @@
 <!--#include file="ssi/footer.html"-->
 
 <address>
-<br />Last revised $Date: 2002-08-06 16:31:18 $
+<br />Last revised $Date: 2002-08-06 18:51:56 $
 </address>
 
 </body>
