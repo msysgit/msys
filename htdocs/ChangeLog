@@ -1,0 +1,34 @@
+2000-09-08  Earnie Boyd <earnie_boyd@yahoo.com>
+
+        * all *.shtml files: change the "web page maintainer" from
+	  mumit@users.sourceforge.com to earnie@users.sourceforge.com
+
+2000-03-01  Mumit Khan  <khan@nanotech.wisc.edu>
+
+	* all *.shtml files: Update the local links to use .shtml instead
+	.html.
+	* x86-win32-ports.shtml: Reformat.
+	* links.shtml: Update.
+
+2000-01-22  Mumit Khan  <khan@nanotech.wisc.edu>
+
+	* Rename all files to .shtml.
+	* index.html: Change title.
+
+2000-01-19  Mumit Khan  <khan@nanotech.wisc.edu>
+
+	* index.html: Added meta tags.
+
+2000-01-16  Mumit Khan  <khan@nanotech.wisc.edu>
+
+	* All html files: Tweak the top level 2-column table. 
+	* licensing.html: Correct w3api licensing info.
+
+	* All html files: Validated XML 1.0 files! Add icon to test.
+	* vxhtml10.gif: New file from W3 Consortium.
+
+2000-01-15  Mumit Khan  <khan@nanotech.wisc.edu>
+
+	* All html files: Mostly footer and URL fixes.
+	* Started ChangeLog.
+

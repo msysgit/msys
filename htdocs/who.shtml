@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+ <title>Who are we?</title>
+ <meta name="Author" content="Mumit Khan" />
+</head>
+<body bgcolor="white" text="black" link="#0000EE" vlink="#551A8B" alink="red">
+
+<h1 align="center">Who are we?</h1>
+
+<!-- two-column format: left sidebar and the body -->
+<table border="0" cellspacing="6" cellpadding="8">
+<tr>
+<td bgcolor="#eeeeee" valign="top" width="10%">
+
+<!-- ================================================================== -->
+<!--                                                                    -->
+<!--			     Left Sidebar                               -->
+<!--                                                                    -->
+
+<table border="0">
+
+<tr><td colspan="2"><a href="index.shtml">Mingw Home</a></td></tr>
+
+<tr><td colspan="2"><a href="docs.shtml">Documentation</a></td></tr>
+
+<tr><td><tt>&nbsp;</tt></td>
+<td><small><a href="mingwfaq.shtml">Frequently Asked Questions (FAQ)</a></small></td></tr>
+
+<tr><td colspan="2"><a href="mirrors.shtml">Mirror Sites</a></td></tr>
+
+<tr><td colspan="2"><a href="links.shtml">Related Sites</a></td></tr>
+
+<tr><td colspan="2"><a href="ported.shtml">Ported Software</a></td></tr>
+
+<tr><td colspan="2"><a href="lists.shtml">Mailing Lists</a></td></tr>
+
+<tr><td colspan="2"><a href="licensing.shtml">Licensing Terms</a></td></tr>
+
+<tr><td colspan="2"><a href="who.shtml">Who are we?</a></td></tr>
+
+<tr><td colspan="2"><a href="news.shtml">News</a></td></tr>
+
+<tr><td colspan="2"><a href="history.shtml">Project History</a></td></tr>
+
+</table>
+
+
+</td>
+<!-- 2nd column of two-column format: the body -->
+<td valign="top">
+
+<!-- ================================================================== -->
+<!--                                                                    -->
+<!--			  Main Body                                     -->
+<!--                                                                    -->
+
+<table border="0" cellspacing="6" cellpadding="0">
+<tr>
+<td valign="top" align="left">
+
+
+</td>
+</tr>
+</table>
+
+<!-- <hr noshade="noshade" size="1" /> -->
+
+<!-- Close page table -->
+</td></tr></table>
+
+<!-- ================================================================== -->
+<!--                                                                    -->
+<!--			     Footer                                     -->
+<!--                                                                    -->
+
+<p><i><small>Please send news, announcements, and technical problems 
+(bad html, broken links) concerning these web pages to 
+<a href="mailto:earnie@users.sourceforge.net"> the web page maintainer</a>. 
+We are in the process of creating these web pages, so do expect some
+incomplete pages and broken links. We appreciate your patience. 
+</small></i></p>
+
+<p>
+<a href="http://validator.w3.org/check?uri=http%3A%2F%2Fwww.mingw.org%2Fwho.shtml">
+<img border="0" src="vxhtml10.gif" alt="Valid XHTML 1.0!" height="31" 
+width="88" /></a>
+</p>
+
+</body>
+</html>
+
