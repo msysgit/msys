@@ -77,6 +77,13 @@ extern strace strace;
 #define _STRACE_MALLOC	 0x20000 // trace malloc calls
 #define _STRACE_THREAD	 0x40000 // thread-locking calls
 #define _STRACE_NOTALL	 0x80000 // don't include if _STRACE_ALL
+#if defined (DEBUGGING)
+#define _STRACE_ON strace.active = 1;
+#define _STRACE_OFF strace.active = 0;
+#else
+#define _STRACE_ON
+#define _STRACE_OFF
+#endif
 
 #ifdef __cplusplus
 extern "C" {
@@ -134,6 +141,17 @@ void strace_printf (unsigned, const char *func, const char *, ...);
     }))
 
 #define debug_printf(fmt, args...) strace_printf_wrap(DEBUG, fmt , ## args)
+#if defined (DEBUGGING)
+#define mdebug(mdebug_active, mdebug_function, mdebug_string) \
+  do { \
+      char mdebug_buf[2048]; \
+      sprintf (mdebug_buf, "%s [%d]: %s", mdebug_function, mdebug_active, mdebug_string); \
+      OutputDebugString (mdebug_buf); \
+     } \
+  while (0)
+#else
+#define mdebug(mdebug_active, mdebug_function, mdebug_string)
+#endif
 #define paranoid_printf(fmt, args...) strace_printf_wrap(PARANOID, fmt , ## args)
 #define select_printf(fmt, args...) strace_printf_wrap(SELECT, fmt , ## args)
 #define sigproc_printf(fmt, args...) strace_printf_wrap(SIGP, fmt , ## args)

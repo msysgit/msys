@@ -179,6 +179,7 @@ normalize_posix_path (const char *src, char *dst)
   char *dst_start = dst;
 
   syscall_printf ("src %s", src);
+  syscall_printf ("dst %s", dst);
   if (isdrive (src) || strpbrk (src, "\\:"))
     {
       cygwin_conv_to_full_posix_path (src, dst);
@@ -188,6 +189,8 @@ normalize_posix_path (const char *src, char *dst)
     {
       if (!cygheap->cwd.get (dst))
 	return get_errno ();
+      syscall_printf("src %s", src);
+      syscall_printf("dst %s", dst);
       dst = strchr (dst, '\0');
       if (*src == '.')
 	{
@@ -197,6 +200,7 @@ normalize_posix_path (const char *src, char *dst)
 	}
       if (dst > dst_start && !isslash (dst[-1]))
 	*dst++ = '/';
+      syscall_printf("dst %s", dst);
     }
   /* Two leading /'s?  If so, preserve them.  */
   else if (isslash (src[1]))
@@ -3201,15 +3205,75 @@ extern "C"
 int
 cygwin_conv_to_win32_path (const char *path, char *win32_path)
 {
-  path_conv p (path, PC_SYM_FOLLOW);
-  if (p.error)
+  bool found_path = true;
+  const char *spath = path;
+  debug_printf("path: %s", path);
+
+  if (spath[0] == '/' && strlen(spath) == 2)
+      found_path = false;
+  else if (spath[0] == '-' &&
+	   spath[1] &&
+	   spath[1] != '-' &&
+	   spath[2])
     {
-      set_errno (p.error);
-      return -1;
+      spath += 2;
+      if (strchr(spath, '='))
+	{
+	  spath = strchr(spath, '=');
+	  spath++;
+	  if (*spath) 
+	      found_path = true;
+	}
+      else
+	  found_path = true;
+    }
+  else if ((spath = strchr(spath, '=')))
+    {
+      spath++;
+      if (spath[0] )
+	{
+	  found_path = true;
+	}
+      else
+	{
+	  spath = path;
+	}
+    }
+  else
+    {
+      spath = path;
     }
 
-  strcpy (win32_path, p.get_win32 ());
-  return 0;
+  if (found_path)
+    {
+      path_conv p (spath, PC_SYM_FOLLOW);
+      if (p.error)
+	{
+	  set_errno (p.error);
+	  debug_printf("path_conv ERROR: %d", p.error);
+	  return -1;
+	}
+      strcpy(win32_path, p.get_win32());
+      if (win32_path[1] != ':' || win32_path[2] != '\\')
+	{
+	  strcpy(win32_path, path);
+	  return 0;
+	}
+
+      *win32_path = '\0';
+      if (spath - path)
+	{
+	  strncpy (win32_path, path, spath - path);
+	  *(win32_path + (spath - path)) = '\0';
+	}
+      strcat (win32_path, p.get_win32 ());
+      return 0;
+    }
+  else
+    {
+      strcpy (win32_path, path);
+      return 0;
+    }
 }
 
 extern "C"
