@@ -1,3 +1,8 @@
+2002-11-10  Luke Dunstan  <infidel@users.sf.net>
+
+	* path.cc (cygwin_conv_to_win32_path): Handle a path list with
+	a trailing colon.
+
 2002-11-09  Luke Dunstan  <infidel@users.sf.net>
 
 	* ismsys.cc (IsMsys): Detect non-PE executables. Small bug fix.
