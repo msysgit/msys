@@ -1,24 +1,116 @@
-BODY { color: black; background-color: white; }
-
-H1 { text-align: center; }
-
-OL { margin-top: 1cm; margin-bottom: 1cm;  }
-OL.alpha { list-style-type: upper-alpha; }
-OL.romanum { list-style-type: lower-roman; }
-
-P.centre { text-align: center; }
-P.sm { font-size: small; text-align: center; }
-P.smi { font-size: small; text-align: center; font-style: italic; }
-
-SPAN.underline { text-decoration: underline; }
-SPAN.bold { font-weight: bold; }
-
-TABLE { width: 100%; text-align: left; }
-TABLE.prim { padding: 0cm; }
-TABLE.sec { padding: 0cm; }
-
-TD { vertical-align: top; }
-TD.side { color: black; background-color: rgb( 238, 238, 238 ); width: 10%; }
-TD.news { color: black; background-color: rgb( 238, 238, 238 ); width: 25%; }
-
-UL { margin-bottom: 1cm; }
+html {
+	font-family: verdana, arial, helvetica, sans-serif;
+/*	font-size: 12pt; */
+	margin: 0;
+	margin-bottom: 2em;
+	padding: 0;
+}
+body {
+	background-color: white;
+	color: #333;
+	margin: 0;
+	padding: 0;
+}
+h1 {
+	color:#999;
+	font-size: larger;
+	font-weight:900;
+	margin: 0;
+	padding:0;
+	text-align:center;
+}
+a {
+	color:#09c;
+	font-weight:600;
+	text-decoration:none;
+}
+a:link {
+	color:#09c;
+}
+a:visited {
+	color:#07a;
+}
+a:hover {
+	background-color:#0ff;
+}
+p {
+	padding-top: 0;
+}
+table {
+	border: 1px solid #999;
+}
+td {
+	border: 1px solid #999;
+}
+tr {
+	border: 1px solid #999;
+}
+#Content {
+/* IE margins here */
+	margin-left: 14em;
+	margin-right: 1em;
+	padding-right: 1em;
+	text-align: justify;
+	width: auto;
+}
+body>div#Content {
+/* Mozilla margins here */
+	margin-left: 15em;
+	margin-right: 1em;
+}
+.dec {
+	background-color:#eee;
+	border-bottom: 1px solid black;
+	border-top: 1px solid black;
+	font-weight:600;
+	padding-bottom: 3px;
+	padding-top: 3px;
+}
+#Footer {
+	float: left;
+	font-size: smaller;
+	margin-top: 1em;
+	text-align: center;
+	width: 100%;
+}
+#Header {
+	float: left;
+	margin: 0;
+	margin-bottom: 1em;
+	padding-left: 1em;
+	width: 100%;
+}
+.sidebar {
+	background-color:#eee;
+	border: 1px dashed #999;
+	padding: 10px;
+	margin-top: 2em;
+}
+#LSide {
+	float: left;
+	margin-left: 1ex;
+	width: 11em;
+}
+#RSide {
+	float: right;
+	margin-right: 1ex;
+	overflow: hidden;
+	width: 18em;
+}
+span#Label {
+	font-size: smaller;
+}
+input#Words {
+	width: 10em;
+}
+ul#Menu {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+.bold { 
+	font-weight: bold;
+}
+.small {
+	font-size: smaller;
+}

@@ -1,3 +1,25 @@
+2004-05-02	Nathan Fisher <natbobc@users.sf.net>
+
+	* bugs.shtml: Change to new style.
+	* docs.shtml: Ditto.
+	* download.shtml: Ditto.
+	* history.shtml: Ditto.
+	* index.shtml: Ditto.
+	* licensing.shtml: Ditto.
+	* links.shtml: Ditto.
+	* lists.shtml: Ditto.
+	* mingwfaq.shtml: Ditto.
+	* msys.shtml: Ditto.
+	* news.shtml: Ditto.
+	
+2004-05-02	Nathan Fisher <natbobc@users.sf.net>
+
+	* mingw_news.css: Add to CVS for new layout.
+	* mingw_orig.css: Add to CVS as reference for old layout.
+	* ssi/header.html: Add to CVS as default page header.
+	* ssi/lside.html: Add to CVS as default leftside menu.
+	* ssi/rside.html: Add to CVS as default rightside news block.
+
 2004-03-31	Nathan Fisher <natbobc@users.sf.net>
 
 	* lists.shtml: Bug fix from bug report #926431.
