@@ -1,3 +1,8 @@
+2002-01-08  Earnie Boyd  <earnie@users.sf.net>
+
+	* spawn.cc (spawn_guts): Enhance path name translation filter.
+	* include/cygwin/version.h: Increment to version 1.0.3.
+
 2001-11-30  Earnie Boyd  <earnie@users.sf.net>
 
 	* spawn.cc (spawn_guts): Add path name translation for newargv.

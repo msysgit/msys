@@ -1,9 +1,10 @@
 File:		FIXME
 Copyright (C):	2001  Earnie Boyd  <earnie@users.sf.net>
 Distribution:	See MSYS_LICENSE
-$Revision: 1.1 $
-Revision $Date: 2001/11/30 16:41:09 $
+$Revision: 1.1.2.1 $
+Revision $Date: 2002/01/08 14:04:03 $
 
 FIXME-0.1: spawn.cc: Earnie Boyd <earnie@users.sf.net>
 FIXME-0.2: spawn.cc: Earnie Boyd <earnie@users.sf.net>
 FIXME-1.0: spawn.cc, path.h, path.cc: Earnie Boyd <earnie@users.sf.net>
+FIXME-1.1: spawn.cc: Earnie Boyd  <earnie@users.sf.net>
