@@ -72,7 +72,7 @@ __sflags (ptr, mode, optr)
       m |= O_BINARY;
 #endif
     }
-#ifdef __CYGWIN__
+#if defined(__CYGWIN__) || defined(__MSYS__)
   else if (mode[1] && (mode[1] == 't' || mode[2] == 't'))
 #else
   else

@@ -47,7 +47,7 @@ int sched_setscheduler (pid_t, int, const struct sched_param *);
 /* yield the cpu */
 int sched_yield (void);
 
-#if defined(__INSIDE_CYGWIN__)
+#if defined(__INSIDE_CYGWIN__) || defined(__INSIDE_MSYS__)
 /* These are private helper functions used to calculate scheduler settings and
  * validate parameters */
 
@@ -56,7 +56,7 @@ int valid_sched_parameters(const struct sched_param *);
 /* set a single thread's priority */
 int sched_set_thread_priority(HANDLE thread, int priority);
 
-#endif /* INSIDE_CYGWIN */
+#endif /* __INSIDE_CYGWIN__ || __INSIDE_MSYS__*/
 
 #ifdef __cplusplus
 }

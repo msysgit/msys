@@ -150,7 +150,7 @@ esac
 
 newlib_cflags="[$]{newlib_cflags} -I"'[$](top_builddir)'"/$1/targ-include -I[$]{newlib_flagbasedir}/libc/include"
 case "${host}" in
-  *-*-cygwin*)
+  *-*-cygwin* | *-*-msys*)
     newlib_cflags="[$]{newlib_cflags} -I[$]{newlib_flagbasedir}/../winsup/cygwin/include  -I[$]{newlib_flagbasedir}/../winsup/w32api/include"
     ;;
 esac

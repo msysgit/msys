@@ -2541,7 +2541,7 @@ EOF
 # }
 # #endif
 #
-# #ifdef __CYGWIN__
+# #if defined (__CYGWIN__) || defined (__MSYS__)
 # #include <cygwin/cygwin_dll.h>
 # DECLARE_CYGWIN_DLL( DllMain );
 # #endif

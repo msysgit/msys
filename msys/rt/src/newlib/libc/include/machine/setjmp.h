@@ -38,7 +38,7 @@
 #define	_JBLEN	9
 #endif
 
-#if defined(__CYGWIN__) && !defined (_JBLEN)
+#if (defined(__CYGWIN__) || defined(__MSYS__)) && !defined (_JBLEN)
 #define _JBLEN (13 * 4)
 #elif defined (__i386__)
 #ifdef __unix__
@@ -152,7 +152,7 @@ typedef	_JBTYPE jmp_buf[_JBLEN];
 typedef	int jmp_buf[_JBLEN];
 #endif
 
-#if defined(__CYGWIN__) || defined(__rtems__)
+#if defined(__CYGWIN__) || defined(__rtems__) || defined(__MSYS__)
 #include <signal.h>
 
 /* POSIX sigsetjmp/siglongjmp macros */
@@ -169,5 +169,5 @@ typedef int sigjmp_buf[_JBLEN+2];
                sigprocmask (SIG_SETMASK, (sigset_t *) &env[_SIGMASK], 0):0),\
                longjmp (env, val))
 
-#endif /* __CYGWIN__ or __rtems__ */
+#endif /* __CYGWIN__ or __rtems__ or __MSYS__ */
 #endif

@@ -917,8 +917,10 @@ _dll_crt0 ()
 	      break;
 	    }
 	  default:
+/*
 	    if ((fork_info->type & PROC_MAGIC_MASK) == PROC_MAGIC_GENERIC)
 	      api_fatal ("conflicting versions of msys-1.0.dll detected.  Use only the most recent version.\n");
+*/
 	    break;
 	}
     }

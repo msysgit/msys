@@ -23,7 +23,7 @@ details. */
 /*  GCC runtime library's C++ EH code unfortunately pulls in stdio, and we
    get undefine references to __impure_ptr, and hence the following
    hack. It should be reasonably safe however as long as this file
-   is built using -mno-cygwin as is intended.  */
+   is built using -mmingw as is intended.  */
 int _impure_ptr;
 
 /* we *know* we're being built with GCC */

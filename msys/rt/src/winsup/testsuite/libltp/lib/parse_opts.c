@@ -77,7 +77,7 @@
 #include <unistd.h>
 #include <sys/time.h>
 
-#ifdef __CYGWIN__
+#if defined (__CYGWIN__) || defined (__MSYS__)
 #include <getopt.h>
 #endif
 

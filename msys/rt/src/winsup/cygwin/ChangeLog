@@ -1,4 +1,40 @@
 
+2001-09-21  Earnie Boyd  <earnie@SF.net>
+
+	* dcrt0.cc: Don't api_fatal for differing versions.
+	* localtime.c: Add preprocessor filters for __MSYS__.
+	* winsup.h: Conditionalize defining __INSIDE_CYGWIN__ and 
+	__INSIDE_MSYS__.
+	* include/getopt.h (getopt_long): Modify the parameter list for
+	consistancy between the various headers of like name.
+	* include/glob.h: Add preprocessor filters for __INSIDE_MSYS__.
+	* include/semaphore.h: Ditto.
+	* include/cygwin/cygwin_dll.h (msys_attach_dll):
+	Renamed cygwin_attach_dll.
+	(msys_detach_dll): Renamed cygwin_detach_dll.
+	(_msys_dll_entry): Renamed _cygwin_dll_entry.
+	(_msys_nonmsys_dll_entry): Renamed _msys_nonmsys_dll_entry.
+	* include/cygwin/types.h: Add preprocessor filters for __INSIDE_MSYS__.
+	* include/cygwin/sys/cygwin.h: Ditto.
+	* lib/_cygwin_crt0_common.c (msys_crt0): Renamed cygwin_crt0.
+	(msys_attach_dll): Renamed cygwin_attach_dll.
+	(msys_attach_nonmsys_dll): Renamed cygwin_attach_noncygwin_dll.
+	(_msys_crt0_common): Renamed _cygwin_crt0_common.
+	* lib/crt0.h (_msys_crt0_common): Ditto.
+	* lib/cygwin_attach_dll.c (__INSIDE_MSYS__): Undefine.
+	(msys_attach_dll): Renamed cygwin_attach_dll.
+	(_msys_crt0_common): Renamed _cygwin_crt0_common.
+	* lib/cygwin_crt0.c (__INSIDE_MSYS__): Undefine.
+	(msys_crt0): Renamed cygwin_crt0.
+	(_msys_crt0_common): Renamed _cygwin_crt0_common.
+	* lib/dll_entry.c: Substitute __msys_dll_entry@12 in comments.
+	* lib/getopt/c (getopt_long): Change parameter structure to match 
+	the header changes.
+	* lib/parse_opts.c: Add preprocessor filters for __MSYS__.
+	* lib/str_to_bytes.c: Ditto.
+	* lib/tst_sig.c: Ditto.
+	* lib/write_log.c: Ditto.
+
 2001-07-27  Earnie Boyd  <earnie@SourceForge.Net>
 
 	* ROADMAP: Rename file.

@@ -20,9 +20,9 @@ details. */
 extern "C"
 {
 char **environ;
-void cygwin_crt0 (MainFunc);
-int cygwin_attach_dll (HMODULE, MainFunc);
-int cygwin_attach_noncygwin_dll (HMODULE, MainFunc);
+void msys_crt0 (MainFunc);
+int msys_attach_dll (HMODULE, MainFunc);
+int msys_attach_nonmsys_dll (HMODULE, MainFunc);
 int main (int, char **, char **);
 struct _reent *_impure_ptr;
 int _fmode;
@@ -31,7 +31,7 @@ int _fmode;
    and then jump to the dll.  */
 
 int __stdcall
-_cygwin_crt0_common (MainFunc f, per_process *u)
+_msys_crt0_common (MainFunc f, per_process *u)
 {
   /* This is used to record what the initial sp was.  The value is needed
      when copying the parent's stack to the child during a fork.  */

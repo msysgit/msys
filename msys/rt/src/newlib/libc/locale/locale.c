@@ -90,7 +90,7 @@ No supporting OS subroutines are required.
 #include <limits.h>
 #include <reent.h>
 
-#ifdef __CYGWIN__
+#if defined (__CYGWIN__) || defined(__MSYS__)
 int __declspec(dllexport) __mb_cur_max = 1;
 #else
 int __mb_cur_max = 1;

@@ -18,7 +18,7 @@
 #ifndef _SYS_TYPES_H
 #define _SYS_TYPES_H
 
-#if defined (_WIN32) || defined (__CYGWIN__)
+#if defined (_WIN32) || defined (__CYGWIN__) || defined (__MSYS__)
 #define __MS_types__
 #endif
 
@@ -158,7 +158,7 @@ typedef unsigned short nlink_t;
    by __USE_W32_SOCKETS) the W32api winsock[2].h header which
    defines Windows versions of them.   Note that a program which
    includes the W32api winsock[2].h header must know what it is doing;
-   it must not call the cygwin32 select function.
+   it must not call the cygwin32 or msys select function.
 */
 # if !(defined (_POSIX_SOURCE) || defined (_WINSOCK_H) || defined (__USE_W32_SOCKETS)) 
 #  define _SYS_TYPES_FD_SET
@@ -206,7 +206,7 @@ typedef	struct _types_fd_set {
    condition variables, and keys.  But since RTEMS is currently the only
    newlib user of these, the ifdef is just on RTEMS. */
 
-#if defined(__rtems__) || defined(__CYGWIN__)
+#if defined(__rtems__) || defined(__CYGWIN__) || defined(__MSYS__)
 
 #ifndef __clockid_t_defined
 typedef _CLOCKID_T_ clockid_t;
@@ -221,14 +221,14 @@ typedef _TIMER_T_ timer_t;
 #include <sys/features.h>
 
 
-/* Cygwin will probably never have full posix compliance due to little things
- * like an inability to set the stackaddress. Cygwin is also using void *  
+/* Cygwin nor msys will probably never have full posix compliance due to little 
+ * things like an inability to set the stackaddress. Cygwin is also using void *
  * pointers rather than structs to ensure maximum binary compatability with
  * previous releases.
  * This means that we don't use the types defined here, but rather in
  * <cygwin/types.h>
  */
-#if defined(_POSIX_THREADS) && !defined(__CYGWIN__)
+#if defined(_POSIX_THREADS) && !defined(__CYGWIN__) && !defined(__MSYS__)
 
 #include <sys/sched.h>
 
@@ -322,7 +322,7 @@ typedef struct {
   int   init_executed;   /* has the initialization routine been run? */
 } pthread_once_t;       /* dynamic package initialization */
 #else
-#if defined (__CYGWIN__)
+#if defined (__CYGWIN__) || defined (__MSYS__)
 #include <cygwin/types.h>
 #endif
 #endif /* defined(_POSIX_THREADS) */

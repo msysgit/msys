@@ -1,3 +1,10 @@
+2001.09.21  Earnie Boyd  <earnie@SF.net>
+
+	* config.guess: Update from FSF and add msys definitions.
+	* config.sub: Ditto.
+	* configure.in: Add msys host and target filters.
+	* ltconfig: Add MSYS preprocessor filters.
+
 2001.07.26  Earnie Boyd  <earnie@SourceForge.net>
 
 	* CYGWIN_LICENSE: Copy from winsup/cygwin directory.

@@ -95,7 +95,7 @@ case "${host_cpu}" in
   i[3456]86)
 	# Don't use for these since they provide their own setjmp.
 	case ${host} in
-	*-*-go32 | *-*-sco* | *-*-cygwin*) 
+	*-*-go32 | *-*-sco* | *-*-cygwin* | *-*-msys*) 
 		machine_dir=i386
 		;;
 	*) 
@@ -199,7 +199,7 @@ fi
 # THIS TABLE IS ALPHA SORTED.  KEEP IT THAT WAY.
 
 case "${host}" in
-  *-*-cygwin*)
+  *-*-cygwin* | *-*-msys*)
 	sys_dir=cygwin
 	posix_dir=posix
 	;;
@@ -325,7 +325,7 @@ esac
 # THIS TABLE IS ALPHA SORTED.  KEEP IT THAT WAY.
 
 case "${host}" in
-  *-*-cygwin*)
+  *-*-cygwin* | *-*-msys*)
 	newlib_cflags="${newlib_cflags} -DHAVE_OPENDIR -DHAVE_RENAME -DSIGNAL_PROVIDED -DWANT_IO_LONG_DBL -DWANT_PRINTF_LONG_LONG -D_COMPILING_NEWLIB -DHAVE_FCNTL"
 # CYGWIN provides its own malloc if --enable-malloc-debugging is set
 	if [ "x${malloc_debugging}" = "xyes" ] ; then

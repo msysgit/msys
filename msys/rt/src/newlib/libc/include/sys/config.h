@@ -126,10 +126,10 @@ typedef unsigned int __uint32_t;
 #endif
 
 
-#if defined(__CYGWIN32__) || defined(__CYGWIN__)
+#if defined(__CYGWIN__) || defined(__MSYS__)
 #define __FILENAME_MAX__ (260 - 1 /* NUL */)
 #define _READ_WRITE_RETURN_TYPE ssize_t
-#if defined(__INSIDE_CYGWIN__) || defined(_COMPILING_NEWLIB)
+#if defined(__INSIDE_CYGWIN__) || defined(__INSIDE_MSYS__) || defined(_COMPILING_NEWLIB)
 #define __IMPORT
 #else
 #define __IMPORT __declspec(dllimport)

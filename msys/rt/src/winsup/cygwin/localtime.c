@@ -1429,7 +1429,7 @@ tzsetwall P((void))
 		}
 	}
 #endif /* defined ALL_STATE */
-#if defined (_WIN32) || defined (__CYGWIN__)
+#if defined (_WIN32) || defined (__CYGWIN__) || defined (__MSYS__)
 #define is_upper(c) ((unsigned)(c) - 'A' <= 26)
 	{
 	    TIME_ZONE_INFORMATION tz;

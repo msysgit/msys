@@ -210,6 +210,9 @@ case "${host}" in
   *-cygwin*)
     host_makefile_frag="${host_makefile_frag} config/mh-cygwin"
     ;;
+  *-msys*)
+    host_makefile_frag="${host_makefile_frag} config/mh-cygwin"
+    ;;
   *-mingw32*)
     host_makefile_frag="${host_makefile_frag} config/mh-mingw32"
     ;;
@@ -304,6 +307,9 @@ if [ x${shared} = xyes ]; then
       ;;
     i[3456]86-*-cygwin*)
       # We don't want -fPIC on Cygwin.
+      ;;
+    i[3456789]86-*-msys*)
+      # We don't want -fPIC on MSYS.
       ;;
     i[3456]86-*-*)
       host_makefile_frag="${host_makefile_frag} config/mh-x86pic"
@@ -537,6 +543,8 @@ case "${host}" in
 	  configdirs="$configdirs dosrel" ;;
 	*-cygwin*)
 	  configdirs="$configdirs libtermcap dosrel" ;;
+	*-msys*)
+	  configdirs="$configdirs libtermcap dosrel" ;;
 esac
 
 # Remove more programs from consideration, based on the host or 
@@ -560,6 +568,9 @@ case "${host}" in
      noconfigdirs="$noconfigdirs tk itcl tix libgui gdb"
      ;;
   *-*-cygwin*)
+     noconfigdirs="autoconf automake send-pr rcs guile perl apache inet"
+    ;;
+  *-*-msys*)
      noconfigdirs="autoconf automake send-pr rcs guile perl apache inet"
     ;;
   *-*-netbsd*)
@@ -624,6 +635,7 @@ case "${target}" in
     skipdirs="$skipdirs target-newlib"
     case "${host}" in
       *-*-cygwin*) ;; # keep gdb and readline
+      *-*-msys*) ;; # keep gdb and readline
       *) noconfigdirs="$noconfigdirs gdb readline ${libstdcxx_version}"
 	 ;;
     esac
@@ -759,6 +771,20 @@ case "${target}" in
     # Can't build gdb for Cygwin if not native.
     case "${host}" in
       *-*-cygwin*) ;; # keep gdb tcl tk expect etc.
+      *) noconfigdirs="$noconfigdirs gdb tcl tk expect itcl tix libgui db snavigator gnuserv"
+         ;;
+    esac
+    ;;    
+  *-*-msys*)
+    target_configdirs="$target_configdirs target-libtermcap target-winsup"
+    noconfigdirs="$noconfigdirs target-gperf target-libgloss ${libgcj}"
+    # always build newlib.
+    skipdirs=`echo " ${skipdirs} " | sed -e 's/ target-newlib / /'`
+
+    # Can't build gdb for Cygwin if not native.
+    case "${host}" in
+      *-*-cygwin*) ;; # keep gdb tcl tk expect etc.
+      *-*-msys*) ;; # keep gdb tcl tk expect etc.
       *) noconfigdirs="$noconfigdirs gdb tcl tk expect itcl tix libgui db snavigator gnuserv"
          ;;
     esac
@@ -1317,6 +1343,8 @@ case " $skipdirs " in
 *" target-newlib "*) ;;
 *)
    case "$target" in
+   *-msys*)
+     FLAGS_FOR_TARGET=$FLAGS_FOR_TARGET' -L$$r/$(TARGET_SUBDIR)/winsup -L$$r/$(TARGET_SUBDIR)/winsup/cygwin -isystem $$s/winsup/include -isystem $$s/winsup/cygwin/include -isystem $$s/newlib/libc/sys/cygwin -isystem $$s/newlib/libc/sys/cygwin32' ;;
    *-cygwin*)
      FLAGS_FOR_TARGET=$FLAGS_FOR_TARGET' -L$$r/$(TARGET_SUBDIR)/winsup -L$$r/$(TARGET_SUBDIR)/winsup/cygwin -isystem $$s/winsup/include -isystem $$s/winsup/cygwin/include -isystem $$s/newlib/libc/sys/cygwin -isystem $$s/newlib/libc/sys/cygwin32' ;;
    esac
