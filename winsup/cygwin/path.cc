@@ -1721,20 +1721,30 @@ mount_info::read_mounts (reg_key& r)
 	      continue;
 	  st = strchr(pfstab, '\n');
 	  if (st)
-	    *st = '\0';
+	    {
+	      *st = '\0';
+	      // Strip carriage return.
+	      if (st > pfstab && *--st == '\r')
+		  *st = '\0';
+	    }
 	  if (! strlen (pfstab))
 	      continue;
+	  // Replace tabs with spaces.
 	  while ((st = strchr (pfstab, '\t')))
 	    {
 	      *st = ' ';
-	    };
+	    }
+	  // Strip spaces at end of line.
+	  sst = strchr(pfstab, '\0');
+	  while (sst > pfstab && *--sst == ' ')
+	      *sst = '\0';
+	  // Find space separator.
 	  st = strchr (pfstab, ' ');
+	  if (!st)
+	      continue;
 	  *st++ = '\0';
 	  while (*st == ' ')
 	      st++;
-	  sst = strrchr(st, ' ');
-	  while (sst && *sst == ' ')
-	      *sst-- = '\0';
 	  debug_printf("fstab: native - %s, posix - %s", pfstab, st);
 	  res = mount_table->add_item (pfstab, st, MOUNT_BINARY, FALSE);
 	}
