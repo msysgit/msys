@@ -1054,6 +1054,12 @@ typedef BYTE BOOLEAN,*PBOOLEAN;
 #define TAPE_LOCK 3
 #define TAPE_UNLOCK 4
 #define TAPE_FORMAT 5
+#define VER_PLATFORM_WIN32s 0
+#define VER_PLATFORM_WIN32_WINDOWS 1
+#define VER_PLATFORM_WIN32_NT 2
+#define VER_NT_WORKSTATION 1
+#define VER_NT_DOMAIN_CONTROLLER 2
+#define VER_NT_SERVER 3
 #define BTYPE(x) ((x)&N_BTMASK)
 #define ISPTR(x) (((x)&N_TMASK)==(IMAGE_SYM_DTYPE_POINTER<<N_BTSHFT))
 #define ISFCN(x) (((x)&N_TMASK)==(IMAGE_SYM_DTYPE_FUNCTION<<N_BTSHFT))
@@ -1999,6 +2005,48 @@ typedef struct _EVENTLOGRECORD {
 	DWORD DataLength;
 	DWORD DataOffset;
 } EVENTLOGRECORD,*PEVENTLOGRECORD;
+typedef struct _OSVERSIONINFOA {
+	DWORD dwOSVersionInfoSize;
+	DWORD dwMajorVersion;
+	DWORD dwMinorVersion;
+	DWORD dwBuildNumber;
+	DWORD dwPlatformId;
+	CHAR szCSDVersion[128];
+} OSVERSIONINFOA,*POSVERSIONINFOA,*LPOSVERSIONINFOA;
+typedef struct _OSVERSIONINFOW {
+	DWORD dwOSVersionInfoSize;
+	DWORD dwMajorVersion;
+	DWORD dwMinorVersion;
+	DWORD dwBuildNumber;
+	DWORD dwPlatformId;
+	WCHAR szCSDVersion[128];
+} OSVERSIONINFOW,*POSVERSIONINFOW,*LPOSVERSIONINFOW;
+typedef struct _OSVERSIONINFOEXA {
+	DWORD dwOSVersionInfoSize;
+	DWORD dwMajorVersion;
+	DWORD dwMinorVersion;
+	DWORD dwBuildNumber;
+	DWORD dwPlatformId;
+	CHAR szCSDVersion[128];
+	WORD wServicePackMajor;
+	WORD wServicePackMinor;
+	WORD wSuiteMask;
+	BYTE wProductType;
+	BYTE wReserved;
+} OSVERSIONINFOEXA, *POSVERSIONINFOEXA, *LPOSVERSIONINFOEXA;
+typedef struct _OSVERSIONINFOEXW {
+	DWORD dwOSVersionInfoSize;
+	DWORD dwMajorVersion;
+	DWORD dwMinorVersion;
+	DWORD dwBuildNumber;
+	DWORD dwPlatformId;
+	WCHAR szCSDVersion[128];
+	WORD wServicePackMajor;
+	WORD wServicePackMinor;
+	WORD wSuiteMask;
+	BYTE wProductType;
+	BYTE wReserved;
+} OSVERSIONINFOEXW, *POSVERSIONINFOEXW, *LPOSVERSIONINFOEXW;
 #pragma pack(push,2)
 typedef struct _IMAGE_VXD_HEADER {
 	WORD e32_magic;
@@ -2526,6 +2574,14 @@ typedef struct _REPARSE_POINT_INFORMATION {
 	WORD   ReparseDataLength;
 	WORD   UnparsedNameLength;
 } REPARSE_POINT_INFORMATION, *PREPARSE_POINT_INFORMATION;
+
+#ifdef UNICODE
+typedef OSVERSIONINFOW OSVERSIONINFO,*POSVERSIONINFO,*LPOSVERSIONINFO;
+typedef OSVERSIONINFOEXW OSVERSIONINFOEX,*POSVERSIONINFOEX,*LPOSVERSIONINFOEX;
+#else
+typedef OSVERSIONINFOA OSVERSIONINFO,*POSVERSIONINFO,*LPOSVERSIONINFO;
+typedef OSVERSIONINFOEXA OSVERSIONINFOEX,*POSVERSIONINFOEX,*LPOSVERSIONINFOEX;
+#endif
 
 #if defined(__GNUC__)
 

@@ -427,9 +427,6 @@ extern "C" {
 #define CBR_115200	115200
 #define CBR_128000	128000
 #define CBR_256000	256000
-#define VER_PLATFORM_WIN32s 0
-#define VER_PLATFORM_WIN32_WINDOWS 1
-#define VER_PLATFORM_WIN32_NT 2
 #define BACKUP_INVALID	0
 #define BACKUP_DATA 1
 #define BACKUP_EA_DATA 2
@@ -841,22 +838,6 @@ typedef struct _TIME_ZONE_INFORMATION {
 	SYSTEMTIME DaylightDate;
 	LONG DaylightBias;
 } TIME_ZONE_INFORMATION,*LPTIME_ZONE_INFORMATION;
-typedef struct _OSVERSIONINFOA {
-	DWORD dwOSVersionInfoSize;
-	DWORD dwMajorVersion;
-	DWORD dwMinorVersion;
-	DWORD dwBuildNumber;
-	DWORD dwPlatformId;
-	CHAR szCSDVersion[128];
-} OSVERSIONINFOA,*POSVERSIONINFOA,*LPOSVERSIONINFOA;
-typedef struct _OSVERSIONINFOW {
-	DWORD dwOSVersionInfoSize;
-	DWORD dwMajorVersion;
-	DWORD dwMinorVersion;
-	DWORD dwBuildNumber;
-	DWORD dwPlatformId;
-	WCHAR szCSDVersion[128];
-} OSVERSIONINFOW,*POSVERSIONINFOW,*LPOSVERSIONINFOW;
 typedef struct _MEMORYSTATUS {
 	DWORD dwLength;
 	DWORD dwMemoryLoad;
@@ -1546,6 +1527,8 @@ BOOL WINAPI UnlockFileEx(HANDLE,DWORD,DWORD,DWORD,LPOVERLAPPED);
 BOOL WINAPI UnmapViewOfFile(PVOID);
 BOOL WINAPI UpdateResourceA(HANDLE,LPCSTR,LPCSTR,WORD,PVOID,DWORD);
 BOOL WINAPI UpdateResourceW(HANDLE,LPCWSTR,LPCWSTR,WORD,PVOID,DWORD);
+BOOL WINAPI VerifyVersionInfoA(LPOSVERSIONINFOEXA,DWORD,DWORDLONG);
+BOOL WINAPI VerifyVersionInfoW(LPOSVERSIONINFOEXW,DWORD,DWORDLONG);
 PVOID WINAPI VirtualAlloc(PVOID,DWORD,DWORD,DWORD);
 BOOL WINAPI VirtualFree(PVOID,DWORD,DWORD);
 BOOL WINAPI VirtualFreeEx(HANDLE,PVOID,DWORD,DWORD);
@@ -1584,7 +1567,6 @@ DWORD WINAPI WriteTapemark(HANDLE,DWORD,DWORD,BOOL);
 typedef STARTUPINFOW STARTUPINFO,*LPSTARTUPINFO;
 typedef WIN32_FIND_DATAW WIN32_FIND_DATA,*LPWIN32_FIND_DATA;
 typedef HW_PROFILE_INFOW HW_PROFILE_INFO,*LPHW_PROFILE_INFO;
-typedef OSVERSIONINFOW OSVERSIONINFO,*POSVERSIONINFO,*LPOSVERSIONINFO;
 #define AccessCheckAndAuditAlarm AccessCheckAndAuditAlarmW
 #define AddAtom AddAtomW
 #define BackupEventLog BackupEventLogW
@@ -1710,6 +1692,7 @@ typedef OSVERSIONINFOW OSVERSIONINFO,*POSVERSIONINFO,*LPOSVERSIONINFO;
 #define SetFileSecurity SetFileSecurityW
 #define SetVolumeLabel SetVolumeLabelW
 #define UpdateResource UpdateResourceW
+#define VerifyVersionInfo VerifyVersionInfoW
 #define WaitNamedPipe WaitNamedPipeW
 #define WritePrivateProfileSection WritePrivateProfileSectionW
 #define WritePrivateProfileString WritePrivateProfileStringW
@@ -1720,7 +1703,6 @@ typedef OSVERSIONINFOW OSVERSIONINFO,*POSVERSIONINFO,*LPOSVERSIONINFO;
 typedef STARTUPINFOA STARTUPINFO,*LPSTARTUPINFO;
 typedef WIN32_FIND_DATAA WIN32_FIND_DATA,*LPWIN32_FIND_DATA;
 typedef HW_PROFILE_INFOA HW_PROFILE_INFO,*LPHW_PROFILE_INFO;
-typedef OSVERSIONINFOA OSVERSIONINFO,*POSVERSIONINFO,*LPOSVERSIONINFO;
 #define AccessCheckAndAuditAlarm AccessCheckAndAuditAlarmA
 #define AddAtom AddAtomA
 #define BackupEventLog BackupEventLogA
@@ -1846,6 +1828,7 @@ typedef OSVERSIONINFOA OSVERSIONINFO,*POSVERSIONINFO,*LPOSVERSIONINFO;
 #define SetFileSecurity SetFileSecurityA
 #define SetVolumeLabel SetVolumeLabelA
 #define UpdateResource UpdateResourceA
+#define VerifyVersionInfo VerifyVersionInfoA
 #define WaitNamedPipe WaitNamedPipeA
 #define WritePrivateProfileSection WritePrivateProfileSectionA
 #define WritePrivateProfileString WritePrivateProfileStringA
