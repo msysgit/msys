@@ -1,3 +1,8 @@
+2003-05-30  Earnie Boyd  <earnie@users.sf.net>
+
+	* ssi/release.html: Remove the CVS version as this file is now
+	dynamically created.
+
 2003-05-27  Earnie Boyd  <earnie@users.sf.net>
 
 	* docs.shtml: Add Thomas Messenger's tutorial about compiled html help.
