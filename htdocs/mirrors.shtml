@@ -1,4 +1,4 @@
-<!-- $Id: mirrors.shtml,v 1.8 2001-08-28 01:05:44 stevedperkins Exp $ -->
+<!-- $Id: mirrors.shtml,v 1.9 2001-08-28 18:04:52 stevedperkins Exp $ -->
 
 <html>
 <head>
@@ -25,52 +25,27 @@
 <!--                                                                    -->
 
 <table border="0" cellspacing="6" cellpadding="0">
-<tr>
-<td valign="top" align="left">
-
-<p>This page is no longer valid for mirrors of the current MinGW versions.  It
-does contain mirrors of some of the original distributions however some of
-these links are no longer valid either.  If you wish to mirror the MinGW
-distributions then please send a request to <a href="mailto:mingw-users-admin@lists.sourceforge.net">mingw-users-admin@lists.sourceforge.net</a>.</p>
-
-<p>The following sites have generously agreed to mirror the MinGW 
-and Cygwin related items. Please pick one closest to you. </p>
-
-<h3>Mirror Sites:</h3>
-<ul>
-<li> USA:
-<ul>
-<li> <a href="ftp://ftp.nanotech.wisc.edu/pub/khan/gnu-win32/">
-ftp://ftp.nanotech.wisc.edu/pub/khan/gnu-win32/ (Madison, WI)</a></li>
-</ul></li>
-<li> Asia:
-<ul>
-<li> <a href="ftp://ftp1.sinica.edu.tw/pub3/GNU/gnu-win32/">
-ftp://ftp1.sinica.edu.tw/pub3/GNU/gnu-win32/ (Taiwan)</a></li>
-</ul></li>
-<li> Europe:
-<ul> 
-<li> <a href="ftp://ftp.eq.uc.pt/pub/software/msdos/prog/gnu-win32/">
-ftp://ftp.eq.uc.pt/pub/software/msdos/prog/gnu-win32/ (Portugal)</a></li>
-<li> <a href="ftp://coanda.propulsion.pub.ro/pub/gnu-win32/">
-ftp://coanda.propulsion.pub.ro/pub/gnu-win32/ (Romania)</a></li>
-<li> <a href="ftp://ftp.franken.de/pub/win32/develop/gnuwin32/mingw32/porters/Khan_Mumit">
-ftp://ftp.franken.de/pub/win32/develop/gnuwin32/mingw32/porters/Khan_Mumit/ (Germany)</a></li>
-<li> <a href="ftp://ftp.cc.foi.hr/pub/egcs-win32/">
-ftp://ftp.cc.foi.hr/pub/egcs-win32/ (Croatia)</a></li>
-<li> <a href="http://paddington.ic.uva.nl/mirror/gnu-win32/">
-http://paddington.ic.uva.nl/mirror/gnu-win32/ (Amsterdam)</a></li>
-</ul></li>
-</ul>
-
-<p>
-Many thanks to Jeremy Bettis (Omaha, NE), Nuno Oliveira (Portugal), 
-Sorin Mitran (Romania), Michael Hirmke (Germany), Tein Horng Yuan 
-(Taiwan), Dobrica Pavlinusic (Croatia), and Karel Sprenger (Amsterdam)
-for providing the mirrors.</p>
-
-</td>
-</tr>
+   <tr>
+      <td valign="top" align="left">
+         <p>If you wish to mirror the MinGW distributions then please send a 
+         request to <a href="mailto:mingw-users-admin@lists.sourceforge.net">
+         mingw-users-admin@lists.sourceforge.net</a>.
+         </p>
+         <h3>Mirror Sites:</h3>
+         <ul>
+            <li> 
+               <a href="ftp://ftp.franken.de/pub/win32/develop/gnuwin32/mingw32/mirrors/sourceforge/">
+               ftp://ftp.franken.de/pub/win32/develop/gnuwin32/mingw32/mirrors/sourceforge/
+               </a>
+            </li>
+            <li> 
+               <a href="ftp://ftp.franken.de/pub/win32/develop/gnuwin32/mingw32/mirrors/sourceforge2/">
+               ftp://ftp.franken.de/pub/win32/develop/gnuwin32/mingw32/mirrors/sourceforge2/
+               </a>
+            </li>
+         </ul>
+      </td>
+   </tr>
 </table>
 
 <!-- <hr noshade="noshade" size="1" /> -->
@@ -82,7 +57,7 @@ for providing the mirrors.</p>
 <!--#include file="ssi/footer.html"-->
 
 <address>
-<br />Last revised $Date: 2001-08-28 01:05:44 $
+<br />Last revised $Date: 2001-08-28 18:04:52 $
 </address>
 
 </body>
