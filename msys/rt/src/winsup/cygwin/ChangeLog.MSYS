@@ -1,3 +1,24 @@
+2004-03-29  Earnie Boyd  <earnie@users.sf.net>
+
+	* winsup.h (stat_worker): Remove "int nofollow" argument from
+	declaration.
+	* fhandler.cc: Ensure that PC_SYM_NOFOLLOW attribute is used throughout.
+	* sec_acl.cc: Ditto.
+	* path.cc: Ditto.
+	(NEW_PATH_METHOD): Remove define and relative old code.
+	(NO_SYMLINK): Ditto.
+	(suffix_scan::next): Remove.
+	(suffix_scan::add): Readd.
+	(Suffix_scan::del): Ditto.
+	* path.h (suffix_scan::next): Remove.
+	(suffix_scan::add): Readd.
+	(suffix_scan::del): Ditto.
+	* spawn.cc (std_suffixes[]): Remove suffix_info for "".
+	(perhaps_suffix): Revert to previous method.
+	* syscalls.cc: Ensure that PC_SYM_NOFOLLOW attribute is used throughout.
+	(stat_suffixes): Remove suffix_info for "".
+	(stat_worker): Remove "int nofollow" argument.
+
 2004-03-18  Earnie Boyd  <earnie@users.sf.net>
 
 	* path.cc (msys_p2w): Modify debug messages.
