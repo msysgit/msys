@@ -36,7 +36,7 @@ if [ ! -d "$HOME" ]; then
   mkdir -p "$HOME"
 fi
 
-if [ -z "$HISTFILE" ]; then
+if [ "x$HISTFILE" == "x/.bash_history" ]; then
   HISTFILE=$HOME/.bash_history
 fi
 
