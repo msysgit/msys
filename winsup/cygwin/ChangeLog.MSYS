@@ -1,3 +1,10 @@
+2002-06-19  Earnie Boyd  <earnie@users.sf.net>
+
+	* msys.cc: Add guards for pointers returned by strrchr throughout.
+	* shared.cc (shared_name): Add guard to check pointer of return from
+	strchr.
+	Thanks to Luke Dunstan for both of the above.
+
 2002-06-13  Earnie Boyd  <earnie@users.sf.net>
 
 	* msys_symlink.cc: New file.

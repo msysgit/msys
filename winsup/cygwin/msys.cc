@@ -32,7 +32,8 @@ __AbsDllPath(const char * DllName, char * AbsDllPath, int AbsDllPathLen)
     else
       {
 	char *ptr = strrchr(AbsDllPath, '\\');
-	*ptr = '\0';
+	if (ptr)
+	  *ptr = '\0';
       }
 }
 
@@ -53,6 +54,7 @@ __AbsExeModPath (char * AbsExeModPath, int AbsExeModPathLen)
     else
       {
 	char *ptr = strrchr(AbsExeModPath, '\\');
-	*ptr = '\0';
+	if (ptr)
+	  *ptr = '\0';
       }
 }
