@@ -75,10 +75,10 @@ extern int _malloc_trim_r _PARAMS ((struct _reent *, size_t));
 extern _VOID mstats _PARAMS ((char *));
 extern _VOID _mstats_r _PARAMS ((struct _reent *, char *));
 
-#ifndef __CYGWIN__
+#if !defined (__CYGWIN__) && !defined (__MSYS__)
 /* Some systems provide this, so do too for compatibility.  */
 extern void cfree _PARAMS ((_PTR));
-#endif /* __CYGWIN__ */
+#endif /* not __CYGWIN__ and not __MSYS__ */
 
 #ifdef __cplusplus
 }

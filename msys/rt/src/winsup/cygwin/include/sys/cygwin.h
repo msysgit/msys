@@ -184,7 +184,7 @@ struct per_process
      add an item. */
   DWORD unused2[5];
 
-#ifdef __INSIDE_CYGWIN__
+#if defined (__INSIDE_CYGWIN__) || defined (__INSIDE_MSYS__)
   ResourceLocks *resourcelocks;
   MTinterface *threadinterface;
 #else

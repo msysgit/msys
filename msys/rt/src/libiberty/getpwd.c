@@ -44,7 +44,7 @@ extern char *getwd ();
 #define GUESSPATHLEN 100
 #endif
 
-#if !(defined (VMS) || (defined(_WIN32) && !defined(__CYGWIN__)))
+#if !(defined (VMS) || (defined(_WIN32) && !(defined(__CYGWIN__) || defined(__MSYS__))))
 
 /* Get the working directory.  Use the PWD environment variable if it's
    set correctly, since this is faster and gives more uniform answers

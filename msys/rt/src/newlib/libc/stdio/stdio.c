@@ -123,7 +123,7 @@ __sclose (cookie)
 int
 __stextmode (int fd)
 {
-#ifdef __CYGWIN__
+#if defined(__CYGWIN__) || defined(__MSYS__)
   return _cygwin_istext_for_stdio (fd);
 #else
   return 0;

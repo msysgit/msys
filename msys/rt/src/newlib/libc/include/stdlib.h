@@ -137,7 +137,7 @@ unsigned short *
 _VOID  _EXFUN(srand48,(long));
 _VOID  _EXFUN(_srand48_r,(struct _reent *, long));
 
-#ifndef __CYGWIN__
+#if !defined (__CYGWIN__) && !defined (__MSYS__)
 _VOID	_EXFUN(cfree,(_PTR));
 #else
 char *	_EXFUN(realpath,(const char *, char *));

@@ -304,7 +304,7 @@ extern "C" {
 #define MALLOC_LOCK __malloc_lock(reent_ptr)
 #define MALLOC_UNLOCK __malloc_unlock(reent_ptr)
 
-#ifdef __CYGWIN__
+#if defined(__CYGWIN__) || defined(__MSYS__)
 # undef _WIN32
 # undef WIN32
 #endif
@@ -3203,7 +3203,7 @@ Void_t* cALLOc(RARG n, elem_size) RDECL size_t n; size_t elem_size;
 
 #endif /* DEFINE_CALLOC */
 
-#if defined(DEFINE_CFREE) && !defined(__CYGWIN__)
+#if defined(DEFINE_CFREE) && !defined(__CYGWIN__) && !defined(__MSYS__)
 
 /*
  

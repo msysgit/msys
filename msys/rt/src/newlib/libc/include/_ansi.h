@@ -31,7 +31,7 @@
 #define	_SIGNED		signed
 #define	_DOTS		, ...
 #define _VOID void
-#ifdef __CYGWIN__
+#if defined (__CYGWIN__) || defined (__MSYS__)
 #define	_EXFUN(name, proto)		__cdecl name proto
 #define	_EXPARM(name, proto)		(* __cdecl name) proto
 #else

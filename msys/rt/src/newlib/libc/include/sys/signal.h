@@ -113,7 +113,7 @@ struct sigaction
 
 #define SA_NOCLDSTOP 1  /* only value supported now for sa_flags */
 
-#ifdef __CYGWIN__
+#if defined(__CYGWIN__) || defined(__MSYS__)
 # define SA_RESTART   0x10000000 /* Restart syscall on signal return.  */
 # define SA_NODEFER   0x40000000 /* Don't automatically block the signal when
                                     its handler is being executed.  */
@@ -138,8 +138,8 @@ int _EXFUN(sigprocmask, (int how, const sigset_t *set, sigset_t *oset));
 int _EXFUN(pthread_sigmask, (int how, const sigset_t *set, sigset_t *oset));
 #endif
 
-/* protos for functions found in winsup sources for CYGWIN */
-#if defined(__CYGWIN__) || defined(__rtems__)
+/* protos for functions found in winsup sources for CYGWIN and MSYS*/
+#if defined(__CYGWIN__) || defined(__rtems__) || defined(__MSYS__)
 #undef sigaddset
 #undef sigemptyset
 /* The first argument to kill should be pid_t.  Right now
@@ -178,7 +178,7 @@ int _EXFUN(sigqueue, (pid_t pid, int signo, const union sigval value));
 
 #endif /* defined(_POSIX_REALTIME_SIGNALS) */
 
-#endif /* defined(__CYGWIN32__) || defined(__rtems__) */
+#endif /* defined(__CYGWIN32__) || defined(__rtems__) || defined(__MSYS__) */
 
 /* #endif __STRICT_ANSI__ */
 
@@ -216,7 +216,7 @@ int _EXFUN(sigqueue, (pid_t pid, int signo, const union sigval value));
 #define SIGUSR1	18
 #define SIGUSR2	19
 #define NSIG    20
-#elif defined(__CYGWIN__)	/* BSD signals semantics */
+#elif defined(__CYGWIN__) || defined(__MSYS__)	/* BSD signals semantics */
 #define	SIGHUP	1	/* hangup */
 #define	SIGINT	2	/* interrupt */
 #define	SIGQUIT	3	/* quit */

@@ -23,9 +23,9 @@ struct timezone {
   int tz_dsttime;
 };
 
-#ifdef __CYGWIN__
+#if defined(__CYGWIN__) || defined(__MSYS__)
 #include <sys/select.h>
-#endif /* __CYGWIN__ */
+#endif /* __CYGWIN__ or __MSYS__ */
 
 #endif /* _WINSOCK_H */
 
@@ -39,7 +39,7 @@ struct  itimerval {
 };
 
 /* BSD time macros used by RTEMS code */
-#if defined (__rtems__) || defined (__CYGWIN__)
+#if defined (__rtems__) || defined (__CYGWIN__) || defined (__MSYS__)
 
 /* Convenience macros for operations on timevals.
    NOTE: `timercmp' does not work for >= or <=.  */
@@ -68,7 +68,7 @@ struct  itimerval {
       (result)->tv_usec += 1000000;					      \
     }									      \
   } while (0)
-#endif /* defined (__rtems__) || defined (__CYGWIN__) */
+#endif /* defined (__rtems__) || defined (__CYGWIN__) || defined (__MSYS__) */
 
 int _EXFUN(gettimeofday, (struct timeval *__p, struct timezone *__z));
 int _EXFUN(settimeofday, (const struct timeval *, const struct timezone *));
