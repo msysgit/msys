@@ -1,3 +1,16 @@
+2002.05.05  Earnie Boyd  <earnie@users.sf.net>
+
+	* script/msys.iss.in ([Run]): Debug it.
+	Add an execution of the README.rtf.
+	* pi/pi.bat: New file.
+	* doc/msys/MSYS-1.0.7-changes.rtf: Update with msys.bat changes and
+	postinstall information.
+	* doc/msys/README.rtf: Correct the Win32 switch data, format for rtf,
+	and move the change history section to the end.  Add sections "Working
+	with MinGW", "Working with other products" and "Disclaimer".  Rename
+	"Using different binaries" to "Using binaries with different runtimes".
+	* var/pi.dat: Add pi.bat.
+	
 2002.05.04  Earnie Boyd  <earnie@users.sf.net>
 
 	* script/msys.iss.in ([Run]): Add section for postinstall commands.
