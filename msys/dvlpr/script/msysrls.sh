@@ -46,16 +46,17 @@ etc_LIST="`cat ${datastore}/etc.dat`"
 dll_LIST="`cat ${datastore}/dll.dat`"
 doc_LIST="`cat ${datastore}/doc.dat` MSYS-${VERSION}-changes.rtf"
 misc_LIST="`cat ${datastore}/misc.dat`"
+pi_LIST="`cat ${datastore}/pi.dat`"
 script_LIST="`cat ${datastore}/script.dat`"
 
-if [ ! -f ${rlsdepot} ]
+if [ ! -d ${rlsdepot} ]
 then
   mkdir -p ${rlsdepot}
 fi
 
 rm -rf ${rlsdepot}/*
 
-if [ ! -f ${rlsdepot}/bin ]
+if [ ! -d ${rlsdepot}/bin ]
 then
   mkdir ${rlsdepot}/bin
 fi
@@ -70,7 +71,7 @@ do
   cp ${istore}/bin/${I} ${rlsdepot}/bin/
 done
 
-if [ ! -f ${rlsdepot}/doc/msys ]
+if [ ! -d ${rlsdepot}/doc/msys ]
 then
   mkdir -p ${rlsdepot}/doc/msys
 fi
@@ -80,7 +81,7 @@ do
   cp ${noarchstore}/doc/msys/${I} ${rlsdepot}/doc/msys/
 done
 
-if [ ! -f ${rlsdepot}/etc ]
+if [ ! -d ${rlsdepot}/etc ]
 then
   mkdir ${rlsdepot}/etc
 fi
@@ -105,6 +106,16 @@ do
     cp ${noarchstore}/${I} ${rlsdepot}
     ;;
   esac
+done
+
+if [ ! -d ${rlsdepot}/postinstall ]
+then
+  mkdir ${rlsdepot}/postinstall
+fi
+
+for I in ${pi_LIST}
+do
+  cp ${noarchstore}/pi/${I} ${rlsdepot}/postinstall/
 done
 
 if [ ! -f ${RLSOUTPUTDIR} ]
