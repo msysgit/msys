@@ -276,6 +276,17 @@ copy_reg (const char *src_path, const char *dst_path,
     }
 
   buf_size = ST_BLKSIZE (sb);
+#if __MSYS__
+  /* FIXME 
+   * This isn't the affect I'm looking for, but until I find it this will
+   * speed up the operation.  The affect I'm looking for is one where the
+   * destination file is created with a known file size.
+   * ************************************************************************/
+  if (buf_size < 1024)
+      buf_size *= 128;
+  else
+      buf_size *= 64;
+#endif
 
 #if HAVE_STRUCT_STAT_ST_BLOCKS
   if (x->sparse_mode == SPARSE_AUTO && S_ISREG (sb.st_mode))
@@ -833,7 +844,7 @@ copy_internal (const char *src_path, const char *dst_path,
 	    *rename_succeeded = 1;
 	  return 0;
 	}
-
+#if ALLOW_COPY_ON_RENAME_FAIL
       /* FIXME: someday, consider what to do when moving a directory into
 	 itself but when source and destination are on different devices.  */
 
@@ -883,6 +894,11 @@ copy_internal (const char *src_path, const char *dst_path,
 	}
 
       new_dst = 1;
+#else /* ! ALLOW_COPY_ON_RENAME_FAIL */
+      error (0, rename_errno, _("cannot move %s to %s"), quote_n (0, src_path),
+	     quote_n (1, dst_path));
+      return 1;
+#endif /* ! ALLOW_COPY_ON_RENAME_FAIL */
     }
 
   delayed_fail = 0;
