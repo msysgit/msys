@@ -5,6 +5,8 @@
 
         * mingwfaq.shtml: IDE links moved to links.shtml.
 
+        * *.shtml: consistently add "Download" link to page templates.
+
 2000-10-08  Paul Sokolovsky  <Paul.Sokolovsky@technologist.com>
 
 	* mingwfaq.shtml: remove blank lines.
