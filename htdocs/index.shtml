@@ -1,52 +1,49 @@
-<!-- $Id: index.shtml,v 1.39 2002-10-01 02:28:04 earnie Exp $ -->
-
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
- <title>MinGW -- Minimalist GNU For Windows</title>
- <meta name="description" content="Home of MinGW -- Minimalist GNU for Windows -- project. Contains information about the MinGW runtime library and GNU/OSS development tools for MinGW." />
- <meta name="keywords" content="mingw, mingw32, programming, C++, C, C/C++, libraries, software, development tools, editors, IDEs, GNU" />
- <style type="text/css"><!-- ol.alpha {list-style-type: upper-alpha} --></style>
- <style type="text/css"><!-- ol.romanum {list-style-type: lower-roman} --></style>
- <style type="text/css"><!-- ol {margin-top: 1em} --></style>
- <style type="text/css"><!-- ul {margin-top: 1em} --></style>
- <style type="text/css"><!-- ul {margin-bottom: 1em} --></style>
+<!-- $Id: index.shtml,v 1.40 2002-10-14 19:03:51 earnie Exp $ -->
+  <title>MinGW -- Minimalist GNU For Windows</title>
+                     
+  <meta name="description"
+ content="Home of MinGW -- Minimalist GNU for Windows -- project. Contains information about the MinGW runtime library and GNU/OSS development tools for MinGW.">
+          
+  <meta name="keywords"
+ content="mingw, mingw32, programming, C++, C, C/C++, libraries, software, development tools, editors, IDEs, GNU">
+          
+  <style type="text/css"><!-- ol.alpha {list-style-type: upper-alpha} --></style>
+          
+  <style type="text/css"><!-- ol.romanum {list-style-type: lower-roman} --></style>
+          
+  <style type="text/css"><!-- ol {margin-top: 1em} --></style>          
+  <style type="text/css"><!-- ul {margin-top: 1em} --></style>          
+  <style type="text/css"><!-- ul {margin-bottom: 1em} --></style>
 </head>
-<body bgcolor="white" text="black" link="#0000EE" vlink="#551A8B" alink="red">
-
+<body bgcolor="white" text="black" link="#0000ee" vlink="#551a8b"
+ alink="red">
 <h1 align="center">MinGW: Minimalist GNU For Windows</h1>
-
 <!-- two-column format: left sidebar and the body -->
 <table border="0" cellspacing="6" cellpadding="8">
-<tr>
-<td bgcolor="#eeeeee" valign="top" width="10%">
-
-<!--#include file="ssi/lsidebar.html"-->
-
-</td>
-<!-- 2nd column of two-column format: the body -->
-<td valign="top">
-
-<!-- ================================================================== -->
+  <tbody>
+    <tr>
+      <td bgcolor="#eeeeee" valign="top" width="10%"><!--#include file="ssi/lsidebar.html"-->
+      <br>
+      </td>
+<!-- 2nd column of two-column format: the body --><td valign="top"><!-- ================================================================== -->
 <!--                                                                    -->
-<!--			  Main Body                                     -->
-<!--                                                                    -->
-
-<table border="0" cellspacing="6" cellpadding="0">
-<tr>
-<td valign="top" align="left">
-
-<p>
-<b>MinGW:</b> A collection of freely available and freely distributable 
-Windows specific header files and import libraries combined with GNU 
-toolsets that allow one to produce native Windows programs that do not 
-rely on any 3rd-party DLLs.
-</p>
-
-<p>
-<b>MSYS:</b> A Minimal SYStem to allow the typical POSIX/Bourne configure
-script to execute to create a Makefile so that you can execute make.
-</p>
-
+<!--			  Main Body                                     --><!--                                                                    -->
+                    
+      <table border="0" cellspacing="6" cellpadding="0">
+        <tbody>
+          <tr>
+            <td valign="top" align="left">                              
+       
+            <p><b>MinGW:</b> A collection of freely available and freely distributable
+ Windows specific header files and import libraries combined with GNU  toolsets
+that allow one to produce native Windows programs that do not  rely on any
+3rd-party DLLs.</p>
+                                      
+            <p><b>MSYS:</b> A Minimal SYStem to allow the typical POSIX/Bourne
+configure script to execute to create a Makefile so that you can execute make.</p>
 <!--
 <p>
 The current set of tools include <a href="http://gcc.gnu.org/">
@@ -57,7 +54,6 @@ GNU Compiler Collection (GCC)</a>,
 creating a complete set of Mingw-hosted GNU toolchain, and looking for 
 volunteers. </p>
 -->
-
 <!--
 <p>
 At the basic level, MinGW is a set of include files and import libraries 
@@ -75,116 +71,139 @@ Windows32 API functionality. Please see the
 <a href="licensing.shtml">licensing</a> information on the various pieces.
 </p>
 -->
-
-<p><b>Mailing Lists:</b>
-We have several <a href=lists.shtml>mailing list</a> you are 
-encouraged to join and participate in.  There is a general discussion
-list <a href="mailto:mingw-users@lists.sf.net">mingw-users@lists.sf.net
-</a> for general MinGW questions and a general discussion list <a href=
-"mailto:mingw-msys@lists.sf.net">mingw-msys@lists.sf.net</a> for 
-questions more related to MSYS and to using the Minimal SYStem.  
-Information for signup and links to the archives can be found by <A HREF=
-"lists.shtml"> clicking here</a>. You may <em>search</em> the archives 
-using the <b>"Search the archives"</b> form found on the left side of 
-every <a href="http://www.mingw.org">www.mingw.org</a> page.
-</p>
-
-<p><b>Latest Releases:</b>
-<br><br><em>NOTE:</em>
-The Latest Releases may not contain the most recent versions of each
-individual package.  You may find the most recent versions of the
-individual packages by 
-<a href="https://sourceforge.net/project/showfiles.php?group_id=2435">
-clicking here</a>.
-
-<ul>
-<li><em>MinGW</em>
-  <a href="http://prdownloads.sourceforge.net/mingw/MinGW-2.0.0-3.exe">
-Version 2.0.0</a>.  Bundles the executables from these packages:
-<ul>
-<li><a href="http://prdownloads.sourceforge.net/mingw/gcc-3.2-core-20020817-1.tar.gz">gcc-3.2-core-20020817-1</a></li>
-<li><a href="http://prdownloads.sourceforge.net/mingw/binutils-2.13-20020903-1.tar.gz">binutils-2.13-20020903-1</a></li>
-<li><a href="http://prdownloads.sourceforge.net/mingw/mingw-runtime-2.2.tar.gz">mingw-runtime-2.2</a></li>
-<li><a href="http://prdownloads.sourceforge.net/mingw/w32api-2.0.tar.gz">w32api-2.0</a></li>
-<li><a href="http://prdownloads.sourceforge.net/mingw/gdb-5.1.1-1.tar.gz">gdb-5.1.1-1</a></li>
-<li><a href="http://prdownloads.sourceforge.net/mingw/make-3.79.1-20010722.tar.gz">make-3.79.1-20010722</a> <em>(make.exe renamed as mingw32-make.exe)</em></li>
-</ul></li>
-<li><em>MSYS:</em><a href="http://prdownloads.sourceforge.net/mingw/MSYS-1.0.7-i386-2.exe">
-Version 1.0.7</a>.  Bundles select executables from:
-<ul>
-<li>bash</li>
-<li>bzip2</li>
-<li>diffutils</li>
-<li>fileutils</li>
-<li>findutils</li>
-<li>gawk</li>
-<li>gzip</li>
-<li>m4</li>
-<li>make</li>
-<li>rxvt</li>
-<li>sed</li>
-<li>sh-utils</li>
-<li>tar</li>
-<li>texinfo</li>
-<li>textutils</li>
-<li>vim</li>
-</ul></li>
-</ul>
-
-<em><b>WinZip Caution:</b></em><br>
-Make sure that you first <b>uncheck</b> the "TAR file smart CR/LF
-conversion" checkbox found in the Configuration -&gt; Miscellaneous tab
-of the Options menu.
-
-<br><br><em><a href="http://www.7-zip.org">7-Zip</a></em><br>
-We've found that this zip/unzip utility is fast and reliable for differing 
-compression algorithms.  If you need a decompression utility, you should
-visit <a href=http://www.7-Zip.org>7-Zip</a> for the latest version.  If
-you don't need a compression/decompression utility, I suggest you visit
-<a href="http://www.7-Zip.org">7-Zip</a> for one of the best compression
-algorithms available.
-
-</p>
-
-
-<hr noshade="noshade" size="1" />
-
-<p align="center"><b>News</b></p>
-
-<!--#include virtual="news-short.html"-->
-
-<!-- <center><a href="news.shtml">more news</a></center> -->
-
-</td></tr></table>
-
-
-<!-- Close page table -->
-</td></tr></table>
-
-<!--#include file="ssi/bottombar.html"-->
-
-<!--#include file="ssi/footer.html"-->
-
-<!-- Only the main page has SourceForge logo. -->
-<p><a href="http://sourceforge.net/">
-<img src="http://sourceforge.net/sflogo.php?group_id=2435&type=1" width="88" height="31" alt="Powered by SourceForge" 
-border="0" /></a>
-
-<!--
+                                      
+            <p><b>Mailing Lists:</b>We have several <a
+ href="lists.shtml">mailing list</a> you are  encouraged to join and participate
+in.  There is a general discussion list <a
+ href="mailto:mingw-users@lists.sf.net">mingw-users@lists.sf.net</a> for general
+MinGW questions and a general discussion list <a
+ href="mailto:mingw-msys@lists.sf.net">mingw-msys@lists.sf.net</a> for  questions
+more related to MSYS and to using the Minimal SYStem.   Information for signup
+and links to the archives can be found by <a href="lists.shtml"> clicking
+here</a>. You may <em>search</em> the archives  using the <b>"Search the archives"</b>form
+found on the left side of  every <a href="http://www.mingw.org">www.mingw.org</a>page.</p>
+                                      
+            <p><b>Latest Releases:</b><br>
+            <em>NOTE:</em>The Latest Releases may not contain the most recent
+versions of each individual package.  You may find the most recent versions
+of the individual packages by <a
+ href="https://sourceforge.net/project/showfiles.php?group_id=2435">clicking
+here</a>. </p>
+                                      
+            <ul>
+              <li><em>MinGW</em>  <a
+ href="http://prdownloads.sourceforge.net/mingw/MinGW-2.0.0-3.exe">Version
+2.0.0</a>.  Bundles the executables from these packages:                
+                                
+                <ul>
+                  <li><a
+ href="http://prdownloads.sourceforge.net/mingw/gcc-3.2-core-20020817-1.tar.gz">gcc-3.2-core-20020817-1</a></li>
+                  <li><a
+ href="http://prdownloads.sourceforge.net/mingw/binutils-2.13-20020903-1.tar.gz">binutils-2.13-20020903-1</a> <a href="#Upgraded_Packages"><em><b>Upgrade Available</b></em></a></li>
+                  <li><a
+ href="http://prdownloads.sourceforge.net/mingw/mingw-runtime-2.2.tar.gz">mingw-runtime-2.2</a></li>
+                  <li><a
+ href="http://prdownloads.sourceforge.net/mingw/w32api-2.0.tar.gz">w32api-2.0</a></li>
+                  <li><a
+ href="http://prdownloads.sourceforge.net/mingw/gdb-5.1.1-1.tar.gz">gdb-5.1.1-1</a></li>
+                  <li><a
+ href="http://prdownloads.sourceforge.net/mingw/make-3.79.1-20010722.tar.gz">make-3.79.1-20010722</a>
+                    <em>(make.exe renamed as mingw32-make.exe)</em></li>
+                                                  
+                </ul>
+              </li>
+              <li><em>MSYS:</em><a
+ href="http://prdownloads.sourceforge.net/mingw/MSYS-1.0.7-i386-2.exe">Version
+1.0.7</a>.  Bundles select executables from:                             
+                     
+                <ul>
+                  <li>bash</li>
+                  <li>bzip2</li>
+                  <li>diffutils</li>
+                  <li>fileutils</li>
+                  <li>findutils</li>
+                  <li>gawk</li>
+                  <li>gzip</li>
+                  <li>m4</li>
+                  <li>make</li>
+                  <li>rxvt</li>
+                  <li>sed</li>
+                  <li>sh-utils</li>
+                  <li>tar</li>
+                  <li>texinfo</li>
+                  <li>textutils</li>
+                  <li>vim</li>
+                                                  
+                </ul>
+              </li>
+                                      
+            </ul>
+            <em><b>WinZip Caution:</b></em><br>
+Make sure that you first <b>uncheck</b> the "TAR file smart CR/LF conversion"
+checkbox found in the Configuration -&gt; Miscellaneous tab of the Options
+menu. <br>
+            <br>
+            <em><a href="http://www.7-zip.org">7-Zip</a></em><br>
+            
+            <p>We've found that this zip/unzip utility is fast and reliable
+for differing compression algorithms.  If you need a decompression utility,
+you should visit             <a href="http://www.7-Zip.org">7-Zip</a> for
+the latest version.  If you don't need a compression/decompression utility,
+I suggest you visit             <a href="http://www.7-Zip.org">7-Zip</a>for
+one of the best compression algorithms available.                       
+  <b><br>
+            </b></p>
+            
+            <p>            <b>Releases Candidates:</b><br>
+            Please test the following <em>release candidate</em> packages:<br>
+                                      </p>
+            <ul>
+              <li><em>Minimal System:</em> &nbsp;<a
+ href="http://prdownloads.sf.net/mingw/MSYS-1.0.8-rc-1.exe">MSYS-1.0.8-rc-1.exe</a></li>
+              <li><em>Debugger:</em> <a
+ href="http://prdownloads.sf.net/mingw/gdb-5.2.1-20021009.tar.gz">&nbsp;gdb-5.2.1-20021009.tar.gz</a></li>
+	      <li><em>Java:</em> <a href="http://prdownloads.sf.net/mingw/gcc-3.2-java-20020926-1.tar.gz">gcc-3.2-java-20020926-1.tar.gz</a></li>
+	    </ul>
+	    </p>
+	    <p><b>Experimental/Test Packages:</b><br>
+	    Please test the following <em>experimental/test release</em> packages<br>
+	    <ul>
+	      <li><em>Ada:</em> <a href="http://prdownloads.sf.net/mingw/gnatgcc-3.3-exp-20021006.tar.gz">gnatgcc-3.3-exp-20021006.tar.gz</a></li>
+            </ul>
+	    </p>
+	    <a name="Upgraded_Packages"/>
+	    <p><b>Upgraded Packages:</b><br>
+	    Please <em>upgrade</em> your installation.<br>
+	    <ul>
+	      <li><em>Binutils:</em> <a href="http://prdownloads.sf.net/mingw/binutils-2.13.90-20021006-2.tar.gz">binutils-2.13.90-20021006-2.tar.gz</a></li>
+	    </ul>
+	    </p>
+                                                  
+            <hr noshade="noshade" size="1">                             
+        
+            <p align="center"><b>News</b></p>
+<!--#include virtual="news-short.html"--><!-- <center><a href="news.shtml">more news</a></center> -->
+            </td>
+          </tr>
+                          
+        </tbody>                    
+      </table>
+<!-- Close page table --></td>
+    </tr>
+        
+  </tbody>
+</table>
+<!--#include file="ssi/bottombar.html"--><!--#include file="ssi/footer.html"--><!-- Only the main page has SourceForge logo. -->
+<p><a href="http://sourceforge.net/"><img
+ src="http://sourceforge.net/sflogo.php?group_id=2435&amp;type=1" width="88"
+ height="31" alt="Powered by SourceForge" border="0"></a><!--
 <a href="http://validator.w3.org/check?uri=http%3A%2F%2Fwww.mingw.org%2Findex.shtml">
 <img border="0" src="vxhtml10.gif" alt="Valid XHTML 1.0!" height="31" 
 width="88" /></a>
 -->
 </p>
-<p align="center">
-<a href="http://www.mingw.org/cgi-bin/showstats.cgi?mingw">
-<!--#include virtual="/cgi-bin/stats.cgi?mingw"--> visitors since
-<!--#include virtual="/cgi-bin/showstatsdate.cgi?mingw"--></a>.
-</p>
-<address>
-<br />Last revised $Date: 2002-10-01 02:28:04 $
-</address>
-
+<address><br>
+Last revised $Date: 2002-10-14 19:03:51 $</address>
+<br>
 </body>
 </html>
-

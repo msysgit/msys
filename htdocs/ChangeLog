@@ -1,3 +1,8 @@
+2002-10-14  Earnie Boyd  <earnie@users.sf.net>
+
+	* index.shtml: Add verbiage about release candidates, experimental
+	packages and updated releases.
+
 2002-10-01  Luke Dunstan  <infidel@users.sf.net>
 
 	* docs.shtml: Fix example C++ code to use std namespace.
