@@ -1,74 +1,167 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
-<head>
-  <meta http-equiv="content-type"
- content="text/html; charset=ISO-8859-1">
-  <link href="mingw.css" type="text/css" rel="stylesheet" title="MinGW">
-  <title>MinGW - Reporting bugs</title>
-</head>
-<body link="#000099" vlink="#990099" alink="#000099">
-
-<h1 align="center">Reporting bugs</h1>
-
-<table class="prim" cellspacing="6" border="0">
-  <tbody>
-    <tr>
-      <td class="side">
-				<!--#include file="ssi/lsidebar.html"--> <br>
-			</td>
-      <td>
-      <table class="sec" cellspacing="6" border="0">
-        <tbody>
-          <tr>
-            <td>
-<!-- ======================================================================= -->
-<!--                               Main Body                                 -->
-
-So you think you have found a bug and want to report the problem? Before
-reporting a bug please ensure you have applied all applicable updates to
-your build environment. When reporting a bug please include the
-following information:<br>
-            <ul>
-              <li>gcc version</li>
-              <li>mingw version<br>
-              </li>
-              <li>build environment (MSYS, Cygwin, Cross-Compiler, etc)</li>
-              <li>small test case demonstrating the bug <span
- style="font-weight: bold; text-decoration: underline;">OR</span></li>
-              <li>MSDN documentation references for missing w32api or
-mingw-runtime features</li>
-              <li>win32api version (refer to include/_win32.h for
-version information)</li>
-              <li>any other detailed information pertinent to your
-experience with the bug</li>
-            </ul>
-&nbsp;SourceForge gives us nice tools 	 to keep track of your bug
-reports, so please <a
- href="https://sourceforge.net/tracker/?group_id=2435&amp;atid=102435"
- target="_nw">follow this link to file your report.</a> You will need a
-SourceForge login account.  If you don't have one then <a
- href="https://sourceforge.net/account/register.php">follow this link
-to register for one.</a>
-
-<!--                            End of Main Body                             --> </td>
-          </tr>
-        </tbody>
-      </table>
-      </td>
-    </tr>
-  </tbody>
-</table>
-<!--#include file="ssi/bottombar.html"--><!--#include file="ssi/footer.html"-->
-<p>
- <a href="http://validator.w3.org/check/referer"><img border="0"
- src="http://www.w3.org/Icons/valid-html401"
- alt="Valid HTML 4.01!" height="31" width="88"></a>
-<a href="http://jigsaw.w3.org/css-validator/">
-<img style="border:0;width:88px;height:31px"
-       src="http://jigsaw.w3.org/css-validator/images/vcss" 
-       alt="Valid CSS!"></a>
-</p>
-<address> <br>
-Last revised $Date: 2003-01-10 08:26:18 $ </address>
-</body>
+  <head>
+    <meta content=
+    "HTML Tidy for Linux/x86 (vers 1st February 2003), see www.w3.org"
+          name="generator">
+    <meta http-equiv="content-type" content=
+    "text/html; charset=us-ascii">
+    <link href="mingw.css" type="text/css" rel="stylesheet"
+          title="MinGW">
+    <title>
+      MinGW - Reporting bugs
+    </title>
+    <style type="text/css">
+    :link { color: #000099 }
+    :visited { color: #990099 }
+    :active { color: #000099 }
+    img.c3 {border:0;width:88px;height:31px}
+    span.c2 {font-weight: bold; text-decoration: underline;}
+    h1.c1 {text-align: center}
+    </style>
+    <style type="text/css">
+    span.c2 {text-decoration: underline;}
+    span.c1 {font-weight: bold;}
+    </style>
+  </head>
+  <body>
+    <h1 class="c1">
+      Reporting bugs
+    </h1>
+    <table class="prim" cellspacing="6" border="0">
+      <tbody>
+        <tr>
+          <td class="side">
+            <!--#include file="ssi/lsidebar.html"--><br>
+          </td>
+          <td>
+            <table class="sec" cellspacing="6" border="0">
+              <tbody>
+                <tr>
+                  <td>
+                    <!-- ======================================================================= -->
+                    <!--                                                                         -->
+                    <!--                               Main Body                                 -->
+                    <!--                                                                         -->
+                    So you think you have found a bug and want to
+                    report the problem? Before reporting a bug
+                    please ensure you have applied all applicable
+                    updates to your build environment. Also please
+                    search the MinGW archives to ensure the bug has
+                    not already been reported or if a temporary
+                    work around has been generated.&nbsp; When
+                    reporting a bug to the MinGW mailing list
+                    please include the following information:<br>
+                     
+                    <ul>
+                      <li>
+                        gcc version
+                      </li>
+                      <li>
+                        mingw version<br>
+                      </li>
+                      <li>
+                        build environment (MSYS, Cygwin,
+                        Cross-Compiler, etc)
+                      </li>
+                      <li>
+                        small test case demonstrating the bug
+                        <span class="c2">OR</span>
+                      </li>
+                      <li>
+                        MSDN documentation references for missing
+                        w32api or mingw-runtime features
+                      </li>
+                      <li>
+                        win32api version (refer to include/_win32.h
+                        for version information)
+                      </li>
+                      <li>
+                        any other detailed information pertinent to
+                        your experience with the bug
+                      </li>
+                    </ul>&nbsp;SourceForge gives us nice tools to
+                    keep track of your bug reports, so please
+                    <a href=
+                    "https://sourceforge.net/tracker/?group_id=2435&amp;atid=102435"
+                        target="_nw">follow this link to file your
+                        report.</a> You will need a SourceForge
+                        login account. If you don't have one then
+                        <a href=
+                        "https://sourceforge.net/account/register.php">follow
+                        this link to register for one.</a><br>
+                    <br>
+                     <span class="c1">Generic Package
+                    Bugs</span><br>
+                    <br>
+                    Under certain circumstances you may find a bug
+                    in a base package, such as gcc, that is
+                    platform independent (ie/ can be reproduced on
+                    another platform other than Win32).&nbsp; In
+                    this situation please generate a simple test
+                    case that illustrates the bug using only
+                    standard headers and libraries.&nbsp; Please
+                    submit the bug following the procedure detailed
+                    above <span class="c2">prior</span> to
+                    submiting it to the primary maintainers. After
+                    receiving verification from a MinGW developer
+                    that the bug is indeed platform independent,
+                    please use the appropriate bug tracker or
+                    mailing list to inform the package
+                    maintainers.&nbsp; It is in everyones best
+                    interest that you try and use the package
+                    maintainers standard methods and procedures for
+                    bug submission.&nbsp; Avoid submiting bugs
+                    specific to a port or application that is not a
+                    part of the primary package to any list except
+                    the MinGW users list.&nbsp; If you are
+                    uncertain about bug submission to another
+                    package maintainer seek assistance on the MinGW
+                    users list.<br>
+                    <br>
+                     <span class="c1">External Bug Reporting Lists
+                    and Guidelines<br>
+                    <br></span> 
+                    <ul>
+                      <li>
+                        gcc bug reporting guidelines:<br>
+                         <a href=
+                        "http://www.gnu.org/software/gcc/bugs.html">
+                        http://www.gnu.org/software/gcc/bugs.html</a>
+                      </li>
+                      <li>
+                        gcc mailing list archives:<br>
+                         <a href=
+                        "http://gcc.gnu.org/lists.html">http://gcc.gnu.org/lists.html</a>
+                      </li>
+                      <li>
+                        cygwin (binutils, gdb and cygwin):<br>
+                         <a href=
+                        "http://sources.redhat.com/lists.html">http://sources.redhat.com/lists.html</a><br>
+                        </li>
+                    </ul>
+                    <!--                            End of Main Body                             -->
+                    </td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+      </tbody>
+    </table><!--#include file="ssi/bottombar.html"-->
+    <!--#include file="ssi/footer.html"-->
+    <p>
+      <a href=
+           "http://validator.w3.org/check/referer"><img border="0"
+           src="http://www.w3.org/Icons/valid-html401" alt=
+           "Valid HTML 4.01!" height="31" width="88"></a> <a href=
+           "http://jigsaw.w3.org/css-validator/"><img class="c3"
+           src="http://jigsaw.w3.org/css-validator/images/vcss"
+           alt="Valid CSS!"></a>
+    </p>
+    <address>
+      <br>
+       Last revised $Date: 2003-02-13 03:01:48 $
+    </address>
+  </body>
 </html>
