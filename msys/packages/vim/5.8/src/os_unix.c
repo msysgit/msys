@@ -1707,7 +1707,10 @@ mch_windexit(r)
 	if (newline_on_exit || (msg_didout && !swapping_screen()))
 	    out_char('\n');
 	else
+	{
 	    msg_clr_eos();	/* clear the rest of the display */
+	    windgoto((int)Rows - 1, 0);	/* may have moved the cursor */
+	}
 
 	/* Cursor may have been switched off without calling starttermcap()
 	 * when doing "vim -u vimrc" and vimrc contains ":q". */
@@ -2451,9 +2454,11 @@ mch_call_shell(cmd, options)
 	     * There is no type cast for the argv, because the type may be
 	     * different on different machines. This may cause a warning
 	     * message with strict compilers, don't worry about it.
+	     * Call _exit() instead of exit() to avoid closing the connection
+	     * to the X server (esp. with GTK, which uses atexit()).
 	     */
 	    execvp(argv[0], argv);
-	    exit(EXEC_FAILED);	    /* exec failed, return failure code */
+	    _exit(EXEC_FAILED);	    /* exec failed, return failure code */
 	}
 	else			/* parent */
 	{

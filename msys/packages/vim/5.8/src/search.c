@@ -1564,7 +1564,8 @@ findmatchlimit(oap, initc, flags, maxtravel)
 		{
 		    if (count > 0)
 			pos = match_pos;
-		    else if (pos.col > 1 && linep[pos.col - 2] == '/')
+		    else if (pos.col > 1 && linep[pos.col - 2] == '/'
+						&& (int)pos.col <= comment_col)
 			pos.col -= 2;
 		    else if (ignore_cend)
 			continue;
