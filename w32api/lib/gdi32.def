@@ -2,8 +2,11 @@ LIBRARY GDI32.dll
 EXPORTS
 AbortDoc@4
 AbortPath@4
+AddFontMemResourceEx@16
 AddFontResourceA@4
 AddFontResourceW@4
+AddFontResourceExA@12
+AddFontResourceExW@12
 AngleArc@24
 AnimatePalette@16
 Arc@36
@@ -254,8 +257,11 @@ RealizePalette@4
 RectInRegion@8
 RectVisible@8
 Rectangle@20
+RemoveFontMemResourceEx@4
 RemoveFontResourceA@4
 RemoveFontResourceW@4
+RemoveFontResourceExA@12
+RemoveFontResourceExW@12
 ResetDCA@8
 ResetDCW@8
 ResizePalette@8

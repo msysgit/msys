@@ -371,6 +371,7 @@ extern "C" {
 #define PURGE_RXABORT 2
 #define PURGE_TXCLEAR 4
 #define PURGE_RXCLEAR 8
+#define EVENTLOG_SUCCESS 0
 #define EVENTLOG_FORWARDS_READ 4
 #define EVENTLOG_BACKWARDS_READ 8
 #define EVENTLOG_SEEK_READ 2
@@ -859,6 +860,19 @@ typedef struct _MEMORYSTATUS {
 	DWORD dwTotalVirtual;
 	DWORD dwAvailVirtual;
 } MEMORYSTATUS,*LPMEMORYSTATUS;
+#if (_WIN32_WINNT >= 0x0500)
+typedef struct _MEMORYSTATUSEX {
+	DWORD dwLength;
+	DWORD dwMemoryLoad;
+	DWORDLONG ullTotalPhys;
+	DWORDLONG ullAvailPhys;
+	DWORDLONG ullTotalPageFile;
+	DWORDLONG ullAvailPageFile;
+	DWORDLONG ullTotalVirtual;
+	DWORDLONG ullAvailVirtual;
+	DWORDLONG ullAvailExtendedVirtual;
+} MEMORYSTATUSEX, *LPMEMORYSTATUSEX;
+#endif
 typedef struct _LDT_ENTRY {
 	WORD LimitLow;
 	WORD BaseLow;
@@ -1103,9 +1117,18 @@ HANDLE WINAPI FindFirstFileW(LPCWSTR,LPWIN32_FIND_DATAW);
 HANDLE WINAPI FindFirstFileExA(LPCSTR,FINDEX_INFO_LEVELS,PVOID,FINDEX_SEARCH_OPS,PVOID,DWORD);
 HANDLE WINAPI FindFirstFileExW(LPCWSTR,FINDEX_INFO_LEVELS,PVOID,FINDEX_SEARCH_OPS,PVOID,DWORD);
 BOOL WINAPI FindFirstFreeAce(PACL,PVOID*);
+#if (_WIN32_WINNT >= 0x0500)
+HANDLE WINAPI FindFirstVolumeA(LPCSTR,DWORD);
+HANDLE WINAPI FindFirstVolumeW(LPCWSTR,DWORD);
+#endif
 BOOL WINAPI FindNextChangeNotification(HANDLE);
 BOOL WINAPI FindNextFileA(HANDLE,LPWIN32_FIND_DATAA);
 BOOL WINAPI FindNextFileW(HANDLE,LPWIN32_FIND_DATAW);
+#if (_WIN32_WINNT >= 0x0500)
+BOOL WINAPI FindNextVolumeA(HANDLE,LPCSTR,DWORD);
+BOOL WINAPI FindNextVolumeW(HANDLE,LPWSTR,DWORD);
+BOOL WINAPI FindVolumeClose(HANDLE);
+#endif
 HRSRC WINAPI FindResourceA(HMODULE,LPCSTR,LPCSTR);
 HRSRC WINAPI FindResourceW(HINSTANCE,LPCWSTR,LPCWSTR);
 HRSRC WINAPI FindResourceExA(HINSTANCE,LPCSTR,LPCSTR,WORD);
@@ -1250,6 +1273,9 @@ UINT WINAPI GetSystemDirectoryW(LPWSTR,UINT);
 VOID WINAPI GetSystemInfo(LPSYSTEM_INFO);
 BOOL WINAPI GetSystemPowerStatus(LPSYSTEM_POWER_STATUS);
 VOID WINAPI GetSystemTime(LPSYSTEMTIME);
+#if (_WIN32_WINNT >= 0x0501)
+BOOL WINAPI GetSystemTimes(LPFILETIME,LPFILETIME,LPFILETIME);
+#endif
 BOOL WINAPI GetSystemTimeAdjustment(PDWORD,PDWORD,PBOOL);
 void WINAPI GetSystemTimeAsFileTime(LPFILETIME);
 DWORD WINAPI GetTapeParameters(HANDLE,DWORD,PDWORD,PVOID);
@@ -1293,6 +1319,9 @@ UINT WINAPI GlobalGetAtomNameW(ATOM,LPWSTR,int);
 HGLOBAL WINAPI GlobalHandle(PCVOID);
 LPVOID WINAPI GlobalLock(HGLOBAL);
 VOID WINAPI GlobalMemoryStatus(LPMEMORYSTATUS);
+#if (_WIN32_WINNT >= 0x0500)
+BOOL WINAPI GlobalMemoryStatusEx(LPMEMORYSTATUSEX);
+#endif
 HGLOBAL WINAPI GlobalReAlloc(HGLOBAL,DWORD,UINT);
 DWORD WINAPI GlobalSize(HGLOBAL);
 VOID WINAPI GlobalUnfix(HGLOBAL);
@@ -1667,7 +1696,13 @@ typedef HW_PROFILE_INFOW HW_PROFILE_INFO,*LPHW_PROFILE_INFO;
 #define FindFirstChangeNotification FindFirstChangeNotificationW
 #define FindFirstFile FindFirstFileW
 #define FindFirstFileEx FindFirstFileExW
+#if (_WIN32_WINNT >= 0x0500)
+#define FindFirstVolume FindFirstVolumeW
+#endif
 #define FindNextFile FindNextFileW
+#if (_WIN32_WINNT >= 0x0500)
+#define FindNextVolume FindNextVolumeW
+#endif
 #define FindResource FindResourceW
 #define FindResourceEx FindResourceExW
 #define FormatMessage FormatMessageW
@@ -1808,7 +1843,13 @@ typedef HW_PROFILE_INFOA HW_PROFILE_INFO,*LPHW_PROFILE_INFO;
 #define FindFirstChangeNotification FindFirstChangeNotificationA
 #define FindFirstFile FindFirstFileA
 #define FindFirstFileEx FindFirstFileExA
+#if (_WIN32_WINNT >= 0x0500)
+#define FindFirstVolume FindFirstVolumeA
+#endif
 #define FindNextFile FindNextFileA
+#if (_WIN32_WINNT >= 0x0500)
+#define FindNextVolume FindNextVolumeA
+#endif
 #define FindResource FindResourceA
 #define FindResourceEx FindResourceExA
 #define FormatMessage FormatMessageA
