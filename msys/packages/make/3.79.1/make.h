@@ -346,6 +346,20 @@ extern char *alloca ();
 extern int strcmpi (const char *,const char *);
 #endif
 
+/* CYGNUS LOCAL: Cygwin */
+#if defined (__CYGWIN__) || defined (__MSYS__)
+#define strcaseequ(s1, s2) (strcasecmp((s1),(s2)) == 0)
+
+/* indicates whether or not we have Bourne shell */
+extern int no_default_sh_exe;
+
+/* is default_shell unixy? */
+extern int unixy_shell;
+
+extern char *end_of_token_w32();
+extern int find_and_set_default_shell(char *token);
+#endif /* __CYGWIN__ */
+
 /* Add to VAR the hashing value of C, one character in a name.  */
 #define HASH(var, c) \
   ((var += (c)), (var = ((var) << 7) + ((var) >> 20)))
@@ -362,15 +376,12 @@ extern int strcmpi (const char *,const char *);
 # define ENUM_BITFIELD(bits)
 #endif
 
-#if defined(__MSDOS__) || defined(WINDOWS32)
-# define PATH_SEPARATOR_CHAR ';'
-#else
-# if defined(VMS)
-#  define PATH_SEPARATOR_CHAR ','
-# else
-#  define PATH_SEPARATOR_CHAR ':'
-# endif
+#if defined(WINDOWS32) || defined(__CYGWIN__) || defined(__MSYS__)
+#define WIN32_OR_CYGWIN
 #endif
+
+#define PATH_SEPARATOR_CHAR path_separator_char_
+extern char path_separator_char_;
 
 #ifdef WINDOWS32
 # include <fcntl.h>

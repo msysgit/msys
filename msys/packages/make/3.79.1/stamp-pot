@@ -1,0 +1,1 @@
+ar.c arscan.c commands.c dir.c expand.c file.c function.c getopt.c implicit.c job.c main.c misc.c read.c remake.c rule.c signame.c variable.c vpath.c remote-cstms.c vmsfunctions.c

@@ -303,7 +303,7 @@ read_makefile (filename, flags)
   char *pattern = 0, *pattern_percent;
 
   int makefile_errno;
-#if defined (WINDOWS32) || defined (__MSDOS__)
+#if defined (WIN32_OR_CYGWIN) || defined (__MSDOS__)
   int check_again;
 #endif
 
@@ -836,7 +836,7 @@ read_makefile (filename, flags)
                 }
 
               colonp = find_char_unquote(p2, ":", 0);
-#if defined(__MSDOS__) || defined(WINDOWS32)
+#if defined(__MSDOS__) || defined(WIN32_OR_CYGWIN)
 	      /* The drive spec brain-damage strikes again...  */
 	      /* Note that the only separators of targets in this context
 		 are whitespace and a left paren.  If others are possible,
@@ -999,7 +999,8 @@ read_makefile (filename, flags)
                      || isspace ((unsigned char)p[-1])))
 	    p = 0;
 #endif
-#if defined (WINDOWS32) || defined (__MSDOS__)
+	  /* CYGNUS LOCAL: or Cygwin */
+#if defined (WIN32_OR_CYGWIN) || defined (__MSDOS__)
           do {
             check_again = 0;
             /* For MSDOS and WINDOWS32, skip a "C:\..." or a "C:/..." */
@@ -1938,7 +1939,8 @@ parse_file_seq (stringp, stopchar, size, strip)
 	p = find_char_unquote (p+1, stopchars, 1);
       }
 #endif
-#if defined(WINDOWS32) || defined(__MSDOS__)
+      /* CYGNUS LOCAL: or Cygwin */
+#if defined(WIN32_OR_CYGWIN) || defined(__MSDOS__)
     /* For WINDOWS32, skip a "C:\..." or a "C:/..." until we find the
        first colon which isn't followed by a slash or a backslash.
        Note that tokens separated by spaces should be treated as separate
@@ -2142,7 +2144,7 @@ readline (linebuffer, stream, flocp)
   char *buffer = linebuffer->buffer;
   register char *p = linebuffer->buffer;
   register char *end = p + linebuffer->size;
-  register int len, lastlen = 0;
+  register int len;
   register char *p2;
   register unsigned int nlines = 0;
   register int backslash;
@@ -2175,33 +2177,25 @@ readline (linebuffer, stream, flocp)
 	  end = buffer + linebuffer->size;
 	  linebuffer->buffer = buffer;
 	  *p = '\0';
-	  lastlen = len;
 	  continue;
 	}
 
       ++nlines;
 
-#if !defined(WINDOWS32) && !defined(__MSDOS__)
+      /* Readjust the length to encompass the entire buffer. */
+      len = p - buffer;
+
+#if defined(WIN32_OR_CYGWIN) || defined(__MSDOS__)
       /* Check to see if the line was really ended with CRLF; if so ignore
          the CR.  */
       if (len > 1 && p[-2] == '\r')
-        {
-          --len;
-          --p;
-          p[-1] = '\n';
-        }
+	{
+	  len--;
+	  p--;
+	  p[-1] = '\n';
+	}
 #endif
 
-      if (len == 1 && p > buffer)
-	/* P is pointing at a newline and it's the beginning of
-	   the buffer returned by the last fgets call.  However,
-	   it is not necessarily the beginning of a line if P is
-	   pointing past the beginning of the holding buffer.
-	   If the buffer was just enlarged (right before the newline),
-	   we must account for that, so we pretend that the two lines
-	   were one line.  */
-	len += lastlen;
-      lastlen = len;
       backslash = 0;
       for (p2 = p - 2; --len > 0; --p2)
 	{
@@ -2292,31 +2286,31 @@ get_next_mword (buffer, delim, startp, length)
     case ':':
       wtype = w_colon;
       switch (*p)
-        {
-        case ':':
-          ++p;
-          wtype = w_dcolon;
-          break;
+	{
+	case ':':
+	  ++p;
+	  wtype = w_dcolon;
+	  break;
 
-        case '=':
-          ++p;
-          wtype = w_varassign;
-          break;
-        }
+	case '=':
+	  ++p;
+	  wtype = w_varassign;
+	  break;
+	}
       break;
 
     case '+':
     case '?':
       if (*p == '=')
-        {
-          ++p;
-          wtype = w_varassign;
-          break;
-        }
+	{
+	  ++p;
+	  wtype = w_varassign;
+	  break;
+	}
 
     default:
       if (delim && strchr (delim, c))
-        wtype = w_static;
+	wtype = w_static;
       break;
     }
 
@@ -2339,16 +2333,16 @@ get_next_mword (buffer, delim, startp, length)
       int count;
 
       switch (c)
-        {
-        case '\0':
-        case ' ':
-        case '\t':
-        case '=':
-        case '#':
-          goto done_word;
+	{
+	case '\0':
+	case ' ':
+	case '\t':
+	case '=':
+	case '#':
+	  goto done_word;
 
-        case ':':
-#if defined(__MSDOS__) || defined(WINDOWS32)
+	case ':':
+#if defined(__MSDOS__) || defined(WIN32_OR_CYGWIN)
 	  /* A word CAN include a colon in its drive spec.  The drive
 	     spec is allowed either at the beginning of a word, or as part
 	     of the archive member name, like in "libfoo.a(d:/foo/bar.o)".  */
@@ -2358,58 +2352,58 @@ get_next_mword (buffer, delim, startp, length)
 #endif
 	  goto done_word;
 
-        case '$':
-          c = *(p++);
-          if (c == '$')
-            break;
+	case '$':
+	  c = *(p++);
+	  if (c == '$')
+	    break;
 
-          /* This is a variable reference, so note that it's expandable.
-             Then read it to the matching close paren.  */
-          wtype = w_variable;
+	  /* This is a variable reference, so note that it's expandable.
+	     Then read it to the matching close paren.  */
+	  wtype = w_variable;
 
-          if (c == '(')
-            closeparen = ')';
-          else if (c == '{')
-            closeparen = '}';
-          else
-            /* This is a single-letter variable reference.  */
-            break;
+	  if (c == '(')
+	    closeparen = ')';
+	  else if (c == '{')
+	    closeparen = '}';
+	  else
+	    /* This is a single-letter variable reference.  */
+	    break;
 
-          for (count=0; *p != '\0'; ++p)
-            {
-              if (*p == c)
-                ++count;
-              else if (*p == closeparen && --count < 0)
-                {
-                  ++p;
-                  break;
-                }
-            }
-          break;
+	  for (count=0; *p != '\0'; ++p)
+	    {
+	      if (*p == c)
+		++count;
+	      else if (*p == closeparen && --count < 0)
+		{
+		  ++p;
+		  break;
+		}
+	    }
+	  break;
 
-        case '?':
-        case '+':
-          if (*p == '=')
-            goto done_word;
-          break;
+	case '?':
+	case '+':
+	  if (*p == '=')
+	    goto done_word;
+	  break;
 
-        case '\\':
-          switch (*p)
-            {
-            case ':':
-            case ';':
-            case '=':
-            case '\\':
-              ++p;
-              break;
-            }
-          break;
+	case '\\':
+	  switch (*p)
+	    {
+	    case ':':
+	    case ';':
+	    case '=':
+	    case '\\':
+	      ++p;
+	      break;
+	    }
+	  break;
 
-        default:
-          if (delim && strchr (delim, c))
-            goto done_word;
-          break;
-        }
+	default:
+	  if (delim && strchr (delim, c))
+	    goto done_word;
+	  break;
+	}
 
       c = *(p++);
     }

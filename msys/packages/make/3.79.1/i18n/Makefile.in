@@ -60,17 +60,23 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
+build_alias = @build_alias@
+build_triplet = @build@
 host_alias = @host_alias@
 host_triplet = @host@
+target_alias = @target_alias@
+target_triplet = @target@
 ALL_LINGUAS = @ALL_LINGUAS@
 AR = @AR@
 CC = @CC@
 CPP = @CPP@
+EXEEXT = @EXEEXT@
 GETCONF = @GETCONF@
 GLOBDIR = @GLOBDIR@
 GLOBINC = @GLOBINC@
 GLOBLIB = @GLOBLIB@
 LIBOBJS = @LIBOBJS@
+MAINT = @MAINT@
 MAKEINFO = @MAKEINFO@
 MAKE_HOST = @MAKE_HOST@
 PACKAGE = @PACKAGE@
@@ -96,7 +102,7 @@ XGETTEXT = xgettext
 SUFFIXES = .po .pox .mo
 
 MAINTAINER_CLEAN = $(PACKAGE).pot $(MOFILES)
-mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
+mkinstalldirs = $(SHELL) $(top_srcdir)/../mkinstalldirs
 CONFIG_HEADER = ../config.h
 CONFIG_CLEAN_FILES = 
 CFLAGS = @CFLAGS@
@@ -113,8 +119,8 @@ GZIP_ENV = --best
 all: all-redirect
 .SUFFIXES:
 .SUFFIXES: .mo .po .pox
-$(srcdir)/Makefile.in: Makefile.am $(top_srcdir)/configure.in $(ACLOCAL_M4) 
-	cd $(top_srcdir) && $(AUTOMAKE) --gnits --include-deps i18n/Makefile
+$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am $(top_srcdir)/configure.in $(ACLOCAL_M4) 
+	cd $(top_srcdir) && $(AUTOMAKE) --cygnus i18n/Makefile
 
 Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status
 	cd $(top_builddir) \
@@ -130,9 +136,9 @@ subdir = i18n
 
 distdir: $(DISTFILES)
 	@for file in $(DISTFILES); do \
-	  d=$(srcdir); \
+	  if test -f $$file; then d=.; else d=$(srcdir); fi; \
 	  if test -d $$d/$$file; then \
-	    cp -pr $$/$$file $(distdir)/$$file; \
+	    cp -pr $$d/$$file $(distdir)/$$file; \
 	  else \
 	    test -f $(distdir)/$$file \
 	    || ln $$d/$$file $(distdir)/$$file 2> /dev/null \
@@ -143,10 +149,12 @@ info-am:
 info: info-am
 dvi-am:
 dvi: dvi-am
-check-am: all-am
+check-am:
 check: check-am
 installcheck-am:
 installcheck: installcheck-am
+install-info-am: 
+install-info: install-info-am
 install-exec-am:
 install-exec: install-exec-am
 
@@ -193,11 +201,12 @@ maintainer-clean-am:  maintainer-clean-generic distclean-am
 maintainer-clean: maintainer-clean-am
 
 .PHONY: tags distdir info-am info dvi-am dvi check check-am \
-installcheck-am installcheck install-exec-am install-exec \
-install-data-local install-data-am install-data install-am install \
-uninstall-local uninstall-am uninstall all-redirect all-am all \
-installdirs mostlyclean-generic distclean-generic clean-generic \
-maintainer-clean-generic clean mostlyclean distclean maintainer-clean
+installcheck-am installcheck install-info-am install-info \
+install-exec-am install-exec install-data-local install-data-am \
+install-data install-am install uninstall-local uninstall-am uninstall \
+all-redirect all-am all installdirs mostlyclean-generic \
+distclean-generic clean-generic maintainer-clean-generic clean \
+mostlyclean distclean maintainer-clean
 
 
 .po.pox:

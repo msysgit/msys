@@ -24,7 +24,6 @@ Boston, MA 02111-1307, USA.  */
 #include "pathstuff.h"
 #endif
 
-
 /* Structure used to represent a selective VPATH searchpath.  */
 
 struct vpath
@@ -61,6 +60,10 @@ build_vpath_lists ()
   register struct vpath *new = 0;
   register struct vpath *old, *nexto;
   register char *p;
+  /* CYGNUS LOCAL Cygwin */
+#if defined (__CYGWIN__) || defined (__MSYS__)
+  register char *posixp;
+#endif /* __CYGWIN__ */
 
   /* Reverse the chain.  */
   for (old = vpaths; old != 0; old = nexto)
@@ -94,6 +97,20 @@ build_vpath_lists ()
       /* Empty `vpaths' so the new one will have no next, and `vpaths'
 	 will still be nil if P contains no existing directories.  */
       vpaths = 0;
+
+      /* CYGNUS LOCAL Cygwin */
+      /* FIXME: should this conversion only take place when in unixy_mode? */
+#if defined (__CYGWIN__) || defined (__MSYS__)
+      /* if a win32 VPATH path list, convert to posix path list */
+      if (!cygwin_posix_path_list_p (p))
+        {
+          posixp = (char *)
+                   alloca (cygwin_win32_to_posix_path_list_buf_size (p));
+          cygwin_win32_to_posix_path_list (p, posixp);
+          p = posixp;
+        }
+#endif /* __CYGWIN__ */
+      /* END CYGNUS LOCAL */
 
       /* Parse P.  */
       construct_vpath_list ("%", p);
