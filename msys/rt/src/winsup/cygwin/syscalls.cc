@@ -1492,7 +1492,7 @@ check_posix_perm (const char *fname, int v)
   if (!allow_ntsec)
     return 0;
 
-  char *root = rootdir (strcpy (new char [(strlen (fname))], fname));
+  char *root = rootdir (strcpy ((char *)alloca (strlen (fname) + 1), fname));
 
   if (!allow_smbntsec
       && ((root[0] == '\\' && root[1] == '\\')

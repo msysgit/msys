@@ -1,4 +1,4 @@
-#if defined MALLOC_PROVIDED && ! defined __MSYS__
+#ifdef MALLOC_PROVIDED
 int _dummy_mallocr = 1;
 #else
 /* ---------- To make a malloc.h, start cutting here ------------ */
@@ -168,10 +168,6 @@ int _dummy_mallocr = 1;
   MALLOC_ALIGNMENT          (default: NOT defined)
      Define this to 16 if you need 16 byte alignment instead of 8 byte alignment
      which is the normal default.
-  SIZE_T_SMALLER_THAN_LONG (default: NOT defined)
-     Define this when the platform you are compiling has sizeof(long) > sizeof(size_t).
-     The option causes some extra code to be generated to handle operations
-     that use size_t operands and have long results.
   REALLOC_ZERO_BYTES_FREES (default: NOT defined) 
      Define this if you think that realloc(p, 0) should be equivalent
      to free(p). Otherwise, since malloc returns a unique pointer for
@@ -271,7 +267,12 @@ extern "C" {
 #endif
 
 #include <stdio.h>    /* needed for malloc_stats */
+#include <limits.h>   /* needed for overflow checks */
 
+#ifdef WIN32
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+#endif
 
 /*
   Compile-time options
@@ -304,7 +305,11 @@ extern "C" {
 #define MALLOC_LOCK __malloc_lock(reent_ptr)
 #define MALLOC_UNLOCK __malloc_unlock(reent_ptr)
 
-#ifdef __CYGWIN__
+#ifdef __CYGWIN__ 
+# undef _WIN32
+# undef WIN32
+#endif
+#ifdef __MSYS__ 
 # undef _WIN32
 # undef WIN32
 #endif
@@ -443,11 +448,10 @@ extern void __malloc_unlock();
   fact that assignment from unsigned to signed won't sign extend.
 */
 
-#ifdef SIZE_T_SMALLER_THAN_LONG
-#define long_sub_size_t(x, y) ( (x < y) ? -((long)(y - x)) : (x - y) );
-#else
-#define long_sub_size_t(x, y) ( (long)(x - y) )
-#endif
+#define long_sub_size_t(x, y)				\
+  (sizeof (long) > sizeof (INTERNAL_SIZE_T) && x < y	\
+   ? -(long) (y - x)					\
+   : (long) (x - y))
 
 /*
   REALLOC_ZERO_BYTES_FREES should be set if a call to
@@ -1076,7 +1080,7 @@ struct mallinfo mALLINFo();
 
 #ifdef WIN32
 
-#define AlignPage(add) (((add) + (malloc_getpagesize-1)) &
+#define AlignPage(add) (((add) + (malloc_getpagesize-1)) & \
 ~(malloc_getpagesize-1))
 
 /* resrve 64MB to insure large contiguous space */ 
@@ -1399,8 +1403,8 @@ nextchunk-> +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 /* pad request bytes into a usable size */
 
 #define request2size(req) \
- (((long)((req) + (SIZE_SZ + MALLOC_ALIGN_MASK)) < \
-  (long)(MINSIZE + MALLOC_ALIGN_MASK)) ? ((MINSIZE + MALLOC_ALIGN_MASK) & ~(MALLOC_ALIGN_MASK)) : \
+ (((unsigned long)((req) + (SIZE_SZ + MALLOC_ALIGN_MASK)) < \
+  (unsigned long)(MINSIZE + MALLOC_ALIGN_MASK)) ? ((MINSIZE + MALLOC_ALIGN_MASK) & ~(MALLOC_ALIGN_MASK)) : \
    (((req) + (SIZE_SZ + MALLOC_ALIGN_MASK)) & ~(MALLOC_ALIGN_MASK)))
 
 /* Check if m has acceptable alignment */
@@ -2333,6 +2337,10 @@ Void_t* mALLOc(RARG bytes) RDECL size_t bytes;
 
   INTERNAL_SIZE_T nb  = request2size(bytes);  /* padded request size; */
 
+  /* Check for overflow and just fail, if so. */
+  if (nb > INT_MAX)
+    return 0;
+
   MALLOC_LOCK;
 
   /* Check for exact match in a bin */
@@ -2792,6 +2800,10 @@ Void_t* rEALLOc(RARG oldmem, bytes) RDECL Void_t* oldmem; size_t bytes;
 
   nb = request2size(bytes);
 
+  /* Check for overflow and just fail, if so. */
+  if (nb > INT_MAX)
+    return 0;
+
 #if HAVE_MMAP
   if (chunk_is_mmapped(oldp)) 
   {
@@ -3212,7 +3224,7 @@ Void_t* cALLOc(RARG n, elem_size) RDECL size_t n; size_t elem_size;
 
 #endif /* DEFINE_CALLOC */
 
-#if defined(DEFINE_CFREE) && !(defined(__CYGWIN__)||defined(__MSYS__))
+#if defined(DEFINE_CFREE) && !(defined(__CYGWIN__) || defined(__MSYS__))
 
 /*
  

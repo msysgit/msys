@@ -85,7 +85,8 @@ class path_conv
   //	    Need to change iscygexec based on whether or not the .exe contains
   //	    a msys-1.0.dll or not.  When this fix occurs, changes to spawn.cc
   //	    with a FIXME-1.0 designator will need to occur.
-  int iscygexec () const {return path_flags & PATH_CYGWIN_EXEC;}
+  int iscygexec () const {return ((path_flags & PATH_CYGWIN_EXEC)
+				  || IsMsys (path));}
   executable_states exec_state ()
   {
     extern int _check_for_executable;

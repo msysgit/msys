@@ -1,3 +1,70 @@
+2003-07-07  Earnie Boyd  <earnie@users.sf.net>
+
+	* path.cc (msys_p2w): Correction for ``foo=c:/bar'' constructs.
+
+2003-07-01  Luke Dunstan <infidel@users.sf.net>
+
+	* syscalls.cc (check_posix_perm): Off by one allocation of memory for
+	char *root.
+
+2003-06-30  Earnie Boyd  <earnie@users.sf.net>
+
+	* environ.cc: Add debug_printf throughout.
+	(winenv): Add a FIXME workaround that reverses the value of keep_posix.
+	Add a stab in the dark pad of (MAX_PATH * 256) to the malloc of the
+	envblock pointer (Note: this is likely to be removed).
+	* malloc.cc: Add malloc_printf throughout.  Add TRACE_IN throughout.
+	* msys.h (debugnow): New macro intended for more immediate debugging
+	and not meant to be left in the source (Note: must -Ddebugger to make
+	the macro useful).
+	* msys_symlink.cc: Add include of winsup.h.
+	(msys_symlink): Add a FIXME to identify a resource leak.
+	* path.cc (check_sysfile): Deleted.
+	(symlink_info::check): Add initialization of HANDLE h to stop warning.
+	(IsAbsWin32Path): Recode.
+	(ScrubRetpath): New static function used by msys_p2w.
+	(msys_p2w): Streamline the code and use ScrubRetpath if the path has
+	changed else just retpath.  Also, protect the argument values from
+	changing.
+	* path.h (path_conv::iscygexec): Add recognition of an msys dependent
+	executable via use of IsMsys function.
+	* spawn.cc: Move char *envblockarg to global space and make static.
+	(spawn_guts): Remove use of IsMsys() function.
+	Streamline newargv population.
+	Streamline envblock and envblockarg population.
+	Use envblockarg in the CreateProcess function instead of envblock.
+	Remove child->copysigs (myself) call.
+	* sync.cc (muto::~muto): Comment out.
+	* sync.h (~muto): Ditto.
+	* syscalls.cc (check_posix_perm): Use alloca instead of new operator.
+	* winsup.h (TRACE_IN): Add a TRACING filter to make it work.
+	(IsMsys): Change the declaration.
+	* include/sys/cygwin.h (msys_p2w): Ditto.
+	
+2003-06-16  Earnie Boyd  <earnie@users.sf.net>
+
+	* path.cc (cygwin_conv_to_win32_path): Copy data to win32_path, don't
+	change the pointer value.
+	* spawn.cc (spawn_guts): Free tmpbuf if needed.  Ditto for wpath.
+	Set envblockarg to contain 0 for it's length.
+
+2003-06-13  Earnie Boyd  <earnie@users.sf.net>
+
+	* environ.cc:  Remove DO_CPP_NEW filters througout.
+	* exceptions.cc (exception): Output version and build date info to the
+	stackdump file.
+	* msys_symlink.cc (msys_symlink): Use msys_p2w() instead of
+	cygwin_conv_to_win32_path().
+	* spawn.cc (spawn_guts): Ditto.
+	* path.cc (msys_p2w): New function (copy previous
+	cygwin_conv_to_win32_path and heavily modify).
+	(cygwin_conv_to_win32_path): Remove contents and use msys_p2w.
+	include/sys/cygwin.h (msys_p2w): Add declaration.
+
+2003-06-11  Earnie Boyd  <earnie@users.sf.net>
+
+	* spawn.cc (spawn_guts): Use malloc instead of cmalloc for envblock.
+
 2003-06-03  Earnie Boyd  <earnie@users.sf.net>
 
 	* spawn.cc: Correct malloc size algorithm and insure that pointers are

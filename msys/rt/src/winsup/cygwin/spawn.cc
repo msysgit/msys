@@ -38,6 +38,7 @@ details. */
 #include "registry.h"
 #include "environ.h"
 
+static char *envblockarg = (char *)NULL;
 static suffix_info std_suffixes[] =
 {
   suffix_info ("", 1), suffix_info (".exe", 1),
@@ -501,27 +502,27 @@ spawn_guts (HANDLE hToken, const char * prog_arg, const char *const *argv,
 
   FIXME;
   // iscygexec needs adjusted so that it truely identifies an MSYS executable.
-  if (real_path.iscygexec () || IsMsys((char *)real_path))
+  if (real_path.iscygexec ())
     newargv.dup_all ();
   else
     {
       for (int i = 0; i < newargv.argc; i++)
 	{
 	  //convert argv to win32
-	  char tmpbuf[MAX_PATH] = "\0";
-
-	  if (strlen(newargv[i]) < MAX_PATH)
-	    {
-	      cygwin_conv_to_win32_path(newargv[i], tmpbuf);
-	      //debug_printf("%d of %d, %s, %s", i, ac, newargv[i], tmpbuf);
-	      debug_printf("newargv[%d] = %s", i, newargv[i]);
-	      newargv.replace (i, tmpbuf);
-	    }
+	  int newargvlen = strlen (newargv[i]);
+	  char *tmpbuf = (char *)malloc (newargvlen + 1);
+	  memcpy (tmpbuf, newargv[i], newargvlen + 1);
+	  tmpbuf = msys_p2w(tmpbuf);
+	  debug_printf("newargv[%d] = %s", i, newargv[i]);
+	  newargv.replace (i, tmpbuf);
+	  free (tmpbuf);
 	}
+      FIXME; // Is the below loop necessary?
+      // Well at least combine the above with it.
       for (int i = 0; i < newargv.argc; i++)
 	{
-	  char *p = NULL;
-	  const char *a;
+	  char *p = NULL; // Temporary use pointer.
+	  const char *a; // Pointer to newargv element.
 
 	  newargv.dup_maybe (i);
 	  a = i ? newargv[i] : (char *) real_path;
@@ -567,7 +568,6 @@ spawn_guts (HANDLE hToken, const char * prog_arg, const char *const *argv,
 	  one_line.add (" ", 1);
 	  MALLOC_CHECK;
 	}
-
 #if 0
       FIXME;
       //    I renamed ix to bufidx and made it private.
@@ -632,73 +632,39 @@ spawn_guts (HANDLE hToken, const char * prog_arg, const char *const *argv,
   /*
    * Why do we need to call winenv() for MSYS binary?
    */
-  if (real_path.iscygexec () || IsMsys((char *)real_path))
-    envblock = winenv (envp, 0);
+  if (real_path.iscygexec ())
+    envblockarg = winenv (envp, 1);
   else
     {
       envblock = winenv (envp, 0);
       char *envblockn = envblock;
-      char *envdebug = envblock;
-      int envblockcnt = 0;
-      envblockcnt = 0;
-      debug_printf("envblockn");
-#if 1
-      while (*envblockn)
-	{
-	  debug_printf("block%d: %s", envblockcnt, envblockn);
-	  envblockn = strchr(envblockn, '\0') + 1;
-	  envblockcnt++;
-	}
-#else
-      FIXME;
-      // FIXME:
-      // ciresrv.moreinfo->envc is the max available not the used count.
-      // Is there a count of used?
-      envblockcnt = ciresrv.moreinfo->envc;
-#endif
-      char **envblockarg = (char **)cmalloc(HEAP_STR, sizeof (char *) * (envblockcnt + 1)); 
-      char *tptr, *wpath;
-      int envblocknlen = 0, envblockarglen = 0;
-      envblockn = envblock;
+      int envblockcnt = ciresrv.moreinfo->envc;
+      const int oneK = 1024;
+      const int envchunk = 4 * oneK;
+      int envchunkcnt = 1;
+      if (envblockarg)
+	free (envblockarg);
+      envblockarg = (char *)malloc(envchunk);
+
+      int envblockarglen = 0;
+
       for (int loop=0;loop < envblockcnt;loop++)
 	{
-	  envblocknlen = strlen(envblockn);
-	  envblockarg[loop] = (char *) cmalloc(HEAP_1_STR, envblocknlen + MAX_PATH);
-	  memset (envblockarg[loop], 0, envblocknlen + MAX_PATH);
-	  wpath = (char *)cmalloc (HEAP_STR, envblocknlen + MAX_PATH);
-	  memset (wpath, 0, envblocknlen + MAX_PATH);
-
-	  if ((tptr = strchr(envblockn, '=')))
-	    {
-	      tptr++;
-	      strncpy (envblockarg[loop], envblockn, tptr - envblockn);
-	      cygwin_conv_to_win32_path (tptr, wpath);
-	      strcat(envblockarg[loop], wpath);
-	    }
-
-	  debug_printf("envblockarg[%d] = %s", loop, envblockarg[loop]);
-	  envblockarglen += strlen(envblockarg[loop]) + 1;
-	  envblockn = envblockn + envblocknlen + 1;
-	  if (wpath)
-	    cfree (wpath);
+	  char *wpath = msys_p2w(envblockn);
+	  int wpathlen = strlen(wpath) + 1;
+	  envblockarglen += wpathlen;
+	  if (envblockarglen > (envchunk * envchunkcnt)) {
+	    envchunkcnt++;
+	    envblockarg = (char *) realloc (envblockarg, envchunk * envchunkcnt);
+	  }
+	  memcpy (envblockarg + envblockarglen - wpathlen, wpath, wpathlen);
+	  if (wpath != envblockn)
+	    free (wpath);
+	  envblockn += strlen (envblockn) + 1;
 	} // END FOR (int loop=0;loop < envblockcnt;loop++)
 
       if (envblock)
 	free (envblock);
-      envblock = (char *)malloc (envblockarglen + 1);
-
-      tptr = envblock;
-      for (int i=0;i < envblockcnt;i++)
-	{
-	  envblocknlen = strlen (envblockarg[i]) + 1;
-	  memcpy (tptr, envblockarg[i], envblocknlen);
-	  tptr += envblocknlen;
-	  if (envblockarg[i])
-	    cfree (envblockarg[i]);
-	}
-      *++tptr = '\0';
-      if (envblockarg)
-	cfree (envblockarg);
     }
 
   /* Preallocated buffer for `sec_user' call */
@@ -729,7 +695,7 @@ spawn_guts (HANDLE hToken, const char * prog_arg, const char *const *argv,
 			  allow_ntsec ? sec_user (sa_buf) : &sec_all_nih,
 			  TRUE,	/* inherit handles from parent */
 			  flags,
-			  envblock,/* environment */
+			  envblockarg,/* environment */
 			  0,	/* use current drive/directory */
 			  &si,
 			  &pi);
@@ -790,7 +756,7 @@ spawn_guts (HANDLE hToken, const char * prog_arg, const char *const *argv,
 		       sec_attribs,     /* thread security attrs */
 		       TRUE,	/* inherit handles from parent */
 		       flags,
-		       envblock,/* environment */
+		       envblockarg,/* environment */
 		       0,	/* use current drive/directory */
 		       &si,
 		       &pi);
@@ -803,8 +769,6 @@ spawn_guts (HANDLE hToken, const char * prog_arg, const char *const *argv,
     }
 
   MALLOC_CHECK;
-  if (envblock)
-    free (envblock);
 
   cygheap_setup_for_child_cleanup (&ciresrv);
   MALLOC_CHECK;
@@ -864,9 +828,10 @@ spawn_guts (HANDLE hToken, const char * prog_arg, const char *const *argv,
 	}
       child->dwProcessId = pi.dwProcessId;
       child->hProcess = pi.hProcess;
-      child->copysigs (myself);
       child.remember ();
       strcpy (child->progname, real_path);
+      (void) DuplicateHandle (hMainProc, child.shared_handle (), pi.hProcess,
+			      NULL, 0, 0, DUPLICATE_SAME_ACCESS);
       /* Start the child running */
       ResumeThread (pi.hThread);
     }
