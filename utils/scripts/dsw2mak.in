@@ -492,7 +492,7 @@ function parse_dsp(infile, outfile, i) {
 					option = "" 
 				} else if (option ~ /^out:/) {
 					# Output File Name
-					target = fixpath(gensub(/out:("[^"]+"|[^[:space:]]+).*$/, "\\1", "1", ldflags))
+					target = fixpath(gensub(/out:("[^"]+"|[^[:space:]]+).*$/, "\\1", "1", option))
 					
 					print "TARGET=" target > outfile
 					
