@@ -1,3 +1,8 @@
+2001-10-04  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/winnt.h: Add PF_* defines.
+	Thanks to: "Wizord"  <wizord@argoslabs.com>
+
 2001-09-18  Danny Smith  <dannysmith@users.sourceforge.net>
 
 	* include/winnt.h (_[U]LARGE_INTEGER): Mark nameless structure
