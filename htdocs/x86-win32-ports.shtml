@@ -4,6 +4,7 @@
 <head>
  <title>Various x86-win32 GCC ports</title> 
  <meta name="Author" content="Mumit Khan" />
+ <meta name="Maintainer" content="Earnie Boyd" />
 </head>
 <body bgcolor="white" text="black" link="#0000EE" vlink="#551A8B" alink="red">
 
@@ -179,7 +180,7 @@ So, how do they differ?</p>
 <dt><strong>Others ...</strong></dt>
 <dd>
    And, don't forget <a href="http://www.delorie.com/djgpp/">DJGPP</a> (DOS
-   only, not windows32), RSXNTDJ, RSXNT, ...
+   only, not windows32), <A HREF="http://www.mathematik.uni-bielefeld.de/~rainer/">RSXNTDJ, RSXNT</a>, ...
 </dd>
 </dl>
 <p>

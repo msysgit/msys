@@ -2,6 +2,8 @@
 
         * index.shtml: Update the page to indicate the new maillist and replace
 	Mumit's personal email address with mingw-dvlpr for contributions.
+	* x86-win32-ports.shtml: Add link for RXSNT as supplied by 
+	Pavel Roskin <proski@gnu.org>.
 
 2000-09-10  Paul Sokolovsky  <Paul.Sokolovsky@technologist.com>
 
