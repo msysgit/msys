@@ -511,7 +511,8 @@ spawn_guts (HANDLE hToken, const char * prog_arg, const char *const *argv,
 	  if (strlen(newargv[i]) < MAX_PATH)
 	    {
 	      cygwin_conv_to_win32_path(newargv[i], tmpbuf);
-	      debug_printf("%d of %d, %s, %s", i, ac, newargv[i], tmpbuf);
+	      //debug_printf("%d of %d, %s, %s", i, ac, newargv[i], tmpbuf);
+	      debug_printf("newargv[%d] = %s", i, newargv[i]);
 	      newargv.replace (i, tmpbuf);
 	    }
 	}
@@ -634,96 +635,61 @@ spawn_guts (HANDLE hToken, const char * prog_arg, const char *const *argv,
     {
       envblock = winenv (envp, 0);
       char *envblockn = envblock;
-      int envblockcnt;
+      char *envdebug = envblock;
+      int envblockcnt = 0;
       envblockcnt = 0;
       debug_printf("envblockn");
-#if 0
+#if 1
       while (*envblockn)
 	{
-	  envblockcnt++;
-	  debug_printf("%s", envblockn);
+	  debug_printf("block%d: %s", envblockcnt, envblockn);
 	  envblockn = strchr(envblockn, '\0') + 1;
+	  envblockcnt++;
 	}
 #else
+      // FIXME:
+      // ciresrv.moreinfo->envc is the max available not the used count.
+      // Is there a count of used?
       envblockcnt = ciresrv.moreinfo->envc;
 #endif
-#if DO_CPP_NEW
       char **envblockarg = new char *[envblockcnt + 1], *tptr, *wpath;
-#else
-      char **envblockarg = (char **) malloc (sizeof (char *) * (envblockcnt + 1)), *tptr, *wpath;
-#endif
-      int envblocknlen, envblockarglen = 0;
+      int envblocknlen = 0, envblockarglen = 0;
       envblockn = envblock;
-      for (int i=0;i < envblockcnt;i++)
+      for (int loop=0;loop < envblockcnt;loop++)
 	{
 	  envblocknlen = strlen(envblockn);
-#if DO_CPP_NEW
-	  envblockarg[i] = new char [envblocknlen + MAX_PATH];
-#else
-	  envblockarg[i] = (char *) malloc (envblocknlen + MAX_PATH);
-#endif
-	  memset (envblockarg[i], 0, envblocknlen + MAX_PATH);
-#if DO_CPP_NEW
+	  envblockarg[loop] = new char [envblocknlen + MAX_PATH];
+	  memset (envblockarg[loop], 0, envblocknlen + MAX_PATH);
 	  wpath = new char [envblocknlen + MAX_PATH];
-#else
-	  wpath = (char *) malloc (envblocknlen + MAX_PATH);
-#endif
 	  memset (wpath, 0, envblocknlen + MAX_PATH);
+
 	  if ((tptr = strchr(envblockn, '=')))
 	    {
 	      tptr++;
-	      strncpy (envblockarg[i], envblockn, tptr - envblockn);
-	      //FIXME: There's a better way to do this!!
-	      if (*tptr == '/' && 
-		  strncmp(envblockn, "PATH=", 5) &&
-		  strncmp(envblockn, "MSYS_WPATH=", 11))
-		{
-		  cygwin_conv_to_win32_path (tptr, wpath);
-		  strcat(envblockarg[i], wpath);
-		}
-	      else
-		{
-		  strcat(envblockarg[i], tptr);
-		}
+	      strncpy (envblockarg[loop], envblockn, tptr - envblockn);
+	      cygwin_conv_to_win32_path (tptr, wpath);
+	      strcat(envblockarg[loop], wpath);
 	    }
-	  debug_printf("%s", envblockarg[i]);
-	  envblockarglen += strlen(envblockarg[i]) + 1;
-	  envblockn = strchr (envblockn, '\0') + 1;
-#if DO_CPP_NEW
+
+	  debug_printf("envblockarg[%d] = %s", loop, envblockarg[loop]);
+	  envblockarglen += strlen(envblockarg[loop]) + 1;
+	  envblockn = envblockn + envblocknlen + 1;
 	  delete[] wpath;
-#else
-	  if (wpath)
-	    free (wpath);
-#endif
-	}
-#if DO_CPP_NEW
+	} // END FOR (int loop=0;loop < envblockcnt;loop++)
+
       delete[] envblock;
       envblock = new char [envblockarglen + 1];
-#else
-      if (envblock)
-	free (envblock);
-      envblock = (char *) malloc (envblockarglen + 1);
-#endif
+
       tptr = envblock;
       for (int i=0;i < envblockcnt;i++)
 	{
 	  envblocknlen = strlen (envblockarg[i]) + 1;
 	  memcpy (tptr, envblockarg[i], envblocknlen);
 	  tptr += envblocknlen;
-#if DO_CPP_NEW
 	  delete[] envblockarg[i];
-#else
-	  //if (envblockarg[i])
-	    //free (envblockarg[i]);
-#endif
 	}
       *++tptr = '\0';
-#if DO_CPP_NEW
       delete[] envblockarg;
-#else
-      if (envblockarg)
-	free (envblockarg);
-#endif
     }
 
   /* Preallocated buffer for `sec_user' call */
@@ -827,12 +793,8 @@ spawn_guts (HANDLE hToken, const char * prog_arg, const char *const *argv,
     }
 
   MALLOC_CHECK;
-#if DO_CPP_NEW
   delete[] envblock;
-#else
-  if (envblock)
-    free (envblock);
-#endif
+
   cygheap_setup_for_child_cleanup (&ciresrv);
   MALLOC_CHECK;
 
