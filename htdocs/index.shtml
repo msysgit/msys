@@ -74,10 +74,19 @@ here</a> for information on how Mingw differs from Red Hat/Cygnus Cygwin
 and AT&amp;T UWIN.</p>
 
 <p><b>Latest MinGW-1.0 Snapshot</b>
-  <a href="http://prdownloads.sourceforge.net/mingw/mingw-1.0-20010608.tar.gz">
-  MinGW-1.0-20010608</a>.  This release bundles gcc-2.95.3-20010608, 
-  binutils-2.91.10-20010607, mingw-runtime-1.0-20010604 and w32api-1.0-20010606.
-  Requires 29MB of disk space.
+  <a href="http://prdownloads.sourceforge.net/mingw/mingw-1.0.1-20010726.tar.gz">
+  MinGW-1.0.1-20010726</a>.  This snapshot bundles:
+                               gcc-2.95.3-20010723, 
+                               binutils-2.11.90-20010705, 
+                               mingw-runtime-1.0.1-20010726, 
+                               w32api-1.0.1-20010726, 
+                               make-3.79.1-20010722.  
+
+                           It replaces MinGW-1.0-20010608, fixing problems with path searches under W9x
+                           and under some Posix shells. It also corrects a problem under W9x of random
+                           memory content being left in executables by the linker. 
+
+  The Full Distribution requires 32MB of disk space.
 </p>
 
 <p><b>Older release</b>:
@@ -128,7 +137,7 @@ width="88" /></a>
 <!--#include virtual="/cgi-bin/stats.cgi?mingw"--> visitors since
 <!--#include virtual="/cgi-bin/showstatsdate.cgi?mingw"--></a>.
 </p>
-$Id: index.shtml,v 1.19 2001-06-10 16:10:12 earnie Exp $
+$Id: index.shtml,v 1.20 2001-08-17 00:52:43 pgarceau Exp $
 </body>
 </html>
 
