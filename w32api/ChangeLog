@@ -1,3 +1,8 @@
+2001-08-02  Danny Smith <dannysmith@users.sourceforge.net>
+
+	* include/winsock2.h (WSAGET* and WSAMAKE*): Remove duplicate
+	defines.
+
 2001-07-30  Danny Smith <dannysmith@users.sourceforge.net>
 
 	* include/commctrl.h (TreeView_SetIndent): Correct typo.
