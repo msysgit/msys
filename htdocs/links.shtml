@@ -1,4 +1,4 @@
-<!-- $Id: links.shtml,v 1.17 2002-08-11 05:20:18 infidel Exp $ -->
+<!-- $Id: links.shtml,v 1.18 2002-08-11 05:53:32 infidel Exp $ -->
 
 <html>
 <head>
@@ -51,6 +51,12 @@ some interesting items Mingw on his
 <a target="_nw" href="http://www.geocities.com/SiliconValley/Station/1177/index.html">
 site</a>. Mostly LCC-Win32 related, but a lot of that applies to Mingw as 
 well.</li>
+<li> <a target="_nw" href="http://mingwacr.souceforge.net">The Mingw32 Alternate C Runtime Library</a>
+is being developed as a replacement to MSVCRT.DLL. Its purpose was to completely remove the dependency
+of MSVCRT.DLL from Mingw32. It will also allow developers to have access to the source code for the 
+C Runtime Library like Microsoft Visual C++ developers do. It will contain some IA-32 (x86) assembly
+optimizations for some functions. It will implement all ANSI/ISO functions, including the ISO C99 and
+Unicode functions.</li>
 </ul>
 
 <h3 align="left">Other GNU-Windows32 projects</h3>
@@ -143,7 +149,7 @@ uses Mingw-hosted gcc/binutils.
 <!--#include file="ssi/footer.html"-->
 
 <address>
-<br />Last revised $Date: 2002-08-11 05:20:18 $
+<br />Last revised $Date: 2002-08-11 05:53:32 $
 </address>
 
 </body>
