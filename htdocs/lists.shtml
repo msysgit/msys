@@ -1,4 +1,4 @@
-<!-- $Id: lists.shtml,v 1.10 2002-06-02 05:48:10 infidel Exp $ -->
+<!-- $Id: lists.shtml,v 1.11 2002-11-29 14:25:13 earnie Exp $ -->
 
 <html>
 <head>
@@ -37,13 +37,13 @@ searchable on-line archives provide a very useful resource.</p>
 <a href="http://lists.sourceforge.net/mailman/listinfo/mingw-users">
 <strong>MinGW-users</strong></a>: 
 This is the general mailing list for MinGW users.  Please search the
-<a href="http://www.geocrawler.com/redir-sf.php3?list=mingw-users">
+<a href="http://sourceforge.net/mailarchive/forum.php?forum=mingw-users">
 <strong>archives</strong></a> before posting.
 </p><p>
 <a href="http://lists.sourceforge.net/mailman/listinfo/mingw-msys">
 <strong>MinGW-msys</strong></a>: 
 This is the general mailing list for MSYS users.  Please search the
-<a href="http://www.geocrawler.com/redir-sf.php3?list=mingw-msys">
+<a href="http://sourceforge.net/mailarchive/forum.php?forum=mingw-msys">
 <strong>archives</strong></a> before posting.
 </p><p>
 <a href="http://lists.sourceforge.net/mailman/listinfo/mingw-dvlpr">
@@ -57,7 +57,7 @@ the developers are discussing at the
 <strong>MinGW-patches</strong></a>: 
 This list is to be used to discuss patches.  You can check previous
 patches in the
-<a href="http://www.geocrawler.com/redir-sf.php3?list=mingw-patches">
+<a href="http://sourceforge.net/mailarchive/forum.php?forum=mingw-patches">
 <strong>archives</strong></a>.
 </p><p>
 <a href="http://lists.sourceforge.net/mailman/listinfo/mingw-editor">
@@ -78,7 +78,7 @@ There are
 <strong>MinGW-notify</strong></a>: 
 This is a notification list for sourceforge.net control changes.
 There are 
-<a href="http://www.geocrawler.com/redir-sf.php3?list=mingw-notify">
+<a href="http://sourceforge.net/mailarchive/forum.php?forum=mingw-notify">
 <strong>archives</strong></a> so you can know what happened to a bug report
 or a patch, etc.
 </p>
@@ -110,7 +110,7 @@ The GNU binutils groups maintains a few mailing lists.
 <!--#include file="ssi/footer.html"-->
 
 <address>
-<br />Last revised $Date: 2002-06-02 05:48:10 $
+<br />Last revised $Date: 2002-11-29 14:25:13 $
 </address>
 
 </body>
