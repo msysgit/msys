@@ -10,11 +10,11 @@
  content="mingw, mingw32, programming, C++, C, C/C++, libraries, software, development tools, editors, IDEs, GNU">
 
    <link href="mingw.css" type="text/css" rel="stylesheet" title="MinGW">
-  <title>Minimal SYStem</title>
+  <title>MinGW: Minimal SYStem</title>
 </head>
 <body link="#000099" vlink="#990099" alink="#000099">
 
-<h1>Minimal SYStem</h1>
+<h1>MinGW: Minimal SYStem</h1>
 
 <table class="prim" cellspacing="6" border="0">
   <tbody>
@@ -50,7 +50,7 @@
          <p>
             MSYS versions 1.0.8 and later include only the i386 binary distribution, which will run
             on any 32-bit Intel-compatible processor.
-            The tarball flagged as &quot;src&quot; contains the source code for MSYS, which is unnecessary unless a 
+            The tarball flagged as &quot;src&quot; contains the source code for MSYS runtime and each package used to provide executable binaries, which is unnecessary unless a 
             manual build is desired. Source tarballs may not be provided for snapshots and
             prereleases, so the latest source should be obtained from the &quot;msys&quot; module in
             <a href="http://sourceforge.net/cvs/?group_id=2435">MinGW CVS</a>.
@@ -64,7 +64,7 @@
             subdirectory within the binary distribution.
          </p>
          <p>
-            There is also a new mailing list for MSYS discussion (MinGW-msys).  See the 
+            There is also a mailing list for MSYS discussion (MinGW-msys).  See the 
             <a href="lists.shtml">Mailing Lists</a> page for more information and access to this list.
          </p>
 <!--                            End of Main Body                             -->
@@ -87,6 +87,6 @@
        alt="Valid CSS!"></a>
 </p>
 <address> <br>
-Last revised $Date: 2003-01-12 18:33:32 $ </address>
+Last revised $Date: 2003-06-06 18:03:05 $ </address>
 </body>
 </html>
