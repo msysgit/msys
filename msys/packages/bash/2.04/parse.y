@@ -1617,6 +1617,11 @@ shell_getc (remove_quoted_newline)
 
 	  RESIZE_MALLOCED_BUFFER (shell_input_line, i, 2, shell_input_line_size, 256);
 
+#if __MSYS__0  // most definitely needed.
+	  if (c == '\r')
+	      continue;
+#endif
+
 	  if (c == EOF)
 	    {
 	      if (bash_input.type == st_stream)

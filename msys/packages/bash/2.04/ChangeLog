@@ -1,7 +1,3 @@
-2002.04.19  Earnie Boyd  <earnie@users.sf.net>
-
-	* parse.y (yy_getc): Ignore \r for __MSYS__ target.
-
 2002.04.18  Earnie Boyd  <earnie@users.sf.net>
 
 	* ChangeLog: New File
