@@ -1,3 +1,16 @@
+2002-12-04 12:15  jrfonseca
+
+	* ChangeLog, Makefile.am, configure.ac, dos2unix/Makefile.am,
+	drmingw/Makefile.am, pexports/Makefile.am, redir/Makefile.am,
+	reimp/Makefile.am, res2coff/Makefile.am, scripts/dsw2mak.in,
+	unix2dos/Makefile.am: Added a 'sdist' and 'bdist' target to the top
+	level Makefile to create the source and binary package of
+	mingw-utils, respectively.  Permanently removed the commented
+	libtool stuff after trying once more time to build exchdnl.dll
+	using it without success.  Installation of the documentation using
+	automake variables, which is much cleaner and simple than using
+	install hooks.
+
 2002-12-02 22:12  jrfonseca
 
 	* drmingw/include/: demangle.h, dis-asm.h, libcoff.h,
