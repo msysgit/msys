@@ -1,5 +1,4 @@
-Ceci est le fichier Info grep.info, produit par Makeinfo version 4.0 à
-partir grep.texi.
+This is grep.info, produced by makeinfo version 4.0 from grep.texi.
 
 START-INFO-DIR-ENTRY
 * grep: (grep).                   print lines matching a pattern.
@@ -791,16 +790,16 @@ options, and environment variables.
 * --word-regexp:                         Invoking.
 * -a:                                    Invoking.
 * -A:                                    Invoking.
-* -b:                                    Invoking.
 * -B:                                    Invoking.
+* -b:                                    Invoking.
 * -C:                                    Invoking.
 * -c:                                    Invoking.
 * -count:                                Invoking.
 * -d:                                    Invoking.
-* -E:                                    Grep Programs.
 * -e:                                    Invoking.
-* -F:                                    Grep Programs.
+* -E:                                    Grep Programs.
 * -f:                                    Invoking.
+* -F:                                    Grep Programs.
 * -G:                                    Grep Programs.
 * -h:                                    Invoking.
 * -H:                                    Invoking.
@@ -814,8 +813,8 @@ options, and environment variables.
 * -s:                                    Invoking.
 * -u:                                    Invoking.
 * -U:                                    Invoking.
-* -V:                                    Invoking.
 * -v:                                    Invoking.
+* -V:                                    Invoking.
 * -w:                                    Invoking.
 * -x:                                    Invoking.
 * -y:                                    Invoking.
@@ -848,15 +847,15 @@ options, and environment variables.
 
 
 Tag Table:
-Node: Top1067
-Node: Introduction1839
-Node: Invoking2566
-Node: Diagnostics13206
-Node: Grep Programs13571
-Node: Regular Expressions14451
-Node: Usage20275
-Node: Reporting Bugs23876
-Node: Concept Index24407
-Node: Index29203
+Node: Top1046
+Node: Introduction1818
+Node: Invoking2545
+Node: Diagnostics13185
+Node: Grep Programs13550
+Node: Regular Expressions14430
+Node: Usage20254
+Node: Reporting Bugs23855
+Node: Concept Index24386
+Node: Index29182
 
 End Tag Table
