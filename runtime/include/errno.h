@@ -18,9 +18,9 @@
  *  DISCLAIMED. This includes but is not limited to warranties of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Revision: 1.4 $
- * $Author: dannysmith $
- * $Date: 2001-11-29 04:26:33 $
+ * $Revision: 1.5 $
+ * $Author: earnie $
+ * $Date: 2003-02-21 21:19:51 $
  *
  */
 
@@ -104,7 +104,7 @@ extern "C" {
 #undef errno
 extern int errno;
 #else
-int*	_errno(void);
+_CRTIMP int* __cdecl _errno(void);
 #define	errno		(*_errno())
 #endif
 

@@ -18,9 +18,9 @@
  *  DISCLAIMED. This includes but is not limited to warranties of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Revision: 1.3 $
- * $Author: dannysmith $
- * $Date: 2001-11-29 04:26:33 $
+ * $Revision: 1.4 $
+ * $Author: earnie $
+ * $Date: 2003-02-21 21:19:52 $
  *
  */
 
@@ -64,10 +64,10 @@ extern "C" {
 #endif
 
 /* TODO: Not tested. */
-void	_ftime (struct _timeb*);
+_CRTIMP void __cdecl	_ftime (struct _timeb*);
 
 #ifndef	_NO_OLDNAMES
-void	ftime (struct timeb*);
+_CRTIMP void __cdecl	ftime (struct timeb*);
 #endif	/* Not _NO_OLDNAMES */
 
 #ifdef	__cplusplus

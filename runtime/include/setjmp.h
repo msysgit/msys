@@ -19,9 +19,9 @@
  *  DISCLAIMED. This includes but is not limited to warranties of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Revision: 1.3 $
- * $Author: dannysmith $
- * $Date: 2001-11-29 04:26:33 $
+ * $Revision: 1.4 $
+ * $Author: earnie $
+ * $Date: 2003-02-21 21:19:52 $
  *
  */
 
@@ -52,7 +52,7 @@ typedef _JBTYPE jmp_buf[_JBLEN];
  * The function provided by CRTDLL which appears to do the actual work
  * of setjmp.
  */
-int	_setjmp (jmp_buf);
+_CRTIMP int __cdecl _setjmp (jmp_buf);
 
 #define	setjmp(x)	_setjmp(x)
 
@@ -60,7 +60,7 @@ int	_setjmp (jmp_buf);
  * Return to the last setjmp call and act as if setjmp had returned
  * nVal (which had better be non-zero!).
  */
-void	longjmp (jmp_buf, int);
+_CRTIMP void __cdecl longjmp (jmp_buf, int);
 
 #ifdef __cplusplus
 }

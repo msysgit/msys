@@ -19,9 +19,9 @@
  *  DISCLAIMED. This includes but is not limited to warranties of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Revision: 1.4 $
+ * $Revision: 1.5 $
  * $Author: earnie $
- * $Date: 2003-02-08 14:16:47 $
+ * $Date: 2003-02-21 21:19:51 $
  *
  */
 
@@ -84,13 +84,13 @@ struct lconv
 extern "C" {
 #endif
 
-char*		setlocale (int, const char*);
-struct lconv*	localeconv (void);
+_CRTIMP  char* __cdecl setlocale (int, const char*);
+_CRTIMP struct lconv* __cdecl localeconv (void);
 
 #ifndef _WLOCALE_DEFINED  /* also declared in wchar.h */
 # define __need_wchar_t
 # include <stddef.h>
-  wchar_t* 	_wsetlocale(int, const wchar_t*);
+  _CRTIMP wchar_t* __cdecl _wsetlocale(int, const wchar_t*);
 # define _WLOCALE_DEFINED
 #endif /* ndef _WLOCALE_DEFINED */
 

@@ -19,9 +19,9 @@
  *  DISCLAIMED. This includes but is not limited to warranties of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Revision: 1.3 $
- * $Author: dannysmith $
- * $Date: 2001-11-29 04:26:33 $
+ * $Revision: 1.4 $
+ * $Author: earnie $
+ * $Date: 2003-02-21 21:19:51 $
  *
  */
 
@@ -61,11 +61,11 @@ struct _diskfree_t {
  * You really shouldn't be using these. Use the Win32 API functions instead.
  * However, it does make it easier to port older code.
  */
-int	_getdrive (void);
-unsigned long _getdrives(void);
-int	_chdrive (int);
-char*	_getdcwd (int, char*, int);
-unsigned _getdiskfree (unsigned, struct _diskfree_t *);
+_CRTIMP int __cdecl _getdrive (void);
+_CRTIMP unsigned long __cdecl _getdrives(void);
+_CRTIMP int __cdecl _chdrive (int);
+_CRTIMP char* __cdecl _getdcwd (int, char*, int);
+_CRTIMP unsigned __cdecl _getdiskfree (unsigned, struct _diskfree_t *);
 
 #ifndef	_NO_OLDNAMES
 # define diskfree_t _diskfree_t
@@ -74,11 +74,11 @@ unsigned _getdiskfree (unsigned, struct _diskfree_t *);
 #ifndef _WDIRECT_DEFINED
 /* wide character versions. Also in wchar.h */
 #ifdef __MSVCRT__ 
-int _wchdir(const wchar_t*);
-wchar_t* _wgetcwd(wchar_t*, int);
-wchar_t* _wgetdcwd(int, wchar_t*, int);
-int _wmkdir(const wchar_t*);
-int _wrmdir(const wchar_t*);
+_CRTIMP int __cdecl _wchdir(const wchar_t*);
+_CRTIMP wchar_t* __cdecl _wgetcwd(wchar_t*, int);
+_CRTIMP wchar_t* __cdecl _wgetdcwd(int, wchar_t*, int);
+_CRTIMP int __cdecl _wmkdir(const wchar_t*);
+_CRTIMP int __cdecl _wrmdir(const wchar_t*);
 #endif	/* __MSVCRT__ */
 #define _WDIRECT_DEFINED
 #endif

@@ -18,9 +18,9 @@
  *  DISCLAIMED. This includes but is not limited to warranties of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Revision: 1.3 $
- * $Author: dannysmith $
- * $Date: 2001-11-29 04:26:33 $
+ * $Revision: 1.4 $
+ * $Author: earnie $
+ * $Date: 2003-02-21 21:19:52 $
  *
  */
 
@@ -94,12 +94,12 @@ extern "C" {
  * previous handler, or SIG_ERR if an error occurs. Initially
  * unhandled signals defined above will return SIG_DFL.
  */
-__p_sig_fn_t	signal(int, __p_sig_fn_t);
+_CRTIMP __p_sig_fn_t __cdecl	signal(int, __p_sig_fn_t);
 
 /*
  * Raise the signal indicated by sig. Returns non-zero on success.
  */
-int	raise (int);
+_CRTIMP int __cdecl	raise (int);
 
 #ifdef	__cplusplus
 }

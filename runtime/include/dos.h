@@ -18,9 +18,9 @@
  *  DISCLAIMED. This includes but is not limited to warranties of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Revision: 1.4 $
+ * $Revision: 1.5 $
  * $Author: earnie $
- * $Date: 2002-06-14 15:12:54 $
+ * $Date: 2003-02-21 21:19:51 $
  *
  */
 
@@ -92,7 +92,7 @@ struct _diskfree_t {
 #define _DISKFREE_T_DEFINED
 #endif  
 
-unsigned _getdiskfree (unsigned, struct _diskfree_t *);
+_CRTIMP unsigned __cdecl _getdiskfree (unsigned, struct _diskfree_t *);
 
 #ifndef	_NO_OLDNAMES
 # define diskfree_t _diskfree_t

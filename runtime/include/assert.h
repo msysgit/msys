@@ -18,9 +18,9 @@
  *  DISCLAIMED. This includes but is not limited to warranties of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Revision: 1.3 $
- * $Author: dannysmith $
- * $Date: 2001-11-29 04:26:33 $
+ * $Revision: 1.4 $
+ * $Author: earnie $
+ * $Date: 2003-02-21 21:19:51 $
  *
  */
 
@@ -49,7 +49,7 @@ extern "C" {
  * CRTDLL nicely supplies a function which does the actual output and
  * call to abort.
  */
-void	_assert (const char*, const char*, int)
+_CRTIMP void __cdecl _assert (const char*, const char*, int)
 #ifdef	__GNUC__
 	__attribute__ ((noreturn))
 #endif
