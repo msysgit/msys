@@ -1,39 +1,42 @@
 2002-12-27   Nathan Fisher <natbobc@users.sf.net>
 
-            *  added News: to news column in index.shtml
+           *  index.shtml: Add "News:" to news column
 
 2002-12-27   Nathan Fisher <natbobc@users.sf.net>
 
-           * changed title for download.shtml to Download
+            * download.shtml: Change title to "Download"
 
 2002-12-27   Nathan Fisher <natbobc@users.sf.net>
 
-	* changed H4 tags to bold type face in index.shtml
-	* removed Release info from index.shtml
-	* created new column for news in index.shtml
-	* added bold class for SPAN tag in mingw.css
+	* index.shtml: Change H4 tags to bold type face
+	* index.shtml: Removed Release info
+	* index.shtml: Add new column for news
+	* mingw.css: Add bold class for SPAN tag
 
 2002-12-27   Nathan Fisher <natbobc@users.sf.net>
 	
-	* reverted ssi/lsidebar.html back to r1.12
+	* ssi/lsidebar.html: Reverted back to r1.12
 
 2002-12-26   Nathan Fisher <natbobc@users.sf.net>
 
-	* fixed missing Download link in ssi/lsidebar.html
-	* fixed incorrect title for index.shtml and download.shtml
+	* ssi/lsidebar.html: Update missing Download link in ssi/lsidebar.html
+	* index.shtml: Update title
+	* download.shtml: Update title
 
 2002-12-26   Nathan Fisher <natbobc@users.sf.net>
 
-	* moved WinZip caution from index.shtml to download.shtml
-	* changed the order of ssi/lsidebar.html to alphabetic. Except for the home being first.
-	* cut some fat from the index.shtml
-	* created ssi/release.html to contain brief info on current release/updates/etc
+	* index.shtml: Remove WinZip caution from index.shtml
+	* download.shtml: Add WinZip caution
+	* ssi/lsidebar.html: Set order to alphabetic. Except for home being first.
+	* index.shtml: Removed excess content
+	* ssi/release.html: Create document to contain brief info on current release/updates/etc
 
 2002-12-26   Nathan Fisher <natbobc@users.sf.net>
 
-	* merged mirrors.shtml with download.shtml
-	* removed mirror link from ssi/lsidebar.html
-	* removed mirror link from ssi/bottombar.html
+	* mirrors.shtml: Merged with download.shtml
+	* mirrors.shtml: Removed
+	* ssi/lsidebar.html: Removed mirrors link
+	* ssi/bottombar.html: Removed mirrors link
 
 2002-12-20  Earnie Boyd  <earnie@users.sf.net>
 
