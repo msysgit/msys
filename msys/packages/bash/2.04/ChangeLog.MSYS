@@ -1,0 +1,4 @@
+2002.02.24  Earnie Boyd  <earnie@users.sf.net>
+
+	* eval.c: Remove MSYS coding.
+	* builtins/cd.def: Ditto.

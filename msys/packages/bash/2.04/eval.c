@@ -38,9 +38,6 @@
 
 #include "input.h"
 #include "execute_cmd.h"
-#ifdef __MSYS__
-#include <sys/cygwin.h>
-#endif
 
 #if defined (HISTORY)
 #  include "bashhist.h"
@@ -179,16 +176,10 @@ static void
 send_pwd_to_eterm ()
 {
   char *pwd;
-#if __MSYS__
-  char wpwd[PATH_MAX];
-#endif
 
   pwd = get_string_value ("PWD");
   if (pwd == 0)
     pwd = get_working_directory ("eterm");
-#if __MSYS__
-  cygwin_conv_to_win32_path (pwd, wpwd);
-#endif
   fprintf (stderr, "\032/%s\n", pwd);
 }
 
