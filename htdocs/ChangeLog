@@ -1,4 +1,11 @@
 
+2001.06.07  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	* mirrors.shtml: Give a warning about that the information on the page
+	is for old distributions.
+	* index.shtml: Change "Latest Release" to "Older Release".
+	* MINGW-USERS-MONTHLY: Fix typo.
+
 2001-02-10  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	* faq.shtml: Change the title to Download and use target="_nw" for

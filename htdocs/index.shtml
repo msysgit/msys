@@ -73,13 +73,13 @@ See <a href="x86-win32-ports.shtml">
 here</a> for information on how Mingw differs from Red Hat/Cygnus Cygwin 
 and AT&amp;T UWIN.</p>
 
-<p><b>Latest release</b>:
+<p><b>Older release</b>:
   <a href="http://www.nanotech.wisc.edu/~khan/software/gnu-win32/gcc.html">
   gcc-2.95.2</a>. The release pack includes Mingw runtime 1999-11-07, 
   gcc-2.95.2, and binutils-2.9.4, gdb-4.18.1, make-3.77. (Nov 7, 1999)
 </p>
 
-<p><b>Latest development snapshot</b>:
+<p><b>Older development snapshot</b>:
   <a href="ftp://ftp.nanotech.wisc.edu/pub/khan/gnu-win32/mingw32/snapshots/gcc-2.95.2-1/">
   gcc-2.95.2-1</a>. The release pack includes Mingw runtime 2000-01-03, 
   gcc-2.95.2-1, and binutils-19990818-1. This is a pre-release snapshot,
@@ -121,7 +121,7 @@ width="88" /></a>
 <!--#include virtual="/cgi-bin/stats.cgi?mingw"--> visitors since
 <!--#include virtual="/cgi-bin/showstatsdate.cgi?mingw"--></a>.
 </p>
-$Id: index.shtml,v 1.17 2001-01-19 00:42:08 earnie Exp $
+$Id: index.shtml,v 1.18 2001-06-07 18:24:14 earnie Exp $
 </body>
 </html>
 

@@ -26,7 +26,7 @@ domain.  There is no centralized force behind MinGW - it is
 maintained by volunteers and its development directed by the user 
 community.  MinGW uses free GNU C/C++ compiler, its core libraries
 and headers (Win32 import libraries and header definitions) are in 
-public domain and it uses hte vendor-supplied runtime library, so
+public domain and it uses the vendor-supplied runtime library, so
 in short, you can use it to develop royalty-free software, either
 open- or close-sourced.  For more comprehensive licensing terms,
 please visit http://www.mingw.org/licensing.shtml
