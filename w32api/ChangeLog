@@ -39,6 +39,12 @@
 	* include/winuser.h (CREATESTRUCT): UNICODE it.
 	(CBT_CREATEWND): Likewise.
 
+2001-10-20  Corinna Vinschen  <corinna@vinschen.de>
+
+	* include/winnetwk.h (WNetGetResourceInformationA): Add declaration.
+	(WNetGetResourceInformationW): Ditto.
+	(WNetGetResourceInformation): Add define.
+
 2001-10-12  Pedro A Aranda  <paaguti@hotmail.com>
 
 	* include/winuser.h (POINTSTOPOINT): Use explicit casts
