@@ -1,3 +1,334 @@
+2002-04-02  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/wtypes.h (enum tagCLSCTX): Change formatting.
+
+2002-04-02  Pat Thoyts  <patthoyts@users.sourceforge.net>
+
+	* include/objidl.h (IRunningObjectTable.Register): Correct
+	prototype.
+	* include/wtypes.h (ROTFLAGS_REGISTRATIONKEEPSALIVE,
+	ROTFLAGS_ALLOWANYCLIENT): Add defines.
+
+2002-03-31  Victor Porton  <porton@narod.ru>
+
+	* include/shellapi.h (SHGFI_ATTR_SPECIFIED): Add define.
+
+2002-03-29  David Robinow  <drobinow@yahoo.com>
+
+	* include/wingdi.h (SetPixelFormat): Correct prototype.
+
+2002-03-29  Phil Krylov  <likewolf@users.sourceforge.net>
+
+	* include/richedit.h (EM_SHOWSCROLLBAR): Add define.
+
+2002-03-26  Phil Krylov  <likewolf@users.sourceforge.net>
+
+	* include/richedit.h (EM_GETSCROLLPOS, EM_SETSCROLLPSPOS):
+	Add defines.
+
+2002-03-14  Gunnar Degnbol <gdegnbol@users.sourceforge.net>
+
+	* include/richedit.h (RICHEDIT_CLASS): UNICODE it.
+	* include/shlobj.h (IContextMenu2): Put methods in right order.
+	* include/basetyps.h (REFGUID, REFIID, REFCLSID): Check for
+	CINTERFACE before defining.
+
+2002-03-09  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/accctrl.h: Add #pragma GCC system_header
+	if __GNUC__ >= 3.
+	* include/aclapi.h: Same.
+	* include/basetsd.h: Same.
+	* include/basetyps.h: Same.
+	* include/cderr.h: Same.
+	* include/cguid.h: Same.
+	* include/commctrl.h: Same.
+	* include/commdlg.h: Same.
+	* include/cpl.h: Same.
+	* include/cplext.h: Same.
+	* include/custcntl.h: Same.
+	* include/dbt.h: Same.
+	* include/dde.h: Same.
+	* include/ddeml.h: Same.
+	* include/dlgs.h: Same.
+	* include/excpt.h: Same.
+	* include/httpext.h: Same.
+	* include/imagehlp.h: Same.
+	* include/imm.h: Same.
+	* include/initguid.h: Same.
+	* include/intshcut.h: Same.
+	* include/ipexport.h: Same.
+	* include/iphlpapi.h: Same.
+	* include/ipifcons.h: Same.
+	* include/iprtrmib.h: Same.
+	* include/iptypes.h: Same.
+	* include/isguids.h: Same.
+	* include/largeint.h: Same.
+	* include/lm.h: Same.
+	* include/lmaccess.h: Same.
+	* include/lmalert.h: Same.
+	* include/lmapibuf.h: Same.
+	* include/lmat.h: Same.
+	* include/lmaudit.h: Same.
+	* include/lmbrowsr.h: Same.
+	* include/lmchdev.h: Same.
+	* include/lmconfig.h: Same.
+	* include/lmcons.h: Same.
+	* include/lmerr.h: Same.
+	* include/lmerrlog.h: Same.
+	* include/lmmsg.h: Same.
+	* include/lmremutl.h: Same.
+	* include/lmrepl.h: Same.
+	* include/lmserver.h: Same.
+	* include/lmshare.h: Same.
+	* include/lmsname.h: Same.
+	* include/lmstats.h: Same.
+	* include/lmsvc.h: Same.
+	* include/lmuse.h: Same.
+	* include/lmuseflg.h: Same.
+	* include/lmwksta.h: Same.
+	* include/lzexpand.h: Same.
+	* include/mapi.h: Same.
+	* include/mciavi.h: Same.
+	* include/mcx.h: Same.
+	* include/mmsystem.h: Same.
+	* include/mswsock.h: Same.
+	* include/nb30.h: Same.
+	* include/nddeapi.h: Same.
+	* include/nspapi.h: Same.
+	* include/ntdef.h: Same.
+	* include/ntsecapi.h: Same.
+	* include/ntsecpkg.h: Same.
+	* include/oaidl.h: Same.
+	* include/objbase.h: Same.
+	* include/objfwd.h: Same.
+	* include/objidl.h: Same.
+	* include/odbcinst.h: Same.
+	* include/ole.h: Same.
+	* include/ole2.h: Same.
+	* include/ole2ver.h: Same.
+	* include/oleauto.h: Same.
+	* include/olectl.h: Same.
+	* include/olectlid.h: Same.
+	* include/oledlg.h: Same.
+	* include/oleidl.h: Same.
+	* include/pbt.h: Same.
+	* include/prsht.h: Same.
+	* include/psapi.h: Same.
+	* include/rapi.h: Same.
+	* include/ras.h: Same.
+	* include/raserror.h: Same.
+	* include/rassapi.h: Same.
+	* include/regstr.h: Same.
+	* include/richedit.h: Same.
+	* include/richole.h: Same.
+	* include/rpc.h: Same.
+	* include/rpcdce.h: Same.
+	* include/rpcdce2.h: Same.
+	* include/rpcdcep.h: Same.
+	* include/rpcndr.h: Same.
+	* include/rpcnsi.h: Same.
+	* include/rpcnsip.h: Same.
+	* include/rpcnterr.h: Same.
+	* include/rpcproxy.h: Same.
+	* include/schannel.h: Same.
+	* include/schnlsp.h: Same.
+	* include/scrnsave.h: Same.
+	* include/security.h: Same.
+	* include/setupapi.h: Same.
+	* include/shellapi.h: Same.
+	* include/shlguid.h: Same.
+	* include/shlobj.h: Same.
+	* include/sql.h: Same.
+	* include/sqlext.h: Same.
+	* include/sqltypes.h: Same.
+	* include/sqlucode.h: Same.
+	* include/sspi.h: Same.
+	* include/subauth.h: Same.
+	* include/tlhelp32.h: Same.
+	* include/unknwn.h: Same.
+	* include/userenv.h: Same.
+	* include/w32api.h: Same.
+	* include/winbase.h: Same.
+	* include/wincon.h: Same.
+	* include/wincrypt.h: Same.
+	* include/windef.h: Same.
+	* include/windows.h: Same.
+	* include/windowsx.h: Same.
+	* include/winerror.h: Same
+	* include/wingdi.h: Same.
+	* include/wininet.h: Same.
+	* include/winioctl.h: Same.
+	* include/winnetwk.h: Same.
+	* include/winnls.h: Same.
+	* include/winnt.h: Same.
+	* include/winperf.h: Same.
+	* include/winreg.h: Same.
+	* include/winresrc.h: Same.
+	* include/winsock.h: Same.
+	* include/winsock2.h: Same.
+	* include/winspool.h: Same.
+	* include/winsvc.h: Same.
+	* include/winuser.h: Same.
+	* include/winver.h: Same.
+	* include/ws2tcpip.h: Same.
+	* include/wsnetbs.h: Same.
+	* include/wtypes.h: Same.
+	* include/zmouse.h: Same.
+	* include/mapi.h: Change header guard name to _MAPI_H  for
+	consistency.
+
+2002-03-08  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/accctrl.h (_ACCCTRL_H): Correct typo.
+	Remove unnecessary inclusion of <wtypes.h>.
+	* ChangeLog: Fix omission of name in recent entries.
+
+2002-03-08  Antony Blakey  <antony.blakey@ihug.com.au>
+
+	* include/initguid.h (DEFINE_GUID): Add GUID_EXT to define.
+
+2002-03-06  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/mswsock.h: Group winsock2 dependants
+	together and protect with #ifdef _WINSOCK2_H.
+	* lib/test.c: Only test ws2tcpip.h if winsock2.h
+	has been included.
+
+2002-03-05  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/mswsock.h (TP_*): Add new defines.
+	(TRANSMIT_PACKETS_ELEMENT): Define new structure.
+	(WSAMSG): Likewise.
+	(WSACMSGHDR): Likewise.
+	(DisconnectEx): Add new prototype.
+	(WSARecvMsg): Likewise.
+	(WSA_CMSG_*) Add empty macros, guarded by #if 0.
+
+2002-03-02  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* ChangeLog: Fix typo in last entry. 
+	* include/winsock2.h (IPPROTO_*): Add IPv6 defines.
+	* include/ws2tcpip.h: (IP_*): Add new defines.
+	(INET_ADDRSTRLEN, INET6_ADDRSTRLEN): Add defines.
+	(NI_*): Add getnameinfo constants and bitmasks.
+	(AI_*): Add getaddrinfo flags.
+	(EAI_*): Add getaddrinfo error codes.
+	(ip_mreq_source): Add new structure.
+	(ip_msfilter): Add new structure.
+	(IP_MSFILTER_SIZE): Add new macro.
+	(in_pktinfo): Add new structure.
+	Add preliminary IPv6 support.
+	(in6_addr): Add new structure and some defines.
+	(sockaddr_in6): Add new structure.
+	(in6addr_any, in6addr_loopback): Declare extern structures.
+	(IN6ADDR_ANY_INIT,IN6ADDR_LOOPBACK_INIT): Add
+	initialization macros for above.
+	(IN6_ARE_ADDR_EQUAL): Define macro.
+	(IN6_IS_ADDR_*): Define address testing macros.
+	(socklen_t) Add new typedef.
+	(ipv6_mreq): Add new structure.
+	(in6_pktinfo): Same.
+	(addrinfo): Same.
+	(freeaddrinfo):Add new prototype.
+	(getaddrinfo): Same.
+	(gai_strerror[AW]): Same.
+	(getnameinfo): Same.
+	(sockaddr_in6_old): Add structure.
+	(sockaddr_gen): Add union definition.
+	(INTERFACE_INFO): Use sockaddr_gen as members.
+	(INTERFACE_INFO_OLD): Add comment on workaround for problems
+	with INTERFACE_INFO on NT4 prior to sp4.
+
+2002-02-28  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/windows.h; Remove test for __W32API_MAJOR_VERSION
+	when selecting winsock interface.
+	* include/winsock2.h (SOCKET_ADDRESS_LIST): Add structure
+	and typedefs. Thanks to: 'Lorenzo' <conte0@infinito.it>.
+	Expand FIXME comment.
+	(WSACOMPLETIONTYPE): Add enum.
+	(WSACOMPLETION): Add structure and typedefs.
+	(WSANSPIoctl): Add function prototpe and callback typedef.
+	(SIO_NSP_NOTIFY_CHANGE): Add define.
+	(sockaddr_storage): Add structure and typedefs.
+
+2002-02-16  Andriy Palamarchuk  <apa3a@yahoo.com>
+
+	* include/winuser.h (OIC_*): Add resource constants.
+
+2002-02-14 Mattia Barbon  <mbarbon@users.sourceforge.net>
+
+	* include/ntsecpkg.h: New file.
+	* include/schannel.h: New file.
+	* include/schnlsp.h: New file.
+	* include/security.h: New file.
+	* include/sspi.h: New file.
+	* include/ntsecapi.h (KERB_WRAP_NO_ENCRYPT,
+	MICROSOFT_KERBEROS_NAME_[AW]): Add missing constants
+	* include/wincrypt.h (CALG_*, X509_ASN_ENCODING.
+	PKCS_7_ASN_ENCODING, CERT_*, USAGE_MATCH_TYPE_AND,
+	USAGE_MATCH_TYPE_OR, szOID_*): Add missing constants
+	(struct _CRYPTOAPI_BLOB): Add structure and typedefs.
+	(SSL_EXTRA_CERT_CHAIN_POLICY_PARA,HTTPSPolicyCallbackData,
+	CERT_CHAIN_POLICY_PARA,CERT_CHAIN_POLICY_STATUS,
+	CRYPT_ALGORITHM_IDENTIFIER, CRYPT_BIT_BLOB,
+	CERT_PUBLIC_KEY_INFO, CERT_EXTENSION, CERT_INFO, CERT_CONTEXT,
+	CTL_USAGE, CERT_ENHKEY_USAGE, CERT_USAGE_MATCH,
+	CERT_CHAIN_PARA, CERT_CHAIN_FIND_BY_ISSUER_PARA,
+	CERT_TRUST_STATUS, CRL_ENTRY, CRL_INFO, CRL_CONTEXT,
+	CERT_REVOCATION_CRL_INFO, CERT_REVOCATION_INFO,
+	CERT_CHAIN_ELEMENT, CRYPT_ATTRIBUTE, CTL_ENTRY, CTL_INFO,
+	CTL_CONTEXT, CERT_TRUST_LIST_INFO, CERT_SIMPLE_CHAIN,
+	CERT_CHAIN_CONTEXT): Add missing structures.
+	(CertCloseStore, CertGetCertificateChain,
+	CertVerifyCertificateChainPolicy, CertFreeCertificateChain,
+	CertNameToStr[AW], CertOpenSystemStore[AW], CertOpenStore,
+	CertFindCertificateInStore, CertFreeCertificateContext,
+	CertGetIssuerCertificateFromStore,
+	CertFindChainInStore): Add missing functions.
+	(CertNameToStr, CertOpenSystemStore, CERT_FIND_SUBJECT_STR,
+	CERT_FIND_ISSUER_STR): Add Unicode mappings.
+	* lib/crypt32.def: New file.
+	* lib/secur32.def: Add mising stubs.
+	* lib/test.c: Include new headers.
+
+2002-02-14  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/windef.h (PROC,FARPROC,NEARPROC): Remove void
+	parameter.
+
+2002-01-30  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* lib/test.c: Include mapi.h.
+	* include/commctrl.h (TBSTYLE_*): Add missing defines.
+	Thanks to: "Ron"  <ron@debian.org> 
+
+2002-01-30  John Fattaruso  <fattaruso@ieee.org>
+
+	* include/mapi.h: New file.
+	* lib/mapi.def: Add missing function stubs.	
+	
+2002-01-28  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/winuser.h (GetWindowLongPtr[AW],
+	SetWindowLongPtr[AW]): Add prototypes for _WIN64.
+
+2002-01-28  Mattia Barbon  <mbarbon@users.sourceforge.net>
+
+	* include/winuser.h (GWLP_*,DWLP_*): Add missing constants.
+	(GetWindowLongPtr[AW], SetWindowLongPtr[AW]): Map them to
+	{Get Set}WindowLong[AW], as in Win32 they are equivalent.
+	(GetWindowLongPtr, SetWindowLongPtr): Add Unicode mappings.
+
+2002-01-28  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* lib/test.c: Include wsnetbs.h.
+
+2002-01-28  Kai Henningsen  <kai-henningsen@users.sourceforge.net>
+
+	* include/wsnetbs.h: New file.
+
 2002-01-25  Earnie Boyd  <earnie@users.sf.net>
 
 	* include/winnt.h: Remove merge conflict.

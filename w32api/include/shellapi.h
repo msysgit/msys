@@ -1,5 +1,9 @@
 #ifndef _SHELLAPI_H
 #define _SHELLAPI_H
+#if __GNUC__ >=3
+#pragma GCC system_header
+#endif
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -78,6 +82,7 @@ extern "C" {
 #define SHGFI_SYSICONINDEX 16384
 #define SHGFI_LINKOVERLAY 32768
 #define SHGFI_SELECTED 65536
+#define SHGFI_ATTR_SPECIFIED 131072
 #define SHGFI_LARGEICON	0
 #define SHGFI_SMALLICON	1
 #define SHGFI_OPENICON	2

@@ -1,5 +1,9 @@
 #ifndef _WINGDI_H
 #define _WINGDI_H
+#if __GNUC__ >=3
+#pragma GCC system_header
+#endif
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -2655,7 +2659,7 @@ int WINAPI SetMetaRgn(HDC);
 BOOL WINAPI SetMiterLimit(HDC,FLOAT,PFLOAT);
 UINT WINAPI SetPaletteEntries(HPALETTE,UINT,UINT,const PALETTEENTRY*);
 COLORREF WINAPI SetPixel(HDC,int,int,COLORREF);
-BOOL WINAPI SetPixelFormat(HDC,int,PIXELFORMATDESCRIPTOR*);
+BOOL WINAPI SetPixelFormat(HDC,int,const PIXELFORMATDESCRIPTOR*);
 BOOL WINAPI SetPixelV(HDC,int,int,COLORREF);
 int WINAPI SetPolyFillMode(HDC,int);
 BOOL WINAPI SetRectRgn(HRGN,int,int,int,int);

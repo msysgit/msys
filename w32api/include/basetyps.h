@@ -1,12 +1,15 @@
 #ifndef _BASETYPS_H
 #define _BASETYPS_H
+#if __GNUC__ >=3
+#pragma GCC system_header
+#endif
 
 #ifndef __OBJC__
 #ifdef __cplusplus
 #define EXTERN_C extern "C"
 #else
 #define EXTERN_C extern
-#endif
+#endif  /* __cplusplus */ 
 #define STDMETHODCALLTYPE	__stdcall
 #define STDMETHODVCALLTYPE	__cdecl
 #define STDAPICALLTYPE	__stdcall
@@ -105,7 +108,7 @@ typedef unsigned long error_status_t;
 typedef unsigned long PROPID;
 
 #ifndef _REFGUID_DEFINED
-#ifdef __cplusplus
+#if defined (__cplusplus) && !defined (CINTERFACE)
 #define REFGUID const GUID&
 #define REFIID const IID&
 #define REFCLSID const CLSID&

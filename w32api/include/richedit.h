@@ -1,11 +1,19 @@
 #ifndef _RICHEDIT_H
 #define _RICHEDIT_H
+#if __GNUC__ >=3
+#pragma GCC system_header
+#endif
+
 #ifdef __cplusplus
 extern "C" {
 #endif
 #pragma pack(push,4)
 
+#ifdef UNICODE 
+#define RICHEDIT_CLASS L"RichEdit20W"
+#else
 #define RICHEDIT_CLASS "RichEdit20A"
+#endif
 #define CF_RTF TEXT("Rich Text Format")
 #define CF_RTFNOOBJS TEXT("Rich Text Format Without Objects")
 #define CF_RETEXTOBJ TEXT("RichEdit Text and Objects")
@@ -131,13 +139,16 @@ extern "C" {
 #define EM_GETUNDONAME	(WM_USER+86)
 #define EM_GETREDONAME	(WM_USER+87)
 #define EM_STOPGROUPTYPING	(WM_USER+88)
-#define EM_GETTEXTLENGTHEX	(WM_USER+95)
 #define EM_AUTOURLDETECT	(WM_USER+91)
+#define EM_GETTEXTLENGTHEX	(WM_USER+95)
+#define EM_SHOWSCROLLBAR	(WM_USER+96)
 #define EM_SETLANGOPTIONS	(WM_USER+120)
 #define EM_GETLANGOPTIONS	(WM_USER+121)
 #define EM_GETIMECOMPMODE	(WM_USER+122)
 #define EM_SETTYPOGRAPHYOPTIONS	(WM_USER+202)
 #define EM_GETTYPOGRAPHYOPTIONS	(WM_USER+203)
+#define EM_GETSCROLLPOS	(WM_USER+221)
+#define EM_SETSCROLLPOS	(WM_USER+222)
 #define EM_SETFONTSIZE	(WM_USER+223)
 #define EM_GETZOOM	(WM_USER+224)
 #define EM_SETZOOM	(WM_USER+225)

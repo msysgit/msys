@@ -1,6 +1,6 @@
 /*
  * mswsock.h
- * MS-specific extensions to Windows Sockets 1.1, exported from mswsock.dll.
+ * MS-specific extensions to Windows Sockets, exported from mswsock.dll.
  * These functions are N/A on Windows9x.
  *
  * This file is part of a free library for the Win32 API.
@@ -11,7 +11,9 @@
          
 #ifndef _MSWSOCK_H
 #define _MSWSOCK_H
-
+#if __GNUC__ >=3
+#pragma GCC system_header
+#endif
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -51,6 +53,58 @@ int PASCAL WSARecvEx(SOCKET,char*,int,int*);
 BOOL PASCAL TransmitFile(SOCKET,HANDLE,DWORD,DWORD,LPOVERLAPPED,LPTRANSMIT_FILE_BUFFERS,DWORD);
 BOOL PASCAL AcceptEx(SOCKET,SOCKET,PVOID,DWORD,DWORD,DWORD,LPDWORD,LPOVERLAPPED);
 VOID PASCAL GetAcceptExSockaddrs(PVOID,DWORD,DWORD,DWORD,struct sockaddr**, LPINT, struct sockaddr**, LPINT);
+
+#ifdef WINSOCK2_H /* These require the winsock2 interface.  */
+
+#define TP_ELEMENT_FILE		1
+#define TP_ELEMENT_MEMORY	2
+#define TP_ELEMENT_EOP		4
+
+typedef struct _TRANSMIT_PACKETS_ELEMENT { 
+	ULONG dwElFlags;
+	ULONG cLength;
+	_ANONYMOUS_UNION
+	union {
+		struct {
+			LARGE_INTEGER	nFileOffset;
+			HANDLE		hFile;
+		};
+		PVOID	pBuffer;
+	};
+} TRANSMIT_PACKETS_ELEMENT; 
+
+typedef struct _WSAMSG {
+	LPSOCKADDR	name;
+	INT		namelen;
+	LPWSABUF	lpBuffers;
+	DWORD		dwBufferCount;
+	WSABUF		Control;
+	DWORD		dwFlags;
+} WSAMSG, *PWSAMSG, *LPWSAMSG;
+
+
+/* According to MSDN docs, the WSAMSG.Control buffer starts with a
+   cmsghdr header of the following form.  See also RFC 2292. */
+
+typedef struct wsacmsghdr {
+	UINT	cmsg_len;
+	INT	cmsg_level;
+ 	INT	cmsg_type;
+	/* followed by UCHAR cmsg_data[]; */
+} WSACMSGHDR;
+
+/* TODO: Standard Posix.1g macros as per RFC 2292, with WSA_uglification. */
+#if 0
+#define WSA_CMSG_FIRSTHDR(mhdr)
+#define WSA_CMSG_NXTHDR(mhdr, cmsg)
+#define WSA_CMSG_SPACE(length)
+#define WSA_CMSG_LEN(length)
+#endif
+
+BOOL PASCAL DisconnectEx(SOCKET,LPOVERLAPPED,DWORD,DWORD);
+int PASCAL WSARecvMsg(SOCKET,LPWSAMSG,LPDWORD,LPWSAOVERLAPPED,LPWSAOVERLAPPED_COMPLETION_ROUTINE);
+
+#endif /* WINSOCK2_H */
 
 #ifdef __cplusplus
 }

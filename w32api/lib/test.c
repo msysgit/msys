@@ -25,6 +25,7 @@
 #include <wininet.h>
 #include <regstr.h>
 #include <custcntl.h>
+#include <mapi.h>
 
 #include <dbt.h>
 #include <httpext.h>
@@ -54,9 +55,14 @@
 #include <winioctl.h>
 #include <winresrc.h>
 #include <winsock.h>
+#ifdef _WINSOCK2_H
 #include <ws2tcpip.h>
+#endif
+#include <wsnetbs.h>
 #include <setupapi.h>
 #include <aclapi.h>
+#include <security.h>
+#include <schnlsp.h>
 
 #ifndef __OBJC__  /* problems with BOOL */
 #include <ole2.h>
