@@ -1,5 +1,4 @@
-This is Info file m4.info, produced by Makeinfo-1.55 from the input
-file m4.texinfo.
+This is m4.info, produced by makeinfo version 4.0 from m4.texinfo.
 
 START-INFO-DIR-ENTRY
 * m4: (m4).			A powerful macro processor.
@@ -76,7 +75,7 @@ that follow the call to `define'.  Thus
      =>Macro foo.
 
    The input up to and including the next newline is discarded, as
-opposed to the way comments are treated (*note Comments::.).
+opposed to the way comments are treated (*note Comments::).
 
    Usually, `dnl' is immediately followed by an end of line or some
 other whitespace.  GNU `m4' will produce a warning diagnostic if `dnl'
@@ -193,7 +192,7 @@ Changing the lexical structure of words
      experimental.  It is only available if the `--enable-changeword'
      option was given to `configure', at GNU `m4' installation time.
      The functionnality might change or even go away in the future.
-     *Do not rely on it*.  Please direct your comments about it the
+     _Do not rely on it_.  Please direct your comments about it the
      same way you would do for bugs.
 
    A file being processed by `m4' is split into quoted strings, words
@@ -255,16 +254,16 @@ Then, the `m4' version:
      =>@a
 
    In the TeX example, the first line defines a macro `a' to print the
-message `Hello'.  The second line defines @ to be usable instead of \
-as an escape character.  The third line defines \ to be a normal
+message `Hello'.  The second line defines <@> to be usable instead of
+<\> as an escape character.  The third line defines <\> to be a normal
 printing character, not an escape.  The fourth line invokes the macro
 `a'.  So, when TeX is run on this file, it displays the message `Hello'.
 
    When the `m4' example is passed through `m4', it outputs
 `errprint(Hello)'.  The reason for this is that TeX does lexical
-analysis of macro definition when the macro is *defined*.  `m4' just
+analysis of macro definition when the macro is _defined_.  `m4' just
 stores the text, postponing the lexical analysis until the macro is
-*used*.
+_used_.
 
    You should note that using `changeword' will slow `m4' down by a
 factor of about seven.
@@ -401,7 +400,7 @@ searched, in the order found on the command line.  Second, if the
 colon-separated list of directories, which will be searched in order.
 
    If the automatic search for include-files causes trouble, the `p'
-debug flag (*note Debug Levels::.) can help isolate the problem.
+debug flag (*note Debug Levels::) can help isolate the problem.
 
 
 File: m4.info,  Node: Diversions,  Next: Text handling,  Prev: File Inclusion,  Up: Top
@@ -507,7 +506,7 @@ numerical order.
 following `undivert', the other from the newline that followed the
 `divert'!  A diversion often starts with a blank line like this.
 
-   When diverted text is undiverted, it is *not* reread by `m4', but
+   When diverted text is undiverted, it is _not_ reread by `m4', but
 rather copied directly to the current output, and it is therefore not
 an error to undivert into a diversion.
 
@@ -532,7 +531,7 @@ and it is not possible to bring back diverted text more than once.
    GNU `m4' allows named files to be undiverted.  Given a non-numeric
 argument, the contents of the file named will be copied, uninterpreted,
 to the current output.  This complements the builtin `include' (*note
-Include::.).  To illustrate the difference, assume the file `foo'
+Include::).  To illustrate the difference, assume the file `foo'
 contains the word `bar':
 
      define(`bar', `BAR')
@@ -1043,7 +1042,7 @@ Executing simple commands
 
 which executes SHELL-COMMAND as a shell command.
 
-   The expansion of `syscmd' is void, *not* the output from
+   The expansion of `syscmd' is void, _not_ the output from
 SHELL-COMMAND!  Output or error messages from SHELL-COMMAND are not
 read by `m4'.  *Note Esyscmd:: if you need to process the command
 output.
@@ -1169,7 +1168,7 @@ standard error output.
      error-->Illegal arguments to forloop
      =>
 
-   A trailing newline is *not* printed automatically, so it must be
+   A trailing newline is _not_ printed automatically, so it must be
 supplied as part of the argument, as in the example.  (BSD flavored
 `m4''s do append a trailing newline on each `errprint' call).
 
@@ -1210,7 +1209,7 @@ the exit code is zero.
    After this macro call, `m4' will exit with exit code 1.  This macro
 is only intended for error exits, since the normal exit procedures are
 not followed, e.g., diverted text is not undiverted, and saved text
-(*note M4wrap::.) is not reread.
+(*note M4wrap::) is not reread.
 
 
 File: m4.info,  Node: Frozen files,  Next: Compatibility,  Prev: Miscellaneous,  Up: Top
@@ -1248,7 +1247,7 @@ macros and computing other initializations.  Only once the input file
 snapshot of the `m4' internal state.
 
    Later calls, containing the `-R' option, are able to reload the
-internal state of `m4''s memory, from `base.m4f', *prior* to reading
+internal state of `m4''s memory, from `base.m4f', _prior_ to reading
 any other input files.  By this mean, instead of starting with a virgin
 copy of `m4', input will be read after having effectively recovered the
 effect of a prior run.  In our example, the effect is the same as if
@@ -1287,38 +1286,38 @@ diversion number is also transmitted.
 
    A frozen file to be reloaded need not reside in the current
 directory.  It is looked up the same way as an `include' file (*note
-Search Path::.).
+Search Path::).
 
    Frozen files are sharable across architectures.  It is safe to write
 a frozen file one one machine and read it on another, given that the
 second machine uses the same, or a newer version of GNU `m4'.  These
 are simple (editable) text files, made up of directives, each starting
-with a capital letter and ending with a newline (NL).  Wherever a
+with a capital letter and ending with a newline (<NL>).  Wherever a
 directive is expected, the character `#' introduces a comment line,
 empty lines are also ignored.  In the following descriptions, LENGTHs
 always refer to corresponding STRINGs.  Numbers are always expressed in
 decimal.  The directives are:
 
-`V NUMBER NL'
+`V NUMBER <NL>'
      Confirms the format of the file.  NUMBER should be 1.
 
-`C LENGTH1 , LENGTH2 NL STRING1 STRING2 NL'
+`C LENGTH1 , LENGTH2 <NL> STRING1 STRING2 <NL>'
      Uses STRING1 and STRING2 as the beginning comment and end comment
      strings.
 
-`Q LENGTH1 , LENGTH2 NL STRING1 STRING2 NL'
+`Q LENGTH1 , LENGTH2 <NL> STRING1 STRING2 <NL>'
      Uses STRING1 and STRING2 as the beginning quote and end quote
      strings.
 
-`F LENGTH1 , LENGTH2 NL STRING1 STRING2 NL'
+`F LENGTH1 , LENGTH2 <NL> STRING1 STRING2 <NL>'
      Defines, through `pushdef', a definition for STRING1 expanding to
      the function whose builtin name is STRING2.
 
-`T LENGTH1 , LENGTH2 NL STRING1 STRING2 NL'
+`T LENGTH1 , LENGTH2 <NL> STRING1 STRING2 <NL>'
      Defines, though `pushdef', a definition for STRING1 expanding to
      the text given by STRING2.
 
-`D NUMBER, LENGTH NL STRING NL'
+`D NUMBER, LENGTH <NL> STRING <NL>'
      Selects diversion NUMBER, making it current, then copy STRING in
      the current diversion.  NUMBER may be a negative number for a
      non-existing diversion.  To merely specify an active selection,
@@ -1359,41 +1358,41 @@ options.
    * In the `$'N notation for macro arguments, N can contain several
      digits, while the System V `m4' only accepts one digit.  This
      allows macros in GNU `m4' to take any number of arguments, and not
-     only nine (*note Arguments::.).
+     only nine (*note Arguments::).
 
    * Files included with `include' and `sinclude' are sought in a user
      specified search path, if they are not found in the working
      directory.  The search path is specified by the `-I' option and the
-     `M4PATH' environment variable (*note Search Path::.).
+     `M4PATH' environment variable (*note Search Path::).
 
    * Arguments to `undivert' can be non-numeric, in which case the named
      file will be included uninterpreted in the output (*note
-     Undivert::.).
+     Undivert::).
 
    * Formatted output is supported through the `format' builtin, which
-     is modeled after the C library function `printf' (*note Format::.).
+     is modeled after the C library function `printf' (*note Format::).
 
    * Searches and text substitution through regular expressions are
-     supported by the `regexp' (*note Regexp::.) and `patsubst' (*note
-     Patsubst::.) builtins.
+     supported by the `regexp' (*note Regexp::) and `patsubst' (*note
+     Patsubst::) builtins.
 
    * The output of shell commands can be read into `m4' with `esyscmd'
-     (*note Esyscmd::.).
+     (*note Esyscmd::).
 
    * There is indirect access to any builtin macro with `builtin'
-     (*note Builtin::.).
+     (*note Builtin::).
 
-   * Macros can be called indirectly through `indir' (*note Indir::.).
+   * Macros can be called indirectly through `indir' (*note Indir::).
 
    * The name of the current input file and the current input line
      number are accessible through the builtins `__file__' and
-     `__line__' (*note Errprint::.).
+     `__line__' (*note Errprint::).
 
    * The format of the output from `dumpdef' and macro tracing can be
-     controlled with `debugmode' (*note Debug Levels::.).
+     controlled with `debugmode' (*note Debug Levels::).
 
    * The destination of trace and debug output can be controlled with
-     `debugfile' (*note Debug Output::.).
+     `debugfile' (*note Debug Output::).
 
    In addition to the above extensions, GNU `m4' implements the
 following command line options: `-F', `-G', `-I', `-L', `-R', `-V',
