@@ -1,5 +1,10 @@
 2002.05.04  Earnie Boyd  <earnie@users.sf.net>
 
+	* bin/start: New file.
+	* var/script.dat (start): Add.
+
+2002.05.04  Earnie Boyd  <earnie@users.sf.net>
+
 	* bin/msys.bat:  Remove SET of USERNAME and HOME.
 	* etc/profile: Add settings for HISTNAME if not already set.
 	* postinstall/: New directory.
