@@ -16,8 +16,9 @@ PACKAGE=msys
 MAJORVER=1
 MINORVER=0
 PATCHVER=8
-STOREROOT=/prjz/msys/nstl
-RLSROOT=/prjz/rls
+STOREROOT=/${PACKAGE}/store
+RLSROOT=/${PACKAGE}/rls
+RLSDEPOT=/${PACKAGE}/depot/binary/${PACKAGE}/${SHORTVER}
 ARC=$1
 SNAPDATE=\-`date +%Y.%m.%d`
 #SNAPDATE=\-rc
@@ -28,7 +29,7 @@ SUBVERSION=\-1
 
 VERSION=${MAJORVER}.${MINORVER}.${PATCHVER}
 SHORTVER=${MAJORVER}.${MINORVER}
-RLSOUTPUTDIR="`p2w ${RLSROOT}/${PACKAGE}/${VERSION}`"
+RLSOUTPUTDIR="`p2w ${RLSROOT}/${VERSION}`"
 
 if [ -z "$SNAPDATE" ]
 then
@@ -45,11 +46,10 @@ noarchstore=${STOREROOT}/noarch
 miscstore=${STOREROOT}/misc
 datastore=${STOREROOT}/var
 
-rlsdepot=${RLSROOT}/${PACKAGE}/depot/${PACKAGE}/${SHORTVER}
-INFOBEFOREFILE="`p2w ${rlsdepot}/doc/msys/MSYS-${VERSION}-changes.rtf`"
-INFOAFTERFILE="`p2w ${rlsdepot}/doc/msys//MSYS_WELCOME.rtf`"
-LICENSEFILE="`p2w ${rlsdepot}/doc/msys/MSYS_LICENSE.rtf`"
-RLSSOURCEDIR="`p2w $rlsdepot`"
+INFOBEFOREFILE="`p2w ${RLSDEPOT}/doc/msys/MSYS-${VERSION}-changes.rtf`"
+INFOAFTERFILE="`p2w ${RLSDEPOT}/doc/msys//MSYS_WELCOME.rtf`"
+LICENSEFILE="`p2w ${RLSDEPOT}/doc/msys/MSYS_LICENSE.rtf`"
+RLSSOURCEDIR="`p2w $RLSDEPOT`"
 
 exe_LIST="`cat ${datastore}/exe.dat`"
 etc_LIST="`cat ${datastore}/etc.dat`"
@@ -59,73 +59,73 @@ misc_LIST="`cat ${datastore}/misc.dat`"
 pi_LIST="`cat ${datastore}/pi.dat`"
 script_LIST="`cat ${datastore}/script.dat`"
 
-if [ ! -d ${rlsdepot} ]
+if [ ! -d ${RLSDEPOT} ]
 then
-  mkdir -p ${rlsdepot}
+  mkdir -p ${RLSDEPOT}
 fi
 
-rm -rf ${rlsdepot}/*
+rm -rf ${RLSDEPOT}/*
 
-if [ ! -d ${rlsdepot}/bin ]
+if [ ! -d ${RLSDEPOT}/bin ]
 then
-  mkdir ${rlsdepot}/bin
+  mkdir ${RLSDEPOT}/bin
 fi
 
 for I in ${exe_LIST}
 do
-  cp ${istore}/bin/${I} ${rlsdepot}/bin/
+  cp ${istore}/bin/${I} ${RLSDEPOT}/bin/
 done
 
 for I in ${dll_LIST}
 do
-  cp ${istore}/bin/${I} ${rlsdepot}/bin/
+  cp ${istore}/bin/${I} ${RLSDEPOT}/bin/
 done
 
-if [ ! -d ${rlsdepot}/doc/msys ]
+if [ ! -d ${RLSDEPOT}/doc/msys ]
 then
-  mkdir -p ${rlsdepot}/doc/msys
+  mkdir -p ${RLSDEPOT}/doc/msys
 fi
 
 for I in ${doc_LIST}
 do
-  cat ${noarchstore}/doc/msys/${I} | sed -c -e "s/@VERSION@/$VERSION/g" -e "s/@RELEASE@/$RELEASE/g" > ${rlsdepot}/doc/msys/$I
+  cat ${noarchstore}/doc/msys/${I} | sed -c -e "s/@VERSION@/$VERSION/g" -e "s/@RELEASE@/$RELEASE/g" > ${RLSDEPOT}/doc/msys/$I
 done
 
-if [ ! -d ${rlsdepot}/etc ]
+if [ ! -d ${RLSDEPOT}/etc ]
 then
-  mkdir ${rlsdepot}/etc
+  mkdir ${RLSDEPOT}/etc
 fi
 
 for I in ${etc_LIST}
 do
-  cp ${noarchstore}/etc/${I} ${rlsdepot}/etc/
+  cp ${noarchstore}/etc/${I} ${RLSDEPOT}/etc/
 done
 
 for I in ${script_LIST}
 do
-  cp ${noarchstore}/bin/${I} ${rlsdepot}/bin/
+  cp ${noarchstore}/bin/${I} ${RLSDEPOT}/bin/
 done
 
 for I in ${misc_LIST}
 do
   case $I in
   msys.bat)
-    cp ${noarchstore}/bin/${I} ${rlsdepot}
+    cp ${noarchstore}/bin/${I} ${RLSDEPOT}
     ;;
   msys.ico | m.ico)
-    cp ${noarchstore}/${I} ${rlsdepot}
+    cp ${noarchstore}/${I} ${RLSDEPOT}
     ;;
   esac
 done
 
-if [ ! -d ${rlsdepot}/postinstall ]
+if [ ! -d ${RLSDEPOT}/postinstall ]
 then
-  mkdir ${rlsdepot}/postinstall
+  mkdir ${RLSDEPOT}/postinstall
 fi
 
 for I in ${pi_LIST}
 do
-  cp ${noarchstore}/pi/${I} ${rlsdepot}/postinstall/
+  cp ${noarchstore}/pi/${I} ${RLSDEPOT}/postinstall/
 done
 
 if [ ! -f ${RLSOUTPUTDIR} ]
@@ -133,7 +133,7 @@ then
   mkdir -p ${RLSOUTPUTDIR}
 fi
 
-cat msys.iss.in | \
+cat ${noarchstore}/msys.iss.in | \
   sed -c \
       -e "s/@VERSION@/$VERSION/g" \
       -e "s/@ARC@/$ARC/g" \
@@ -144,7 +144,6 @@ cat msys.iss.in | \
       -e "s%@INFOAFTERFILE@%${INFOAFTERFILE}%g" \
       -e "s%@RLSSOURCEDIR@%${RLSSOURCEDIR}%g" \
       -e "s%@RLSOUTPUTDIR@%${RLSOUTPUTDIR}%g" \
-  > msys.iss
+  > ${RLSDEPOT}/msys.iss
 
-/c/InnoSetup2/iscc "msys.iss"
-rm msys.iss
+/c/InnoSetup2/iscc "{$RLSDEPOT}/msys.iss"

@@ -1,3 +1,11 @@
+2002.05.17  Earnie Boyd  <earnie@users.sf.net>
+
+	* bin/lnkcnv: New file.
+	* var/script.dat: Add lnkcnv.
+	* script/msysrls.sh: Set directory defaults to something more generic.
+	* postinstall/pi.sh: Modify the check for ftp.exe and the script ftp.
+	* msys.packages: New file.
+
 2002.05.15  Earnie Boyd  <earnie@users.sf.net>
 
 	* script/msysrls.sh: Define value of RELEASE variable.

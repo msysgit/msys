@@ -73,7 +73,7 @@ echo
 echo    "        Normalizing your MSYS environment."
 echo
 
-for I in awk cmd echo egrep ex fgrep ftp ln printf pwd rvi rview rvim vi view
+for I in awk cmd echo egrep ex fgrep ln printf pwd rvi rview rvim vi view
 do
   if [ -f /bin/$I. ]
   then
@@ -85,6 +85,13 @@ do
     fi
   fi
 done
+
+if [ -f /bin/ftp.exe ] && [ -f /bin/ftp. ]
+then
+    echo You have both /bin/ftp.exe and /bin/ftp.
+    echo Removing /bin/ftp.
+    rm -f /bin/ftp.
+fi
 
 if [ -f /bin/make.exe ] && [ -f /bin/make. ]
 then
