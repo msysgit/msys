@@ -1,3 +1,7 @@
+2003-03-25  Luke Dunstan  <infidel@users.sourceforge.net>
+
+	* include/stdio.h (_wfdopen): Add const to second param.
+
 2003-03-10  Danny Smith  <dannysmith@users.sourceforge.net>
 
 	* include/stdlib.h (qsort): Remove const from first parm.
