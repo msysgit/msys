@@ -1,3 +1,15 @@
+2002-10-31  Earnie Boyd  <earnie@users.sf.net>
+
+	* dcrt0.cc: Apply changes from cygwin to avoid race condition in vfork.
+	* fork.cc: Ditto.
+	* perthread.cc: Ditto.
+	* sigproc.cc: Ditto.
+	* sigproc.h: Ditto.
+	* path.cc (retpathcat): Thanks to Luke Dunstan. Correct memory growth.
+	(retpathcpy) Ditto:
+	* spawn.cc (spawn_guts): Thanks to Luke Dunstan. Add IsMsys filter for
+	the envblock translation.
+
 2002-10-09  Earnie Boyd  <earnie@users.sf.net>
 
 	* path.cc (cygwin_conv_to_win32_path): Adjust path sizes down to
