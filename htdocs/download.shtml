@@ -142,8 +142,7 @@
 		      File List
 		    </a></h2>
 		    
-                    <!--  #include file="ssi/release.html"  -->
-                    <!--#include file="ssi/files.html"-->
+                    <!--#include file="ssi/release.html"-->
                      
 		    <hr>
                     <h2><a href="#Contents" name="hdr3">
@@ -340,7 +339,7 @@
     </p>
     <address>
       <br>
-      Last revised $Date: 2003-12-24 22:05:14 $
+      Last revised $Date: 2003-12-29 19:20:11 $
     </address>
   </body>
 </html>

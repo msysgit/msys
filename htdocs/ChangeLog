@@ -1,3 +1,8 @@
+2003-12-29  Earnie Boyd  <earnie@users.sf.net>
+
+	* download.shmtl: Revert change to 1.25 version.
+	* ssi/files.html: Remove.
+
 2003-12-24	Nathan Fisher <nfisher@users.sf.net>
 
 	* ssi/files.html: Add to CVS and ran through HTML tidy.
