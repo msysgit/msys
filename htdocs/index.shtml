@@ -55,14 +55,11 @@ volunteers. </p>
 <p>
 At the basic level, MinGW is a set of include files and import libraries 
 that allow a console-mode program to use Microsoft's standard C runtime 
-library such as
-<!-- CRTDLL.DLL (available on all stock Windows 9x/NT systems) or --> 
-MSVCRT.DLL (available on all NT systems, and on all stock Win9x after
+library MSVCRT.DLL (available on all NT systems, and on all stock Win9x after
 the original Windows 95 release (for which it can be installed separately)).
-Using this basic runtime, you can 
-write console-mode ANSI compliant programs using GCC and use some of 
-the extensions offered by MS C runtime, but cannot use the features 
-provided by the Windows32 API. The next critical piece is the 
+Using this basic runtime, you can write console-mode ANSI compliant programs 
+using GCC and use some of the extensions offered by MS C runtime, but cannot 
+use the features provided by the Windows32 API. The next critical piece is the 
 <em>w32api</em> package, which is a set of includes and import libraries 
 to enable the use of Windows32 API, and combined with the basic runtime, 
 you (potentially) have full access to both the C Runtime (CRT) and 
@@ -123,7 +120,7 @@ width="88" /></a>
 <!--#include virtual="/cgi-bin/stats.cgi?mingw"--> visitors since
 <!--#include virtual="/cgi-bin/showstatsdate.cgi?mingw"--></a>.
 </p>
-$Id: index.shtml,v 1.15 2000-12-15 12:12:27 pfalcon Exp $
+$Id: index.shtml,v 1.16 2000-12-18 19:44:50 earnie Exp $
 </body>
 </html>
 

@@ -1,4 +1,14 @@
 
+Mon Dec 18 11:37:39 PST 2000  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	* index.shtml: reformat Paul Sokolovsky's change slightly.
+	* links.shtml: revert Paul Sokolovsky's change and reword.
+	* faq.shtml: reformat to use ssi.
+	* mingwfaq.shtml: ditto.
+	* ssi/footer.html: Modify CVS tag.
+	* ssi/lsidebar.html: ditto.
+	* ssi/bottombar.html: ditto.
+
 Thu Dec 14 17:37:26 PST 2000  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	* history.shtml: Modified to use ssi.

@@ -1,5 +1,35 @@
-<html>
-<body>
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+ <title>FAQ</title>
+ <meta name="Author" content="MinGW Developers">
+ <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+</head>
+<body bgcolor="white" text="black" link="#0000EE" vlink="#551A8B" alink="red">
+
+<h1 align="center">FAQ</h1>
+
+<!-- two-column format: left sidebar and the body -->
+<table border="0" cellspacing="6" cellpadding="8">
+<tr>
+<td bgcolor="#eeeeee" valign="top" width="10%">
+
+<!--#include file="ssi/lsidebar.html"-->
+
+</td>
+<!-- 2nd column of two-column format: the body -->
+<td valign="top">
+
+<!-- ================================================================== -->
+<!--                                                                    -->
+<!--			  Main Body                                     -->
+<!--                                                                    -->
+
+<table border="0" cellspacing="6" cellpadding="0">
+<tr>
+<td valign="top" align="left">
+
 <h2>
 Downloading MinGW
 </h2>
@@ -109,6 +139,22 @@ File suffix (extension) corresponding to used packer. We are using either
 For example, <tt>binutils-2.10.91-20001205.zip</tt> is a binutils
 (which are GNU Binary Utilities) 2.10.91 alpha or beta release made
 on 5th of December, 2000.
+</p>
+
+</td>
+</tr>
+</table>
+
+<!-- Close page table -->
+</td></tr></table>
+
+<!--#include file="ssi/bottombar.html"-->
+<!--#include file="ssi/footer.html"-->
+
+<p>
+<a href="http://validator.w3.org/check?uri=http%3A%2F%2Fwww.mingw.org%2Ffaq.shtml">
+<img border="0" src="vxhtml10.gif" alt="Valid XHTML 1.0!" height="31" 
+width="88" /></a>
 </p>
 
 </body>

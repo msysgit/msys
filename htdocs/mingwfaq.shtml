@@ -16,8 +16,29 @@
 <style type="text/css"><!-- ul {margin-top: 1em} --></style>
 <style type="text/css"><!-- ul {margin-bottom: 1em} --></style>
 </head>
-<body>
-<h1>MinGW FAQ</h1>
+<body bgcolor="white" text="black" link="#0000EE" vlink="#551A8B" alink="red">
+<h1 align="center">MinGW FAQ</h1>
+
+<!-- two-column format: left sidebar and the body -->
+<table border="0" cellspacing="6" cellpadding="8">
+<tr>
+<td bgcolor="#eeeeee" valign="top" width="10%">
+
+<!--#include file="ssi/lsidebar.html"-->
+
+</td>
+<!-- 2nd column of two-column format: the body -->
+<td valign="top">
+
+<!-- ================================================================== -->
+<!--                                                                    -->
+<!--			  Main Body                                     -->
+<!--                                                                    -->
+
+<table border="0" cellspacing="6" cellpadding="0">
+<tr>
+<td valign="top" align="left">
+
 <p>If you have any further questions, please refer them to the
 mingw32 mailing list.  I will update this page as I have time to do so.
 Information provided here was obtained from the mingw32 mailing list,
@@ -1695,17 +1716,30 @@ patch -o file.cpp ..\old\file.cpp patch.fil
 </pre>
   </li>
 </ol>
-<pre>
 
+</td>
+</tr>
+</table>
 
-</pre>
-<p><a href="http://validator.w3.org/check?uri=http%3A%2F%2Fwww.crosswinds.net%2F%7Elmemsm%2Fmingwfaq.htm">Validate XHTML</a>
+<!-- <hr noshade="noshade" size="1" /> -->
+
+<!-- Close page table -->
+</td></tr></table>
+
+<!--#include file="ssi/bottombar.html"-->
+<!--#include file="ssi/footer.html"-->
+
+<p>
+<a href="http://validator.w3.org/check?uri=http%3A%2F%2Fwww.mingw.org%2Fmingwfaq.shtml">
+<img border="0" src="vxhtml10.gif" alt="Valid XHTML 1.0!" height="31" 
+width="88" /></a>
 </p>
+
 <hr />
 <address>
 <br />Original document by Laura Michaels
-<br />Copyright &#169; 1999 All Rights Reserved
-<br />Last revised 20001123
+<br />Copyright &#169; 1999-2000 All Rights Reserved
+<br />Last revised 20001218
 </address>
 </body>
 </html>
