@@ -1,4 +1,9 @@
-2001-10-30  Danny Smith  <dannysmith@users.sourceforge.net>
+2001-11-01  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/basetyps.h (DECLARE_INTERFACE): Don't add
+	__attribute__((com_interface)) for __GNUC__ >= 3. 
+
+2001-11-01  Danny Smith  <dannysmith@users.sourceforge.net>
 
 	* include/commdlg.h (PRINTPAGERANGE): Add structure
 	definition.
