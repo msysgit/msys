@@ -1,7 +1,68 @@
+2002-06-14  Earnie Boyd  <earnie@users.sf.net>
+
+	* include/wingdi.h (GetEnhMetaFileBits): Correct typo.
+
+2002-06-13  Earnie Boyd  <earnie@users.sf.net>
+
+	* include/winuser.h (MOUSEHOOKSTRUCT): Define structure.
+	* include/wingdi.h (GetEnhMetaFileBits): Define prototype.
+
+2002-06-13  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* lib/test.c: #include comcat.h.
+
+2002-06-13  John K. Hohm <jhohm@acm.org>
+
+	* include/comcat.h: New file.
+
+2002-06-09  Gunnar Degnbol <gdegnbol@users.sourceforge.net>
+
+	* include/richedit.h (EM_*, TM_*, GT_*): Add new defines.
+	(GETTEXTEX): Add structure definition.
+
+2002-06-08  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/windows.h (ole2.h): #include if !__OBJC__ and
+	__GNUC__ >=3 and !WIN32_LEAN_AND_MEAN.
+
+2002-06-07  Gunnar Degnbol <gdegnbol@users.sourceforge.net>
+
+	* include/mapi.h: Change LPTSTR to LPSTR throughout.
+
+2002-06-05  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/winnt.h (PACE_HEADER, PACCESS_ALLOWED_ACE,
+	PACCESS_DENIED_ACE): Add typedefs.
+
+2002-06-03  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* lib/thunk32.def (LIBRARY): Change to KERNEL32.dll.
+
+2002-06-03 Steven Edwards  <Steven_Ed4153@yahoo.com>
+
+	* lib/kernel32.def (ConvertToGlobalHandle): Add stub.
+
+2002-06-01  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/windef.h: Fix typo in last change.
+
+2002-06-01  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/windef.h: Add no-op __try, __except, __finally
+	defines from ...
+	* include/excpt.h: Remove file.
+	* include/windows.h: Don't include excpt.h.
+
+2002-05-30  Christopher January  <chris@atomice.net>
+
+	* include/ntdef.h (ANSI_STRING, PANSI_STRING, OEM_STRING, POEM_STRING):
+	Add missing typedefs.
+
 2002-05-28  Earnie Boyd  <earnie@users.sf.net>
 
 	* include/w32api.h: Increment version to 1.5
 	* Makefile.in: Ditto.
+
 
 2002-05-27  René Møller Fonseca  <fonseca@users.sourceforge.net> 
 

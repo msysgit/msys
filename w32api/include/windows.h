@@ -48,7 +48,6 @@
 #include <windef.h>
 #include <wincon.h>
 #include <basetyps.h>
-#include <excpt.h>
 #include <winbase.h>
 #ifndef _WINGDI_H
 #include <wingdi.h>
@@ -104,6 +103,11 @@
 #include <winsock.h>
 #endif /*  (_WIN32_WINNT >= 0x0400) */
 #endif
+#if !defined (__OBJC__)
+#if  __GNUC__ >= 3  /* what about Watcom? */
+#include <ole2.h>
+#endif
+#endif /* __OBJC__ */
 #endif /* WIN32_LEAN_AND_MEAN */
 
 #endif /* RC_INVOKED */
