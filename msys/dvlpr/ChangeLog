@@ -3,6 +3,38 @@
 	* var/DTK/share.dat: Add missing autoconf, automake and libtool
 	directories.
 	* script/msysDTKrls.sh: Increment patch version.
+	* doc/mingw/MinGW_LICENSE.rtf: New file.
+	* doc/mingw/MinGW_PACKAGES.rtf: Ditto.
+	* doc/mingw/MinGW_WELCOME.rtf: Ditto.
+	* doc/msys/msysDTK-1.0.0-changes.rtf: Ditto.
+	* doc/msys/msysDVLPR.rtf: Ditto.
+	* script/mingw.iss.in: Ditto.
+	* script/mingwDTK.iss.in: Ditto.
+	* script/mingwDTKrls.sh: Ditto.
+	* script/mingwrls.sh: Ditto.
+	* script/msysDTK.iss.in: Ditto.
+	* script/msysDVLPRrls.sh: Ditto.
+	* script/msysrlsbld: Ditto.
+	* var/DTK/doc.dat: Ditto.
+	* var/DTK/lib.dat: Ditto.
+	* var/MinGW/doc.dat: Ditto.
+	* var/MinGW/exe.dat: Ditto.
+	* var/MinGW/include.dat: Ditto.
+	* var/MinGW/lib.dat: Ditto.
+	* var/MinGW/mingw32.dat: Ditto.
+	* var/mingwDTK/etc.dat: Ditto.
+	* var/mingwDTK/exe.dat: Ditto.
+	* var/mingwDTK/include.dat: Ditto.
+	* var/mingwDTK/lib.dat: Ditto.
+	* var/mingwDTK/share.dat: Ditto.
+	* msys.packages: Add package ``less'' to the list.
+	* script/msys.iss.in: Change for only one architecture.
+	* script/msysrls.sh: Ditto.  Add $HOST subdirectory in /store, /release
+	and /depot parent directories.
+	* var/DTK/dll.dat: Add libperl.dll.
+	* var/DTK/exe.dat: Update to automake-1.7 and add missing components.
+	* var/dll.dat, var/doc.dat, var/etc.dat, var/exe.dat var/misc.dat,
+	var/pi.dat, var/script.dat: Move to subdirectory var/msys.
 
 2002.12.18  Earnie Boyd  <earnie@users.sf.net>
 
