@@ -1,3 +1,21 @@
+2004-03-10  Wayne Scott  <wscott@bitmover.com>
+
+	* path.cc (normalize_posix_path): Remove serialization of previous path
+	data and current path data to fix bug causing ``mkdir -p A/A/A/A'' to
+	fail.
+
+2004-03-10  Earnie Boyd  <earnie@users.sf.net>
+
+	* dcrt0.cc (globify): Add debug_printf output.
+	(build_argv): Adjust quoted string algorithm.
+	* fhandler.cc (rootdir): Add debug_printf output.
+	* path.cc (ScrubRetpath): Ditto.
+	(msys_p2w): Ditto.
+	Adjust quoted string algorithm.
+	(cygwin_conv_to_win32_path): Add debug_printf output.
+	* syscalls.cc (stat_woerker): Add TRACE_IN.
+	(_stat): Ditto.
+	
 2004-02-24  Earnie Boyd  <earnie@users.sf.net>
 
 	* cygerrno.h: Include errno.h.
