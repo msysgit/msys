@@ -33,8 +33,11 @@ internal_getlogin (cygheap_user &user)
   char username[UNLEN + 1];
   DWORD username_len = UNLEN + 1;
   struct passwd *pw = NULL;
+  char *env;
 
-  if (!GetUserName (username, &username_len))
+  if ((env = getenv ("USERNAME")) != NULL)
+    user.set_name (env);
+  else if (!GetUserName (username, &username_len))
     user.set_name ("unknown");
   else
     user.set_name (username);
@@ -45,12 +48,9 @@ internal_getlogin (cygheap_user &user)
       LPWKSTA_USER_INFO_1 wui;
       NET_API_STATUS ret;
       char buf[512];
-      char *env;
 
       user.set_logsrv (NULL);
       /* First trying to get logon info from environment */
-      if ((env = getenv ("USERNAME")) != NULL)
-	user.set_name (env);
       if ((env = getenv ("USERDOMAIN")) != NULL)
 	user.set_domain (env);
       if ((env = getenv ("LOGONSERVER")) != NULL)
