@@ -1,5 +1,21 @@
 2001-10-30  Danny Smith  <dannysmith@users.sourceforge.net>
 
+	* include/winuser.h (MOUSEEVENTF_WHEEL): Define.
+	Thanks to: Kim Saunders.
+	* include/oleauto.h: Define VARIANT* flags for VariantChangeType.
+	Thanks to: Pat Thoyts.
+	* include/winnt.h: Change C++ style comment to C style.
+ 	* include/shlobj.h: Ditto.
+	* include/objbase.h (enum tagCOINIT): Remove comma at end of
+	list.
+	* include/oledlg.h (enum tagOLEUIPASTEFLAG): Ditto.
+	* include/oleidl.h (enum tagDROPEFFECT): Mark as __extension__
+	(enum not limited to range of int).
+	* include/oaidl.h (struct tagVARIANT): Mark as __extension__
+	(struct with no named members), ifndef NONAMELESSUNION. 
+
+2001-10-30  Danny Smith  <dannysmith@users.sourceforge.net>
+
 	* include/winuser.h (CREATESTRUCT): UNICODE it.
 	(CBT_CREATEWND): Likewise.
 

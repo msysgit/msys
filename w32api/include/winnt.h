@@ -1641,9 +1641,8 @@ typedef struct _CONTEXT {
 
 } CONTEXT;
 #elif defined(ARM)
-//
-// The following flags control the contents of the CONTEXT structure.
-//
+
+/* The following flags control the contents of the CONTEXT structure. */
 
 #define CONTEXT_ARM    0x0000040
 #define CONTEXT_CONTROL         (CONTEXT_ARM | 0x00000001L)
