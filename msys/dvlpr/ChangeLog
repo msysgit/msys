@@ -1,3 +1,19 @@
+2002.05.15  Earnie Boyd  <earnie@users.sf.net>
+
+	* script/msysrls.sh: Define value of RELEASE variable.
+	Filter documents through sed to substitute @VERSION@ to $VERSION and 
+	@RELEASE@ to $RELEASE.
+	* doc/msys/MSYS_LICENSE.rtf: Change version to @VERSION@.
+	* doc/msys/MSYS_WELCOME.rtf: Ditto.
+	* doc/msys/README.rtf: Ditto.  Also, remove change history past version
+	1.0.6 and explain where to find it.
+	* doc/msys/MSYS-1.0.8-changes.rtf: Use @RELEASE@.
+	* script/msysrlsbld: New file.
+	* postinstall/pi.bat: Make it dos line endings.
+	* patches/: New directory.
+	* patches/gcc.diff.gz: New File.
+	* patches/binutils.diff.gz: Ditto.
+
 2002.05.13  Earnie Boyd  <earnie@users.sf.net>
 
 	* script/msysrls.sh (PATCHVER): Increment to 8.
