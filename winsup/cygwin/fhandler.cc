@@ -727,63 +727,6 @@ fhandler_base::lseek (off_t offset, int whence)
 
   debug_printf ("lseek (%s, %d, %d)", unix_path_name, offset, whence);
 
-#if 0	/* lseek has no business messing about with text-mode stuff */
-
-  if (!get_r_binary ())
-    {
-      int newplace;
-
-      if (whence == 0)
-	{
-	  newplace = offset;
-	}
-      else if (whence ==1)
-	{
-	  newplace = rpos +  offset;
-	}
-      else
-	{
-	  /* Seek from the end of a file.. */
-	  if (rsize == -1)
-	    {
-	      /* Find the size of the file by reading till the end */
-
-	      char b[CHUNK_SIZE];
-	      while (read (b, sizeof (b)) > 0)
-		;
-	      rsize = rpos;
-	    }
-	  newplace = rsize + offset;
-	}
-
-      if (rpos > newplace)
-	{
-	  SetFilePointer (handle, 0, 0, 0);
-	  rpos = 0;
-	}
-
-      /* You can never shrink something more than 50% by turning CRLF into LF,
-	 so we binary chop looking for the right place */
-
-      while (rpos < newplace)
-	{
-	  char b[CHUNK_SIZE];
-	  size_t span = (newplace - rpos) / 2;
-	  if (span == 0)
-	    span = 1;
-	  if (span > sizeof (b))
-	    span = sizeof (b);
-
-	  debug_printf ("lseek (%s, %d, %d) span %d, rpos %d newplace %d",
-		       name, offset, whence,span,rpos, newplace);
-	  read (b, span);
-	}
-
-      debug_printf ("Returning %d", newplace);
-      return newplace;
-    }
-#endif	/* end of deleted code dealing with text mode */
-
   DWORD win32_whence = whence == SEEK_SET ? FILE_BEGIN
 		       : (whence == SEEK_CUR ? FILE_CURRENT : FILE_END);
 
