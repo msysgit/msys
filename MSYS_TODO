@@ -1,0 +1,6 @@
+2001.07.26:
+    * Cause the "/" directory to reference a pseudo device which will point to
+    the mount table.  I.E. an `ls /' would show the mount points as would be
+    returned by `mount'.
+    * Predetermination of type of file, text or binary, and "Do The Right
+    Thing".

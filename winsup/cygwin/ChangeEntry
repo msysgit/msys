@@ -1,0 +1,8 @@
+2001-07-27  Earnie Boyd  <earnie@SourceForge.Net>
+
+	* ROADMAP: Rename file.
+	* WINSUP_ROADMAP: Previously named ROADMAP.
+	* ChangeLog: Rename current to ChangeLog.Cygwin.  Create a new ChangeLog
+	file for MSYS changes.
+	* winver.rc: MSYSize the data strings.
+

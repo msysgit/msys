@@ -1,0 +1,59 @@
+
+2001-07-27  Earnie Boyd  <earnie@SourceForge.Net>
+
+	* ROADMAP: Rename file.
+	* WINSUP_ROADMAP: Previously named ROADMAP.
+	* ChangeLog.Cygwin: Renamed original ChangeLog.
+	* ChangeLog: New file.
+	* winver.rc: MSYSize the data strings.
+
+2001-07-26  Earnie Boyd  <earnie@SourceForge.Net>
+
+	* path.cc (mount_info::read_mounts): Process fstab before automounts.
+	* uname.cc (uname): use MSYSTEM environment variable to control system
+	name.  Defaults to MSYS.
+
+2001-07-24  Earnie Boyd  <earnie@SourceForge.Net>
+
+	* environ.cc: Guard against turning on NTEA, NTSEC and SMBNTSEC.
+	Add MSYSTEM to the forced_winenv_vars constants.
+
+2001-07-23  Earnie Boyd  <earnie@SourceForge.Net>
+
+	* Makefile.in (DLL_OFILES): Add msys.o.
+	* cygwin.din: (BASE): Change to 0x51000000 to avoid Cygwin.
+	(AbsDllPath): Add export.
+	(AbsExeModPath): Ditto.
+	* dcrt0.cc (_dll_crt0): Change cygwin1.dll to msys-1.0.dll.	
+	* environ.cc (environ_init): Don't call regopt.
+	* external.cc (cygwin_internal): Remove CW_READ_V1_MOUNT_TABLES case.
+	* msys.cc: New file.
+	* msys.h: Ditto.
+	* passwd.cc (read_etc_passwd): Force emulated passwd file.	
+	* path.cc: #include "msys.h"
+	(mount_info::read_mounts): Do MSYS init routines #if __MSYS__.	
+	(mount_info::from_registry): Ditto.
+	(mount_info::add_reg_mount): Exclude local_machine code #if __MSYS__.
+	(mount_info::del_reg_mount): ENOSYS.
+	(mount_info::read_cygdrive_info_from_registry): Ditto,
+	(mount_info::write_cygdrive_info_to_registry): Ditto.
+	(mount_info::remove_cygdrive_info_from_registry): Ditto,
+	(mount_info::get_cygdrive_info): Ditto.
+	(mount_info::add_item): Don't call add_reg_mount #if __MSYS__.
+	(mount_info::read_v1_mounts): Remove function.
+	(mount_info::import_v1_mounts): Ditto.
+	(mount): ENOSYS.
+	(umount): Ditto.
+	* pinfo.cc (pinfo::release): BASE now 0x510000000.
+	* registry.cc: #include <errno.h> and "cygerrno.h"
+	(reg_key::build_reg): ENOSYS.
+	* security.cc (alloc_sd): Return NULL regardless.
+	* shared.cc (shared_info::initialize): s/cygwin1.dll/msys-1.0.dll
+	* syscalls.cc (_fstat): Add debug_prinf.
+	* times.cc (time): Ditto.
+	* uname.cc (uname): Change osname from CYGWIN_ to MSYS_.
+	* winsup.h (__INSIDE_CYGWIN__): Add constant 1.
+	(__MSYS__): New constant.
+	(__INSIDE_MSYS__): Ditto.
+	* mount.h (MOUNT_TEXT): Ditto.
+

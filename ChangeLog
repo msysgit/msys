@@ -1,0 +1,15 @@
+2001.07.26  Earnie Boyd  <earnie@SourceForge.net>
+
+	* CYGWIN_LICENSE: Copy from winsup/cygwin directory.
+	* MSYS_LICENSE: New File.
+	* MSYS_AGREEMENT: Ditto.
+	* MSYS_CONTRIBUTIONS: Ditto.
+	* MSYS_TODO: Ditto.
+	* MSYS_MISSION: Ditto.
+	* MSYS_VS_CYGWIN: Ditto.
+
+2001.06.16  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	* ChangeLog: Create this file for msys.
+	* ChangeLog.Cygwin: Renamed original ChangeLog.
+
