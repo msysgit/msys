@@ -126,6 +126,9 @@ We have a participating mailing list.  You may join in the discussions and will 
 
 <p align="center"><b>News</b></p>
 
+<!--#include virtual="news-short.html"-->
+
+
 <p><b>New Home</b>: Mingw project is now hosted by
 <a href="http://www.sourceforge.net/">SourceForge</a>. </p>
 
@@ -205,7 +208,7 @@ width="88" /></a>
 <!--#include virtual="/cgi-bin/stats.cgi?mingw"--> visitors since
 <!--#include virtual="/cgi-bin/showstatsdate.cgi?mingw"--></a>.
 </p>
-$Id: index.shtml,v 1.11 2000-11-04 14:49:01 pfalcon Exp $
+$Id: index.shtml,v 1.12 2000-11-14 19:28:53 pfalcon Exp $
 </body>
 </html>
 
