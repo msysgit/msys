@@ -1,4 +1,4 @@
-<!-- $Id: docs.shtml,v 1.16 2001-08-28 01:05:44 stevedperkins Exp $ -->
+<!-- $Id: docs.shtml,v 1.17 2001-08-28 14:04:38 stevedperkins Exp $ -->
 <html>
 <head>
  <title>Documentation</title>
@@ -105,7 +105,10 @@
                <pre>
    #include &lt;windows.h&gt;
 
-   int WINAPI WinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR szCmdLine, int iCmdShow) 
+   int WINAPI WinMain (HINSTANCE hInstance, 
+                        HINSTANCE hPrevInstance, 
+                        PSTR szCmdLine, 
+                        int iCmdShow) 
    {
       MessageBox (NULL, "Hello", "Hello Demo", MB_OK);
       return (0);
