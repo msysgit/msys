@@ -1,4 +1,7 @@
 #!/bin/sh
+# mkRelease
+# Copyright (C) 2003 Earnie Boyd, earnie@users.sourceforge.net
+# $Id: mkRelease.tcl,v 1.2 2003-12-29 19:03:09 earnie Exp $
 #\
 exec tclsh "$0" "$@"
 
@@ -55,14 +58,29 @@ proc process_current_files_page {} {
   while {[gets $mingw_files line] >= 0} {
     set lline [split "$line" ">"]
     if {[set category_colnum [lsearch "$lline" "<h3"]] >= 0} {
-      set category_name [lindex [split [lindex $lline [expr $category_colnum + 1]] "<"] 0]
+      break
     }
-    if {[set release_colnum [lsearch -regexp "$lline" ".*release_id.*"]] >= 0} {
-      set release_id [lindex [split [lindex [split [lindex $lline $release_colnum] "="] 2] "\""] 0]
-      set release_name [lindex [split [lindex $lline [expr $release_colnum + 2]] "<"] 0]
+  }
+  for {set Idx [lsearch "$lline" "<h3"]} {$Idx < [llength $lline]} {incr Idx} {
+    if {[lindex "$lline" $Idx] == "<h3"} {
+      incr Idx
+      set category_name [lindex [split [lindex $lline $Idx] "\["] 0]
+      continue
     }
-    if {[set download_colnum [lsearch -regexp $lline ".*\?download\".*"]] >= 0} {
-      set download_type [lindex [split [lindex $lline [expr ${download_colnum} + 10]] "<"] 0]
+    if {[lsearch -regexp [split [lindex $lline $Idx] "="] ".*Release Notes.*"] >= 0} {
+      incr Idx
+      set release_name [lindex [split [lindex $lline $Idx] "<"] 0]
+      continue
+    }
+    if {[lsearch -regexp [lindex $lline $Idx] ".*\?download\".*"] >= 0} {
+      incr Idx
+      set file_name [lindex [split [lindex $lline $Idx] "<"] 0]
+      incr Idx 3
+      set file_size [lindex [split [lindex $lline $Idx] "<"] 0]
+      incr Idx 2
+      set file_dl_cnt [lindex [split [lindex $lline $Idx] "<"] 0]
+      incr Idx 4
+      set download_type [lindex [split [lindex $lline $Idx] "<"] 0]
       switch -regexp ${download_type} {
 	{Source Patch/Diff} {set file_type diff}
 	{Source.*} {set file_type src}
@@ -71,7 +89,6 @@ proc process_current_files_page {} {
 	{\.exe.*} {set file_type bin}
 	default {set file_type other}
       }
-      set file_name [lindex [split [lindex $lline [expr $download_colnum + 1]] "<"] 0]
       incr file_id
       set files(${category_name},${release_name},${file_id}) "$file_type $file_name"
     }
