@@ -1,4 +1,4 @@
-<!-- $Id: msys.shtml,v 1.1 2001-12-20 15:59:49 earnie Exp $ -->
+<!-- $Id: msys.shtml,v 1.2 2001-12-22 03:21:22 stevedperkins Exp $ -->
 
 <html>
 <head>
@@ -6,7 +6,7 @@
 </head>
 <body bgcolor="white" text="black" link="#0000EE" vlink="#551A8B" alink="red">
 
-<h1 align="center">Mailing Lists</h1>
+<h1 align="center">MSYS</h1>
 
 <!-- two-column format: left sidebar and the body -->
 <table border="0" cellspacing="6" cellpadding="8">
@@ -64,7 +64,7 @@ information on this list.
 <!--#include file="ssi/footer.html"-->
 
 <address>
-<br />Last revised $Date: 2001-12-20 15:59:49 $
+<br />Last revised $Date: 2001-12-22 03:21:22 $
 </address>
 
 </body>
