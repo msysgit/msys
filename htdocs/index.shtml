@@ -11,7 +11,7 @@
   <title>MinGW</title>
 </head>
 <body link="#000099" vlink="#990099" alink="#000099">
-<h1>MinGW: Minimalist GNU For Windows</h1>
+<h1>Minimalist GNU For Windows</h1>
 <table class="prim" cellspacing="6" border="0">
   <tbody>
     <tr>
@@ -86,6 +86,6 @@ Fisher for this work.
  -->
 </p>
 <address><br>
-Last revised $Date: 2003-06-06 17:48:12 $ </address>
+Last revised $Date: 2003-06-06 18:47:54 $ </address>
 </body>
 </html>
