@@ -1,4 +1,4 @@
-<!-- $Id: mingwfaq.shtml,v 1.24 2001-08-28 17:46:40 stevedperkins Exp $ -->
+<!-- $Id: mingwfaq.shtml,v 1.25 2001-12-20 15:59:48 earnie Exp $ -->
 
 <html>
 <head>
@@ -62,6 +62,8 @@
       <li><a href="#faq-usingwithcygwin">How can I use MinGW within a Cygwin environment?</a></li>
       <li><a href="#faq-runtime">Which runtime should I use?</a></li>
       <li><a href="#faq-w32api">What is w32api?</a></li>
+      <li><a href="#faq-msys">What is MSYS?</a></li>
+      <li><a href="#faq-msys">How do I execute configure scripts?</a></li>
       <li><a href="#faq-comsupport">Is support provided for COM?</a></li>
       <li><a href="#faq-cross">How can I build a cross compiler?</a></li>
       <li><a href="#faq-bugreports">How can I report bugs?</a></li>
@@ -364,6 +366,21 @@
 
 
 
+      <a name="faq-msys" />
+      <h3>What is MSYS?</h3>
+      <h3>And how do I execute configure scripts?</h3>
+      <p>
+         MSYS is a "Minimal SYStem" providing just enough of POSIX and Bourne
+	 to allow a typical configuration script to execute and use the native
+	 MinGW version of gcc.  For more information please see <a href="msys.shtml">
+	 msys.shtml</a>.
+      </p>
+      <p><a href="#index">Back to index</a></p>
+
+      <hr />
+
+
+
       <a name="faq-comsupport" />
       <h3>Is support provided for COM?</h3>
       <p>
@@ -447,7 +464,7 @@
 
    <hr />
    <address>
-   <br />Last revised $Date: 2001-08-28 17:46:40 $
+   <br />Last revised $Date: 2001-12-20 15:59:48 $
    </address>
 
 </body>

@@ -1,4 +1,4 @@
-<!-- $Id: lists.shtml,v 1.8 2001-08-28 01:05:44 stevedperkins Exp $ -->
+<!-- $Id: lists.shtml,v 1.9 2001-12-20 15:59:48 earnie Exp $ -->
 
 <html>
 <head>
@@ -38,6 +38,12 @@ searchable on-line archives provide a very useful resource.</p>
 <strong>MinGW-users</strong></a>: 
 This is the general mailing list for MinGW users.  Please search the
 <a href="http://www.geocrawler.com/redir-sf.php3?list=mingw-users">
+<strong>archives</strong></a> before posting.
+</p><p>
+<a href="http://lists.sourceforge.net/mailman/listinfo/mingw-msys">
+<strong>MinGW-msys</strong></a>: 
+This is the general mailing list for MSYS users.  Please search the
+<a href="http://www.geocrawler.com/redir-sf.php3?list=mingw-msys">
 <strong>archives</strong></a> before posting.
 </p><p>
 <a href="http://lists.sourceforge.net/mailman/listinfo/mingw-dvlpr">
@@ -104,7 +110,7 @@ The GNU binutils groups maintains a few mailing lists.
 <!--#include file="ssi/footer.html"-->
 
 <address>
-<br />Last revised $Date: 2001-08-28 01:05:44 $
+<br />Last revised $Date: 2001-12-20 15:59:48 $
 </address>
 
 </body>

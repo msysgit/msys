@@ -1,0 +1,72 @@
+<!-- $Id: msys.shtml,v 1.1 2001-12-20 15:59:49 earnie Exp $ -->
+
+<html>
+<head>
+ <title>Minimal SYStem</title>
+</head>
+<body bgcolor="white" text="black" link="#0000EE" vlink="#551A8B" alink="red">
+
+<h1 align="center">Mailing Lists</h1>
+
+<!-- two-column format: left sidebar and the body -->
+<table border="0" cellspacing="6" cellpadding="8">
+<tr>
+<td bgcolor="#eeeeee" valign="top" width="10%">
+
+<!--#include file="ssi/lsidebar.html"-->
+
+</td>
+<!-- 2nd column of two-column format: the body -->
+<td valign="top">
+
+<!-- ================================================================== -->
+<!--                                                                    -->
+<!--			  Main Body                                     -->
+<!--                                                                    -->
+
+<table border="0" cellspacing="6" cellpadding="0">
+<tr>
+<td valign="top" align="left">
+
+<p>
+MSYS was created out of a long lived desire to provide the MinGW community a
+Minimal SYStem with which a configure script could be executed.  We finally have
+that available and is downloadable from the SourceForge file distribution system
+which MinGW is using.
+</p><p>
+The current version is msys-1.0.2 and you need to download either the
+<a href="ftp://ftp1.sf.net/pub/sourceforge/msys-1.0.2-1.i686-bin.tar.gz">i686</a>
+binary distribution or the
+<a href="ftp://ftp1.sf.net/pub/sourceforge/msys-1.0.2-1.i386-bin.tar.gz">i386</a> 
+binary distribution.  The source distribution is delivered in
+<a href="ftp://ftp1.sf.net/pub/sourceforge/msys-1.0.2-1.src.tar.gz">this package</a> 
+and includes the source for both the runtime and all the packages from which
+the hand selected binaries were taken.
+</p><p>
+To install chose a drive device and unpack the binary distribution in the root
+of that drive.  The read the documentation in \msys\1.0\usr\doc\msys, especially
+the README file.
+</p><p>
+There is also a new mail list to discuss the use of MSYS called mingw-msys@lists.sf.net.  See the <a href="lists.shtml">lists.shtml</a> document for a more
+information on this list.
+</p>
+</td>
+</tr>
+</table>
+
+<!-- <hr noshade="noshade" size="1" /> -->
+
+<!-- Close page table -->
+</td></tr></table>
+
+<!--#include file="ssi/bottombar.html"-->
+
+<!--#include file="ssi/footer.html"-->
+
+<address>
+<br />Last revised $Date: 2001-12-20 15:59:49 $
+</address>
+
+</body>
+</html>
+
