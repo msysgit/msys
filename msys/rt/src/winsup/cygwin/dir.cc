@@ -386,7 +386,7 @@ rmdir (const char *dir)
 
 #ifdef __MSYS__
   //  FIXME: NASTY HACK
-  if (*real_dir.get_win32 () == *cwd.get_win32 ())
+  if (dir[0] == '/' && *real_dir.get_win32 () == *cwd.get_win32 ())
     {
       char chdirstr[MAX_PATH];
       strcpy (chdirstr, cwd.get_win32 ());
