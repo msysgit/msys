@@ -37,6 +37,7 @@ mv.exe
 od.exe 
 patch.exe 
 sort.exe 
+stty.exe
 tail.exe 
 tee.exe 
 true.exe 
