@@ -1,4 +1,4 @@
-<!-- $Id: index.shtml,v 1.28 2002-08-06 14:36:56 earnie Exp $ -->
+<!-- $Id: index.shtml,v 1.29 2002-08-06 14:45:52 earnie Exp $ -->
 
 <html>
 <head>
@@ -79,8 +79,8 @@ Version 1.1</a>.  This release bundles:
 The Latest MinGW Release may not contain the most recent versions of each
 individual package.  You may find the most recent versions of the individual 
 packages by 
-<a href:="https://sourceforge.net/project/showfiles.php?group_id=2435">
-clicking here"</a>.
+<a href="https://sourceforge.net/project/showfiles.php?group_id=2435">
+clicking here</a>.
 
 <br><br><em>WinZip Cautions:</em><br>
 Make sure that you first <b>uncheck</b> the "TAR file smart CR/LF conversion"
@@ -126,7 +126,7 @@ width="88" /></a>
 <!--#include virtual="/cgi-bin/showstatsdate.cgi?mingw"--></a>.
 </p>
 <address>
-<br />Last revised $Date: 2002-08-06 14:36:56 $
+<br />Last revised $Date: 2002-08-06 14:45:52 $
 </address>
 
 </body>
