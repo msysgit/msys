@@ -1647,7 +1647,7 @@ mount_info::set_flags_from_win32_path (const char *p)
       if (path_prefix_p (mi.native_path, p, mi.native_pathlen))
 	return mi.flags;
     }
-  return 0;
+  return PC_FULL;
 }
 
 DWORD WINAPI

@@ -1,3 +1,8 @@
+2004-09-05  Andres Rand <lothar@hot.ee>
+
+	* path.cc (set_flags_from_win32_path): Return PC_FULL as default
+	flag for paths not found in fstab mountpoints.
+
 2004-04-30  Earnie Boyd  <earnie@users.sf.net>
 
 	* Makefile.in (new-$(DLL_NAME)): Add -luser32 to link command.
