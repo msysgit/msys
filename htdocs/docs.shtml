@@ -413,18 +413,26 @@
                   and useful external libraries and IDE's that work with MinGW.
                </li>
                <li> 
-                  Colin Peters' tutorial on 
                   <a href="http://webclub.kcom.ne.jp/ma/colinp/win32/index.html">
-                  Programming Win32 with GNU C and C++</a>
+                  Programming Win32 with GNU C and C++</a><br>
+		  A tutorial by Coin Peters, the original author of MinGW.
                </li>
                <li> 
                   <a href="http://www.nanotech.wisc.edu/~khan/software/gnu-win32/dllhelpers.html">
-                  How to make DLLs using GCC</a><br /> A set of helper programs and examples to
-                  make DLLs in C, C++ and F77 using gcc on Mingw and Cygwin. Released v0.2.5
-                  on Mar 13, 1999. Also contains some pointers to DLL related information
-                  available from Microsoft's on-line archives. The next release, currently in
-                  beta, will create DLLs using a much more straight forward way.
+                  How to make DLLs using GCC</a><br /> 
+		  Examples by Mumit Khan.<br />
+		  A set of helper programs and examples to make DLLs in C, C++ 
+		  and F77 using gcc on Mingw and Cygwin. Released v0.2.5
+                  on Mar 13, 1999. Also contains some pointers to DLL related 
+		  information available from Microsoft's on-line archives. 
                </li>
+	       <li>
+	          <a href="http://www.citlink.net/~messengertj/htmlhelp.htm">
+		  How to add compiled HTML help to a MinGW application</a><br />
+		  A tutorial by Thomas Messenger.<br />  It is very easy for 
+		  applications that already have a menu.  And it is not 
+		  difficult for any WinMain window style program.
+	       </li>
             </ul>
             <br />
             <li><h3>Developing Modules for Specific Software Packages</h3></li>
@@ -488,6 +496,6 @@
 </table>
 <!--#include file="ssi/bottombar.html"--><!--#include file="ssi/footer.html"-->
 <address> <br>
-Last revised $Date: 2003-01-11 09:08:04 $ </address>
+Last revised $Date: 2003-05-27 11:31:50 $ </address>
 </body>
 </html>
