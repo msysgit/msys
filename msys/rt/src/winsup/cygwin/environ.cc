@@ -226,6 +226,7 @@ _addenv (const char *name, const char *value, int overwrite)
       if (issetenv && strlen (p) >= valuelen)
 	{
 	  strcpy (p, value);
+	  SetEnvironmentVariable (name, value);
 	  return 0;
 	}
     }
@@ -283,6 +284,7 @@ _addenv (const char *name, const char *value, int overwrite)
   if ((spenv = getwinenv (envhere)))
     spenv->add_cache (value);
 
+  SetEnvironmentVariable (name, value);
   return 0;
 }
 
@@ -304,6 +306,7 @@ putenv (const char *str)
 
   /* Remove str from the environment. */
   unsetenv (str);
+  SetEnvironmentVariable(str, NULL);
   return 0;
 }
 
