@@ -3,7 +3,7 @@
  *  Documentation:
  *    Convert lf ('\x0a') characters in a file to cr lf ('\x0d' '\x0a')
  *    combinations.
- *  Version: $$Id: unix2dos.c,v 1.2 2002-09-29 23:31:47 jrfonseca Exp $$
+ *  Version: $$Id: unix2dos.c,v 1.3 2002-10-06 09:55:42 jrfonseca Exp $$
  *
  *  Copyright (c) 1994, 1995 Benjamin Lin.
  *  All rights reserved.
@@ -47,24 +47,61 @@
 
 
 #define RCS_AUTHOR   "$$Author: jrfonseca $$"
-#define RCS_DATE     "$$Date: 2002-09-29 23:31:47 $$"
-#define RCS_REVISION "$$Revision: 1.2 $$"
+#define RCS_DATE     "$$Date: 2002-10-06 09:55:42 $$"
+#define RCS_REVISION "$$Revision: 1.3 $$"
 #define VER_AUTHOR   "Benjamin Lin"
 #define VER_DATE     "1995.03.31"
 #define VER_REVISION "2.2"
 
 /* #define DEBUG */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/stat.h>
-#include <sys/utime.h>
 #include "unix2dos.h"
 
+#include <stdio.h>
+#include <stdlib.h>
+#ifdef HAVE_CONFIG_H
+#  if HAVE_DIRENT_H
+#	  include <dirent.h>
+#	  define NAMLEN(dirent) strlen((dirent)->d_name)
+#  else
+#	  define dirent direct
+#	  define NAMLEN(dirent) (dirent)->d_namlen
+#	  if HAVE_SYS_NDIR_H
+#	   include <sys/ndir.h>
+#	  endif
+#	  if HAVE_SYS_DIR_H
+#	   include <sys/dir.h>
+#	  endif
+#	  if HAVE_NDIR_H
+#	   include <ndir.h>
+#	  endif
+#  endif
+#else
+#  if defined(__MSDOS__) || defined(_WIN32)
+#     include <dir.h>
+#  endif
+#endif
+#include <string.h>
+#include <sys/stat.h>
+#ifdef HAVE_CONFIG_H
+#  if HAVE_UTIME_H
+#   include <utime.h>
+#  endif
+#  if HAVE_SYS_UTIME_H
+#   include <sys/utime.h>
+#  endif
+#else
+#  include <utime.h>
+#endif /* HAVE_CONFIG_H */
 
-#define R_CNTRL   "rb"
-#define W_CNTRL   "wb"
+
+#if defined(__MSDOS__) || defined(_WIN32)
+#  define R_CNTRL   "rb"
+#  define W_CNTRL   "wb"
+#else
+#  define R_CNTRL   "r"
+#  define W_CNTRL   "w"
+#endif
 
 
 typedef struct
@@ -105,7 +142,7 @@ void PrintVersion(void)
   fprintf(stderr, "VER_AUTHOR: %s\n", VER_AUTHOR);
   fprintf(stderr, "VER_DATE: %s\n", VER_DATE);
   fprintf(stderr, "VER_REVISION: %s\n", VER_REVISION);
-#endif /* DEBUG */
+#endif
 }
 
 
@@ -181,7 +218,7 @@ int ConvertUnixToDos(FILE* ipInF, FILE* ipOutF, CFlag *ipFlag)
 #ifdef DEBUG
             fprintf(stderr, "unix2dos: program error, invalid conversion mode %d\n",ipFlag->ConvMode);
             exit(1);
-#endif /* DEBUG */
+#endif
   }
   return RetVal;
 }
@@ -206,11 +243,15 @@ int ConvertUnixToDosNewFile(char *ipInFN, char *ipOutFN, CFlag *ipFlag)
 
   strcpy (TempPath, "./u2dtmp");
   strcat (TempPath, "XXXXXX");
-  mktemp (TempPath);
+#ifdef HAVE_MKSTEMP
+  mkstemp (TempPath);
+#else
+  mktemp  (TempPath);
+#endif
 
 #ifdef DEBUG
   fprintf(stderr, "unix2dos: using %s as temp file\n", TempPath);
-#endif /* DEBUG */
+#endif
 
   /* can open in file? */
   if ((!RetVal) && ((InF=OpenInFile(ipInFN)) == NULL))
@@ -285,11 +326,15 @@ int ConvertUnixToDosOldFile(char* ipInFN, CFlag *ipFlag)
 
   strcpy (TempPath, "./u2dtmp");
   strcat (TempPath, "XXXXXX");
-  mktemp (TempPath);
+#ifdef HAVE_MKSTEMP
+  mkstemp (TempPath);
+#else
+  mktemp  (TempPath);
+#endif
 
 #ifdef DEBUG
   fprintf(stderr, "unix2dos: using %s as temp file\n", TempPath);
-#endif /* DEBUG */
+#endif
 
   /* can open in file? */
   if ((!RetVal) && ((InF=OpenInFile(ipInFN)) == NULL))

@@ -10,7 +10,7 @@
  *  Name: dos2unix
  *  Documentation:
  *    Remove cr ('\x0d') characters from a file.
- *  Version: $$Id: dos2unix.c,v 1.2 2002-09-29 23:31:46 jrfonseca Exp $$
+ *  Version: $$Id: dos2unix.c,v 1.3 2002-10-06 09:55:42 jrfonseca Exp $$
  * 
  *  Copyright (c) 1994, 1995 Benjamin Lin.
  *  All rights reserved.
@@ -55,8 +55,8 @@
 
 
 #define RCS_AUTHOR   "$$Author: jrfonseca $$"
-#define RCS_DATE     "$$Date: 2002-09-29 23:31:46 $$"
-#define RCS_REVISION "$$Revision: 1.2 $$"
+#define RCS_DATE     "$$Date: 2002-10-06 09:55:42 $$"
+#define RCS_REVISION "$$Revision: 1.3 $$"
 #define VER_AUTHOR   "Christian Wurll"
 #define VER_DATE     "Thu Nov 19 1998"
 #define VER_REVISION "3.1"
@@ -66,16 +66,53 @@ static int macmode = 0;
 
 /* #define DEBUG */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/stat.h>
-#include <sys/utime.h>
 #include "dos2unix.h"
 
+#include <stdio.h>
+#include <stdlib.h>
+#ifdef HAVE_CONFIG_H
+#  if HAVE_DIRENT_H
+#	  include <dirent.h>
+#	  define NAMLEN(dirent) strlen((dirent)->d_name)
+#  else
+#	  define dirent direct
+#	  define NAMLEN(dirent) (dirent)->d_namlen
+#	  if HAVE_SYS_NDIR_H
+#	   include <sys/ndir.h>
+#	  endif
+#	  if HAVE_SYS_DIR_H
+#	   include <sys/dir.h>
+#	  endif
+#	  if HAVE_NDIR_H
+#	   include <ndir.h>
+#	  endif
+#  endif
+#else
+#  if defined(__MSDOS__) || defined(_WIN32)
+#    include <dir.h>
+#  endif
+#endif
+#include <string.h>
+#include <sys/stat.h>
+#ifdef HAVE_CONFIG_H
+#  if HAVE_UTIME_H
+#   include <utime.h>
+#  endif
+#  if HAVE_SYS_UTIME_H
+#   include <sys/utime.h>
+#  endif
+#else
+#  include <utime.h>
+#endif /* HAVE_CONFIG_H */
 
-#define R_CNTRL   "rb"
-#define W_CNTRL   "wb"
+
+#if defined(__MSDOS__) || defined(_WIN32)
+#  define R_CNTRL   "rb"
+#  define W_CNTRL   "wb"
+#else
+#  define R_CNTRL   "r"
+#  define W_CNTRL   "w"
+#endif
 
 
 typedef struct
@@ -259,7 +296,11 @@ int ConvertDosToUnixNewFile(char *ipInFN, char *ipOutFN, CFlag *ipFlag)
 
   strcpy (TempPath, "./d2utmp");
   strcat (TempPath, "XXXXXX");
-  mktemp (TempPath);
+#ifdef HAVE_MKSTEMP
+  mkstemp (TempPath);
+#else
+  mktemp  (TempPath);
+#endif
 
 #ifdef DEBUG
   fprintf(stderr, "dos2unix: using %s as temp file\n", TempPath);
@@ -339,7 +380,11 @@ int ConvertDosToUnixOldFile(char* ipInFN, CFlag *ipFlag)
 
   strcpy (TempPath, "./u2dtmp");
   strcat (TempPath, "XXXXXX");
-  mktemp (TempPath);
+#ifdef HAVE_MKSTEMP
+  mkstemp (TempPath);
+#else
+  mktemp  (TempPath);
+#endif
 
 #ifdef DEBUG
   fprintf(stderr, "dos2unix: using %s as temp file\n", TempPath);

@@ -1,26 +1,58 @@
-dnl Process this file with autoconf to produce a configure script.
+# Process this file with autoconf 2.53 or better to produce a configure script.
 
-AC_INIT(Makefile.am)
-AM_INIT_AUTOMAKE(mingw-utils, 0.1)
+AC_INIT(mingw-utils,0.1)
+AC_PREREQ(2.53)
+AM_INIT_AUTOMAKE(1.6 no-define dist-bzip2)
+#AM_INIT_AUTOMAKE(1.6 foreign no-define no-dependencies no-installman dist-bzip2)
+AC_CONFIG_SRCDIR(Makefile.am)
+AM_CONFIG_HEADER(config.h)
+AM_MAINTAINER_MODE
 
-AC_PROG_AWK
+# Checks for programs.
 AC_PROG_CC
-AM_PROG_CC_STDC
+AC_PROG_INSTALL
+AC_PROG_MAKE_SET
+AC_PROG_AWK
 
 AM_PROG_LEX
-AC_PROG_MAKE_SET
 AC_PROG_YACC
 
+AC_ARG_VAR(WINDRES, [Windows Resource compiler tool path])
+AC_PATH_TOOL(WINDRES,windres,
+	[AC_MSG_WARN(Could not find a windres tool in your PATH. Will not be able to compile drmingw.)]
+)
+AC_SUBST(WINDRES)
+
+# Libtool not yet support.
 #AC_LIBTOOL_WIN32_DLL
 #AC_PROG_LIBTOOL
 
-AC_CYGWIN
-AC_MINGW32
+# Checks for header files.
+AC_HEADER_STDC
+where_toGet_utime_h='not found!'
+# this part is scrambled by autoconf. phooey. so we just cannot tell the user what we are doing.
+# AC_MSG_CHECKING([for whether utime.h is found as "utime.h" or "sys/utime.h"])
+AC_CHECK_HEADER(utime.h,
+	[AC_DEFINE(HAVE_UTIME_H,1, ["utime.h" is present instead of "sys/utime.h"])]
+	where_toGet_utime_h='utime.h',
+	[AC_CHECK_HEADER(sys/utime.h,
+		[AC_DEFINE(HAVE_SYS_UTIME_H,1, ["sys/utime.h" is present instead of "utime.h"])]
+		where_toGet_utime_h='sys/utime.h',
+		[AC_MSG_WARN(Could find neither "utime.h" nor "sys/utime.h")]
+	)]
+)
+# AC_MSG_RESULT($where_toGet_utime_h)
 
-AC_EXEEXT
-AC_OBJEXT
+# Checks for typedefs, structures, and compiler characteristics.
 
-AC_OUTPUT([
+# Checks for library functions.
+AC_FUNC_MALLOC
+AC_FUNC_STAT
+AC_CHECK_FUNCS(mkstemp mktemp, break)
+AC_FUNC_UTIME_NULL
+AC_CHECK_FUNCS(utime)
+
+AC_CONFIG_FILES([
 Makefile
 dos2unix/Makefile
 drmingw/Makefile
@@ -33,3 +65,4 @@ scripts/a2dll
 scripts/dsw2mak
 unix2dos/Makefile
 ])
+AC_OUTPUT

@@ -1,8 +1,11 @@
 #ifndef __UNIX2DOS_H
 #define __UNIX2DOS_H
 
-/* $$Id: unix2dos.h,v 1.2 2002-09-29 23:31:47 jrfonseca Exp $$ */
+/* $$Id: unix2dos.h,v 1.3 2002-10-06 09:55:42 jrfonseca Exp $$ */
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
 #ifdef __GNUC__
 #  define strcmpi(s1, s2) strcasecmp(s1, s2)
 #endif /* __GNUC__ */
