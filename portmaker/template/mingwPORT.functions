@@ -1,0 +1,17 @@
+# mingwPORT.functions
+# Required.  Shell functions used by mingwPORT.
+
+# ask "User prompt" "Default response" VariableToStoreResponse
+function ask() {
+  echo -n "$1 ($2) "
+  read $3
+  if [ -z "$(eval echo \${$3\})" ]
+    then
+      eval $3=\"$2\"
+  fi
+}
+
+# isyes $variable
+function isyes() {
+  echo $1 | grep '[Yy][Ee][Ss]' > /dev/null
+}

@@ -1,0 +1,3 @@
+# mingwPORT.afterconfigure
+# Optional.  Used to add commands relative to configuration after the configure
+# script has executed.

@@ -1,0 +1,43 @@
+ask "Download file?" "Yes" DOWNLOAD
+if (isyes $DOWNLOAD)
+then
+  if [ -f ${CURDIR}/mirrors.sf ]
+  then
+    ask "SF Mirror" "Yes" SFMIRROR
+  fi
+  if (isyes $SFMIRROR)
+  then
+    . ${CURDIR}/mirrors.sf
+  else
+    ask "Download file URI?" "$DOWNLOADURI" DOWNLOADURI
+  fi
+  case "$ARCHIVETYPE" in
+  tar.gz) ATN=1;;
+  tgz) ATN=2;;
+  tar.bz2) ATN=3;;
+  tbz2) ATN=4;;
+  zip) ATN=5;;
+  *) ATN=0;;
+  esac
+  ask "Archive file type?
+0) unknown
+1) tar.gz
+2) tgz
+3) tar.bz2
+4) tbz2
+5) zip
+Select a numeric value:" "$ATN" ATN
+  ask "Archive file?" "$ARCHIVEFILE" ARCHIVEFILE
+  ask "Download to path?" "/tmp" ARCHIVEPATH
+else
+  ask "Unarchive file?" "Yes" UNARCHIVE
+  if (isyes $UNARCHIVE)
+  then
+    ask "Archive file type?" $ARCHIVETYPE ARCHIVETYPE
+    ask "Archive file?" "$PACKAGE-$VERSION.$ARCHIVETYPE" ARCHIVEFILE
+    ask "Archive file path?" "/tmp" ARCHIVEPATH
+  fi
+fi
+ask "Source path?" "$SRCDIR" SRCDIR
+ask "Installation directory?" $PREFIX PREFIX
+ask "CFLAGS" "$CFLAGS" CFLAGS

@@ -1,0 +1,3 @@
+# mingwPORT.patch
+# Replace this file with the output of ``diff -u3prNw origsrc portsrc'' or
+# ``cvs diff -u3pNw'' if you checked out the source from a cvs repository.

@@ -1,0 +1,35 @@
+ask "Which mirror from the list do you wish to use?
+ 0) none (Oops, I wish to cancel)
+ 1) jaist    (JP)
+ 2) puzzle   (CH)
+ 3) nchc     (TW)
+ 4) easynews (US)
+ 5) ovh      (FR)
+ 6) belnet   (BE)
+ 7) citkit   (RU)
+ 8) cogent   (US)
+ 9) voxel    (US)
+10) kent     (UK)
+11) heanet   (IE)
+12) switch   (CH)
+13) mesh     (DE)
+14) optusnet (AU)
+Select a numeric value:" "0" DL
+case $DL in
+0) exit;;
+1) DOWNLOADURI=jaist;;
+2) DOWNLOADURI=puzzle;;
+3) DOWNLOADURI=nchc;;
+4) DOWNLOADURI=easynews;;
+5) DOWNLOADURI=ovh;;
+6) DOWNLOADURI=belnet;;
+7) DOWNLOADURI=citkit;;
+8) DOWNLOADURI=cogent;;
+9) DOWNLOADURI=voxel;;
+10) DOWNLOADURI=kent;;
+11) DOWNLOADURI=heanet;;
+12) DOWNLOADURI=switch;;
+13) DOWNLOADURI=mesh;;
+14) DOWNLOADURI=optusnet;;
+esac
+DOWNLOADURI=${DOWNLOADURI}.dl.sourceforge.net/${PACKAGE}

@@ -1,0 +1,26 @@
+	    MinGW PORTMAKER - The mingwPORT template compiler
+
+Portmaker provides a means to create a standardized release for the mingwPORT
+packages.  A developer uses portmaker to create the files necessary to download,
+configure, make, install and cleanup the users desired source.  The portmaker
+package, processes templates from the template directory to the desired location
+you wish to create the mingwPORT depot directory.
+
+To operate portmaker for this release, notice that it may change as we are in
+early development of this package, you simply answer questions at the MSYS
+shell as prompted and files will be delivered to your desired location.
+Remember that you are answering questions as they relate to the build of other
+shell files.  Typically the default is the correct answer once you answer
+the first two questions.  Give the newly created mingwPORT a try to discover if
+you need to do any patching. If you have patches then you will deliver those 
+patches in the mingwPORT directory with a name of mingwPORT.patch.
+
+Processing of the patch can be controlled by the mingwPORT.beforepatch file.
+Processing after the patch can also be done with a mingwPORT.afterpatch file.
+These files are not typical so they will not be delivered automatically.
+
+Direct questions to the portmaker forum provided at 
+http://sourceforge.net/forum/forum.php?forum_id=458211
+
+You MinGW Community project leader,
+Earnie Boyd

@@ -1,0 +1,36 @@
+package: mingwPORT
+version: 1.0
+http://www.mingw.org
+
+port: [PACKAGEFILE]
+[PACKAGEHOME]
+
+DISCLAIMER: This code is distributed in the hope that it will be useful but
+WITHOUT ANY WARRANTY.  ALL WARRANTIES, EXPRESSED OR IMPLIED ARE HEREBY
+DISCLAIMED.  This includes but is not limited to warranties of MERCHANTABILITY
+or FITNESS FOR A PARTICULAR PURPOSE.  This disclaimer applies to both mingwPORT
+and the ported package.
+
+The mingwPORT code is offered for use in the public domain.  You may use, modify
+or distribute it freely.  This copyright notice is only relative to the
+mingwPORT code and does not extend to the code ported.  Each individual package
+has its own copyright notice and the ported package copyright may have affect 
+to the code contained in the file mingwPORT.patch when the patch is applied to
+the code.  If you distribute the binaries as a result of mingwPORT you may need
+to also distribute the source and any modifications.  If that is the case you
+are free to distribute the mingwPORT.patch file, if one is supplied with the 
+port, with the source as a modification to the source without including the 
+rest of mingwPORT.
+
+HOW TO USE:
+1) Every mingwPORT requires MSYS, see http://www.mingw.org for download 
+   instructions.
+2) The implementation of mingwPORT tries to make it easy for you by asking you
+   questions at the command line.  An offer to download the original source
+   file is given with options for the file mirror to use.  The archive source
+   is then exploded and the build process is then executed.  The mingwPORT
+   process supplies a cleanup facility to remove generated files from your
+   disk.  If you don't wish for that to take place, then modify the
+   mingwPORT.cleanup file.  Later versions of mingwPORT may ask you whether to
+   cleanup or not.
+3) ./mingwPORT.sh is all that is required to get started.
