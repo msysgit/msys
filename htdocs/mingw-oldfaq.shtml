@@ -1,4 +1,4 @@
-<!--$Id: mingw-oldfaq.shtml,v 1.6 2001-08-28 01:05:44 stevedperkins Exp $-->
+<!--$Id: mingw-oldfaq.shtml,v 1.7 2002-03-22 15:19:26 stevedperkins Exp $-->
 <html>
 <head>
    <title>"The Old FAQ"</title>
@@ -1133,12 +1133,6 @@
          <li>
             <h4>Other libraries</h4>
             <ul>
-               <!-->
-               <li><h5>Virtual Windows Class Library</h5>
-               <p><a href="http://www.vwcl.org/">http://www.vwcl.org/</a>
-               </p>
-               </li>
-               <--!>
                <li>
                   <h5>GNU gettext</h5>
                   <p>
@@ -1398,7 +1392,7 @@
 
    <hr />
    <address>
-   <br />Last revised $Date: 2001-08-28 01:05:44 $
+   <br />Last revised $Date: 2002-03-22 15:19:26 $
    </address>
 </body>
 </html>
