@@ -1,3 +1,7 @@
+2003.02.17  Earnie Boyd  <earnie@users.sf.net>
+
+	* libc/stdlib/mallocr.c (unlink): Add filters.
+
 2002.06.13  Earnie Boyd  <earnie@users.sf.net>
 
 	* libc/stdlib/mallocr.c: Merge changes from official newlib.
