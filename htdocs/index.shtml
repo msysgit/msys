@@ -58,7 +58,8 @@ Fisher for this work.
 						</td>
 						<td class="news">
 							<p class="centre"><span class="bold">Latest News:</span></p>
-							<!--#include virtual="news-short.html"--><br>
+							<!--#include virtual="news-short.html"--></dl><!--need /dl for tag started in news-short.html-->
+							<br>
             </td>
           </tr>
         </tbody>
@@ -83,6 +84,6 @@ Fisher for this work.
  </a>
 </p>
 <address><br>
-Last revised $Date: 2003-01-10 08:23:27 $ </address>
+Last revised $Date: 2003-01-11 08:30:41 $ </address>
 </body>
 </html>
