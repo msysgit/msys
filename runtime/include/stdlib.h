@@ -18,9 +18,9 @@
  *  DISCLAMED. This includes but is not limited to warranties of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Revision: 1.3 $
+ * $Revision: 1.4 $
  * $Author: dannysmith $
- * $Date: 2001-08-01 03:46:27 $
+ * $Date: 2001-10-11 23:05:20 $
  *
  */
 
@@ -150,8 +150,8 @@ int*	__doserrno(void);
  */
 
 #ifdef __MSVCRT__
-  extern char *** __p__environ();
-  extern wchar_t *** __p__wenviron();
+  extern char *** __p__environ(void);
+  extern wchar_t *** __p__wenviron(void);
 # define _environ (*__p__environ())
 # define _wenviron (*__p__wenviron())
 #else /* ! __MSVCRT__ */
