@@ -1,4 +1,13 @@
-2000-09-11  Earnie Boyd  <earnie_boyd@yahoo.com
+2000-09-11  Paul Sokolovsky  <Paul.Sokolovsky@technologist.com>
+
+	* lists.shtml: Update mingw list URL.
+
+        * index.shtml: Suggest posting to general mailing lists for
+        those who want to contribute. mingw-dvlpr is list for those
+        who *are* developers, and should stay closed. Don't use
+        explicit email address, hope that helps with spam.
+
+2000-09-11  Earnie Boyd  <earnie_boyd@yahoo.com>
 
         * index.shtml: Update the page to indicate the new maillist and replace
 	Mumit's personal email address with mingw-dvlpr for contributions.

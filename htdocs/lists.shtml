@@ -64,13 +64,17 @@
 searchable on-line archives provide a very useful resource.</p>
 
 <ul>
-<li> <a href="http://www.egroups.com/group/mingw32/">Mingw</a>: This
+
+<a name="mingw">
+<li> <a href="http://lists.sourceforge.net/mailman/listinfo/mingw-users">Mingw</a>: This
 is the general mailing list for MinGW users. Note that while anyone can
 access the online archive, list membership is a prerequisite for posting.</li>
+
 <li> <a href="http://sourceware.cygnus.com/ml/cygwin/">Cygwin</a>: The
 development tools for MinGW and Cygwin share the same backend, and so
 there is a lot of cooperation between these two projecs. MinGW started 
 out as a Cygwin "sub-target".</li>
+
 <li> <a href="http://gcc.gnu.org/lists.html">GCC</a>: There are various
 lists for GCC that you can use to post compiler-specific bugs.</li>
 <li> <a href="http://sourceware.cygnus.com/binutils/">Binutils</a>: The
