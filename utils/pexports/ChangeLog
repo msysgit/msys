@@ -1,0 +1,51 @@
+1999-04-02  Paul Sokolovsky  <Paul.Sokolovsky@technologist.com>
+
+	* pexports.c: now distinguishes data/non-data symbols,
+	depending on type of section symbol in
+	* pexports.c: in verbose mode prints section name for symbol
+	* pexports.c: file offsets are now in hex
+
+1998-11-07  Anders Norlander  <kv98anr@cs.umu.se>
+
+	* hparse.y: types and parameters are now recognized as
+	a series of tokens, which means that keywords like const
+	struct and so on are not recognized as such, allowing any
+	kind of parameter, including function pointers.
+
+1998-11-05  Anders Norlander  <kv98anr@cs.umu.se>
+
+	* hlex.l: removed all tokens except ID, CONST and VOLATILE
+	* hparse.y: Added INC_ARGS macro to increment arg_size only if
+	new flag inc_flag is set
+	* hparse.y: Added function_pointer and function_pointer_name rules
+	* hparse.y: Function attributes are now handled as list of ID's
+	* pexports.h: Incremented VER_MINOR
+	* pexports.c: Print name of file if a header is not found
+	* pexports.c: Separated printing to function dump_symbol
+	* pexports.c: Fixed handling of forwarded exports
+
+1998-10-26  Anders Norlander  <anorland@hem2.passagen.se>
+
+	* New files: str_tree.c str_tree.h: implements
+	a symbol tree.
+	* pexports.c: changed symbol handling to use str_tree,
+	add_function_prot removed.
+	* pexports.h: removed add_function_prot prototype
+	* hlex.l: removed unnecessary code (count, CONSTANT, STRING)
+	* hlex.l: added ATTRIBUTE token.
+	* hparse.y: completely rewritten. *Much* improved parser.
+	* pexports.h: changed VER_MINOR to 3
+
+1998-10-21  Anders Norlander  <anorland@hem2.passagen.se>
+
+	* pexports.c: removed include_path structure and replaced
+	it with a generic string list str_list.
+	* pexports.c: preprocessor now defaults to "gcc -E -xc-header"
+	instead of "cpp".
+	* pexports.h: incremented minor version VER_MINOR to 2
+	* pexports.c: headers are now parsed after all paramaters
+	command line options have been parsed.
+	* hparse.y: fixed problem with unnamed parameters that
+	are pointers.
+	* pexports.c: in dump_exports: don't print extra white
+	space if ordinals are not supposed to be printed.
