@@ -1,3 +1,9 @@
+2003-02-17  Earnie Boyd  <earnie@users.sf.net>
+
+	* cygheap.cc (init_cygheap::etc_changed): Use more appropriate object
+	name.
+	* heap.cc (heap_init): Add FIXME debug macro.
+	
 2003-02-12  Earnie Boyd  <earnie@users.sf.net>
 
 	* fhandler.cc: Add TRACE_IN throughout.
