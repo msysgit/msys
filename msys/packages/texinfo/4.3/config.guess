@@ -765,6 +765,9 @@ EOF
     i*:MINGW*:*)
 	echo ${UNAME_MACHINE}-pc-mingw32
 	exit 0 ;;
+    i*:MSYS*:*)
+	echo ${UNAME_MACHINE}-pc-msys
+	exit 0 ;;
     i*:PW*:*)
 	echo ${UNAME_MACHINE}-pc-pw32
 	exit 0 ;;
@@ -785,6 +788,9 @@ EOF
 	exit 0 ;;
     p*:CYGWIN*:*)
 	echo powerpcle-unknown-cygwin
+	exit 0 ;;
+    p*:MSYS*:*)
+	echo powerpcle-unknown-msys
 	exit 0 ;;
     prep*:SunOS:5.*:*)
 	echo powerpcle-unknown-solaris2`echo ${UNAME_RELEASE}|sed -e 's/[^.]*//'`
