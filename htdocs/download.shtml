@@ -13,7 +13,7 @@
     <link href="mingw.css" type="text/css" rel="stylesheet"
           title="MinGW">
     <title>
-      Mingw: Download
+      Mingw: File Download
     </title>
     <style type="text/css">
     :link { color: #000099 }
@@ -25,7 +25,7 @@
   </head>
   <body>
     <h1>
-      MinGW: File Download
+      File Download
     </h1>
     <table class="prim" cellspacing="6" border="0">
       <tbody>
@@ -40,7 +40,9 @@
                 <tr>
                   <td>
 <!-- ======================================================================= --><!--                                                                         --><!--                               Main Body                                 --><!--                                                                         -->
-		    <h2>Contents</h2>
+		    <h2><a name="Contents" />
+		      Contents
+		    </h2>
 		    <ul>
 		      <li><a href="#hdr1">MinGW and MSYS Distributions</a></li>
 		      <li><a href="#hdr2">File List</a></li>
@@ -48,7 +50,12 @@
 		      <li><a href="#hdr4">Understanding MinGW Packaging</a></li>
 		      <li><a href="#hdr5">Decompression and Unarchiving Utilities</a></li>
 		      <li><a href="#hdr6">Installing MinGW</a></li>
+		      <li><a href="#hdr7">Updating MinGW</a></li>
+		      <li><a href="#hdr8">Installing MSYS</a></li>
+		      <li><a href="#hdr9">Updating MSYS</a></li>
 		    </ul>
+
+                    <hr />
                     <h2><a name="hdr1" />
                       MinGW and MSYS Distributions
                     </h2>
@@ -129,19 +136,21 @@
 		      suggest that you visit this page often for the status
 		      of updates.
                     </p>
+
+		    <hr />
 		    <h2><a name="hdr2" />
 		      File List
 		    </h2>
+		    <p>
                     <!--#include file="ssi/release.html"-->
+		    </p>
                      
+                    <hr />
                     <h2><a name="hdr3" />
                       Mirror Sites
                     </h2>
+		    <p>
                     <ul>
-                      <!--<li>
-                        <a href=
-                        "http://prdownloads.sf.net/mingw/">http://prdownloads.sf.net/mingw/</a>
-                      </li>-->
                       <li>
                         <a href=
                         "ftp://gd.tuwien.ac.at/gnu/mingw/">ftp://gd.tuwien.ac.at/gnu/mingw/</a>
@@ -151,6 +160,7 @@
                         "http://gd.tuwien.ac.at/gnu/mingw/">http://gd.tuwien.ac.at/gnu/mingw/</a>
                       </li>
                     </ul>
+		    </p>
                     <p>
                       If you wish to mirror the MinGW distributions
                       then please send a request to <a href=
@@ -158,6 +168,7 @@
                       mingw-users-admin@lists.sourceforge.net</a>.
                     </p>
 
+                    <hr />
                     <h2><a name="hdr4" />
                       Understanding MinGW Packaging
                     </h2>
@@ -179,111 +190,23 @@
 		      mistake.  The timestamp is optional on the Current release
 		      but is a must for anything else.
 		    </p>
-		    <!--
-                    <p>
-                      The naming scheme for the main MinGW
-                      distribution file is:
-                    </p>
-                    <blockquote>
-                      <tt>Mingw-&lt;version&gt;[-&lt;stamp&gt;].&lt;tar.[gz|bz2], zip or exe&gt;</tt>
-                    </blockquote>Where: 
-                    <dl>
-                      <dt>
-                        <tt>&lt;version&gt;</tt>
-                      </dt>
-                      <dd>
-                        Arbitrarily chosen by the MinGW development
-                        team, the latest version at the time of
-                        this writing was 1.0.1. Major updates to
-                        the distribution will involve incrementing
-                        the most-significant digit in the version
-                        number, smaller updates will increment
-                        less-significant digits.
-                      </dd>
-                      <dt>
-                        <tt>&lt;stamp&gt;</tt>
-                      </dt>
-                      <dd>
-                        Always YYYYMMDD format, representing the
-                        date on which the distribution was bundled
-                        (not related to the timestamp or version of
-                        any component package.
-                      </dd>
-                      <dt>
-                        <tt>&lt;suffix&gt;</tt>
-                      </dt>
-                      <dd>
-                        File extension corresponding to the
-                        compression method used. We are using
-                        <tt>zip</tt> and/or <tt>tar.gz</tt>.
-                      </dd>
-                    </dl>
-                    <h3>
-                      Downloading packages
-                    </h3>
-                    <p>
-                      All the MinGW releases use consistent naming
-                      scheme:
-                    </p>
-                    <blockquote>
-                      <tt>&lt;package_name&gt;-&lt;original_version&gt;[-&lt;stamp&gt;].&lt;suffix&gt;</tt>
-                    </blockquote>Where: 
-                    <dl>
-                      <dt>
-                        <tt>&lt;package_name&gt;</tt>
-                      </dt>
-                      <dd>
-                        Package name of this release. Package name
-                        is usually obtained from the official short
-                        software name.
-                      </dd>
-                      <dt>
-                        <tt>&lt;original_version&gt;</tt>
-                      </dt>
-                      <dd>
-                        Official software vesrion. Since most of
-                        MinGW packages is official GNU software, we
-                        don't control this field and take it as is
-                        from documentation or specification files.
-                      </dd>
-                      <dt>
-                        <tt>&lt;stamp&gt;</tt>
-                      </dt>
-                      <dd>
-                        Stamp is: 
-                        <ul>
-                          <li>
-                            Always YYYYMMDD timestamp for
-                            non-production releases (i.e. alpha and
-                            beta releases).
-                          </li>
-                          <li>
-                            Sequental integer (release number) for
-                            official releases of ported software
-                            (i.e. software which we do not
-                            maintain).
-                          </li>
-                          <li>
-                            May not be present for our own packages
-                            (we increment version for them, not
-                            release number).
-                          </li>
-                        </ul>
-                      </dd>
-                      <dt>
-                        <tt>&lt;suffix&gt;</tt>
-                      </dt>
-                      <dd>
-                        File extension corresponding to the
-                        compression method used. We are using
-                        <tt>zip</tt> and/or <tt>tar.gz</tt>.
-                      </dd>
-                    </dl>For example,
-                    <tt>binutils-2.10.91-20001205.zip</tt> is a
-                    binutils (which are GNU Binary Utilities)
-                    2.10.91 alpha or beta release made on 5th of
-                    December, 2000.<br>
-		    -->
+		    <p>
+		      The packages that have a suffix .exe are developer
+		      prepared Win32 installer executables.  They install the
+		      package on your system in a known to the developer
+		      manner.  This helps the developer to give you assistance
+		      when it is requested.  Currently, two of these installer
+		      executables are package bundles, MinGW-&lt;version&gt;-&lt;fileversion&gt;.exe.
+		      and MSYS-&lt;version&gt;.exe.  MinGW consists of various
+		      packages chosen by the developer to be included in a
+		      base package bundle.  Updates to MinGW can be accomplished
+		      by installing the individual package updates.  With MSYS
+		      there currently isn't an individual package for each
+		      package in its bundle.  The developer distributes the
+		      entire package when there's an update.
+		    </p>
+
+                    <hr />
 		    <h2><a name="hdr5" />
 		      Decompression and Unarchiving Utilities</h2>
                     <p>
@@ -294,228 +217,65 @@
                       tab of the Options menu.
 		    </p>
 		    <p>
-		      <h3>An Open Source Win32 style solution</h3>
+		      <em><b>An Open Source Win32 style solution:</b></em><br>
                       <a href="http://www.7-zip.org" target=
                       "_nw">7-Zip</a> offers an open source compression and
 		      decompression utility that will compress in two formats
 		      and decompress in several formats.
 		    </p>
-                    <hr>
+
+                    <hr />
                     <h2><a name="hdr6" />
                       Installing MinGW
-                    </h2><span class="bold">Installing MinGW using
-                    MinGW-__VERSION__.exe:<br></span><br>
-                     <span class="underline">Summary for the click happy
-                    and impatient:</span><br>
-                     
-                    <ul>
-                      <li>
-                        Make sure you read and understand the
-                        License agreement.
-                      </li>
-                      <li>
-                        Accept all of the defaults unless you have
-                        reason not to (ie/ installation dir to
-                        c:\msys\__VERSION__\mingw for a combined
-                        MinGW/MSYS installation).
-                      </li>
-                    </ul><span class="underline">Detailed
-                    Instructions:</span><br>
-                      
-                    <ol>
-                      <li>
-                        Download the latest MinGW binary
-                        executable.
-                      </li>
-                      <li>
-                        Run the executable.
-                      </li>
-                      <li>
-                        Click "<span class="underline">N</span>ext" if you
-                        wish to continue with the installation.<br>
-                      </li>
-                      <li>
-                        Carefully read through the License
-                        Agreement.
-                      </li>
-                      <li>
-                        Click "<span class="underline">Y</span>es" only if
-                        you agree with the terms of the license.
-                      </li>
-                      <li>
-                        Read through the Setup Info.
-                      </li>
-                      <li>
-                        Click "<span class="underline">N</span>ext".
-                      </li>
-                      <li>
-                        Select your installation directory or
-                        accept the default.
-                      </li>
-                      <li>
-                        Click "<span class="underline">N</span>ext".
-                      </li>
-                      <li>
-                        An architecture dialog will be displayed,
-                        accept the default.
-                      </li>
-                      <li>
-                        Click "<span class="underline">N</span>ext".
-                      </li>
-                      <li>
-                        Review the installation summary go
-                        "<span class="underline">B</span>ack" if
-                        necessary.
-                      </li>
-                      <li>
-                        Click "Install" to continue with the
-                        installation.
-                      </li>
-                      <li>
-                        A progress bar will be displayed indicating
-                        the current install progress.
-                      </li>
-                      <li>
-                        Upon completion click "<span class=
-                        "underline">N</span>ext"
-                      </li>
-                      <li>
-                        Click "<span class="underline">F</span>inish" to
-                        finalize the installation.
-                      </li>
-                    </ol><span class="bold"><span class=
-                    "bold">Installing MinGW package
-                    updates:</span></span><br>
-                    <br>
-                     <span class="underline">Summary:</span><br>
-                     
-                    <ul>
-                      <li>
-                        Unpack the mingw tarball into the root of
-                        your mingw installation (ie/ C:\mingw).
-                      </li>
-                    </ul><span class="underline">Detailed
-                    Instructions:</span><br>
-                    Sory on the todo list<br>
-                     <span class="bold"><br>
-                    Normalizing MinGW with your build
-                    environment<br>
-                    <br>
-                     Windows Command prompt:<br>
-                    <br></span> <span class=
-                    "underline">Summary:</span><br>
-                     
-                    <ul>
-                      <li>
-                        set
-                        PATH=c:\__MinGW_Install_Dir__\bin;%PATH%
-                      </li>
-                      <li>
-                        test installation with "gcc -v"<br>
-                      </li>
-                      <li>
-                        add the above path to c:\autoexec.bat
-                      </li>
-                    </ul><span class="underline">Detailed
-                    Instructions:<br></span> 
-                    <ol>
-                      <li>
-                        Run command.com (98 or ME) or cmd.exe (NT,
-                        2000 or XP).
-                      </li>
-                      <li>
-                        Type "set
-                        PATH=c:\__MinGW_Install_Dir__\bin;%PATH%",
-                        substituting __MinGW_Install_Dir__ with the
-                        directory path you installed MinGW into.
-                      </li>
-                      <li>
-                        Type "gcc -v" and ensure that it outputs
-                        version information which will start
-                        similar to the following:<br>
-                         
-                        <pre>
-   Reading specs from c:/mingw/bin/../lib/gcc-lib/i386-pc-mingw32/3.2.1/specs<br>           
-                        </pre>
-                      </li>
-                      <li>
-                        To permanently set the path type "notepad
-                        c:\autoexec.bat" at the command prompt.
-                      </li>
-                      <li>
-                        In notepad goto the last line and add the
-                        'set PATH' command you typed in step 2.
-                      </li>
-                      <li>
-                        Save and close notepad.
-                      </li>
-                    </ol><span class="bold">pre-MSYS:<br></span><br>
-                     <span class="underline">Summary:</span><br>
-                     
-                    <ul>
-                      <li>
-                        During the MSYS install specify your MinGW
-                        directory during the environment
-                        normalization
-                      </li>
-                    </ul><span class="underline">Detailed
-                    Instructions:<br></span> Sorry on the todo
-                    list<span class="underline"><br>
-                    <br></span> <span class="bold">post-MSYS:<br>
-                    <br></span> <span class=
-                    "underline">Summary:<br></span> 
-                    <ul>
-                      <li>
-                        Start up msys, copy /etc/fstab.sample to
-                        /etc/fstab
-                      </li>
-                      <li>
-                        Edit /etc/fstab updating the location of
-                        your MinGW installation appropriately
-                      </li>
-                    </ul><span class="underline">Detailed
-                    Instructions:</span><br>
-                     
-                    <ol>
-                      <li>
-                        Start MSYS.
-                      </li>
-                      <li>
-                        Type "cd /etc".
-                      </li>
-                      <li>
-                        Type "cp fstab.sample fstab".
-                      </li>
-                      <li>
-                        Type "notepad fstab".
-                      </li>
-                      <li>
-                        If necessary modify the
-                        "c:/mingw&nbsp;&nbsp; /mingw" entry to
-                        reflect where you installed MinGW during
-                        setup.
-                      </li>
-                      <li>
-                        Save the file.
-                      </li>
-                      <li>
-                        Shutdown and restart MSYS.
-                      </li>
-                      <li>
-                        Type "gcc -v" and ensure that it outputs
-                        version information which will start
-                        similar to the following:<br>
-                         
-                        <pre>
-   Reading specs from c:/mingw/bin/../lib/gcc-lib/i386-pc-mingw32/3.2.1/specs
-                        </pre>
-                      </li>
-                      <li>
-                        Happy programming if you get the above
-                        output.<br>
-                      </li>
-                    </ol>
-                    <!--                            End of Main Body                             -->
+                    </h2>
+		    <p>
+		      How are you going to use MinGW?  That is a question you
+		      need to ask yourself.  If you are a Bourne command line
+		      wizard and want to use ./configure && make then you want
+		      to install MSYS as well.  If you are an IDE wizard and
+		      have a configurable IDE then you need to determine if the
+		      IDE distributors provide MinGW for you need to download
+		      from MinGW are updates to the individual packages.  You
+		      can if you want even use MinGW from the %COMSPEC% shell
+		      if you're proficient with that.
+		    </p>
+		    <p>
+		      Once you've decided how you are using MinGW, then you
+		      need to decide what to download.  The MinGW bundle with
+		      individual updates are a good choice if you're also going
+		      to use MSYS or from the %COMSPEC% shell.  The individual
+		      packages you need to update your IDE with are a good
+		      choice for that.  If you plan to use MSYS then you could
+		      install MSYS first and install MinGW into the
+		      &lt;msys_prefix&gt;/mingw directory.  Or install MinGW
+		      in a separate directory tree and use the MSYS /etc/fstab
+		      file to point the MSYS /mingw directory to it.
+		    </p>
+
+		    <hr />
+		    <h2><a name="hdr7" />
+		      Updating MinGW
+		    </h2>
+		    <p>
+		      On the round tuit list.
+		    </p>
+
+		    <hr />
+		    <h2><a name="hdr8" />
+		      Installing MSYS
+		    </h2>
+		    <p>
+		      On the round tuit list.
+		    </p>
+
+		    <hr />
+		    <h2><a name="hdr9" />
+		      Updating MSYS
+		    </h2>
+		    <p>
+		      On the round tuit list.
+		    </p>
+<!--                            End of Main Body                             -->
                   </td>
                 </tr>
                 <tr>
@@ -541,7 +301,7 @@
     </p>
     <address>
       <br>
-      Last revised $Date: 2003-06-11 23:46:48 $
+      Last revised $Date: 2003-06-20 15:04:41 $
     </address>
   </body>
 </html>

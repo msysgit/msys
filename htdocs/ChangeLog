@@ -1,3 +1,11 @@
+2003-06-20  Earnie Boyd  <earnie@users.sf.net>
+
+	* download.shtml (Understanding MinGW Packages): Add more content.
+	(Installing MinGW): Modify content into paragraphs.
+	(Updating MInGW): Add section place holder.
+	(Installing MSYS): Ditto.
+	(Updating MSYS): Ditto.
+
 2003-06-11  Earnie Boyd  <earnie@users.sf.net>
 
 	* download.shtml: Add a Contents section and unify the section titles.
