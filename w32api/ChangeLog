@@ -1,3 +1,29 @@
+2001-12-11  Phillip Susi  <psusi@cfl.rr.com>
+
+	* include/commctrl.h (ACS_*): Add new defines.
+	(PGS_*): Ditto.
+	(CBES_*): Ditto.
+	(TBSTYLE_*): Ditto.
+	(TB_*): Ditto.
+	(TTS_*): Ditto.
+	(UDS_HOTTRACK): Add define.
+	(SBT_TOOLTIPS): Ditto.
+	(TBS_*): Add new defines.
+	(HDS_*): Ditto.
+	(LVS_EX_*) Ditto.
+	(LVKF_*): Ditto.
+	(TCM_GETEXTENDEDSTYLE): Add define.
+	(TVS_NOHSCROLL): Ditto.
+	(TVIF_INTEGRAL): Ditto.
+	(DTS_SHORTDATECENTURYFORMAT): Ditto.
+	(TCS_*): Add new defines.
+	(CBEM_*): Add defines.
+	(tagNMITEMACTIVATE): Add structure definition and typedefs.
+	(tagTVITEMEX[AW]: Ditto.
+	(tagTVINSERTSTRUCT[AW]: Add union member.
+	* include/winbase.h (VirtualAllocEx): Add prototype.
+	* include/winuser.h (SS_*): Add new defines.
+
 2001-12-07  Earnie Boyd  <earnie@users.sf.net>
 
 	* Makefile.in: Increment VERSION.
