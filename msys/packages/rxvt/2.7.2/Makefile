@@ -1,6 +1,6 @@
 # Generated automatically from Makefile.in by configure.
 # ./Makefile.in			-*- Makefile -*-
-# $Id: Makefile,v 1.1 2002-12-06 23:07:58 earnie Exp $
+# $Id: Makefile,v 1.2 2004-03-15 15:03:08 earnie Exp $
 
 # autoconf/Make.common.in	 -*- Makefile -*-
 # release date (man), LSM date, version number/name, current maintainer
@@ -77,7 +77,7 @@ srcdir =	.
 first_rule: all
 dummy:
 
-subdirs = W11 src doc rclock src/graphics src/test
+subdirs = W11 src doc src/graphics src/test
 
 DIST =	INSTALL README.configure configure Makefile Makefile.in ChangeLog
 

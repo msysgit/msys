@@ -27,7 +27,7 @@ SHELL = /bin/sh
 
 # Installation target directories & other installation stuff
 prefix = /usr
-exec_prefix = /usr
+exec_prefix = ${prefix}
 binprefix =
 manprefix =
 bindir = ${exec_prefix}/bin

@@ -1,5 +1,5 @@
 # Generated automatically from Makefile.in by configure.
-# $Id: Makefile,v 1.1 2002-12-06 23:08:02 earnie Exp $
+# $Id: Makefile,v 1.2 2004-03-15 15:03:09 earnie Exp $
 
 # autoconf/Make.common.in	 -*- Makefile -*-
 # release date (man), LSM date, version number/name, current maintainer
@@ -27,7 +27,7 @@ SHELL = /bin/sh
 
 # Installation target directories & other installation stuff
 prefix = /usr
-exec_prefix = /usr
+exec_prefix = ${prefix}
 binprefix =
 manprefix =
 bindir = ${exec_prefix}/bin
