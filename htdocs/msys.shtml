@@ -41,14 +41,12 @@
             as a Windows installer executable. MSYS versions prior to 1.0.8 are available
             for three processor architectures:
          </p>
-         <p>
             <ul>
                <li><b>i386</b>, which will run on any 32-bit Intel-compatible processor.</li>
                <li><b>i586</b>, which will run on Pentium processors or newer (and compatibles).</li>
                <li><b>i686</b>, which will run on Pentium Pro, Pentium II and Celeron processors or newer
                   (and compatibles).
             </ul>
-         </p>
          <p>
             MSYS versions 1.0.8 and later include only the i386 binary distribution, which will run
             on any 32-bit Intel-compatible processor.
@@ -80,6 +78,6 @@
 </table>
 <!--#include file="ssi/bottombar.html"--><!--#include file="ssi/footer.html"-->
 <address> <br>
-Last revised $Date: 2003-01-11 09:02:49 $ </address>
+Last revised $Date: 2003-01-12 18:17:55 $ </address>
 </body>
 </html>

@@ -89,12 +89,12 @@ uses Mingw-hosted gcc/binutils.
   </li>
 </ul>
 
-  <ol class="alpha" type="A">
     <p>There are several IDEs (Integrated Development Environments)
     for Win32 platforms.  Some are freeware and some are not.  Some
     are specifically tailored to mingw and others are for more
     general use.
     </p>
+  <ol class="alpha" type="A">
     <ul>
       <li>Visual-MinGW, <a target="_nw" href="http://visual-mingw.sourceforge.net/">
         http://visual-mingw.sourceforge.net/</a>
@@ -150,6 +150,6 @@ uses Mingw-hosted gcc/binutils.
 </table>
 <!--#include file="ssi/bottombar.html"--><!--#include file="ssi/footer.html"-->
 <address> <br>
-Last revised $Date: 2003-01-12 17:56:17 $ </address>
+Last revised $Date: 2003-01-12 18:17:55 $ </address>
 </body>
 </html>
