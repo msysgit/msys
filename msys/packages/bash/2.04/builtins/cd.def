@@ -287,10 +287,11 @@ cd_builtin (list)
 
 $BUILTIN pwd
 $FUNCTION pwd_builtin
-$SHORT_DOC pwd [-PL]
+$SHORT_DOC pwd [-PLW]
 Print the current working directory.  With the -P option, pwd prints
 the physical directory, without any symbolic links; the -L option
-makes pwd follow symbolic links.
+makes pwd follow symbolic links; the -W option, pwd prints the Win32
+value of the physical directory.
 $END
 
 /* Non-zero means that pwd always prints the physical directory, without
@@ -302,12 +303,12 @@ int
 pwd_builtin (list)
      WORD_LIST *list;
 {
-  char *directory, *buffer;
+  char *directory, *buffer, *wbuffer;
   int opt;
 
   verbatim_pwd = no_symbolic_links;
   reset_internal_getopt ();
-  while ((opt = internal_getopt (list, "LP")) != -1)
+  while ((opt = internal_getopt (list, "LPW")) != -1)
     {
       switch (opt)
 	{
@@ -317,6 +318,9 @@ pwd_builtin (list)
 	case 'L':
 	  verbatim_pwd = 0;
 	  break;
+	case 'W':
+	  verbatim_pwd = 2;
+	  break;
 	default:
 	  builtin_usage ();
 	  return (EXECUTION_FAILURE);
@@ -324,20 +328,40 @@ pwd_builtin (list)
     }
   list = loptend;
 
-  if (verbatim_pwd)
+  switch (verbatim_pwd)
     {
-      buffer = xmalloc (PATH_MAX);
-      directory = getcwd (buffer, PATH_MAX);
+    case 1:
+      {
+	buffer = xmalloc (PATH_MAX);
+	directory = getcwd (buffer, PATH_MAX);
 
-      if (directory == 0)
+	if (directory == 0)
+	  {
+	    builtin_error ("%s: %s", bash_getcwd_errstr, strerror (errno));
+	    free (buffer);
+	  }
+      }
+      break;
+    case 2:
+      {
+	buffer = xmalloc (PATH_MAX);
+	wbuffer = xmalloc (PATH_MAX);
+	directory = getcwd (buffer, PATH_MAX);
+	cygwin_conv_to_win32_path (buffer, wbuffer);
 	{
-	  builtin_error ("%s: %s", bash_getcwd_errstr, strerror (errno));
-	  free (buffer);
+	  char *c = wbuffer;
+	  while (c = strchr (c, '\\'))
+	    *c = '/';
 	}
-    }
-  else
-    {
-      directory = get_working_directory ("pwd");
+	free (buffer);
+	directory = wbuffer;
+      }
+      break;
+    default:
+      {
+	directory = get_working_directory ("pwd");
+      }
+      break;
     }
 
   if (directory)
