@@ -1,3 +1,8 @@
+2004-03-15  Earnie Boyd  <earnie@users.sf.net>
+
+	* dcrt0.cc (build_argv): Revert previous change due to
+	sf.net/tracker/?func=detail&aid=915874&group_id=2435&atid=102435.
+
 2004-03-10  Wayne Scott  <wscott@bitmover.com>
 
 	* path.cc (normalize_posix_path): Remove serialization of previous path
