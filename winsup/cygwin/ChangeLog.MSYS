@@ -1,3 +1,11 @@
+2002-04-26  Earnie Boyd  <earnie@users.sf.net>
+
+	* path.cc (pathmatch): Reinstate function.
+	(normalize_posix_path): Check for same src and return last dst.
+	Call cygwin_conv_to_full_posix_path for //foo/bar case.
+	(path_conv::check): Remove unused code.
+	(symlink_info::check): Ditto.
+
 2002-04-25  Earnie Boyd  <earnie@users.sf.net>
 
 	* dir.cc (rmdir): Remove NASTY HACK.
