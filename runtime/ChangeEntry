@@ -1,4 +1,0 @@
-2001-06-01  Earnie Boyd  <earnie@users.sourceforge.net>
-
-	* profile/Makefile.in (mkinstalldirs): Correct relative path.
-
