@@ -1,3 +1,8 @@
+2001-06-27 Danny Smith <dannysmith@users.sourceforge.net>
+
+	* include/basetsd.h (#include <_mingw.h>): Add directive.
+
+
 2001-06-25 Danny Smith <dannysmith@users.sourceforge.net>
 
 	* include/winbase.h(InterlockedCompareExchange): Change args
