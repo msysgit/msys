@@ -20,7 +20,7 @@ STOREROOT=/prjz/msys/nstl
 RLSROOT=/prjz/rls
 ARC=$1
 SNAPDATE=\-`date +%Y.%m.%d`
-#SNAPDATE=\-prerelease
+#SNAPDATE=\-rc
 #SNAPDATE=
 SUBVERSION=\-1
 #SUBVERSION=
@@ -28,10 +28,17 @@ SUBVERSION=\-1
 
 VERSION=${MAJORVER}.${MINORVER}.${PATCHVER}
 SHORTVER=${MAJORVER}.${MINORVER}
-INFOBEFOREFILE="`p2w ${STOREROOT}/noarch/doc/msys/MSYS-${VERSION}-changes.rtf`"
-INFOAFTERFILE="`p2w ${STOREROOT}/noarch/doc/msys//MSYS_WELCOME.rtf`"
-LICENSEFILE="`p2w ${STOREROOT}/noarch/doc/msys/MSYS_LICENSE.rtf`"
 RLSOUTPUTDIR="`p2w ${RLSROOT}/${PACKAGE}/${VERSION}`"
+
+if [ -z "$SNAPDATE" ]
+then
+    RELEASE="Production Release${SUBVERSION}"
+elif [ "x${SNAPDATE}" == "x-rc" ]
+then
+    RELEASE="Release Candidate${SUBVERSION}"
+else
+    RELEASE="Snapshot${SNAPDATE}${SUBVERSION}"
+fi
 
 istore=${STOREROOT}/${ARC}
 noarchstore=${STOREROOT}/noarch
@@ -39,6 +46,9 @@ miscstore=${STOREROOT}/misc
 datastore=${STOREROOT}/var
 
 rlsdepot=${RLSROOT}/${PACKAGE}/depot/${PACKAGE}/${SHORTVER}
+INFOBEFOREFILE="`p2w ${rlsdepot}/doc/msys/MSYS-${VERSION}-changes.rtf`"
+INFOAFTERFILE="`p2w ${rlsdepot}/doc/msys//MSYS_WELCOME.rtf`"
+LICENSEFILE="`p2w ${rlsdepot}/doc/msys/MSYS_LICENSE.rtf`"
 RLSSOURCEDIR="`p2w $rlsdepot`"
 
 exe_LIST="`cat ${datastore}/exe.dat`"
@@ -78,7 +88,7 @@ fi
 
 for I in ${doc_LIST}
 do
-  cp ${noarchstore}/doc/msys/${I} ${rlsdepot}/doc/msys/
+  cat ${noarchstore}/doc/msys/${I} | sed -c -e "s/@VERSION@/$VERSION/g" -e "s/@RELEASE@/$RELEASE/g" > ${rlsdepot}/doc/msys/$I
 done
 
 if [ ! -d ${rlsdepot}/etc ]
