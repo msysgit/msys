@@ -18,9 +18,9 @@
  *  DISCLAIMED. This includes but is not limited to warranties of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Revision: 1.6 $
+ * $Revision: 1.7 $
  * $Author: dannysmith $
- * $Date: 2001-11-29 04:26:33 $
+ * $Date: 2002-01-11 19:52:50 $
  *
  */
 
@@ -401,6 +401,26 @@ char*	gcvt (double, int, char*);
 #endif	/* Not _NO_OLDNAMES */
 
 #endif	/* Not __STRICT_ANSI__ */
+
+/* C99 names */
+
+#if defined (__MSVCRT__)
+#ifndef __STRICT_ANSI__ 
+static inline long long	atoll (const char * _c)
+	{ return _atoi64 (_c); }
+static inline char* lltoa(long long _n, char * _c, int _i)
+	{ return _i64toa (_n, _c, _i); }
+static inline char* ulltoa(unsigned long long _n, char * _c, int _i)
+	{ return _ui64toa (_n, _c, _i); }
+static inline long long wtoll(const wchar_t * _w)
+ 	{ return _wtoi64 (_w); };
+static inline wchar_t* lltow(long long _n, wchar_t * _w, int _i)
+	{ return _i64tow (_n, _w, _i); } 
+static inline wchar_t* ulltow(unsigned long long _n, wchar_t * _w, int _i)
+	{ return _ui64tow (_n, _w, _i); } 
+#endif /* __STRICT_ANSI__ */
+#endif /* __MSVCRT__ */
+
 
 /*
  * Undefine the no return attribute used in some function definitions
