@@ -856,6 +856,9 @@ spawn_guts (HANDLE hToken, const char * prog_arg, const char *const *argv,
 	}
       child->dwProcessId = pi.dwProcessId;
       child->hProcess = pi.hProcess;
+      FIXME; // PROPOSED
+      child->copysigs (myself);
+      //END PROPOSED
       child.remember ();
       strcpy (child->progname, real_path);
       /* Start the child running */

@@ -57,9 +57,13 @@ class mount_info
   char cygdrive[MAX_PATH];
   size_t cygdrive_len;
   unsigned cygdrive_flags;
+  HANDLE eventH;
  private:
   int posix_sorted[MAX_MOUNTS];
   int native_sorted[MAX_MOUNTS];
+  LPDWORD threadID;
+  HANDLE threadH;
+  char RootPath[MAX_PATH+1];
 
  public:
   /* Increment when setting up a reg_key if mounts area had to be
@@ -92,7 +96,9 @@ class mount_info
  private:
 
   void sort ();
+  static DWORD WINAPI read_mounts_thread (LPVOID thrdParam);
   void read_mounts (reg_key& r);
+  void read_mounts2 (void);
   void read_v1_mounts (reg_key r, unsigned which);
   void mount_slash ();
   void to_registry ();
