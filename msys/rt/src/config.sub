@@ -3,7 +3,7 @@
 #   Copyright (C) 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001
 #   Free Software Foundation, Inc.
 
-timestamp='2001-06-08'
+timestamp='2001-08-30'
 
 # This file is (in principle) common to ALL GNU software.
 # The presence of a machine in this file suggests that SOME GNU software
@@ -238,11 +238,9 @@ case $basic_machine in
 		| mips16 | mips64 | mipsel | mips64el \
 		| mips64orion | mips64orionel | mipstx39 | mipstx39el \
 		| mips64vr4300 | mips64vr4300el | mips64vr4100 | mips64vr4100el \
-		| mips64vr5000 | miprs64vr5000el | mcore | s390 | s390x \
-		| sparc | sparclet | sparclite | sparc64 | sparcv9 | sparcv9b \
-		| v850 | c4x \
-		| thumb | d10v | d30v | fr30 | avr | openrisc | tic80 \
-		| pj | pjl | h8500 | z8k)
+		| mips64vr5000 | miprs64vr5000el | mcore \
+		| sparc | sparclet | sparclite | sparc64 | sparcv9 | v850 | c4x \
+		| thumb | d10v | d30v | fr30 | avr | openrisc)
 		basic_machine=$basic_machine-unknown
 		;;
 	m6811 | m68hc11 | m6812 | m68hc12)
@@ -250,7 +248,7 @@ case $basic_machine in
 		basic_machine=$basic_machine-unknown
 		os=-none
 		;;
-	m88110 | m680[12346]0 | m683?2 | m68360 | m5200 | v70 | w65 | z8k)
+	m88110 | m680[12346]0 | m683?2 | m68360 | m5200 | z8k | v70 | h8500 | w65 | pj | pjl)
 		;;
 
 	# We use `pc' rather than `unknown'
@@ -266,7 +264,7 @@ case $basic_machine in
 		;;
 	# Recognize the basic CPU types with company name.
 	# FIXME: clean up the formatting here.
-	vax-* | tahoe-* | i*86-* | i860-* | ia64-* | m32r-* | m68k-* | m68000-* \
+	vax-* | tahoe-* | i[234567]86-* | i860-* | ia64-* | m32r-* | m68k-* | m68000-* \
 	      | m88k-* | sparc-* | ns32k-* | fx80-* | arc-* | c[123]* \
 	      | arm-*  | armbe-* | armle-* | armv*-* | strongarm-* | xscale-* \
 	      | mips-* | pyramid-* | tron-* | a29k-* | romp-* | rs6000-* \
@@ -279,17 +277,15 @@ case $basic_machine in
 	      | alphaev6[78]-* \
 	      | we32k-* | cydra-* | ns16k-* | pn-* | np1-* | xps100-* \
 	      | clipper-* | orion-* \
-	      | sparclite-* | pdp10-* | pdp11-* | sh-* | sh[34]-* | sh[34]eb-* \
-	      | powerpc-* | powerpcle-* | sparc64-* | sparcv9-* | sparcv9b-* | sparc86x-* \
-	      | mips16-* | mips64-* | mipsel-* \
+	      | sparclite-* | pdp10-* | pdp11-* | sh-* | powerpc-* | powerpcle-* \
+	      | sparc64-* | sparcv9-* | sparc86x-* | mips16-* | mips64-* | mipsel-* \
 	      | mips64el-* | mips64orion-* | mips64orionel-* \
 	      | mips64vr4100-* | mips64vr4100el-* | mips64vr4300-* | mips64vr4300el-* \
 	      | mipstx39-* | mipstx39el-* | mcore-* \
-	      | f30[01]-* | f700-* | s390-* | s390x-* | sv1-* | t3e-* \
-	      | [cjt]90-* \
+	      | f30[01]-* | f700-* | s390-* | sv1-* | t3e-* \
 	      | m88110-* | m680[01234]0-* | m683?2-* | m68360-* | z8k-* | d10v-* \
-	      | thumb-* | v850-* | d30v-* | tic30-* | tic80-* | c30-* | fr30-* \
-	      | bs2000-* | tic54x-* | c54x-* | x86_64-* | pj-* | pjl-*)
+	      | thumb-* | v850-* | d30v-* | tic30-* | c30-* | fr30-* \
+	      | bs2000-* | tic54x-* | c54x-* | x86_64-*)
 		;;
 	# Recognize the various machine names and aliases which stand
 	# for a CPU type and a company and sometimes even an OS.
@@ -380,8 +376,8 @@ case $basic_machine in
 		basic_machine=cray2-cray
 		os=-unicos
 		;;
-	[cjt]90)
-		basic_machine=${basic_machine}-cray
+	[ctj]90-cray)
+		basic_machine=c90-cray
 		os=-unicos
 		;;
 	crds | unos)
@@ -389,10 +385,6 @@ case $basic_machine in
 		;;
 	cris | cris-* | etrax*)
 		basic_machine=cris-axis
-		;;
-	cygwin*)
-		basic_machine=i386-pc
-		os=-cygwin
 		;;
 	da30 | da30-*)
 		basic_machine=m68k-da30
@@ -573,6 +565,10 @@ case $basic_machine in
 		basic_machine=i386-pc
 		os=-mingw32
 		;;
+	msys*)
+		basic_machine=i386-pc
+		os=-msys
+		;;
 	miniframe)
 		basic_machine=m68000-convergent
 		;;
@@ -605,10 +601,6 @@ case $basic_machine in
 	msdos)
 		basic_machine=i386-pc
 		os=-msdos
-		;;
-	msys)
-		basic_machine=i386-pc
-		os=-msys
 		;;
 	mvs)
 		basic_machine=i370-ibm
@@ -742,6 +734,16 @@ case $basic_machine in
 	        ;;
 	ppcle-* | powerpclittle-*)
 		basic_machine=powerpcle-`echo $basic_machine | sed 's/^[^-]*-//'`
+		;;
+	ppc64)	basic_machine=powerpc64-unknown
+	        ;;
+	ppc64-*) basic_machine=powerpc64-`echo $basic_machine | sed 's/^[^-]*-//'`
+		;;
+	ppc64le | powerpc64little | ppc64-le | powerpc64-little)
+		basic_machine=powerpc64le-unknown
+	        ;;
+	ppc64le-* | powerpc64little-*)
+		basic_machine=powerpc64le-`echo $basic_machine | sed 's/^[^-]*-//'`
 		;;
 	ps2)
 		basic_machine=i386-ibm
@@ -954,7 +956,7 @@ case $basic_machine in
 	we32k)
 		basic_machine=we32k-att
 		;;
-	sh3 | sh4)
+	sh3 | sh4 | sh3eb | sh4eb)
 		basic_machine=sh-unknown
 		;;
 	sparc | sparcv9 | sparcv9b)
@@ -1038,12 +1040,12 @@ case $os in
 	      | -lynxos* | -bosx* | -nextstep* | -cxux* | -aout* | -elf* | -oabi* \
 	      | -ptx* | -coff* | -ecoff* | -winnt* | -domain* | -vsta* \
 	      | -udi* | -eabi* | -lites* | -ieee* | -go32* | -aux* \
-	      | -chorusos* | -chorusrdb* \
-	      | -cygwin* | -msys* | -pe* | -psos* | -moss* | -proelf* | -rtems* \
-	      | -mingw32* | -linux-gnu* | -uxpv* | -beos* | -mpeix* | -udk* \
+	      | -esystems* | -cygwin* | -pe* | -psos* | -moss* | -proelf* | -rtems* \
+	      | -msys* | -mingw32* | -linux-gnu* | -uxpv* | -beos* | -mpeix* | -udk* \
 	      | -interix* | -uwin* | -rhapsody* | -darwin* | -opened* \
 	      | -openstep* | -oskit* | -conix* | -pw32* | -nonstopux* \
-	      | -storm-chaos* | -tops10* | -tenex* | -tops20* | -its* | -os2*)
+	      | -storm-chaos* | -tops10* | -tenex* | -tops20* | -its* \
+	      | -os2* | -vos*)
 	# Remember, each alternative MUST END IN *, to match a version number.
 		;;
 	-qnx*)
@@ -1366,6 +1368,9 @@ case $basic_machine in
 				;;
 			-*mint | -mint[0-9]* | -*MiNT | -MiNT[0-9]*)
 				vendor=atari
+				;;
+			-vos*)
+				vendor=stratus
 				;;
 		esac
 		basic_machine=`echo $basic_machine | sed "s/unknown/$vendor/"`

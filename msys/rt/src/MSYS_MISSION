@@ -1,9 +1,3 @@
-File: MSYS_MISSION
-Copyright (C): Earnie Boyd  <earnie@users.sf.net>
-Distribution:	See MSYS_LICENSE
-$Revision:   $
-Revision $Date:	$
-
 The mission or goal of MSYS is to provide a POSIX environment for developing
 MinGW ports and code.  The MSYS developers have taken the Cygwin source and
 modified it to fit the needs for MinGW and MSYS.  MSYS in it's own right is

@@ -285,7 +285,6 @@ static void __stdcall
 mkrelpath (char *path)
 {
   char cwd_win32[MAX_PATH];
-  debug_printf("entr %s", path);
   if (!cygheap->cwd.get (cwd_win32, 0))
     return;
 
@@ -306,7 +305,6 @@ mkrelpath (char *path)
   memmove (path, tail, strlen (tail) + 1);
   if (!*path)
     strcpy (path, ".");
-  debug_printf("exit %s", path);
 }
 
 void
@@ -1588,16 +1586,7 @@ mount_info::read_mounts (reg_key& r)
   // Add "/" again to prevent user corruption.
   res = mount_table->add_item (RootPath, "/", mount_flags, FALSE);
   res = mount_table->add_item (RootPath, "/usr", mount_flags, FALSE);
-  //FIXME-1.0:
-  //	    In order to pass Win32 paths to Win32 programs and POSIX paths to
-  //	    MSYS programs we must know if we have MSYS programs.  The flag
-  //	    MOUNT_CYGWIN_EXEC is being used for this purpose.  Once iscygexec
-  //	    is fixed to know that we have an MSYS program based on the msys dll
-  //	    being present then we can remove this.
-  //	    NOTE: I added the /usr/bin mount point simply to mark it as
-  //		  containing MSYS programs.  It can be removed once fixed.
-  res = mount_table->add_item (DllPath, "/bin", MOUNT_CYGWIN_EXEC | mount_flags, FALSE);
-  res = mount_table->add_item (DllPath, "/usr/bin", MOUNT_CYGWIN_EXEC | mount_flags, FALSE);
+  res = mount_table->add_item (DllPath, "/bin", mount_flags, FALSE);
 
   strcat(RootPath, "\\home");
   res = mount_table->add_item (RootPath, "/home", mount_flags, FALSE);

@@ -79,10 +79,6 @@ class path_conv
   int isbinary () const {return path_flags & PATH_BINARY;}
   int issymlink () const {return path_flags & PATH_SYMLINK;}
   int issocket () const {return path_flags & PATH_SOCKET;}
-  // FIXME-1.0: 
-  //	    Need to change iscygexec based on whether or not the .exe contains
-  //	    a msys-1.0.dll or not.  When this fix occurs, changes to spawn.cc
-  //	    with a FIXME-1.0 designator will need to occur.
   int iscygexec () const {return path_flags & PATH_CYGWIN_EXEC;}
   executable_states exec_state ()
   {
