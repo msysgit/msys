@@ -1,6 +1,10 @@
 2003-01-10  Nathan Fisher <natbobc@users.sf.net>
 
-	*
+	* index.shtml: Updated to be w3c transitional compliant
+	* mingw.css: Added sm class to replace depreciated SMALL tag
+	* ssi/bottombar.html: ditto
+	* ssi/footer.html: ditto
+	* ssi/lsidebar.html: ditto
 
 2003-01-08  Earnie Boyd  <earnie@users.sf.net>
 

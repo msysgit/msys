@@ -7,6 +7,7 @@ OL.alpha { list-style-type: upper-alpha; }
 OL.romanum { list-style-type: lower-roman; }
 
 P.centre { text-align: center; }
+P.sm { font-size: small; text-align: center; }
 
 SPAN.bold { font-weight: bold; }
 
