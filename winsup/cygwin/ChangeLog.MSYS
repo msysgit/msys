@@ -1,3 +1,8 @@
+2002-11-27  Earnie Boyd  <earnie@users.sf.net>
+
+	* path.cc (cygwin_conv_to_win32_path): Fix the -Ic:/foo regression.
+	Also, if we changed path convert all \ to /.
+
 2002-11-16  Earnie Boyd  <earnie@users.sf.net>
 
 	* path.cc (cygwin_conv_to_win32_path): Bug and typo fixes.
