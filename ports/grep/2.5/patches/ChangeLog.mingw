@@ -1,3 +1,8 @@
+2002-11-13  Wu Yongwei  <adah@netstd.com>
+
+	* src/grep.c (INITIAL_BUFSIZE): Define to a smaller value in _WIN32.
+	* intl/localename.c (LANG_SORBIAN): Remove an extra zero for consistency.
+
 2002-11-08  Manu B  <manubee@users.sourceforge.net>
 
 	* Readme.mingw: Correct typo, specify '- grep-2.5.tar.gz (Internet Shortcut)'.
