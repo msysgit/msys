@@ -1,3 +1,8 @@
+2002.10.27  Earnie Boyd  <earnie@users.sf.net>
+
+	* Makefile.in: Use mingw32-gcc and mingw32-g++ for MinGW compilations
+	instead of -mmingw switch.
+
 2002.06.13  Earnie Boyd  <earnie@users.sf.net>
 
 	* strace.cc: Correct the string searched to MsYs.

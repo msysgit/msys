@@ -42,9 +42,10 @@ libintl:=${shell $(CC) -L$(bupdir2)/intl --print-file-name=libintl.a}
 build_dumper:=${shell test -r $(libbfd) && test -r ${libintl} &&  echo 1}
 
 DUMPER_INCLUDES:=-I$(bupdir2)/bfd -I$(updir1)/include
-
-MINGW_CXXFLAGS:=$(CXXFLAGS) -mmingw $(MINGW_INCLUDES)
-MINGW_CFLAGS:=-mmingw $(MINGW_INCLUDES)
+MINGW_CC := mingw32-gcc
+MINGW_CXX := mingw32-g++
+MINGW_CXXFLAGS:=$(CXXFLAGS) $(MINGW_INCLUDES)
+MINGW_CFLAGS:=$(MINGW_INCLUDES)
 
 libcygwin:=$(cygwin_build)/libmsys-1.0.dll.a
 libuser32:=
@@ -86,10 +87,10 @@ all: Makefile $(PROGS)
 
 strace.exe: strace.cc mingw_getopt.o $(MINGW_DEP_LDLIBS)
 ifdef VERBOSE
-	$(CXX) $(MINGW_CXXFLAGS) -o $@ ${wordlist 1,2,$^} $(MINGW_LDFLAGS)
+	$(MINGW_CXX) $(MINGW_CXXFLAGS) -o $@ ${wordlist 1,2,$^} $(MINGW_LDFLAGS)
 else
-	@echo $(CXX) -o $@ ${wordlist 1,2,$^} ${filter-out -B%, $(MINGW_CXXFLAGS) $(MINGW_LDFLAGS)};\
-	$(CXX) $(MINGW_CXXFLAGS) -o $@ ${wordlist 1,2,$^}  $(MINGW_LDFLAGS)
+	@echo $(MINGW_CXX) -o $@ ${wordlist 1,2,$^} ${filter-out -B%, $(MINGW_CXXFLAGS) $(MINGW_LDFLAGS)};\
+	$(MINGW_CXX) $(MINGW_CXXFLAGS) -o $@ ${wordlist 1,2,$^}  $(MINGW_LDFLAGS)
 endif
 
 dumper.o: dumper.cc dumper.h
@@ -119,10 +120,10 @@ endif
 
 mingw_getopt.o: $(cygwin_source)/lib/getopt.c
 ifdef VERBOSE
-	$(COMPILE_CC) $c -o $(@D)/$(basename $@)$o $(MINGW_CFLAGS) $<
+	$(MINGW_CC) $c -o $(@D)/$(basename $@)$o $(MINGW_CFLAGS) $<
 else
-	@echo $(CC) $c -o $(@D)/$(basename $@)$o $(MINGW_CFLAGS) ... $^;\
-	$(COMPILE_CC) $c -o $(@D)/$(basename $@)$o $(MINGW_CFLAGS) $<
+	@echo $(MINGW_CC) $c -o $(@D)/$(basename $@)$o $(MINGW_CFLAGS) ... $^;\
+	$(MINGW_CC) $c -o $(@D)/$(basename $@)$o $(MINGW_CFLAGS) $<
 endif
 
 clean:
