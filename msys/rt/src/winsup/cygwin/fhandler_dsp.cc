@@ -86,7 +86,7 @@ Audio::~Audio ()
 }
 
 bool
-Audio::open (int rate, int bits, int channels, bool bCallback = false)
+Audio::open (int rate, int bits, int channels, bool bCallback)
 {
   WAVEFORMATEX format;
   int nDevices = waveOutGetNumDevs ();
@@ -431,7 +431,7 @@ fhandler_dev_dsp::~fhandler_dev_dsp ()
 }
 
 int
-fhandler_dev_dsp::open (const char *path, int flags, mode_t mode = 0)
+fhandler_dev_dsp::open (const char *path, int flags, mode_t mode)
 {
   // currently we only support writing
   if ((flags & (O_WRONLY | O_RDONLY | O_RDWR)) != O_WRONLY)
