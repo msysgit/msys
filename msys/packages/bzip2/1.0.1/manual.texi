@@ -42,11 +42,6 @@ END-INFO-DIR-ENTRY
 @end iftex
 @node Top, Overview, (dir), (dir)
 
-@menu
-* Overview::			overview
-* Implementation::		internals
-@end menu
-
 This program, @code{bzip2}, 
 and associated library @code{libbzip2}, are
 Copyright (C) 1996-2000 Julian R Seward.  All rights reserved.
@@ -137,7 +132,7 @@ and nothing else.
 @quotation
 
 @unnumberedsubsubsec NAME
-@itemize @bullet
+@itemize
 @item @code{bzip2}, @code{bunzip2}
 - a block-sorting file compressor, v1.0
 @item @code{bzcat} 
@@ -147,7 +142,7 @@ and nothing else.
 @end itemize
 
 @unnumberedsubsubsec SYNOPSIS
-@itemize @bullet
+@itemize
 @item @code{bzip2} [ -cdfkqstvzVL123456789 ] [ filenames ...  ]
 @item @code{bunzip2} [ -fkvsVL ] [ filenames ...  ]
 @item @code{bzcat} [ -s ] [ filenames ...  ]
@@ -188,7 +183,7 @@ specified files.  Files which were not created by @code{bzip2}
 will be detected and ignored, and a warning issued.  
 @code{bzip2} attempts to guess the filename for the decompressed file 
 from that of the compressed file as follows:
-@itemize @bullet
+@itemize
 @item @code{filename.bz2 } becomes @code{filename}
 @item @code{filename.bz  } becomes @code{filename}
 @item @code{filename.tbz2} becomes @code{filename.tar}
@@ -2213,8 +2208,6 @@ Julian Seward:
      Snowbird, Utah.  28-30 March 2000.
 @end example
 
-@node Implementation,  , Overview, Top
-Placeholder to quiet makeinfo errors.
 
 @contents
 
