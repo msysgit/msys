@@ -242,7 +242,11 @@ open_next_file(name, input)
       clearerr(stdin);	/* clear any stale EOF indication */
       input->fp = stdin;
     }
+#ifdef __CYGWIN__
+  else if ( ! (input->fp = fopen(name, "rt")) )
+#else
   else if ( ! (input->fp = fopen(name, "r")) )
+#endif
     {
       const char *ptr = strerror(errno);
       fprintf(stderr, "%s: can't read %s: %s\n", myname, name, ptr);
@@ -1142,7 +1146,11 @@ dump_append_queue()
 	  size_t cnt;
 	  FILE *fp;
 
+#ifdef __CYGWIN__
+	  fp = fopen(p->rfile, "rt");
+#else
 	  fp = fopen(p->rfile, "r");
+#endif
 	  /* Not ck_fopen() because: "If _rfile_ does not exist or cannot be
 	     read, it shall be treated as if it were an empty file, causing
 	     no error condition."  IEEE Std 1003.2-1992 */

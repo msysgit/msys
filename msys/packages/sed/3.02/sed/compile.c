@@ -208,7 +208,11 @@ compile_file(cur_program, cmdfile)
   prog.end = NULL;
   prog.file = stdin;
   if (cmdfile[0] != '-' || cmdfile[1] != '\0')
+#ifdef __CYGWIN__
+    prog.file = ck_fopen(cmdfile, "rt");
+#else
     prog.file = ck_fopen(cmdfile, "r");
+#endif
   if (map_file(prog.file, &prog.base, &len))
     {
       prog.cur = VCAST(const unsigned char *)prog.base;
