@@ -5,17 +5,13 @@
  content="text/html; charset=ISO-8859-1">
   <meta name="description"
  content="Home of MinGW -- Minimalist GNU for Windows -- project. Contains information about the MinGW runtime library and GNU/OSS development tools for MinGW.">
-          
   <meta name="keywords"
  content="mingw, mingw32, programming, C++, C, C/C++, libraries, software, development tools, editors, IDEs, GNU">
-
-   <link href="mingw.css" type="text/css" rel="stylesheet" title="MinGW">
+  <link href="mingw.css" type="text/css" rel="stylesheet" title="MinGW">
   <title>Related Sites</title>
 </head>
 <body link="#000099" vlink="#990099" alink="#000099">
-
 <h1>Related Sites</h1>
-
 <table class="prim" cellspacing="6" border="0">
   <tbody>
     <tr>
@@ -25,126 +21,179 @@
       <table class="sec" cellspacing="6" border="0">
         <tbody>
           <tr>
-            <td>
-<!-- ======================================================================= -->
-<!--                                                                         -->
-<!--                               Main Body                                 -->
-<!--                                                                         -->
-<h3 align="left">MinGW</h3>
-<ul>
-<li> <a target="_nw" href="http://www.nanotech.wisc.edu/~khan/software/gnu-win32/">
-Mumit Khan's MinGW site</a></li>
-<li> <a target="_nw" href="http://gcc.gnu.org/">GNU Compiler Collection (GCC)</a></li>
-<li> Colin Peters' site on
-<a target="_nw" href="http://webclub.kcom.ne.jp/ma/colinp/gcc.html">MinGW</a> --
-this is where it all started.</li>
-<li> J.J.vanderHeijden's 
-<a target="_nw" href="http://agnes.dida.physik.uni-essen.de/~janjaap/mingw32/index.html">
-GNU mingw32 tools</a>. Contains some useful tools, and also old versions 
+            <td><!-- ======================================================================= --><!--                                                                         --><!--                               Main Body                                 --><!--                                                                         -->
+            <h3 align="left">MinGW</h3>
+            <ul>
+              <li> <a target="_nw"
+ href="http://www.nanotech.wisc.edu/%7Ekhan/software/gnu-win32/"> Mumit
+Khan's MinGW site</a></li>
+              <li> <a target="_nw" href="http://gcc.gnu.org/">GNU
+Compiler Collection (GCC)</a></li>
+              <li> Colin Peters' site on <a target="_nw"
+ href="http://webclub.kcom.ne.jp/ma/colinp/gcc.html">MinGW</a> -- this
+is where it all started.</li>
+              <li> J.J.vanderHeijden's <a target="_nw"
+ href="http://agnes.dida.physik.uni-essen.de/%7Ejanjaap/mingw32/index.html">
+GNU mingw32 tools</a>. Contains some useful tools, and also old versions
 of GCC (2.8.x).</li>
-<li> <a href="mailto:kern@caltech.edu">Robert Kern</a>'s instructions
-for <a target="_nw" href="http://starship.python.net/crew/kernr/mingw32/Notes.html">
-Python Extensions with GCC/mingw32</a>.</li>
-<li> <a target="_nw" href="http://groups.yahoo.com/group/mingw32/">
-Old Mingw32 mailing list (use for archived information)</a>
-hosted by <a target="_nw" href="http://groups.yahoo.com">groups.yahoo.com</a>.</li>
-<li> <a target="_nw" href="http://mingwacr.sourceforge.net">The Mingw32 Alternate C Runtime Library</a>
-is being developed as a replacement to MSVCRT.DLL. Its purpose was to completely remove the dependency
-of MSVCRT.DLL from Mingw32. It will also allow developers to have access to the source code for the 
-C Runtime Library like Microsoft Visual C++ developers do. It will contain some IA-32 (x86) assembly
-optimizations for some functions. It will implement all ANSI/ISO functions, including the ISO C99 and
-Unicode functions.</li>
-</ul>
-
-<h3 align="left">Sites useful for Windows32 programmers</h3>
-<ul>
-  <li> <a target="_nw" href="http://www.iseran.com/Win32/FAQ/section0.html">http://www.iseran.com/Win32/FAQ/section0.html</a> Steve Loughran's utterly unofficial and sporadically accurate list of frequently asked questions about the Win32 API.</li>
-  <li> <a target="_nw" href="http://www.blockdev.net/Community/Editors/">Free Editors for
-  Programming in Windows (32-bit)</a>
-  </li>
-  <li> <a target="_nw" href="http://www.foosyerdoos.fsnet.co.uk">FoosYerDoos Programming</a>
-  is devoted to win32 C++ programming with a variety of different compilers.
-  </li>
-  <li> <a target="_nw" href="http://freespace.virgin.net/james.brown7">Catch22 Productions</a>
-  is a web-site offering free software and tutorials for Windows.
-  </li>
-  <li> <a target = "_nw" href="http://www.winprog.org/tutorial/">theForger's Win32 API Tutorial</a>
-  attempts to get you started developing with the Win32 API as quickly and clearly as possible.
-  </li>
-  <li> <a target="_nw" href="http://www.wotsit.org/">Wotsit's Format</a> file format information on hundreds of different file types</li>
-</ul>
-
-<h3 align="left">Other Windows32 projects with compilers</h3>
-<ul>
-<li> <a target="_nw" href="http://cygwin.com">Cygwin project</a>.
-     The mailing list archives are on-line, as is the Users Guide and so
-     on. Please do look through these if you have a problem.</li>
-<li> <a target="_nw" href="http://www.cs.virginia.edu/%7Elcc-win32/">lcc-win</a>
-     is a Win32 C compiler complete with integrated environment.  I believe 
-     the distribution includes a working GUI resource editor that has been 
-     reported to work with other compilers such as mingw.  </li>
-<li> <a target="_nw" href="http://pw32.sourceforge.net/">PW32</a> is
-<a href="mailto:pfalcon@users.sourceforge.net">Paul Sokolovsky's</a>
+              <li> <a href="mailto:kern@caltech.edu">Robert Kern</a>'s
+instructions for <a target="_nw"
+ href="http://starship.python.net/crew/kernr/mingw32/Notes.html"> Python
+Extensions with GCC/mingw32</a>.</li>
+              <li> <a target="_nw"
+ href="http://groups.yahoo.com/group/mingw32/"> Old Mingw32 mailing list
+(use for archived information)</a> hosted by <a target="_nw"
+ href="http://groups.yahoo.com">groups.yahoo.com</a>.</li>
+              <li> <a target="_nw"
+ href="http://mingwacr.sourceforge.net">The Mingw32 Alternate C Runtime
+Library</a> is being developed as a replacement to MSVCRT.DLL. Its
+purpose was to completely remove the dependency of MSVCRT.DLL from
+Mingw32. It will also allow developers to have access to the source code
+for the C Runtime Library like Microsoft Visual C++ developers do. It
+will contain some IA-32 (x86) assembly optimizations for some
+functions. It will implement all ANSI/ISO functions, including the ISO
+C99 and Unicode functions.</li>
+            </ul>
+            <h3 align="left">Sites useful for Windows32 programmers</h3>
+            <ul>
+              <li> <a target="_nw"
+ href="http://www.iseran.com/Win32/FAQ/section0.html">http://www.iseran.com/Win32/FAQ/section0.html</a>
+Steve Loughran's utterly unofficial and sporadically accurate list of
+frequently asked questions about the Win32 API.</li>
+              <li> <a target="_nw"
+ href="http://www.blockdev.net/Community/Editors/">Free Editors for
+Programming in Windows (32-bit)</a> </li>
+              <li> <a target="_nw"
+ href="http://www.foosyerdoos.fsnet.co.uk">FoosYerDoos Programming</a>
+is devoted to win32 C++ programming with a variety of different
+compilers. </li>
+              <li> <a target="_nw"
+ href="http://freespace.virgin.net/james.brown7">Catch22 Productions</a>
+is a web-site offering free software and tutorials for Windows. </li>
+              <li> <a target="_nw"
+ href="http://www.winprog.org/tutorial/">theForger's Win32 API Tutorial</a>
+attempts to get you started developing with the Win32 API as quickly and
+clearly as possible. </li>
+              <li> <a target="_nw" href="http://www.wotsit.org/">Wotsit's
+Format</a> file format information on hundreds of different file types</li>
+              <li> List of Win32 tutorials, <a
+ href="http://people.montana.com/%7Ebowman/Software/winAPI.htm">
+http://people.montana.com/~bowman/Software/winAPI.htm</a></li>
+              <li> Programming Win32 with GNU C and C++ by Colin Peters
+at <a href="http://webclub.kcom.ne.jp/ma/colinp/win32/index.html">
+http://webclub.kcom.ne.jp/ma/colinp/win32/index.html</a></li>
+            </ul>
+            <h3>Assorted Tutorials</h3>
+            <ul>
+              <li>C++ Windows Tutorial, <a
+ href="http://www.relisoft.com">http://www.relisoft.com</a> <br>
+Also has a directory for programmers trying to start or looking
+for projects.</li>
+              <li>&nbsp; DevCentral Tutorials, <a
+ href="http://devcentral.iftech.com/learning/tutorials/">
+http://devcentral.iftech.com/learning/tutorials/</a> <br>
+C++, Win32 and COM Tutorials.</li>
+              <li>The Programming Sharehouse,&nbsp; <a
+ href="http://www.progsharehouse.com">http://www.progsharehouse.com</a> <br>
+Tutorials, question and answer boards, links to source code
+and information on programming related topics.</li>
+              <li> C++ Annotations, <a
+ href="http://www.icce.rug.nl/documents/cpp.shtml">
+http://www.icce.rug.nl/documents/cpp.shtml</a></li>
+            </ul>
+OpenGL Tutorials:<br>
+            <ul>
+              <li> OpenGL Win32 Tutorial, <a
+ href="http://www.nullterminator.net/opengl32.html">
+http://www.nullterminator.net/opengl32.html</a></li>
+              <li> Neon Helium's OpenGL information, <a
+ href="http://nehe.gamedev.net"> http://nehe.gamedev.net</a></li>
+              <li> POT (Personal OpenGL Tutorial), <a
+ href="http://home.a-city.de/franco.bez/pot/pot_w32_en.html">
+http://home.a-city.de/franco.bez/pot/pot_w32_en.html</a> <br>
+Franco Bez recommended this program for learning OpenGL.  It requires
+TCL/TK to run.  It was originally targeted for Linux machines but a
+version has been                   ported to Win32.</li>
+            </ul>
+Database Tutorials:<br>
+            <ul>
+              <li> ODBC Oracle Example Program, <a
+ href="ftp://ftp.simtel.net/pub/simtelnet/win95/prog/odbcora8.zip">
+ftp://ftp.simtel.net/pub/simtelnet/win95/prog/odbcora8.zip</a> <br>
+An example of how to write ODBC code.  The Visual C++ version
+compiles with the mingw32 C compiler (although main really should be
+declared with a return value of int for mingw to be happy).  When
+creating the executable, be sure to link in <code>-lodbc32</code>.</li>
+            </ul>
+            <h3 align="left">Other Windows32 projects with compilers</h3>
+            <ul>
+              <li> <a target="_nw" href="http://cygwin.com">Cygwin
+project</a>.      The mailing list archives are on-line, as is the
+Users Guide and so      on. Please do look through these if you have a
+problem.</li>
+              <li> <a target="_nw"
+ href="http://www.cs.virginia.edu/%7Elcc-win32/">lcc-win</a> is a Win32
+C compiler complete with integrated environment.  I believe      the
+distribution includes a working GUI resource editor that has been
+reported to work with other compilers such as mingw. </li>
+              <li> <a target="_nw" href="http://pw32.sourceforge.net/">PW32</a>
+is <a href="mailto:pfalcon@users.sourceforge.net">Paul Sokolovsky's</a>
 effort to provide another POSIX-compliant C runtime library. Currently
-uses Mingw-hosted gcc/binutils.
-</li>
-</ul>
-
-<h3 align="left">IDE - Integrated Development Environments</h3>
-    <p>There are several IDEs (Integrated Development Environments)
-    for Win32 platforms.  Some are freeware and some are not.  Some
-    are specifically tailored to mingw and others are for more
-    general use.
-    </p>
-  <ul>
-      <li>Visual-MinGW, <a target="_nw" href="http://visual-mingw.sourceforge.net/">
-        http://visual-mingw.sourceforge.net/</a>
-      <br />A "Minimalist" Open Source IDE being developed with and for the MinGW
-      development tools.
-      </li>
-      <li>bloodshed Dev-C++ from <a target="_nw" href="http://www.bloodshed.net/devcpp.html">
-          http://www.bloodshed.net/devcpp.html</a> is a distribution of mingw32
-	  with an IDE and other integrated tools.
-      </li>
-      <li>RSXIDE, <a target="_nw" href="http://www.mathematik.uni-bielefeld.de/%7Erainer/">
-      http://www.mathematik.uni-bielefeld.de/~rainer/</a>
-      <br />Built in support for djgpp, rsxnt, emx/nt09d and mingw.  Works with
-      any editor that supports DDE.  This program in conjunction with an editor
-      like PFE makes an easy-to-use but flexible IDE.
-      </li>
-      <li>Vide, <a target="_nw" href="http://www.objectcentral.com">http://www.objectcentral.com</a>
-      <br />Tested with mingw.
-      </li>
-      <li>JFE (Jen's File Editor), 
-      <a target="_nw" 
-         href="http://home.t-online.de/home/Jens.Altmann/jfe_eng.htm">
-      http://home.t-online.de/home/Jens.Altmann/jfe_eng.htm</a>
-      <br />can be used with mingw.  Has some nice features including 
-      automatically building HTML documentation files for projects and easy
-      viewing of and navigation to functions in a project.  (I personally miss 
-      the key-mapping functionality of PFE though.)
-      </li>
-      <li>Pow! - Programmers Open Workbench, <a target="_nw" href="http://www.fim.uni-linz.ac.at/pow/Pow.htm">
-      http://www.fim.uni-linz.ac.at/pow/Pow.htm</a>
-      </li>
-      <li>ACIDE, <a target="_nw" href="http://pages.zoom.co.uk/andyc/">
-      http://pages.zoom.co.uk/andyc/</a>
-      <br />Can be configured to work with many languages/compilers.
-      </li>
-      <li>Visual Programming Armoury,
-      <a target="_nw" href="http://www.polymorph.spb.ru/">
-      http://www.polymorph.spb.ru/</a>
-      </li>
-      <li>Assembler Laboratory, <a target="_nw" href="http://tihlde.org/%7Ekurtg/">http://tihlde.org/~kurtg/</a>
-      </li>
-      <li>Octopod, <a target="_nw" href="http://www.octopod.net">http://www.octopod.net</a>
-      <br />Commercial IDE.
-      </li>
-    </ul>
-
-
-<!--                            End of Main Body                             -->
-           </td>
+uses Mingw-hosted gcc/binutils. </li>
+            </ul>
+            <h3 align="left">IDE - Integrated Development Environments</h3>
+            <p>There are several IDEs (Integrated Development
+Environments) for Win32 platforms.  Some are freeware and some are not. 
+Some     are specifically tailored to mingw and others are for more    
+general use. </p>
+            <ul>
+              <li>Visual-MinGW, <a target="_nw"
+ href="http://visual-mingw.sourceforge.net/">
+http://visual-mingw.sourceforge.net/</a> <br>
+A "Minimalist" Open Source IDE being developed with and for the MinGW
+development tools. </li>
+              <li>bloodshed Dev-C++ from <a target="_nw"
+ href="http://www.bloodshed.net/devcpp.html">
+http://www.bloodshed.net/devcpp.html</a> is a distribution of mingw32 	
+with an IDE and other integrated tools. </li>
+              <li>RSXIDE, <a target="_nw"
+ href="http://www.mathematik.uni-bielefeld.de/%7Erainer/">
+http://www.mathematik.uni-bielefeld.de/~rainer/</a> <br>
+Built in support for djgpp, rsxnt, emx/nt09d and mingw.  Works with
+any editor that supports DDE.  This program in conjunction with an
+editor like PFE makes an easy-to-use but flexible IDE. </li>
+              <li>Vide, <a target="_nw"
+ href="http://www.objectcentral.com">http://www.objectcentral.com</a> <br>
+Tested with mingw. </li>
+              <li>JFE (Jen's File Editor), <a target="_nw"
+ href="http://home.t-online.de/home/Jens.Altmann/jfe_eng.htm">
+http://home.t-online.de/home/Jens.Altmann/jfe_eng.htm</a> <br>
+can be used with mingw.  Has some nice features including
+automatically building HTML documentation files for projects and easy
+viewing of and navigation to functions in a project.  (I personally miss
+the key-mapping functionality of PFE though.) </li>
+              <li>Pow! - Programmers Open Workbench, <a target="_nw"
+ href="http://www.fim.uni-linz.ac.at/pow/Pow.htm">
+http://www.fim.uni-linz.ac.at/pow/Pow.htm</a> </li>
+              <li>ACIDE, <a target="_nw"
+ href="http://pages.zoom.co.uk/andyc/"> http://pages.zoom.co.uk/andyc/</a> <br>
+Can be configured to work with many languages/compilers.</li>
+              <li>Quincy 2000, <a
+ href="http://csjava.occ.cccd.edu/%7Egilberts/quincy2k.html">
+http://csjava.occ.cccd.edu/~gilberts/quincy2k.html</a> <br>
+From Al Stevens.  Covered in various Dr. Dobb's articles and Al
+Stevens books on learning C++.  The Quincy 99 version had a bug when
+running on Windows NT.  Don't know if this has been corrected in the
+latest version.</li>
+              <li>Visual Programming Armoury, <a target="_nw"
+ href="http://www.polymorph.spb.ru/"> http://www.polymorph.spb.ru/</a> </li>
+              <li>Assembler Laboratory, <a target="_nw"
+ href="http://tihlde.org/%7Ekurtg/">http://tihlde.org/~kurtg/</a> </li>
+              <li>Octopod, <a target="_nw"
+ href="http://www.octopod.net">http://www.octopod.net</a> <br>
+Commercial IDE. </li>
+            </ul>
+<!--                            End of Main Body                             --> </td>
           </tr>
         </tbody>
       </table>
@@ -154,6 +203,6 @@ uses Mingw-hosted gcc/binutils.
 </table>
 <!--#include file="ssi/bottombar.html"--><!--#include file="ssi/footer.html"-->
 <address> <br>
-Last revised $Date: 2003-01-27 21:40:29 $ </address>
+Last revised $Date: 2003-02-04 05:40:11 $ </address>
 </body>
 </html>
