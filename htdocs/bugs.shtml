@@ -75,7 +75,7 @@
                         )<br>
                       </li>
                       <li>
-                        w32api version ( include/win32.h )
+                        w32api version ( include/w32api.h )
                       </li>
                       <li>
                         any other detailed information pertinent to
@@ -150,6 +150,6 @@
     </p>
     <address>
       <br>
-       Last revised $Date: 2003-02-19 03:46:24 $
+       Last revised $Date: 2004-03-24 11:20:50 $
     </address>
   </body></html>
