@@ -3,6 +3,7 @@
 	* bin/msys.bat: Add -norxvt switch and allow to execute from any
 	directory.
 	* doc/msys/MSYS-1.0.11-changes.rtf: New file.
+	* var/msys/exe.dat (stty.exe): Add.
 
 2004.03.10  Earnie Boyd  <earnie@users.sf.net>
 
