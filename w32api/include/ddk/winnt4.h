@@ -31,8 +31,6 @@
 extern "C" {
 #endif
 
-#pragma pack(push,4)
-
 typedef struct _ZONE_SEGMENT_HEADER {
   SINGLE_LIST_ENTRY  SegmentList;
   PVOID  Reserved;
@@ -569,10 +567,16 @@ RtlLargeIntegerSubtract(
 
 
 /*
-** Architecture specific structures
+** Architecture specific functions
 */
 
 #ifdef _X86_
+
+NTOSAPI
+INTERLOCKED_RESULT
+DDKAPI
+Exi386InterlockedIncrementLong(
+  IN PLONG  Addend);
 
 NTOSAPI
 INTERLOCKED_RESULT
@@ -582,9 +586,22 @@ Exfi386InterlockedIncrementLong(
 
 NTOSAPI
 INTERLOCKED_RESULT
+DDKAPI
+Exi386InterlockedDecrementLong(
+  IN PLONG  Addend);
+
+NTOSAPI
+INTERLOCKED_RESULT
 DDKFASTAPI
 Exfi386InterlockedDecrementLong(
   IN PLONG  Addend);
+
+NTOSAPI
+ULONG
+DDKAPI
+Exi386InterlockedExchangeUlong(
+  IN PULONG  Target,
+  IN ULONG  Value);
 
 NTOSAPI
 ULONG
@@ -598,8 +615,6 @@ Exfi386InterlockedExchangeUlong(
 #define ExInterlockedExchangeUlong(Target, Value, Lock) Exfi386InterlockedExchangeUlong(Target, Value)
 
 #endif /* _X86_ */
-
-#pragma pack(pop)
 
 #ifdef __cplusplus
 }

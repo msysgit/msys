@@ -34,12 +34,12 @@
 extern "C" {
 #endif
 
-#pragma pack(push,4)
-
 #include <stdarg.h>
 #include <winbase.h>
 #include "ntddk.h"
 #include "ntpoapi.h"
+
+#pragma pack(push,4)
 
 typedef struct _PEB *PPEB;
 
@@ -647,7 +647,7 @@ typedef struct _SYSTEM_MEMORY_USAGE {
 } SYSTEM_MEMORY_USAGE, *PSYSTEM_MEMORY_USAGE;
 
 typedef struct _SYSTEM_MEMORY_USAGE_INFORMATION {
-  ULONG  Reserved;
+  	ULONG  Reserved;
 	PVOID  EndOfData;
 	SYSTEM_MEMORY_USAGE  MemoryUsage[1];
 } SYSTEM_MEMORY_USAGE_INFORMATION, *PSYSTEM_MEMORY_USAGE_INFORMATION;
@@ -669,6 +669,20 @@ ZwQuerySystemInformation(
   IN OUT PVOID  SystemInformation,
   IN ULONG  SystemInformationLength,
   OUT PULONG  ReturnLength  OPTIONAL);
+
+NTOSAPI
+NTAPI
+NTSTATUS
+NtQueryFullAttributesFile(
+	IN POBJECT_ATTRIBUTES ObjectAttributes,
+	OUT PFILE_NETWORK_OPEN_INFORMATION FileInformation);
+
+NTOSAPI
+NTAPI
+NTSTATUS
+ZwQueryFullAttributesFile(
+	IN POBJECT_ATTRIBUTES ObjectAttributes,
+ 	OUT PFILE_NETWORK_OPEN_INFORMATION FileInformation);
 
 NTOSAPI
 NTSTATUS

@@ -462,7 +462,8 @@ typedef enum {
 } SLR_FLAGS;
 typedef enum {
 	SLGP_SHORTPATH=1,
-	SLGP_UNCPRIORITY
+	SLGP_UNCPRIORITY=2,
+	SLGP_RAWPATH=4
 } SLGP_FLAGS;
 typedef PBYTE LPVIEWSETTINGS;
 typedef enum {
@@ -532,7 +533,13 @@ typedef struct
 	DWORD dwAttributes;
 	int csidl;
 } PERSIST_FOLDER_TARGET_INFO;
+
+typedef enum {
+	SHGFP_TYPE_CURRENT = 0,
+	SHGFP_TYPE_DEFAULT = 1,
+} SHGFP_TYPE;
 #endif
+
 
 DECLARE_ENUMERATOR_(IEnumIDList,LPITEMIDLIST);
 typedef IEnumIDList *LPENUMIDLIST;
@@ -546,6 +553,17 @@ typedef IEnumIDList *LPENUMIDLIST;
 #define IEnumIDList_Reset(T) (T)->lpVtbl->Reset(T)
 #define IEnumIDList_Clone(T,a) (T)->lpVtbl->Clone(T,a)
 #endif
+
+#undef INTERFACE
+#define INTERFACE IObjMgr
+DECLARE_INTERFACE_(IObjMgr, IUnknown)
+{
+	STDMETHOD(QueryInterface)(THIS_ REFIID,PVOID*) PURE;
+	STDMETHOD_(ULONG,AddRef)(THIS) PURE;
+	STDMETHOD_(ULONG,Release)(THIS) PURE;
+	STDMETHOD(Append)(THIS_ IUnknown*) PURE;
+	STDMETHOD(Remove)(THIS_ IUnknown*) PURE;
+};
 
 #undef INTERFACE
 #define INTERFACE IContextMenu
