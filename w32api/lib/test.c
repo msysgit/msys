@@ -57,7 +57,7 @@
 #include <ws2tcpip.h>
 
 
-#ifndef __OBJC__
+#ifndef __OBJC__  /* problems with BOOL */
 #include <ole2.h>
 #include <shlobj.h>
 #include <intshcut.h>
