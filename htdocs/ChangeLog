@@ -1,3 +1,9 @@
+2002-12-17  Earnie Boyd  <earnie@users.sf.net>
+
+	* bugs.shtml: New file.
+	* ssi/lsidebar.html: Rearrange and add bugs.shtml.
+	* ssi/bottombar.html: Ditto.
+
 2002-12-13  Earnie Boyd  <earnie@users.sf.net>
 
 	* mirrors.shtml: Add gd.tuwien.ac.at.

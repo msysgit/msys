@@ -1,0 +1,57 @@
+<!-- $Id: bugs.shtml,v 1.1 2002-12-17 13:14:34 earnie Exp $ -->
+
+<html>
+<head>
+ <title>Reporting Bugs</title>
+</head>
+<body bgcolor="white" text="black" link="#0000EE" vlink="#551A8B" alink="red">
+
+<h1 align="center">Reporting Bugs</h1>
+
+<!-- two-column format: left sidebar and the body -->
+<table border="0" cellspacing="6" cellpadding="8">
+<tr>
+<td bgcolor="#eeeeee" valign="top" width="10%">
+
+<!--#include file="ssi/lsidebar.html"-->
+
+</td>
+<!-- 2nd column of two-column format: the body -->
+<td valign="top">
+
+<!-- ================================================================== -->
+<!--                                                                    -->
+<!--			  Main Body                                     -->
+<!--                                                                    -->
+
+<table border="0" cellspacing="6" cellpadding="0">
+   <tr>
+      <td valign="top" align="left">
+      <p>So you think you found a bug and want to report the problem.  When
+         reporting your bug please be kind and provide as much detail as
+	 about how you experience your bug as possible.  Give a small test
+	 case that demonstrates the bug if it concerns GCC.  Give
+	 documentation references if the bug involves the lacking features
+	 in the w32api or mingw-runtime.  SourceForge gives us nice tools
+	 to keep track of your bug reports, so please
+      <a href=https://sourceforge.net/tracker/?group_id=2435&atid=102435" target="_nw">follow this link to file your report.</a>  You will need a SourceForge
+      login account.  If you don't have one then <a href="https://sourceforge.net/account/register.php">follow this link to register for one.</a>
+      </p>
+      </td>
+   </tr>
+</table>
+
+<!-- <hr noshade="noshade" size="1" /> -->
+
+<!-- Close page table -->
+</td></tr></table>
+
+<!--#include file="ssi/bottombar.html"-->
+<!--#include file="ssi/footer.html"-->
+
+<address>
+<br />Last revised $Date: 2002-12-17 13:14:34 $
+</address>
+
+</body>
+</html>
