@@ -142,6 +142,7 @@ int pcheck_case = PCHECK_RELAXED; /* Determines the case check behaviour. */
 int
 path_prefix_p (const char *path1, const char *path2, int len1)
 {
+  TRACE_IN;
   /* Handle case where PATH1 has trailing '/' and when it doesn't.  */
   if (len1 > 0 && SLASH_P (path1[len1 - 1]))
     len1--;
@@ -159,6 +160,7 @@ path_prefix_p (const char *path1, const char *path2, int len1)
 int
 pathnmatch (const char *path1, const char *path2, int len)
 {
+  TRACE_IN;
   debug_printf("pathnmatch(%s, %s, %d))", path1, path2, len);
   // Paths of just dots can't be matched so don't say they are.
   if (path1[0] == '.' && path2[0] == '.')
@@ -178,6 +180,7 @@ pathnmatch (const char *path1, const char *path2, int len)
 int
 pathmatch (const char *path1, const char *path2)
 {
+  TRACE_IN;
   debug_printf("pathmatch(%s, %s))", path1, path2);
   // Paths of just dots can't be matched so don't say they are.
   if (path1[0] == '.' && path2[0] == '.')
@@ -203,6 +206,7 @@ pathmatch (const char *path1, const char *path2)
 int
 normalize_posix_path (const char *src, char *dst)
 {
+  TRACE_IN;
   const char *src_start = src;
   char *dst_start = dst;
   static char last_src[MAX_PATH] = "\0";
@@ -317,6 +321,7 @@ done:
 inline void
 path_conv::add_ext_from_sym (symlink_info &sym)
 {
+  TRACE_IN;
   if (sym.ext_here && *sym.ext_here)
     {
       known_suffix = path + sym.extn;
@@ -329,6 +334,7 @@ static void __stdcall mkrelpath (char *dst) __attribute__ ((regparm (2)));
 static void __stdcall
 mkrelpath (char *path)
 {
+  TRACE_IN;
   char cwd_win32[MAX_PATH];
   debug_printf("entr %s", path);
   if (!cygheap->cwd.get (cwd_win32, 0))
@@ -357,6 +363,7 @@ mkrelpath (char *path)
 void
 path_conv::update_fs_info (const char* win32_path)
 {
+  TRACE_IN;
   char tmp_buf [MAX_PATH];
   strncpy (tmp_buf, win32_path, MAX_PATH);
 
@@ -415,6 +422,7 @@ void
 path_conv::check (const char *src, unsigned opt,
 		  const suffix_info *suffixes)
 {
+  TRACE_IN;
   /* ******************************************************************
    * So what do we need to check, or what the &*(# is this doing?
    * 
@@ -839,6 +847,7 @@ out:
 static __inline int
 digits (const char *name)
 {
+  TRACE_IN;
   char *p;
   int n = strtol(name, &p, 10);
 
@@ -877,6 +886,7 @@ const char *windows_device_names[] NO_COPY =
 static int
 get_raw_device_number (const char *uxname, const char *w32path, int &unit)
 {
+  TRACE_IN;
   DWORD devn = FH_BAD;
 
   if (strncasematch (w32path, "\\\\.\\tape", 8))
@@ -903,6 +913,7 @@ get_raw_device_number (const char *uxname, const char *w32path, int &unit)
 int __stdcall
 get_device_number (const char *name, int &unit, BOOL from_conv)
 {
+  TRACE_IN;
   DWORD devn = FH_BAD;
   unit = 0;
 
@@ -985,6 +996,7 @@ static BOOL
 win32_device_name (const char *src_path, char *win32_path,
 		   DWORD &devn, int &unit)
 {
+  TRACE_IN;
   const char *devfmt;
 
   devn = get_device_number (src_path, unit, TRUE);
@@ -1010,6 +1022,7 @@ win32_device_name (const char *src_path, char *win32_path,
 static int
 normalize_win32_path (const char *src, char *dst)
 {
+  TRACE_IN;
   const char *src_start = src;
   char *dst_start = dst;
   char *dst_root_start = dst;
@@ -1097,6 +1110,7 @@ normalize_win32_path (const char *src, char *dst)
 static void
 slashify (const char *src, char *dst, int trailing_slash_p)
 {
+  TRACE_IN;
   const char *start = src;
 
   while (*src)
@@ -1121,6 +1135,7 @@ slashify (const char *src, char *dst, int trailing_slash_p)
 static void
 backslashify (const char *src, char *dst, int trailing_slash_p)
 {
+  TRACE_IN;
   const char *start = src;
 
   while (*src)
@@ -1144,6 +1159,7 @@ backslashify (const char *src, char *dst, int trailing_slash_p)
 void __stdcall
 nofinalslash (const char *src, char *dst)
 {
+  TRACE_IN;
   int len = strlen (src);
   if (src != dst)
     memcpy (dst, src, len + 1);
@@ -1156,6 +1172,7 @@ nofinalslash (const char *src, char *dst)
 int __stdcall
 slash_unc_prefix_p (const char *path)
 {
+  TRACE_IN;
   char *p = NULL;
   int ret = (isdirsep (path[0])
 	     && isdirsep (path[1])
@@ -1180,6 +1197,7 @@ slash_unc_prefix_p (const char *path)
 static void
 conv_path_list (const char *src, char *dst, int to_posix_p)
 {
+  TRACE_IN;
   char *s;
   char *d = dst;
   char src_delim = to_posix_p ? ';' : ':';
@@ -1214,6 +1232,7 @@ conv_path_list (const char *src, char *dst, int to_posix_p)
 void
 mount_info::init ()
 {
+  TRACE_IN;
   nmounts = 0;
   had_to_create_mount_areas = 0;
 
@@ -1240,6 +1259,7 @@ mount_info::conv_to_win32_path (const char *src_path, char *dst,
 				DWORD &devn, int &unit, unsigned *flags,
 				bool no_normalize)
 {
+  TRACE_IN;
   static char last_src_path[MAX_PATH];
   static char last_dst[MAX_PATH];
   static int last_rc;
@@ -1464,6 +1484,7 @@ mount_info::conv_to_win32_path (const char *src_path, char *dst,
 void
 mount_info::cygdrive_posix_path (const char *src, char *dst, int trailing_slash_p)
 {
+  TRACE_IN;
   int len = cygdrive_len;
 
   memcpy (dst, cygdrive, len + 1);
@@ -1490,6 +1511,7 @@ mount_info::cygdrive_posix_path (const char *src, char *dst, int trailing_slash_
 int
 mount_info::cygdrive_win32_path (const char *src, char *dst, int trailing_slash_p)
 {
+  TRACE_IN;
   const char *p = src + cygdrive_len;
   if (!isalpha (*p) || (!isdirsep (p[1]) && p[1]))
     return 0;
@@ -1511,6 +1533,7 @@ int
 mount_info::conv_to_posix_path (const char *src_path, char *posix_path,
 				int keep_rel_p)
 {
+  TRACE_IN;
   int src_path_len = strlen (src_path);
   int relative_path_p = !isabspath (src_path);
   int trailing_slash_p;
@@ -1633,6 +1656,7 @@ out:
 unsigned
 mount_info::set_flags_from_win32_path (const char *p)
 {
+  TRACE_IN;
   for (int i = 0; i < nmounts; i++)
     {
       mount_item &mi = mount[native_sorted[i]];
@@ -1648,6 +1672,7 @@ mount_info::set_flags_from_win32_path (const char *p)
 void
 mount_info::read_mounts (reg_key& r)
 {
+  TRACE_IN;
   char native_path[4];
   char posix_path[MAX_PATH];
   DWORD mask = 1, drive = 'a';
@@ -1760,6 +1785,7 @@ mount_info::read_mounts (reg_key& r)
 void
 mount_info::from_registry ()
 {
+  TRACE_IN;
     reg_key r;
     read_mounts (r);
     return;
@@ -1772,6 +1798,7 @@ mount_info::from_registry ()
 int
 mount_info::add_reg_mount (const char * native_path, const char * posix_path, unsigned mountflags)
 {
+  TRACE_IN;
   int res = 0;
 
   /* Add the mount to the right registry location, depending on
@@ -1809,6 +1836,7 @@ mount_info::add_reg_mount (const char * native_path, const char * posix_path, un
 int
 mount_info::del_reg_mount (const char * posix_path, unsigned flags)
 {
+  TRACE_IN;
   set_errno(ENOSYS);
   return -1;
 }
@@ -1820,6 +1848,7 @@ mount_info::del_reg_mount (const char * posix_path, unsigned flags)
 void
 mount_info::read_cygdrive_info_from_registry ()
 {
+  TRACE_IN;
   set_errno(ENOSYS);
 }
 
@@ -1830,6 +1859,7 @@ mount_info::read_cygdrive_info_from_registry ()
 int
 mount_info::write_cygdrive_info_to_registry (const char *cygdrive_prefix, unsigned flags)
 {
+  TRACE_IN;
   set_errno(ENOSYS);
   return -1;
 }
@@ -1837,6 +1867,7 @@ mount_info::write_cygdrive_info_to_registry (const char *cygdrive_prefix, unsign
 int
 mount_info::remove_cygdrive_info_from_registry (const char *cygdrive_prefix, unsigned flags)
 {
+  TRACE_IN;
   set_errno(ENOSYS);
   return -1;
 }
@@ -1845,6 +1876,7 @@ int
 mount_info::get_cygdrive_info (char *user, char *system, char* user_flags,
 			       char* system_flags)
 {
+  TRACE_IN;
   set_errno(ENOSYS);
   return -1;
 }
@@ -1858,6 +1890,7 @@ static mount_item *mounts_for_sort;
 static int
 sort_by_posix_name (const void *a, const void *b)
 {
+  TRACE_IN;
   mount_item *ap = mounts_for_sort + (*((int*) a));
   mount_item *bp = mounts_for_sort + (*((int*) b));
 
@@ -1894,6 +1927,7 @@ sort_by_posix_name (const void *a, const void *b)
 static int
 sort_by_native_name (const void *a, const void *b)
 {
+  TRACE_IN;
   mount_item *ap = mounts_for_sort + (*((int*) a));
   mount_item *bp = mounts_for_sort + (*((int*) b));
 
@@ -1926,6 +1960,7 @@ sort_by_native_name (const void *a, const void *b)
 void
 mount_info::sort ()
 {
+  TRACE_IN;
   for (int i = 0; i < nmounts; i++)
     native_sorted[i] = posix_sorted[i] = i;
   /* Sort them into reverse length order, otherwise we won't
@@ -1944,6 +1979,7 @@ mount_info::sort ()
 int
 mount_info::add_item (const char *native, const char *posix, unsigned mountflags, int reg_p)
 {
+  TRACE_IN;
   /* Something's wrong if either path is NULL or empty, or if it's
      not a UNC or absolute path. */
 
@@ -2014,6 +2050,7 @@ mount_info::add_item (const char *native, const char *posix, unsigned mountflags
 int
 mount_info::del_item (const char *path, unsigned flags, int reg_p)
 {
+  TRACE_IN;
   char pathtmp[MAX_PATH];
   int posix_path_p = FALSE;
 
@@ -2068,6 +2105,7 @@ mount_info::del_item (const char *path, unsigned flags, int reg_p)
 static mntent *
 fillout_mntent (const char *native_path, const char *posix_path, unsigned flags)
 {
+  TRACE_IN;
 #ifdef _MT_SAFE
   struct mntent &ret=_reent_winsup()->mntbuf;
 #else
@@ -2126,12 +2164,14 @@ fillout_mntent (const char *native_path, const char *posix_path, unsigned flags)
 struct mntent *
 mount_item::getmntent ()
 {
+  TRACE_IN;
   return fillout_mntent (native_path, posix_path, flags);
 }
 
 static struct mntent *
 cygdrive_getmntent ()
 {
+  TRACE_IN;
   char native_path[4];
   char posix_path[MAX_PATH];
   DWORD mask = 1, drive = 'a';
@@ -2162,6 +2202,7 @@ cygdrive_getmntent ()
 struct mntent *
 mount_info::getmntent (int x)
 {
+  TRACE_IN;
   if (x < 0 || x >= nmounts)
     return cygdrive_getmntent ();
 
@@ -2173,6 +2214,7 @@ mount_info::getmntent (int x)
 void
 mount_item::init (const char *native, const char *posix, unsigned mountflags)
 {
+  TRACE_IN;
   strcpy ((char *) native_path, native);
   strcpy ((char *) posix_path, posix);
 
@@ -2195,6 +2237,7 @@ extern "C"
 int
 mount (const char *win32_path, const char *posix_path, unsigned flags)
 {
+  TRACE_IN;
   set_errno(ENOSYS);
   return -1;
 }
@@ -2208,6 +2251,7 @@ extern "C"
 int
 umount (const char *path)
 {
+  TRACE_IN;
   set_errno(ENOSYS);
   return -1;
 }
@@ -2220,6 +2264,7 @@ extern "C"
 int
 cygwin_umount (const char *path, unsigned flags)
 {
+  TRACE_IN;
   int res = -1;
 
   if (flags & MOUNT_AUTO)
@@ -2242,6 +2287,7 @@ extern "C"
 FILE *
 setmntent (const char *filep, const char *)
 {
+  TRACE_IN;
   iteration = 0;
   available_drives = GetLogicalDrives ();
   return (FILE *) filep;
@@ -2251,6 +2297,7 @@ extern "C"
 struct mntent *
 getmntent (FILE *)
 {
+  TRACE_IN;
   return mount_table->getmntent (iteration++);
 }
 
@@ -2258,6 +2305,7 @@ extern "C"
 int
 endmntent (FILE *)
 {
+  TRACE_IN;
   return 1;
 }
 
@@ -2267,6 +2315,7 @@ endmntent (FILE *)
 int
 get_symlink_ea (const char* frompath, char* buf, int buf_size)
 {
+  TRACE_IN;
   int res = NTReadEA (frompath, SYMLINK_EA_NAME, buf, buf_size);
   if (res == 0)
     debug_printf ("Cannot read symlink from EA");
@@ -2277,6 +2326,7 @@ get_symlink_ea (const char* frompath, char* buf, int buf_size)
 BOOL
 set_symlink_ea (const char* frompath, const char* topath)
 {
+  TRACE_IN;
   if (!NTWriteEA (frompath, SYMLINK_EA_NAME, topath, strlen (topath) + 1))
     {
       debug_printf ("Cannot save symlink in EA");
@@ -2295,6 +2345,7 @@ extern "C"
 int
 symlink (const char *topath, const char *frompath)
 {
+  TRACE_IN;
 #if NO_SYMLINK
     int res;
     debug_printf("symlink (%s, %s)", topath, frompath);
@@ -2375,7 +2426,13 @@ symlink (const char *topath, const char *frompath)
   if (allow_ntsec && win32_path.has_acls ())
     {
       set_security_attribute (S_IFLNK | S_IRWXU | S_IRWXG | S_IRWXO,
-			    &sa, (new void [4096]), 4096);
+			    &sa, 
+#if DO_CPP_NEW
+			    (new void [4096]), 
+#else
+			    alloca (4096),
+#endif
+			    4096);
     }
 
   h = CreateFileA(win32_path, GENERIC_WRITE, 0, &sa,
@@ -2452,6 +2509,7 @@ static int
 check_sysfile (const char *path, DWORD fileattr, HANDLE h,
 	       char *contents, int *error, unsigned *pflags)
 {
+  TRACE_IN;
   char cookie_buf[sizeof (SYMLINK_COOKIE) - 1];
   DWORD got;
   int res = 0;
@@ -2510,6 +2568,7 @@ check_sysfile (const char *path, DWORD fileattr, HANDLE h,
 char *
 suffix_scan::has (const char *in_path, const suffix_info *in_suffixes)
 {
+  TRACE_IN;
   nextstate = SCAN_BEG;
   suffixes = suffixes_start = in_suffixes;
 
@@ -2551,6 +2610,7 @@ suffix_scan::has (const char *in_path, const suffix_info *in_suffixes)
 int
 suffix_scan::next ()
 {
+  TRACE_IN;
   if (suffixes)
     {
       while (suffixes && suffixes->name)
@@ -2642,6 +2702,7 @@ suffix_scan::next ()
 int
 symlink_info::check (char *path, const suffix_info *suffixes, unsigned opt)
 {
+  TRACE_IN;
   HANDLE h;
   int res = 0;
   suffix_scan suffix;
@@ -2696,6 +2757,7 @@ symlink_info::check (char *path, const suffix_info *suffixes, unsigned opt)
 BOOL
 symlink_info::case_check (char *path)
 {
+  TRACE_IN;
   WIN32_FIND_DATA data;
   HANDLE h;
   char *c;
@@ -2735,6 +2797,7 @@ extern "C"
 int
 readlink (const char *path, char *buf, int buflen)
 {
+  TRACE_IN;
   extern suffix_info stat_suffixes[];
 
   if (buflen < 0)
@@ -2783,6 +2846,7 @@ readlink (const char *path, char *buf, int buflen)
 unsigned long __stdcall
 hash_path_name (unsigned long hash, const char *name)
 {
+  TRACE_IN;
   if (!*name)
     return hash;
 
@@ -2798,7 +2862,11 @@ hash_path_name (unsigned long hash, const char *name)
 	 the environment to track current directory on various drives. */
       if (name[1] == ':')
 	{
+#if DO_CPP_NEW
 	  char *nn, *newname = new char [(strlen (name) + 2)];
+#else
+	  char *nn, *newname = (char *) alloca (strlen (name) + 2);
+#endif
 	  nn = newname;
 	  *nn = isupper (*name) ? cyg_tolower (*name) : *name;
 	  *++nn = ':';
@@ -2807,7 +2875,9 @@ hash_path_name (unsigned long hash, const char *name)
 	    *++nn = '\\';
 	  strcpy (++nn, name);
 	  name = newname;
+#if DO_CPP_NEW
 	  delete[] newname;
+#endif
 	  goto hashit;
 	}
 
@@ -2842,6 +2912,7 @@ hashit:
 char *
 getcwd (char *buf, size_t ulen)
 {
+  TRACE_IN;
   // This cygheap->cwd.get function is a part of struct cwdstuff.
   // The following are the parameters.
   //   Pointer to buffer to hold the return data.
@@ -2857,6 +2928,7 @@ extern "C"
 char *
 getwd (char *buf)
 {
+  TRACE_IN;
   return getcwd (buf, MAX_PATH);
 }
 
@@ -2864,6 +2936,7 @@ getwd (char *buf)
 extern "C" int
 chdir (const char *in_dir)
 {
+  TRACE_IN;
   if (check_null_empty_str_errno (in_dir))
     return -1;
 
@@ -2956,6 +3029,7 @@ extern "C"
 int
 fchdir (int fd)
 {
+  TRACE_IN;
   sigframe thisframe (mainthread);
 
   if (cygheap->fdtab.not_open (fd))
@@ -3020,14 +3094,23 @@ extern "C"
 int
 cygwin_conv_to_win32_path (const char *path, char *win32_path)
 {
+  TRACE_IN;
   bool found_path = true;
   const char *spath = path;
   char *sptr;
   char * sspath;
-  char *swin32_path = new char [MAX_PATH*4];
+#if DO_CPP_NEW
+  char *swin32_path = new char [MAX_PATH * 4];
+#else
+  char *swin32_path = (char *)malloc (MAX_PATH * 4);
+#endif
   int swin32_pathlen;
   // retpath will be what sets win32_path before exiting.
-  char *retpath = new char [MAX_PATH*4];
+#if DO_CPP_NEW
+  char *retpath = new char [MAX_PATH * 4];
+#else
+  char *retpath = (char *)malloc (MAX_PATH * 4);
+#endif
   int retpath_len = 0;
   int retpath_buflen = MAX_PATH*4;
   int sret;
@@ -3081,7 +3164,7 @@ cygwin_conv_to_win32_path (const char *path, char *win32_path)
 	  sspath = strchr (&spath[tidx], '/');
 	  if (sspath)
 	    {
-	      retpathcat (spath);
+	      retpathcpy (spath);
 	      break;
 	    }
 	  retpathcpy (&spath[1]);
@@ -3254,7 +3337,12 @@ cygwin_conv_to_win32_path (const char *path, char *win32_path)
 	}
     }
   strcpy (win32_path, retpath);
+#if DO_CPP_NEW
   delete[] swin32_path;
+#else
+  if (swin32_path)
+    free (swin32_path);
+#endif
   *retpath = '\0';
   retpath_len = 0;
   return retval;
@@ -3264,6 +3352,7 @@ extern "C"
 int
 cygwin_conv_to_full_win32_path (const char *path, char *win32_path)
 {
+  TRACE_IN;
   path_conv p (path, PC_SYM_FOLLOW | PC_FULL);
   if (p.error)
     {
@@ -3281,6 +3370,7 @@ extern "C"
 int
 cygwin_conv_to_posix_path (const char *path, char *posix_path)
 {
+  TRACE_IN;
   if (check_null_empty_str_errno (path))
     return -1;
   mount_table->conv_to_posix_path (path, posix_path, 1);
@@ -3291,6 +3381,7 @@ extern "C"
 int
 cygwin_conv_to_full_posix_path (const char *path, char *posix_path)
 {
+  TRACE_IN;
   if (check_null_empty_str_errno (path))
     return -1;
   mount_table->conv_to_posix_path (path, posix_path, 0);
@@ -3303,6 +3394,7 @@ extern "C"
 char *
 realpath (const char *path, char *resolved)
 {
+  TRACE_IN;
   int err;
 
   path_conv real_path (path, PC_SYM_FOLLOW | PC_FULL);
@@ -3344,6 +3436,7 @@ extern "C"
 int
 cygwin_posix_path_list_p (const char *path)
 {
+  TRACE_IN;
   int posix_p = !(strchr (path, ';') || isdrive (path));
   return posix_p;
 }
@@ -3356,6 +3449,7 @@ cygwin_posix_path_list_p (const char *path)
 static int
 conv_path_list_buf_size (const char *path_list, int to_posix_p)
 {
+  TRACE_IN;
   int i, num_elms, max_mount_path_len, size;
   const char *p;
 
@@ -3386,6 +3480,7 @@ extern "C"
 int
 cygwin_win32_to_posix_path_list_buf_size (const char *path_list)
 {
+  TRACE_IN;
   return conv_path_list_buf_size (path_list, 1);
 }
 
@@ -3393,6 +3488,7 @@ extern "C"
 int
 cygwin_posix_to_win32_path_list_buf_size (const char *path_list)
 {
+  TRACE_IN;
   return conv_path_list_buf_size (path_list, 0);
 }
 
@@ -3400,6 +3496,7 @@ extern "C"
 int
 cygwin_win32_to_posix_path_list (const char *win32, char *posix)
 {
+  TRACE_IN;
   conv_path_list (win32, posix, 1);
   return 0;
 }
@@ -3408,6 +3505,7 @@ extern "C"
 int
 cygwin_posix_to_win32_path_list (const char *posix, char *win32)
 {
+  TRACE_IN;
   conv_path_list (posix, win32, 0);
   return 0;
 }
@@ -3435,6 +3533,7 @@ extern "C"
 void
 cygwin_split_path (const char *path, char *dir, char *file)
 {
+  TRACE_IN;
   int dir_started_p = 0;
 
   /* Deal with drives.
@@ -3501,6 +3600,7 @@ cygwin_split_path (const char *path, char *dir, char *file)
 DWORD
 cwdstuff::get_hash ()
 {
+  TRACE_IN;
   DWORD hashnow;
   lock->acquire ();
   hashnow = hash;
@@ -3512,6 +3612,7 @@ cwdstuff::get_hash ()
 void
 cwdstuff::init ()
 {
+  TRACE_IN;
   lock = new_muto (FALSE, "cwd");
 }
 
@@ -3520,6 +3621,7 @@ cwdstuff::init ()
 bool
 cwdstuff::get_initial ()
 {
+  TRACE_IN;
   lock->acquire ();
 
   if (win32)
@@ -3554,6 +3656,7 @@ cwdstuff::get_initial ()
 void
 cwdstuff::set (const char *win32_cwd, const char *posix_cwd)
 {
+  TRACE_IN;
   char pathbuf[MAX_PATH];
 
   if (win32_cwd)
@@ -3583,6 +3686,7 @@ cwdstuff::set (const char *win32_cwd, const char *posix_cwd)
 char *
 cwdstuff::get (char *buf, int need_posix, int with_chroot, unsigned ulen)
 {
+  TRACE_IN;
   MALLOC_CHECK;
 
   if (ulen)
@@ -3622,7 +3726,11 @@ cwdstuff::get (char *buf, int need_posix, int with_chroot, unsigned ulen)
   else
     {
       if (!buf)
+#if DO_CPP_NEW
 	buf = new char [(strlen (tocopy) + 1)];
+#else
+	buf = (char *) malloc (strlen (tocopy) + 1);
+#endif
       strcpy (buf, tocopy);
       if (!buf[0])	/* Should only happen when chroot */
 	strcpy (buf, "/");

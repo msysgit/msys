@@ -201,9 +201,9 @@ shared_info::heap_chunk_size ()
       what the fixed size is. */
 
       heap_chunk_in_mb = reg.get_int ("heap_chunk_in_mb", 256);
-      if (heap_chunk_in_mb < 6)
+      if (heap_chunk_in_mb < 2)
 	{
-	  heap_chunk_in_mb = 6;
+	  heap_chunk_in_mb = 2;
 	  reg.set_int ("heap_chunk_in_mb", heap_chunk_in_mb);
 	}
     }

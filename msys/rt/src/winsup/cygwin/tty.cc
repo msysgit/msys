@@ -10,6 +10,7 @@ details. */
 
 #include "winsup.h"
 #include <errno.h>
+#include <stdlib.h>
 #include <unistd.h>
 #include <utmp.h>
 #include <wingdi.h>
@@ -31,6 +32,7 @@ extern "C"
 int
 grantpt (int fd)
 {
+  TRACE_IN;
   return 0;
 }
 
@@ -38,6 +40,7 @@ extern "C"
 int
 unlockpt (int fd)
 {
+  TRACE_IN;
   return 0;
 }
 
@@ -45,6 +48,7 @@ extern "C"
 int
 ttyslot (void)
 {
+  TRACE_IN;
   if (NOTSTATE (myself, PID_USETTY))
     return -1;
   return myself->ctty;
@@ -53,6 +57,7 @@ ttyslot (void)
 void __stdcall
 tty_init (void)
 {
+  TRACE_IN;
   if (NOTSTATE (myself, PID_USETTY))
     return;
   if (myself->ctty == -1)
@@ -69,8 +74,8 @@ tty_init (void)
 void __stdcall
 create_tty_master (int ttynum)
 {
-  tty_master = (fhandler_tty_master *) cygheap->fdtab.build_fhandler (-1, FH_TTYM,
-							     "/dev/ttym", ttynum);
+  TRACE_IN;
+  tty_master = (fhandler_tty_master *) cygheap->fdtab.build_fhandler (-1, FH_TTYM, "/dev/ttym", ttynum);
   if (tty_master->init (ttynum))
     api_fatal ("Can't create master tty");
   else
@@ -92,6 +97,7 @@ create_tty_master (int ttynum)
 void __stdcall
 tty_terminate (void)
 {
+  TRACE_IN;
   if (NOTSTATE (myself, PID_USETTY))
     return;
   cygwin_shared->tty.terminate ();
@@ -100,6 +106,7 @@ tty_terminate (void)
 int __stdcall
 attach_tty (int num)
 {
+  TRACE_IN;
   if (num != -1)
     {
       return cygwin_shared->tty.connect_tty (num);
@@ -112,6 +119,7 @@ attach_tty (int num)
 void
 tty_list::terminate (void)
 {
+  TRACE_IN;
   int ttynum = myself->ctty;
 
   /* Keep master running till there are connected clients */
@@ -152,6 +160,7 @@ tty_list::terminate (void)
 int
 tty_list::connect_tty (int ttynum)
 {
+  TRACE_IN;
   if (ttynum < 0 || ttynum >= NTTYS)
     {
       termios_printf ("ttynum (%d) out of range", ttynum);
@@ -169,6 +178,7 @@ tty_list::connect_tty (int ttynum)
 void
 tty_list::init (void)
 {
+  TRACE_IN;
   for (int i = 0; i < NTTYS; i++)
     {
       ttys[i].init ();
@@ -184,6 +194,7 @@ tty_list::init (void)
 int
 tty_list::allocate_tty (int with_console)
 {
+  TRACE_IN;
   HWND console;
 
   /* FIXME: This whole function needs a protective mutex. */
@@ -192,7 +203,11 @@ tty_list::allocate_tty (int with_console)
     console = NULL;
   else
     {
+#if DO_CPP_NEW
       char *oldtitle = new char [TITLESIZE];
+#else
+      char *oldtitle = (char *) malloc (TITLESIZE);
+#endif
 
       if (!oldtitle)
 	{
@@ -215,6 +230,11 @@ tty_list::allocate_tty (int with_console)
       Sleep (40);
       console = FindWindow (NULL, buf);
       SetConsoleTitle (oldtitle);
+#if DO_CPP_NEW
+      delete[] oldtitle;
+#else
+      free (oldtitle);
+#endif
       Sleep (40);
       ReleaseMutex (title_mutex);
       if (console == NULL)
@@ -279,18 +299,21 @@ tty_list::allocate_tty (int with_console)
 BOOL
 tty::slave_alive ()
 {
+  TRACE_IN;
   return alive (TTY_SLAVE_ALIVE);
 }
 
 BOOL
 tty::master_alive ()
 {
+  TRACE_IN;
   return alive (TTY_MASTER_ALIVE);
 }
 
 BOOL
 tty::alive (const char *fmt)
 {
+  TRACE_IN;
   HANDLE ev;
   char buf[sizeof (TTY_MASTER_ALIVE) + 16];
 
@@ -303,6 +326,7 @@ tty::alive (const char *fmt)
 HANDLE
 tty::create_inuse (const char *fmt)
 {
+  TRACE_IN;
   HANDLE h;
   char buf[sizeof (TTY_MASTER_ALIVE) + 16];
 
@@ -317,6 +341,7 @@ tty::create_inuse (const char *fmt)
 void
 tty::init (void)
 {
+  TRACE_IN;
   output_stopped = 0;
   setsid (0);
   pgid = 0;
@@ -329,6 +354,7 @@ tty::init (void)
 HANDLE
 tty::get_event (const char *fmt, BOOL manual_reset)
 {
+  TRACE_IN;
   HANDLE hev;
   char buf[40];
 
@@ -347,6 +373,7 @@ tty::get_event (const char *fmt, BOOL manual_reset)
 int
 tty::make_pipes (fhandler_pty_master *ptym)
 {
+  TRACE_IN;
   /* Create communication pipes */
 
   /* FIXME: should this be sec_none_nih? */
@@ -379,6 +406,7 @@ tty::make_pipes (fhandler_pty_master *ptym)
 BOOL
 tty::common_init (fhandler_pty_master *ptym)
 {
+  TRACE_IN;
   /* Set termios information.  Force initialization. */
   ptym->tcinit (this, TRUE);
 

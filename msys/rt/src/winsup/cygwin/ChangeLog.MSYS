@@ -1,3 +1,30 @@
+2002-07-17  Earnie Boyd  <earnie@users.sf.net>
+
+	* Makefile.in (DLL_OFILES): Add ismsys.o.
+	* ismsys.cc: New file.
+	* winsup.h (TRACE_IN): New macro.
+	(IsMsys): Add prototype.
+	* environ.cc: Use TRACE_IN throughout.
+	(winenv): Add DO_CPP_NEW logic.
+	* msys_symlink.cc (msys_symlink): Ditto.
+	* path.cc: Use TRACE_IN throughout.
+	(symlink): Add DO_CPP_NEW logic.
+	(hash_path_name): Ditto.
+	(cwdstuff): Ditto.
+	(cygwin_conv_to_win32_path): Ditto. Also, correct a bug in the path
+	list routine.
+	* poll.cc (poll): Use TRACE_IN.  Add DO_CPP_NEW logic.
+	* select.cc (allocfd_set(n)): Add DO_CPP_NEW logic.
+	* shared.cc (shared_info::heap_chunk_size): Change default from 6 to 2.
+	* spawn.cc: Use TRACE_IN throughout.
+	(spawn_guts): Add check for IsMsys executable.  Initialize tmpbuf.
+	Use already calculated count of environment variables.
+	Add some DO_CPP_NEW logic.
+	Don't convert PATH and MSYS_WPATH to Win32 paths.
+	* tty.cc: Add #include <stdlib.h>.  Use TRACE_IN throughout.
+	(create_tty_master): Remove unneeded spacing.
+	(tty_list::allocate_tty): Add DO_CPP_NEW logic.
+
 2002-06-19  Earnie Boyd  <earnie@users.sf.net>
 
 	* msys.cc: Add guards for pointers returned by strrchr throughout.
