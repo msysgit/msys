@@ -1584,7 +1584,7 @@ typedef HW_PROFILE_INFOW HW_PROFILE_INFO,*LPHW_PROFILE_INFO;
 #define CreateEvent CreateEventW
 #define CreateFile CreateFileW
 #define CreateFileMapping CreateFileMappingW
-#define CreateCreateHardLink CreateCreateHardLinkW
+#define CreateHardLink CreateHardLinkW
 #define CreateMailslot CreateMailslotW
 #define CreateMutex CreateMutexW
 #define CreateNamedPipe CreateNamedPipeW
@@ -1720,7 +1720,7 @@ typedef HW_PROFILE_INFOA HW_PROFILE_INFO,*LPHW_PROFILE_INFO;
 #define CreateEvent CreateEventA
 #define CreateFile CreateFileA
 #define CreateFileMapping CreateFileMappingA
-#define CreateCreateHardLink CreateCreateHardLinkA
+#define CreateHardLink CreateHardLinkA
 #define CreateMailslot CreateMailslotA
 #define CreateMutex CreateMutexA
 #define CreateNamedPipe CreateNamedPipeA

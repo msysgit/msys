@@ -1,3 +1,8 @@
+2001-12-15  Andrew Begel  <abegel@eecs.berkeley.edu>
+
+	*include/winbase.h (CreateHardLink): Correct typo in UNICODE
+	mappings.
+
 2001-12-11  Phillip Susi  <psusi@cfl.rr.com>
 
 	* include/commctrl.h (ACS_*): Add new defines.
