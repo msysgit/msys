@@ -107,6 +107,12 @@ uses Mingw-hosted gcc/binutils.
 </li>
 </ul>
 
+<h3 align="left">Sites useful for Windows32 programmers</h3>
+<ul>
+<li><a href="http://www.blockdev.net/Community/Editors/">Free Editors for
+Programming in Windows (32-bit)</a>
+</ul>
+
 <p>The <a href="mingwfaq.shtml">MinGW FAQ</a>
 contains various other useful links.</p>
 
