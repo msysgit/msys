@@ -1,4 +1,8 @@
 
+Fri Dec 22 07:23:46 PST 2000  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	* docs.shtml: bugfix ssi include comment tag.
+
 Fri Dec 22 07:16:51 PST 2000  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	* docs.shtml: oops. Missed the change for ssi. Changed to use ssi.

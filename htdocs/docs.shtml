@@ -14,7 +14,7 @@
 <tr>
 <td bgcolor="#eeeeee" valign="top" width="10%">
 
-<!--#include file="ssi/lsidebar.html"--!>
+<!--#include file="ssi/lsidebar.html"-->
 
 </td>
 <!-- 2nd column of two-column format: the body -->
