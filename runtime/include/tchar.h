@@ -29,9 +29,9 @@
  *  DISCLAIMED. This includes but is not limited to warranties of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Revision: 1.8 $
+ * $Revision: 1.9 $
  * $Author: earnie $
- * $Date: 2002-08-12 13:06:35 $
+ * $Date: 2002-08-27 11:20:27 $
  *
  */
 
@@ -165,7 +165,7 @@ typedef wchar_t _TCHAR;
 #define _wcsncnt(_wcs, _cnt) ((wcslen(_wcs)>_cnt) ? _count : wcslen(_wcs))
 #define _wcsspnp(_wcs1, _wcs2) ((*((_wcs1)+wcsspn(_wcs1,_wcs2))) ? ((_wcs1)+wcsspn(_wcs1,_wcs2)) : NULL)
 
-#if 1  // defined __MSVCRT__
+#if 1  /* defined __MSVCRT__ */
 /*
  *   These wide functions not in crtdll.dll.
  *   Define macros anyway so that _wfoo rather than _tfoo is undefined
@@ -360,8 +360,7 @@ typedef char	_TCHAR;
 #define _tunlink    _unlink
 #define _tfinddata_t    _finddata_t
 
-
-#if 1  // defined __MSVCRT__
+#if 1  /* defined __MSVCRT__ */
 /* Not in crtdll.dll. Define macros anyway? */
 #define _ttoi64     _atoi64
 #define _i64tot     _i64toa
