@@ -124,6 +124,7 @@ char title_buf[TITLESIZE + 1];
 static void
 do_global_dtors (void)
 {
+  TRACE_IN;
   if (user_data->dtors)
     {
       void (**pfunc)() = user_data->dtors;
@@ -135,6 +136,7 @@ do_global_dtors (void)
 static void __stdcall
 do_global_ctors (void (**in_pfunc)(), int force)
 {
+  TRACE_IN;
   if (!force)
     {
       if (user_data->forkee || user_data->run_ctors_p)
@@ -168,6 +170,7 @@ bool iswinnt;
 static void
 set_os_type ()
 {
+  TRACE_IN;
   OSVERSIONINFO os_version_info;
   const char *os;
 
@@ -216,6 +219,7 @@ host_dependent_constants NO_COPY host_dependent;
 void
 host_dependent_constants::init ()
 {
+  TRACE_IN;
   extern DWORD chunksize;
   /* fhandler_disk_file::lock needs a platform specific upper word
      value for locking entire files.
@@ -253,6 +257,7 @@ host_dependent_constants::init ()
 static int __stdcall
 insert_file (char *name, char *&cmd)
 {
+  TRACE_IN;
   HANDLE f;
   DWORD size;
 
@@ -308,6 +313,7 @@ insert_file (char *name, char *&cmd)
 static inline int
 isquote (char c)
 {
+  TRACE_IN;
   char ch = c;
   return ch == '"' || ch == '\'';
 }
@@ -316,6 +322,7 @@ isquote (char c)
 static /*__inline*/ char *
 quoted (char *cmd, int winshell)
 {
+  TRACE_IN;
   char *p;
   char quote = *cmd;
 
@@ -361,6 +368,7 @@ quoted (char *cmd, int winshell)
 static int __stdcall
 globify (char *word, char **&argv, int &argc, int &argvlen)
 {
+  TRACE_IN;
   if (*word != '~' && strpbrk (word, "?*[\"\'(){}") == NULL)
     return 0;
 
@@ -440,6 +448,7 @@ globify (char *word, char **&argv, int &argc, int &argvlen)
 static void __stdcall
 build_argv (char *cmd, char **&argv, int &argc, int winshell)
 {
+  TRACE_IN;
   int argvlen = 0;
   int nesting = 0;		// monitor "nesting" from insert_file
 
@@ -510,6 +519,7 @@ build_argv (char *cmd, char **&argv, int &argc, int winshell)
 void __stdcall
 check_sanity_and_sync (per_process *p)
 {
+  TRACE_IN;
   /* Sanity check to make sure developers didn't change the per_process    */
   /* struct without updating SIZEOF_PER_PROCESS [it makes them think twice */
   /* about changing it].						   */
@@ -552,6 +562,7 @@ static MEMORY_BASIC_INFORMATION sm;
 extern void
 alloc_stack_hard_way (child_info_fork *ci, volatile char *b)
 {
+  TRACE_IN;
   void *new_stack_pointer;
   MEMORY_BASIC_INFORMATION m;
   void *newbase;
@@ -602,6 +613,7 @@ alloc_stack_hard_way (child_info_fork *ci, volatile char *b)
 static void
 alloc_stack (child_info_fork *ci)
 {
+  TRACE_IN;
   /* FIXME: adding 16384 seems to avoid a stack copy problem during
      fork on Win95, but I don't know exactly why yet. DJ */
   volatile char b[ci->stacksize + 16384];
@@ -629,6 +641,7 @@ char _declspec(dllexport) **__argv;
 void
 sigthread::init (const char *s)
 {
+  TRACE_IN;
   InitializeCriticalSection (&lock);
   id = GetCurrentThreadId ();
 }
@@ -640,6 +653,7 @@ sigthread::init (const char *s)
 static void
 dll_crt0_1 ()
 {
+  TRACE_IN;
   /* According to onno@stack.urc.tue.nl, the exception handler record must
      be on the stack.  */
   /* FIXME: Verify forked children get their exception handler set up ok. */
@@ -873,6 +887,7 @@ dll_crt0_1 ()
 extern "C" void __stdcall
 _dll_crt0 ()
 {
+  TRACE_IN;
   char envbuf[8];
 #ifdef DEBUGGING
   if (GetEnvironmentVariable ("CYGWIN_SLEEP", envbuf, sizeof (envbuf) - 1))
@@ -941,6 +956,7 @@ _dll_crt0 ()
 void
 dll_crt0 (per_process *uptr)
 {
+  TRACE_IN;
   /* Set the local copy of the pointer into the user space. */
   if (uptr && uptr != user_data)
     {
@@ -954,6 +970,7 @@ dll_crt0 (per_process *uptr)
 extern "C" void
 msys_dll_init ()
 {
+  TRACE_IN;
   static char **envp;
   static int _fmode;
 
@@ -975,6 +992,7 @@ msys_dll_init ()
 extern "C" void
 __main (void)
 {
+  TRACE_IN;
   do_global_ctors (user_data->ctors, FALSE);
 }
 
@@ -988,6 +1006,7 @@ enum
 extern "C" void __stdcall
 do_exit (int status)
 {
+  TRACE_IN;
   UINT n = (UINT) status;
   static int NO_COPY exit_state = 0;
 
@@ -1068,12 +1087,14 @@ do_exit (int status)
 extern "C" void
 _exit (int n)
 {
+  TRACE_IN;
   do_exit ((DWORD) n & 0xffff);
 }
 
 extern "C" void
 __api_fatal (const char *fmt, ...)
 {
+  TRACE_IN;
   char buf[4096];
   va_list ap;
 
@@ -1109,6 +1130,7 @@ __api_fatal (const char *fmt, ...)
 void __stdcall
 cygbench (const char *s)
 {
+  TRACE_IN;
   char buf[1024];
   if (GetEnvironmentVariable ("CYGWIN_BENCH", buf, sizeof (buf)))
     small_printf ("%05d ***** %s : %10d\n", GetCurrentProcessId (), s, strace.microseconds ());
