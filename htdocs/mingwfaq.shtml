@@ -1,4 +1,4 @@
-<!-- $Id: mingwfaq.shtml,v 1.31 2002-01-26 18:14:48 stevedperkins Exp $ -->
+<!-- $Id: mingwfaq.shtml,v 1.32 2002-02-06 17:00:39 stevedperkins Exp $ -->
 
 <html>
 <head>
@@ -341,24 +341,19 @@
          by the GPL as well!
       </p>
       <p>
-         There is command-line option that can be passed to Cygwin's GCC, "-mno-cygwin", 
-         that was intended to address these concerns.  When Cygwin's GCC is invoked with 
-         the "-mno-cygwin" option, executables are built without a dependency on the 
-         Cygwin DLL.  Instead, the "-mno-cygwin" option instructs GCC to use the MinGW 
-         headers and libraries (which must be located in a particular location within 
-         the Cygwin directory structure).  However, support for "-mno-cygwin" has 
-         been weak and flaky... the location at which it searches for MinGW headers 
-         has changed a time or two (with poor documentation), bugs have crept in, and 
-         maintainence of the option has NOT be a priority in development.  There is a
-         distinct possibility that "-mno-cygwin" will become depreciated in future 
-         releases of Cygwin.  If you would like to experiment with &quot;-mno-cygwin"&quot;,
-         the most intuitive documentation can be found 
+         There is command-line option that can be passed to Cygwin's GCC,
+         "-mno-cygwin", that was intended to address these concerns. When Cygwin's
+         GCC is invoked with the "-mno-cygwin" option, executables are built without
+         a dependency on the Cygwin DLL.  However, while this works effortlessly for
+         C applications, using "-mno-cygwin" to compile C++ applications requires
+         additional configuration work up-front.  A large amount of documentation on
+         this is in circulation, but the most up-to-date can be found 
          <a href="http://www.colomsat.net.co/freehost/ngiraldo/cppcygwin.html">here</a>.
-      </p>
+      </p>         
       <p>
-         For those who would like to use a Cygwin environment for development, yet 
-         generate non-Cygwin-dependant executables, a much easier option to 
-         "-mno-cygwin" exists.  Simply install Cygwin and the MinGW distribution 
+         For those who would like to use the Cygwin environment for development, yet
+         generate non-Cygwin-dependant executables, a much easier option to "-mno-cygwin"
+         does exist.  Simply install Cygwin and the MinGW distribution 
          in seperate directories (i.e. &quot;C:\CYGWIN&quot; and &quot;C:\MINGW&quot;), and make sure 
          that the &quot;/bin&quot; subdirectory beneath your MinGW installation comes before 
          Cygwin's &quot;/bin&quot; subdirectory in your PATH environment variable
@@ -504,7 +499,7 @@
 
    <hr />
    <address>
-   <br />Last revised $Date: 2002-01-26 18:14:48 $
+   <br />Last revised $Date: 2002-02-06 17:00:39 $
    </address>
 
 </body>
