@@ -9,7 +9,7 @@ alldoc tags:
 	ar r ../lib/libX11.a wrap.o rxvt_res.o
 
 wrap.o: wrap.c xwrappers.gen
-	gcc -O -c wrap.c -I.. -mwin32
+	gcc -O -c wrap.c -I.. 
 
 rxvt_res.o: rxvt.rc
 	windres -i rxvt.rc -o rxvt_res.o
