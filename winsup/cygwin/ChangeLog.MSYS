@@ -1,5 +1,10 @@
 2003-06-03  Earnie Boyd  <earnie@users.sf.net>
 
+	* spawn.cc: Correct malloc size algorithm and insure that pointers are
+	set before freeing.
+
+2003-06-03  Earnie Boyd  <earnie@users.sf.net>
+
 	* spawn.cc: Use cmalloc and friends instead of the c++ new operator
 	and friends.
 	* path.cc: Use std::min instead of min for GCC >= 3.0.

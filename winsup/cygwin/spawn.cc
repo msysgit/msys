@@ -244,8 +244,10 @@ class av
   {
   TRACE_IN;
     for (int i = 0; i < calloced; i++)
-      cfree (argv[i]);
-    cfree (argv);
+      if (argv[i])
+	cfree (argv[i]);
+    if (argv)
+      cfree (argv);
   }
   int unshift (const char *what, int conv = 0);
   operator char **() {TRACE_IN; return argv;}
@@ -654,14 +656,14 @@ spawn_guts (HANDLE hToken, const char * prog_arg, const char *const *argv,
       // Is there a count of used?
       envblockcnt = ciresrv.moreinfo->envc;
 #endif
-      char **envblockarg = (char *)cmalloc(HEAP_STR, envblockcnt + 1); 
+      char **envblockarg = (char **)cmalloc(HEAP_STR, sizeof (char *) * (envblockcnt + 1)); 
       char *tptr, *wpath;
       int envblocknlen = 0, envblockarglen = 0;
       envblockn = envblock;
       for (int loop=0;loop < envblockcnt;loop++)
 	{
 	  envblocknlen = strlen(envblockn);
-	  envblockarg[loop] = (char *) cmalloc(HEAP_STR, envblocknlen + MAX_PATH);
+	  envblockarg[loop] = (char *) cmalloc(HEAP_1_STR, envblocknlen + MAX_PATH);
 	  memset (envblockarg[loop], 0, envblocknlen + MAX_PATH);
 	  wpath = (char *)cmalloc (HEAP_STR, envblocknlen + MAX_PATH);
 	  memset (wpath, 0, envblocknlen + MAX_PATH);
@@ -677,11 +679,13 @@ spawn_guts (HANDLE hToken, const char * prog_arg, const char *const *argv,
 	  debug_printf("envblockarg[%d] = %s", loop, envblockarg[loop]);
 	  envblockarglen += strlen(envblockarg[loop]) + 1;
 	  envblockn = envblockn + envblocknlen + 1;
-	  cfree (wpath);
+	  if (wpath)
+	    cfree (wpath);
 	} // END FOR (int loop=0;loop < envblockcnt;loop++)
 
-      cfree (envblock);
-      envblock = (char *)cmalloc (HEAP_STR, envblockarglen + 1);
+      if (envblock)
+	free (envblock);
+      envblock = (char *)malloc (envblockarglen + 1);
 
       tptr = envblock;
       for (int i=0;i < envblockcnt;i++)
@@ -689,10 +693,12 @@ spawn_guts (HANDLE hToken, const char * prog_arg, const char *const *argv,
 	  envblocknlen = strlen (envblockarg[i]) + 1;
 	  memcpy (tptr, envblockarg[i], envblocknlen);
 	  tptr += envblocknlen;
-	  cfree (envblockarg[i]);
+	  if (envblockarg[i])
+	    cfree (envblockarg[i]);
 	}
       *++tptr = '\0';
-      cfree (envblockarg);
+      if (envblockarg)
+	cfree (envblockarg);
     }
 
   /* Preallocated buffer for `sec_user' call */
@@ -797,7 +803,8 @@ spawn_guts (HANDLE hToken, const char * prog_arg, const char *const *argv,
     }
 
   MALLOC_CHECK;
-  cfree (envblock);
+  if (envblock)
+    free (envblock);
 
   cygheap_setup_for_child_cleanup (&ciresrv);
   MALLOC_CHECK;
