@@ -13,8 +13,8 @@ P.smi { font-size: small; text-align: center; font-style: italic; }
 SPAN.bold { font-weight: bold; }
 
 TABLE { width: 100%; text-align: left; }
-TABLE.prim { padding: 0cm }
-TABLE.sec { padding: 1cm; }
+TABLE.prim { padding: 0cm; }
+TABLE.sec { padding: 0cm; }
 
 TD { vertical-align: top; }
 TD.side { background-color: rgb( 238, 238, 238 ); width: 10%; }
