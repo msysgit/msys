@@ -9,9 +9,9 @@
  * Significantly revised and rewinddir, seekdir and telldir added by Colin
  * Peters <colin@fu.is.saga-u.ac.jp>
  *	
- * $Revision: 1.3 $
+ * $Revision: 1.4 $
  * $Author: earnie $
- * $Date: 2003-09-15 14:18:35 $
+ * $Date: 2003-10-10 15:02:04 $
  *
  */
 
@@ -76,8 +76,8 @@ _topendir (const _TCHAR *szPath)
 
   /* Allocate enough space to store DIR structure and the complete
    * directory path given. */
-  nd = (_TDIR *) malloc (sizeof (_TDIR) + _tcslen (szFullPath) + _tcslen (SLASH) +
-		       _tcslen (SUFFIX));
+  nd = (_TDIR *) malloc (sizeof (_TDIR) + (_tcslen(szFullPath) + _tcslen (SLASH) +
+			 _tcslen(SUFFIX) + 1) * sizeof(_TCHAR));
 
   if (!nd)
     {
@@ -165,7 +165,12 @@ _treaddir (_TDIR * dirp)
       /* Get the next search entry. */
       if (_tfindnext (dirp->dd_handle, &(dirp->dd_dta)))
 	{
-	  /* We are off the end or otherwise error. */
+	  /* We are off the end or otherwise error.	
+	     _findnext sets errno to ENOENT if no more file
+	     Undo this. */ 
+	  DWORD winerr = GetLastError();
+	  if (winerr == ERROR_NO_MORE_FILES)
+	    errno = 0;	
 	  _findclose (dirp->dd_handle);
 	  dirp->dd_handle = -1;
 	  dirp->dd_stat = -1;

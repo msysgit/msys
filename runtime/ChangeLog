@@ -1,3 +1,64 @@
+2003-10-10  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	* include/sys/types.h (ssize_t): Correct the definition.
+
+2003-10-03  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/stdio.h (_filbuf): Add prototype.
+	(_flsbuf): Add prototype.
+	(getc): Add inline version.
+	(putc): Likewise.
+	(getchar): Likewise.
+	(putchar): Likewise.
+
+2003-10-03  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* mingwex/dirent.c (_treaddir): Reset errno to 0 if end
+	of directory.
+
+2003-09-29  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/stdlib.h: Guard non-ISO functions with
+	!__STRICT_ANSI__, throughout.
+
+2003-09-24  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/io.h (_fileno): Remove prototype.
+	(fileno): Likewise.
+	(FILENAME_MAX): Define, if needed.
+	Don't include <stdio.h>.
+	* include/stdio.h (FILENAME_MAX): Protect against
+	prior definition.
+	(_fileno): Define macro implementation.
+	(fileno): Likewise.
+
+2003-09-24  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/inttypes.h: Include _mingw.h.
+
+2003-09-24  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/_mingw.h (__CRT_INLINE): Define.
+	* include/ctype.h: Replace 'extern inline' with __CRT_INLINE,
+	throughout
+	* include/inttypes.h: Likewise.
+	* include/math.h: Likewise.
+	* include/stdio.h: Likewise.
+	* include/stdlib.h: Likewise.
+	* include/string.h: Likewise.
+	* include/wchar.h: Likewise.
+	* include/wctype.h: Likewise.
+
+2003-09-22  Roland Schwingel  <rolandschwingel@users.sourceforge.net>
+
+	* mingwex/dirent.c (_topendir): Allocate enough memory for
+	DIR struct in UNICODE case too.
+
+2003-09-15  Earnie Boyd  <earnie@users.sf.net>
+
+	* include/_mingw.h: Increment version to 3.2.
+	* Makefile.in: Ditto.
+
 2003-07-03  Earnie Boyd  <earnie@users.sf.net>
 
 	* config.guess, config.sub: Update with versions from ftp.gnu.org.
@@ -883,10 +944,10 @@
 	(atexit): Force use of private atexit table via _dllonexit,
 	(_onexit): New function. Force use of private atexit table via
 	_dllonexit,
-	* mscvrt.def (atexit, _onexit): Add DATA keyword so that only 
+	* msvcrt.def (atexit, _onexit): Add DATA keyword so that only
 	_imp_<_symbol> is visible in import lib.
-	* mscvrt20.def: Likewise.
-	* mscvrt40.def: Likewise.
+	* msvcrt20.def: Likewise.
+	* msvcrt40.def: Likewise.
 	* crtdll.def: Likewise.
 
 	2002-04-26  Danny Smith  <dannysmith@users.sourceforge.net>

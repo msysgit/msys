@@ -22,9 +22,9 @@
  *  DISCLAIMED. This includes but is not limited to warranties of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Revision: 1.14 $
+ * $Revision: 1.15 $
  * $Author: earnie $
- * $Date: 2003-09-15 14:18:35 $
+ * $Date: 2003-10-10 15:02:04 $
  *
  */
 
@@ -65,11 +65,11 @@
 /*
  * The maximum length of a file name. You should use GetVolumeInformation
  * instead of this constant. But hey, this works.
- *
- * NOTE: This is used in the structure _finddata_t (see io.h) so changing it
- *       is probably not a good idea.
+ * Also defined in io.h.
  */
+#ifndef FILENAME_MAX
 #define	FILENAME_MAX	(260)
+#endif
 
 /*
  * The maximum number of files that may be open at once. I have set this to
@@ -142,7 +142,7 @@
 /*
  * The structure underlying the FILE type.
  *
- * I still believe that nobody in their right mind should make use of the
+ * Some believe that nobody in their right mind should make use of the
  * internals of this structure. Provided by Pedro A. Aranda Gutiirrez
  * <paag@tid.es>.
  */
@@ -222,7 +222,7 @@ _CRTIMP int __cdecl	_vsnprintf (char*, size_t, const char*, __VALIST);
 
 #ifndef __NO_ISOCEXT  /* externs in libmingwex.a */
 int __cdecl snprintf(char* s, size_t n, const char*  format, ...);
-extern __inline__ int __cdecl
+__CRT_INLINE int __cdecl
 vsnprintf (char* s, size_t n, const char* format, __VALIST arg)
   { return _vsnprintf ( s, n, format, arg); }
 int __cdecl vscanf (const char * __restrict__, __VALIST);
@@ -247,13 +247,56 @@ _CRTIMP int __cdecl	fgetc (FILE*);
 _CRTIMP char* __cdecl	fgets (char*, int, FILE*);
 _CRTIMP int __cdecl	fputc (int, FILE*);
 _CRTIMP int __cdecl	fputs (const char*, FILE*);
-_CRTIMP int __cdecl	getc (FILE*);
-_CRTIMP int __cdecl	getchar (void);
 _CRTIMP char* __cdecl	gets (char*);
-_CRTIMP int __cdecl	putc (int, FILE*);
-_CRTIMP int __cdecl	putchar (int);
 _CRTIMP int __cdecl	puts (const char*);
 _CRTIMP int __cdecl	ungetc (int, FILE*);
+
+/* Traditionally, getc and putc are defined as macros. but the
+   standard doesn't say that they must be macros.
+   We use inline functions here to allow the fast versions
+   to be used in C++ with namespace qualification, eg., ::getc.
+
+   _filbuf and _flsbuf  are not thread-safe. */
+_CRTIMP int __cdecl	_filbuf (FILE*);
+_CRTIMP int __cdecl	_flsbuf (int, FILE*);
+
+#if !defined _MT
+
+__CRT_INLINE int __cdecl getc (FILE* __F)
+{
+  return (--__F->_cnt >= 0)
+    ?  (int) *__F->_ptr++
+    : _filbuf (__F);
+}
+
+__CRT_INLINE int __cdecl putc (int __c, FILE* __F)
+{
+  return (--__F->_cnt >= 0)
+    ?  (int)(*__F->_ptr++ = (char)__c)
+    :  _flsbuf (__c, __F);
+}
+
+__CRT_INLINE int __cdecl getchar (void)
+{
+  return (--stdin->_cnt >= 0)
+    ?  (int) *stdin->_ptr++
+    : _filbuf (stdin);
+}
+
+__CRT_INLINE int __cdecl putchar(int __c)
+{
+  return (--stdout->_cnt >= 0)
+    ?  (int)(*stdout->_ptr++ = (char)__c)
+    :  _flsbuf (__c, stdout);}
+
+#else  /* Use library functions.  */
+
+_CRTIMP int __cdecl	getc (FILE*);
+_CRTIMP int __cdecl	putc (int, FILE*);
+_CRTIMP int __cdecl	getchar (void);
+_CRTIMP int __cdecl	putchar (int);
+
+#endif
 
 /*
  * Direct Input and Output Functions
@@ -336,11 +379,16 @@ _CRTIMP int __cdecl	_getmaxstdio(void);
 _CRTIMP int __cdecl	_setmaxstdio(int);
 #endif
 
+#define _fileno(__F) ((__F)->_file)
+
 #ifndef _NO_OLDNAMES
 _CRTIMP int __cdecl	fgetchar (void);
 _CRTIMP int __cdecl	fputchar (int);
 _CRTIMP FILE* __cdecl	fdopen (int, const char*);
 _CRTIMP int __cdecl	fileno (FILE*);
+
+#define fileno(__F) ((__F)->_file)
+
 #endif	/* Not _NO_OLDNAMES */
 
 #endif	/* Not __STRICT_ANSI__ */
@@ -387,7 +435,7 @@ _CRTIMP FILE* __cdecl	_wpopen (const wchar_t*, const wchar_t*);
 
 #ifndef __NO_ISOCEXT  /* externs in libmingwex.a */
 int __cdecl snwprintf (wchar_t* s, size_t n, const wchar_t*  format, ...);
-extern __inline__ int __cdecl
+__CRT_INLINE int __cdecl
 vsnwprintf (wchar_t* s, size_t n, const wchar_t* format, __VALIST arg)
   { return _vsnwprintf ( s, n, format, arg);}
 int __cdecl vwscanf (const wchar_t * __restrict__, __VALIST);

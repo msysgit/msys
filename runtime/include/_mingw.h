@@ -100,8 +100,14 @@
 # endif
 #endif /* __GNUC__ */
 
-#define __MINGW32_VERSION 3.1
+#ifdef __cplusplus
+#define __CRT_INLINE inline
+#else
+#define __CRT_INLINE extern __inline__
+#endif
+
+#define __MINGW32_VERSION 3.2
 #define __MINGW32_MAJOR_VERSION 3
-#define __MINGW32_MINOR_VERSION 1
+#define __MINGW32_MINOR_VERSION 2
 
 #endif /* __MINGW_H */

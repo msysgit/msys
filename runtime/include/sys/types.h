@@ -19,9 +19,9 @@
  *  DISCLAIMED. This includes but is not limited to warrenties of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Revision: 1.4 $
+ * $Revision: 1.5 $
  * $Author: earnie $
- * $Date: 2003-09-15 14:18:35 $
+ * $Date: 2003-10-10 15:02:04 $
  *
  */
 
@@ -116,7 +116,7 @@ typedef _sigset_t	sigset_t;
 typedef long _ssize_t;
 
 #ifndef	_NO_OLDNAMES
-typedef _ssize_t ssize_t;
+typedef ssize_t _ssize_t;
 #endif
 #endif /* Not _SSIZE_T_ */ 
 
