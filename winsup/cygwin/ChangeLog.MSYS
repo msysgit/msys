@@ -1,3 +1,13 @@
+2001-11-30  Earnie Boyd  <earnie@users.sf.net>
+
+	* spawn.cc (spawn_guts): Add path name translation for newargv.
+	* path.h: Add FIXME.
+	* path.cc: Ditto.
+	(mkrelpath): Add debug_printf for entry and exit.
+	* spawn.cc: Ditto.
+	* FIXME: New file.
+	* include/cygwin/version.h (CYGWIN_VERSION_DLL_MINOR): Increment.
+
 2001-09-28  Earnie Boyd  <earnie@SF.net>
 
 	* cygwin.din (msys_dll_init): Renamed cygwin_dll_init.
