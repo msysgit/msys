@@ -48,11 +48,12 @@ for i in /etc/profile.d/*.sh ; do
   fi
 done
 
-export CONFIG_SITE=/etc/config.site
 export MAKE_MODE=unix
 export PS1='\[\033]0;$MSYSTEM:\w\007
 \033[32m\]\u@\h \[\033[33m\w\033[0m\]
 $ '
+
+alias clear=clsb
 
 cd "$HOME"
 
