@@ -22,7 +22,7 @@
 <br />Original document by Laura Michaels
 <br />Current maintainer ?
 <br />Copyright © 1999 All Rights Reserved
-<br />Last revised: $Id: mingwfaq.shtml,v 1.10 2000-11-14 22:32:17 pfalcon Exp $
+<br />Last revised: $Id: mingwfaq.shtml,v 1.11 2000-11-14 22:42:25 pfalcon Exp $
 </address>
 <p>If you have any further questions, please refer them to the
 mingw32 mailing list.  I will update this page as I have time to do so.
@@ -114,7 +114,7 @@ for his source code examples and other suggestions.
 <pre>
 </pre>
   </li>
-  <li><a id="copyrightissues" name="copyrightissues">Copyright issues</a>
+  <li><a id="copyrightissues" name="copyrightissues"><h2>Copyright issues</h2></a>
   <p>Various licenses come with Open Software.  Some Open Software
   code requires you to redistribute your own source code
   when you add their code to your programs.  Some source code is public
@@ -177,45 +177,45 @@ for his source code examples and other suggestions.
 <pre>
 </pre>
   </li>
-  <li><a id="msvcrtvscrtdll" name="msvcrtvscrtdll">msvcrt vs crtdll?</a>
-  <p>Mingw requires the Microsoft runtime libraries.  You'll need
-  either crtdll.dll or msvcrt.dll on a system in order to run a
-  program.  There are two distributions of mingw, one for each
-  runtime library option.  Use the version of mingw for the type
-  of runtime library you wish to work with.  Which is better?  That
-  depends on what you need.  Crtdll is on all Win32 systems, but is
-  no longer updated.  It is available on platforms such as Windows
-  3.11/Windows NT 3.5 and platforms that use Win32s.  Msvcrt is not
-  guaranteed to be on every Windows operating system, but it is more
-  up-to-date and may offer more features.  It handles threading better
-  than crtdll and supplies functions such as _i64toa and _atoi64
-  that crtdll doesn't.
-  </p>
-<pre>
-</pre>
-  </li>
-  <li><a id="wheretogetmingw" name="wheretogetmingw">Where to get mingw</a>
+  <li><a id="wheretogetmingw" name="wheretogetmingw"><h2>Where to get mingw</h2></a>
   <p>You can download mingw from
   <a href="http://www.mingw.org">
   http://www.mingw.org</a>
   </p>
 <pre>
 </pre>
-  </li>
-  <li><a id="usingolderversions" name="usingolderversions">Using older versions</a>
-  <p>It's highly recommended that you use the latest version of
-  mingw.  There are older versions available on the Internet or
-  through books and CDs.  Older versions may have more bugs and can
-  be more difficult to install or use than the latest version.  
-  Please be sure that you have downloaded and are working with the
-  latest version, especially if you are having any difficulties with
-  installation or use.  If you are not sure of your version, you can
-  type <code>gcc -dumpversion</code> to find out what you are
-  using.  The current version is 2.95.2.
-  </p>
-<pre>
-</pre>
-  </li>
+  <ol class="alpha" type="A">
+    <li><a id="msvcrtvscrtdll" name="msvcrtvscrtdll">msvcrt vs crtdll?</a>
+    <p>Using crtdll is deprecated.</p>
+    <p>Mingw requires the Microsoft runtime libraries.  You'll need
+    either crtdll.dll or msvcrt.dll on a system in order to run a
+    program.  There are two distributions of mingw, one for each
+    runtime library option.  Use the version of mingw for the type
+    of runtime library you wish to work with.  Which is better?  That
+    depends on what you need.  Crtdll is on all Win32 systems, but is
+    no longer updated.  It is available on platforms such as Windows
+    3.11/Windows NT 3.5 and platforms that use Win32s.  Msvcrt is not
+    guaranteed to be on every Windows operating system, but it is more
+    up-to-date and may offer more features.  It handles threading better
+    than crtdll and supplies functions such as _i64toa and _atoi64
+    that crtdll doesn't.
+    </p>
+    </li>
+
+    <li><a id="usingolderversions" name="usingolderversions">Using older versions</a>
+    <p>Using older versions is not recommended.</p>
+    <p>It's highly recommended that you use the latest version of
+    mingw.  There are older versions available on the Internet or
+    through books and CDs.  Older versions may have more bugs and can
+    be more difficult to install or use than the latest version.  
+    Please be sure that you have downloaded and are working with the
+    latest version, especially if you are having any difficulties with
+    installation or use.  If you are not sure of your version, you can
+    type <code>gcc -dumpversion</code> to find out what you are
+    using.  The current version is 2.95.2.
+    </p>
+    </li>
+  </ol>
   <li><a id="howtoinstall" name="howtoinstall">How to install</a>
   <p>To install mingw, choose the distribution you want, either
   mingw using crtdll.dll or mingw using mscvrt.dll.  Download
