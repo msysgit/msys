@@ -1,32 +1,35 @@
-<!-- $Id: msys.shtml,v 1.7 2002-09-16 03:06:25 infidel Exp $ -->
-
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
- <title>Minimal SYStem</title>
+  <meta http-equiv="content-type"
+ content="text/html; charset=ISO-8859-1">
+  <meta name="description"
+ content="Home of MinGW -- Minimalist GNU for Windows -- project. Contains information about the MinGW runtime library and GNU/OSS development tools for MinGW.">
+          
+  <meta name="keywords"
+ content="mingw, mingw32, programming, C++, C, C/C++, libraries, software, development tools, editors, IDEs, GNU">
+
+   <link href="mingw.css" type="text/css" rel="stylesheet" title="MinGW">
+  <title>Minimal SYStem</title>
 </head>
-<body bgcolor="white" text="black" link="#0000EE" vlink="#551A8B" alink="red">
+<body link="#000099" vlink="#990099" alink="#000099">
 
-<h1 align="center">MSYS</h1>
+<h1>Minimal SYStem</h1>
 
-<!-- two-column format: left sidebar and the body -->
-<table border="0" cellspacing="6" cellpadding="8">
-<tr>
-<td bgcolor="#eeeeee" valign="top" width="10%">
-
-<!--#include file="ssi/lsidebar.html"-->
-
-</td>
-<!-- 2nd column of two-column format: the body -->
-<td valign="top">
-
-<!-- ================================================================== -->
-<!--                                                                    -->
-<!--			  Main Body                                     -->
-<!--                                                                    -->
-
-<table border="0" cellspacing="6" cellpadding="0">
-   <tr>
-      <td valign="top" align="left">
+<table class="prim" cellspacing="6" border="0">
+  <tbody>
+    <tr>
+      <td class="side"><!--#include file="ssi/lsidebar.html"--> <br>
+&nbsp;</td>
+      <td>
+      <table class="sec" cellspacing="6" border="0">
+        <tbody>
+          <tr>
+            <td>
+<!-- ======================================================================= -->
+<!--                                                                         -->
+<!--                               Main Body                                 -->
+<!--                                                                         -->
          <p>
             MSYS was created out of a long-lived desire to provide the MinGW community a
             Minimal SYStem, with which a configure script could be executed.  This is finally 
@@ -66,23 +69,17 @@
             There is also a new mailing list for MSYS discussion (MinGW-msys).  See the 
             <a href="lists.shtml">Mailing Lists</a> page for more information and access to this list.
          </p>
+<!--                            End of Main Body                             -->
+           </td>
+          </tr>
+        </tbody>
+      </table>
       </td>
-   </tr>
+    </tr>
+  </tbody>
 </table>
-
-<!-- <hr noshade="noshade" size="1" /> -->
-
-<!-- Close page table -->
-</td></tr></table>
-
-<!--#include file="ssi/bottombar.html"-->
-
-<!--#include file="ssi/footer.html"-->
-
-<address>
-<br />Last revised $Date: 2002-09-16 03:06:25 $
-</address>
-
+<!--#include file="ssi/bottombar.html"--><!--#include file="ssi/footer.html"-->
+<address> <br>
+Last revised $Date: 2003-01-11 09:02:49 $ </address>
 </body>
 </html>
-
