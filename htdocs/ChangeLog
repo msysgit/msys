@@ -1,3 +1,9 @@
+2003-03-15  Nathan Fisher <natbobc@users.sf.net>
+
+	* mingwfaq.shtml: Add Makefile section.
+	Add JNI DLL section.
+	Add Supported Languages section.
+	
 2003-03-01  Nathan Fisher <natbobc@users.sf.net>
 
 	* links.shtml: Fix bug report #694983.

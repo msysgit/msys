@@ -1,26 +1,63 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html><head>
+ 
+  
+  
+  
+  <meta content="HTML Tidy for Linux/x86 (vers 1st February 2003), see www.w3.org" name="generator">
 
-<html>
-<head>
- <meta content=
- "HTML Tidy for Linux/x86 (vers 1st February 2003), see www.w3.org"
-    name="generator">
- <meta http-equiv="content-type" content=
- "text/html; charset=us-ascii">
- <meta name="description" content=
- "Information about the Mingw Compiler. Includes descriptive information and questions commonly brought up on the mailing list.">
- <meta name="keywords" content=
- "mingw, mingw32, programming, C++, C, C/C++, libraries, software, development tools, editors, IDEs, GNU">
- <link href="mingw.css" type="text/css" rel="stylesheet"
-    title="MinGW">
 
- <title>MinGW FAQ</title>
-</head>
 
-<body link="#000099" vlink="#990099" alink="#000099">
- <h1>MinGW FAQ</h1>
 
- <table class="prim" cellspacing="6" border="0">
+ 
+  
+  
+  
+  <meta http-equiv="content-type" content="text/html; charset=us-ascii">
+
+
+
+
+ 
+  
+  
+  
+  <meta name="description" content="Information about the Mingw Compiler. Includes descriptive information and questions commonly brought up on the mailing list.">
+
+
+
+
+ 
+  
+  
+  
+  <meta name="keywords" content="mingw, mingw32, programming, C++, C, C/C++, libraries, software, development tools, editors, IDEs, GNU">
+
+
+
+
+ 
+  
+  
+  
+  <link href="mingw.css" type="text/css" rel="stylesheet" title="MinGW">
+  <title>MinGW FAQ</title>
+
+  
+
+</head><body link="#000099" vlink="#990099" alink="#000099">
+ 
+<h1>MinGW FAQ</h1>
+
+
+
+
+
+ 
+<table class="prim" cellspacing="6" border="0">
+
+
+
+
   <tbody>
    <tr>
     <td class="side">
@@ -63,8 +100,9 @@
            </li>
        <li><a href="download.shtml#release">What is the current version?</a>
            </li>
-       <li><a href="#faq-usingolderversions">Can I use older versions?</a>
-           </li>
+       <li><a href="#faq-usingolderversions">Can I use older versions?</a></li><li><a href="#faq-languages">What Languages Are Supported?</a><br>
+              </li>
+
        <li><a href="#faq-configure">How do I execute configure scripts?</a>
            </li>
        <li><a href="#faq-usingwithmsys">How do I use MinGW with MSYS?</a>
@@ -74,17 +112,15 @@
        <li><a href="#faq-comsupport">Is support provided for COM?</a>
            </li>
        <li><a href="#faq-msvcdll">
-             How can an MSVC program call a MinGW DLL, and vice versa?</a>
-           </li>
+             How can an MSVC program call a MinGW DLL, and vice versa?</a></li><li><a href="#faq-jni-dll">How can a JNI DLL be created?</a><br>
+              </li>
+
        <li><a href="#faq-cross">How can I build a cross compiler?</a>
            </li>
        <li><a href="#faq-mingw32-gcc.exe">
-             What's the difference between gcc.exe and mingw32-gcc.exe?"</a>
-           </li>
-       <li><a href="#faq-mingw32-make.exe">Why is make named mingw32-make.exe?
-           </a>
-           </li>
-       <li><a href="#faq-ridconsole">How to remove DOS command windows?</a>
+             What's the difference between gcc.exe and mingw32-gcc.exe?"</a></li><li><a href="#faq-Makefile">What is a Makefile and how do I create one?</a></li>
+
+       <li><a href="#faq-mingw32-make.exe">Why is make named mingw32-make.exe?</a></li><li><a href="#faq-ridconsole">How to remove DOS command windows?</a>
            </li>
        <li><a href="#faq-bugreports">How can I report bugs?</a>
            </li>
@@ -141,7 +177,7 @@
 
       <p>The POSIX layer used by
          MSYS is a fork of the 1.3.3 version of
-         <a href= "http://sources.redhat.com/cygwin">Cygwin</a>
+         <a href="http://sources.redhat.com/cygwin">Cygwin</a>
          .  Cygwin is a full POSIX layer and UNIX-like
          environment for Win32 providing both server and
          client utilites.</p>
@@ -167,7 +203,7 @@
          Anders Norlander and it's license is also
          non-restrictive. For more information see the
          file 
-         <a href= "http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/mingw/w32api/README.w32api?rev=HEAD&amp;content-type=text/vnd.viewcvs-markup">
+         <a href="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/mingw/w32api/README.w32api?rev=HEAD&amp;content-type=text/vnd.viewcvs-markup">
            README.w32api</a>
          .</p>
 
@@ -252,7 +288,7 @@
               import libraries related to WIN32 API access,
               is released under</li>
 
-          <li><a href= "http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/mingw/w32api/README.w32api?rev=HEAD&amp;content-type=text/vnd.viewcvs-markup">
+          <li><a href="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/mingw/w32api/README.w32api?rev=HEAD&amp;content-type=text/vnd.viewcvs-markup">
                 copyright</a>
               . The copyright agreement states
               no restrictions are placed on programs or
@@ -290,7 +326,7 @@
 
           <li>For more information on the copyleft
               concept, 
-              <a href= "http://www.gnu.org/copyleft/">
+              <a href="http://www.gnu.org/copyleft/">
                 http://www.gnu.org/copyleft/</a>
               </li>
          </ul>
@@ -325,7 +361,23 @@
          using.</p>
 
       <p><a href="#index">Back to index</a></p>
-      <hr>
+      
+<hr>
+
+      <h3><a name="faq-languages"></a>
+          What Languages Are Supported?</h3>
+
+      <p>As of MinGW-2.0.0-3.exe, MinGW carries support for C , C++,
+         ObjC, Fortran 77, while ADA is available as a seperate 
+         binary.&nbsp; Java is not implemented yet, however 
+         work is being done to hopefully include it with the 
+         release of gcc-3.3 for MinGW.</p>
+
+
+      <p><a href="#index">Back to index</a>
+         </p>
+
+<hr>
 
 
       <h3><a name="faq-configure">
@@ -371,8 +423,10 @@
          MSYS " bin" subdirectory. Therefore, do not
          attempt to "merge" the two packages.</p>
 
-      <p><a href="#index">Back to index</a></p>
-      <hr>
+      <p><a href="#index">Back to index</a>
+         </p>
+
+<hr>
 
 
       <h3><a name="faq-usingwithcygwin">
@@ -405,7 +459,8 @@
          or setting it manually).</p>
 
       <p><a href="#index">Back to index</a></p>
-      <hr>
+
+<hr>
 
       <h3><a name="faq-comsupport">
           Is support provided for COM?</a></h3> 
@@ -478,7 +533,7 @@
          <code>reimp</code> tool from Anders Norlander
          (since his web site is no longer available, you
          may choose to download
-         <a href= "http://mywebpage.netscape.com/yongweiwu/reimp_new.zip">
+         <a href="http://mywebpage.netscape.com/yongweiwu/reimp_new.zip">
             here</a> 
          a version enhanced by Jose Fonseca):</p>
 
@@ -516,8 +571,59 @@
           -ltestdll</code>
          </blockquote>Hooray, we got it. 
 
-      <p><a href="#index">Back to index</a></p>
-      <hr>
+      <p><a href="#index">Back to index</a>
+         </p>
+      
+<hr>
+
+            <h3><a name="faq-jni-dll"></a>
+                How can a JNI DLL be created?</h3>
+
+            <p>JNI is the Java Native Interface, you will need to download and install
+               the Java SDK.&nbsp; Note the installation directory (ie/ c:\j2sdk1.4.1_02 )
+               for use later.&nbsp; If you are using MSYS add a line similiar to the 
+               following in /etc/fstab and then restart MSYS:</p>
+
+            <blockquote><code>
+            c:/j2sdk1.4.1_02&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /java
+            </code></blockquote>
+
+            <p>In MSYS the JNI DLL can be generated using the following
+               (NOTE: -Wl has an 'L' not a '1'):</p>
+
+            <blockquote><code>
+            gcc -Wall -D_JNI_IMPLEMENTATION_ -Wl,--kill-at \<br>
+            -I/java/include -I/java/include/win32 \<br>
+            --shared -o JavaImp.dll someJavaImp.c<br>
+            </code></blockquote>
+
+            <p>In a standard command console it can be generated as follows (one continuous line):
+               </p>
+
+            
+            <blockquote><code>
+            gcc -Wall -D_JNI_IMPLEMENTATION_ -Wl,--kill-at <br>
+            -Ic:/j2sdk1.4.1_02/include -Ic:/j2sdk1.4.1_02/include/win32 <br>
+            --shared someJavaImp.c -o JavaImp.dll
+            </code></blockquote>
+
+            <p>Where JavaImp.dll should be named whatever you refer to the library as
+               in your .java file.&nbsp; To use the above dll you would refer to it as
+               follows in your java classes code:
+               </p>
+
+            <blockquote><code>
+            System.loadLibrary( "JavaImp" );
+            </code></blockquote>
+
+            <p>If you encounter problems ensure your CLASS_PATH and PATH are set 
+               appropriately for your environment.&nbsp; Please refer to 
+               <a href="http://java.sun.com/docs/books/tutorial/native1.1/index.html">Java Native Interface</a>           
+               for further details on using a JNI DLL in java code.</p>
+
+            <p><a href="#index">Back to index</a></p>
+
+<hr>
 
 
       <h3><a name="faq-cross">
@@ -534,30 +640,28 @@
          environment in many scenerios.</p>
 
       <p>There is a very old out-of-date 
-         <a href="http://www.nanotech.wisc.edu/%7Ekhan/software/gnu-win32/mingw-cross-howto.txt"
-            target="_nw">mingw-cross-howto.txt</a>
+         <a href="http://www.nanotech.wisc.edu/%7Ekhan/software/gnu-win32/mingw-cross-howto.txt" target="_nw">mingw-cross-howto.txt</a>
          written by Mumit Khan and stored on his site you can
          use. You'll have to update the packages. This
          needs to be rewritten, any volunteers? If so,
          please speak up in the
-         <a href= "mailto:mingw-users@lists.sourceforge.net">mingw-users</a>
+         <a href="mailto:mingw-users@lists.sourceforge.net">mingw-users</a>
          list.</p>
 
       <p>A more upto date HOWTO complete with a script
          to configure it for you can be found at
-         <a href="http://www.libsdl.org/extras/win32/cross/README.txt" 
-            target= "_nw">http://www.libsdl.org/extras/win32/cross/README.txt
+         <a href="http://www.libsdl.org/extras/win32/cross/README.txt" target="_nw">http://www.libsdl.org/extras/win32/cross/README.txt
            </a>
          .</p>
 
       <p>You'll want to visit the 
          <a href="mailto:crossgcc@sources.redhat.com">crossgcc</a>
          mail list 
-         <a href= "http://sources.redhat.com/ml/crossgcc/">archives</a>
+         <a href="http://sources.redhat.com/ml/crossgcc/">archives</a>
          .  You'll also find a link to a crossgcc FAQ and
          another for an ftp download site of some useful
          scripts on the 
-         <a href= "http://sources.redhat.com/ml/crossgcc/">archives</a>
+         <a href="http://sources.redhat.com/ml/crossgcc/">archives</a>
          search page.</p>
 
       <p>There are also some pre-built versions:</p>
@@ -587,7 +691,76 @@
          executed on the mingw32 target.</p>
 
       <p><a href="#index">Back to index</a></p>
-      <hr>
+      
+<hr>
+            <h3><a name="faq-Makefile"></a>
+                What is a Makefile and how do I create one?</h3>
+
+            <p>A Makefile is a plain textfile that is used to reduce repeatitive
+               commands such as compiler invocation.&nbsp; All indentation in a
+               Makefile should be done with tabs not spaces.&nbsp; A simple example of
+               a Makefile is as follows and is invoked by typing 'make':</p>
+
+            <blockquote><code>
+            all:<br>
+            &nbsp;&nbsp;&nbsp;&nbsp; gcc -Wall -O3 -o hello.exe hello.cpp
+            </code></blockquote>
+
+            <p>The following is a more complex example that shows the use of variables and other features:
+               </p>
+
+            <blockquote><code>
+            # this is a comment<br>
+            SRC=hello.c main.c<br>
+            OBJ=$(SRC:.c=.o)                  # replaces the .c from SRC with .o<br>
+            EXE=hello.exe<br>
+            <br>
+            CC=gcc<br>
+            CFLAGS=-Wall -O3<br>
+            LDFLAGS=-mwindows<br>
+            RM=rm<br>
+            <br>
+            %.o: %.c&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;       
+            # combined w/ next line will compile recently changed .c files<br>
+            &nbsp;&nbsp;&nbsp;&nbsp; $(CC) $(CFLAGS) -o $@ -c $&lt;<br>
+            <br>
+            all: $(EXE)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;                             # all is dependent on $(EXE) to be complete<br>
+           <br>
+           $(EXE): $(OBJ)&nbsp;&nbsp;                     # $(EXE) is dependent on all of the files in $(OBJ) to exist<br>
+           &nbsp;&nbsp;&nbsp;&nbsp; $(CC) $(OBJ) $(LDFLAGS)<br>
+           <br>
+           .PHONY : clean&nbsp;&nbsp;                    # .PHONY prevents clean from exiting if errors are
+           encountered<br>
+           clean:<br>
+           &nbsp;&nbsp;&nbsp; -$(RM) $(OBJ) core
+           </code></blockquote>
+           <p>This Makefile can be invoked in any of the following ways:</p>
+
+           <blockquote><code>
+           # for the above file will compile everything required by the all label<br>
+           make<br>
+           <br>
+           # effectively the same as the previous line<br>
+           make all<br>
+           <br>
+           # 'clean' the project of stale files<br>
+           # for this Makefile, remove hello.o, main.o and core<br>
+           make clean<br>
+           <br>
+           # clean and then build all<br>
+           make clean all<br>
+           <br>
+           # build all and then clean<br>
+           make all clean
+           </code></blockquote>
+
+           <p>For further information on Makefiles please refer to the
+              <a href="http://www.gnu.org/manual/make/html_chapter/make_toc.html">GNU make tutorial</a>.
+              </p>
+            
+           <p><a href="#index">Back to index</a>
+              </p>
+<hr>
 
 
       <h3><a name="faq-mingw32-make.exe">
@@ -633,28 +806,41 @@
 
 <!--                               End of Main Body                         -->
      </td>
-       </tr>
+       </tr><tr>
+            <td style="vertical-align: top;"><br>
+            </td>
+          </tr>
+
       </tbody>
      </table>
     </td>
    </tr>
   </tbody>
- </table><!--#include file="ssi/bottombar.html"-->
- <!--#include file="ssi/footer.html"-->
+ 
+</table>
+<!--#include file="ssi/bottombar.html"--><!--#include file="ssi/footer.html"-->
+
+
+
+ 
 
 <p>
- <a href="http://validator.w3.org/check/referer"><img border="0"
-    src="http://www.w3.org/Icons/valid-html401"
-    alt="Valid HTML 4.01!" height="31" width="88"></a>
+ <a href="http://validator.w3.org/check/referer"><img border="0" src="http://www.w3.org/Icons/valid-html401" alt="Valid HTML 4.01!" height="31" width="88"></a>
  <a href="http://jigsaw.w3.org/css-validator/">
-  <img style="border:0;width:88px;height:31px"
-       src="http://jigsaw.w3.org/css-validator/images/vcss" 
-       alt="Valid CSS!"></a>
+  <img style="border: 0pt none ; width: 88px; height: 31px;" src="http://jigsaw.w3.org/css-validator/images/vcss" alt="Valid CSS!"></a>
 </p>
 
- <address>
+
+
+
+
+ 
+<address>
   <br>
-  Last revised $Date: 2003-02-07 20:15:02 $
+  Last revised $Date: 2003-03-15 22:06:12 $
  </address>
-</body>
-</html>
+
+
+
+
+</body></html>
