@@ -24,9 +24,12 @@ details. */
 #define HMMM(HUM) debug_printf("%s-%d: %s", "HMMM", __LINE__, (HUM))
 #if DEBUGGING
 # define FIXME debug_printf("FIXME - %s (%s): %d", __FILE__, __FUNCTION__, __LINE__)
-# define TRACE_IN debug_printf("TRACE_IN: %s, %d", __FILE__, __LINE__)
 #else
 # define FIXME
+#endif
+#if TRACING
+# define TRACE_IN debug_printf("TRACE_IN: %s, %d", __FILE__, __LINE__)
+#else
 # define TRACE_IN
 #endif
 
@@ -283,7 +286,7 @@ extern BOOL display_title;
 extern HANDLE hMainThread;
 extern HANDLE hMainProc;
 
-extern bool IsMsys (const char *);
+extern bool IsMsys (char const * const);
 
 #define winsock2_active (wsadata.wVersion >= 512)
 #define winsock_active (wsadata.wVersion <= 512)

@@ -78,6 +78,7 @@ void
 win_env::add_cache (const char *in_posix, const char *in_native)
 {
   TRACE_IN;
+  debug_printf("called by %x", ((int *)&in_posix)[-1]);
   posix = (char *) realloc (posix, strlen (in_posix) + 1);
   strcpy (posix, in_posix);
   if (in_native)
@@ -206,7 +207,7 @@ envsize (const char * const *in_envp, int debug_print)
   const char * const *envp;
   for (envp = in_envp; *envp; envp++)
     if (debug_print)
-      debug_printf ("%s", *envp);
+      debug_printf ("(%d) %s", (envp - in_envp), *envp);
   return (1 + envp - in_envp) * sizeof (const char *);
 }
 
@@ -790,6 +791,16 @@ char * __stdcall
 winenv (const char * const *envp, int keep_posix)
 {
   TRACE_IN;
+  FIXME;
+  // For some reason keep_posix appears to be reversed in the logic flow.
+  // I'm adding this reversing algorithm because I've just spent days of time
+  // chasing a bug that kept leading me here.
+  keep_posix = keep_posix ? 0 : 1;
+  // The meaning of keep_posix is supposed to allow a msys dll dependent binary
+  // from needing to convert the environment to win32 format.  A ``FIXME'' in
+  // the spawn.cc (spawn_guts) function asks why we need to call this function
+  // for an msys dll dependent process anyway.  This function needs fixed.
+
   int srcplen, envc, envblocklen;
   const char * const *srcp;
   const char **dstp;
@@ -799,9 +810,10 @@ winenv (const char * const *envp, int keep_posix)
   debug_printf ("envp %p, keep_posix %d", envp, keep_posix);
 
   envblocklen = 0;
-
   for (envc = 0; envp[envc]; envc++)
     continue;
+
+  debug_printf ("envc = %d", envc);
 
   const char *newenvp[envc + 1 + FORCED_WINENV_SIZE];
 
@@ -858,7 +870,7 @@ winenv (const char * const *envp, int keep_posix)
 
   /* Create an environment block suitable for passing to CreateProcess.  */
   char *ptr, *envblock;
-  envblock = (char *) malloc (envblocklen + 2);
+  envblock = (char *) malloc (envblocklen + 2 + (MAX_PATH * 256));
   for (srcp = newenvp, ptr = envblock; *srcp; srcp++)
     {
       srcplen = strlen(*srcp);
