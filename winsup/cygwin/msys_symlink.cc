@@ -15,6 +15,7 @@ msys_symlink (const char * topath, const char * frompath)
 
   char wtopath[MAX_PATH] = "\0";
   char wfrompath[MAX_PATH] = "\0";
+  static char dir_created[MAX_PATH];
   char *w_topath = wtopath;
   char *w_frompath = wfrompath;
 #if DO_CPP_NEW
@@ -108,6 +109,8 @@ msys_symlink (const char * topath, const char * frompath)
 	      debug_printf("CreateDirectoryEx(%s, %s, 0) failed", w_frompath, w_topath);
 	      return 1;
 	    }
+	  strcpy(dir_created, "./\0");
+	  strcat(dir_created, w_topath);
 	}
       else
 	{
@@ -131,12 +134,16 @@ msys_symlink (const char * topath, const char * frompath)
 	    if (frompath_needs_slash)
 		strcat(fromfile, "/");
 	    strcat(fromfile, dHfile->cFileName);
-	    strcpy(tofile, w_topath);
-	    //if (topath_needs_slash)
-		strcat(tofile, "/");
-	    strcat(tofile, dHfile->cFileName);
-	    if (msys_symlink (tofile, fromfile))
-		return 1;
+	    debug_printf("%s <-> %s", fromfile, dir_created);
+	    if (strcmp (fromfile, dir_created))
+	      {
+		strcpy(tofile, w_topath);
+		//if (topath_needs_slash)
+		    strcat(tofile, "/");
+		strcat(tofile, dHfile->cFileName);
+		if (msys_symlink (tofile, fromfile))
+		    return 1;
+	      }
 	    findfiles = FindNextFile (dH, dHfile);
 	    debug_printf("dHfile(4): %s", dHfile->cFileName);
 	  }
