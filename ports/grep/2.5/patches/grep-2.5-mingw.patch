@@ -6,15 +6,27 @@ diff -rup grep-2.5/intl/localename.c grep-2.5-mingw/intl/localename.c
  # define LANG_SERBIAN 0x1a
  # endif
 +# ifndef LANG_SORBIAN
-+# define LANG_SORBIAN 0x02e
++# define LANG_SORBIAN 0x2e
 +# endif
  # ifndef LANG_SINDHI
  # define LANG_SINDHI 0x59
  # endif
 diff -rup grep-2.5/src/grep.c grep-2.5-mingw/src/grep.c
 --- grep-2.5/src/grep.c	Wed Mar 13 14:49:52 2002
-+++ grep-2.5-mingw/src/grep.c	Sat Oct 26 16:43:20 2002
-@@ -262,10 +262,10 @@ reset (int fd, char const *file, struct 
++++ grep-2.5-mingw/src/grep.c	Wed Nov 13 09:50:50 2002
+@@ -213,7 +213,11 @@ context_length_arg (char const *str, int
+ 
+ static char *buffer;		/* Base of buffer. */
+ static size_t bufalloc;		/* Allocated buffer size, counting slop. */
++#ifdef _WIN32			/* NT cmd.exe demands a smaller buffer size. */
++#define INITIAL_BUFSIZE 16384	/* Initial buffer size, not counting slop. */
++#else
+ #define INITIAL_BUFSIZE 32768	/* Initial buffer size, not counting slop. */
++#endif
+ static int bufdesc;		/* File descriptor. */
+ static char *bufbeg;		/* Beginning of user-visible stuff. */
+ static char *buflim;		/* Limit of user-visible stuff. */
+@@ -262,10 +266,10 @@ reset (int fd, char const *file, struct
      }
    if (directories == SKIP_DIRECTORIES && S_ISDIR (stats->stat.st_mode))
      return 0;
