@@ -3325,6 +3325,22 @@ cygwin_conv_to_win32_path (const char *path, char *win32_path)
 	  // Just a normal POSIX path.
 	  //
 	  {
+	    sspath = strchr (spath, '.');
+	    if (sspath && *(sspath - 1) == '/' && *(sspath + 1) == '.')
+	      {
+		*(sspath - 1) = '\0';
+		sret = cygwin_conv_to_win32_path (spath, swin32_path);
+		if (sret)
+		  {
+		    retpathcpy (path);
+		    retval = -1;
+		    break;
+		  }
+		retpathcpy (swin32_path);
+		retpathcat ("/");
+		retpathcat (sspath);
+		break;
+	      }
 	    path_conv p (spath, 0);
 	    if (p.error)
 	      {
