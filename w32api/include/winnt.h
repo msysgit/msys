@@ -1075,7 +1075,7 @@ typedef struct _GUID {
 	unsigned short Data3;
 	unsigned char  Data4[8];
 } GUID, *REFGUID, *LPGUID;
-#define SYSTEM_LUID { 999 }
+#define SYSTEM_LUID { QuadPart:999 }
 #endif /* _GUID_DEFINED */
 typedef struct _GENERIC_MAPPING {
 	ACCESS_MASK GenericRead;
@@ -1705,7 +1705,7 @@ typedef union _LARGE_INTEGER {
     DWORD LowPart;
     LONG  HighPart;
   } u;
-#if _ANONYMOUS_STRUCT || defined __cplusplus
+#if defined(_ANONYMOUS_STRUCT) || defined(__cplusplus)
   struct {
     DWORD LowPart;
     LONG  HighPart;
@@ -1718,7 +1718,7 @@ typedef union _ULARGE_INTEGER {
     DWORD LowPart;
     DWORD HighPart;
   } u;
-#if _ANONYMOUS_STRUCT || defined __cplusplus
+#if defined(_ANONYMOUS_STRUCT) || defined(__cplusplus)
   struct {
     DWORD LowPart;
     DWORD HighPart;
