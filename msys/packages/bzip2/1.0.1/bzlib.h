@@ -105,11 +105,12 @@ typedef
    } 
    bz_stream;
 
+
 #ifndef BZ_IMPORT
 #define BZ_EXPORT
 #endif
 
-#if defined(_WIN32) && !defined(__CYGWIN__)
+#ifdef _WIN32
 #   include <stdio.h>
 #   include <windows.h>
 #   ifdef small
@@ -124,32 +125,6 @@ typedef
 #   define BZ_API(func) (WINAPI * func)
 #   define BZ_EXTERN
 #   endif
-#elif defined(__CYGWIN__)
-#  if defined(BZLIB_DLL)
-#    if defined(BZLIB_STATIC)
-#      undef BZLIB_STATIC
-#    endif
-#  endif
-#  if defined(BZLIB_DLL)
-/* building a DLL */
-#    define BZLIB_IMPEXP __declspec(dllexport)
-#  elif defined(BZLIB_STATIC)
-/* building or linking to a static library */
-#    define BZLIB_IMPEXP
-#  else
-/* linking to the DLL */
-#    define BZLIB_IMPEXP __declspec(dllimport)
-#  endif
-#
-#  if !defined(BZLIB_API)
-#    define BZLIB_API __cdecl
-#  endif
-#  if !defined(BZ_API)
-#    define BZ_API(func) BZLIB_IMPEXP BZLIB_API func
-#  endif
-#  if !defined(BZ_EXTERN)
-#    define BZ_EXTERN extern
-#  endif
 #else
 #   define BZ_API(func) func
 #   define BZ_EXTERN extern
