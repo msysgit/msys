@@ -171,7 +171,12 @@ for more detail). </p>
   </tbody>
 </table>
 <!--#include file="ssi/bottombar.html"--><!--#include file="ssi/footer.html"-->
+<p>
+      <a href="http://validator.w3.org/check/referer"><img border="0"
+          src="http://www.w3.org/Icons/valid-html401"
+          alt="Valid HTML 4.01!" height="31" width="88"></a>
+</p>
 <address> <br>
-Last revised $Date: 2003-01-05 21:39:25 $ </address>
+Last revised $Date: 2003-01-10 08:14:49 $ </address>
 </body>
 </html>
