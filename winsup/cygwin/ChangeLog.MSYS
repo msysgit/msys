@@ -1,3 +1,15 @@
+2004-09-05  Earnie Boyd <earnie@users.sf.net>
+
+	* fhandler_console.cc: Add TRACE_IN throughout.
+	* fhandler_termios.cc: Ditto.
+	* fhandler_tty.cc (process_slave_output): Rename variable n to 
+	CharsInPipe.
+	* spawn.cc (spawn_guts): Add a FIXME and remove a FIXME.
+	* winsup.h (TRACE_IN): Recode so that it could live without DEBUGGING
+	set.
+	* fhandler_console.cc (set_console_state_for_spawn): Always return 0.
+	Add a FIXME item.
+
 2004-09-05  Andres Rand <lothar@hot.ee>
 
 	* path.cc (set_flags_from_win32_path): Return PC_FULL as default

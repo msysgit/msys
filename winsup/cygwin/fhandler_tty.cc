@@ -253,7 +253,7 @@ fhandler_pty_master::process_slave_output (char *buf, size_t len, int pktmode_on
   TRACE_IN;
   size_t rlen;
   char outbuf[OUT_BUFFER_SIZE + 1];
-  DWORD n;
+  DWORD CharsInPipe;
   int column = 0;
   int rc = 0;
 
@@ -290,21 +290,22 @@ fhandler_pty_master::process_slave_output (char *buf, size_t len, int pktmode_on
 
       HANDLE handle = get_io_handle ();
 
-      n = 0; // get_readahead_into_buffer (outbuf, len);
-      if (!n)
+      CharsInPipe = 0; // get_readahead_into_buffer (outbuf, len);
+	      OutputDebugString ("PeekNamedPipe");
+	      if (!PeekNamedPipe (handle, NULL, 0, NULL, &CharsInPipe, NULL))
+		goto err;
+      if (1)
 	{
 	  /* Doing a busy wait like this is quite inefficient, but nothing
 	     else seems to work completely.  Windows should provide some sort
 	     of overlapped I/O for pipes, or something, but it doesn't.  */
 	  while (1)
 	    {
-	      if (!PeekNamedPipe (handle, NULL, 0, NULL, &n, NULL))
-		goto err;
-	      if (n > 0)
+	      if (CharsInPipe > 0)
 		break;
 	      if (hit_eof ())
 		goto out;
-	      if (n == 0 && is_nonblocking ())
+	      if (CharsInPipe == 0 && is_nonblocking ())
 		{
 		  set_errno (EAGAIN);
 		  rc = -1;
@@ -314,11 +315,11 @@ fhandler_pty_master::process_slave_output (char *buf, size_t len, int pktmode_on
 	      Sleep (10);
 	    }
 
-	  if (ReadFile (handle, outbuf, rlen, &n, NULL) == FALSE)
+	  if (ReadFile (handle, outbuf, rlen, &CharsInPipe, NULL) == FALSE)
 	    goto err;
 	}
 
-      termios_printf ("bytes read %u", n);
+      termios_printf ("bytes read %u", CharsInPipe);
       get_ttyp ()->write_error = 0;
       if (output_done_event != NULL)
 	SetEvent (output_done_event);
@@ -333,14 +334,14 @@ fhandler_pty_master::process_slave_output (char *buf, size_t len, int pktmode_on
 
       if (!(get_ttyp ()->ti.c_oflag & OPOST))	// post-process output
 	{
-	  memcpy (optr, outbuf, n);
-	  optr += n;
+	  memcpy (optr, outbuf, CharsInPipe);
+	  optr += CharsInPipe;
 	}
       else					// raw output mode
 	{
 	  char *iptr = outbuf;
 
-	  while (n--)
+	  while (CharsInPipe--)
 	    {
 	      switch (*iptr)
 		{
@@ -374,8 +375,10 @@ fhandler_pty_master::process_slave_output (char *buf, size_t len, int pktmode_on
 		 doing \r\n expansion.  */
 	      if (optr - buf >= (int) len)
 		{
-		  if (*iptr != '\n' || n != 0)
-		    system_printf ("internal error: %d unexpected characters", n);
+		  OutputDebugString("optr - buf >= (int) len");
+		  if (*iptr != '\n' || CharsInPipe != 0)
+		    system_printf ("internal error: %d unexpected characters", CharsInPipe);
+		  OutputDebugString("need_nl = 1");
 		  need_nl = 1;
 		  break;
 		}
@@ -387,6 +390,7 @@ fhandler_pty_master::process_slave_output (char *buf, size_t len, int pktmode_on
       break;
 
     err:
+      OutputDebugString ("process_slave_output error");
       if (GetLastError () == ERROR_BROKEN_PIPE)
 	rc = 0;
       else
@@ -398,6 +402,7 @@ fhandler_pty_master::process_slave_output (char *buf, size_t len, int pktmode_on
     }
 
 out:
+  TRACE_IN;
   termios_printf ("returning %d", rc);
   return rc;
 }

@@ -38,12 +38,14 @@ details. */
 inline UINT
 cp_get_internal ()
 {
+  TRACE_IN;
   return current_codepage == ansi_cp ? GetACP() : GetOEMCP();
 }
 
 static BOOL
 cp_convert (UINT destcp, char * dest, UINT srccp, const char * src, DWORD size)
 {
+  TRACE_IN;
   if (!size)
     /* no action */;
   else if (destcp == srccp)
@@ -69,12 +71,14 @@ cp_convert (UINT destcp, char * dest, UINT srccp, const char * src, DWORD size)
 inline BOOL
 con_to_str (char *d, const char *s, DWORD sz)
 {
+  TRACE_IN;
   return cp_convert (cp_get_internal (), d, GetConsoleCP (), s, sz);
 }
 
 inline BOOL
 str_to_con (char *d, const char *s, DWORD sz)
 {
+  TRACE_IN;
   return cp_convert (GetConsoleOutputCP (), d, cp_get_internal (), s, sz);
 }
 
@@ -100,6 +104,7 @@ static tty_min NO_COPY *shared_console_info = NULL;
 static tty_min *
 get_tty_stuff (int flags = 0)
 {
+  TRACE_IN;
   if (shared_console_info)
     return shared_console_info;
 
@@ -119,6 +124,7 @@ get_tty_stuff (int flags = 0)
 void
 set_console_ctty ()
 {
+  TRACE_IN;
   (void) get_tty_stuff ();
 }
 
@@ -127,6 +133,7 @@ set_console_ctty ()
 tty_min *
 tty_list::get_tty (int n)
 {
+  TRACE_IN;
   static tty_min nada;
   if (n == TTY_CONSOLE)
     return get_tty_stuff ();
@@ -143,6 +150,11 @@ tty_list::get_tty (int n)
 int __stdcall
 set_console_state_for_spawn ()
 {
+  TRACE_IN;
+  //FIXME: It doesn't do what we need it to.
+  //I.E.: Display from non msys programs does not work properly; stdout is blocked from displaying, stdin and stderr do not seem to be blocked.
+  //For the time being just return 0 to indicate invalid handle.
+  return 0;
   HANDLE h = CreateFileA ("CONIN$", GENERIC_READ, FILE_SHARE_WRITE,
 			  &sec_none_nih, OPEN_EXISTING,
 			  FILE_ATTRIBUTE_NORMAL, NULL);
@@ -150,18 +162,12 @@ set_console_state_for_spawn ()
   if (h == INVALID_HANDLE_VALUE || h == NULL)
     return 0;
 
+  // FIXME: Why should shared_console_info be null
   if (shared_console_info != NULL)
     {
 #     define tc shared_console_info	/* ACK.  Temporarily define for use in TTYSETF macro */
       SetConsoleMode (h, ENABLE_LINE_INPUT | ENABLE_ECHO_INPUT | ENABLE_PROCESSED_INPUT);
       TTYSETF (RSTCONS);
-#if 0
-      char ch;
-      DWORD n;
-      /* NOTE -- This ReadFile is apparently necessary for correct functioning on
-	 Windows NT 4.0.  Without this, the next ReadFile returns garbage.  */
-      (void) ReadFile (h, &ch, 0, &n, NULL);
-#endif
 #     undef tc
     }
 
@@ -172,6 +178,7 @@ set_console_state_for_spawn ()
 BOOL
 fhandler_console::set_raw_win32_keyboard_mode (BOOL new_mode)
 {
+  TRACE_IN;
   BOOL old_mode = raw_win32_keyboard_mode;
   raw_win32_keyboard_mode = new_mode;
   syscall_printf ("raw keyboard mode %sabled", raw_win32_keyboard_mode ? "en" : "dis");
@@ -181,6 +188,7 @@ fhandler_console::set_raw_win32_keyboard_mode (BOOL new_mode)
 void
 fhandler_console::set_cursor_maybe ()
 {
+  TRACE_IN;
   CONSOLE_SCREEN_BUFFER_INFO now;
 
   if (!GetConsoleScreenBufferInfo (get_output_handle (), &now))
@@ -197,6 +205,7 @@ fhandler_console::set_cursor_maybe ()
 int
 fhandler_console::read (void *pv, size_t buflen)
 {
+  TRACE_IN;
   if (!buflen)
     return 0;
 
@@ -466,6 +475,7 @@ fhandler_console::read (void *pv, size_t buflen)
 void
 fhandler_console::set_input_state ()
 {
+  TRACE_IN;
   if (TTYISSETF (RSTCONS))
     input_tcsetattr (0, &tc->ti);
 }
@@ -473,6 +483,7 @@ fhandler_console::set_input_state ()
 BOOL
 fhandler_console::fillin_info (void)
 {
+  TRACE_IN;
   BOOL ret;
   CONSOLE_SCREEN_BUFFER_INFO linfo;
 
@@ -500,6 +511,7 @@ fhandler_console::fillin_info (void)
 void
 fhandler_console::scroll_screen (int x1, int y1, int x2, int y2, int xn, int yn)
 {
+  TRACE_IN;
   SMALL_RECT sr1, sr2;
   CHAR_INFO fill;
   COORD dest;
@@ -543,6 +555,7 @@ fhandler_console::scroll_screen (int x1, int y1, int x2, int y2, int xn, int yn)
 int
 fhandler_console::open (const char *, int flags, mode_t)
 {
+  TRACE_IN;
   HANDLE h;
 
   tcinit (get_tty_stuff (flags));
@@ -599,6 +612,7 @@ fhandler_console::open (const char *, int flags, mode_t)
 int
 fhandler_console::close (void)
 {
+  TRACE_IN;
   CloseHandle (get_io_handle ());
   CloseHandle (get_output_handle ());
   set_io_handle (INVALID_HANDLE_VALUE);
@@ -614,6 +628,7 @@ fhandler_console::close (void)
 int
 fhandler_console::dup (fhandler_base *child)
 {
+  TRACE_IN;
   fhandler_console *fhc = (fhandler_console *) child;
 
   if (!fhc->open (get_name (), get_flags () & ~O_NOCTTY, 0))
@@ -666,6 +681,7 @@ fhandler_console::dup (fhandler_base *child)
 int
 fhandler_console::ioctl (unsigned int cmd, void *buf)
 {
+  TRACE_IN;
   switch (cmd)
     {
       case TIOCGWINSZ:
@@ -701,6 +717,7 @@ fhandler_console::ioctl (unsigned int cmd, void *buf)
 int
 fhandler_console::tcflush (int queue)
 {
+  TRACE_IN;
   int res = 0;
   if (queue == TCIFLUSH
       || queue == TCIOFLUSH)
@@ -717,6 +734,7 @@ fhandler_console::tcflush (int queue)
 int
 fhandler_console::output_tcsetattr (int, struct termios const *t)
 {
+  TRACE_IN;
   /* Ignore the optional_actions stuff, since all output is emitted
      instantly */
 
@@ -736,6 +754,7 @@ fhandler_console::output_tcsetattr (int, struct termios const *t)
 int
 fhandler_console::input_tcsetattr (int, struct termios const *t)
 {
+  TRACE_IN;
   /* Ignore the optional_actions stuff, since all output is emitted
      instantly */
 
@@ -807,6 +826,7 @@ fhandler_console::input_tcsetattr (int, struct termios const *t)
 int
 fhandler_console::tcsetattr (int a, struct termios const *t)
 {
+  TRACE_IN;
   int res = output_tcsetattr (a, t);
   if (res != 0)
     return res;
@@ -816,6 +836,7 @@ fhandler_console::tcsetattr (int a, struct termios const *t)
 int
 fhandler_console::tcgetattr (struct termios *t)
 {
+  TRACE_IN;
   int res;
   *t = tc->ti;
 
@@ -864,6 +885,7 @@ fhandler_console::tcgetattr (struct termios *t)
 fhandler_console::fhandler_console (const char *name) :
   fhandler_termios (FH_CONSOLE, name, -1)
 {
+  TRACE_IN;
   set_cb (sizeof *this);
   default_color = dim_color = FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE;
   underline_color = FOREGROUND_GREEN | FOREGROUND_BLUE;
@@ -902,6 +924,7 @@ fhandler_console::fhandler_console (const char *name) :
 void
 fhandler_console::set_default_attr ()
 {
+  TRACE_IN;
   blink = underline = reverse = FALSE;
   intensity = INTENSITY_NORMAL;
   fg = default_color & FOREGROUND_ATTR_MASK;
@@ -913,6 +936,7 @@ fhandler_console::set_default_attr ()
 WORD
 fhandler_console::get_win32_attr ()
 {
+  TRACE_IN;
   WORD win_fg = fg;
   WORD win_bg = bg;
   if (reverse)
@@ -944,6 +968,7 @@ fhandler_console::get_win32_attr ()
 void
 fhandler_console::clear_screen (int x1, int y1, int x2, int y2)
 {
+  TRACE_IN;
   COORD tlc;
   DWORD done;
   int num;
@@ -985,6 +1010,7 @@ fhandler_console::clear_screen (int x1, int y1, int x2, int y2)
 void
 fhandler_console::cursor_set (BOOL rel_to_top, int x, int y)
 {
+  TRACE_IN;
   COORD pos;
 
   (void)fillin_info ();
@@ -1008,6 +1034,7 @@ fhandler_console::cursor_set (BOOL rel_to_top, int x, int y)
 void
 fhandler_console::cursor_rel (int x, int y)
 {
+  TRACE_IN;
   fillin_info ();
   x += info.dwCursorPosition.X;
   y += info.dwCursorPosition.Y;
@@ -1017,6 +1044,7 @@ fhandler_console::cursor_rel (int x, int y)
 void
 fhandler_console::cursor_get (int *x, int *y)
 {
+  TRACE_IN;
   fillin_info ();
   *y = info.dwCursorPosition.Y;
   *x = info.dwCursorPosition.X;
@@ -1075,6 +1103,7 @@ static const char base_chars[256] =
 void
 fhandler_console::char_command (char c)
 {
+  TRACE_IN;
   int x, y;
   char buf[40];
 
@@ -1398,6 +1427,7 @@ const unsigned char *
 fhandler_console::write_normal (const unsigned char *src,
 				const unsigned char *end)
 {
+  TRACE_IN;
   /* Scan forward to see what a char which needs special treatment */
   DWORD done;
   const unsigned char *found = src;
@@ -1497,6 +1527,7 @@ fhandler_console::write_normal (const unsigned char *src,
 int
 fhandler_console::write (const void *vsrc, size_t len)
 {
+  TRACE_IN;
   /* Run and check for ansi sequences */
   unsigned const char *src = (unsigned char *) vsrc;
   unsigned const char *end = src + len;
@@ -1679,6 +1710,7 @@ static struct {
 const char *
 get_nonascii_key (INPUT_RECORD& input_rec, char *tmp)
 {
+  TRACE_IN;
 #define NORMAL  0
 #define SHIFT	1
 #define CONTROL	2
@@ -1710,6 +1742,7 @@ get_nonascii_key (INPUT_RECORD& input_rec, char *tmp)
 void
 fhandler_console::init (HANDLE f, DWORD a, mode_t bin)
 {
+  TRACE_IN;
   this->fhandler_termios::init (f, bin, a);
 
   /* Ensure both input and output console handles are open */
@@ -1732,12 +1765,14 @@ fhandler_console::init (HANDLE f, DWORD a, mode_t bin)
 int
 fhandler_console::igncr_enabled (void)
 {
+  TRACE_IN;
   return tc->ti.c_iflag & IGNCR;
 }
 
 void
 fhandler_console::set_close_on_exec (int val)
 {
+  TRACE_IN;
   this->fhandler_base::set_close_on_exec (val);
   set_inheritance (output_handle, val);
 }
@@ -1745,6 +1780,7 @@ fhandler_console::set_close_on_exec (int val)
 void
 fhandler_console::fixup_after_fork (HANDLE)
 {
+  TRACE_IN;
   HANDLE h = get_handle ();
   HANDLE oh = get_output_handle ();
 
@@ -1764,6 +1800,7 @@ fhandler_console::fixup_after_fork (HANDLE)
 void __stdcall
 set_console_title (char *title)
 {
+  TRACE_IN;
   int rc;
   char buf[257];
   strncpy (buf, title, sizeof (buf) - 1);
@@ -1778,6 +1815,7 @@ set_console_title (char *title)
 void
 fhandler_console::fixup_after_exec (HANDLE)
 {
+  TRACE_IN;
   HANDLE h = get_handle ();
   HANDLE oh = get_output_handle ();
 
