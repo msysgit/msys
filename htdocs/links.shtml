@@ -96,8 +96,7 @@ uses Mingw-hosted gcc/binutils.
     are specifically tailored to mingw and others are for more
     general use.
     </p>
-  <ol class="alpha" type="A">
-    <ul>
+  <ul class="alpha" type="A">
       <li>Visual-MinGW, <a target="_nw" href="http://visual-mingw.sourceforge.net/">
         http://visual-mingw.sourceforge.net/</a>
       <br />A "Minimalist" Open Source IDE being developed with and for the MinGW
@@ -142,8 +141,6 @@ uses Mingw-hosted gcc/binutils.
       <br />Commercial IDE.
       </li>
     </ul>
-    </li>
-  </ol>
 
 
 <!--                            End of Main Body                             -->
@@ -157,6 +154,6 @@ uses Mingw-hosted gcc/binutils.
 </table>
 <!--#include file="ssi/bottombar.html"--><!--#include file="ssi/footer.html"-->
 <address> <br>
-Last revised $Date: 2003-01-26 15:30:08 $ </address>
+Last revised $Date: 2003-01-26 15:41:29 $ </address>
 </body>
 </html>
