@@ -1,3 +1,5 @@
+<!-- $Id: index.shtml,v 1.21 2001-08-27 19:41:19 stevedperkins Exp $ -->
+
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
@@ -137,7 +139,6 @@ width="88" /></a>
 <!--#include virtual="/cgi-bin/stats.cgi?mingw"--> visitors since
 <!--#include virtual="/cgi-bin/showstatsdate.cgi?mingw"--></a>.
 </p>
-$Id: index.shtml,v 1.20 2001-08-17 00:52:43 pgarceau Exp $
 </body>
 </html>
 

@@ -1,6 +1,8 @@
+<!-- $Id: mingwfaq.shtml,v 1.22 2001-08-27 19:41:19 stevedperkins Exp $ -->
+
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "DTD/xhtml1-transitional.dtd">
-<!--$Id: mingwfaq.shtml,v 1.21 2001-08-22 21:44:12 stevedperkins Exp $-->
+<!--$Id: mingwfaq.shtml,v 1.22 2001-08-27 19:41:19 stevedperkins Exp $-->
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
    <title>MinGW FAQ</title>
@@ -52,9 +54,9 @@
    <p>
       <b>**NOTE**</b> We are currently in the process of assimilating the 
       <a href="mingw-oldfaq.shtml">"Old FAQ"</a> contents into this consolidated 
-      FAQ.  Information current residing on the Old FAQ page will find a home 
-      either here, on the "Documentation" and "Download" pages, or in the 
-      <i>MinGW User's Guide</i> upcoming work in progress.
+      FAQ.  Information currently residing on the Old FAQ page will soon find a home 
+      either here, on the "Documentation" and "Download" pages, or in the upcoming
+      <i>MinGW User's Guide</i>.
    </p>
    
    <a name="index"></a>
@@ -64,6 +66,7 @@
       <li><a href="#faq-license">How is MinGW licensed?</a></li>
       <li><a href="#faq-version">What is the current version?</a></li>
       <li><a href="#faq-usingolderversions">Can I use older versions?</a></li>
+      <li><a href="#faq-usingwithcygwin">How can I use MinGW within a Cygwin environment?</a></li>
       <li><a href="#faq-runtime">Which runtime should I use?</a></li>
       <li><a href="#faq-w32api">What is w32api?</a></li>
       <li><a href="#faq-comsupport">Is support provided for COM?</a></li>
@@ -265,6 +268,58 @@
 
 
 
+      
+      <a name="faq-usingwithcygwin" />
+      <h3>How can I use MinGW within a Cygwin environment?</h3>
+      <p>
+         <a href="http://sources.redhat.com/cygwin">Cygwin</a> refers to a GPL'ed 
+         implementation of a POSIX emulation layer for the Win32 platform (POSIX being 
+         a standard specification for certain OS services within the UNIX world).  
+         This POSIX emulation layer makes it easier to port applications from UNIX 
+         to Win32... and as a result, Cygwin has grown over the years into a full 
+         bash shell environment with all the familiar tools a UNIX developer would 
+         work with.  Cygwin allows developers to work on a Win32 machine, and feel 
+         as if they're developing on a UNIX box.
+      </p>
+      <p>
+         However, there is a downside to Cygwin (which MinGW was created to address).  
+         All executables built by Cygwin's port of GCC have a dependency on the 
+         Cygwin DLL, which provides the POSIX emulation layer to applications.  In 
+         addition to decreasing the execution speed of apps, the fact that 
+         all applications have a dependency on a GPL'ed component means that 
+         <b><i>ALL</i></b> applications built with Cygwin's GCC are legally bound 
+         by the GPL as well!
+      </p>
+      <p>
+         There is command-line option that can be passed to Cygwin's GCC, "-mno-cygwin", 
+         that was intended to address these concerns.  When Cygwin's GCC is invoked with 
+         the "-mno-cygwin" option, executables are built without a dependency on the 
+         Cygwin DLL.  Instead, the "-mno-cygwin" option instructs GCC to use the MinGW 
+         headers and libraries (which must be located in a particular location within 
+         the Cygwin directory structure).  However, support for "-mno-cygwin" has 
+         been weak and flaky... the location at which it searches for MinGW headers 
+         has changed a time or two (with poor documentation), bugs have crept in, and 
+         maintainence of the option has NOT be a priority in development.  There is a
+         distinct possibility that "-mno-cygwin" will become depreciated in future 
+         releases of Cygwin.
+      </p>
+      <p>
+         For those who would like to use a Cygwin environment for development, yet 
+         generate non-Cygwin-dependant executables, a much easier option to 
+         "-mno-cygwin" exists.  Simply install Cygwin and the MinGW distribution 
+         in seperate directories (i.e. "C:\CYGWIN" and "C:\MINGW"), and make sure 
+         that the "/bin" subdirectory beneath your MinGW installation comes before 
+         Cygwin's "/bin" subdirectory in your PATH environment variable
+         (i.e. "PATH=%PATH%;C:\MINGW\BIN;C:\CYGWIN\BIN").  This will allow you access 
+         to all the UNIX tools you want, while ensuring that the instance of GCC used 
+         is the MinGW version.
+      </p>
+      <p><a href="#index">Back to index</a></p>
+
+      <hr />
+
+
+
 
       <a name="faq-runtime" />
       <h3>Which runtime should I use?</h3>
@@ -391,13 +446,13 @@
    <!--#include file="ssi/footer.html"-->
 
    <p>
-      <a href="http://validator.w3.org/check?uri=http%3A%2F%2Fwww.mingw.org%2Ftrial%2Fhtdocs%2Fmingwfaq_new.shtml">
+      <a href="http://validator.w3.org/check?uri=http%3A%2F%2Fwww.mingw.org%2Ftrial%2Fhtdocs%2Fmingwfaq.shtml">
       <img border="0" src="vxhtml10.gif" alt="Valid XHTML 1.0!" height="31" width="88" /></a>
    </p>
 
    <hr />
    <address>
-   <br />Last revised $Date: 2001-08-22 21:44:12 $
+   <br />Last revised $Date: 2001-08-27 19:41:19 $
    </address>
 </body>
 </html>

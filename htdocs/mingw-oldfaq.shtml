@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "DTD/xhtml1-transitional.dtd">
-<!--$Id: mingw-oldfaq.shtml,v 1.4 2001-08-22 21:44:12 stevedperkins Exp $-->
+<!--$Id: mingw-oldfaq.shtml,v 1.5 2001-08-27 19:41:19 stevedperkins Exp $-->
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
    <title>"The Old FAQ"</title>
@@ -44,9 +44,9 @@
       <p>
          The following are questions and answers from "The Old FAQ", whose content 
          has yet to be assimilated into the consolidated FAQ or given a home 
-         elsewhere.  The information below will soon be finding its way (most likely in 
-         piecemail fashion) into the consolidated FAQ, the "Documentation" and "Download" 
-         pages, or the upcoming <i>MinGW User's Guide</i> work in progress.
+         elsewhere.  Most of the questions still remaining here don't fit in 
+         with the objectives of any currently-existing portion of the website... so
+         they are waiting to be incorporated into the upcoming <i>MinGW User's Guide</i>.
       </p>
 
 
@@ -57,7 +57,6 @@
          <li><a href="#help">Help</a></li>
          <li><a href="#debugging">Debugging</a></li>
          <li><a href="#idesandeditors">IDEs and editors</a></li>
-         <li><a href="#compilingandbuilding">Compiling and building</a></li>
          <li><a href="#morecompilingandbuildingissues">More compiling and building issues</a></li>
          <li><a href="#compileroutput">Compiler output</a></li>
          <li><a href="#patches">Patches</a></li>
@@ -499,286 +498,6 @@
       </ol>
       <p><a href="#index">Back to index</a></p>
 
-
-      <hr />
-
-
-
-
-      <a name="compilingandbuilding"></a>
-      <h3>Compiling and Building</h3>
-      <li>
-         <h4>How to create a console application</h4></a>
-         <p>
-            Here's an example.  The following is a code sample for a simple C program.  Cut 
-            and paste it into a file named hello.c to try it out.
-         </p>
-         <pre>
-   #include &lt;stdio.h&gt;
-
-   int main(int argc, char **argv)
-   {
-      printf ("Hello\n");
-      return (0);
-   }
-         </pre>  
-         If you want to create a console mode executable hello.exe
-         from a c file called hello.c, try the following:
-         <pre>
-   gcc -c hello.c
-         </pre>
-         This compiles hello.c into an object file, hello.o
-         <pre>
-   gcc -o hello hello.o
-         </pre>
-         This creates an executable hello.exe from hello.o. Alternatively, you can compile 
-         and link in one step using:
-         <pre>
-   gcc -o hello hello.c 
-         </pre>
-         <p>The following is a code sample for a simple C++ program.  Cut and paste it into 
-         a file named hello.cpp to try it out.
-         </p>
-         <pre>
-   #include &lt;iostream&gt;
-   int main(int argc, char **argv)
-   {
-     cout &lt;&lt; "Hello" &lt;&lt; endl;
-     return (0);
-   }
-         </pre>
-         <p>
-            For the C++ program, use the following to compile and link:
-         </p>
-         <pre>
-   g++ -c hello.cpp
-   g++ -o hello hello.o
-         </pre>
-      </li>
-      <li>
-         <h4>How to create a windows application?</h4>
-         <p>
-            Here's an example.  The following is a code sample for a simple
-            Windows program.  Cut and paste it into a file named hello.c to try it out.
-         </p>
-         <pre>
-   #include &lt;windows.h&gt;
-
-   int WINAPI WinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR szCmdLine, int iCmdShow) 
-   {
-      MessageBox (NULL, "Hello", "Hello Demo", MB_OK);
-      return (0);
-   }
-         </pre>
-         <p>
-            If you want to create a Windows executable hello.exe, from a c file called 
-            hello.c, try the following:
-         </p>
-         <pre>
-   gcc -c hello.c
-         </pre>
-         This compiles hello.c into an object file, hello.o
-         <pre>
-   gcc -o hello hello.o -mwindows
-         </pre>
-         This creates an executable hello.exe from hello.o
-         The <code>-mwindows</code> switch is needed to create Windows executables
-         instead of console applications.  It assures the appropriate Windows libraries
-         are linked in for you.  To get a console screen along with a standard windows 
-         application, add the <code>-mconsole</code> flag as well as <code>-mwindows</code>.
-         <p>
-            If you have resources from a resource file (.rc) that also need
-            to be added to your executable, you'll need to compile the resource
-            file as well as your other source files and include the compiled resources
-            when linking to create the executable.  Here's an example that shows how to
-            compile and link in a resource file named resfile.rc.
-         </p>
-         <pre>
-   windres -o resfile.o resfile.rc
-   gcc -o hello hello.o resfile.o -mwindows
-         </pre>
-      </li>
-      <li>
-         <h4>How to create a dll</h4>
-         <p>
-            Here's an example.  Cut and paste the following into a file
-            named dllfct.h:
-         </p>
-         <pre>
-   #ifdef BUILD_DLL
-   // the dll exports
-   #define EXPORT __declspec(dllexport)
-   #else
-   // the exe imports
-   #define EXPORT __declspec(dllimport)
-   #endif
-
-   // function to be imported/exported
-   EXPORT void tstfunc (void);
-         </pre>
-         <p>
-            Cut and paste the following into a file named dllfct.c:
-         </p>
-         <pre>
-   #include &lt;stdio.h&gt;
-   #include "dllfct.h"
-
-   EXPORT void tstfunc (void)
-   {
-      printf ("Hello\n");
-   }
-         </pre>
-         <p>
-            Cut and paste the following into a file named hello.c:
-         </p>
-         <pre>
-   #include "dllfct.h"
-
-   int main ()
-   {
-      tstfunc ();
-      return (0);
-   }
-         </pre>
-         <p>
-            To create the dll and an executable that uses it, try the following:
-         </p>
-         <pre>
-   gcc -c hello.c
-   gcc -c -DBUILD_DLL dllfct.c
-   dllwrap --output-lib=libtstdll.a --dllname=tst.dll --driver-name=gcc dllfct.o
-   gcc -o hello.exe hello.o -L./ -ltstdll
-         </pre>
-         <p>
-            For more information on dlls, see
-            <a href="http://www.nanotech.wisc.edu/%7Ekhan/software/gnu-win32/dllhelpers.html">
-          http://www.nanotech.wisc.edu/&#126;khan/software/gnu-win32/dllhelpers.html</a>
-         </p>
-      </li>
-      <li>
-         <h4>How to create a def file for a dll</h4>
-         <p>
-            There are several methods that can be tried in order to create a definition file
-            (.def) when one is not supplied.
-         </p>
-         <ol>
-            <li>
-               One option is the tool, pexports.  A version is available from
-               <a href="http://www.is.lg.ua/~paul/devel/binutils.html">
-               http://www.is.lg.ua/~paul/devel/binutils.html</a>.
-               Another version is available from Anders Norlander's MinGW page listed
-               in the Other resources section.  If your dll has functions that use
-               the Pascal calling convention, you'll need to use the <code>-o</code> option.
-            </li>      
-            <li>
-               Another option is the tool,
-               <a href="http://www.geocities.com/Tokyo/Towers/6162/impdef.zip">impdef</a>.
-               More instructions on how to create def files from dlls, a copy of impdef and
-               more information on how to use it are available at Colin Peters' site.
-               See the <a href="#tutorials">Tutorials</a> section.
-               Other compilers may also supply versions of the impdef program that
-               can be used to create a .def file which will work with any compiler.  If you
-               have another version of impdef from another compiler, you may wish to try it.
-               Some handle the Pascal calling convention better than others.  Borland has
-               a version of impdef and other compiler utilities available for download at their
-               Borland Community web site.  Their Borland C++ version 5.5 compiler includes several
-               utilities to help convert between standard formats, their formats and Microsoft's
-               formats.
-            </li>
-            <li>
-               Another option is to use nm which comes with the MinGW distribution.
-               This option will not work for all dlls.  Problems may occur if the dll is stripped or
-               compiled as 16 bit.  To use this technique, you'll need to filter the output from nm to
-               create a def file.  This can be done by hand in an editor or automated using tools like
-               Perl (Practical Extraction and Report Language) or grep (global regular expression print)
-               and sed (stream editor).  Even with the automated methods, you may have to
-               make some changes by hand if the Pascal calling convention is used by the dll.
-               See Colin Peters' site for more details on this case.
-               (Versions of sed and grep are available from various sites
-               including archives that host gnuish MSDOS and archives such as Virtually Un*x that contain
-               Win32 ports of common Unix tools and from the self-hosting MinGW port distribution.  The
-               ActiveState version of Perl works well on Win32 platforms.)
-               Here are examples of possible filtering techniques.
-               <li>
-                  <p>
-                     This example uses grep and sed.  If you have a dll named file.dll that you wish 
-                     to create a def file for named file.def, try the following:
-                  </p>
-                  <pre> 
-   echo EXPORTS &gt; file.def
-   nm file.dll | grep ' T _' | sed 's/.* T _//' &gt;&gt; file.def
-                  </pre>
-                  <p>
-                     To create a library file named file.a from the dll and def file, type:
-                  </p>
-                  <pre>
-   dlltool --def file.def --dllname file.dll --output-lib file.a
-                  </pre>
-               </li>
-               <li>
-                  <p>
-                     This example uses Perl.  Copy the following Perl script
-                     to a file called dll.pl and use it:
-                  </p>
-                  <pre>
-   open (OUTFILE,"&gt;dll.def");
-   print OUTFILE "EXPORTS\n";
-   open (INFILE,"dll.fil");
-   while(&lt;INFILE&gt;)
-   {
-      if ($_ =~ /T _/)
-      {
-         $line = $_;
-         $line =~ s/.* T _//;
-         print OUTFILE $line;
-      }
-   }
-   close (INFILE);
-   close (OUTFILE);
-                  </pre>
-                  <p>
-                     If you have a dll file named file.dll.  At the command line, type:
-                  </p>
-                  <pre>
-   nm file.dll &gt; dll.fil
-   perl dll.pl
-                  </pre>
-                  <p>
-                     A def file named dll.def will be created.  You can rename this
-                     as needed.  You'll also probably want to delete dll.fil when you're finished
-                     with this process.
-                  </p>
-               </li>
-               <li>
-                  <p>
-                     If you don't have any of these tools on your system, you can still use nm
-                     to create a def file and edit it by hand through an editor.  For example:
-                  </p>
-                  <pre>
-   nm file.dll &gt; dll.fil
-   find " T _" dll.fil &gt; dll.def
-                  </pre>
-                  <p>
-                     Replace the line at the top of dll.def that was created by the find program
-                     and shows a file name with a line that says EXPORTS.  Set your editor to search for 
-                     <code>T _</code> and erase it and anything on the line before it, leaving
-                     only the routine names in the file.
-                  </p>
-               </li>
-            </li>
-            <li>
-               If the previous options don't work, you can still try to create a def file
-               using the output from the objdump program (from the MinGW distribution).
-               Here's an example.
-               <pre> 
-   objdump -p file.dll &gt; dll.fil
-               </pre>
-                  Search for <code>[Ordinal/Name Pointer] Table</code> in dll.fil and use the list 
-                  of functions following it to create your def file.
-            </li>
-         </ol>
-      </li>
-      <p><a href="#index">Back to index</a></p>
 
       <hr />
 
@@ -1691,7 +1410,7 @@
 
    <hr />
    <address>
-   <br />Last revised $Date: 2001-08-22 21:44:12 $
+   <br />Last revised $Date: 2001-08-27 19:41:19 $
    </address>
 </body>
 </html>
