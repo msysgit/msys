@@ -2975,6 +2975,27 @@ msys_p2w (char const * const path)
       return ScrubRetpath (retpath);
     }
   //
+  // Check for paths after commas, if string begins with a '-' character.
+  //
+  else if ((sspath = strchr(spath, ',')) && spath[0] == '-')
+    {
+      if (IsAbsWin32Path (sspath + 1)) {
+	debug_printf("returning: %s", path);
+	return (char *)path;
+      }
+      char *swin32_path = msys_p2w(sspath + 1);
+      if (swin32_path == (sspath + 1)) {
+	debug_printf("returning: %s", path);
+	return (char *)path;
+      }
+      *sspath = '\0';
+      retpathcpy (spath);
+      retpathcat (",");
+      retpathcat (swin32_path);
+      free (swin32_path);
+      return ScrubRetpath (retpath);
+    }
+  //
   // Check for POSIX path lists.
   // But we have to allow processing of quoted strings and switches first
   // which uses recursion so this code will be seen again.
