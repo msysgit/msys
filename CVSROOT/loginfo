@@ -26,5 +26,5 @@
 #DEFAULT (echo ""; id; echo %{sVv}; date; cat) >> $CVSROOT/CVSROOT/commitlog
 
 # E-mail notifications - we use python's syncmain
-CVSROOT $CVSROOT/CVSROOT/syncmail %{sVv} mingw-cvs-admin@lists.sourceforge.net
-DEFAULT $CVSROOT/CVSROOT/syncmail %{sVv} mingw-cvs@lists.sourceforge.net earnie_boyd@yahoo.com
+CVSROOT $CVSROOT/CVSROOT/syncmail %{sVv} earnie@users.sourceforge.net mingw-cvs-admin@lists.sourceforge.net
+DEFAULT $CVSROOT/CVSROOT/syncmail %{sVv} earnie@users.sourceforge.net mingw-cvs@lists.sourceforge.net
