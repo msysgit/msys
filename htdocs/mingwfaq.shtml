@@ -1,4 +1,4 @@
-<!-- $Id: mingwfaq.shtml,v 1.32 2002-02-06 17:00:39 stevedperkins Exp $ -->
+<!-- $Id: mingwfaq.shtml,v 1.33 2002-02-15 20:45:42 stevedperkins Exp $ -->
 
 <html>
 <head>
@@ -90,7 +90,7 @@
       <p>
          The project was originally started by Colin Peters, who created headers and import 
          definitions for Microsoft's crtdll C runtime in an effort to remove the dependancy of 
-         the Cygwin1.dll from applications built by Cygwin's implemtation of GCC.  It is that 
+         the Cygwin1.dll from applications built by Cygwin's implementation of GCC.  It is that 
          set of headers and import definitions that constitute what MinGW is and is interchangeably 
          refered to as the MinGW runtime.  
       </p>
@@ -499,7 +499,7 @@
 
    <hr />
    <address>
-   <br />Last revised $Date: 2002-02-06 17:00:39 $
+   <br />Last revised $Date: 2002-02-15 20:45:42 $
    </address>
 
 </body>

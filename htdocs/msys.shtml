@@ -1,4 +1,4 @@
-<!-- $Id: msys.shtml,v 1.5 2002-01-26 18:13:43 stevedperkins Exp $ -->
+<!-- $Id: msys.shtml,v 1.6 2002-02-15 20:45:42 stevedperkins Exp $ -->
 
 <html>
 <head>
@@ -46,7 +46,7 @@
             binary distribution there.  It is recommended that you create a shortcut pointing to 
             &quot;msys\1.0\msys.bat&quot;, and set the &quot;Start In:&quot; field of the shortcut 
             to &quot;msys\1.0\bin&quot;.  More information about using MinGW with 
-            MSYS can be found in the <a href="http://localhost/mingw/mingwfaq.shtml#faq-usingwithmsys">FAQ</a>, 
+            MSYS can be found in the <a href="mingwfaq.shtml#faq-usingwithmsys">FAQ</a>, 
             and the current MSYS documentation can be found in the &quot;\msys\1.0\doc\msys&quot; 
             subdirectory within the binary distribution.
          </p>
@@ -68,7 +68,7 @@
 <!--#include file="ssi/footer.html"-->
 
 <address>
-<br />Last revised $Date: 2002-01-26 18:13:43 $
+<br />Last revised $Date: 2002-02-15 20:45:42 $
 </address>
 
 </body>
