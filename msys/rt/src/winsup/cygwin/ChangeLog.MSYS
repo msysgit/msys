@@ -1,3 +1,7 @@
+2003-06-11  Earnie Boyd  <earnie@users.sf.net>
+
+	* spawn.cc (spawn_guts): Use malloc instead of cmalloc for envblock.
+
 2003-06-03  Earnie Boyd  <earnie@users.sf.net>
 
 	* spawn.cc: Correct malloc size algorithm and insure that pointers are
