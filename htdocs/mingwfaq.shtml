@@ -786,8 +786,11 @@ gcc -o hello.exe hello.o -L./ -ltstdll
     <p>For more information on dlls, see
     <a href="http://www.nanotech.wisc.edu/%7Ekhan/software/gnu-win32/dllhelpers.html">
     http://www.nanotech.wisc.edu/~khan/software/gnu-win32/dllhelpers.html</a>
-    </p>
+	<a href="http://www.geocities.com/Tokyo/Towers/6162/win32/dll/index.html">
+	http://www.geocities.com/Tokyo/Towers/6162/win32/dll/index.htm</a>
+	</p>
     </li>
+	
     <li><a id="howtocreateadeffileforadll" name="howtocreateadeffileforadll">How to create a def file for a dll</a>
     <p>There are several methods that can be tried in order to create a definition file
     (.def) when one is not supplied.
@@ -1692,5 +1695,5 @@ utility.  For more information, see the <a href="#patches">Patches</a> section.
 <br />Last revised 20000907
 </address>
 </body>
-$Id: mingwfaq.shtml,v 1.6 2000-10-08 09:35:43 pfalcon Exp $
+$Id: mingwfaq.shtml,v 1.7 2000-11-01 06:42:34 pgarceau Exp $
 </html>
