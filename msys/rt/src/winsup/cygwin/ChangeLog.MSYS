@@ -1,3 +1,24 @@
+2004-02-24  Earnie Boyd  <earnie@users.sf.net>
+
+	* cygerrno.h: Include errno.h.
+	* cygheap.c (_cygheap_start): Move definition from here.
+	* cygheap.h (_cygheap_start): To here.
+	* debug.cc (add_handle): Add parameter.
+	* debug.h (add_handle): Ditto.
+	(ProtectHandleINH, ProtectHandle1INH, ProtectHandle2INH): New 
+	definitions.
+	* dtable.cc: Add TRACE_IN throughout.
+	* miscfuncs.cc: Include winnls.h.
+	(get_cp): New function.
+	* include/cygwin/socket.h (SOMAXCONN): Modify value 
+	from 5 to 0x7fffffff.
+	(MSG_WINMASK): New constant.
+	(MSG_NOSIGNAL): Ditto.
+	(IPTOS_LOWDELAY, IPTOS_THROUGHPUT, IPTOS_RELIABILITY): Filter
+	definition based on IPTOS_LOWDELAY being defined or not.
+	(TCP_NODELAY, TCP_MAXSEG): Filter definition based on TCP_NODELAY
+	being defined or not.
+	
 2003-10-11  Earnie Boyd  <earnie@users.sf.net>
 
 	* environ.cc (winenv): Use msys_p2w() for win32 path translation.

@@ -252,7 +252,7 @@ out:
 
 /* Add a handle to the linked list of known handles. */
 void __stdcall
-add_handle (const char *func, int ln, HANDLE h, const char *name)
+add_handle (const char *func, int ln, HANDLE h, const char *name, bool inh)
 {
   handle_list *hl;
   lock_debug ();

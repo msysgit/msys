@@ -188,4 +188,5 @@ void *__stdcall ccalloc (cygheap_types, DWORD, DWORD) __attribute__ ((regparm(3)
 char *__stdcall cstrdup (const char *) __attribute__ ((regparm(1)));
 char *__stdcall cstrdup1 (const char *) __attribute__ ((regparm(1)));
 void __stdcall cygheap_init ();
+extern DWORD _cygheap_start;
 }
