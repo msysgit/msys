@@ -1,5 +1,9 @@
 2003-02-18  Nathan Fisher <natbobc@users.sf.net>
 
+	* bugs.shtml: Change include/_win32.h to include/win32.h
+
+2003-02-18  Nathan Fisher <natbobc@users.sf.net>
+
 	* download.shtml: Add package installation instructions.
 	Add detailed post-MSYS MinGW normalization instructions.
 	* bugs.shtml: Add request for OS info.
