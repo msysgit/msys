@@ -6,7 +6,8 @@ TESTS = accent accentenc cond \
   macro-at menu-whitespace \
   no-headers \
   node-expand node-value node-whitespace \
-  top top2
+  top top2 \
+  xref-cr
 
 noinst_SCRIPTS = $(TESTS)
 
@@ -15,4 +16,6 @@ EXTRA_DIST = $(noinst_SCRIPTS) \
   html-docdesc.txi html-extrali.txi html-min.txi html-para.txi html-title.txi \
   macro-at.txi menu-whitespace.txi \
   node-expand.txi node-value.txi node-whitespace.txi \
-  top.txi top2.txi
+  top.txi top2.txi \
+  xref-cr.txi
+

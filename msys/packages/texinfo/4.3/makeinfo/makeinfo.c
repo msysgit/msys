@@ -1,5 +1,5 @@
 /* makeinfo -- convert Texinfo source into other formats.
-   $Id: makeinfo.c,v 1.1 2002-12-05 21:07:17 earnie Exp $
+   $Id: makeinfo.c,v 1.2 2003-06-17 11:56:02 infidel Exp $
 
    Copyright (C) 1987, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999,
    2000, 2001, 2002 Free Software Foundation, Inc.
@@ -867,12 +867,10 @@ fix_whitespace (string)
     {
       c = temp[temp_index++] = string[string_index++];
 
-      if (c == ' ' || c == '\n' || c == '\t')
+      if (cr_or_whitespace (c))
         {
           temp[temp_index - 1] = ' ';
-          while ((c = string[string_index]) && (c == ' ' ||
-                                                c == '\t' ||
-                                                c == '\n'))
+          while ((c = string[string_index]) && cr_or_whitespace (c))
             string_index++;
         }
     }
