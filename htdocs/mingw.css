@@ -9,11 +9,13 @@ OL.romanum { list-style-type: lower-roman; }
 SPAN.bold { font-weight: bold; }
 
 TABLE { border: 0; width: 100%; text-align: left; }
-TABLE.prim { padding: 8; }
-TABLE.sec { padding: 0; }
+TABLE.prim { padding: 8px; }
+TABLE.sec { padding: 0px; }
 TABLE.search { border: 1; text-align: center; }
 
 TD { vertical-align: top; text-align: left; }
 TD.side { background-color: rgb( 238, 238, 238 ); width: 10%; }
+
+TABLE.search { border: 1; text-align: center; }
 
 UL { margin-bottom: 1em; }
