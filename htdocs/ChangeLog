@@ -1,3 +1,7 @@
+2003-01-26  Earnie Boyd  <earnie@users.sf.net>
+
+	* news-short.html: Remove from cvs as this file is dynamically created.
+
 2003-01-13  Nathan Fisher <natbobc@users.sf.net>
 
 	* index.shtml: Removed W3C Icons because compliance breaks when
