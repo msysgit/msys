@@ -1,3 +1,44 @@
+2002.04.24  Earnie Boyd  <earnie@users.sf.net>
+
+	* var: New Directory.
+	* etc: Ditto.
+	* bin: Ditto.
+	* ico: Ditto.
+	* var/script.dat: New File.
+	* var/misc.dat: Ditto.
+	* var/exe.dat: Ditto.
+	* var/etc.dat: Ditto.
+	* var/doc.dat: Ditto.
+	* var/dll.dat: Ditto.
+	* script/msysrls.sh: Ditto.
+	* script/msys.iss.in: Ditto.
+	* ico/M.ico: Ditto.
+	* ico/msys.ico: Ditto.
+	* etc/termcap: Ditto.
+	* etc/profile: Ditto.
+	* etc/fstab: Ditto.
+	* etc/config.site: Ditto.
+	* bin/view: Ditto.
+	* bin/vi: Ditto.
+	* bin/rvim: Ditto.
+	* bin/rview: Ditto.
+	* bin/rvi: Ditto.
+	* bin/printf: Ditto.
+	* bin/msys.bat: Ditto.
+	* bin/ln: Ditto.
+	* bin/ftp: Ditto.
+	* bin/fgrep: Ditto.
+	* bin/ex: Ditto.
+	* bin/egrep: Ditto.
+	* bin/echo: Ditto.
+	* bin/cmd: Ditto.
+	* bin/awk: Ditto.
+	* doc/msys/MSYS-1.0.7.changes.rtf: Ditto.
+
+2002.04.23  Earnie Boyd  <earnie@users.sf.net>
+
+	* doc/msys/MSYS-1.0.7-changes.rtf: Update with most current changes.
+
 2002.04.19  Earnie Boyd  <earnie@users.sf.net>
 
 	* src: New directory.
