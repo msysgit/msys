@@ -1,3 +1,7 @@
+2003.03.21  Earnie Boyd  <earnie@users.sf.net>
+
+	* libc/sys/cygwin/sys/utmp.h (UT_IDLEN): Add.
+	
 2003.03.07  Earnie Boyd  <earnie@users.sf.net>
 
 	* libc/stdlib/mallocr.c (unlink): Revert 2003.02.17 change.
