@@ -1,5 +1,9 @@
 2003-02-10  Earnie Boyd  <earnie@users.sf.net>
 
+	* ssi/release.html: Modify versions for bison snapshot.
+
+2003-02-10  Earnie Boyd  <earnie@users.sf.net>
+
 	* ssi/release.html: Modify versions for mingw-runtime, w32api and GCC.
 
 2003-02-04  Nathan Fisher <natbobc@users.sf.net>
