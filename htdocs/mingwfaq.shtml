@@ -22,7 +22,7 @@
 <br />Original document by Laura Michaels
 <br />Current maintainer ?
 <br />Copyright © 1999 All Rights Reserved
-<br />Last revised: $Id: mingwfaq.shtml,v 1.9 2000-11-04 13:57:14 pfalcon Exp $
+<br />Last revised: $Id: mingwfaq.shtml,v 1.10 2000-11-14 22:32:17 pfalcon Exp $
 </address>
 <p>If you have any further questions, please refer them to the
 mingw32 mailing list.  I will update this page as I have time to do so.
@@ -62,7 +62,7 @@ for his source code examples and other suggestions.
 </pre>
 <ol>
   <li>
-  <a id="whatismingw" name="whatismingw">What is mingw?</a>
+  <a id="whatismingw" name="whatismingw"><h2>What is mingw?</h2></a>
   <p>Mingw is a compiler system based on the Gnu gcc/egcs projects
   that compiles code to be run on Win32 (Windows) systems.  It
   provides C, C++ and Fortran compilers plus other related tools.  
@@ -1529,20 +1529,37 @@ utility.  For more information, see the <a href="#patches">Patches</a> section.
 </pre>
   </li>
   <li><a id="howwheretoreportbugs" name="howwheretoreportbugs">How/where to report bugs</a>
-  <p>When sending in a bug report, please be sure to send a short 
-  example of the problem.  If the problem cannot be recreated, it 
-  cannot be debugged.  Also, see the list of known problems at 
-  <a href="http://www.nanotech.wisc.edu/%7Ekhan/software/gnu-win32/gcc.html">
-  http://www.nanotech.wisc.edu/~khan/software/gnu-win32/gcc.html</a>
-  before reporting a problem.  
+  <p>
+  Please use this
+  <a href="http://sourceforge.net/bugs/?func=addbug&group_id=2435">online
+  form</a>.
   </p>
-  <p>You can report bugs to cygwin.  
-  See <a href="http://gcc.gnu.org/faq.html#bugreport">
-  http://gcc.gnu.org/faq.html#bugreport</a> for more information.
-  You can also bring problems up on the mingw32 mailing list.
+  <p>
+  When writing a bug report, be sure to send a complete, 
+  minimal test case that reproduces the problem.
+  If you never submitted bug reports before, please
+  find a time to read this vivid essay:
+  <a href="http://freshmeat.net/news/2000/02/26/951627540.html">How
+  to Report Bugs Effectively</a>.
+
+  If you prefer technical commandments, these 
+  <a href="http://gcc.gnu.org/bugs.html">guidelines</a>
+  will help, too. (But don't 
+  report a mingw-specific bug to gnu.org; send it to us 
+  using the online form above.)
   </p>
-<pre>
-</pre>
+  <p>
+  If you are not sure whether the problem is with the gnu 
+  tools, mingw itself, or your own code, then it is best 
+  to send a message to the
+  <a href="http://www.mingw.org/lists.shtml#mingw">mingw
+  mailing list</a>
+  first. It is often a good idea to post to the mailing 
+  list anyway, where you may receive helpful suggestions. 
+  But be ready to submit bug report by the link above
+  anyway - only centralized bug submission guarantees
+  that your bug won't be lost or forgotten.
+  </p>
   </li>
   <li><a id="otherresources" name="otherresources">Other resources</a>
   <p>If anyone has any other mingw pages they've put together that they'd like to add,
