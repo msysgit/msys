@@ -12,7 +12,6 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include <windows.h>
 #include "winsup.h"
 
 #define FILEERROR(A) fprintf (stderr, (A))
