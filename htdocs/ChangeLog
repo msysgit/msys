@@ -1,3 +1,8 @@
+2003-01-13  Nathan Fisher <natbobc@users.sf.net>
+
+	* index.shtml: Removed W3C Icons because compliance breaks when
+	news-short.html is updated.
+
 2003-01-12  Nathan Fisher <natbobc@users.sf.net>
 
 	* docs.shtml: Moved to new template
