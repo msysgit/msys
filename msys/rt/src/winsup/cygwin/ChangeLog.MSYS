@@ -1,3 +1,19 @@
+2003-02-12  Earnie Boyd  <earnie@users.sf.net>
+
+	* fhandler.cc: Add TRACE_IN throughout.
+	* fhandler_tty.cc: Ditto.
+	* signal.cc: Ditto.
+	* sigproc.cc: Ditto.
+	* select.cc: Ditto.
+	(select_stuff::test_and_set): Remove needless duplicate filters.
+	(thread_pipe): Code refactor.
+	(thread_serial): Ditto.
+	* winsup.h (FIXME): Change macro to identify file, function and line.
+	* spawn.cc: Format of FIXME changed.
+	* path.cc (cygwin_conv_to_win32_path): Move the test for a valid path
+	variable before initialization of variables.
+	Free retpath before exiting to fix resource leak.
+
 2003-01-24  Earnie Boyd  <earnie@users.sf.net>
 
 	* path.cc (cygwin_conv_to_win32_path): Use cygheap's cmalloc, crealloc

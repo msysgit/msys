@@ -3119,6 +3119,13 @@ int
 cygwin_conv_to_win32_path (const char *path, char *win32_path)
 {
   TRACE_IN;
+
+  if (!path || !*path)
+    {
+      *win32_path = '\0';
+      return 0;
+    }
+
   static bool path_list_found = false;
   static bool path_changed = false;
   const char *spath = path;
@@ -3160,12 +3167,6 @@ cygwin_conv_to_win32_path (const char *path, char *win32_path)
       retpath = (char *)crealloc (retpath, retpath_buflen); \
     } \
   strcpy (retpath, retstr);
-
-  if (!path || !*path)
-    {
-      *win32_path = '\0';
-      return 0;
-    }
 
   *win32_path = '\0';
 
@@ -3465,8 +3466,8 @@ cygwin_conv_to_win32_path (const char *path, char *win32_path)
 
   if (swin32_path)
     cfree(swin32_path);
-  *retpath = '\0';
-  retpath_len = 0;
+  if (retpath)
+    cfree(retpath);
   return retval;
 }
 
