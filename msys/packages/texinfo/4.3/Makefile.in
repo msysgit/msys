@@ -15,7 +15,7 @@
 @SET_MAKE@
 
 # Makefile.am for texinfo.
-# $Id: Makefile.in,v 1.1 2002/12/05 21:07:12 earnie Exp $
+# $Id: Makefile.in,v 1.3 2004/03/16 14:32:17 earnie Exp $
 # Process this file with automake to produce Makefile.in in all directories.
 #
 # This file is free software; as a special exception the author gives
@@ -88,6 +88,7 @@ INTL_LIBTOOL_SUFFIX_PREFIX = @INTL_LIBTOOL_SUFFIX_PREFIX@
 LDFLAGS = @LDFLAGS@
 LIBICONV = @LIBICONV@
 LIBINTL = @LIBINTL@
+LIBOBJS = @LIBOBJS@
 LIBS = @LIBS@
 LTLIBICONV = @LTLIBICONV@
 LTLIBINTL = @LTLIBINTL@

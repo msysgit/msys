@@ -1,0 +1,24 @@
+\input texinfo
+@c **** This file must have DOS newlines to see the bug ****
+
+@setfilename bug.info
+
+@node Top
+@top Bug
+
+@menu
+* Chapter Foo::
+* Chapter Bar::
+@end menu
+
+@node Chapter Foo
+@chapter Chapter Foo
+
+...
+
+@node Chapter Bar
+@chapter Chapter Bar
+
+Please see @xref{Chapter
+Foo}
+
