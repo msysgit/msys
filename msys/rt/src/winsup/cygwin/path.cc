@@ -56,6 +56,7 @@ details. */
 #endif
 
 #include "winsup.h"
+#include "msys.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/mount.h>
@@ -1239,14 +1240,6 @@ conv_path_list (const char *src, char *dst, int to_posix_p)
 
 /* init: Initialize the mount table.  */
 
-#define CHECK_MOUNT_EVENT \
-  if ( ! (WaitForSingleObject (mount_table->eventH, 1) == WAIT_OBJECT_0)) \
-    { debug_printf ("Unexpected wait value"); \
-    }
-FIXME; //We need to figure out where we need to wait for this event.
-// Race issues currently abound where access to the mount data can occur at the
-// same time the mount data is being replaced.
-
 void
 mount_info::init ()
 {
@@ -1689,8 +1682,6 @@ mount_info::read_mounts_thread (LPVOID thrdParam)
 {
     mount_info *info = (mount_info *)thrdParam;
     char etcPath [MAX_PATH+1];
-    info->eventH = CreateEvent (NULL, true, false, "evtReadMounts");
-    info->read_mounts2();
     strcpy (etcPath, info->RootPath);
     strcat (etcPath, "/etc");
     HANDLE ffcnH = FindFirstChangeNotification (etcPath, true,
@@ -1704,13 +1695,12 @@ mount_info::read_mounts_thread (LPVOID thrdParam)
 	ExitProcess (1);
       }
     do {
-	SetEvent (info->eventH);
 	FindNextChangeNotification (ffcnH);
 	if (WaitForSingleObject (ffcnH, INFINITE) == WAIT_OBJECT_0)
 	  {
 	    FIXME; // We need only do this if /etc/fstab actually changed and
 	    // not any change to the /etc directory.
-	    ResetEvent (info->eventH);
+	    auto_lock mounts_lock(info->lock);
 	    info->nmounts = 0;
 	    info->read_mounts2 ();
 	  }
@@ -1721,6 +1711,8 @@ mount_info::read_mounts_thread (LPVOID thrdParam)
 void
 mount_info::read_mounts (reg_key& r)
 {
+    InitializeCriticalSection(&lock);
+    read_mounts2();
     threadH = CreateThread (NULL, 0, mount_info::read_mounts_thread, this, 0, threadID);
 }
 
@@ -2047,6 +2039,7 @@ int
 mount_info::add_item (const char *native, const char *posix, unsigned mountflags, int reg_p)
 {
   TRACE_IN;
+  auto_lock mounts_lock(lock); 
   /* Something's wrong if either path is NULL or empty, or if it's
      not a UNC or absolute path. */
 
@@ -2118,6 +2111,7 @@ int
 mount_info::del_item (const char *path, unsigned flags, int reg_p)
 {
   TRACE_IN;
+  auto_lock mounts_lock(lock); 
   char pathtmp[MAX_PATH];
   int posix_path_p = FALSE;
 
@@ -3616,8 +3610,8 @@ cygwin_posix_path_list_p (const char *path)
    size of the buffer needed is computed.  Then the conversion is done.  This
    allows the caller to use alloca if it wants.  */
 
-static int
-conv_path_list_buf_size (const char *path_list, int to_posix_p)
+int
+mount_info::conv_path_list_buf_size (const char *path_list, int to_posix_p)
 {
   TRACE_IN;
   int i, num_elms, max_mount_path_len, size;
@@ -3632,11 +3626,11 @@ conv_path_list_buf_size (const char *path_list, int to_posix_p)
     ++p;
 
   /* 7: strlen ("//c") + slop, a conservative initial value */
-  for (max_mount_path_len = 7, i = 0; i < mount_table->nmounts; ++i)
+  for (max_mount_path_len = 7, i = 0; i < nmounts; ++i)
     {
       int mount_len = (to_posix_p
-		       ? mount_table->mount[i].posix_pathlen
-		       : mount_table->mount[i].native_pathlen);
+		       ? mount[i].posix_pathlen
+		       : mount[i].native_pathlen);
       if (max_mount_path_len < mount_len)
 	max_mount_path_len = mount_len;
     }
@@ -3651,7 +3645,7 @@ int
 cygwin_win32_to_posix_path_list_buf_size (const char *path_list)
 {
   TRACE_IN;
-  return conv_path_list_buf_size (path_list, 1);
+  return mount_table->conv_path_list_buf_size (path_list, 1);
 }
 
 extern "C"
@@ -3659,7 +3653,7 @@ int
 cygwin_posix_to_win32_path_list_buf_size (const char *path_list)
 {
   TRACE_IN;
-  return conv_path_list_buf_size (path_list, 0);
+  return mount_table->conv_path_list_buf_size (path_list, 0);
 }
 
 extern "C"

@@ -47,10 +47,14 @@ shared_name (const char *str, int num)
   static NO_COPY char buf[MAX_PATH] = {0};
   static NO_COPY char buf2[MAX_PATH] = {0};
   extern bool _cygwin_testing;
-  static unsigned long ulModuleHash;
+  unsigned long ulModuleHash = 0;
+  char *tptr = buf2;
 
   AbsDllPath("msys-1.0.dll", buf2, sizeof (buf2));
-  ulModuleHash = hash_path_name(ulModuleHash, buf2);
+  do {
+      ulModuleHash = ulModuleHash + *tptr++;
+  } while (*tptr);
+
   debug_printf("%d.%s.%s.%d", ulModuleHash, cygwin_version.shared_id, str, num);
   __small_sprintf (buf, "%d.%s.%s.%d", ulModuleHash, cygwin_version.shared_id, str, num);
 /* This code was removed because cygwin_version.dll_build_date is invalid.
