@@ -1,3 +1,35 @@
+2002-10-06 10:55  jrfonseca
+
+	* AUTHORS, autogen.sh, configure.ac, dos2unix/dos2unix.c,
+	dos2unix/dos2unix.h, drmingw/Makefile.am, unix2dos/unix2dos.c,
+	unix2dos/unix2dos.h: Updated configure.ac to use updated Autotools
+	syntax, determine windres program at build-time, make
+	dos2unix-unix2dos use config.h (Soren Andersen)
+
+2002-10-03 18:11  jrfonseca
+
+	* dos2unix/Makefile.am, unix2dos/Makefile.am: Tell automake to
+	include the man pages in the source package
+
+2002-09-30 17:53  jrfonseca
+
+	* drmingw/samples/: exchndl2.cxx, test-c.c, test-cxx.cxx,
+	test-segv.cpp, test-segv.txt: Added a test case contributed by Wu
+	Yongwei on 2002/04/27 which causes Dr.MinGW to go in a infinite
+	loop (still).  Converted the previous files to Unix line endings.
+
+2002-09-30 17:40  jrfonseca
+
+	* drmingw/samples/: exchndl2.cxx, test-c.c, test-cxx.cxx: Added
+	some previously forgotten sample test programs of Dr.MinGW.
+
+2002-09-30 01:10  jrfonseca
+
+	* ChangeLog, dos2unix/COPYING, dos2unix/COPYRIGHT,
+	drmingw/Makefile.am, unix2dos/COPYING, unix2dos/COPYRIGHT: Renamed
+	some files to better suit what is expected by autotools.  Other
+	fixes for packaging.
+
 2002-09-30 00:50  jrfonseca
 
 	* AUTHORS, ChangeLog, configure.ac, drmingw/include/getopt.h: Added
