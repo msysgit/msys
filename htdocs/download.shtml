@@ -46,6 +46,8 @@
 		      <li><a href="#hdr2">File List</a></li>
 		      <li><a href="#hdr3">Mirror Sites</a></li>
 		      <li><a href="#hdr4">Understanding MinGW Packaging</a></li>
+		      <li><a href="#hdr5">Decompression and Unarchiving Utilities</a></li>
+		      <li><a href="#hdr6">Installing MinGW</a></li>
 		    </ul>
                     <h2><a name="hdr1" />
                       MinGW and MSYS Distributions
@@ -282,30 +284,24 @@
                     2.10.91 alpha or beta release made on 5th of
                     December, 2000.<br>
 		    -->
-                    <br>
-                     <em><b>WinZip Caution:</b></em><br>
-                    Make sure that you first <b>uncheck</b> the
-                    "TAR file smart CR/LF conversion" checkbox
-                    found in the Configuration -&gt; Miscellaneous
-                    tab of the Options menu.<br>
-                    <br>
-                     <em><a href="http://www.7-zip.org" target=
-                    "_nw">7-Zip</a></em><br>
-                     
+		    <h2><a name="hdr5" />
+		      Decompression and Unarchiving Utilities</h2>
                     <p>
-                      We've found that this zip/unzip utility is
-                      fast and reliable for differing compression
-                      algorithms. If you need a decompression
-                      utility, you should visit <a href=
-                      "http://www.7-Zip.org" target="_nw">7-Zip</a>
-                      for the latest version. If you don't need a
-                      compression/decompression utility, I suggest
-                      you visit <a href="http://www.7-Zip.org"
-                      target="_nw">7-Zip</a> for one of the best
-                      compression algorithms available.
-                    </p>
+                     <em><b>WinZip Caution:</b></em><br>
+                      Make sure that you first <b>uncheck</b> the
+                      "TAR file smart CR/LF conversion" checkbox
+                      found in the Configuration -&gt; Miscellaneous
+                      tab of the Options menu.
+		    </p>
+		    <p>
+		      <h3>An Open Source Win32 style solution</h3>
+                      <a href="http://www.7-zip.org" target=
+                      "_nw">7-Zip</a> offers an open source compression and
+		      decompression utility that will compress in two formats
+		      and decompress in several formats.
+		    </p>
                     <hr>
-                    <h2>
+                    <h2><a name="hdr6" />
                       Installing MinGW
                     </h2><span class="bold">Installing MinGW using
                     MinGW-__VERSION__.exe:<br></span><br>
@@ -518,11 +514,7 @@
                         Happy programming if you get the above
                         output.<br>
                       </li>
-                    </ol><span class="bold">Cygwin:<br></span> Sorry
-                    on the todo list<br>
-                    <br>
-                     <span class="bold">Other:<br></span> Please
-                    submit to suggestions as a&nbsp; patch.
+                    </ol>
                     <!--                            End of Main Body                             -->
                   </td>
                 </tr>
@@ -549,7 +541,7 @@
     </p>
     <address>
       <br>
-      Last revised $Date: 2003-06-11 23:03:48 $
+      Last revised $Date: 2003-06-11 23:46:48 $
     </address>
   </body>
 </html>

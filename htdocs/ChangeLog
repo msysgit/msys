@@ -2,6 +2,8 @@
 
 	* download.shtml: Add a Contents section and unify the section titles.
 	Modify verbiage explaining the packaging conventions.
+	Add "Decompression and Unarchiving utilities" content header.
+	Add "Installing MinGW" to Contents.
 
 2003-06-06  Earnie Boyd  <earnie@users.sf.net>
 
