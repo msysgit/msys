@@ -86,6 +86,7 @@ set_myself (pid_t pid, HANDLE h)
 		       cygwin_version.dll_major, cygwin_version.dll_minor,
 		       cygwin_version.api_major, cygwin_version.api_minor);
       strace.prntf (1, NULL, "DLL build:    %s", cygwin_version.dll_build_date);
+      strace.prntf (1, NULL, "Shared ID:    %s", cygwin_version.shared_id);
       strace.prntf (1, NULL, "OS version:   Windows %s", osname);
       strace.prntf (1, NULL, "**********************************************");
     }

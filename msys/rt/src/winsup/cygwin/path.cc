@@ -181,8 +181,18 @@ int
 pathmatch (const char *path1, const char *path2)
 {
   TRACE_IN;
-  debug_printf("pathmatch(%s, %s))", path1, path2);
+  debug_printf("pathmatch(path1=%s, path2=%s))", path1, path2);
   // Paths of just dots can't be matched so don't say they are.
+  if (! path1 || ! path2 || !*path1 || !*path2)
+    {
+      debug_printf("Path length 0 or not initialized");
+      return 0;
+    }
+  if (strlen (path1) > MAX_PATH || strlen (path2) > MAX_PATH)
+    {
+      debug_printf("Maximum path exceeded");
+      return 0;
+    }
   if (path1[0] == '.' && path2[0] == '.')
     {
       if (path1[1] && path2[1])
@@ -216,7 +226,7 @@ normalize_posix_path (const char *src, char *dst)
       strcpy (dst, last_dst);
       return 0;
     }
-  strcpy (last_src, src);
+  strncpy (last_src, src, MAX_PATH);
 
   syscall_printf ("src %s", src);
   syscall_printf ("dst %s", dst);
@@ -2437,11 +2447,7 @@ symlink (const char *topath, const char *frompath)
     {
       set_security_attribute (S_IFLNK | S_IRWXU | S_IRWXG | S_IRWXO,
 			    &sa, 
-#if DO_CPP_NEW
-			    (new void [4096]), 
-#else
 			    alloca (4096),
-#endif
 			    4096);
     }
 
@@ -2872,11 +2878,7 @@ hash_path_name (unsigned long hash, const char *name)
 	 the environment to track current directory on various drives. */
       if (name[1] == ':')
 	{
-#if DO_CPP_NEW
-	  char *nn, *newname = new char [(strlen (name) + 2)];
-#else
 	  char *nn, *newname = (char *) alloca (strlen (name) + 2);
-#endif
 	  nn = newname;
 	  *nn = isupper (*name) ? cyg_tolower (*name) : *name;
 	  *++nn = ':';
@@ -2885,9 +2887,6 @@ hash_path_name (unsigned long hash, const char *name)
 	    *++nn = '\\';
 	  strcpy (++nn, name);
 	  name = newname;
-#if DO_CPP_NEW
-	  delete[] newname;
-#endif
 	  goto hashit;
 	}
 
@@ -3109,20 +3108,12 @@ cygwin_conv_to_win32_path (const char *path, char *win32_path)
   const char *spath = path;
   char *sptr;
   char * sspath;
-#if DO_CPP_NEW
-  char *swin32_path = new char [MAX_PATH * 4];
-#else
-  char *swin32_path = (char *)calloc (1, MAX_PATH * 4);
-#endif
+  char *swin32_path = (char *)calloc (1, MAX_PATH);
   int swin32_pathlen;
   // retpath will be what sets win32_path before exiting.
-#if DO_CPP_NEW
-  char *retpath = new char [MAX_PATH * 4];
-#else
-  char *retpath = (char *)calloc (1, MAX_PATH * 4);
-#endif
+  char *retpath = (char *)calloc (1, MAX_PATH);
   int retpath_len = 0;
-  int retpath_buflen = MAX_PATH * 4;
+  int retpath_buflen = MAX_PATH;
   int sret;
   int retval = 0;
     
@@ -3366,12 +3357,8 @@ cygwin_conv_to_win32_path (const char *path, char *win32_path)
 	}
     }
   strcpy (win32_path, retpath);
-#if DO_CPP_NEW
-  delete[] swin32_path;
-#else
   if (swin32_path)
     free (swin32_path);
-#endif
   *retpath = '\0';
   retpath_len = 0;
   return retval;
@@ -3755,11 +3742,7 @@ cwdstuff::get (char *buf, int need_posix, int with_chroot, unsigned ulen)
   else
     {
       if (!buf)
-#if DO_CPP_NEW
-	buf = new char [(strlen (tocopy) + 1)];
-#else
 	buf = (char *) malloc (strlen (tocopy) + 1);
-#endif
       strcpy (buf, tocopy);
       if (!buf[0])	/* Should only happen when chroot */
 	strcpy (buf, "/");
