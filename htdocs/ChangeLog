@@ -1,10 +1,17 @@
 2003-01-10  Nathan Fisher <natbobc@users.sf.net>
 
+	* bugs.shtml: Validated as HTML 4.01(transitional) and CSS1 compliant
+	* download.shtml: ditto
+	* index.shtml: ditto
+	* ssi/footer.html: Replaced & with &amp; for w3c compliance
+
+2003-01-10  Nathan Fisher <natbobc@users.sf.net>
+
 	* index.shtml: Updated to be w3c transitional compliant
-	* mingw.css: Added sm class to replace depreciated SMALL tag
-	* ssi/bottombar.html: ditto
-	* ssi/footer.html: ditto
-	* ssi/lsidebar.html: ditto
+	* mingw.css: Added sm and smi class to replace depreciated SMALL tag
+	* ssi/bottombar.html: Used sm class 
+	* ssi/footer.html: Used smi class
+	* ssi/lsidebar.html: Used smi class
 
 2003-01-08  Earnie Boyd  <earnie@users.sf.net>
 
