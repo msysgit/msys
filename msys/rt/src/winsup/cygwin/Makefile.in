@@ -91,8 +91,8 @@ RUNTESTFLAGS =
 # native rebuilding issues (we don't want the build tools to see a partially
 # built cygwin.dll and attempt to use it instead of the old one).
 
-DLL_NAME:=msys-1.0.dll
-LIB_NAME:=libmsys-1.0.dll.a
+DLL_NAME:=msys-1.1.dll
+LIB_NAME:=libmsys-1.1.dll.a
 DEF_FILE:=cygwin.def
 DLL_ENTRY:=@DLL_ENTRY@
 

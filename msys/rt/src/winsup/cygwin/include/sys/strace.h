@@ -35,7 +35,7 @@ details. */
 
 class strace
 {
-  int vsprntf (char *buf, const char *func, const char *infmt, va_list ap);
+  int vsprntf (char *buf, const char *func, int line, const char *infmt, va_list ap);
   void write (unsigned category, const char *buf, int count);
 public:
   int microseconds ();
@@ -44,8 +44,8 @@ public:
   int lmicrosec;
   int execing;
   strace() : version(1) {}
-  void prntf (unsigned, const char *func, const char *, ...) /*__attribute__ ((regparm(3)))*/;
-  void vprntf (unsigned, const char *func, const char *, va_list ap) /*__attribute__ ((regparm(3)))*/;
+  void prntf (unsigned, const char *func, int line, const char *, ...) /*__attribute__ ((regparm(3)))*/;
+  void vprntf (unsigned, const char *func, int line, const char *, va_list ap) /*__attribute__ ((regparm(3)))*/;
   void wm (int message, int word, int lon) __attribute__ ((regparm(3)));
 };
 
@@ -90,7 +90,7 @@ extern "C" {
 #endif
 
 void small_printf (const char *, ...);
-void strace_printf (unsigned, const char *func, const char *, ...);
+void strace_printf (unsigned, const char *func, int line, const char *, ...);
 
 #ifdef __cplusplus
 }
@@ -108,7 +108,7 @@ void strace_printf (unsigned, const char *func, const char *, ...);
 #define define_strace0(c,...) \
   do { \
       if ((c & _STRACE_SYSTEM) || strace.active) \
-	strace.prntf (c, __PRETTY_FUNCTION__, __VA_ARGS__); \
+	strace.prntf (c, __PRETTY_FUNCTION__, __LINE__, __VA_ARGS__); \
     } \
   while (0)
 
@@ -130,13 +130,13 @@ void strace_printf (unsigned, const char *func, const char *, ...);
 #define strace_printf_wrap(what, fmt, args...) \
    ((void) ({\
 	if ((_STRACE_ ## what & _STRACE_SYSTEM) || strace.active) \
-	  strace.prntf(_STRACE_ ## what, __PRETTY_FUNCTION__, fmt, ## args); \
+	  strace.prntf(_STRACE_ ## what, __PRETTY_FUNCTION__, __LINE__, fmt, ## args); \
 	0; \
     }))
 #define strace_printf_wrap1(what, fmt, args...) \
     ((void) ({\
 	if ((_STRACE_ ## what & _STRACE_SYSTEM) || strace.active) \
-	  strace.prntf((_STRACE_ ## what) | _STRACE_NOTALL, __PRETTY_FUNCTION__, fmt, ## args); \
+	  strace.prntf((_STRACE_ ## what) | _STRACE_NOTALL, __PRETTY_FUNCTION__,__LINE__, fmt, ## args); \
 	0; \
     }))
 

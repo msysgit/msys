@@ -845,7 +845,7 @@ dll_crt0_1 ()
       char *cp = __progname;
       if (strip_title_path)
 	for (char *ptr = cp; *ptr && *ptr != ' '; ptr++)
-	  if (isdirsep (*ptr))
+	  if (IsDirMarker (*ptr))
 	    cp = ptr + 1;
       set_console_title (cp);
     }
@@ -971,7 +971,7 @@ dll_crt0 (per_process *uptr)
   _dll_crt0 ();
 }
 
-/* This must be called by anyone who uses LoadLibrary to load msys-1.0.dll */
+/* This must be called by anyone who uses LoadLibrary to load msys-1.1.dll */
 extern "C" void
 msys_dll_init ()
 {

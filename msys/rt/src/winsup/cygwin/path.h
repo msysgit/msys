@@ -79,10 +79,9 @@ class path_conv
   int issocket () const {return path_flags & PATH_SOCKET;}
   // FIXME-1.0: 
   //	    Need to change iscygexec based on whether or not the .exe contains
-  //	    a msys-1.0.dll or not.  When this fix occurs, changes to spawn.cc
+  //	    a msys-1.1.dll or not.  When this fix occurs, changes to spawn.cc
   //	    with a FIXME-1.0 designator will need to occur.
-  int iscygexec () const {return ((path_flags & PATH_MSYS_EXEC)
-				  || IsMsys (path));}
+  int iscygexec () const {return (IsMsys (path));}
 
   executable_states exec_state ()
   {
@@ -111,24 +110,22 @@ class path_conv
 
   DWORD fileattr;
 
-  BOOL case_clash;
-
-  void check (const char *src, unsigned opt = PC_SYM_FOLLOW,
+  void check (const char *src, unsigned opt = 0,
 	      const suffix_info *suffixes = NULL)  __attribute__ ((regparm(3)));
 
-  path_conv (int, const char *src, unsigned opt = PC_SYM_FOLLOW,
+  path_conv (int, const char *src, unsigned opt = 0,
 	     const suffix_info *suffixes = NULL)
   {
     check (src, opt, suffixes);
   }
 
-  path_conv (const char *src, unsigned opt = PC_SYM_FOLLOW,
+  path_conv (const char *src, unsigned opt = 0,
 	     const suffix_info *suffixes = NULL)
   {
     check (src, opt | PC_NULLEMPTY, suffixes);
   }
 
-  path_conv (): path_flags (0), known_suffix (NULL), error (0), devn (0), unit (0), fileattr ((DWORD)-1) {path[0] = '\0';}
+  path_conv (): path_flags (0), known_suffix (NULL), error (0), devn (0), unit (0), fileattr (0xffffffff) {path[0] = '\0';}
 
   inline char *get_win32 () { return path; }
   operator char *() {return path; }

@@ -131,7 +131,7 @@ opendir (const char *dirname)
   dir->__d_dirent->d_fd = open (dir->__d_dirname, O_RDONLY | O_DIROPEN);
   /* FindFirstFile doesn't seem to like duplicate /'s. */
   len = strlen (dir->__d_dirname);
-  if (len == 0 || SLASH_P (dir->__d_dirname[len - 1]))
+  if (len == 0 || IsDirMarker (dir->__d_dirname[len - 1]))
     strcat (dir->__d_dirname, "*");
   else
     strcat (dir->__d_dirname, "\\*");  /**/
@@ -327,7 +327,11 @@ mkdir (const char *dir, mode_t mode)
 
   if (real_dir.error)
     {
+#if INCLUDE_CASE_CLASH
       set_errno (real_dir.case_clash ? ECASECLASH : real_dir.error);
+#else
+      set_errno (real_dir.error);
+#endif
       goto done;
     }
 

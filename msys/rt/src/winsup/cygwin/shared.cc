@@ -50,7 +50,7 @@ shared_name (const char *str, int num)
   unsigned long ulModuleHash = 0;
   char *tptr = buf2;
 
-  AbsDllPath("msys-1.0.dll", buf2, sizeof (buf2));
+  AbsDllPath("msys-1.1.dll", buf2, sizeof (buf2));
   do {
        ulModuleHash = ulModuleHash + *tptr++;
   } while (*tptr);
@@ -126,7 +126,7 @@ shared_info::initialize ()
     {
       if (inited != SHAREDVER)
 	api_fatal ("Shared region version mismatch.  Version %x != %x.\n"
-		   "Are you using multiple versions of msys-1.0.dll?\n"
+		   "Are you using multiple versions of msys-1.1.dll?\n"
 		   "Run 'cygcheck -r -s -v' to find out.",
 		   inited, SHAREDVER);
       return;

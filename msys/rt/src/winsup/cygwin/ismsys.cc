@@ -7,7 +7,7 @@
  * bool IsMsys (const char * File)
  *
  * This function returns true or false based on the import section data of
- * the File containing the name msys-1.0.dll.
+ * the File containing the name msys-1.1.dll or msys-1.0.dll.
  */
 
 #include <stdlib.h>
@@ -132,6 +132,12 @@ IsMsys (const char *File)
 	ID *impdata = (ID *)PE_Import;
 	for (int I=0; impdata[I].name; I++)
 	  {
+	    if (!strcmp((char *) PE_Import + impdata[I].name - PE_ImportRva,
+		  "msys-1.1.dll"))
+	      {
+		retval = true;
+		break;
+	      }
 	    if (!strcmp((char *) PE_Import + impdata[I].name - PE_ImportRva,
 		  "msys-1.0.dll"))
 	      {

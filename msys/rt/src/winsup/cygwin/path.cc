@@ -105,12 +105,8 @@ struct symlink_info
   DWORD fileattr;
   bool ext_tacked_on;
   int error;
-  BOOL case_clash;
   int check (char *path, const suffix_info *suffixes, unsigned opt);
-  BOOL case_check (char *path);
 };
-
-int pcheck_case = PCHECK_RELAXED; /* Determines the case check behaviour. */
 
 /* Return non-zero if PATH1 is a prefix of PATH2.
    Both are assumed to be of the same path style and / vs \ usage.
@@ -131,16 +127,18 @@ path_prefix_p (const char *path1, const char *path2, int len1)
 {
   TRACE_IN;
   /* Handle case where PATH1 has trailing '/' and when it doesn't.  */
-  if (len1 > 0 && SLASH_P (path1[len1 - 1]))
+  if (len1 > 0 && IsDirMarker (path1[len1 - 1]))
     len1--;
 
-  if (len1 == 0)
-    return SLASH_P (path2[0]) && !SLASH_P (path2[1]);
+  if (len1 == 0) {
+    return IsDirMarker (path2[0]) && !IsDirMarker (path2[1]);
+  }
 
-  if (!pathnmatch (path1, path2, len1))
+  if (!pathnmatch (path1, path2, len1)) {
     return 0;
+  }
 
-  return SLASH_P (path2[len1]) || path2[len1] == 0 || path1[len1 - 1] == ':';
+  return IsDirMarker (path2[len1]) || path2[len1] == 0 || path1[len1 - 1] == ':';
 }
 
 /* Return non-zero if paths match in first len chars. */
@@ -337,7 +335,7 @@ mkrelpath (char *path)
   if (n == cwdlen)
     tail += cwdlen;
   else
-    tail += isdirsep (cwd_win32[cwdlen - 1]) ? cwdlen : cwdlen + 1;
+    tail += IsDirMarker (cwd_win32[cwdlen - 1]) ? cwdlen : cwdlen + 1;
 
   memmove (path, tail, strlen (tail) + 1);
   if (!*path)
@@ -429,17 +427,9 @@ path_conv::check (const char *src, unsigned opt,
    * 2) PC_SYM_IGNORE: Doesn't do symlink checking including the path
    *    extention.
    * ******************************************************************
-   * pcheck_case == PCHECK_RELAXED used with opt & PC_SYM_IGNORE.
-   * pcheck_case == PCHECK_STRICT used with sym.case_clase;
-   * sym.case_clash is set via the previous sym.check call and sym is
-   * an object of the symlink_info class.
-   * pcheck_case == PCHECK_ADJUST allows a path creator to maintain
-   * the current case of a file if the file exists and the case for
-   * the new name differs.
-   * ******************************************************************
    * FIXME: All we really need path_conv::check to do is:
    * 1) Does the value of src exists in the file system?
-   *    Y) Does case of file system name differ with the value of src?
+   *    Y) Does case of file system name differ with the value of src?  //?? Do I really want to check case ??//
    *       Y) Report File Not Found.
    *       N) Report File Found
    *    N) Does the value of src contain a '.'?
@@ -470,18 +460,15 @@ path_conv::check (const char *src, unsigned opt,
   /* This array is used when expanding symlinks.  It is MAX_PATH * 2
      in length so that we can hold the expanded symlink plus a
      trailer.  */
-  char tmp_buf[2 * MAX_PATH + 3];
   char path_copy[MAX_PATH + 3];
   symlink_info sym;
-  bool need_directory = 0;
+  bool need_directory = false;
   int is_relpath;
   sigframe thisframe (mainthread);
 
-  int loop = 0;
   path_flags = 0;
   known_suffix = NULL;
   fileattr = (DWORD) -1;
-  case_clash = FALSE;
   devn = unit = 0;
   root_dir[0] = '\0';
   fs_name[0] = '\0';
@@ -497,29 +484,22 @@ path_conv::check (const char *src, unsigned opt,
   //OK, it doesn't work and the reason is that foo is treated as a symlink for
   //foo.exe.  So, now maybe we can go clean this up.
 
-  if (!(opt & PC_NULLEMPTY))
-    error = 0;
-  else if ((error = check_null_empty_str (src)))
+  error = ((opt & PC_NULLEMPTY) ? check_null_empty_str (src) : 0);
+  if (error)
     return;
 
   /* This loop handles symlink expansion.  */
-  for (;;)
     {
       //What's this macro do?
       MALLOC_CHECK;
       assert (src);
 
-      char *p = strrchr (src, '\0');
+      char *p = strrchr (src, '\0') - 1;
       /* Detect if the user was looking for a directory.  We have to strip the
 	 trailing slash initially and add it back on at the end due to Windows
 	 brain damage. */
-      if (--p > src)
-	{
-	  if (isdirsep (*p))
-	    need_directory = 1;
-	  else if (--p  > src && p[1] == '.' && isdirsep (*p))
-	    need_directory = 1;
-	}
+      if (p > src)
+	need_directory = (IsDirMarker (*p) || (IsDirMarker (*(p - 1)) && *p == '.'));
 
       is_relpath = !isabspath (src);
       error = normalize_posix_path (src, path_copy);
@@ -536,29 +516,15 @@ path_conv::check (const char *src, unsigned opt,
 	 Also: be careful to preserve the errno returned from
 	 symlink.check as the caller may need it. */
       /* FIXME: Do we have to worry about multiple \'s here? */
-      int component = 0;		// Number of translated components
       sym.contents[0] = '\0';
 
-      for (;;)
 	{
 	  const suffix_info *suff;
-	  char pathbuf[MAX_PATH];
 	  char *full_path;
 
-	  /* Don't allow symlink.check to set anything in the path_conv
-	     class if we're working on an inner component of the path */
-	  if (component)
-	    {
-	      suff = NULL;
-	      sym.pflags = 0;
-	      full_path = pathbuf;
-	    }
-	  else
-	    {
 	      suff = suffixes;
 	      sym.pflags = path_flags;
 	      full_path = this->path;
-	    }
 
 	  /* Convert to native path spec sans symbolic link info. */
 	  error = mount_table->conv_to_win32_path (path_copy, full_path, devn,
@@ -576,85 +542,41 @@ path_conv::check (const char *src, unsigned opt,
 	      goto out;		/* Found a device.  Stop parsing. */
 	    }
 
-	  /* Eat trailing slashes */
-	  char *dostail = strchr (full_path, '\0');
-
-	  /* 
-	   * If path is only a drivename, 
-	   * Windows interprets it as the current working directory on 
-	   * this drive instead of the root dir which is not what we want. 
-	   * So we need the trailing backslash in this case. 
-	   */
-	  while (dostail > full_path + 3 && (*--dostail == '\\'))
-	    *tail = '\0';
-
 	  if (full_path[0] && full_path[1] == ':' && full_path[2] == '\0')
 	    {
 	      full_path[2] = '\\';
 	      full_path[3] = '\0';
 	    }
 
-	  if ((opt & PC_SYM_IGNORE) && pcheck_case == PCHECK_RELAXED)
+	  if (opt & PC_SYM_IGNORE)
 	    {
 	      fileattr = GetFileAttributesA (full_path);
 	      goto out;
 	    }
 
-	  int len = sym.check (full_path, suff, opt | sym_opt);
-
-	  if (sym.case_clash)
-	    {
-	      if (pcheck_case == PCHECK_STRICT)
-		{
-		  case_clash = TRUE;
-		  error = ENOENT;
-		  goto out;
-		}
-	      /* If pcheck_case==PCHECK_ADJUST the case_clash is remembered
-		 if the last component is concerned. This allows functions
-		 which shall create files to avoid overriding already existing
-		 files with another case. */
-	      if (!component)
-		case_clash = TRUE;
-	    }
+	  debug_printf("%s", full_path);
+	  sym.check (full_path, suff, opt | sym_opt);
 
 	  // since I don't care about symlinks I can get rid of this, right?
 	  // No!! We can't find any thing on PATH if we don't do this.?!?!
-	  if (!(opt & PC_SYM_IGNORE))
-	    {
-	      if (!component)
-		path_flags = sym.pflags;
+	    path_flags = sym.pflags;
 
-	      /* If symlink.check found an existing non-symlink file, then
-		 it sets the appropriate flag.  It also sets any suffix found
-		 into `ext_here'. */
-	      if (sym.fileattr != (DWORD) -1)
+	  /* If symlink.check found an existing non-symlink file, then
+	     it sets the appropriate flag.  It also sets any suffix found
+	     into `ext_here'. */
+	  if (sym.fileattr != (DWORD) -1)
+	    {
+		error = sym.error;
+		fileattr = sym.fileattr;
+	      if (sym.ext_here && *sym.ext_here)
 		{
-		  error = sym.error;
-		  fileattr = sym.fileattr;
-		  if (sym.ext_here && *sym.ext_here)
-		    {
-		      known_suffix = path + sym.extn;
-		      if (sym.ext_tacked_on)
-			strcpy (known_suffix, sym.ext_here);
-		    }
-		  if (pcheck_case == PCHECK_RELAXED)
-		    goto out;	// file found
-		  /* Avoid further symlink evaluation. Only case checks are
-		     done now. */
-		  opt |= PC_SYM_IGNORE;
+		  known_suffix = path + sym.extn;
+		  if (sym.ext_tacked_on)
+		    strcpy (known_suffix, sym.ext_here);
 		}
-	      /* Found a symlink if len > 0.  If component == 0, then the
-		 src path itself was a symlink.  If !follow_mode then
-		 we're done.  Otherwise we have to insert the path found
-		 into the full path that we are building and perform all of
-		 these operations again on the newly derived path. */
-	      else if (len > 0)
-		{
-		    break;
-		}
-	      /* No existing file found. */
+		goto out;	// file found
 	    }
+	  /* No existing file found. */
 
 	  /* Find the "tail" of the path, e.g. in '/for/bar/baz',
 	     /baz is the tail. */
@@ -672,14 +594,6 @@ path_conv::check (const char *src, unsigned opt,
 	  /* Haven't found an existing pathname component yet.
 	     Pinch off the tail and try again. */
 	  *tail = '\0';
-	  component++;
-	}
-
-      /* Arrive here if above loop detected a symlink. */
-      if (++loop > MAX_LINK_DEPTH)
-	{
-	  error = ELOOP;   // Eep.
-	  return;
 	}
 
       MALLOC_CHECK;
@@ -705,20 +619,14 @@ path_conv::check (const char *src, unsigned opt,
       *p = '\0';
 
       char *headptr;
-      if (isabspath (sym.contents))
-	headptr = tmp_buf;	/* absolute path */
-      else
-	{
 	  /* Copy the first part of the path and point to the end. */
-	  strcpy (tmp_buf, path_copy);
-	  headptr = strchr (tmp_buf, '\0');
-	}
+	  headptr = strchr (path_copy, '\0');
 
       /* See if we need to separate first part + symlink contents with a / */
-      if (headptr > tmp_buf && headptr[-1] != '/')
+      if (headptr > path_copy && headptr[-1] != '/')
 	*headptr++ = '/';
 
-      /* Copy the symlink contents to the end of tmp_buf.
+      /* Copy the symlink contents to the end of path_copy.
 	 Convert slashes.  FIXME? */
       for (p = sym.contents; *p; p++)
 	*headptr++ = *p == '\\' ? '/' : *p;
@@ -732,18 +640,13 @@ path_conv::check (const char *src, unsigned opt,
 	  strcpy (headptr, tail);
 	}
 
-      /* Now evaluate everything all over again. */
-      src = tmp_buf;
+      src = path_copy;
     }
 
 out:
   /* Deal with Windows stupidity which considers filename\. to be valid
      even when "filename" is not a directory. */
-  if (!need_directory || error)
-    /* nothing to do */;
-  else if (fileattr & FILE_ATTRIBUTE_DIRECTORY)
-    /* also nothing to do */;
-  else
+  if (need_directory && !error && !(fileattr & FILE_ATTRIBUTE_DIRECTORY))
     {
       debug_printf ("%s is a non-directory", path);
       error = ENOTDIR;
@@ -986,9 +889,9 @@ normalize_win32_path (const char *src, char *dst)
   const char *src_start = src;
   char *dst_start = dst;
   char *dst_root_start = dst;
-  bool beg_src_slash = isdirsep (src[0]);
+  bool beg_src_slash = IsDirMarker (src[0]);
 
-  if (beg_src_slash && isdirsep (src[1]))
+  if (beg_src_slash && IsDirMarker (src[1]))
     {
       *dst++ = '\\';
       ++src;
@@ -1021,18 +924,18 @@ normalize_win32_path (const char *src, char *dst)
   while (*src)
     {
       /* Strip duplicate /'s.  */
-      if (SLASH_P (src[0]) && SLASH_P (src[1]))
+      if (IsDirMarker (src[0]) && IsDirMarker (src[1]))
 	src++;
       /* Ignore "./".  */
-      else if (src[0] == '.' && SLASH_P (src[1])
-	       && (src == src_start || SLASH_P (src[-1])))
+      else if (src[0] == '.' && IsDirMarker (src[1])
+	       && (src == src_start || IsDirMarker (src[-1])))
 	src += 2;
 
       /* Backup if "..".  */
       else if (src[0] == '.' && src[1] == '.'
 	       /* dst must be greater than dst_start */
 	       && dst[-1] == '\\'
-	       && (SLASH_P (src[2]) || src[2] == 0))
+	       && (IsDirMarker (src[2]) || src[2] == 0))
 	{
 	  /* Back up over /, but not if it's the first one.  */
 	  if (dst > dst_root_start + 1)
@@ -1041,7 +944,7 @@ normalize_win32_path (const char *src, char *dst)
 	  while (dst > dst_root_start + 1 && dst[-1] != '\\' && dst[-2] != ':')
 	    dst--;
 	  src += 2;
-	  if (SLASH_P (*src))
+	  if (IsDirMarker (*src))
 	    src++;
 	}
       /* Otherwise, add char to result.  */
@@ -1083,7 +986,7 @@ slashify (const char *src, char *dst, int trailing_slash_p)
     }
   if (trailing_slash_p
       && src > start
-      && !isdirsep (src[-1]))
+      && !IsDirMarker (src[-1]))
     *dst++ = '/';
   *dst++ = 0;
 }
@@ -1108,7 +1011,7 @@ backslashify (const char *src, char *dst, int trailing_slash_p)
     }
   if (trailing_slash_p
       && src > start
-      && !isdirsep (src[-1]))
+      && !IsDirMarker (src[-1]))
     *dst++ = '\\';
   *dst++ = 0;
 }
@@ -1123,7 +1026,7 @@ nofinalslash (const char *src, char *dst)
   int len = strlen (src);
   if (src != dst)
     memcpy (dst, src, len + 1);
-  while (len > 1 && SLASH_P (dst[--len]))
+  while (len > 1 && IsDirMarker (dst[--len]))
     dst[len] = '\0';
 }
 
@@ -1134,11 +1037,11 @@ slash_unc_prefix_p (const char *path)
 {
   TRACE_IN;
   char *p = NULL;
-  int ret = (isdirsep (path[0])
-	     && isdirsep (path[1])
+  int ret = (IsDirMarker (path[0])
+	     && IsDirMarker (path[1])
 	     && isalpha (path[2])
 	     && path[3] != 0
-	     && !isdirsep (path[3])
+	     && !IsDirMarker (path[3])
 	     && ((p = strpbrk(path + 3, "\\/")) != NULL));
   if (!ret || p == NULL)
     return ret;
@@ -1226,6 +1129,7 @@ mount_info::conv_to_win32_path (const char *src_path, char *dst,
   static DWORD last_devn;
   static int last_unit;
   static unsigned last_flags;
+
   if (!strcmp (src_path, last_src_path))
     {
       strcpy (dst, last_dst);
@@ -1444,13 +1348,13 @@ mount_info::cygdrive_posix_path (const char *src, char *dst, int trailing_slash_
      The cygdrive prefix always ends with a trailing slash so
      the drive letter is added after the path. */
   dst[len++] = cyg_tolower (src[0]);
-  if (!src[2] || (SLASH_P (src[2]) && !src[3]))
+  if (!src[2] || (IsDirMarker (src[2]) && !src[3]))
     dst[len++] = '\000';
   else
     {
       int n;
       dst[len++] = '/';
-      if (SLASH_P (src[2]))
+      if (IsDirMarker (src[2]))
 	n = 3;
       else
 	n = 2;
@@ -1464,7 +1368,7 @@ mount_info::cygdrive_win32_path (const char *src, char *dst, int trailing_slash_
 {
   TRACE_IN;
   const char *p = src + cygdrive_len;
-  if (!isalpha (*p) || (!isdirsep (p[1]) && p[1]))
+  if (!isalpha (*p) || (!IsDirMarker (p[1]) && p[1]))
     return 0;
   dst[0] = *p;
   dst[1] = ':';
@@ -1494,7 +1398,7 @@ mount_info::conv_to_posix_path (const char *src_path, char *posix_path,
   else
     {
       const char *lastchar = src_path + src_path_len - 1;
-      trailing_slash_p = SLASH_P (*lastchar) && lastchar[-1] != ':';
+      trailing_slash_p = IsDirMarker (*lastchar) && lastchar[-1] != ':';
     }
 
   debug_printf ("conv_to_posix_path (%s, %s, %s)", src_path,
@@ -1542,7 +1446,7 @@ mount_info::conv_to_posix_path (const char *src_path, char *posix_path,
 
       if (!*p || !p[1])
 	nextchar = 0;
-      else if (isdirsep (*p))
+      else if (IsDirMarker (*p))
 	nextchar = -1;
       else
 	nextchar = 1;
@@ -1673,7 +1577,7 @@ mount_info::read_mounts2 (void)
 
   mount_flags |= MOUNT_BINARY;
 
-  AbsDllPath ("msys-1.0.dll", DllPath, sizeof (DllPath));
+  AbsDllPath ("msys-1.1.dll", DllPath, sizeof (DllPath));
   {
     char *ptr;
     strcpy(RootPath, DllPath);
@@ -2237,8 +2141,10 @@ suffix_scan::has (const char *in_path, const suffix_info *in_suffixes)
   path = in_path;
   eopath = strchr (path, '\0');
 
-  if (!ext_here)
-    goto noext;
+  if (!ext_here) {
+    ext_here = eopath;
+    return ext_here;
+  }
 
   if (suffixes)
     {
@@ -2248,14 +2154,10 @@ suffix_scan::has (const char *in_path, const suffix_info *in_suffixes)
 	  {
 	    nextstate = SCAN_JUSTCHECK;
 	    suffixes = NULL;	/* Has an extension so don't scan for one. */
-	    goto done;
+	    return ext_here;
 	  }
     }
-
- noext:
   ext_here = eopath;
-
- done:
   return ext_here;
 }
 
@@ -2263,9 +2165,12 @@ int
 suffix_scan::next ()
 {
   TRACE_IN;
+  debug_printf ("%p", suffixes);
   if (suffixes)
     {
-      while (suffixes && suffixes->name)
+      if (suffixes && suffixes->name)
+	debug_printf ("0) %s", suffixes->name);
+      while (suffixes && suffixes->name) {
 	if (!suffixes->addon)
 	  suffixes++;
 	else
@@ -2274,13 +2179,17 @@ suffix_scan::next ()
 	    suffixes++;
 	    return 1;
 	  }
+      }
       suffixes = NULL;
     }
 
+  debug_printf ("%d", nextstate);
   switch (nextstate)
     {
     case SCAN_BEG:
       suffixes = suffixes_start;
+      if (suffixes && suffixes->name)
+	debug_printf ("1) %s", suffixes->name);
       if (!suffixes)
 	nextstate = SCAN_JUSTCHECK;
       else
@@ -2291,9 +2200,13 @@ suffix_scan::next ()
 	}
       return 1;
     case SCAN_JUSTCHECK:
+      if (suffixes && suffixes->name)
+	debug_printf ("2) %s", suffixes->name);
       nextstate = SCAN_DONE;
       return 1;
     default:
+      if (suffixes && suffixes->name)
+	debug_printf ("3) %s", suffixes->name);
       *eopath = '\0';
       return 0;
     }
@@ -2330,11 +2243,10 @@ symlink_info::check (char *path, const suffix_info *suffixes, unsigned opt)
   ext_here = suffix.has (path, suffixes);
   extn = ext_here - path;
 
-  case_clash = FALSE;
-
   while (suffix.next ())
     {
       error = 0;
+      debug_printf ("%s", suffix.path);
       fileattr = GetFileAttributesA (suffix.path);
       if (fileattr == (DWORD) -1)
 	{
@@ -2356,52 +2268,9 @@ symlink_info::check (char *path, const suffix_info *suffixes, unsigned opt)
 
   if (hndl != INVALID_HANDLE_VALUE)
       CloseHandle(hndl);
-  syscall_printf ("%d = symlink.check (%s, %p) (%p)",
-		  res, suffix.path, contents, pflags);
+  syscall_printf ("%d = symlink.check (%s, %p) (%p) (%d)",
+		  res, suffix.path, contents, pflags, fileattr);
   return res;
-}
-
-/* Check the correct case of the last path component (given in DOS style).
-   Adjust the case in this->path if pcheck_case == PCHECK_ADJUST or return
-   FALSE if pcheck_case == PCHECK_STRICT.
-   Dont't call if pcheck_case == PCHECK_RELAXED.
-*/
-
-BOOL
-symlink_info::case_check (char *path)
-{
-  TRACE_IN;
-  WIN32_FIND_DATA data;
-  HANDLE h;
-  char *c;
-
-  /* Set a pointer to the beginning of the last component. */
-  if (!(c = strrchr (path, '\\')))
-    c = path;
-  else
-    ++c;
-
-  if ((h = FindFirstFile (path, &data))
-      != INVALID_HANDLE_VALUE)
-    {
-      FindClose (h);
-
-      /* If that part of the component exists, check the case. */
-      if (strcmp (c, data.cFileName))
-	{
-	  case_clash = TRUE;
-
-	  /* If check is set to STRICT, a wrong case results
-	     in returning a ENOENT. */
-	  if (pcheck_case == PCHECK_STRICT)
-	    return FALSE;
-
-	  /* PCHECK_ADJUST adjusts the case in the incoming
-	     path which points to the path in *this. */
-	  strcpy (c, data.cFileName);
-	}
-    }
-  return TRUE;
 }
 
 /* readlink system call */
@@ -2584,8 +2453,7 @@ chdir (const char *in_dir)
      we'll see if Cygwin mailing list users whine about the current behavior. */
   if (res == -1)
     __seterrno ();
-  else if (!path.has_symlinks () && strpbrk (dir, ":\\") == NULL
-	   && pcheck_case == PCHECK_RELAXED)
+  else if (strpbrk (dir, ":\\") == NULL)
     cygheap->cwd.set (path, dir);
   else
     cygheap->cwd.set (path, NULL);
@@ -3244,7 +3112,7 @@ cygwin_split_path (const char *path, char *dir, char *file)
 	  *file = 0;
 	  return;
 	}
-      if (SLASH_P (*path))
+      if (IsDirMarker (*path))
 	++path;
       dir_started_p = 1;
     }
@@ -3253,7 +3121,7 @@ cygwin_split_path (const char *path, char *dir, char *file)
      We pretend as if they don't exist.  */
   const char *end = path + strlen (path);
   /* path + 1: keep leading slash.  */
-  while (end > path + 1 && SLASH_P (end[-1]))
+  while (end > path + 1 && IsDirMarker (end[-1]))
     --end;
 
   /* At this point, END points to one beyond the last character
@@ -3262,7 +3130,7 @@ cygwin_split_path (const char *path, char *dir, char *file)
   /* Point LAST_SLASH at the last slash (duh...).  */
   const char *last_slash;
   for (last_slash = end - 1; last_slash >= path; --last_slash)
-    if (SLASH_P (*last_slash))
+    if (IsDirMarker (*last_slash))
       break;
 
   if (last_slash == path)

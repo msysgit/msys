@@ -294,7 +294,7 @@ fhandler_base::get_default_fmode (int flags)
 	  {
 	    size_t pflen = strlen (pf->name);
 	    const char *stem = get_name () + nlen - pflen;
-	    if (pflen > nlen || (stem != get_name () && !isdirsep (stem[-1])))
+	    if (pflen > nlen || (stem != get_name () && !IsDirMarker (stem[-1])))
 	      continue;
 	    else if (ACCFLAGS (pf->flags) == accflags && strcasematch (stem, pf->name))
 	      return pf->flags & ~(O_RDONLY | O_WRONLY | O_RDWR);
@@ -1285,10 +1285,18 @@ fhandler_disk_file::open (const char *path, int flags, mode_t mode)
 
   if (real_path.error &&
       (flags & O_NOSYMLINK || real_path.error != ENOENT
-       || !(flags & O_CREAT) || real_path.case_clash))
+       || !(flags & O_CREAT)
+#if INCLUDE_CASE_CLASH
+       || real_path.case_clash
+#endif
+       ))
     {
+#if INCLUDE_CASE_CLASH
       set_errno (flags & O_CREAT && real_path.case_clash ? ECASECLASH
 							 : real_path.error);
+#else
+      set_errno (flags & O_CREAT && real_path.error);
+#endif
       syscall_printf ("0 = fhandler_disk_file::open (%s, %p)", path, flags);
       return 0;
     }

@@ -27,7 +27,7 @@ MSYS license.  Please consolt the file "MSYS_LICENSE" for details.*/
 #include "cygheap.h"
 #include "thread.h"
 
-FIXME;
+//FIXME;
 /* FIXME: These should probably be in the registry. */
 /* FIXME: The Win95 path should be whatever slash is */
 
@@ -44,7 +44,6 @@ get_win95_event_log_path ()
   return WIN95_EVENT_LOG_PATH;
 }
 
-FIXME;
 /* FIXME: For MT safe code these will need to be replaced */
 
 #ifdef _MT_SAFE
@@ -204,7 +203,6 @@ pass_handler::print_va (const char *fmt, va_list list)
     return -1;
 }
 
-FIXME;
 /*
  * syslog: creates the log message and writes to system
  * log (NT) or log file (95). FIXME. WinNT log error messages

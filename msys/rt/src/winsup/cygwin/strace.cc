@@ -100,7 +100,7 @@ extern "C" char *__progname;
 
 /* sprintf analog for use by output routines. */
 int
-strace::vsprntf (char *buf, const char *func, const char *infmt, va_list ap)
+strace::vsprntf (char *buf, const char *func, int line, const char *infmt, va_list ap)
 {
   int count;
   char fmt[80];
@@ -138,6 +138,7 @@ strace::vsprntf (char *buf, const char *func, const char *infmt, va_list ap)
       if (func)
 	count += getfunc (buf + count, func);
     }
+  count += __small_sprintf (buf + count, "%d ", line);
 
   count += __small_vsprintf (buf + count, infmt, ap);
   char *p;
@@ -183,7 +184,7 @@ strace::write (unsigned category, const char *buf, int count)
    Warning: DO NOT SET ERRNO HERE! */
 
 void
-strace::vprntf (unsigned category, const char *func, const char *fmt, va_list ap)
+strace::vprntf (unsigned category, const char *func, int line, const char *fmt, va_list ap)
 {
   DWORD err = GetLastError ();
   int count;
@@ -192,7 +193,7 @@ strace::vprntf (unsigned category, const char *func, const char *fmt, va_list ap
   PROTECT(buf);
   SetLastError (err);
 
-  count = this->vsprntf (buf, func, fmt, ap);
+  count = this->vsprntf (buf, func, line, fmt, ap);
   CHECK(buf);
   if (category & _STRACE_SYSTEM)
     {
@@ -209,23 +210,23 @@ strace::vprntf (unsigned category, const char *func, const char *fmt, va_list ap
 }
 
 void
-strace::prntf (unsigned category, const char *func, const char *fmt, ...)
+strace::prntf (unsigned category, const char *func, int line, const char *fmt, ...)
 {
   va_list ap;
 
   va_start (ap, fmt);
-  this->vprntf (category, func, fmt, ap);
+  this->vprntf (category, func, line, fmt, ap);
 }
 
 extern "C" void
-strace_printf (unsigned category, const char *func, const char *fmt, ...)
+strace_printf (unsigned category, const char *func, int line, const char *fmt, ...)
 {
   va_list ap;
 
   if ((category & _STRACE_SYSTEM) || strace.active)
     {
       va_start (ap, fmt);
-      strace.vprntf (category, func, fmt, ap);
+      strace.vprntf (category, func, line, fmt, ap);
     }
 }
 
@@ -398,11 +399,11 @@ strace::wm (int message, int word, int lon)
 	{
 	  if (ta[i].v == message)
 	    {
-	      this->prntf (_STRACE_WM, NULL, "wndproc %d %s %d %d", message, ta[i].n, word, lon);
+	      this->prntf (_STRACE_WM, NULL, 0, "wndproc %d %s %d %d", message, ta[i].n, word, lon);
 	      return;
 	    }
 	}
-      this->prntf (_STRACE_WM, NULL, "wndproc %d unknown  %d %d", message, word, lon);
+      this->prntf (_STRACE_WM, NULL, 0, "wndproc %d unknown  %d %d", message, word, lon);
     }
 }
 #endif /*NOSTRACE*/

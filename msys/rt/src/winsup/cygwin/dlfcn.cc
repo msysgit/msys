@@ -69,6 +69,7 @@ get_full_path_of_dll (const char* str, char *name)
 
   if (isabspath (name) ||
       (ret = check_path_access ("LD_LIBRARY_PATH=", name, real_filename)) == NULL)
+    debug_printf("%s", name);
     real_filename.check (name);	/* Convert */
 
   if (!real_filename.error)

@@ -34,7 +34,6 @@ extern BOOL allow_ntea;
 extern BOOL allow_smbntsec;
 extern BOOL allow_winsymlinks;
 extern BOOL strip_title_path;
-extern int pcheck_case;
 extern DWORD chunksize;
 extern int subauth_id;
 BOOL reset_com = TRUE;
@@ -431,25 +430,6 @@ check_case_init (const char *buf)
   if (!buf || !*buf)
     return;
 
-  if (strncmp (buf, "relax", 5)== 0)
-    {
-      pcheck_case = PCHECK_RELAXED;
-      debug_printf ("File case checking set to RELAXED");
-    }
-  else if (strcmp (buf, "adjust")== 0)
-    {
-      pcheck_case = PCHECK_ADJUST;
-      debug_printf ("File case checking set to ADJUST");
-    }
-  else if (strcmp (buf, "strict")== 0)
-    {
-      pcheck_case = PCHECK_STRICT;
-      debug_printf ("File case checking set to STRICT");
-    }
-  else
-    {
-      debug_printf ("Wrong case checking name: %s", buf);
-    }
 }
 
 void

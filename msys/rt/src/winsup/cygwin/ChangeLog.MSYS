@@ -1,3 +1,46 @@
+2003-08-01  Earnie Boyd  <earnie@users.sf.net>
+
+	* Makefile.in (DLL_NAME): Change to reflect version 1.1.
+	(LIB_NAME): Ditto.
+	* cygwin.din: Now producing msys-1.1.dll.
+	* drct0.cc (dll_crt0_1): Rename isdirsep to IsDirMarker.
+	Modify comment to reflect msys-1.1.dll.
+	* dir.cc (opendir): Rename SLASH_P to IsDirMarker.
+	(mkdir): Remove case clash coding.
+	* dlfcn.cc (get_full_path_of_dll): Add debugging output.
+	* environ.cc (pcheck_case): Remove.
+	(check_case_init): Remove coding relative to pcheck_case.
+	* fhandler.cc (get_default_fmode): Rename isdirsep to IsDirMarker.
+	(fhandler_disk_file::open): Remove case clash coding.
+	* fhandler_tty.cc: Add __LINE__ to strace.prntf throughout.
+	* ismsys.cc (IsMsys): Add check for msys-1.1.dll.
+	* path.cc: Remove case clash coding throughout.
+	Rename SLASH_P and isdirsep to IsDirMarker throughout.
+	(path_conv::check): Streamline.
+	(mount_info::read_mounts2): Search for msys-1.1.dll.
+	(suffix_scan::has): Remove use of goto.
+	(suffix_scan::next): Add debugging output.
+	(symlink_info::check): Ditto.
+	* path.h (iscygexec): Use only IsMsys to determine value.
+	(path_conv::check): Change opt default to 0.
+	(path_conv::path_conv): Ditto.
+	(path_conv::path_conv : path_flags): Use hex value 0xffffffff for 
+	fileattr default valoe.
+	* pinfo.cc (set_myself): Add __LINE__ in strace.prntf.
+	* shared.cc (shared_name): Search for msys-1.1.dll.
+	* spawn.cc (find_exec): Add debugging output.
+	(iscmd): Rename isdirsep to IsDirMarker.
+	(spawn_guts): Add debugging output.
+	* strace.cc: Identify __LINE__ in debugging output throughout.
+	* syscalls.cc: Remove case clash coding throughout.
+	Rename isdirsep to IsDirMarker throughout.
+	* syslog.cc: Remove the use of the FIXME macro.  GCC 3 isn't liking
+	it in global space.
+	* winsup.h (SLASH_P): Rename to IsDirMarker.
+	(isdirsep): Remove.
+	(isabspath): Rename isdirsep to IsDirMarker.
+	include/sys/strace.h: Add line parameter to declarations throughout.
+	
 2003-07-08  Earnie Boyd  <earnie@users.sf.net>
 
 	* cygwin_version.h: Regenerated from mkvers.sh.

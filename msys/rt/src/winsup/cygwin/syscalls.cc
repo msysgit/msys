@@ -583,7 +583,11 @@ _link (const char *a, const char *b)
     }
   if (real_b.error)
     {
+#if INCLUDE_CASE_CLASH
       set_errno (real_b.case_clash ? ECASECLASH : real_b.error);
+#else
+      set_errno (real_b.error);
+#endif
       goto done;
     }
 
@@ -937,7 +941,7 @@ num_entries (const char *win32_name)
 
   strcpy (buf1, win32_name);
   int len = strlen (buf1);
-  if (len == 0 || isdirsep (buf1[len - 1]))
+  if (len == 0 || IsDirMarker (buf1[len - 1]))
     strcat (buf1, "*");
   else
     strcat (buf1, "/*");	/* */
@@ -1037,7 +1041,7 @@ suffix_info stat_suffixes[] =
 {
   suffix_info ("", 1),
   suffix_info (".exe", 1),
-  suffix_info (NULL)
+  suffix_info (NULL, 0)
 };
 
 /* Cygwin internal */
@@ -1289,10 +1293,18 @@ _rename (const char *oldpath, const char *newpath)
 
   path_conv real_new (newpath, PC_SYM_NOFOLLOW);
 
+#if INCLUDE_CASE_CLASH
   if (real_new.error || real_new.case_clash)
+#else
+  if (real_new.error)
+#endif
     {
       syscall_printf ("-1 = rename (%s, %s)", oldpath, newpath);
+#if INCLUDE_CASE_CLASH
       set_errno (real_new.case_clash ? ECASECLASH : real_new.error);
+#else
+      set_errno (real_new.error);
+#endif
       return -1;
     }
 

@@ -141,7 +141,10 @@ find_exec (const char *name, path_conv& buf, const char *mywinenv,
   if (null_if_notfound)
     retval = NULL;
   else
+  {
+    debug_printf("%s", name);
     buf.check (name);
+  }
 
  out:
   debug_printf ("%s = find_exec (%s)", (char *) buf, name);
@@ -176,7 +179,7 @@ iscmd (const char *argv0, const char *what)
   if (n >= 2 && argv0[1] != ':')
     return 0;
   return n >= 0 && strcasematch (argv0 + n, what) &&
-	 (n == 0 || isdirsep (argv0[n - 1]));
+	 (n == 0 || IsDirMarker (argv0[n - 1]));
 }
 
 class linebuf
@@ -390,6 +393,7 @@ spawn_guts (HANDLE hToken, const char * prog_arg, const char *const *argv,
   if (ac == 3 && argv[1][0] == '/' && argv[1][1] == 'c' &&
       (iscmd (argv[0], "command.com") || iscmd (argv[0], "cmd.exe")))
     {
+      debug_printf ("%s", prog_arg);
       real_path.check (prog_arg);
       one_line.add ("\"");
       if (!real_path.error)
