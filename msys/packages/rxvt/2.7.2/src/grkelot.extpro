@@ -1,6 +1,0 @@
-void             greek_init              __PROTO((void));
-void             greek_end               __PROTO((void));
-void             greek_reset             __PROTO((void));
-void             greek_setmode           __PROTO((int greek_mode));
-int              greek_getmode           __PROTO((void));
-int              greek_xlat              __PROTO((char *s, int num_chars));

@@ -1,7 +1,0 @@
-2002.04.27  Earnie Boyd  <earnie@users.sf.net>
-
-	sed/sed.c (main): Ensure that sed always removes \r$ from the data 
-	before executing user code.
-	Add -c --nocr option to disable the \r$ change.
-	testsuite/help.good: Add format for -c --nocr option.
-	ChangeLog.MSYS: New file.

@@ -1,7 +1,0 @@
-COMMENT(-- $Id: rxvt-login.yo,v 1.1 2002/12/06 23:08:01 earnie Exp $ --)
-COMMENT(----------------------------------------------------------------------)
-manpagesection(LOGIN STAMP)
-
-bf(rxvt) tries to write an entry into the em(utmp)(5) file so that it can be
-seen via the em(who(1)) command, and can accept messages.  To allow this
-feature, bf(rxvt) must be installed setuid root on some systems.

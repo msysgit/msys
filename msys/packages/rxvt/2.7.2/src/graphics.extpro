@@ -1,9 +1,0 @@
-void             Gr_ButtonReport         __PROTO((int but, int x, int y));
-void             Gr_do_graphics          __PROTO((int cmd, int nargs, int args[], unsigned char *text));
-void             Gr_scroll               __PROTO((int count));
-void             Gr_ClearScreen          __PROTO((void));
-void             Gr_ChangeScreen         __PROTO((void));
-void             Gr_expose               __PROTO((Window win));
-void             Gr_Resize               __PROTO((int w, int h));
-void             Gr_reset                __PROTO((void));
-int              Gr_Displayed            __PROTO((void));
