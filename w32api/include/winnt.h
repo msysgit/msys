@@ -117,7 +117,9 @@ typedef WORD LANGID;
 #define _INTEGRAL_MAX_BITS 64
 #undef __int64
 #define __int64 long long
-#endif
+#elif defined(__WATCOMC__) && (defined(_INTEGRAL_MAX_BITS) && _INTEGRAL_MAX_BITS >= 64 )
+#define _HAVE_INT64
+#endif /* __GNUC__/__WATCOMC */
 #if defined(_HAVE_INT64) || (defined(_INTEGRAL_MAX_BITS) && _INTEGRAL_MAX_BITS >= 64)
 typedef __int64 LONGLONG;
 typedef unsigned __int64 DWORDLONG;
@@ -2524,6 +2526,9 @@ typedef struct _REPARSE_POINT_INFORMATION {
 	WORD   ReparseDataLength;
 	WORD   UnparsedNameLength;
 } REPARSE_POINT_INFORMATION, *PREPARSE_POINT_INFORMATION;
+
+#if defined(__GNUC__)
+
 PVOID GetCurrentFiber(void);
 PVOID GetFiberData(void);
 extern __inline__ PVOID GetCurrentFiber(void)
@@ -2548,6 +2553,23 @@ extern __inline__ PVOID GetFiberData(void)
 	      );
     return ret;
 }
+
+#else
+
+extern PVOID GetCurrentFiber(void);
+#pragma aux GetCurrentFiber = \
+        "mov	eax, dword ptr fs:0x10" \
+        value [eax] \
+        modify [eax];
+
+extern PVOID GetFiberData(void);
+#pragma aux GetFiberData = \
+	"mov	eax, dword ptr fs:0x10" \
+	"mov	eax, [eax]" \
+        value [eax] \
+        modify [eax];
+        
+#endif /* __GNUC__ */
 
 #endif
 #ifdef __cplusplus

@@ -1,3 +1,39 @@
+2001-11-05  Mattia Barbon  <mbarbon@dsi.unive.it>
+
+	* include/windef.h (DECLSPEC_NORTEURN): Add an empty version
+	for Watcom.
+	(DECLARE_STDCALL_P): Use it to add __stdcall decoration for
+	functions of the form 'type * function(...)' in a way compatible
+	with both Watcom and GCC.
+	* include/rpcdcep.h (I_RpcAllocate): Use DECLARE_STDCALL_P.
+	* include/rpcproxy.h (CInterfaceProxyVtbl): Do not declare
+	zero-sized arrays for Watcom. Mark as __extension for __GNUC__.
+	* include/windows.h: Watcom can use anonymous structs/unions.
+	* include/winnt.h: Watcom can use 64 bit ints.
+	(GetCurrentFiber): Add another inline definition using
+	Watcom inline assembly syntax.
+	(GetFiberData): Likewise.
+	* include/winsock.h (inet_ntoa): Use DECLARE_STDCALL_P.
+	(gethostbyname): Likewise.
+	(gethostbyaddr}: Likewise.
+	(getservbyport}: Likewise.
+	(getservbyname}: Likewise.
+	(getprotobynumber}: Likewise.
+	(getprotobyname}: Likewise.
+	* include/winsock2.h (inet_ntoa): Use DECLARE_STDCALL_P.
+	(gethostbyname}: Likewise.
+	(gethostbyaddr}: Likewise.
+	(getservbyport}: Likewise.
+	(getservbyname}: Likewise.
+	(getprotobynumber}: Likewise.
+	(getprotobyname}: Likewise.
+	* lib/diinut.c: Correction for Watcom.
+	* lib/kernel32.c (GetCurrentFiber): Add another definition
+	using Watcom inline assembly syntax.
+	(GetFiberData): Likewise.
+	* lib/scrnsave.c (WinMain): Add break after default:
+	clause.
+
 2001-11-04  "stefan"  <stefan@lkcc.org>
 
 	* include/winnt.h (GetCurrentFiber): Add prototype.
