@@ -1,0 +1,3 @@
+2002.05.13  Earnie Boyd  <earnie@users.sf.net>
+
+	* src/m4.c: Include <signal.h> rather than <sys/signal.h> if __MSYS__.

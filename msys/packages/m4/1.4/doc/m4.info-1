@@ -1,5 +1,4 @@
-This is Info file m4.info, produced by Makeinfo-1.55 from the input
-file m4.texinfo.
+This is m4.info, produced by makeinfo version 4.0 from m4.texinfo.
 
 START-INFO-DIR-ENTRY
 * m4: (m4).			A powerful macro processor.
@@ -37,7 +36,7 @@ macros).  `m4' also has builtin functions for including files, running
 shell commands, doing arithmetic, etc.  Autoconf needs GNU `m4' for
 generating `configure' scripts, but not for running them.
 
-   GNU `m4' was originally written by Ren'e Seindal, with subsequent
+   GNU `m4' was originally written by Rene' Seindal, with subsequent
 changes by Franc,ois Pinard and other volunteers on the Internet.  All
 names and email addresses can be found in the file `THANKS' from the
 GNU `m4' distribution.
@@ -79,7 +78,7 @@ do not count on it yet.
 * Concept index::               Index for many concepts
 * Macro index::                 Index for all m4 macros
 
- -- The Detailed Node Listing --
+ --- The Detailed Node Listing ---
 
 Introduction and preliminaries
 
@@ -222,7 +221,7 @@ to a compiler, or as a macro processor in its own right.
    The `m4' macro processor is widely available on all UNIXes.
 Usually, only a small percentage of users are aware of its existence.
 However, those who do often become commited users.  The growing
-popularity of GNU Autoconf, which prerequires GNU `m4' for *generating*
+popularity of GNU Autoconf, which prerequires GNU `m4' for _generating_
 the `configure' scripts, is an incentive for many to install it, while
 these people will not themselves program in `m4'.  GNU `m4' is mostly
 compatible with the System V, Release 3 version, except for some minor
@@ -251,7 +250,7 @@ General Purpose Macro generator", Computer Journal 8,3 (1965), pp. 225
 ff.  `GPM' is also succintly described into David Gries classic
 "Compiler Construction for Digital Computers".
 
-   While `GPM' was *pure*, `m4' was meant to deal more with the true
+   While `GPM' was _pure_, `m4' was meant to deal more with the true
 intricacies of real life: macros could be recognized with being
 pre-announced, skipping whitespace or end-of-lines was made easier,
 more constructs were builtin instead of derived, etc.
@@ -340,7 +339,7 @@ options:
 
 `-P'
 `--prefix-builtins'
-     Internally modify *all* builtin macro names so they all start with
+     Internally modify _all_ builtin macro names so they all start with
      the prefix `m4_'.  For example, using this option, one should write
      `m4_define' instead of `define', and `m4___file__' instead of
      `__file__'.
@@ -349,7 +348,7 @@ options:
 `--word-regexp=REGEXP'
      Use an alternative syntax for macro names.  This experimental
      option might not be present on all GNU `m4' implementations.
-     (*note Changeword::.).
+     (*note Changeword::).
 
 `-HN'
 `--hashsize=N'
@@ -371,16 +370,16 @@ options:
      shown to be obtrusive, this option (which is still experimental)
      might well disappear.
 
-     This option does *not* have the ability to break endless
+     This option does _not_ have the ability to break endless
      rescanning loops, while these do not necessarily consume much
      memory or stack space.  Through clever usage of rescanning loops,
      one can request complex, time-consuming computations to `m4' with
      useful results.  Putting limitations in this area would break `m4'
      power.  There are many pathological cases: `define(`a', `a')a' is
-     only the simplest example (but *note Compatibility::.).  Expecting
+     only the simplest example (but *note Compatibility::).  Expecting
      GNU `m4' to detect these would be a little like expecting a
      compiler system to detect and diagnose endless loops: it is a
-     quite *hard* problem in general, if not undecidable!
+     quite _hard_ problem in general, if not undecidable!
 
 `-Q'
 `--quiet'
@@ -426,12 +425,12 @@ using the `-D' and `-U' options.  They have the following format:
 `-FFILE'
 `--freeze-state FILE'
      Once execution is finished, write out the frozen state on the
-     specified FILE (*note Frozen files::.).
+     specified FILE (*note Frozen files::).
 
 `-RFILE'
 `--reload-state FILE'
      Before execution starts, recover the internal state from the
-     specified frozen FILE (*note Frozen files::.).
+     specified frozen FILE (*note Frozen files::).
 
    The remaining arguments on the command line are taken to be input
 file names.  If no names are present, the standard input is read.  A
@@ -536,7 +535,7 @@ Names
    A name is any sequence of letters, digits, and the character `_'
 (underscore), where the first character is not a digit.  If a name has
 a macro definition, it will be subject to macro expansion (*note
-Macros::.).
+Macros::).
 
    Examples of legal names are: `foo', `_tmp', and `name01'.
 
@@ -582,7 +581,7 @@ Comments
    Comments in `m4' are normally delimited by the characters `#' and
 newline.  All characters between the comment delimiters are ignored,
 but the entire comment (including the delimiters) is passed through to
-the output--comments are *not* discarded by `m4'.
+the output--comments are _not_ discarded by `m4'.
 
    Comments cannot be nested, so the first newline after a `#' ends the
 comment.  The commenting effect of the begin comment character can be
@@ -627,11 +626,11 @@ which is a macro invocation with N arguments.  Macros can have any
 number of arguments.  All arguments are strings, but different macros
 might interpret the arguments in different ways.
 
-   The opening parenthesis *must* follow the NAME directly, with no
+   The opening parenthesis _must_ follow the NAME directly, with no
 spaces in between.  If it does not, the macro is called with no
 arguments at all.
 
-   For a macro call to have no arguments, the parentheses *must* be
+   For a macro call to have no arguments, the parentheses _must_ be
 left out.  The macro call
 
      name()
@@ -679,7 +678,7 @@ invocation, and how quoting can be used to inhibit macro invocation.
 
    Even if quoting is usually done over the whole macro name, it can
 also be done over only a few characters of this name.  It is also
-possible to quote the empty string, but this works only *inside* the
+possible to quote the empty string, but this works only _inside_ the
 name.  For example:
 
      `divert'
@@ -897,7 +896,7 @@ remember that quotes can be nested in quoted strings.  Thus, in
      foo
      =>This is macro foo.
 
-The `foo' in the expansion text is *not* expanded, since it is a quoted
+The `foo' in the expansion text is _not_ expanded, since it is a quoted
 string, and not a name.
 
 
@@ -1010,7 +1009,7 @@ need the builtin `defn':
 
      defn(NAME)
 
-which expands to the *quoted definition* of NAME.  If the argument is
+which expands to the _quoted definition_ of NAME.  If the argument is
 not a defined macro, the expansion is void.
 
    If NAME is a user-defined macro, the quoted definition is simply the
@@ -1078,8 +1077,8 @@ previous definition, `popdef' behaves like `undefine'.
      =>foo
 
    If a macro with several definitions is redefined with `define', the
-topmost definition is *replaced* with the new definition.  If it is
-removed with `undefine', *all* the definitions are removed, and not
+topmost definition is _replaced_ with the new definition.  If it is
+removed with `undefine', _all_ the definitions are removed, and not
 only the topmost one.
 
      define(`foo', `Expansion one.')
@@ -1127,7 +1126,7 @@ the arguments.  This can be used to call macros with "illegal" names
      =>Internal macro (name $$internal$macro)
 
    The point is, here, that larger macro packages can have private
-macros defined, that will not be called by accident.  They can *only* be
+macros defined, that will not be called by accident.  They can _only_ be
 called through the builtin `indir'.
 
 
@@ -1309,7 +1308,7 @@ argument.
 
    The macro `_forloop' expands the fourth argument once, and tests to
 see if it is finished.  If it has not finished, it increments the
-iteration variable (using the predefined macro `incr', *note Incr::.),
+iteration variable (using the predefined macro `incr', *note Incr::),
 and recurses.
 
    Here is the actual implementation of `forloop':
@@ -1321,7 +1320,7 @@ and recurses.
      		   `define(`$1', incr($1))_forloop(`$1', `$2', `$3', `$4')')')
 
    Notice the careful use of quotes.  Only three macro arguments are
-unquoted, each for its own reason.  Try to find out *why* these three
+unquoted, each for its own reason.  Try to find out _why_ these three
 arguments are left unquoted, and see what happens if they are quoted.
 
    Now, even though these two macros are useful, they are still not
@@ -1468,7 +1467,7 @@ when using the macros described in the preceding sections.
 
 `p'
      Print a message when a named file is found through the path search
-     mecanism (*note Search Path::.), giving the actual filename used.
+     mecanism (*note Search Path::), giving the actual filename used.
 
 `i'
      Print a message each time the current input file is changed,
