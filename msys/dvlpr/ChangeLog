@@ -1,5 +1,10 @@
 2002.05.04  Earnie Boyd  <earnie@users.sf.net>
 
+	* bin/start: Quote the arguments before handing to cmd.
+	* README.rtf: Begin documenting the process.
+
+2002.05.04  Earnie Boyd  <earnie@users.sf.net>
+
 	* bin/start: New file.
 	* var/script.dat (start): Add.
 
