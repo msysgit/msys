@@ -22,6 +22,7 @@ head.exe
 id.exe 
 install.exe 
 less.exe 
+ln.exe
 ls.exe 
 m4.exe 
 make.exe
