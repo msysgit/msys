@@ -1,4 +1,4 @@
-<!-- $Id: mingwfaq.shtml,v 1.34 2002-06-02 05:48:10 infidel Exp $ -->
+<!-- $Id: mingwfaq.shtml,v 1.35 2002-07-22 04:08:22 adah Exp $ -->
 
 <html>
 <head>
@@ -66,6 +66,7 @@
       <li><a href="#faq-runtime">Which runtime should I use?</a></li>
       <li><a href="#faq-w32api">What is w32api?</a></li>
       <li><a href="#faq-comsupport">Is support provided for COM?</a></li>
+      <li><a href="#faq-msvcdll">How can an MSVC program call a MinGW DLL, and vice versa?</a></li>
       <li><a href="#faq-cross">How can I build a cross compiler?</a></li>
       <li><a href="#faq-bugreports">How can I report bugs?</a></li>
    </ul>
@@ -430,6 +431,80 @@
 
 
 
+      <a name="faq-msvcdll" />
+      <h3>How can an MSVC program call a MinGW DLL, and vice versa?</h3>
+      <p>
+        Assume we have a testdll.h, testdll.c, and testmain.c.  In the first case,
+        we will compile testdll.c with MinGW, and let the MSVC-compiled testmain
+        call it.  You should use
+        <blockquote>
+        <code>gcc -shared -o testdll.dll testdll.c \<br />
+        &nbsp;&nbsp;&nbsp; -Wl,--output-def,testdll.def,--out-implib,libtestdll.a</code>
+        </blockquote>
+        to produce the DLL and DEF files.  MSVC cannot use the MinGW library, but
+        since you have already the DEF file you may easily produce one by the Microsoft
+        <code>LIB</code> tool:
+        <blockquote>
+          <code>lib /machine:i386 /def:testdll.def</code>
+        </blockquote>
+      </p>
+      <p>
+        Once you have testdll.lib, it is trivial to produce the executable with
+MSVC:
+        <blockquote>
+          <code>cl testmain.c testdll.lib</code>
+        </blockquote>
+      </p>
+      <p>
+        Now for MinGW programs calling an MSVC DLL.  We have two methods.  One way
+        is to specify the LIB files directly on the command line <em>after</em> the
+        main program.  For example, after
+        <blockquote>
+          <code>cl /LD testdll.c</code>
+        </blockquote>
+        use
+        <blockquote>
+          <code>gcc -o testmain testmain.c testdll.lib</code>
+        </blockquote>
+      </p>
+      <p>
+        The other way is to produce the .a files for GCC.  For <code>__cdecl</code>
+        functions (in most cases), it is simple: you only need to apply the <code>reimp</code>
+        tool from Anders Norlander (since his web site is no longer available, you may choose
+        to download <a href="http://mywebpage.netscape.com/yongweiwu/reimp_new.zip">here</a>
+        a version enhanced by Jose Fonseca):
+        <blockquote>
+          <code>reimp testdll.lib</code><br />
+          <code>gcc -o testmain testmain.c -L. -ltestdll</code>
+        </blockquote>
+      </p>
+      <p>
+        However, for <code>__stdcall</code> functions, the above method does not work.
+        For MSVC will prefix an underscore to <code>__stdcall</code> functions while
+        MinGW will not.  The right way is to produce the DEF file using the
+        <code>pexports</code> tool from
+        <a href="http://www.is.lg.ua/~paul/devel/binutils.html">http://www.is.lg.ua/~paul/devel/binutils.html</a>
+        and filter off the first underscore by <code>sed</code>:
+        <blockquote>
+          <code>pexports testdll.dll | sed "s/^_//" &gt; testdll.def</code>
+        </blockquote>
+        Then, when using <code>dlltool</code> to produce the import library, add
+        `<code>-U</code>' to the command line:
+        <blockquote>
+          <code>dlltool -U -d testdll.def -l libtestdll.a</code>
+        </blockquote>
+        And now, you can proceed in the usual way:
+        <blockquote>
+          <code>gcc -o testmain testmain.c -L. -ltestdll</code>
+        </blockquote>
+        Hooray, we got it.
+      </p>
+      <p><a href="#index">Back to index</a></p>
+
+      <hr />
+
+
+
       <a name="faq-cross" />
       <h3>How can I build a cross compiler?</h3>
       <p>
@@ -499,7 +574,7 @@
 
    <hr />
    <address>
-   <br />Last revised $Date: 2002-06-02 05:48:10 $
+   <br />Last revised $Date: 2002-07-22 04:08:22 $
    </address>
 
 </body>
