@@ -78,6 +78,11 @@
 #include <winsnmp.h>
 #include <mgmtapi.h>
 #include <vfw.h>
+#include <uxtheme.h>
+#include <tmschema.h>
+#include <dhcpcsdk.h>
+#include <errorrep.h>
+#include <windns.h>
 
 #ifndef __OBJC__  /* problems with BOOL */
 #include <ole2.h>

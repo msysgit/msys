@@ -119,14 +119,6 @@ extern "C" {
 #define AT_KEYEXCHANGE 1
 #define AT_SIGNATURE 2
 #define CRYPT_USERDATA 1
-#define KP_IV 1
-#define KP_SALT 2
-#define KP_PADDING 3
-#define KP_MODE 4
-#define KP_MODE_BITS 5
-#define KP_PERMISSIONS 6
-#define KP_ALGID 7
-#define KP_BLOCKLEN 8
 #define PKCS5_PADDING 1
 #define CRYPT_MODE_CBC 1
 #define CRYPT_MODE_ECB 2
@@ -313,7 +305,6 @@ extern "C" {
 #define szOID_SERVER_GATED_CRYPTO "4235658"
 #define szOID_SGC_NETSCAPE "2.16.840.1.113730.4.1"
 #define szOID_PKIX_KP_CLIENT_AUTH "1.3.6.1.5.5.7.3.2"
-
 #define CRYPT_NOHASHOID 0x00000001
 #define CRYPT_NO_SALT 0x10
 #define CRYPT_PREGEN 0x40
@@ -326,6 +317,36 @@ extern "C" {
 #define CRYPT_DATA_KEY 0x800
 #define CRYPT_VOLATILE 0x1000
 #define CRYPT_SGCKEY 0x2000
+#define KP_IV               0x00000001
+#define KP_SALT             0x00000002
+#define KP_PADDING          0x00000003
+#define KP_MODE             0x00000004
+#define KP_MODE_BITS        0x00000005
+#define KP_PERMISSIONS      0x00000006
+#define KP_ALGID            0x00000007
+#define KP_BLOCKLEN         0x00000008
+#define KP_KEYLEN           0x00000009
+#define KP_SALT_EX          0x0000000a
+#define KP_P                0x0000000b
+#define KP_G                0x0000000c
+#define KP_Q                0x0000000d
+#define KP_X                0x0000000e
+#define KP_Y                0x0000000f
+#define KP_RA               0x00000010
+#define KP_RB               0x00000011
+#define KP_INFO             0x00000012
+#define KP_EFFECTIVE_KEYLEN 0x00000013
+#define KP_SCHANNEL_ALG     0x00000014
+#define KP_PUB_PARAMS       0x00000027
+#define CRYPT_FLAG_PCT1    0x0001
+#define CRYPT_FLAG_SSL2    0x0002
+#define CRYPT_FLAG_SSL3    0x0004
+#define CRYPT_FLAG_TLS1    0x0008
+#define CRYPT_FLAG_IPSEC   0x0010
+#define CRYPT_FLAG_SIGNING 0x0020
+#define SCHANNEL_MAC_KEY    0x00000000
+#define SCHANNEL_ENC_KEY    0x00000001
+#define INTERNATIONAL_USAGE 0x00000001
 
 typedef UINT ALG_ID;
 typedef struct _VTableProvStruc {FARPROC FuncVerifyImage;} VTableProvStruc,*PVTableProvStruc;

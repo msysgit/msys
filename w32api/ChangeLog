@@ -1,3 +1,1052 @@
+2004-02-13  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	* include/ddk/winddk.h (DIRECTORY_QUERY): Add define.
+	(DIRECTORY_TRAVERSE): Ditto.
+	(DIRECTORY_CREATE_OBJECT): Ditto.
+	(DIRECTORY_CREATE_SUBDIRECTORY): Ditto.
+	(DIRECTORY_ALL_ACCESS): Ditto.
+	Thanks to Konstantin Stepaniuk <skostia@users.sourceforge.net>
+
+2004-02-12  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/basetypes.h (_REFIID_DEFINED): Correct typo.
+
+	* include/winuser.h (NCCALCSIZE_PARAMS): Define structure.
+	Thanks to Mike Nordell <tamlin at algonet dot se>.
+
+2004-02-11  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* lib/dnsapi.a: New file.
+	* lib/test.c: Include windns,h.
+ 
+2004-02-11  Pierre A. Humblet  <Pierre.Humblet@ieee.org>
+
+	* include/windns.h: New file.
+
+2004-02-11  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/sqlucode.h (SQLGetStmtAttr[AW]): Remove duplicate
+	defines.
+	(SQLSetStmtAttr[AW]): Move into ODBCVER >= 0x0300 block.
+	(SQLSetDescFieldW): Correct prototype.
+	(SQLSetDescFieldA): Add prototype.
+	(SQLGetDescFieldW): Add prototype.
+
+2004-02-11  Pat Thoyts  <patthoyts@users.sourceforge.net>
+
+	* include/winuser.h (DFC_POPUPMENU): Add define.
+
+2004-02-07  Dan Aloni  <da-x@gmx.net>
+
+	* lib/ddk/ntoskrnl.def (KeSetTimer,KeSetTimerEx): Correct
+	suffix.
+
+2004-02-02  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/oleacc.h (LIBID_Accessibility): Declare.
+	* lib/uuid.c (LIBID_Accessibility): Define.
+
+2004-02-02  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/winioctl.h (NTFS_VOLUME_DATA_BUFFER): Add structure.
+	(FSCTL_GET_NTFS_VOLUME_DATA): Add macro.
+
+2004-02-02  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/commctrl.h (ICC_STANDARD_CLASSES, ICC_LINK_CLASS): Add
+	defines.
+
+2004-01-31  Jiri Malak  <Jiri.Malak@geac.cz>
+
+	* include/winuser.h (RT_MANIFEST): Make conditional on
+	RC_INVOKED.
+	(CREATEPROCESS_MANIFEST_RESOURCE_ID,
+	ISOLATIONAWARE_MANIFEST_RESOURCE_ID,
+	ISOLATIONAWARE_NOSTATICIMPORT_MANIFEST_RESOURCE_ID): Add
+	defines.
+
+2004-01-16 Martin Fuchs  <martin-fuchs@gmx.net>
+
+	* include/shlobj.h (SHGDN_INCLUDE_NONFILESYS): Add define.
+
+2004-01-15  Filip Navara  <xnavara@volny.cz>
+
+	* include/ddk/mcd.h: Don't care about value of DBG define.
+	* include/ddk/srb.h: Ditto.
+	* include/ddk/storport.h: Ditto.
+	* include/ddk/video.h: Ditto.
+	* include/nspapi.h (SetServiceW, GetAddressByNameA,
+	GetAddressByNameW): Correct protoype.
+	* include/ntsecapi.h (PCUNICODE_STRING): Define.
+
+2004-01-05  Filip Navara  <xnavara@volny.cz>
+
+	* include/prsht.h (LPCPROPSHEETPAGEW): Fix definition.
+	* include/shlwapi.h (SHRegQueryInfoUSKey[AW]): Fix prototype.
+	* include/cpl.h (CPL_STARTWPARMS[AW]): Correct.
+	* include/shellapi.h (ABS_AUTOHIDE, ABS_ALWAYSONTOP,
+	SEE_MASK_NO_CONSOLE, SEE_MASK_ASYNCOK, SEE_MASK_HMONITOR,
+	FOF_NOCOPYSECURITYATTRIBS): Add defines.
+	* include/shlobj.h (BFFM_SETOKTEXT, BFFM_SETEXPANDED,
+	CSIDL_FLAG_DONT_VERIFY, CSIDL_FLAG_CREATE, CSIDL_FLAG_MASK,
+	CFSTR_INETURL[AW], SHGDN_FOREDITING, SHGDN_FORADDRESSBAR,
+	SSF_*): Add defines.
+	(SHCNF_PATH[AW], SHCNF_PRINTER[AW], CFSTR_FILENAME[AW],
+	CFSTR_FILENAMEMAP[AW], CFSTR_FILEDESCRIPTOR[AW], CFSTR_SHELLURL,
+	CMDSTR_NEWFOLDER[AW], CMDSTR_VIEWLIST[AW], CMDSTR_VIEWDETAILS[AW]):
+	Correct.
+	(IEnumIDList): Add COBJMACROS.
+	* include/winuser.h (MIM_*): Add define.
+
+2004-01-04  Filip Navara  <xnavara@volny.cz>
+
+	* include/shlguid.h (IID_IPersistFolder2, IID_IPersistFolder3,
+	IID_IShellFolder2, IID_IFileSystemBindData): Add declarations.
+	* include/shlobj.h (EXTRASEARCH, SHCOLSTATEF, SHELLDETAILS,
+	PERSIST_FOLDER_TARGET_INFO): Define structures.
+	(IEnumExtraSearch, IShellFolder2, IFileSystemBindData,
+	IPersistFolder2, IPersistFolder3): Add COM interface
+	definitions.
+	(IExtractIcon[AW], IShellLink[AW], IPersistFolder, IShellView,
+	ICommDlgBrowser, IShellFolder2, IPersistFolder2, IPersistFolder3):
+	Add COBJMACROS.
+	(SHCreateDirectoryEx[AW], SHBindToParent): Add prototypes.
+        * lib/shell32.c	(IID_IPersistFolder2, IID_IPersistFolder3,
+	IID_IShellFolder2, IID_IFileSystemBindData): Add definitions.
+
+2004-01-03  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/mshtml.h (IHTMLDocument2): Correct write, writeln
+	declarations.
+	Thanks to: Rene Nyffenegger <renenyffenegger@users.sf.net>.
+
+2004-01-03  Filip Navara  <xnavara@volny.cz>
+
+	* include/cguid.h (CLSID_StdGlobalInterfaceTable): Declare IID.
+	* include/oaidl.h (ITypeLib2, ITypeInfo2): Define interfaces,
+	declare IID's.
+	(IErrorInfo): Add COBJMACROS.
+	* include/objbase.h (STGM_NOSNAPSHOT): Add define.
+	(CoGetPSClsid): Add protototype,
+	(CoRegisterPSClsid): Likewise.
+	* include/objidl.h (IMarshal): Correct methods.
+	(IMallocSpy): Likewise,
+	(LPPSFACTORYBUFFER): Add typedef.
+	(IGlobalInterfaceTable): Define interface and COBJMACROS. Declare
+	IID.
+	(IStorage_CreateStorage, IRpcStubBuffer_Invoke): Fix macros.
+	* include/ocidl.h (PROPBAG2_TYPE): Define enum.
+	(PROPBAG2, QACONTAINERFLAGS, QACONTAINER, QACONTROL): Define
+	structures.
+	(IPropertyBag2, IPersistPropertyBag2,IAdviseSinkEx, IPointerInactive,
+	IOleUndoUnit, IOleParentUndoUnit, IEnumOleUndoUnits, IOleUndoManager,
+	IQuickActivate): Define interfaces. Declare IID's.
+	(IPersistPropertyBag2): Add COBJMACROS.
+	(LPOLEUNDOMANAGER): Add typedef.
+	(LPPROPERTYBAG2): Likewise.
+	* include/oleidl.h (LPPARSEDISPLAYNAME): Fix definiton.
+	(BINDSPEED): Add definition.
+	(IParseDisplayName, IOleItemContainer, IOleObject, IDropSource,
+	IDropTarget): Add COBJMACROS.
+	* include/wtypes.h (MEMCTX, MSHCTX): Fix enum.
+	* include/winerror.h (CO_S_NOTALLINTERFACES): Add define.
+	* lib/uuid.c (IID_IGlobalInterfaceTable, IID_IOleUndoManager,
+	IID_IPersistPropertyBag2, IID_IPropertyBag2, IID_IRpcProxyBuffer):
+	Add IID definitions.
+
+2004-01-02  Filip Navara  <xnavara@volny.cz>
+
+	* include/ddk/winddk.h: Don't care about value of
+	DBG define.
+
+2004-01-02  Danny Smith  <dannysmith@users.sourceforge.net>
+	    Filip Navara  <xnavara@volny.cz>
+	    
+	* include/ddk/winddk.h (_DDK_DUMMYUNION_MEMBER,
+	_DDK_DUMMYUNION_N_MEMBER): New macros.
+	(ExAllocateFromPagedLookasideList,ExFreeToPagedLookasideList,
+	ExAllocateFromNPagedLookasideList, ExFreeToNPagedLookasideList):
+	Use them.
+
+2004-01-01  Filip Navara  <xnavara@volny.cz>
+
+	* include/objbase.h:  Don't care about value of DBG define.
+	* include/objidl.h: Add some COBJMACROS.
+	* include/ocidl.h: Ditto.
+	* include/oleidl.h: Ditto.
+	* include/servprov.h: Ditto.
+	* include/shlobj.h: Ditto.
+	* include/shlobj.h (IContextMenu2): Correct parent in
+	DECLARE_INTERFACE.
+	* include/oleidl.h (IOleCache, IOleCache2, IOleCacheControl):
+	Define interfaces.
+	* include/setupapi.h (SetupGetLineTextA): Correct prototype.
+	Add new constants for _SETUPAPI_VER >= 0x501.
+
+2004-01-01  Filip Navara  <xnavara@volny.cz>
+
+	* include/winnt.h (NtCurrentTeb): Add inline definition.
+
+2004-01-01  Martin Fuchs  <martin-fuchs@gmx.net>
+
+	* include/shlobj.h (SHCoCreateInstance): Add prototype.
+	* lib/shell32.def (SHCoCreateInstance): Add export stub.
+
+2004-01-01  Igor Pechtchanski  <pechtcha@cs.nyu.edu>
+
+	* lib/setupapi.def (CM_Request_Device_Eject[AW]): Add export.
+	(CM_Request_Device_Eject_Ex[AW]): Likwise.
+	* include/ddk/cfg.h (DN_*): Add defines.
+
+2004-01-01  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* lib/ddk/cfgmgr32.def: Remove duplicate symbol names.
+
+2004-01-01  Mattia Barbon  <mbarbon@users.sourceforge.net>
+
+	* include/commctrl.h (TVN_GETINFOTIP): Add UNICODE mappings.
+	(NMTVGETINFOTIP): Add structure.
+
+2003-12-08  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/winuser.h (DISPLAY_DEVICE_*): Remove defines.
+	* include/wingdi.h  (DISPLAY_DEVICE_REMOVABLE,
+	DISPLAY_DEVICE_MODESPRUNED): Add defines.
+
+2003-12-08  Hartmut Honisch  <hhonisch@users.sourceforge.net>
+
+	* include/commctrl.h (ListView_Get_State, ListView_Check_State):
+	Add macros.
+	* include/wingdi.h  (DISPLAY_DEVICE_*): Add multi-monitor
+	constants.
+	* include/shlobj.h (SHCOLUMNINIT); Add structure.
+	(SHCOLUMNDAT): Likwise.
+	(SHCOLUMNID): Likewise.
+	(SHCOLUMNINFO): Likewise.
+	(SHCOLSTATE): Add enum.
+	(IColumnProvider): Add COM interface.
+	(IQueryInfo): Likewise.
+	(IShellIconOverlayIdentifier): Likewise. 
+  	* include/shlguid.h (IID_IColumnProvider) Declare.
+	(IID_IQueryInfo): Likweise.
+	(IID_IShellIconOverlayIdentifier): Likwise. 
+	* lib/shell32.c (IID_IColumnProvider) Define.
+	(IID_IQueryInfo): Likweise.
+	(IID_IShellIconOverlayIdentifier): Likwise.
+
+2003-12-08  Roald Ribe <rrib@users.sourceforge.net>
+
+	* include/winuser.h (RT_MANIFEST): Add define.
+
+2003-12-08  Pascal Buhler <pbuhler@users.sourceforge.net>
+
+	* include/oleidl.h (IViewObject2): Inherit from IViewObject.
+
+2003-12-01  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/winnt.h (GetCurrentFiber): Remove duplicate prototype.
+	(GetFiberData); Likewise.
+	(GetCurrentFiber): Change volatile to __volatile__.
+	(GetFiberData); Likewise.
+
+2003-11-27  Christopher Faylor  <cgf@redhat.com>
+
+	* lib/Makefile.in: Use make function to locate .mri file to allow
+	building in directory other than source directory.
+
+2003-11-27  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* lib/vfw32.def: Remove, replacing with ...
+	* lib/msvfw32.def: New file.
+	* lib/avicap32.def: New file.
+	* lib/avifil32.def: New file.
+	* lib/vfw32.mri: New file.
+	* Makefile.in: (MRI_FILES, MIMPLIBS): New vars for
+	import libs with multiple dll's.
+	(LIBS): Add MIMPLIBS.
+	(DISTFILES): Add MRI_FILES.
+	(libvfw32.a): Build using mri script.
+
+2003-11-23  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/winnt.h (PAGE_*): Group defines together. Change
+	constants to hex notation.
+
+2003-11-15  Manu B  <manubee@users.sourceforge.net>
+
+	* include/commctrl.h (TabCtrl_GetImageList): Add macro.
+
+2003-11-13 Martin Fuchs  <martin-fuchs@gmx.net>
+
+	* include/shlobj.h (ILAppendID, ILClone, ILCloneFirst, ILCombine,
+	ILFindChild, ILFindLastID, ILFree, ILGetNext, ILGetSize, ILIsEqual,
+	ILIsParent, ILLoadFromStream, ILRemoveLastID, ILSaveToStream):
+	Add prototypes.
+	* lib/shell32.def: Add stubs.
+
+	* include/commctrl.h (ListView_FindItem): Add type cast to avoid
+	compiler warnings.
+
+2003-11-13  Hans Leidekker <hans@it.vu.nl>
+
+	* include/winbase.h (WIN32_STREAM_ID): Correct typedef.
+
+2003-10-13  Andre Auzi  <aauzi@users.sourceforge.net>
+
+	* include/windows.h (CopyCursor): Define as macro.
+
+2003-10-13  Steven Edwards  <Steven_Ed4153@yahoo.com>
+
+	* include/winnt.h (CONTAINING_RECORD): Add macro.
+
+2003-10-13  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/winnt.h: (FILE_SUPERSEDED, FILE_OPENED, FILE_CREATED,
+	FILE_OVERWRITTEN, FILE_EXISTS, FILE_DOES_NOT_EXIST): Remove
+	defines.
+
+2003-10-13  Filip Navara  <xnavara@volny.cz>
+
+	* include/commctrl.h: (DSA_*):Add prototypes, typedefs and
+	defines for Dynamic Storage Arrays.
+	(DPA_*): Likewise, for Dynamic Pointer Arrays.
+	(FlatSB_*, InitializeFlatSB, InitializeFlatSB): Add prototypes
+	and defines for Flat ScrollBars.
+	(SetWindowSubclass, GetWindowSubclass, RemoveWindowSubclass,
+	DefSubclassProc): Add prototypes for subclassing.
+	(DrawShadowText) Add prototype.
+	(COMCTL32_VERSION): Define.
+
+2003-10-13  Martin Fuchs  <Martin-Fuchs@gmx.net>
+
+	* include/shlobj.h (CFSTR_FILENAME, CFSTR_FILEDESCRIPTOR,
+	CFSTR_FILENAMEMAP, CFSTR_SHELLURL): Correct UNICODE definitions.
+
+2003-10-13  Pierre Humblet  <pierre.humblet@ieee.org>
+
+	* include/winnt.h (SM_REMOTESESSION): Add define.
+	* include/winuser.h (SE_CREATE_GLOBAL_NAME): Ditto.
+
+2003-10-13  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/wincrypt (KP_IV, KP_SALT, KP_PADDING, KP_MODE,
+	KP_MODE_BITS, KP_PERMISSIONS, KP_ALGID, KP_BLOCKLEN): Remove
+	duplicate definitions.
+	(KP_X, KP_Y): Correct typos.
+
+2003-10-11  Manu B  <manubee@users.sourceforge.net>
+
+	* include/afxres.h: New file.
+
+	* include/richedit.h (ES_NOOLEDRAGDROP, ENM_DRAGDROPDONE,
+	ENM_IMECHANGE, ENM_LANGCHANGE, ENM_OBJECTPOSITIONS,
+	ENM_SCROLLEVENTS): Add constants.
+
+	* include/richedit.h (ES_SELECTIONBAR, ENM_LINK): Sort constants.
+
+2003-10-09  Dimitri Papadopoulos  <papadopo@users.sourceforge.net>
+
+	* include/errorep.h: New file.
+
+	* lib/faultrep.def: New file.
+
+2003-10-09  Dimitri Papadopoulos  <papadopo@users.sourceforge.net>
+
+	* include/winbase.h (AddVectoredExceptionHandler): Define if
+	_WIN32_WINNT >= 0x0500.
+
+	* include/winnt.h (PVECTORED_EXCEPTION_HANDLER): Define if
+	_WIN32_WINNT >= 0x0500.
+
+2003-10-08  Corinna Vinschen  <corinna@vinschen.de>
+
+	* include/winbase.h (AddVectoredExceptionHandler): Only define if
+	_WIN32_WINNT >= 0x0501.
+
+2003-10-07  Dimitri Papadopoulos  <papadopo@users.sourceforge.net>
+
+	* include/winbase.h [_WIN32_WINNT >= 0x0500] (SetComputerNameEx[AW],
+	UnregisterWaitEx): Add functions.
+
+	* include/winbase.h [_WIN32_WINNT >= 0x0500]
+	(AddVectoredExceptionHandler, RemoveVectoredExceptionHandler): Add
+	or guard function. The MSDN says it is available on Windows XP and
+	better, and then it says it is declared for _WIN32_WINNT >= 0x0500.
+	Huh?
+
+	* include/winbase.h [_WIN32_WINNT >= 0x0501] (AddRefActCtx,
+	CreateActCtx[AW], SetFileShortName[AW], SetFileValidData,
+	ZombifyActCtx, QueryActCtxW): Add functions.
+
+	* include/winbase.h [_WIN32_WINNT >= 0x0501]
+	(QUERY_ACTCTX_FLAG_USE_ACTIVE_ACTCTX,
+	QUERY_ACTCTX_FLAG_ACTCTX_IS_HMODULE,
+	QUERY_ACTCTX_FLAG_ACTCTX_IS_ADDRESS): Add constants.
+
+	* include/winbase.h [_WIN32_WINNT >= 0x0502] (SetDllDirectory[AW],
+	SetFirmwareEnvironmentVariable[AW]): Add functions.
+
+	* include/winnt.h [_WIN32_WINNT >= 0x0500] (VER_BUILDNUMBER,
+	VER_MAJORVERSION, VER_MINORVERSION, VER_PLATFORMID,
+	VER_SERVICEPACKMAJOR, VER_SERVICEPACKMINOR, VER_SUITENAME,
+	VER_PRODUCT_TYPE, VER_EQUAL, VER_GREATER, VER_GREATER_EQUAL,
+	VER_LESS, VER_LESS_EQUAL, VER_AND, VER_OR): Add constants.
+
+	* include/winnt.h [_WIN32_WINNT >= 0x0501]
+	(PVECTORED_EXCEPTION_HANDLER): Add callback.
+
+	* include/winnt.h [_WIN32_WINNT >= 0x0501]
+	(ACTIVATION_CONTEXT_INFO_CLASS,
+	ACTIVATION_CONTEXT_ASSEMBLY_DETAILED_INFORMATION,
+	ACTIVATION_CONTEXT_DETAILED_INFORMATION,
+	ACTIVATION_CONTEXT_QUERY_INDEX, ASSEMBLY_FILE_DETAILED_INFORMATION):
+	Add structures.
+
+	* lib/user32.def (AddRefActCtx, AddVectoredExceptionHandler,
+	CreateActCtx[AW], SetComputerNameEx[AW], SetDllDirectory[AW],
+	SetFileShortName[AW], SetFileValidData,
+	SetFirmwareEnvironmentVariable[AW], UnregisterWaitEx,
+	VerSetConditionMask, ZombifyActCtx, QueryActCtxW): Add functions.
+
+2003-10-07  Dimitri Papadopoulos  <papadopo@users.sourceforge.net>
+
+	* include/winbase.h (GetWriteWatch, IsSystemResumeAutomatic,
+	ResetWriteWatch): Add function.
+
+	* include/winbase.h [_WIN32_WINNT >= 0x0500]
+	(GetSystemWindowsDirectory[AW], ProcessIdToSessionId, ReplaceFile[AW]):
+	Add functions.
+
+	* include/winbase.h [_WIN32_WINNT >= 0x0501]
+	(GetSystemWow64Directory[AW], HeapQueryInformation,
+	HeapSetInformation, InitializeSListHead, InterlockedFlushSList,
+	InterlockedPopEntrySList, InterlockedPushEntrySList, IsProcessInJob,
+	IsWow64Process, QueryMemoryResourceNotification, ReleaseActCtx,
+	RemoveVectoredExceptionHandler): Add functions.
+
+	* include/winnt.h [_WIN32_WINNT >= 0x0501] (HEAP_INFORMATION_CLASS):
+	Add enumeration.
+
+	* include/winbase.h [_WIN32_WINNT >= 0x0502] (GetThreadIOPendingFlag):
+	Add function.
+
+	* include/winbase.h [_WIN32_WINNT >= 0x0510] (RestoreLastError):
+	Add function. The MSDN Magazine of June 2003 reads:
+		RestoreLastError is an enigma. It's code is identical to
+		SetLastError. It's unclear to me why it was made into a
+		separate API.
+
+	* lib/user32.def (GetSystemWindowsDirectory[AW],
+	GetSystemWow64Directory[AW], GetThreadIOPendingFlag,
+	HeapQueryInformation, HeapSetInformation, InitializeSListHead,
+	InterlockedFlushSList, InterlockedPopEntrySList,
+	InterlockedPushEntrySList, IsSystemResumeAutomatic, IsWow64Process,
+	ProcessIdToSessionId, QueryMemoryResourceNotification, ReleaseActCtx,
+	RemoveVectoredExceptionHandler, ReplaceFile[AW], ResetWriteWatch,
+	RestoreLastError): Add functions.
+
+2003-10-07  Dimitri Papadopoulos  <papadopo@users.sourceforge.net>
+
+	* include/winbase.h [_WIN32_WINNT >= 0x0500] (GetComputerNameEx[AW],
+	GetProcessIoCounters): Add functions.
+
+	* include/winbase.h [_WIN32_WINNT >= 0x0500] (COMPUTER_NAME_FORMAT):
+	Move around, needed by GetComputerNameEx.
+
+	* include/winbase.h [_WIN32_WINNT >= 0x0501] (FindActCtxSectionGuid,
+	FindActCtxSectionString[AW], GetCurrentActCtx, GetNativeSystemInfo):
+	Add functions.
+
+	* include/winbase.h [_WIN32_WINNT >= 0x0501]
+	(ACTCTX_SECTION_KEYED_DATA): Add structure.
+
+	* include/winbase.h [_WIN32_WINNT >= 0x0502] (GetDllDirectory[AW],
+	GetFirmwareEnvironmentVariable[AW], GetProcessHandleCount,
+	GetProcessId, GetSystemRegistryQuota): Add functions, available on
+	Windows XP SP1 and better.
+
+	* include/winnt.h [_WIN32_WINNT >= 0x0501]
+	(ACTIVATION_CONTEXT_SECTION_ASSEMBLY_INFORMATION,
+	ACTIVATION_CONTEXT_SECTION_DLL_REDIRECTION,
+	ACTIVATION_CONTEXT_SECTION_WINDOW_CLASS_REDIRECTION,
+	ACTIVATION_CONTEXT_SECTION_COM_SERVER_REDIRECTION,
+	ACTIVATION_CONTEXT_SECTION_COM_INTERFACE_REDIRECTION,
+	ACTIVATION_CONTEXT_SECTION_COM_TYPE_LIBRARY_REDIRECTION,
+	ACTIVATION_CONTEXT_SECTION_COM_PROGID_REDIRECTION,
+	ACTIVATION_CONTEXT_SECTION_CLR_SURROGATES): Add constants.
+
+	* lib/user32.def (FindActCtxSectionGuid, FindActCtxSectionString[AW],
+	GetComputerNameEx[AW], GetCurrentActCtx, GetDllDirectory[AW],
+	GetFirmwareEnvironmentVariable[AW], GetModuleHandleEx[AW],
+	GetNativeSystemInfo, GetProcessHandleCount, GetProcessIoCounters):
+	Add functions.
+
+2003-10-07  Dimitri Papadopoulos  <papadopo@users.sourceforge.net>
+
+	* include/winbase.h [_WIN32_WINNT >= 0x0501]
+	(CheckRemoteDebuggerPresent, DebugActiveProcessStop, DebugBreakProcess,
+	DebugSetProcessKillOnExit): Add functions.
+
+	* include/winbase.h [_WIN32_WINNT >= 0x0500] (DeleteTimerQueue,
+	DeleteTimerQueueEx, DeleteTimerQueueTimer,
+	DnsHostnameToComputerName[AW]): Add functions.
+
+	* lib/user32.def (CheckRemoteDebuggerPresent, DebugActiveProcessStop,
+	DebugBreakProcess, DebugSetProcessKillOnExit, DeleteTimerQueueEx,
+	DeleteTimerQueueTimer, DnsHostnameToComputerName[AW]): Add functions.
+
+2003-10-07  Kobun Fujimori  <kobun@users.sourceforge.net>
+
+	* include/winbase.h (GetVolumePathNamesForVolumeName): Available
+	on Windows XP and later.
+
+2003-10-07  Manu B  <manubee@users.sourceforge.net>
+
+	* include/commctrl.h (TreeView_Select): Returns BOOL.
+
+2003-10-06  Dimitri Papadopoulos  <papadopo@users.sourceforge.net>
+
+	* include/winbase.h (CancelDeviceWakeupRequest): Add function.
+
+	* include/winbase.h [_WIN32_WINNT >= 0x0501]
+	(CreateMemoryResourceNotification, DeactivateActCtx): Add functions.
+
+	* include/winbase.h [_WIN32_WINNT >= 0x0500] (CreateTimerQueue,
+	CreateTimerQueueTimer): Add function.
+
+	* include/winbase.h [_WIN32_WINNT >= 0x0501]
+	(MEMORY_RESOURCE_NOTIFICATION_TYPE): Add enumeration.
+
+	* include/winbase.h [_WIN32_WINNT >= 0x0501]
+	(DEACTIVATE_ACTCTX_FLAG_FORCE_EARLY_DEACTIVATION): Add constant.
+
+	* include/winnt.h (WT_*): Add constants.
+
+	* lib/user32.def (CancelDeviceWakeupRequest,
+	CreateMemoryResourceNotification, CreateTimerQueueTimer,
+	DeactivateActCtx): Add functions.
+
+2003-10-06  Dimitri Papadopoulos  <papadopo@users.sourceforge.net>
+
+	* include/winbase.h [_WIN32_WINNT >= 0x0400] (ConvertFiberToThread):
+	Add function. Sometimes I don't understand MSDN. This function is
+	available on Windows XP and Server 2003, but the SDK is supposed to
+	make it available when _WIN32_WINNT >= 0x0400, or so says the MSDN.
+	Mmmh...
+
+	* include/winbase.h [_WIN32_WINNT >= 0x0400] (CreateFiberEx):
+	Guard function. Same remark as above.
+
+	* lib/user32.def (ConvertFiberToThread, CreateFiberEx):
+	Add functions.
+
+2003-10-06  Dimitri Papadopoulos  <papadopo@users.sourceforge.net>
+
+	* include/winbase.h [_WIN32_WINNT >= 0x0501] (ACTCTX_FLAG_*):
+	Add constants.
+
+	* include/winbase.h [_WIN32_WINNT >= 0x0501] (ACTCTX[AW]): Add
+	structures.
+
+	* include/winbase.h [_WIN32_WINNT >= 0x0501] (ActivateActCtx): Add
+	function. MSDN says the first argument is HACTCTX but I'm not sure
+	where such a specialized handle is defined, so use HANDLE instead.
+
+	* include/winbase.h [_WIN32_WINNT >= 0x0501] (AttachConsole,
+	CheckNameLegalDOS8Dot3[AW]): Add functions.
+
+	* lib/user32.def (ActivateActCtx, AttachConsole,
+	CheckNameLegalDOS8Dot3[AW]): Add functions.
+
+	* lib/user32.def (AddLocalAlternateComputerName[AW]): Add functions.
+	Unfortunately I don't know which header to put the declarations in.
+
+2003-10-06  Dimitri Papadopoulos  <papadopo@users.sourceforge.net>
+
+	* include/winnls.h (CTRY_KYRGYZSTAN, CTRY_MALDIVES, CTRY_MONGOLIA):
+	Add constants.
+
+	* include/winnls.h (NLS_FUNCTION, SYSGEOCLASS, SYSGEOTYPE): Add
+	constants for National Language Support.
+
+	* include/winnls.h (NLSVERSIONINFO): Add structure for National
+	Language Support.
+
+	* include/winnls.h (GEO_ENUMPROC): Add callback for National
+	Language Support.
+
+	* include/winnls.h (EnumSystemGeoID, GetCalendarInfo[AW],
+	GetGeoInfo[AW], GetUserGeoID, SetCalendarInfo[AW], SetUserGeoID):
+	Add functions.
+
+	* include/winnls.h (IsNLSDefinedString, GetNLSVersion): Add
+	functions. Strange... I am unable to find which library contains
+	these functions. Can't find anything with pexports. Any clue?
+
+	* lib/user32.def (EnumSystemGeoID, GetGeoInfo[AW], GetUserGeoID,
+	SetUserGeoID): Add functions.
+
+2003-10-06  Dimitri Papadopoulos  <papadopo@users.sourceforge.net>
+
+	* include/winnt.h (LANG_KYRGYZ, LANG_MONGOLIAN, LANG_GALICIAN,
+	LANG_SYRIAC, LANG_INVARIANT, SUBLANG_KASHMIRI_SASIA): Add constants.
+
+	* include/winnt.h (SUBLANG_AZERI_LATIN, SUBLANG_AZERI_CYRILLIC,
+	SUBLANG_ENGLISH_ZIMBABWE, SUBLANG_ENGLISH_PHILIPPINES): Fix wrong
+	value for constants.
+
+2003-10-03  Dimitri Papadopoulos  <papadopo@users.sourceforge.net>
+
+	* include/wincrypt.h (SCHANNEL_MAC_KEY, SCHANNEL_ENC_KEY,
+	INTERNATIONAL_USAGE, KP_SCHANNEL_ALG): Add constants. Specifying
+	the algorithms.
+
+2003-10-03  Dimitri Papadopoulos  <papadopo@users.sourceforge.net>
+
+	* include/wincrypt.h (CRYPT_FLAGS_*): Add constants. Protocol flags.
+
+2003-10-03  Dimitri Papadopoulos  <papadopo@users.sourceforge.net>
+
+	* include/wincrypt.h (KP_*): Add constants. Needed by
+	CryptSetKeyParam() and other functions.
+
+2003-10-03  Dimitri Papadopoulos  <papadopo@users.sourceforge.net>
+
+	* include/winuser.h [_WIN32_WINNT >= 0x0501] (EVENT_*, CONSOLE_*):
+	Add constants, related to Console Accessibility.
+
+2003-10-03  Dimitri Papadopoulos  <papadopo@users.sourceforge.net>
+
+	* include/winuser.h [WINVER >= 0x0500] (EVENT_MAX): Ooops...
+	wrong value for constant.
+
+2003-10-03  Dimitri Papadopoulos  <papadopo@users.sourceforge.net>
+
+	* include/winuser.h [WINVER >= 0x0500] (EVENT_*): Add constants.
+
+	* include/uxtheme.h: Cleanup.
+	* include/tmschema.h: Cleanup.
+
+2003-10-02  Luke Dunstan  <infidel@users.sourceforge.net>
+
+	* include/winspool.h (GetDefaultPrinter[AW]): Add functions.
+	* lib/winspool.def (GetDefaultPrinter[AW]): Add stubs.
+
+2003-10-01  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/winnt.h (INVALID_FILE_ATTRIBUTES): Fix define.
+
+2003-09-30  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/winuser.h (BSF_*, BSM_*):  Sync constants defined in
+	both winuser.h and dbt.h.
+	* include/dbt.h (BSF_*, BSM_*): Likewise.
+
+	* include/winuser.h (struct tagRAWINPUT): Remove
+	_ANONYMOUS_UNION tag from named union.
+	(struct tagRAWMOUSE): Add _ANONYMOUS_STRUCT to nameless struct.
+
+2003-09-30  Dimitri Papadopoulos  <papadopo@users.sourceforge.net>
+
+	* include/dhcpcdsk.h: New file.
+	Note that MSDN is confused about whether it should start constant
+	and structure names with DHCPCAPI or DHCPAPI. It's using both but
+	experience suggests it's DHCPCAPI with `C'.
+
+	* lib/dhcpcsvc.def: New file.
+
+2003-09-30  Dimitri Papadopoulos  <papadopo@users.sourceforge.net>
+
+	* include/winuser.h [_WIN32_WINNT >= 0x0501] (RIM_INPUT,
+	RIM_INPUTSINK): Add constants, for use by WM_INPUT notification.
+
+	* include/winuser.h [_WIN32_WINNT >= 0x0501] (RIDEV_REMOVE,
+	RIDEV_EXCLUDE, RIDEV_PAGEONLY, RIDEV_NOLEGACY, RIDEV_INPUTSINK,
+	RIDEV_CAPTUREMOUSE, RIDEV_NOHOTKEYS, RIDEV_APPKEYS): Add constants,
+	for use in RAWINPUTDEVICE.
+
+	* include/winuser.h [_WIN32_WINNT >= 0x0501]
+	(GetRawInputDeviceInfo[AW]): Ooops... there are
+	ANSI/Unicode versions of this function.
+
+	* lib/user32.def (GetRawInputDeviceInfo[AW]): Ooops... there
+	are ANSI/Unicode versions of this function.
+
+2003-09-29  Dimitri Papadopoulos  <papadopo@users.sourceforge.net>
+
+	* include/winuser.h [_WIN32_WINNT >= 0x0501] (RIM_TYPEMOUSE,
+	RIM_TYPEKEYBOARD, RIM_TYPEHID, MOUSE_MOVE_RELATIVE,
+	MOUSE_MOVE_ABSOLUTE, MOUSE_VIRTUAL_DESKTOP,
+	MOUSE_ATTRIBUTES_CHANGED, RI_MOUSE_LEFT_BUTTON_DOWN,
+	RI_MOUSE_LEFT_BUTTON_UP, RI_MOUSE_RIGHT_BUTTON_DOWN,
+	RI_MOUSE_RIGHT_BUTTON_UP, RI_MOUSE_MIDDLE_BUTTON_DOWN,
+	RI_MOUSE_MIDDLE_BUTTON_UP, RI_MOUSE_BUTTON_1_DOWNT_BUTTON_DOWN,
+	RI_MOUSE_BUTTON_1_UP, RI_MOUSE_BUTTON_2_DOWNHT_BUTTON_DOWN,
+	RI_MOUSE_BUTTON_2_UP, RI_MOUSE_BUTTON_3_DOWNDLE_BUTTON_DOWN,
+	RI_MOUSE_BUTTON_3_UP, RI_MOUSE_BUTTON_4_DOWN,
+	RI_MOUSE_BUTTON_4_UP, RI_MOUSE_BUTTON_5_DOWN,
+	RI_MOUSE_BUTTON_5_UP, RI_MOUSE_WHEEL, KEYBOARD_OVERRUN_MAKE_CODE,
+	RI_KEY_MAKE, RI_KEY_BREAK, RI_KEY_E0, RI_KEY_E1,
+	RI_KEY_TERMSRV_SET_LED, RI_KEY_TERMSRV_SHADOW, RID_INPUT,
+	RID_HEADER, RIDI_PREPARSEDDATA, RIDI_DEVICENAME, 
+	RIDI_DEVICEINFO): Add constants.
+
+	* include/winuser.h [_WIN32_WINNT >= 0x0501] (RAWINPUTHEADER,
+	RAWMOUSE, RAWKEYBOARD, RAWHID, RAWINPUT, RAWINPUTDEVICE,
+	RAWINPUTDEVICELIST): Add structures.
+
+	* include/winuser.h [_WIN32_WINNT >= 0x0501] (DefRawInputProc,
+	GetRawInputBuffer, GetRawInputData, GetRawInputDeviceInfo,
+	GetRawInputDeviceList, GetRegisteredRawInputDevices): Add functions.
+
+	* lib/user32.def (DefRawInputProc, GetRawInputBuffer,
+	GetRawInputData, GetRawInputDeviceInfo, GetRawInputDeviceList,
+	GetRegisteredRawInputDevices): Add functions.
+
+2003-09-26  Dimitri Papadopoulos  <papadopo@users.sourceforge.net>
+
+	* include/winable.h (BlockInput): Add function.
+
+	* include/winable.h (WS_ACTIVECAPTION): Add constant.
+	For use with WINDOWINFO structure.
+
+	* include/winuser.h [_WIN32_WINNT >= 0x0500] (LockWorkStation):
+	Add function.
+
+	* include/winuser.h [_WIN32_WINNT >= 0x0501] (IsWinEventHookInstalled):
+	Add function.
+
+	* include/winuser.h [WINVER >= 0x0500] (UnhookWinEvent):
+	Add function...
+
+	* include/winable.h [WINVER < 0x0500] (UnhookWinEvent):
+	...and duplicate.
+
+	* include/winuser.h [_WIN32_WINNT >= 0x0403] (SendInput):
+	Guard function...
+
+	* include/winable.h [_WIN32_WINNT < 0x0403] (SendInput):
+	...and duplicate.
+
+	* include/winuser.h [WINVER >= 0x0500] (NotifyWinEvent):
+	Guard function...
+
+	* include/winable.h [WINVER < 0x0500] (NotifyWinEvent):
+	...and duplicate.
+
+	* include/winuser.h [WINVER >= 0x0500] (MOUSEINPUT, KEYBDINPUT,
+	HARDWAREINPUT, INPUT): Guard structures...
+
+	* include/winable.h [WINVER < 0x0500] (MOUSEINPUT, KEYBDINPUT,
+	HARDWAREINPUT, INPUT): ...and duplicate.
+
+	* include/winuser.h [_WIN32_WINNT >= 0x0403] (INPUT_MOUSE,
+	INPUT_KEYBOARD, INPUT_HARDWARE): Guard constants...
+
+	* include/winable.h [_WIN32_WINNT < 0x0403] (INPUT_MOUSE,
+	INPUT_KEYBOARD, INPUT_HARDWARE): ...and duplicate.
+
+	* include/winuser.h: Move around some lines. Reformat according
+	to recommended or dominant style. Remove FAR keyword.
+
+	* include/winable.h: Move around some lines.
+
+	* lib/user32.def (BlockInput, IsWinEventHookInstalled,
+	LockWorkStation, UnhookWinEvent): Add functions.
+
+2003-09-26  Dimitri Papadopoulos  <papadopo@users.sourceforge.net>
+
+	* include/winuser.h [_WIN32_WINNT >= 0x0501] (PrintWindow,
+	PW_CLIENTONLY): Add function and constant.
+
+	* lib/user32.def (PrintWindow): Add function.
+
+2003-09-26  Dimitri Papadopoulos  <papadopo@users.sourceforge.net>
+
+	* include/winuser.h (RealGetWindowClassA[AW]): Add function.
+
+	* lib/user32.def (RealGetWindowClassA[AW]): Add function.
+
+2003-09-26  Dimitri Papadopoulos  <papadopo@users.sourceforge.net>
+
+	* include/winuser.h [WINVER >= 0x0500] (RegisterDeviceNotification[AW],
+	DEVICE_NOTIFY_WINDOW_HANDLE, DEVICE_NOTIFY_SERVICE_HANDLE,
+	DEVICE_NOTIFY_ALL_INTERFACE_CLASSES): Add function and constants.
+
+	* lib/user32.def (RegisterDeviceNotification[AW]): Add function.
+
+2003-09-26  Dimitri Papadopoulos  <papadopo@users.sourceforge.net>
+
+	* include/winuser.h [WINVER >= 0x0500] (SetWinEventHook, WINEVENTPROC,
+	WINEVENT_OUTOFCONTEXT, WINEVENT_SKIPOWNTHREAD, WINEVENT_SKIPOWNPROCESS,
+	WINEVENT_INCONTEXT): Add function, typedef, and constants.
+
+	* include/winable.h [WINVER < 0x0500] (SetWinEventHook, WINEVENTPROC,
+	WINEVENT_OUTOFCONTEXT, WINEVENT_SKIPOWNTHREAD, WINEVENT_SKIPOWNPROCESS,
+	WINEVENT_INCONTEXT): Add function, typedef, and constants.
+
+	* include/winuser.h [_WIN32_WINNT >= 0x0500] (UserHandleGrantAccess):
+	Add function.
+
+	* lib/user32.def (SetWinEventHook, UserHandleGrantAccess):
+	Add functions.
+
+2003-09-26  Dimitri Papadopoulos  <papadopo@users.sourceforge.net>
+
+	* include/winnt.h (ACE_INHERITED_OBJECT_TYPE_PRESENT,
+	ACE_OBJECT_TYPE_PRESENT): Add constants.
+	For use with OBJECTS_AND_NAME structure.
+
+2003-09-26  Dimitri Papadopoulos  <papadopo@users.sourceforge.net>
+
+	* include/aclapi.h [_WIN32_WINNT >= 0x0501] (GetInheritanceSource[AW]):
+	Add functions. Don't know what PFN_OBJECT_MGR_FUNCTS is so use
+	void* instead.
+
+	* include/accctrl.h [_WIN32_WINNT >= 0x0501] (INHERITED_FROM[AW],
+	PINHERITED_FROM[AW]): Add structures.
+
+	* lib/user32.def (GetInheritanceSource[AW]): Add functions.
+
+2003-09-26  Corinna Vinschen  <corinna@vinschen.de>
+
+	* include/winuser.h (FLASHWINFO, PFLASHWINFO): Define for 98/Me, too.
+
+2003-09-25  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* lib/version.def (LIBRARY): Quote name.
+
+2003-09-25  Dimitri Papadopoulos  <papadopo@users.sourceforge.net>
+
+	* include/winuser.h (GetClipboardSequenceNumber): Add functions
+	and constants.
+
+	* include/winuser.h (GetGuiResources, GR_GDIOBJECTS,
+	GR_USEROBJECTS): Add functions and constants.
+
+	* include/winuser.h (GetMouseMovePointsEx, GMMP_USE_DISPLAY_POINTS,
+	GMMP_USE_HIGH_RESOLUTION_POINTS): Add functions and constants.
+
+	* include/winuser.h (InSendMessageEx, ISMEX_NOSEND, ISMEX_CALLBACK,
+	ISMEX_NOTIFY, ISMEX_REPLIED, ISMEX_SEND): Add functions and
+	constants.
+
+	* lib/user32.def (GetClipboardSequenceNumber, GetGuiResources,
+	GetMouseMovePointsEx, InSendMessageEx): Add functions.
+
+2003-09-25  Dimitri Papadopoulos  <papadopo@users.sourceforge.net>
+
+	* include/winuser.h (BroadcastSystemMessage, BroadcastSystemMessageA,
+	BroadcastSystemMessageW, BroadcastSystemMessageEx,
+	BroadcastSystemMessageExA, BroadcastSystemMessageExW,
+	BSMINFO, BSF_ALLOWSFW, BSF_SENDNOTIFYMESSAGE, BSF_LUID,
+	BSF_RETURNHDESK): Add functions and constants.
+
+	* include/winuser.h (EnumDisplaySettingsEx, EnumDisplaySettingsExA,
+	EnumDisplaySettingsExW, EDS_RAWMODE): Add functions and constant.
+
+	* include/winuser.h (IsGUIThread, IsHungAppWindow, FlashWindowEx,
+	GetProcessDefaultLayout, SetProcessDefaultLayout,
+	RealChildWindowFromPoint, SetProcessDefaultLayout,
+	SwitchToThisWindow): Add functions.
+
+	* lib/user32.def (BroadcastSystemMessageA, BroadcastSystemMessageW,
+	BroadcastSystemMessageExA, BroadcastSystemMessageExW,
+	EnumDisplaySettingsExA, EnumDisplaySettingsExW, FlashWindowEx,
+	GetProcessDefaultLayout, IsGUIThread, IsHungAppWindow,
+	RealChildWindowFromPoint, SetProcessDefaultLayout,
+	SwitchToThisWindow): Add function.
+
+2003-09-25  Dimitri Papadopoulos  <papadopo@users.sourceforge.net>
+
+	* include/winuser.h (DeregisterShellHookWindow): Add function.
+
+	* include/winuser.h [_WIN32_WINNT >= 0x0500] (EndTask): Add function.
+
+	* lib/user32.def (EndTask): Add function.
+
+	* include/winuser.h (WINVER, _WIN32_WINNT): It's better (?) to
+	use _WIN32_WINNT instead of WINVER to test for Windows 2000.
+
+	* include/winable.h: Reorder target macros.
+
+	* lib/*.def: Cleanup.
+
+2003-09-25  Dimitri Papadopoulos  <papadopo@users.sourceforge.net>
+
+	* include/winuser.h [WINVER >= 0x0500] (AnimateWindow): Add
+	function.
+
+	* lib/user32.def (AnimateWindow): Add function. By the way
+	there are ~ 140 symbols missing from this file when comparing
+	to user32.dll on Windows XP.
+
+2003-09-25  Dimitri Papadopoulos  <papadopo@users.sourceforge.net>
+
+	* include/winuser.h [WINVER >= 0x0500] (AW_SLIDE, AW_ACTIVATE,
+	AW_BLEND, AW_HIDE, AW_CENTER, AW_HOR_POSITIVE, AW_HOR_NEGATIVE,
+	AW_VER_POSITIVE, AW_VER_NEGATIVE): Add constants. For use by
+	AnimateWindow().
+
+2003-09-25  Dimitri Papadopoulos  <papadopo@users.sourceforge.net>
+
+	* include/winuser.h [WINVER >= 0x0500] (GetGUIThreadInfo,
+	LPGUITHREADINFO): Add function and associated typedef...
+
+	* include/winable.h [WINVER < 0x0500] (GetGUIThreadInfo,
+	LPGUITHREADINFO): ...and duplicate them in <winable.h> as
+	seems to be required on older versions of Windows.
+
+2003-09-24  Dimitri Papadopoulos  <papadopo@users.sourceforge.net>
+
+	* include/GL/glu.h (gluErrorUnicodeStringWIN): Add macro
+	function. MSDN suggests using gluErrorUnicodeStringWIN
+	instead of gluErrorString, as it allows both ANSI and Unicode
+	error strings.
+
+	* include/GL/glu.h (gluErrorUnicodeStringEXT): Make the
+	returned pointer const for consistency reasons.
+
+2003-09-24  Dimitri Papadopoulos  <papadopo@users.sourceforge.net>
+
+	* include/GL/glu.h (gluErrorUnicodeStringEXT): Add function.
+	Function exists in glu32.def but is undocumented on MSDN.
+	A Google search came up with this declaration.
+
+2003-09-24  Dimitri Papadopoulos  <papadopo@users.sourceforge.net>
+
+	* include/GL/glu.h: Rewritten from scratch. Started from GLU 1.3
+	headers from OpenGL Sample Implementation. Windows ships with
+	GLU 1.2 so some constants and functions were removed. Then some
+	typedef's and function declarations were reworked to look like
+	the previous GL/glu.h.
+
+2003-09-24  Dimitri Papadopoulos  <papadopo@users.sourceforge.net>
+
+	* include/uxtheme.h (PROPERTYORIGIN): the documentation of
+	PROPERTYORIGIN suggests it's `PROPERTYORIGIN' but experimentation
+	suggests it's actually `enum PROPERTYORIGIN'. Keep both.
+
+	* include/uxtheme.h (THEME_SIZE, THEMESIZE): MSDN suggests
+	it's either `THEME_SIZE' or `THEMESIZE' but experimentation
+	suggests it's actually `enum THEMESIZE'. Keep `THEME_SIZE'
+	and `enum THEMESIZE'.
+
+2003-09-24  Dimitri Papadopoulos  <papadopo@users.sourceforge.net>
+
+	* include/uxtheme.h: New file.
+	* include/tmschema.h: New file.
+	* include/uxtheme.def: New file.
+	* lib/test.c: Include uxtheme.h, tmschema.h.
+
+2003-09-23  Dimitri Papadopoulos  <papadopo@users.sourceforge.net>
+
+	* include/winuser.h (KEYEVENTF_UNICODE, KEYEVENTF_SCANCODE):
+	Add defines.
+
+2003-09-23  Dimitri Papadopoulos  <papadopo@users.sourceforge.net>
+
+	* include/winable.h [_WIN32_WINNT < 0x0403] (INPUT_MOUSE,
+	INPUT_KEYBOARD, INPUT_HARDWARE): Duplicate defines in
+	<winable.h> as seems to be required on older versions of
+	Windows.
+
+2003-09-23  Dimitri Papadopoulos  <papadopo@users.sourceforge.net>
+
+	* include/winuser.h [WINVER >= 0x0500] (CHILDID_SELF,
+	GUI_CARETBLINKING, GUI_INMOVESIZE, GUI_INMENUMODE,
+	GUI_SYSTEMMENUMODE, GUI_POPUPMENUMODE, GUI_16BITTASK):
+	Add defines, the last one only on Windows XP...
+
+	* include/winable.h [WINVER < 0x0500] (CHILDID_SELF,
+	GUI_CARETBLINKING, GUI_INMOVESIZE, GUI_INMENUMODE,
+	GUI_SYSTEMMENUMODE, GUI_POPUPMENUMODE): ...and duplicate
+	them in <winable.h> as seems to be required on older
+	versions of Windows.
+
+2003-09-23  Dimitri Papadopoulos  <papadopo@users.sourceforge.net>
+
+	* include/winuser.h [WINVER >= 0x0500] (GUITHREADINFO,
+	OBJID_WINDOW, OBJID_SYSMENU, OBJID_TITLEBAR, OBJID_MENU,
+	OBJID_CLIENT, OBJID_VSCROLL, OBJID_HSCROLL, OBJID_SIZEGRIP,
+	OBJID_CARET, OBJID_CURSOR, OBJID_ALERT, OBJID_SOUND): Bring
+	back into <winuser.h>...
+
+	* include/winable.h [WINVER < 0x0500] (GUITHREADINFO,
+	OBJID_WINDOW, OBJID_SYSMENU, OBJID_TITLEBAR, OBJID_MENU,
+	OBJID_CLIENT, OBJID_VSCROLL, OBJID_HSCROLL, OBJID_SIZEGRIP,
+	OBJID_CARET, OBJID_CURSOR, OBJID_ALERT, OBJID_SOUND): ...and
+	comment out in <winable.h>. MSDN may say <winable.h> but this
+	breaks many programs. It seems it used to be <winable.h> on
+	older versions of Windows.
+
+2003-09-17  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/winuser.h (UpdateLayeredWindow): Protect against NOGDI.
+	Thanks to Will Levine  <willll@users.sourceforge.net>
+
+2003-09-15  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/ws2spi.h (LPWSPBIND): Change CONST LPSOCKADDR to
+	const struct sockaddr*.
+	(LPWSPCONNECT): Likewise.
+	(LPWSPJOINLEAF): Likewise.
+	(LPWSPSENDTO): Likewise.
+	Tanks to Sebastian Nowak  <snowak1@users.spourceforge.net>
+
+2003-09-15  Filip Navara  <xnavara@volny.cz>
+
+	* include/commctrl.h (TCIS_BUTTONPRESSED, TCIS_HIGHLIGHTED):
+	Add definitions.
+
+2003-09-15  Sascha Brawer  <brawer@dandelis.ch>
+
+	* include/winuser.h (DISPLAY_DEVICE_ATTACHED_TO_DESKTOP,
+	DISPLAY_DEVICE_PRIMARY_DEVICE, DISPLAY_DEVICE_MIRRORING_DRIVER,
+	DISPLAY_DEVICE_VGA_COMPATIBLE, DISPLAY_DEVICE_REMOVABLE,
+	DISPLAY_DEVICE_MODESPRUNED): Define constants.
+	(ChangeDisplaySettingsEx[A,W]): Add prototype.
+
+	* lib/user32.def (ChangeDisplaySettingsEx[A,W]): Add exports.
+	(EnumDisplayDevices[A,W]): Likewise.
+
+2003-09-15  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include.commctrl.h (_WIN32_WINNT): Change _WXP to 0x0501,
+	throughout.
+
+2003-09-13  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/olectl.h (TEXTMETRICOLE, LPERRORLOG, LPPROPERTYBAG,
+	LPENUMCONNECTIONPOINTS, LPCONNECTIONPOINT, LPENUMCONNECTIONS,
+	LPPROPERTYPAGESITE, LPFONT, LPFONTDISP, OLE_COLOR, HIMETRIC,
+	OLE_YPOS_HIMETRIC, OLE_XSIZE_HIMETRIC, OLE_YSIZE_HIMETRIC,
+	OLE_YSIZE_CONTAINER, OLE_HANDLE, POINTF,LPPOINTF, CONTROLINFO,
+	LPCONTROLINFO, CONNECTDATA, LPCONNECTDATA, LICINFO, LPLICINFO,
+	CAUUID, LPCAUUID, CALPOLESTR, LPCALPOLESTR, CADWORD, LPCADWORD,
+	PROPPAGEINFO, LPPROPPAGEINFO): Remove from here ...
+	* include/ocidl.h: (TEXTMETRICOLE, LPERRORLOG, LPPROPERTYBAG,
+	LPENUMCONNECTIONPOINTS, LPCONNECTIONPOINT, LPENUMCONNECTIONS,
+	LPPROPERTYPAGESITE, LPFONT, LPFONTDISP, OLE_COLOR, HIMETRIC,
+	OLE_YPOS_HIMETRIC, OLE_XSIZE_HIMETRIC, OLE_YSIZE_HIMETRIC,
+	OLE_YSIZE_CONTAINER, OLE_HANDLE, POINTF, LPPOINTF, CONTROLINFO,
+	LPCONTROLINFO, CONNECTDATA, LPCONNECTDATA, LICINFO, LPLICINFO,
+	CAUUID, LPCAUUID, CALPOLESTR, LPCALPOLESTR, CADWORD, LPCADWORD,
+	PROPPAGEINFO, LPPROPPAGEINFO): ... to here, for consistency
+	with documentation.
+	* include/olectl.h: Do #include <ocidl.h>.
+	* include/ocidl.h: Don't #include <olectl.h>.
+
+2003-09-13  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/winuser.h (_WIN32_WINNT, _WIN32_WINDOWS, WINVER):
+	Change guards to use numeric constants, throughout.
+
+2003-09-15  Earnie Boyd  <earnie@users.sf.net>
+
+	* include/w32api.h: Increment version to 2.5.
+	* Makefile.in: Ditto.
+
 2003-09-08  Justin Forest <vhex@users.sourceforge.net>
 
 	* include/winuser.h (PM_QS_INPUT, PM_QS_POSTMESSAGE,

@@ -129,6 +129,14 @@ extern "C" {
 #define WC_SCROLLBAR WC_SCROLLBARA
 #endif
 
+#if (_WIN32_IE >= 0x0500)
+#if (_WIN32_WINNT >= 0x0501)
+#define COMCTL32_VERSION 6
+#else
+#define COMCTL32_VERSION 5
+#endif
+#endif
+
 #define LVM_FIRST 0x1000
 #define TV_FIRST 0x1100
 #define HDM_FIRST 0x1200
@@ -440,9 +448,9 @@ extern "C" {
 #define TBSTYLE_EX_MIXEDBUTTONS 8
 #define TBSTYLE_EX_HIDECLIPPEDBUTTONS 16
 #endif /* _WIN32_IE >= 0x0501 */
-#if (_WIN32_WINNT >= _WXP)
+#if (_WIN32_WINNT >= 0x0501)
 #define TBSTYLE_EX_DOUBLEBUFFER	0x80
-#endif /* _WIN32_WINNT >= _WXP */
+#endif /* _WIN32_WINNT >= 0x0501 */
 #if (_WIN32_IE >= 0x0500)
 #define BTNS_BUTTON	TBSTYLE_BUTTON
 #define BTNS_SEP	TBSTYLE_SEP
@@ -914,7 +922,7 @@ extern "C" {
 #define CDIS_SELECTED 1
 #define CDIS_MARKED 128
 #define CDIS_INDETERMINATE 256
-#if (_WIN32_WINNT >= _WXP)
+#if (_WIN32_WINNT >= 0x0501)
 #define CDIS_SHOWKEYBOARDCUES 512
 #endif
 #define CDDS_POSTERASE 4
@@ -990,7 +998,7 @@ extern "C" {
 #define LVIF_INDENT 16
 #define LVIF_NORECOMPUTE 2048
 #endif
-#if (_WIN32_WINNT >= _WXP)
+#if (_WIN32_WINNT >= 0x0501)
 #define LVIF_GROUPID 128
 #define LVIF_COLUMNS 256
 #endif
@@ -1374,6 +1382,10 @@ extern "C" {
 #if (_WIN32_IE >= 0x0400)
 #define TCIF_STATE	16
 #endif
+#define TCIS_BUTTONPRESSED 1
+#if (_WIN32_IE >= 0x0400)
+#define TCIS_HIGHLIGHTED 2
+#endif
 #define TCM_FIRST	0x1300
 #define TCM_GETIMAGELIST	(TCM_FIRST+2)
 #define TCM_SETIMAGELIST	(TCM_FIRST+3)
@@ -1441,7 +1453,7 @@ extern "C" {
 #define CCM_SETVERSION 0x2007
 #define CCM_GETVERSION 0x2008
 #define CCM_SETNOTIFYWINDOW 0x2009
-#if (_WIN32_WINNT >= _WXP)
+#if (_WIN32_WINNT >= 0x0501)
 #define CCM_SETWINDOWTHEME 0x200b
 #define CCM_DPISCALE 0x200c
 #endif 
@@ -1463,6 +1475,10 @@ extern "C" {
 #define ICC_NATIVEFNTCTL_CLASS 8192
 #define INFOTIPSIZE 1024
 #endif /* _WIN32_IE */
+#if (_WIN32_WINNT >= 0x501)
+#define ICC_STANDARD_CLASSES	0x00004000
+#define ICC_LINK_CLASS		0x00008000
+#endif
 #define GDTR_MIN 1
 #define GDTR_MAX 2
 #define GMR_VISIBLE 0
@@ -1736,6 +1752,32 @@ extern "C" {
 #define CBEM_INSERTITEMW	(WM_USER + 11)
 #define CBEM_SETITEMW	(WM_USER + 12)
 #define CBEM_GETITEMW	(WM_USER + 13)
+#define DA_LAST	0x7fffffff
+#define DPA_APPEND	0x7fffffff
+#define DPA_ERR	-1
+#define DSA_APPEND	0x7fffffff
+#define DSA_ERR	-1
+#define DPAS_SORTED	1
+#define DPAS_INSERTBEFORE	2
+#define DPAS_INSERTAFTER	4
+#if (_WIN32_IE >= 0x400)
+#define WSB_PROP_CYVSCROLL	1
+#define WSB_PROP_CXHSCROLL	2
+#define WSB_PROP_CYHSCROLL	4
+#define WSB_PROP_CXVSCROLL	8
+#define WSB_PROP_CXHTHUMB	16
+#define WSB_PROP_CYVTHUMB	32
+#define WSB_PROP_VBKGCOLOR	64
+#define WSB_PROP_HBKGCOLOR	128
+#define WSB_PROP_VSTYLE	256
+#define WSB_PROP_HSTYLE	512
+#define WSB_PROP_WINSTYLE	1024
+#define WSB_PROP_PALETTE	2048
+#define WSB_PROP_MASK	0xfff
+#define FSB_FLAT_MODE	2
+#define FSB_ENCARTA_MODE	1
+#define FSB_REGULAR_MODE	0
+#endif /* _WIN32_IE >= 0x400 */
 
 #ifndef RC_INVOKED
 typedef struct tagCOMBOBOXEXITEMA{
@@ -2119,7 +2161,7 @@ typedef struct _NMTBCUSTOMDRAW {
 	RECT rcText;
 	int nStringBkMode;
 	int nHLStringBkMode;
-#if (_WIN32_WINNT >= _WXP)
+#if (_WIN32_WINNT >= 0x0501)
 	int iListGap;
 #endif
 } NMTBCUSTOMDRAW, * LPNMTBCUSTOMDRAW;
@@ -2275,7 +2317,7 @@ typedef struct _LVITEMA {
 #if (_WIN32_IE >= 0x0300)
 	int iIndent;
 #endif
-#if (_WIN32_WINNT >= _WXP)
+#if (_WIN32_WINNT >= 0x0501)
 	int iGroupId;
 	UINT cColumns;
 	PUINT puColumns;
@@ -2296,7 +2338,7 @@ typedef struct _LVITEMW {
 #if (_WIN32_IE >= 0x0300)
 	int iIndent;
 #endif
-#if (_WIN32_WINNT >= _WXP)
+#if (_WIN32_WINNT >= 0x0501)
 	int iGroupId;
 	UINT cColumns;
 	PUINT puColumns;
@@ -2536,6 +2578,22 @@ typedef struct tagNMTVDISPINFOW {
 } NMTVDISPINFOW, *LPNMTVDISPINFOW;
 #define _TV_DISPINFOW tagNMTVDISPINFOW
 #define TV_DISPINFOW NMTVDISPINFOW
+#if (_WIN32_IE >= 0x0400)
+typedef struct tagNMTVGETINFOTIPA {
+	NMHDR hdr;
+	LPSTR pszText;
+	int cchTextMax;
+	HTREEITEM hItem;
+	LPARAM lParam;
+} NMTVGETINFOTIPA, *LPNMTVGETINFOTIPA;
+typedef struct tagNMTVGETINFOTIPW {
+	NMHDR hdr;
+	LPWSTR pszText;
+	int cchTextMax;
+	HTREEITEM hItem;
+	LPARAM lParam;
+} NMTVGETINFOTIPW, *LPNMTVGETINFOTIPW;
+#endif
 typedef struct _TV_KEYDOWN {
 	NMHDR hdr;
 	WORD wVKey;
@@ -2700,7 +2758,7 @@ typedef struct tagIMAGELISTDRAWPARAMS {
 	COLORREF rgbFg;
 	UINT fStyle;
 	DWORD dwRop;
-#if (_WIN32_WINNT >= _WXP)
+#if (_WIN32_WINNT >= 0x0501)
 	DWORD fState;
 	DWORD Frame;
 	COLORREF crEffect;
@@ -2745,6 +2803,14 @@ typedef struct _RB_HITTESTINFO {
 	int iBand;
 } RBHITTESTINFO,*LPRBHITTESTINFO;
 #endif
+typedef struct _DSA *HDSA;
+typedef struct _DPA *HDPA;
+typedef INT (CALLBACK *PFNDPAENUMCALLBACK)(PVOID,PVOID);
+typedef INT (CALLBACK *PFNDSAENUMCALLBACK)(PVOID,PVOID);
+typedef INT (CALLBACK *PFNDPACOMPARE)(PVOID,PVOID,LPARAM);
+#if (_WIN32_WINNT >= 0x0501)
+typedef LRESULT (CALLBACK *SUBCLASSPROC)(HWND,UINT,WPARAM,LPARAM,UINT_PTR,DWORD_PTR);
+#endif /* _WIN32_WINNT >= 0x0501 */
 
 #define INDEXTOOVERLAYMASK(i) ((i)<<8)
 #define INDEXTOSTATEIMAGEMASK(i) ((i)<<12)
@@ -2794,6 +2860,50 @@ void WINAPI GetEffectiveClientRect(HWND,LPRECT,LPINT);
 #define Header_GetOrderArray(w,l,a) (BOOL)SNDMSG((w),HDM_GETORDERARRAY,(WPARAM)(l),(LPARAM)(a))
 #define Header_SetOrderArray(w,l,a) (BOOL)SNDMSG((w),HDM_SETORDERARRAY,(WPARAM)(l),(LPARAM)(a))
 #endif
+HDSA WINAPI DSA_Create(INT,INT);
+BOOL WINAPI DSA_Destroy(HDSA);
+VOID WINAPI DSA_DestroyCallback(HDSA,PFNDSAENUMCALLBACK,PVOID);
+PVOID WINAPI DSA_GetItemPtr(HDSA,INT);
+INT WINAPI DSA_InsertItem(HDSA,INT,PVOID);
+HDPA WINAPI DPA_Create(INT);
+BOOL WINAPI DPA_Destroy(HDPA);
+PVOID WINAPI DPA_DeletePtr(HDPA,INT);
+BOOL WINAPI DPA_DeleteAllPtrs(HDPA);
+VOID WINAPI DPA_EnumCallback(HDPA,PFNDPAENUMCALLBACK,PVOID);
+VOID WINAPI DPA_DestroyCallback(HDPA,PFNDPAENUMCALLBACK,PVOID);
+BOOL WINAPI DPA_SetPtr(HDPA,INT,PVOID);
+INT WINAPI DPA_InsertPtr(HDPA,INT,PVOID);
+PVOID WINAPI DPA_GetPtr(HDPA,INT_PTR);
+BOOL WINAPI DPA_Sort(HDPA,PFNDPACOMPARE,LPARAM);
+INT WINAPI DPA_Search(HDPA,PVOID,INT,PFNDPACOMPARE,LPARAM,UINT);
+BOOL WINAPI Str_SetPtrW(LPWSTR*,LPCWSTR);
+#if (_WIN32_IE >= 0x0400)
+BOOL WINAPI FlatSB_EnableScrollBar(HWND,INT,UINT);
+BOOL WINAPI FlatSB_ShowScrollBar(HWND,INT,BOOL);
+BOOL WINAPI FlatSB_GetScrollRange(HWND,INT,LPINT,LPINT);
+BOOL WINAPI FlatSB_GetScrollInfo(HWND,INT,LPSCROLLINFO);
+INT WINAPI FlatSB_GetScrollPos(HWND,INT);
+BOOL WINAPI FlatSB_GetScrollProp(HWND,INT,LPINT);
+#ifdef _WIN64
+BOOL WINAPI FlatSB_GetScrollPropPtr(HWND,INT,PINT_PTR);
+#else
+#define FlatSB_GetScrollPropPtr FlatSB_GetScrollProp
+#endif
+INT WINAPI FlatSB_SetScrollPos(HWND,INT,INT,BOOL);
+INT WINAPI FlatSB_SetScrollInfo(HWND,INT,LPSCROLLINFO,BOOL);
+INT WINAPI FlatSB_SetScrollRange(HWND,INT,INT,INT,BOOL);
+BOOL WINAPI FlatSB_SetScrollProp(HWND,UINT,INT_PTR,BOOL);
+#define FlatSB_SetScrollPropPtr FlatSB_SetScrollProp
+BOOL WINAPI InitializeFlatSB(HWND);
+HRESULT WINAPI UninitializeFlatSB(HWND);
+#endif /* _WIN32_IE >= 0x0400 */
+#if (_WIN32_WINNT >= 0x0501)
+BOOL WINAPI SetWindowSubclass(HWND,SUBCLASSPROC,UINT_PTR,DWORD_PTR);
+BOOL WINAPI GetWindowSubclass(HWND,SUBCLASSPROC,UINT_PTR,DWORD_PTR*);
+BOOL WINAPI RemoveWindowSubclass(HWND,SUBCLASSPROC,UINT_PTR);
+LRESULT WINAPI DefSubclassProc(HWND,UINT,WPARAM,LPARAM);
+INT WINAPI DrawShadowText(HDC,LPCWSTR,UINT,RECT*,DWORD,COLORREF,COLORREF,INT,INT);
+#endif /* _WIN32_WINNT >= 0x0501 */
 int WINAPI ImageList_Add(HIMAGELIST,HBITMAP,HBITMAP);
 #define ImageList_AddIcon(l,i) ImageList_ReplaceIcon(l,-1,i)
 int WINAPI ImageList_AddMasked(HIMAGELIST,HBITMAP,COLORREF);
@@ -2848,7 +2958,7 @@ int WINAPI LBItemFromPt(HWND,POINT,BOOL);
 #define ListView_GetCallbackMask(w) (BOOL)SNDMSG((w),LVM_GETCALLBACKMASK,0,0)
 #define ListView_SetCallbackMask(w,m) (BOOL)SNDMSG((w),LVM_SETCALLBACKMASK,m,0)
 #define ListView_GetNextItem(w,i,f) (int)SNDMSG((w),LVM_GETNEXTITEM,i,MAKELPARAM((f),0))
-#define ListView_FindItem(w,i,p) (int)SNDMSG((w), LVM_FINDITEM,i,(LPARAM)(const LV_FINDINFO*)(p))
+#define ListView_FindItem(w,i,p) (int)SNDMSG((w), LVM_FINDITEM,(WPARAM)i,(LPARAM)(const LV_FINDINFO*)(p))
 #define ListView_GetItemRect(w,i,p,c) (BOOL)SNDMSG((w),LVM_GETITEMRECT,i,((p)?(((LPRECT)(p))->left=(c),(LPARAM)(LPRECT)(p)):0))
 #define ListView_SetItemPosition(w,i,x,y) (BOOL)SNDMSG((w),LVM_SETITEMPOSITION,i,MAKELPARAM(x,y))
 #define ListView_GetItemPosition(w,i,p) (BOOL)SNDMSG((w),LVM_GETITEMPOSITION,i,(LPARAM)p)
@@ -2909,6 +3019,9 @@ int WINAPI LBItemFromPt(HWND,POINT,BOOL);
 	SNDMSG((w),LVM_SETITEMPOSITION32,i,(LPARAM)&p);\
 }
 #define ListView_GetSelectedCount(w) (UINT)SNDMSG((w),LVM_GETSELECTEDCOUNT,0,0)
+#define ListView_GetCheckState(w,i) ((((UINT)(SNDMSG((w),LVM_GETITEMSTATE,(WPARAM)(i),LVIS_STATEIMAGEMASK)))>>12)-1)
+#define ListView_SetCheckState(w,i,f) ListView_SetItemState(w,i,INDEXTOSTATEIMAGEMASK((f)+1),LVIS_STATEIMAGEMASK)
+
 BOOL WINAPI MakeDragList(HWND);
 void WINAPI MenuHelp(UINT,WPARAM,LPARAM,HMENU,HINSTANCE,HWND,PUINT);
 #define MonthCal_GetColor(hwnd,icolor) SNDMSG(hwnd,MCM_GETCOLOR,(WPARAM)icolor,(LPARAM)0)
@@ -2954,6 +3067,7 @@ BOOL WINAPI ShowHideMenuCtl(HWND,UINT,PINT);
 #define TabCtrl_SetToolTips(w,t) (void)SNDMSG((w),TCM_SETTOOLTIPS,(WPARAM)t,0)
 #define TabCtrl_GetCurFocus(w) (int)SNDMSG((w),TCM_GETCURFOCUS,0,0)
 #define TabCtrl_SetCurFocus(w,i) (void)SNDMSG((w),TCM_SETCURFOCUS,i,0)
+#define TabCtrl_GetImageList(w) (HIMAGELIST)SNDMSG((w),TCM_GETIMAGELIST,0,0)
 #define TabCtrl_SetImageList(w,h) (HIMAGELIST)SNDMSG((w),TCM_SETIMAGELIST,0,(LPARAM)(UINT)(h))
 #define TabCtrl_GetItemCount(w) (int)SNDMSG((w),TCM_GETITEMCOUNT,0,0)
 BOOL WINAPI _TrackMouseEvent(LPTRACKMOUSEEVENT);
@@ -2978,7 +3092,7 @@ BOOL WINAPI _TrackMouseEvent(LPTRACKMOUSEEVENT);
 #define TreeView_GetSelection(w)	TreeView_GetNextItem(w,NULL,TVGN_CARET)
 #define TreeView_GetDropHilight(w)	TreeView_GetNextItem(w,NULL,TVGN_DROPHILITE)
 #define TreeView_GetRoot(w)	TreeView_GetNextItem(w,NULL,TVGN_ROOT)
-#define TreeView_Select(w,i,c) (HTREEITEM)SNDMSG((w),TVM_SELECTITEM,c,(LPARAM)(HTREEITEM)(i))
+#define TreeView_Select(w,i,c) (BOOL)SNDMSG((w),TVM_SELECTITEM,c,(LPARAM)(HTREEITEM)(i))
 #define TreeView_SelectItem(w,i)	TreeView_Select(w,i,TVGN_CARET)
 #define TreeView_SelectDropTarget(w,i)	TreeView_Select(w,i,TVGN_DROPHILITE)
 #define TreeView_SelectSetFirstVisible(w,i)	TreeView_Select(w,i,TVGN_FIRSTVISIBLE)
@@ -3185,6 +3299,11 @@ typedef NMHDDISPINFOW NMHDDISPINFO, *LPNMHDDISPINFO;
 #define TV_DISPINFO NMTVDISPINFOW
 #define NMTVDISPINFO NMTVDISPINFOW
 #define LPNMTVDISPINFO LPNMTVDISPINFOW
+#if (_WIN32_IE >= 0x0400)
+#define NMTVGETINFOTIP NMTVGETINFOTIPW
+#define LPNMTVGETINFOTIP LPNMTVGETINFOTIPW
+#define TVN_GETINFOTIP TVN_GETINFOTIPW
+#endif
 #define TVN_SELCHANGING TVN_SELCHANGINGW
 #define TVN_SELCHANGED TVN_SELCHANGEDW
 #define TVN_GETDISPINFO TVN_GETDISPINFOW
@@ -3349,6 +3468,11 @@ typedef NMHDDISPINFOW NMHDDISPINFO, *LPNMHDDISPINFO;
 #define TV_DISPINFO NMTVDISPINFOA
 #define NMTVDISPINFO NMTVDISPINFOA
 #define LPNMTVDISPINFO LPNMTVDISPINFOA
+#if (_WIN32_IE >= 0x0400)
+#define NMTVGETINFOTIP NMTVGETINFOTIPA
+#define LPNMTVGETINFOTIP LPNMTVGETINFOTIPA
+#define TVN_GETINFOTIP TVN_GETINFOTIPA
+#endif
 #define TVN_SELCHANGING TVN_SELCHANGINGA
 #define TVN_SELCHANGED TVN_SELCHANGEDA
 #define TVN_GETDISPINFO TVN_GETDISPINFOA

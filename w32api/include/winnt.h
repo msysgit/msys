@@ -162,6 +162,8 @@ typedef DWORD FLONG;
 
 #define NTAPI __stdcall
 #include <basetsd.h>
+#define ACE_OBJECT_TYPE_PRESENT           0x00000001
+#define ACE_INHERITED_OBJECT_TYPE_PRESENT 0x00000002
 #define APPLICATION_ERROR_MASK       0x20000000
 #define ERROR_SEVERITY_SUCCESS       0x00000000
 #define ERROR_SEVERITY_INFORMATIONAL 0x40000000
@@ -206,7 +208,7 @@ typedef DWORD FLONG;
 #define GENERIC_EXECUTE	0x20000000
 #define GENERIC_ALL	0x10000000
 
-#define INVALID_FILE_ATTRIBUTES	(DWORD (-1))
+#define INVALID_FILE_ATTRIBUTES	((DWORD)-1)
 
 /* Also in ddk/winddk.h */
 #define FILE_LIST_DIRECTORY		0x00000001
@@ -225,14 +227,7 @@ typedef DWORD FLONG;
 #define FILE_DELETE_CHILD		0x00000040
 #define FILE_READ_ATTRIBUTES		0x00000080
 #define FILE_WRITE_ATTRIBUTES		0x00000100
-			
-#define FILE_SUPERSEDED			0x00000000
-#define FILE_OPENED			0x00000001
-#define FILE_CREATED			0x00000002
-#define FILE_OVERWRITTEN		0x00000003
-#define FILE_EXISTS			0x00000004
-#define FILE_DOES_NOT_EXIST		0x00000005
-			
+
 #define FILE_SHARE_READ			0x00000001
 #define FILE_SHARE_WRITE		0x00000002
 #define FILE_SHARE_DELETE		0x00000004
@@ -468,6 +463,7 @@ typedef DWORD FLONG;
 #define SE_SYSTEM_ENVIRONMENT_NAME	TEXT("SeSystemEnvironmentPrivilege")
 #define SE_CHANGE_NOTIFY_NAME	TEXT("SeChangeNotifyPrivilege")
 #define SE_REMOTE_SHUTDOWN_NAME	TEXT("SeRemoteShutdownPrivilege")
+#define SE_CREATE_GLOBAL_NAME TEXT("SeCreateGlobalPrivilege")
 #define SE_GROUP_MANDATORY 1
 #define SE_GROUP_ENABLED_BY_DEFAULT 2
 #define SE_GROUP_ENABLED 4
@@ -527,6 +523,7 @@ typedef DWORD FLONG;
 #define LANG_HINDI	0x39
 #define LANG_MALAY	0x3e
 #define LANG_KAZAK	0x3f
+#define LANG_KYRGYZ	0x40
 #define LANG_SWAHILI	0x41
 #define LANG_UZBEK	0x43
 #define LANG_TATAR	0x44
@@ -541,11 +538,16 @@ typedef DWORD FLONG;
 #define LANG_ASSAMESE	0x4d
 #define LANG_MARATHI	0x4e
 #define LANG_SANSKRIT	0x4f
+#define LANG_MONGOLIAN	0x50
+#define LANG_GALICIAN	0x56
 #define LANG_KONKANI	0x57
 #define LANG_MANIPURI	0x58
 #define LANG_SINDHI	0x59
+#define LANG_SYRIAC	0x5a
 #define LANG_KASHMIRI	0x60
 #define LANG_NEPALI	0x61
+#define LANG_DIVEHI	0x65
+#define LANG_INVARIANT	0x7f
 #define SUBLANG_NEUTRAL	0x00
 #define SUBLANG_DEFAULT	0x01
 #define SUBLANG_SYS_DEFAULT	0x02
@@ -565,8 +567,8 @@ typedef DWORD FLONG;
 #define SUBLANG_ARABIC_UAE	0x0e
 #define SUBLANG_ARABIC_BAHRAIN	0x0f
 #define SUBLANG_ARABIC_QATAR	0x10
-#define SUBLANG_AZERI_CYRILLIC	0x01
-#define SUBLANG_AZERI_LATIN	0x02
+#define SUBLANG_AZERI_LATIN	0x01
+#define SUBLANG_AZERI_CYRILLIC	0x02
 #define SUBLANG_CHINESE_TRADITIONAL	0x01
 #define SUBLANG_CHINESE_SIMPLIFIED	0x02
 #define SUBLANG_CHINESE_HONGKONG	0x03
@@ -585,8 +587,8 @@ typedef DWORD FLONG;
 #define SUBLANG_ENGLISH_CARIBBEAN	0x09
 #define SUBLANG_ENGLISH_BELIZE	0x0a
 #define SUBLANG_ENGLISH_TRINIDAD	0x0b
-#define SUBLANG_ENGLISH_PHILIPPINES	0x0c
-#define SUBLANG_ENGLISH_ZIMBABWE	0x0d
+#define SUBLANG_ENGLISH_ZIMBABWE	0x0c
+#define SUBLANG_ENGLISH_PHILIPPINES	0x0d
 #define SUBLANG_FRENCH	0x01
 #define SUBLANG_FRENCH_BELGIAN	0x02
 #define SUBLANG_FRENCH_CANADIAN	0x03
@@ -601,6 +603,7 @@ typedef DWORD FLONG;
 #define SUBLANG_ITALIAN	0x01
 #define SUBLANG_ITALIAN_SWISS	0x02
 #define SUBLANG_KASHMIRI_INDIA	0x02
+#define SUBLANG_KASHMIRI_SASIA	0x02
 #define SUBLANG_KOREAN	0x01
 #define SUBLANG_LITHUANIAN	0x01
 #define SUBLANG_MALAY_MALAYSIA	0x01
@@ -709,9 +712,6 @@ typedef DWORD FLONG;
 #define PF_RDTSC_INSTRUCTION_AVAILABLE 8
 #define PF_PAE_ENABLED 9
 #define PF_XMMI64_INSTRUCTIONS_AVAILABLE 10
-#define PAGE_READONLY 2
-#define PAGE_READWRITE 4
-#define PAGE_WRITECOPY 8
 /* also in ddk/ntifs.h */
 #define FILE_ACTION_ADDED                   0x00000001
 #define FILE_ACTION_REMOVED                 0x00000002
@@ -764,12 +764,16 @@ typedef DWORD FLONG;
 #define DACL_SECURITY_INFORMATION 4
 #define SACL_SECURITY_INFORMATION 8
 #define MAXIMUM_PROCESSORS 32
-#define PAGE_EXECUTE 16
-#define PAGE_EXECUTE_READ 32
-#define PAGE_EXECUTE_READWRITE 64
-#define PAGE_GUARD 256
-#define PAGE_NOACCESS 1
-#define PAGE_NOCACHE 512
+#define PAGE_NOACCESS	0x0001
+#define PAGE_READONLY	0x0002
+#define PAGE_READWRITE	0x0004
+#define PAGE_WRITECOPY	0x0008
+#define PAGE_EXECUTE	0x0010
+#define PAGE_EXECUTE_READ	0x0020
+#define PAGE_EXECUTE_READWRITE	0x0040
+#define PAGE_EXECUTE_WRITECOPY	0x0080
+#define PAGE_GUARD		0x0100
+#define PAGE_NOCACHE		0x0200
 #define MEM_COMMIT           0x1000
 #define MEM_RESERVE          0x2000
 #define MEM_DECOMMIT         0x4000
@@ -793,7 +797,6 @@ typedef DWORD FLONG;
 #define SEC_COMMIT	0x08000000
 #define SEC_NOCACHE	0x10000000
 /* end ntifs.h */
-#define PAGE_EXECUTE_WRITECOPY 128
 #define SECTION_EXTEND_SIZE 16
 #define SECTION_MAP_READ 4
 #define SECTION_MAP_WRITE 2
@@ -803,7 +806,13 @@ typedef DWORD FLONG;
 #define MESSAGE_RESOURCE_UNICODE 1
 #define RTL_CRITSECT_TYPE 0
 #define RTL_RESOURCE_TYPE 1
+/* Also in winddk.h */
 #define FIELD_OFFSET(t,f) ((LONG)&(((t*)0)->f))
+#ifndef CONTAINING_RECORD
+#define CONTAINING_RECORD(address, type, field) \
+  ((type*)((PCHAR)(address) - (PCHAR)(&((type *)0)->field)))
+#endif
+/* end winddk.h */
 #define IMAGE_SIZEOF_FILE_HEADER	20
 #define IMAGE_FILE_RELOCS_STRIPPED	1
 #define IMAGE_FILE_EXECUTABLE_IMAGE	2
@@ -1241,6 +1250,23 @@ typedef DWORD FLONG;
 #define TAPE_LOCK 3
 #define TAPE_UNLOCK 4
 #define TAPE_FORMAT 5
+#if (_WIN32_WINNT >= 0x0500)
+#define VER_MINORVERSION 0x0000001
+#define VER_MAJORVERSION 0x0000002
+#define VER_BUILDNUMBER 0x0000004
+#define VER_PLATFORMID 0x0000008
+#define VER_SERVICEPACKMINOR 0x0000010
+#define VER_SERVICEPACKMAJOR 0x0000020
+#define VER_SUITENAME 0x0000040
+#define VER_PRODUCT_TYPE 0x0000080
+#define VER_EQUAL 1
+#define VER_GREATER 2
+#define VER_GREATER_EQUAL 3
+#define VER_LESS 4
+#define VER_LESS_EQUAL 5
+#define VER_AND 6
+#define VER_OR 7
+#endif
 #define VER_PLATFORM_WIN32s 0
 #define VER_PLATFORM_WIN32_WINDOWS 1
 #define VER_PLATFORM_WIN32_NT 2
@@ -1255,6 +1281,24 @@ typedef DWORD FLONG;
 #define VER_SUITE_DATACENTER 128
 #define VER_SUITE_PERSONAL 512
 #define VER_SUITE_BLADE 1024
+#define WT_EXECUTEDEFAULT 0x00000000                           
+#define WT_EXECUTEINIOTHREAD 0x00000001                           
+#define WT_EXECUTEINWAITTHREAD 0x00000004                           
+#define WT_EXECUTEONLYONCE 0x00000008                           
+#define WT_EXECUTELONGFUNCTION 0x00000010                           
+#define WT_EXECUTEINTIMERTHREAD 0x00000020                           
+#define WT_EXECUTEINPERSISTENTTHREAD 0x00000080                      
+#define WT_TRANSFER_IMPERSONATION 0x00000100                         
+#if (_WIN32_WINNT >= 0x0501)
+#define ACTIVATION_CONTEXT_SECTION_ASSEMBLY_INFORMATION 1
+#define ACTIVATION_CONTEXT_SECTION_DLL_REDIRECTION 2
+#define ACTIVATION_CONTEXT_SECTION_WINDOW_CLASS_REDIRECTION 3
+#define ACTIVATION_CONTEXT_SECTION_COM_SERVER_REDIRECTION 4
+#define ACTIVATION_CONTEXT_SECTION_COM_INTERFACE_REDIRECTION 5
+#define ACTIVATION_CONTEXT_SECTION_COM_TYPE_LIBRARY_REDIRECTION 6
+#define ACTIVATION_CONTEXT_SECTION_COM_PROGID_REDIRECTION 7
+#define ACTIVATION_CONTEXT_SECTION_CLR_SURROGATES 9
+#endif /* (_WIN32_WINNT >= 0x0501) */
 #define BTYPE(x) ((x)&N_BTMASK)
 #define ISPTR(x) (((x)&N_TMASK)==(IMAGE_SYM_DTYPE_POINTER<<N_BTSHFT))
 #define ISFCN(x) (((x)&N_TMASK)==(IMAGE_SYM_DTYPE_FUNCTION<<N_BTSHFT))
@@ -2026,7 +2070,10 @@ typedef struct _TOKEN_PRIVILEGES {
 	DWORD PrivilegeCount;
 	LUID_AND_ATTRIBUTES Privileges[ANYSIZE_ARRAY];
 } TOKEN_PRIVILEGES,*PTOKEN_PRIVILEGES,*LPTOKEN_PRIVILEGES;
-typedef enum tagTOKEN_TYPE { TokenPrimary=1,TokenImpersonation }TOKEN_TYPE, *PTOKEN_TYPE;
+typedef enum tagTOKEN_TYPE {
+	TokenPrimary = 1,
+	TokenImpersonation
+} TOKEN_TYPE,*PTOKEN_TYPE;
 typedef struct _TOKEN_STATISTICS {
 	LUID TokenId;
 	LUID AuthenticationId;
@@ -2060,8 +2107,9 @@ typedef enum _TOKEN_INFORMATION_CLASS {
 	TokenSessionId
 } TOKEN_INFORMATION_CLASS;
 typedef enum _SID_NAME_USE {
-	SidTypeUser=1,SidTypeGroup,SidTypeDomain,SidTypeAlias,SidTypeWellKnownGroup,
-	SidTypeDeletedAccount,SidTypeInvalid,SidTypeUnknown
+	SidTypeUser=1,SidTypeGroup,SidTypeDomain,SidTypeAlias,
+	SidTypeWellKnownGroup,SidTypeDeletedAccount,SidTypeInvalid,
+	SidTypeUnknown
 } SID_NAME_USE,*PSID_NAME_USE;
 typedef struct _QUOTA_LIMITS {
 	SIZE_T PagedPoolLimit;
@@ -3113,14 +3161,78 @@ typedef enum _POWER_INFORMATION_LEVEL {
 	ProcessorPowerPolicyCurrent
 } POWER_INFORMATION_LEVEL;
 
+#if (_WIN32_WINNT >= 0x0500)
+typedef LONG (WINAPI *PVECTORED_EXCEPTION_HANDLER)(PEXCEPTION_POINTERS);
+#endif
 #if 1 /* (WIN32_WINNT >= 0x0500) */
 typedef struct _SYSTEM_POWER_INFORMATION {
 	ULONG  MaxIdlenessAllowed;
 	ULONG  Idleness;
 	ULONG  TimeRemaining;
 	UCHAR  CoolingMode;
-} SYSTEM_POWER_INFORMATION, *PSYSTEM_POWER_INFORMATION;
+} SYSTEM_POWER_INFORMATION,*PSYSTEM_POWER_INFORMATION;
 #endif
+
+#if (_WIN32_WINNT >= 0x0501)
+typedef enum _HEAP_INFORMATION_CLASS {
+	HeapCompatibilityInformation
+} HEAP_INFORMATION_CLASS;
+typedef enum _ACTIVATION_CONTEXT_INFO_CLASS {
+	ActivationContextBasicInformation = 1,
+	ActivationContextDetailedInformation,
+	AssemblyDetailedInformationInActivationContext,
+	FileInformationInAssemblyOfAssemblyInActivationContext
+} ACTIVATION_CONTEXT_INFO_CLASS;
+typedef struct _ACTIVATION_CONTEXT_ASSEMBLY_DETAILED_INFORMATION {
+	DWORD ulFlags;
+	DWORD ulEncodedAssemblyIdentityLength;
+	DWORD ulManifestPathType;
+	DWORD ulManifestPathLength;
+	LARGE_INTEGER liManifestLastWriteTime;
+	DWORD ulPolicyPathType;
+	DWORD ulPolicyPathLength;
+	LARGE_INTEGER liPolicyLastWriteTime;
+	DWORD ulMetadataSatelliteRosterIndex;
+	DWORD ulManifestVersionMajor;
+	DWORD ulManifestVersionMinor;
+	DWORD ulPolicyVersionMajor;
+	DWORD ulPolicyVersionMinor;
+	DWORD ulAssemblyDirectoryNameLength;
+	PCWSTR lpAssemblyEncodedAssemblyIdentity;
+	PCWSTR lpAssemblyManifestPath;
+	PCWSTR lpAssemblyPolicyPath;
+	PCWSTR lpAssemblyDirectoryName;
+} ACTIVATION_CONTEXT_ASSEMBLY_DETAILED_INFORMATION,*PACTIVATION_CONTEXT_ASSEMBLY_DETAILED_INFORMATION;
+typedef const ACTIVATION_CONTEXT_ASSEMBLY_DETAILED_INFORMATION *PCACTIVATION_CONTEXT_ASSEMBLY_DETAILED_INFORMATION;
+typedef struct _ACTIVATION_CONTEXT_DETAILED_INFORMATION {
+	DWORD dwFlags;
+	DWORD ulFormatVersion;
+	DWORD ulAssemblyCount;
+	DWORD ulRootManifestPathType;
+	DWORD ulRootManifestPathChars;
+	DWORD ulRootConfigurationPathType;
+	DWORD ulRootConfigurationPathChars;
+	DWORD ulAppDirPathType;
+	DWORD ulAppDirPathChars;
+	PCWSTR lpRootManifestPath;
+	PCWSTR lpRootConfigurationPath;
+	PCWSTR lpAppDirPath;
+} ACTIVATION_CONTEXT_DETAILED_INFORMATION,*PACTIVATION_CONTEXT_DETAILED_INFORMATION;
+typedef const ACTIVATION_CONTEXT_DETAILED_INFORMATION *PCACTIVATION_CONTEXT_DETAILED_INFORMATION;
+typedef struct _ACTIVATION_CONTEXT_QUERY_INDEX {
+	ULONG ulAssemblyIndex;
+	ULONG ulFileIndexInAssembly;
+} ACTIVATION_CONTEXT_QUERY_INDEX,*PACTIVATION_CONTEXT_QUERY_INDEX;
+typedef const ACTIVATION_CONTEXT_QUERY_INDEX *PCACTIVATION_CONTEXT_QUERY_INDEX;
+typedef struct _ASSEMBLY_FILE_DETAILED_INFORMATION {
+	DWORD ulFlags;
+	DWORD ulFilenameLength;
+	DWORD ulPathLength;
+	PCWSTR lpFileName;
+	PCWSTR lpFilePath;
+} ASSEMBLY_FILE_DETAILED_INFORMATION,*PASSEMBLY_FILE_DETAILED_INFORMATION;
+typedef const ASSEMBLY_FILE_DETAILED_INFORMATION *PCASSEMBLY_FILE_DETAILED_INFORMATION;
+#endif /* (WIN32_WINNT >= 0x0501) */
 
 typedef struct _PROCESSOR_POWER_POLICY_INFO {
 	ULONG  TimeCheck;
@@ -3169,13 +3281,10 @@ ULONGLONG WINAPI VerSetConditionMask(ULONGLONG,DWORD,BYTE);
 #if defined(__GNUC__)
 
 PVOID GetCurrentFiber(void);
-PVOID GetFiberData(void);
-
-PVOID GetCurrentFiber(void);
 extern __inline__ PVOID GetCurrentFiber(void)
 {
     void* ret;
-    __asm__ volatile (
+    __asm__ __volatile__ (
 	"movl	%%fs:0x10,%0"
 	: "=r" (ret) /* allow use of reg eax,ebx,ecx,edx,esi,edi */
 	);
@@ -3186,11 +3295,24 @@ PVOID GetFiberData(void);
 extern __inline__ PVOID GetFiberData(void)
 {
     void* ret;
-    __asm__ volatile (
+    __asm__ __volatile__ (
 	"movl	%%fs:0x10,%0\n"
 	"movl	(%0),%0"
 	: "=r" (ret) /* allow use of reg eax,ebx,ecx,edx,esi,edi */
 	);
+    return ret;
+}
+
+static __inline__ struct _TEB * NtCurrentTeb(void)
+{
+    struct _TEB *ret;
+
+    __asm__ __volatile__ (
+        "movl %%fs:0x18, %0\n"
+        : "=r" (ret)
+        : /* no inputs */
+    );
+
     return ret;
 }
 
@@ -3211,10 +3333,9 @@ extern PVOID GetFiberData(void);
         
 #endif /* __GNUC__ */
 
-#endif  /* RC_INVOKED */
+#endif /* RC_INVOKED */
 
 #ifdef __cplusplus
 }
 #endif
 #endif
-
