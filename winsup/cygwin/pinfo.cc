@@ -61,8 +61,8 @@ set_myself (pid_t pid, HANDLE h)
   myself->process_state |= PID_IN_USE;
   myself->start_time = time (NULL); /* Register our starting time. */
 
-  char buf[30];
-  __small_sprintf (buf, "cYg%8x %x", _STRACE_INTERFACE_ACTIVATE_ADDR,
+  char buf[31];
+  __small_sprintf (buf, "MsYs%8x %x", _STRACE_INTERFACE_ACTIVATE_ADDR,
 		   &strace.active);
 #ifndef DEBUGGING
   if (strace.active)
