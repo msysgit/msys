@@ -1,3 +1,7 @@
+2002.06.13  Earnie Boyd  <earnie@users.sf.net>
+
+	* strace.cc: Correct the string searched to MsYs.
+
 2001.09.22  Earnie Boyd  <Earnie@SF.net>
 
 	* Makefile.in (MINGW_CXXFLAGS): Use -mmingw switch instead of 
