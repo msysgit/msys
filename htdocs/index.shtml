@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<!-- $Id: index.shtml,v 1.44 2002-11-28 12:35:52 earnie Exp $ -->
+<!-- $Id: index.shtml,v 1.45 2002-12-02 21:34:55 earnie Exp $ -->
   <title>MinGW -- Minimalist GNU For Windows</title>
                      
   <meta name="description"
@@ -159,7 +159,7 @@ one of the best compression algorithms available.
                                       </p>
             <ul>
               <li><em>Minimal System:</em> &nbsp;<a
- href="http://prdownloads.sf.net/mingw/MSYS-1.0.8-rc-4.exe">MSYS-1.0.8-rc-4.exe</a></li>
+ href="http://prdownloads.sf.net/mingw/MSYS-1.0.8-rc-5.exe">MSYS-1.0.8-rc-5.exe</a></li>
               <li><em>Debugger:</em> <a
  href="http://prdownloads.sf.net/mingw/gdb-5.2.1-20021009.tar.gz">&nbsp;gdb-5.2.1-20021009.tar.gz</a></li>
 	      <li><em>Java:</em> <a href="http://prdownloads.sf.net/mingw/gcc-3.2-java-20020926-1.tar.gz">gcc-3.2-java-20020926-1.tar.gz</a></li>
@@ -204,7 +204,7 @@ width="88" /></a>
 -->
 </p>
 <address><br>
-Last revised $Date: 2002-11-28 12:35:52 $</address>
+Last revised $Date: 2002-12-02 21:34:55 $</address>
 <br>
 </body>
 </html>
