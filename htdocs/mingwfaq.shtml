@@ -1,4 +1,4 @@
-<!-- $Id: mingwfaq.shtml,v 1.43 2002-09-27 11:49:30 earnie Exp $ -->
+<!-- $Id: mingwfaq.shtml,v 1.44 2002-11-05 20:10:58 earnie Exp $ -->
 
 <html>
 <head>
@@ -67,6 +67,8 @@
       <li><a href="#faq-comsupport">Is support provided for COM?</a></li>
       <li><a href="#faq-msvcdll">How can an MSVC program call a MinGW DLL, and vice versa?</a></li>
       <li><a href="#faq-cross">How can I build a cross compiler?</a></li>
+      <li><a href="#faq-mingw32-gcc.exe">What's the difference between gcc.exe and mingw32-gcc.exe?"</a></li>
+      <li><a href="faq-mingw32-make.exe">Why is make named mingw32-make.exe?</a></li>
       <li><a href="#faq-bugreports">How can I report bugs?</a></li>
    </ul>
 
@@ -534,6 +536,37 @@
 
 
 
+      <a name="faq-mingw32-gcc.exe" />
+      <h3>What's the difference between gcc.exe and mingw32-gcc.exe?</h3>
+      <p>
+	 The mingw32-gcc, mingw32-g++, etc. binaries exist as an aid to cross
+	 development.  They are created in a typical build of gcc.  They are
+	 therefore distributed as the maintainers of GCC meant them to be.  The
+	 gcc.exe indicates that the binary produces binaries for a target equal
+	 to the build, while the mingw32-gcc binary produces binaries to be
+	 executed on the mingw32 target.
+      </p>
+      <p><a href="#index">Back to index</a></p>
+
+
+
+      <a name="faq-mingw32-make.exe" />
+      <h3>Why is make named mingw32-make.exe?</h3>
+      <p>
+         The "native" (i.e.: MSVCRT dependent) port of make is lacking in some
+	 functionality and has modified functionality due to the lack of POSIX
+	 on Win32.  There also exists a version of make in the MSYS distribution
+	 that is dependent on the MSYS runtime.  This port operates more as make
+	 was intended to operate and gives less headaches during execution.
+	 Based on this, the MinGW developers/maintainers/packagers decided it
+	 would be best to rename the native version so that both the "native"
+	 version and the MSYS version could be present at the same time without
+	 file name collision.
+      </p>
+      <p><a href="#index">Back to index</a></p>
+
+
+
       <a name="faq-bugreports" />
       <h3>How can I report bugs?</h3>
       <p>
@@ -559,7 +592,7 @@
 
    <hr />
    <address>
-   <br />Last revised $Date: 2002-09-27 11:49:30 $
+   <br />Last revised $Date: 2002-11-05 20:10:58 $
    </address>
 
 </body>

@@ -1,3 +1,8 @@
+2002-11-05  Earnie Boyd  <earnie@users.sf.net>
+
+	* mingwfaq.shmtl (faq-mingw32-gcc.exe): Add.
+	(faq-mingw32-make.exe): Ditto.
+
 2002-10-31  Earnie Boyd  <earnie@users.sf.net>
 
 	* index.shtml: Update MSYS release candidate.
