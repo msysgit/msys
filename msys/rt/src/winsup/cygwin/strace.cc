@@ -168,11 +168,11 @@ done:
 void
 strace::write (unsigned category, const char *buf, int count)
 {
-# define PREFIX (3 + 8 + 1 + 8 + 1)
+# define PREFIX (4 + 8 + 1 + 8 + 1)
   char outbuf[PREFIX + 1 + count + 1];
-# define outstuff (outbuf + 12)
+# define outstuff (outbuf + 13)
   __small_sprintf (outstuff, "%x %s", category, buf);
-  __small_sprintf (outbuf, "cYg%08x", strlen (outstuff) + 1);
+  __small_sprintf (outbuf, "MsYs%08x", strlen (outstuff) + 1);
   outstuff[-1] = ' ';
   OutputDebugString (outbuf);
 #undef outstuff

@@ -1,3 +1,26 @@
+2002-04-17  Earnie Boyd  <earnie@users.sf.net>
+
+	* environ.cc (putenv): Update Win32 environment strings.
+	(_addenv): Ditto.
+	* path.cc (cygwin_conv_path_to_win32): Rewrite. Add path lists.
+	(getcwd): Return the Win32 path instead of the POSIX path.
+	(cwdstuff::get): Return Win32 path with forward slashes.
+	(mount_info::read_mounts): Remove unused code.
+	(mount_info::from_registry): Ditto.
+	(mount_info::add_reg_mount): Ditto.
+	(mount_info::del_reg_mount): Ditto.
+	(mount_info::read_cygdrive_info_from_registry): Ditto.
+	(mount_info::write_cygdrive_info_from_registry): Ditto.
+	(mount_info::add_item): Ditto.
+	(mount): Ditto.
+	(umount): Ditto.
+	(symlink): Remove preprocessor conditional.
+	(symlink_info::check): Ditto.  If __MSYS__ then no symlinks.
+	(mount_info::read_mounts): Enhancements for /etc/fstab, comments,
+	blank lines and no new line requirement.
+	* strace.cc (strace::write): Change literal constant from cYg to MsYs.
+	* pfino.cc (set_myself): Ditto.
+
 2002-03-21  Earnie Boyd  <earnie@users.sf.net>
 
 	* include/cygwin/version.h (CYGWIN_VERSION_DLL_MINOR): Increment to 7.
