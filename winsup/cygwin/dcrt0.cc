@@ -472,14 +472,14 @@ build_argv (char *cmd, char **&argv, int &argc, int winshell)
       char *sawquote = NULL;
       while (*cmd)
 	{
-//	  if (*cmd != '"' && (!winshell || *cmd != '\''))
+	  if (*cmd != '"' && (!winshell || *cmd != '\''))
 	    cmd++;		// Skip over this character
-//	  else
-//	    /* Skip over characters until the closing quote */
-//	    {
-//	      sawquote = cmd;
-//	      cmd = quoted (cmd, winshell && argc > 0);
-//	    }
+	  else
+	    /* Skip over characters until the closing quote */
+	    {
+	      sawquote = cmd;
+	      cmd = quoted (cmd, winshell && argc > 0);
+	    }
 	  if (issep (*cmd))	// End of argument if space
 	    break;
 	}
