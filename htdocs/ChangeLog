@@ -1,4 +1,8 @@
 
+Tue Jan  2 13:11:24 PST 2001  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	* ssi/footer.html: Correct the matching of starting and ending tags.
+
 Wed Dec 27 12:06:43 PST 2000  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	* mingwfaq.shtml: Add a name reference to each item of the index.
