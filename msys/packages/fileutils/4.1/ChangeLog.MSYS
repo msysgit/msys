@@ -1,3 +1,9 @@
+2004.01.20  Earnie Boyd  <earnie@users.sf.net>
+
+	* src/Makefile.am (ln_SOURCES): Add.
+	* src/Makefile.in: Regenerate.
+	* po/fileutils.pot: Regnerate.
+	
 2002.06.16  Earnie Boyd  <earnie@users.sf.net>
 
 	* src/copy.c (copy_reg): Make buf_size 256 * bigger to speed up disk

@@ -42,6 +42,7 @@ chgrp_SOURCES = chgrp.c chown-core.c
 
 mv_SOURCES = mv.c copy.c cp-hash.c remove.c
 rm_SOURCES = rm.c remove.c
+ln_SOURCES = ln.c remove.c
 
 BUILT_SOURCES = dircolors.h
 PERL = @PERL@
