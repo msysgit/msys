@@ -54,7 +54,7 @@
 # endif
 #endif
 #if HAVE_TZNAME
-extern char *tzname[];
+//extern char *tzname[];
 #endif
 
 /* Do multibyte processing if multibytes are supported, unless

@@ -1941,7 +1941,7 @@ get_date (const char *p, const time_t *now)
 #if HAVE_TZNAME
   {
 # ifndef tzname
-    extern char *tzname[];
+    //extern char *tzname[];
 # endif
     int i;
     for (i = 0; i < 2; i++)

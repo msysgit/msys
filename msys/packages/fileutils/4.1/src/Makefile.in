@@ -152,6 +152,7 @@ chgrp_SOURCES = chgrp.c chown-core.c
 
 mv_SOURCES = mv.c copy.c cp-hash.c remove.c
 rm_SOURCES = rm.c remove.c
+ln_SOURCES = ln.c remove.c
 
 BUILT_SOURCES = dircolors.h
 PERL = @PERL@
@@ -225,8 +226,8 @@ ginstall_OBJECTS = $(am_ginstall_OBJECTS)
 ginstall_LDADD = $(LDADD)
 ginstall_DEPENDENCIES = ../lib/libfetish.a
 ginstall_LDFLAGS = 
-ln_SOURCES = ln.c
-ln_OBJECTS = ln$U.$(OBJEXT)
+am_ln_OBJECTS = ln$U.$(OBJEXT) remove$U.$(OBJEXT)
+ln_OBJECTS = $(am_ln_OBJECTS)
 ln_LDADD = $(LDADD)
 ln_DEPENDENCIES = ../lib/libfetish.a
 ln_LDFLAGS = 
