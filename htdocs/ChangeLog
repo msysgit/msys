@@ -1,4 +1,10 @@
 
+Wed Dec 27 12:06:43 PST 2000  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	* mingwfaq.shtml: Add a name reference to each item of the index.
+	Add a href at the end of each section to go back to the index.  
+	Add header tags (h#) to highlight the sections of the FAQ.
+
 Tue Dec 26 13:39:25 PST 2000  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	* ssi/lsidebar.html: Revert previous change
