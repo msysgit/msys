@@ -1,0 +1,18 @@
+
+2001.07.27  Earnie Boyd  <Earnie@SourceForge.Net>
+
+	* Makefile.in (PROGS): Removed unsupported modules.
+
+2001.07.27  Earnie Boyd  <Earnie@SourceForge.Net>
+
+	* ChangeLog.Cygwin: Renamed original ChangeLog.
+	* ChangeLog: New file.
+	* Makefile.in: Included and modified for MSYS subset.
+	* aclocal.m4: Included for MSYS subset.
+	* configure: Generated for MSYS subset.
+	* configure.in: Included and modified for MSYS subset.
+	* cygcheck.cc: Included for MSYS subset.
+	* mount.cc: Ditto.
+	* strace.cc: Ditto.
+	* ps.cc: Ditto.
+	* cygpath.cc: Ditto.
