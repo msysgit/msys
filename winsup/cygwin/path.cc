@@ -3079,15 +3079,18 @@ static bool
 IsAbsWin32Path (const char * path)
 {
   int plen = strlen (path);
-  bool p0alpha = isalpha (path[0]);
+  bool p0alpha = isalpha (path[0]) != 0;
   bool p1colon = (plen > 1 && path[1] == ':');
   bool rval = 
-         (   (plen == 2 && p0alpha && p1colon)
-          || (plen > 2 && p0alpha && p1colon && strchr (&path[2], ':') == 0)
+         (   ((plen == 2) && p0alpha && p1colon)
+          || (  (plen > 2) 
+	      && p0alpha 
+	      && p1colon 
+	      && (strchr (&path[2], ':') == (char *)NULL)
+	     )
 	  || (   plen > 3 
 	      && path[0] == '\\' 
 	      && path[1] == '\\' 
-	      && path[2] == '.'
 	      && path[3] == '\\'
 	     )
 	 );
@@ -3222,6 +3225,23 @@ msys_p2w (char const * const path)
       return ScrubRetpath (retpath);
     }
   //
+  // Check for variable set.
+  //
+  else if ((sspath = strchr(spath, '=')) && isalpha (spath[0]))
+    {
+      if (IsAbsWin32Path (sspath + 1))
+	return (char *)path;
+      char *swin32_path = msys_p2w(sspath + 1);
+      if (swin32_path == (sspath + 1))
+	return (char *)path;
+      *sspath = '\0';
+      retpathcpy (spath);
+      retpathcat ("=");
+      retpathcat (swin32_path);
+      free (swin32_path);
+      return ScrubRetpath (retpath);
+    }
+  //
   // Check for POSIX path lists.
   // But we have to allow processing of quoted strings and switches first
   // which uses recursion so this code will be seen again.
@@ -3326,10 +3346,11 @@ msys_p2w (char const * const path)
 	      // just use recursion if we find a set variable token.
 	      //
 	      *sspath = '\0';
+	      if (IsAbsWin32Path (sspath + 1))
+		return (char *)path;
 	      char *swin32_path = msys_p2w(sspath + 1);
 	      if (swin32_path == sspath + 1)
 		{
-		  *sspath = '=';
 		  return ((char *)path);
 		}
 	      retpathcpy (spath);

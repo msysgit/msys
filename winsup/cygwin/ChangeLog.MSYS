@@ -1,3 +1,7 @@
+2003-07-07  Earnie Boyd  <earnie@users.sf.net>
+
+	* path.cc (msys_p2w): Correction for ``foo=c:/bar'' constructs.
+
 2003-07-01  Luke Dunstan <infidel@users.sf.net>
 
 	* syscalls.cc (check_posix_perm): Off by one allocation of memory for
