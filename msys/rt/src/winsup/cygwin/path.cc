@@ -1239,6 +1239,14 @@ conv_path_list (const char *src, char *dst, int to_posix_p)
 
 /* init: Initialize the mount table.  */
 
+#define CHECK_MOUNT_EVENT \
+  if ( ! (WaitForSingleObject (mount_table->eventH, 1) == WAIT_OBJECT_0)) \
+    { debug_printf ("Unexpected wait value"); \
+    }
+FIXME; //We need to figure out where we need to wait for this event.
+// Race issues currently abound where access to the mount data can occur at the
+// same time the mount data is being replaced.
+
 void
 mount_info::init ()
 {
@@ -1676,11 +1684,51 @@ mount_info::set_flags_from_win32_path (const char *p)
   return 0;
 }
 
+DWORD WINAPI
+mount_info::read_mounts_thread (LPVOID thrdParam)
+{
+    mount_info *info = (mount_info *)thrdParam;
+    char etcPath [MAX_PATH+1];
+    info->eventH = CreateEvent (NULL, true, false, "evtReadMounts");
+    info->read_mounts2();
+    strcpy (etcPath, info->RootPath);
+    strcat (etcPath, "/etc");
+    HANDLE ffcnH = FindFirstChangeNotification (etcPath, true,
+	      FILE_NOTIFY_CHANGE_FILE_NAME
+	    | FILE_NOTIFY_CHANGE_DIR_NAME
+	    | FILE_NOTIFY_CHANGE_SIZE
+	    | FILE_NOTIFY_CHANGE_LAST_WRITE);
+    if (ffcnH == INVALID_HANDLE_VALUE)
+      {
+	debug_printf("/etc path change notification failure, %s\n", etcPath);
+	ExitProcess (1);
+      }
+    do {
+	SetEvent (info->eventH);
+	FindNextChangeNotification (ffcnH);
+	if (WaitForSingleObject (ffcnH, INFINITE) == WAIT_OBJECT_0)
+	  {
+	    FIXME; // We need only do this if /etc/fstab actually changed and
+	    // not any change to the /etc directory.
+	    ResetEvent (info->eventH);
+	    info->nmounts = 0;
+	    info->read_mounts2 ();
+	  }
+    } while (true);
+    return 0;
+}
+
+void
+mount_info::read_mounts (reg_key& r)
+{
+    threadH = CreateThread (NULL, 0, mount_info::read_mounts_thread, this, 0, threadID);
+}
+
 /* read_mounts: Given a specific regkey, read mounts from under its
    key. */
 
 void
-mount_info::read_mounts (reg_key& r)
+mount_info::read_mounts2 (void)
 {
   TRACE_IN;
   char native_path[4];
@@ -1690,7 +1738,6 @@ mount_info::read_mounts (reg_key& r)
   int mount_flags = 0;
   int res;
   char DllPath[MAX_PATH+1];
-  char RootPath[MAX_PATH+1];
 
   mount_flags |= MOUNT_AUTO;
   mount_flags |= MOUNT_BINARY;

@@ -1,3 +1,26 @@
+2003-03-28  Earnie Boyd  <earnie@users.sf.net>
+
+	* cygthread.cc: Copy new file from Cygwin.
+	* cygthread.h: Ditto.
+	* winbase.h: Ditto.
+	* Makefile.in (DLL_OFILES): Add cygthread.o and reformat.
+	* path.cc (CHECK_MOUNT_EVENT): New macro, currently unused.
+	(mount_info::read_mounts_thread): New static function, thread to watch
+	for changes to /etc/fstab.
+	(mount_info::read_mounts): Renamed original read_mounts and created
+	a new read_mounts to call read_mounts_thread.
+	(mount_info::read_mounts2): Renamed original read_mounts to be called
+	from read_mounts_thread.
+	shared_info.h (mount_info): Add new elements.
+	spawn.cc (spawn_guts): Add a proposed Cygwin change.
+	winsup.h: Following changes copied from recent versions of Cygwin.
+	(iovec): New struct.
+	(check_iovec_for_read): New function.
+	(check_iovec_for_write): Ditto.
+	(__check_invalid_read_ptr_errno): Ditto.
+	(stat_worker): Ditto.
+	(low_priority_sleep): Ditto.
+	
 2003-03-21  Earnie Boyd  <earnie@users.sf.net>
 
 	* uinfo.cc (internal_getlogin): Move check for USERNAME variable to
