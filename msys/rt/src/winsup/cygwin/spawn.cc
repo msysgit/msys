@@ -62,18 +62,33 @@ perhaps_suffix (const char *prog, path_conv &buf)
 {
   TRACE_IN;
   char *ext;
+  char *pbuf;
+  DWORD attr;
 
   debug_printf ("prog '%s'", prog);
-  buf.check (prog, PC_SYM_FOLLOW | PC_FULL, std_suffixes);
 
-  if (buf.file_attributes () & FILE_ATTRIBUTE_DIRECTORY)
-    ext = NULL;
-  else if (buf.known_suffix)
-    ext = buf + (buf.known_suffix - buf.get_win32 ());
-  else
-    ext = strchr (buf, '\0');
-
-  debug_printf ("buf %s, suffix found '%s'", (char *) buf, ext);
+  pbuf = msys_p2w(prog);
+  ext = strrchr(pbuf, '.');
+  if (! ext) {
+    strcat(pbuf, ".exe");
+    if (attr = GetFileAttributes(pbuf) == FILE_ATTRIBUTE_DIRECTORY ||
+	attr == INVALID_FILE_ATTRIBUTES)
+      ext = 0;
+    else
+      ext = strrchr(pbuf, '.');
+  }
+  else {
+    if (strcmp(ext, ".exe")) {
+      strcat(pbuf, ".exe");
+      if (attr = GetFileAttributes(pbuf) == FILE_ATTRIBUTE_DIRECTORY ||
+	  attr == INVALID_FILE_ATTRIBUTES)
+	ext = 0;
+      else
+	ext = strrchr(pbuf, '.');
+    }
+  }
+  buf = pbuf;
+  debug_printf ("buf %s, perhaps_suffix found '%s'", (char *) buf, ext);
   return ext;
 }
 

@@ -1,3 +1,12 @@
+2004-03-18  Earnie Boyd  <earnie@users.sf.net>
+
+	* path.cc (msys_p2w): Modify debug messages.
+	* spawn.cc (perhaps_suffix): Recode.
+	* winsup.h: Include "cygwin/version.h".
+	* include/cygwin/version.h (DLL_VERSION_MAJOR): New constant name.
+	Will be used to replace CYGWIN_VERSION_DLL_MAJOR.
+	(DLL_VERSION_MINOR): Ditto.
+
 2004-03-17  Earnie Boyd  <earnie@users.sf.net>
 
 	* include/cygwin/version.h: Increment version to 1.0.11.

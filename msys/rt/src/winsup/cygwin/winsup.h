@@ -21,6 +21,8 @@ details. */
   #define __INSIDE_MSYS__ 1
 #endif
 
+#include "cygwin/version.h"
+
 #define HMMM(HUM) debug_printf("%s-%d: %s", "HMMM", __LINE__, (HUM))
 #if DEBUGGING
 # define FIXME debug_printf("FIXME - %s (%s): %d", __FILE__, __FUNCTION__, __LINE__)
