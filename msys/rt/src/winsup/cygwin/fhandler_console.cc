@@ -22,6 +22,7 @@ details. */
 #include <ctype.h>
 #include <sys/cygwin.h>
 #include "cygerrno.h"
+#include "security.h"
 #include "fhandler.h"
 #include "dtable.h"
 #include "cygheap.h"
@@ -29,7 +30,6 @@ details. */
 #include "sigproc.h"
 #include "pinfo.h"
 #include "shared_info.h"
-#include "security.h"
 
 #define CONVERT_LIMIT 4096
 
@@ -107,9 +107,12 @@ get_tty_stuff (int flags = 0)
 						 sizeof (*shared_console_info),
 						 NULL);
   ProtectHandle (cygheap->console_h);
-  shared_console_info->setntty (TTY_CONSOLE);
-  shared_console_info->setsid (myself->sid);
-  shared_console_info->set_ctty (TTY_CONSOLE, flags);
+  if (!shared_console_info->ntty)
+    {
+      shared_console_info->setntty (TTY_CONSOLE);
+      shared_console_info->setsid (myself->sid);
+      shared_console_info->set_ctty (TTY_CONSOLE, flags);
+    }
   return shared_console_info;
 }
 
@@ -289,6 +292,8 @@ fhandler_console::read (void *pv, size_t buflen)
 
 #define ich (input_rec.Event.KeyEvent.uChar.AsciiChar)
 #define wch (input_rec.Event.KeyEvent.uChar.UnicodeChar)
+#define ALT_PRESSED (LEFT_ALT_PRESSED | RIGHT_ALT_PRESSED)
+#define CTRL_PRESSED (LEFT_CTRL_PRESSED | RIGHT_CTRL_PRESSED)
 
 	  if (wch == 0 ||
 	      /* arrow/function keys */
@@ -306,8 +311,22 @@ fhandler_console::read (void *pv, size_t buflen)
 		 converting a CTRL-U. */
 	      if ((unsigned char)ich > 0x7f)
 		con_to_str (tmp + 1, tmp + 1, 1);
-	      /* Determine if the keystroke is modified by META. */
-	      if (!(input_rec.Event.KeyEvent.dwControlKeyState & meta_mask))
+	      /* Determine if the keystroke is modified by META.  The tricky
+		 part is to distinguish whether the right Alt key should be
+		 recognized as Alt, or as AltGr. */
+	      bool meta;
+	      if (iswinnt)
+		/* WinNT: AltGr is reported as Ctrl+Alt, and Ctrl+Alt is
+		   treated just like AltGr.  However, if Ctrl+Alt+key generates
+		   an ASCII control character, interpret is as META. */
+		meta = (control_key_state & ALT_PRESSED) != 0
+		       && ((control_key_state & CTRL_PRESSED) == 0
+			   || (ich >= 0 && ich <= 0x1f || ich == 0x7f));
+	      else
+		/* Win9x: there's no way to distinguish Alt from AltGr, so rely
+		   on meta_mask heuristic (see fhandler_console constructor). */
+		meta = (control_key_state & meta_mask) != 0;
+	      if (!meta)
 		toadd = tmp + 1;
 	      else
 		{
@@ -319,6 +338,8 @@ fhandler_console::read (void *pv, size_t buflen)
 	    }
 #undef ich
 #undef wch
+#undef ALT_PRESSED
+#undef CTRL_PRESSED
 	  break;
 
 	case MOUSE_EVENT:
@@ -1285,9 +1306,10 @@ fhandler_console::char_command (char c)
       break;
     case 's':   /* Save cursor position */
       cursor_get (&savex, &savey);
+      savey -= info.winTop;
       break;
     case 'u':   /* Restore cursor position */
-      cursor_set (FALSE, savex, savey);
+      cursor_set (TRUE, savex, savey);
       break;
     case 'I':	/* TAB */
       cursor_get (&x, &y);
@@ -1522,12 +1544,13 @@ fhandler_console::write (const void *vsrc, size_t len)
 	    }
 	  else if (*src == '8')		/* Restore cursor position */
 	    {
-	      cursor_set (FALSE, savex, savey);
+	      cursor_set (TRUE, savex, savey);
 	      state_ = normal;
 	    }
 	  else if (*src == '7')		/* Save cursor position */
 	    {
 	      cursor_get (&savex, &savey);
+	      savey -= info.winTop;
 	      state_ = normal;
 	    }
 	  else if (*src == 'R')
@@ -1623,7 +1646,7 @@ fhandler_console::write (const void *vsrc, size_t len)
 static struct {
   int vk;
   const char *val[4];
-} keytable[] = {
+} const keytable[] NO_COPY = {
 	       /* NORMAL */  /* SHIFT */    /* CTRL */       /* ALT */
   {VK_LEFT,	{"\033[D",	"\033[D",	"\033[D",	"\033\033[D"}},
   {VK_RIGHT,	{"\033[C",	"\033[C",	"\033[C",	"\033\033[C"}},
@@ -1728,7 +1751,7 @@ fhandler_console::fixup_after_fork (HANDLE)
   /* Windows does not allow duplication of console handles between processes
      so open the console explicitly. */
 
-  if (!open (get_name (), get_flags (), 0))
+  if (!open (get_name (), O_NOCTTY | get_flags (), 0))
     system_printf ("error opening console after fork, %E");
 
   if (!get_close_on_exec ())
@@ -1758,7 +1781,7 @@ fhandler_console::fixup_after_exec (HANDLE)
   HANDLE h = get_handle ();
   HANDLE oh = get_output_handle ();
 
-  if (!open (get_name (), get_flags (), 0))
+  if (!open (get_name (), O_NOCTTY | get_flags (), 0))
     {
       int sawerr = 0;
       if (!get_io_handle ())

@@ -1,6 +1,6 @@
 /* fcntl.cc: fcntl syscall
 
-   Copyright 1996, 1997, 1998 Cygnus Solutions.
+   Copyright 1996, 1997, 1998, 1999, 2000, 2001 Red Hat, Inc.
 
 This file is part of Cygwin.
 
@@ -13,6 +13,7 @@ details. */
 #include <stdarg.h>
 #include <errno.h>
 #include <unistd.h>
+#include "security.h"
 #include "fhandler.h"
 #include "dtable.h"
 #include "cygheap.h"

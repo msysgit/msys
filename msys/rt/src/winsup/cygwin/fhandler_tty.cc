@@ -17,6 +17,7 @@ details. */
 #include <ctype.h>
 #include <limits.h>
 #include "cygerrno.h"
+#include "security.h"
 #include "fhandler.h"
 #include "dtable.h"
 #include "sync.h"
@@ -61,7 +62,7 @@ fhandler_tty_master::init (int ntty)
 
   cygwin_shared->tty[ttynum]->common_init (this);
 
-  inuse = get_ttyp ()->create_inuse (TTY_MASTER_ALIVE, FALSE);
+  inuse = get_ttyp ()->create_inuse (TTY_MASTER_ALIVE);
 
   h = makethread (process_input, NULL, 0, "ttyin");
   if (h == NULL)
@@ -108,7 +109,7 @@ public:
   const char *tname;
 } ostack[100];
 
-static int osi = 0;
+static int osi;
 #endif /*DEBUGGING*/
 
 DWORD
@@ -294,7 +295,7 @@ fhandler_pty_master::process_slave_output (char *buf, size_t len, int pktmode_on
 		break;
 	      if (hit_eof ())
 		goto out;
-	      if (n == 0 && (get_flags () & (O_NONBLOCK | O_NDELAY)) != 0)
+	      if (n == 0 && is_nonblocking ())
 		{
 		  set_errno (EAGAIN);
 		  rc = -1;
@@ -478,13 +479,13 @@ fhandler_tty_slave::open (const char *, int flags, mode_t)
   __small_sprintf (buf, OUTPUT_DONE_EVENT, ttynum);
   output_done_event = OpenEvent (EVENT_ALL_ACCESS, TRUE, buf);
 
-  if (!(output_mutex = get_ttyp ()->open_output_mutex (TRUE)))
+  if (!(output_mutex = get_ttyp ()->open_output_mutex ()))
     {
       termios_printf ("open output mutex failed, %E");
       __seterrno ();
       return 0;
     }
-  if (!(input_mutex = get_ttyp ()->open_input_mutex (TRUE)))
+  if (!(input_mutex = get_ttyp ()->open_input_mutex ()))
     {
       termios_printf ("open input mutex failed, %E");
       __seterrno ();
@@ -508,7 +509,7 @@ fhandler_tty_slave::open (const char *, int flags, mode_t)
   /* FIXME: Needs a method to eliminate tty races */
   {
     acquire_output_mutex (500);
-    inuse = get_ttyp ()->create_inuse (TTY_SLAVE_ALIVE, TRUE);
+    inuse = get_ttyp ()->create_inuse (TTY_SLAVE_ALIVE);
     get_ttyp ()->was_opened = TRUE;
     release_output_mutex ();
   }
@@ -710,11 +711,11 @@ fhandler_tty_slave::read (void *ptr, size_t len)
 	      termios_printf ("read failed, %E");
 	      _raise (SIGHUP);
 	    }
-          /* MSDN states that 5th prameter can be used to determine total
-             number of bytes in pipe, but for some reason this number doesn't
-             change after successful read. So we have to peek into the pipe
-             again to see if input is still available */
-          if (!PeekNamedPipe (get_handle (), peek_buf, 1, &bytes_in_pipe, NULL, NULL))
+	  /* MSDN states that 5th prameter can be used to determine total
+	     number of bytes in pipe, but for some reason this number doesn't
+	     change after successful read. So we have to peek into the pipe
+	     again to see if input is still available */
+	  if (!PeekNamedPipe (get_handle (), peek_buf, 1, &bytes_in_pipe, NULL, NULL))
 	    {
 	      termios_printf ("PeekNamedPipe failed, %E");
 	      _raise (SIGHUP);
@@ -745,8 +746,7 @@ fhandler_tty_slave::read (void *ptr, size_t len)
 	  termios_printf ("saw EOF");
 	  break;
 	}
-      if (get_ttyp ()->ti.c_lflag & ICANON ||
-	  get_flags () & (O_NONBLOCK | O_NDELAY))
+      if (get_ttyp ()->ti.c_lflag & ICANON || is_nonblocking ())
 	break;
       if (totalread >= vmin && (vmin > 0 || totalread > 0))
 	break;
@@ -912,10 +912,7 @@ fhandler_tty_slave::ioctl (unsigned int cmd, void *arg)
     case TIOCSWINSZ:
       break;
     case FIONBIO:
-      if (* (int *) arg)
-	set_flags (get_flags () | O_NONBLOCK);
-      else
-	set_flags (get_flags () & ~O_NONBLOCK);
+      set_nonblocking (*(int *) arg);
       goto out;
     default:
       set_errno (EINVAL);
@@ -975,7 +972,7 @@ fhandler_pty_master::open (const char *, int flags, mode_t)
     return 0;
 
   cygwin_shared->tty[ttynum]->common_init (this);
-  inuse = get_ttyp ()->create_inuse (TTY_MASTER_ALIVE, FALSE);
+  inuse = get_ttyp ()->create_inuse (TTY_MASTER_ALIVE);
   set_flags (flags);
   set_open_status ();
 
@@ -1014,7 +1011,7 @@ fhandler_tty_common::close ()
     termios_printf ("CloseHandle (get_output_handle ()<%p>), %E", get_output_handle ());
 
   inuse = NULL;
-  termios_printf ("tty%d closed", ttynum);
+  termios_printf ("tty%d <%p,%p> closed", ttynum, get_handle (), get_output_handle ());
   return 0;
 }
 
@@ -1095,10 +1092,7 @@ fhandler_pty_master::ioctl (unsigned int cmd, void *arg)
 	_kill (-get_ttyp ()->getpgid (), SIGWINCH);
 	break;
       case FIONBIO:
-	if (* (int *) arg)
-	  set_flags (get_flags () | O_NONBLOCK);
-	else
-	  set_flags (get_flags () & ~O_NONBLOCK);
+	set_nonblocking (*(int *) arg);
 	break;
       default:
 	set_errno (EINVAL);

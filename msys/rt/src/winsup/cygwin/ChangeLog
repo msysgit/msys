@@ -1,3 +1,979 @@
+Wed Sep 12 01:03:36 2001  Christopher Faylor <cgf@cygnus.com>
+
+	* exceptions.cc (call_signal_handler_now): Add additional guard against
+	inappropriately calling signal handler.
+	* syscalls.cc (_read): Reset errno if not exiting due to signal.
+
+Wed Sep 12 13:03:00 2001  Robert Collins <rbtcollins@hotmail.com>
+
+	* autoload.cc (LoadDLLfuncEx): Auto load TryEnterCriticalSection - it's
+	an NT only call.
+	* thread.cc (pthread_cond::TimedWait): Use critical sections for NT.
+	(pthread_cond::fixup_after_fork): Don't detect bad apps.
+	(pthread_mutex::pthread_mutex): Use critical sections for NT.
+	(pthread_mutex::~pthread_mutex): Ditto.
+	(pthread_mutex::Lock): Ditto.
+	(pthread_mutex::TryLock): Ditto.
+	(pthread_mutex::UnLock): Ditto.
+	(pthread_mutex::fixup_after_fork): Ditto.  Also do not detect bad apps.
+	(__pthread_mutex_trylock): Move WIN32 specific test into the class
+	method.
+	(__pthread_mutex_destroy): Prevent dereferencing passed pointer without
+	valid address.
+	* thread.h (pthread_mutex): Use critical sections for NT.
+
+Tue Sep 11 21:55:37 2001  Christopher Faylor <cgf@cygnus.com>
+
+	* sigproc.h (sigframe::unregister): Return true/false whether this
+	frame is capable of responding to signals.
+	* exceptions.cc (sigframe::call_signal_handler): Don't call signal
+	handler if it is not armed for this thread.
+
+Tue Sep 11 11:23:10 2001  Christopher Faylor <cgf@cygnus.com>
+
+	* cygwin.din: Remove cygwin_getshared.
+	* shared.cc: Ditto.
+	* include/cygwin/version.h: Bump API minor number.
+
+Tue Sep 11 11:14:11 2001  Dmitry Timoshkov  <dmitry@baikal.ru>
+
+	* dtable.cc (dtable::build_fhandler): Fix incorrect test for socket.
+
+Tue Sep 11 21:22:00 2001  Robert Collins <rbtcollins@hotmail.com>
+
+	* thread.cc (pthread_cond::~pthread_cond): Fix incorrect use of
+	InterlockExchangePointer.
+	(pthread_mutex::~pthread_mutex): Ditto.
+	(semaphore::~semaphore): Ditto.
+
+Tue Sep 11 18:15:00 2001  Robert Collins <rbtcollins@hotmail.com>
+
+	* dcrt0.cc (cygwin_finished_initializing): Copy _mtinterf on fork.
+	* fork.cc (fork_child): Fixup thread-related structures after fork.
+	* thread.cc (MTinterface::Init): Initialise the new mutex, condition
+	and semaphore lists.
+	(MTinterface::fixup_after_fork): Iterate through each list and fixup
+	the objects.
+	(pthread_cond::pthread_cond): Add this to the condition list.
+	(pthread_cond::~pthread_cond): Remove this from the condition list.
+	(pthread_cond::fixup_after_fork): Recreate as best we can the pre-fork
+	state.
+	(pthread_mutex::pthread_mutex): Add this to the mutex list.
+	(pthread_mutex::~pthread_mutex): Remove this from the mutex list.
+	(pthread_mutex::fixup_after_fork): Recreate as best we can the pre-fork
+	state.
+	(semaphore::semaphore): Store the initial value, and add this to the
+	semaphore list.
+	(semaphore::~semaphore): Remove this from the semaphore list.
+	(semaphore::Post): Increment the current semaphore value.
+	(semaphore::TryWait): Decrement the current semaphore value.
+	(semaphore::Wait): Ditto.
+	(semaphore::fixup_after_fork): Recreate the pre-fork state as best we
+	can.
+	* thread.h (pthread_mutex): New members to allow fixup_after_fork.
+	(pthread_cond): Ditto.
+	(semaphore): Ditto.
+	(MTinterface): New list heads for tracking conds and semaphores.
+
+Sun Sep  9 22:11:27 2001  Christopher Faylor <cgf@cygnus.com>
+
+	* dtable.cc (dtable::fixup_after_fork): Use SetStdHandle appropriately
+	on inherited fds.
+
+Sun Sep  9 20:09:11 2001  Christopher Faylor <cgf@cygnus.com>
+
+	* sigproc.cc (NZOMBIES): Reduce substantially to minimize memory use.
+
+Mon Sep 10 08:28:00 2001  Robert Collins <rbtcollins@hotmail.com>
+
+	* thread.h (MT_Interface): Remove pshared mutex array.  Add a
+	threadsafe list for mutex tracking (for fixup after fork).
+	* thread.cc (MTInterface::Init): Remove pshared mutex array.
+	(pthread_mutex::pthread_mutex): Remove pshared mutex functionality.
+	Fail with EINVAL on attempts to use pshared functionality.
+	(__pthread_mutex_getpshared): Remove.
+	(__pthread_cond_timedwait): Remove pshared mutex functionality.
+	(__pthread_cond_wait): Ditto.
+	(__pthread_mutex_init): Ditto.
+	(__pthread_mutex_getprioceiling): Ditto.
+	(__pthread_mutex_lock): Ditto.
+	(__pthread_mutex_trylock): Ditto.
+	(__pthread_mutex_unlock): Ditto.
+	(__pthread_mutex_destroy): Ditto.
+	(__pthread_mutex_setprioceiling): Ditto.
+	(__pthread_mutexattr_setpshared): Ditto.
+
+Sun Sep 9 23:09:00 2001 Corinna Vinschen <corinna@vinschen.de>
+
+	* pwdgrp.h (pwdgrp_check::set_last_modified): Call GetFileTime()
+	instead of GetFileInformationByHandle().
+
+Sun Sep  9 15:59:53 2001  Christopher Faylor <cgf@cygnus.com>
+
+	* heap.h (inheap): Rewrite macro to accomodate removal of brk macros
+	below.
+
+Sun Sep  9 15:02:44 2001  Christopher Faylor <cgf@cygnus.com>
+
+	* cygheap.cc (cygheap_fixup_in_child): Clear cygheap->base so that heap
+	is not forced to start at the same place in execed process.
+	* heap.cc: Remove brk* macros for clarity throughout.
+	* heap.h: Ditto.
+	* shared.cc (shared_info::initialize): Move heap_chunk test into
+	heap_chunk_size().
+	(heap_chunk_size): Check for chunk size here.  Don't go to registry if
+	heap_chunk_in_mb is already set.
+
+	* smallprint.c (console_printf): Add Windows 95 concessions.
+
+Sun Sep  9 13:01:06 2001  Christopher Faylor <cgf@cygnus.com>
+
+	* child_info.h (PROC_MAGIC): Bump magic number.
+
+Sun Sep  9 18:36:00 2001  Corinna Vinschen <corinna@vinschen.de>
+			  Christopher Faylor <cgf@cygnus.com>
+
+	* cygheap.cc (init_cygheap::etc_changed): New method to signal
+	a change in /etc.
+	* cygheap.h (struct init_cygheap): Add member `etc_changed_h'
+	and method `etc_changed'.
+	* grp.cc (enum grp_state): Eliminate.
+	(class grp_check): Ditto.
+	(group_state): Define as `class pwdgrp_check'.
+	(parse_grp): Remeber path and modification time of /etc/group file.
+	* passwd.cc (enum_pwd_state): Eliminate.
+	(class pwd_check): Ditto.
+	(passwd_state): Define as `class pwdgrp_check'.
+	(read_etc_passwd): Remember path and modification time of /etc/passwd
+	file.
+	* pwdgrp.h: New file.
+	(enum pwdgrp_state): Substitutes `pwd_state' and `grp_state'.
+	(class pwdgrp_check): Substitutes `pwd_check' and `grp_check'.
+
+Sun Sep  9 14:31:00 2001  Corinna Vinschen <corinna@vinschen.de>
+
+	* include/cygwin/version.h: Bump API minor version to 45 according
+	to adding the gamm*_r functions.
+
+Sat Sep  8 23:32:18 2001  Christopher Faylor <cgf@cygnus.com>
+
+	* fork.cc (fork_parent): Stop malloc activity while fork is in control
+	of the heap.
+	* sigproc.cc (NZOMBIES): Rename from ZOMBIEMAX for clarity.
+	(zombies): Revert to original behavior.  Allocating zombie array
+	resulted in performance hit.
+	* winsup.h: Declare malloc lock routines.
+
+Fri Sep  7 21:35:35 2001  Christopher Faylor <cgf@cygnus.com>
+
+	* cygwin.din: Add gamm*_r function exports.
+
+Fri Sep  7 17:11:11 2001  Christopher Faylor <cgf@cygnus.com>
+
+	* cygheap.h (init_cygheap): Move heap pointers here.
+	* include/sys/cygwin.h (perprocess): Remove heap pointers.
+	* dcrt0.cc (__cygwin_user_data): Reflect obsolete perprocess stuff.
+	(_dll_crt0): Don't initialize heap pointers.
+	(cygwin_dll_init): Ditto.
+	(release_upto): Use heap pointers from cygheap.
+	* heap.h: Ditto.
+	* fork.cc (fork_parent): Ditto.  Don't set heap pointers in ch.
+	(fork_child): Remove obsolete sigproc_fixup_after_fork.
+	* shared.cc (memory_init): Reorganize so that cygheap initialization is
+	called prior to regular heap since regular heap uses cygheap now.
+	* sigproc.cc (proc_subproc): Eliminate zombies allocation.
+	(sigproc_init): Move zombies alloation here.  Don't free up array on
+	fork, just reuse it.
+	(sigproc_fixup_after_fork): Eliminate.
+	* sigproc.h: Ditto.
+	* include/cygwin/version.h: Reflect change to perprocess structure.
+
+Fri Sep  7 10:53:34 2001  Jason Tishler <jason@tishler.net>
+
+	* poll.cc (poll): Change implementation to only call select() when no
+	invalid file descriptors are specified.
+
+Fri Sep  7 10:27:00 2001  Corinna Vinschen <corinna@vinschen.de>
+
+	* include/limits.h: Define PIPE_BUF.
+	* syscalls.cc (fpathconf): Use PIPE_BUF instead of numerical constant.
+	(pathconf): Ditto.
+
+Thu Sep  6 20:04:05 2001  Christopher Faylor <cgf@cygnus.com>
+
+	* fhandler_socket.cc (fhandler_socket::fhandler_socket): Ensure that
+	prot_info_ptr is zeroed for later use.
+
+Thu Sep  6 14:03:49 2001  Christopher Faylor <cgf@cygnus.com>
+
+	* cygheap.cc (cygheap_fixup_in_child): Don't consider a NULL bucket as
+	a candidate for deletion.  It is actually the end of a linked list
+	chain.
+
+	* exceptions.cc (open_stackdumpfile): Default to "unknown" program name
+	if myself->progname hasn't been filled out yet.
+
+Thu Sep  6 01:16:44 2001  Christopher Faylor <cgf@cygnus.com>
+
+	Move appropriate variables to NO_COPY segment, throughout.
+
+Thu Sep  6 00:40:35 2001  Christopher Faylor <cgf@cygnus.com>
+
+	Remove initialization of static or global values to zero, throughout.
+	This just needlessly grows the size of the DLL.
+	* tty.cc (tty::alive): Make inuse handle non-inheriting on open, just
+	for thread safety.
+
+Wed Sep  5 23:36:03 2001  Christopher Faylor <cgf@cygnus.com>
+
+	* cygheap.h (init_cygheap): Move bucket array here from cygheap.cc.
+	* cygheap.cc: Throughout use bucket array from cygheap.
+
+	* sigproc.cc (proc_subproc): Dynamically allocate zombie buffer to save
+	DLL space.
+	(sigproc_fixup_after_fork): Free zombie array after a fork.
+	* sigproc.h (sigproc_fixup_after_fork): Declare.
+
+2001-09-06  Egor Duda  <deo@logos-m.ru>
+
+	* dir.cc (mkdir): Expand buffer for security descriptor to 4K to avoid
+	stack corruption.
+	* fhandler.cc (fhandler_base::open): Ditto.
+	* path.cc (symlink): Ditto.
+
+Wed Sep  5 21:35:00 2001  Corinna Vinschen <corinna@vinschen.de>
+
+	* winver.rc: Change copyright to include 2001.
+
+Wed Sep  5 12:12:00 2001  Corinna Vinschen <corinna@vinschen.de>
+
+	* fhandler_floppy.cc (fhandler_floppy::lseek): Remove iswinnt check.
+
+Wed Sep  5 11:34:00 2001  Corinna Vinschen <corinna@vinschen.de>
+
+	* fhandler_socket.cc (fhandler_socket::close): Change 2MSL value
+	according to MSDN.
+
+Wed Sep  5 10:14:00 2001  Corinna Vinschen <corinna@vinschen.de>
+
+	* net.cc (cygwin_connect): Add WSAEALREADY and WSAEINVAL handling
+	for non-blocking sockets.
+
+Tue Sep  4 22:42:13 2001  Christopher Faylor <cgf@cygnus.com>
+
+	* exceptions.cc (ctrl_c_handler): Only send SIGINT when we have a
+	controlling terminal and we are the head of the process group.
+
+Tue Sep  4 16:48:14 2001  Christopher Faylor <cgf@cygnus.com>
+
+	* thread.cc (InterlockedExchangePointer): Don't define if it already
+	exists.
+
+Tue Sep  4 22:14:00 2001  Corinna Vinschen <corinna@vinschen.de>
+
+	* uname.cc (uname): Eliminate os specific retrieving of x86
+	processor type.
+
+2001-09-04  Kazuhiro Fujieda  <fujieda@jaist.ac.jp>
+
+	* fhandler_console.cc (fhandler_console::char_command): Save the cursor
+	position relative to the top of the window.
+	* fhandler_cc (fhandler_console::write): Ditto.
+
+Mon Sep  3 21:06:00 2001  Corinna Vinschen <corinna@vinschen.de>
+
+	* dir.cc (opendir): Write version information to __d_dirent->d_version.
+
+Mon Sep  3 18:34:00 2001  Corinna Vinschen <corinna@vinschen.de>
+
+	* cygwin.din: Add `dirfd'.
+	* dir.cc (dirfd): New function.
+	(opendir): Open a directory file descriptor and save it in
+	__d_dirent->d_fd.
+	(closedir): Close directory file descriptor.
+	* include/cygwin/version.h: Bump API minor version to 44.
+
+Sun Sep  2 22:09:31 2001  Christopher Faylor <cgf@cygnus.com>
+
+	* child_info.h: Modify magic number.
+	* dcrt0.cc (_cygwin_testing): Define.
+	(_dll_crt0): Set _cygwin_testing if CYGWIN_TESTING environment variable
+	exists.  Don't issue "conflicting versions" error if _cygwin_testing is
+	true.
+	* shared.cc (shared_name): Use _cygwin_testing global rather than
+	testing the environment.
+	* syscalls.cc (_write): Remove debugging info.
+
+Sat Sep  1 01:37:13 2001  Christopher Faylor <cgf@cygnus.com>
+
+	* tty.cc (tty::create_inuse): Eliminate unneeded argument.
+	* tty.h: Reflect above change.
+	* fhandler_tty.cc: Reflect argument reduction in tty::create_inuse,
+	throughout.  Always make inuse inheritable.
+
+Sat Sep  1 01:10:07 2001  Christopher Faylor <cgf@cygnus.com>
+
+	* debug.cc (mark_closed): Rename from debug_mark_closed and make
+	static.
+	(setclexec_pid): New function for marking saved handle as
+	close-on-exec.
+	(delete_handle): New function.
+	(debug_fixup_after_fork): New function.
+	* debug.h: Declare new functions, remove obsolete ones.
+	* fork.cc (debug_fixup_after_fork): Call to cleanup close-on-exec
+	handles.
+
+	* fhandler.cc (fhandler_disk_file::close): Minor reorg.
+	(fhandler_base::set_inheritance): Set flag appropriately for debugging
+	when close-on-exec so forked process can delete closed handles.
+	* tty.h (open_output_mutex): Eliminate unneeded argument.
+	(open_input_mutex): Ditto.
+	* fhandler_tty.cc (fhandler_tty_slave::open): reflect open_*_mutex
+	argument changes.
+	* fhandler.h (fhandler_socket): Make saw_shutdown_* functions type
+	bool.
+	* tty.cc (tty::get_event): Eliminate unneeded argument.
+	(tty::common_init): Reflect change to get_event.  Events should always
+	be inherited.
+
+Fri Aug 31 21:39:00 2001  Corinna Vinschen <corinna@vinschen.de>
+
+	* security.cc (create_token): Change initialization of `exp' to comply
+	with new LARGE_INTEGER definition in winnt.h.
+
+Fri Aug 31 13:58:51 2001  Christopher Faylor <cgf@cygnus.com>
+
+	* cygwin.sc: Revert to previous NO_COPY behavior.
+	* winsup.h: Ditto.
+	* sigproc.cc: Ditto.
+	* autoload.cc: Ditto.
+
+Fri Aug 31 00:56:26 2001  Christopher Faylor <cgf@cygnus.com>
+
+	* cygwin.sc: New file -- linker script for building cygwin DLL.
+	* Makefile.in: Use linker script to control location of cygheap.
+	* cygheap.cc (buckets): Make static.
+	(init_cheap): Remove special iswinnt handling.  Allocate cygheap at a
+	fixed location.  Display more info when allocation fails.
+	(cygheap_fixup_in_child): Try harder to move cygheap to correct
+	location.  Display more info when allocation fails.
+	* fhandler.h (fhandler_socket): Add macros for tracking socket shutdown
+	state.
+	* net.cc (cygwin_shutdown): Set appropriate shutdown value for future
+	use.
+	* select.cc (select_stuff::cleanup): New method.
+	(cygwin_select): Call cleanup explicitly to avoid a race.
+	(select_stuff:~select_stuff): Call cleanup chain via cleanup method.
+	(fhandler_socket::select_read): Set *_ready when shutdown has been
+	called on the socket.
+	(fhandler_socket::select_write): Ditto.
+	(fhandler_socket::select_except): Ditto.
+
+	* winsup.h: Move NO_COPY to "COMMON" section.
+	* autoload.cc (wsock_started): Avoid initializing NO_COPY value.
+	* sigproc.cc: Remove initialization from NO_COPY variables.
+	(sigproc_init): Initialize sig_loop_wait here, rather than via
+	initialization.
+	(subproc_init): Initialize proc_loop_wait here, rather than via
+	initialization.
+
+Thu Aug 30 10:19:00 2001  Christopher Faylor <cgf@cygnus.com>
+
+	* select.cc (select_read): Add setting read_ready flag.
+	(select_write): Add setting write_ready flag.
+
+Wed Aug 29 00:40:42 2001  Christopher Faylor <cgf@cygnus.com>
+
+	* path.cc (path_conv::check): Avoid splitting off leading '/' in path
+	component when building a symlink.
+
+Wed Aug 29  0:45:00 2001  Corinna Vinschen <corinna@vinschen.de>
+
+	* resource.cc (getrlimit): Return actual values on RLIMIT_STACK.
+
+Tue Aug 28 16:37:17 2001  Christopher Faylor <cgf@cygnus.com>
+
+	* dir.cc (rmdir): Report ENOENT when file doesn't exist rather than
+	ENOTDIR.
+
+Mon Aug 27 11:58:19 2001  Christopher Faylor <cgf@cygnus.com>
+
+	* select.cc (cygwin_select): Ensure that arguments are zeroed on
+	timeout.
+	(select_stuff::wait): Ditto.
+
+2001-08-24  Kazuhiro Fujieda  <fujieda@jaist.ac.jp>
+
+	* syscalls.cc (check_tty_fds): New function.  Check whether there is a
+	fd referring to pty slave.
+	(setsid): Don't detach console if the process has a pty slave.
+
+Fri Aug 24  8:54:00 2001  Corinna Vinschen <corinna@vinschen.de>
+
+	* net.cc (free_addr_list): Add define for symmetry.
+	(free_hostent_ptr): Use free_addr_list to free h_addr_list element.
+
+Thu Aug 23 16:00:09 2001  Jason Tishler <jason@tishler.net>
+
+	* net.cc (dup_addr_list): New static function.
+	(dup_hostent_ptr): Use dup_addr_list instead of dup_char_list in order
+	to handle embedded null characters.
+
+Wed Aug 22 22:23:14 2001  Christopher Faylor <cgf@cygnus.com>
+
+	* dtable.cc (dtable::dup2): Allow extension of fd table by dup2.
+	* syscalls.cc: Minor code cleanup.
+	(fpathconf): Check for bad fd before doing anything else.
+	* termios.cc (tcsetattr): Don't convert to new termios if bad fd.
+	(tcgetattr): Minor debugging tweak.
+
+Wed Aug 22 23:41:00 2001  Corinna Vinschen <corinna@vinschen.de>
+
+	* net.cc (cygwin_inet_ntoa): Rearrange previous patch to use
+	thread local buffer space when compiled thread safe.
+	(cygwin_getprotobyname): Ditto.
+	(cygwin_getprotobynumber): Ditto.
+	(cygwin_getservbyname): Ditto.
+	(cygwin_getservbyport): Ditto.
+	(cygwin_gethostbyname): Ditto.
+	(cygwin_gethostbyaddr): Ditto. Move near to cygwin_gethostbyname.
+	* thread.h (struct _winsup_t): Add pointers for above used buffer space.
+	* passwd.cc (getpwduid): Remove initializing passwd.
+	(setpwent): Ditto.
+	(endpwent): Ditto.
+	(setpassent): Ditto.
+
+Wed Aug 22 13:41:09 2001  Christopher Faylor <cgf@cygnus.com>
+
+	* smallprint.c (console_printf): New function.
+	* dcrt0.cc (dll_crt0_1): Use console_printf for debugging output.
+	* debug.cc (debug_mark_closed): New function.
+	(close_handle): Use debug_mark_closed.
+	* debug.h: Declare new functions.
+	* dtable.cc (dtable::build_fhandler): Remove unneeded extern.
+	* spawn.cc: Cosmetic changes.
+	* winsup.h: Define NO_COPY for C files, too.  Declare a global.
+
+Wed Aug 22 17:31:00 2001  Corinna Vinschen <corinna@vinschen.de>
+
+	* net.cc (free_char_list): New static function.
+	(dup_char_list): Ditto.
+	(free_protoent_ptr): Ditto.
+	(dup_protoent_ptr): Ditto.
+	(free_servent_ptr): Ditto.
+	(dup_servent_ptr): Ditto.
+	(free_hostent_ptr): Ditto.
+	(dup_hostent_ptr): Ditto.
+	(cygwin_inet_ntoa): Use local static buffer to allow propagating of
+	the result to child processes.
+	(cygwin_getprotobyname): Ditto.
+	(cygwin_getprotobynumber): Ditto.
+	(cygwin_getservbyname): Ditto.
+	(cygwin_getservbyport): Ditto.
+	(cygwin_gethostbyname): Ditto.
+	(cygwin_gethostbyaddr): Ditto.
+
+Mon Aug 20 11:56:19 2001  Christopher Faylor <cgf@cygnus.com>
+
+	* cygheap.cc (init_cheap): Allocate cygheap in shared memory for Windows NT.
+
+Thu Aug 16 09:38:59 2001  Jason Tishler <jason@tishler.net>
+
+	* fhandler_socket.cc (fhandler_socket::create_secret_event): Relax
+	security of secret_event so AF_UNIX socket clients can connect to
+	servers even if running under a different user account.
+	(fhandler_socket::check_peer_secret_event): Ditto.
+
+Thu Aug 16 16:26:00 2001  Corinna Vinschen <corinna@vinschen.de>
+
+	* resource.cc (getrlimit): Return getdtablesize () as current limit
+	on RLIMIT_NOFILE.
+	* syscalls.cc (getdtablesize): Return OPEN_MAX if current dtable size
+	is less than OPEN_MAX, the current dtable size otherwise.
+	* sysconf.cc (sysconf): Return getdtablesize () on _SC_OPEN_MAX.
+
+Thu Aug 16 16:17:00 2001  Corinna Vinschen <corinna@vinschen.de>
+
+	* resource.cc (getrlimit): Return OPEN_MAX as current limit
+	on RLIMIT_NOFILE.
+	* syscalls.cc (getdtablesize): Return OPEN_MAX.
+	* sysconf.cc (sysconf): Return OPEN_MAX on _SC_OPEN_MAX.
+	* include/limits.h (OPEN_MAX): Define as 256.
+
+Wed Aug 15 12:43:00 2001  Corinna Vinschen <corinna@vinschen.de>
+
+	* times.cc (utimes): Revert previous change. Just open the
+	file using FILE_WRITE_ATTRIBUTES instead of GENERIC_WRITE
+	on NT/W2K.
+
+Wed Aug 15 12:18:00 2001  Corinna Vinschen <corinna@vinschen.de>
+
+	* security.cc (set_nt_attribute): Return always -1 in case of
+	a failure.
+	* times.cc (utimes): On NTFS with ntsec ON, change the file's
+	security descriptor temporarily to acquire write access if
+	opening the file failed.
+
+Wed Aug 15  9:42:00 2001  Corinna Vinschen <corinna@vinschen.de>
+
+	* fhandler.cc (fhandler_base::is_nonblocking): New method.
+	(fhandler_base::set_nonblocking): Ditto.
+	* fhandler.h (fhandler_base): Declare new methods `is_nonblocking' and
+	`set_nonblocking'.
+	* fhandler_socket.cc (fhandler_socket::ioctl): Use `set_nonblocking'.
+	* fhandler_tty.cc (fhandler_pty_master::process_slave_output):
+	Use `is_nonblocking'.
+	(fhandler_tty_slave::read): Ditto.
+	(fhandler_tty_slave::ioctl): Use `set_nonblocking'.
+	(fhandler_pty_master::ioctl): Ditto.
+	* net.cc (cygwin_sendto): Fallback to winsock 1 functionality
+	in case of nonblocking IO.
+	(cygwin_recvfrom): Ditto.
+	(cygwin_recv): Ditto.
+	(cygwin_send): Ditto.
+	* syscalls.cc (_read): Use `is_nonblocking'.
+
+Tue Aug 14 11:05:26 2001  Christopher Faylor <cgf@cygnus.com>
+
+	* include/cygwin/version.h: Bump API version.
+
+2001-08-14  Egor Duda  <deo@logos-m.ru>
+
+	* spawn.cc (spawn_guts): Enable appropriate privilege before
+	loading user's registry hive.
+
+Mon Aug 13 22:34:00 2001  Corinna Vinschen <corinna@vinschen.de>
+
+	* fhandler.cc (fhandler_base::fcntl): Use new O_NONBLOCK_MASK define.
+	* fhandler.h: Move definitions of O_NOSYMLINK, O_DIROPEN and
+	OLD_O_NDELAY from winsup.h to here. Add O_NONBLOCK_MASK define.
+	* fhandler_socket.cc (fhandler_socket::close): Add hack to allow
+	a graceful shutdown even if shutdown() hasn't been called by the
+	application. Add debug output.
+	(fhandler_socket::ioctl): Set fhandler's NONBLOCK flag according
+	to FIONBIO setting.
+	(fhandler_socket::fcntl): Use new O_NONBLOCK_MASK define. Actually
+	set `request' before using it.
+	* fhandler_tty.cc: Use new O_NONBLOCK_MASK define throughout.
+	(fhandler_tty_slave::ioctl): Set fhandler's NONBLOCK flag according
+	to FIONBIO setting.
+	(fhandler_pty_master::ioctl): Ditto.
+	* net.cc (wsock_event::prepare): Compare WSACreateEvent return code
+	with `WSA_INVALID_EVENT' according to MSDN.
+	* syscalls.cc (_read): Use new O_NONBLOCK_MASK define.
+
+Wed Aug  8 15:24:59 2001  Christopher Faylor <cgf@cygnus.com>
+
+	* include/wchar.h: Define __need_wint_t.
+
+Wed Aug  8 11:46:00 2001  Corinna Vinschen <corinna@vinschen.de>
+
+	* security.cc (alloc_sd): Revert to setting inheritance attribute for
+	permissions given to directories. Never set inheritance on NULL ACE.
+
+Tue Aug  7 18:11:00 2001  Corinna Vinschen <corinna@vinschen.de>
+
+	* security.cc (alloc_sd): Don't set FILE_DELETE_CHILD for group
+	if S_ISVTX attribute is given.
+	* dir.cc (mkdir): Allow immediate setting of S_ISUID, S_ISGID and
+	S_ISVTX attribute.
+	* syscalls.cc (_open): Ditto.
+
+Tue Aug  7 16:24:00 2001  Corinna Vinschen <corinna@vinschen.de>
+
+	* dir.cc (mkdir): Set security attributes correctly for
+	CreateDirectoryA () call if ntsec is on. Don't call
+	set_file_attributes () then.
+	* fhandler.cc (fhandler_base::open): Ditto for CreateFileA () call.
+	* path.cc (symlink): Ditto.
+	* security.cc (set_security_attribute): New function.
+	* security.h: Add declaration for `allow_ntea' and
+	`set_security_attribute'.
+
+Tue Aug  7 10:54:00 2001  Corinna Vinschen <corinna@vinschen.de>
+
+	* grp.cc (class grp_check): New class. Make `group_state'
+	a member of class grp_check.
+	(read_etc_group): Free former allocated memory on reread.
+	* passwd.cc (class pwd_check): New class Make `passwd_state'
+	a member of class pwd_check.
+	(read_etc_passwd): Free former allocated memory on reread.
+
+Tue Aug  7 01:13:58 2001  Christopher Faylor <cgf@cygnus.com>
+
+	* fhandler_console.cc (get_tty_stuff): Don't initialize shared memory
+	console area if it is already initialized.
+
+	* fhandler_termios.cc (fhandler_termios::tcsetpgrp): Augment debugging
+	info.
+
+Mon Aug  6 19:58:43 2001  Christopher Faylor <cgf@cygnus.com>
+
+	* cygheap.cc (cygheap_root::set): Avoid treating '/' specially.
+
+	* fhandler.cc (fhandler_base::fcntl): Only set specific O_NDELAY style
+	flag passed in from application.
+	* fhandler_socket.cc (fhandler_socket::fcntl): Ditto.
+	* fhandler.h: Set constant for future use.
+	* winsup.h: Define OLD_O_NDELAY only for old programs.
+	* include/cygwin/version.h: Define
+	CYGWIN_VERSION_CHECK_FOR_OLD_O_NONBLOCK.
+
+Sat Aug  4 16:52:03 2001  Christopher Faylor <cgf@cygnus.com>
+
+	Throughout, change check for running under Windows NT to 'iswinnt'.
+	* dcrt0.cc (set_os_type): Set 'iswinnt' appropriately.
+	* cygheap.cc (init_cheap): Revert to using VirtualAlloc for allocating
+	cygheap.
+	(cygheap_setup_for_child_cleanup): New function.  Standard function to
+	call after calling CreateProcess to cleanup cygheap info passed to
+	child.
+	(cygheap_fixup_in_child): Copy cygheap from shared memory into
+	allocated space under Windows 9x or if can't relocate shared space
+	under NT.
+	* cygheap.h: Declare new function.
+	* spawn.cc (spawn_guts): Use cygheap_fixup_in_child.
+	* fork.cc (fork_parent): Ditto.
+	* winsup.h: Declare iswinnt.
+
+2001-08-04  Egor Duda  <deo@logos-m.ru>
+
+	* dtable.cc (dtable::release): Avoid messing with console when
+	closing socket.
+
+Fri Aug  3 14:02:00 2001  Corinna Vinschen <corinna@vinschen.de>
+
+	* net.cc (cygwin_accept): Allow NULL peer and len parameters.
+	* include/cygwin/socket.h: Define socklen_t as int.
+
+Fri Aug  3 13:04:00 2001  Corinna Vinschen <corinna@vinschen.de>
+
+	* path.cc (fchdir): Set the fhandler's path to absolute value to ensure
+	changing to the correct directory even if the fhandler originally
+	points to a relative path.
+
+Thu Aug  2 17:59:00 2001  Corinna Vinschen <corinna@vinschen.de>
+
+	* security.cc (set_file_attribute): Clean up. Don't call
+	`set_nt_attribute' when ntsec isn't set.
+
+Sat Jul 28 22:30:55 2001  Christopher Faylor <cgf@cygnus.com>
+
+	* dcrt0.cc (alloc_stack_hard_way): Make half-hearted attempt to deal
+	with growing stack under Windows 95.
+
+Fri Jul 27 12:36:07 2001  Christopher Faylor <cgf@cygnus.com>
+
+	* Makefile.in: Add install-lib and install-headers.
+
+Fri Jul 27 12:28:12 2001  Christopher Faylor <cgf@cygnus.com>
+
+	* cygwin.din: Export sys_errlist, sys_nerr.
+	* include/cygwin/version.h: Bump minor version number.
+
+Fri 27 Jul 2001 10:29:00  Corinna Vinschen <corinna@vinschen.de>
+
+	* security.cc (get_user_primary_group): Fix compiler warning.
+	(alloc_sd): Add DELETE permission for user when S_IWUSR is given.
+
+Thu Jul 26 16:43:39 2001  Pieter de Visser <pieterdv@knoware.nl>
+
+	* thread.cc (__pthread_equal): Invert return value so that true is
+	returned when threads are equal.
+
+Thu Jul 26 15:50:38 2001  Charles Wilson <cwilson@ece.gatech.edu>
+			  Christopher Faylor <cgf@cygnus.com>
+
+	* cygwin.din: Export __signgam.
+	* include/cygwin/version.h: Bump minor version number.
+
+Thu Jul 26 15:19:50 2001  Christopher Faylor <cgf@cygnus.com>
+
+	Throughout, reorganize header file inclusion to put security.h prior to
+	fhandler.h.
+	* fhandler.h (fhandler_base::get_inheritance): New method.
+	* fhandler_socket.cc (fhandler_socket::create_secret_event): Use proper
+	close-on-exec inheritance when creating.
+	(fhandler_socket::check_peer_secret_event): Create handle as
+	non-inheritable.
+
+2001-07-25  Kazuhiro Fujieda  <fujieda@jaist.ac.jp>
+
+	* syscalls.cc (setsid): Detach process from its console if the current
+	controlling tty is the console and already closed.
+	* dtable.h (class dtable): Add members to count descriptors referring
+	to the console.
+	* dtable.cc (dtable::dec_console_fds): New function to detach process
+	from its console.
+	(dtable::release): Decrement the counter of console descriptors.
+	(dtable::build_fhandler): Increment it.
+	* exception.cc (ctrl_c_handler): Send SIGTERM to myself when catch
+	CTRL_SHUTDOWN_EVENT.
+
+Tue 24 Jul 2001 02:28:00 PM  Trevor Forbes <t4bs@hotmail.com>
+
+	* thread.cc (verifyable_object_isvalid): Don't validate
+	PTHREAD_MUTEX_INITIALIZER pointer as it will cause an exception
+	in IsBadWritePtr() when running GDB.
+			
+Wed 25 Jul 2001 23:46:00  Corinna Vinschen <corinna@vinschen.de>
+
+	* localtime.c: Changed whole file to become C++ clean. Rename to
+	localtime.cc.
+	* localtime.cc (tzload): Preserve errno.
+
+Fri 20 Jul 2001 11:15:50 PM EDT  Christopher Faylor <cgf@cygnus.com>
+
+	* cygheap.cc (cygheap_fixup_in_child): Attempt Win95 workaround.
+	* dtable.cc (dtable::dup_worker): Add debugging output.
+	(dtable::vfork_child_dup): Correctly set close_on_exec.
+	* fhandler.cc (fhandler_base::fork_fixup): Don't mess with handle if
+	there is no need to get it from the parent.
+	* fhandler_tty.cc (fhandler_tty_common::close): Add debugging output.
+
+Fri 20 Jul 2001 09:15:00  Mark Bradshaw <bradshaw@staff.crosswalk.com>
+
+	* dir.cc (readdir): Protect FindNextFileA against INVALID_HANDLE_VALUE.
+
+Wed 18 Jul 2001 01:00:47 PM EDT  Christopher Faylor <cgf@cygnus.com>
+
+	* cygheap.cc (_cmalloc): Use correct constants for size calculation.
+	* dcrt0.cc (dll_crt0_1): Move uid initialization earlier.
+	* fork.cc (fork_parent): Move cygheap_setup_in_child to just prior to
+	CreateProcess so that all contents of cygheap are copied.
+	* spawn.cc (spawn_guts): Ditto.
+
+Wed 18 Jul 2001 12:54:17  Corinna Vinschen <corinna@vinschen.de>
+
+	* security.cc (get_user_groups): Call Net function with NULL server
+	name under specific error conditions.
+	(is_group_member): Ditto.
+	(get_user_local_groups): Ditto.
+	(get_user_primary_group): Ditto.
+
+Wed 18 Jul 2001 11:56:00  Corinna Vinschen <corinna@vinschen.de>
+
+	* syscalls.cc (_unlink): Explicitly check for non-existant file.
+
+Tue 17 Jul 2001 10:19:00  Corinna Vinschen <corinna@vinschen.de>
+
+	* delqueue.h: Remove obsolete file.
+
+Mon 16 Jul 2001 10:47:17 PM EDT  Christopher Faylor <cgf@cygnus.com>
+
+	* child_info.h: Bump magic number.
+	(class child_info): Add an element.
+	* cygheap.cc (init_cheap): Allocate cygwin heap in shared memory area.
+	(cygheap_fixup_in_child): Map cygwin heap, passed from parent via
+	shared memory into correct address.
+	(cygheap_setup_for_child): New function.
+	* cygheap.h: Declare new functions.
+	* dcrt0.cc (dll_crt0_1): Accomodate new cygheap_fixup_in_child
+	arguments.  Avoid protecting subproc_ready unless it is spawn/nowait.
+	* fork.cc (fork_parent): Use new cygheap_setup_for_child function to
+	setup cygwin heap info.  Close passed cygheap shared memory handle.
+	* spawn.cc (spawn_guts): Ditto.  Also, reorganize to avoid
+	synchronization between parent and child in non-P_OVERLAY case.
+	* sigproc.cc (wait_sig): Only signal subproc_ready when execing.
+
+Mon 16 Jul 2001 15:21:00  Corinna Vinschen <corinna@vinschen.de>
+
+	* grp.cc: Add missing Copyright date 2001.
+
+Mon 16 Jul 2001 00:11:00  Corinna Vinschen <corinna@vinschen.de>
+
+	Change well_known_admin_sid to well_known_admins_sid throughout.
+	* sec_acl.cc (setacl): Never set DELETE permission. Set
+	FILE_DELETE_CHILD only on readable and executable directories.
+	* sec_helper.cc: Add constructor for `well_known_null_sid'.
+	* security.cc (get_nt_attribute): Set S_ISVTX for directories if
+	FILE_WRITE_DATA and FILE_EXECUTE but not FILE_DELETE_CHILD is set.
+	Add evaluation of S_ISVTX, S_ISGID and S_ISUID from NULL ACE.
+	(alloc_sd): Never set DELETE permission. Set FILE_DELETE_CHILD
+	only on readable and executable directories.
+	Add creation of NULL ACE for S_ISVTX, S_ISGID and S_ISUID permissions.
+	* security.h: Add extern declaration for `well_known_null_sid'.
+
+Fri 13 Jul 2001 08:08:49 PM EDT  Christopher Faylor <cgf@cygnus.com>
+
+	* syscalls.cc (stat_worker): Simplify previous change.
+
+Fri Jul 13 13:13:09 2001  Christopher Faylor <cgf@cygnus.com>
+
+	* syscalls.cc (_unlink): Correct (?) logic which determines when
+	to report an access violation and when to queue file for eventual
+	deletion.
+	(stat_worker): Check for invalid buf argument.
+
+Tue Jul 10 23:01:00 2001  Corinna Vinschen <corinna@vinschen.de>
+
+	* mmap.cc (fhandler_disk_file::mmap): Try to open file mappings
+	by a unified name when running under 9x/ME. If that failes, create
+	the file mapping using the unified name.
+
+Mon Jul  9 10:43:00 2001  Corinna Vinschen <corinna@vinschen.de>
+
+	* uinfo.cc (internal_getlogin): Add pointer check.
+
+Mon Jul  9 10:05:00 2001  Corinna Vinschen <corinna@vinschen.de>
+
+	* security.cc (alloc_sd): Don't set inheritance attribute for
+	permissions given to directories.
+
+Thu Jun 28 22:19:08 2001  Christopher Faylor <cgf@cygnus.com>
+
+	* fhandler_dsp.cc (fhandler_dev_dsp::ioctl): Return 0 for success.
+
+Wed Jun 27 22:19:07 2001  Christopher Faylor <cgf@cygnus.com>
+
+	* path.cc (path_conv::check): Add signal protection here since
+	retrieving info about remote shares can take some time.
+
+Wed Jun 27 23:30:00 2001  Robert Collins <rbtcollins@hotmail.com>
+			  Christopher Faylor <cgf@cygnus.com>
+
+	Change check_null_empty_path* to check_null_empty_str* throughout.
+	* path.h (check_null_empty_str_errno): Convert to a function prototype.
+	* path.cc (check_null_empty_str): Move to miscfuncs.cc.
+	* miscfuncs.cc (check_null_empty_str_errno): New function.
+	(__check_null_invalid_struct): Ditto.
+	(__check_null_invalid_struct_errno): Ditto.
+	(check_null_empty_str): Change from VirtualQuery to IsBadWritePtr.
+	* thread.cc (check_valid_pointer): Ditto.
+	* resource.cc (getrlimit): Use check_null_invalid_struct macro for
+	checking validity of pointer.
+	(setrlimit): Ditto.
+
+Tue Jun 26 16:59:16 2001  Christopher Faylor <cgf@cygnus.com>
+
+	* fhandler.cc (fhandler_disk_file::fstat): Don't rely on exactly 3
+	characters being read for executable test since we could be checking
+	for less than that.
+	* syscalls.cc (stat_worker): Try opening the file the "correct" way
+	first so that #! processing can potentially happen.  If that fails,
+	then use "query open" method.
+
+	* spawn.cc (spawn_guts): Delay processing of signal until after we've
+	notified parent about reparenting.
+
+Tue Jun 26 10:47:24 2001  Christopher Faylor <cgf@cygnus.com>
+
+	* mmap.cc: Clean up *ResourceLock calls throughout.
+
+Tue Jun 26 22:10:00 2001  Robert Collins rbtcollins@hotmail.com
+
+	* thread.cc (pthread_cond::TimedWait): Check for WAIT_TIMEOUT as well
+	as WAIT_ABANDONED.
+	(__pthread_cond_timedwait): Calculate a relative wait from the abstime
+	parameter.
+
+Sun Jun 24 17:38:19 2001  Christopher Faylor <cgf@cygnus.com>
+
+	* exceptions.cc (interrupt_setup): Move actions from setup_handler to
+	here.
+	(setup_handler): Move actions after a successful interrupt to
+	interrupt_setup.
+	* fork.cc (vfork): Augment debugging output.
+	* sigproc.cc (proc_subproc): Ditto.
+	* spawn.cc (spawn_guts): Ditto.  Correctly fill out progname when spawn
+	NO_WAIT.  Call signal handler when a signal arrives.
+	* sigproc.h: Declare a function.
+
+Fri Jun 22 16:50:00 2001  Corinna Vinschen <corinna@vinschen.de>
+
+	* fhandler.h class fhandler_socket): Declare new method
+	`set_close_on_exec'.
+	* fhandler_socket.cc (fhandler_socket::set_close_on_exec):
+	New method.
+
+Fri Jun 22 16:12:00 2001  Corinna Vinschen <corinna@vinschen.de>
+
+	* fhandler_tape.cc (fhandler_dev_tape::tape_erase): Set size
+	parameter to value expected by GetTapeParameters().
+
+Thu Jun 21 22:01:39 2001  Marius Gedminas <mgedmin@delfi.lt>
+
+	* fhandler_console.cc (fhandler_console::read): Detect AltGr more
+	robustly on WinNT.
+
+2001-06-22  Robert Collins  <rbbtcollins@hotmail.com>
+
+	* thread.cc (__pthread_cond_timedwait): Lock the waiting mutex before
+	the condition protect mutex to avoid deadlocking. (Found by Greg Smith).
+	(__pthread_cond_wait): Ditto.
+
+2001-06-30  Egor Duda  <deo@logos-m.ru>
+
+	* fhandler.cc (fhandler_base::open): Work around windows bug when
+	CreateFile() with dwDesiredAccess == 0 called on remote share returns
+	valid handle even if file doesn't exist.
+
+2001-06-20  Egor Duda  <deo@logos-m.ru>
+
+	* fhandler_socket.cc (fhandler_socket::signal_secret_event): New
+	function.
+	* fhandler.h: Declare it.
+	* fhandler_socket.cc (fhandler_socket::create_secret_event): Don't
+	signal secret event immediately.
+	(fhandler_socket::check_peer_secret_event): Do it after peer event
+	was opened.
+	* net.cc (cygwin_connect): Or if socket is non-blocking.
+	(cygwin_accept): Ditto.
+
+Mon Jun 18 17:09:25 2001  Christopher Faylor <cgf@cygnus.com>
+
+	* fhandler_tty.cc (fhandler_tty_slave::init): Revert 2001-06-16 change.
+
+	* fork.cc (fork_copy): Print more debugging info.
+	(fork_parent): Change order of arguments to accomdate buggy gcc.
+	(fork): Ditto.
+
+Sun Jun 17 18:54:46 2001  Christopher Faylor <cgf@cygnus.com>
+
+	* syscalls.cc (_unlink): Reorganize to try harder to delete file with
+	DeleteFile and to recover more gracefully if FILE_FLAG_DELETE_ON_CLOSE
+	doesn't work properly.
+
+Sat Jun 16 13:06:49 2001  Christopher Faylor <cgf@cygnus.com>
+
+	* exceptions.cc (sig_handle_tty_stop): Reset PID_STOPPED if not
+	actually stopping.
+	* fhandler_console.cc (fhandler_console::fixup_after_fork): Don't set
+	controlling terminal if just inheriting a handle.
+	(fhandler_console::fixup_after_exec): Ditto.
+	* fhandler_tty.cc (fhandler_tty_slave::init): Ditto.
+	* signal.cc (kill_worker): Set appropriate errno if proc_exists
+	determines that process does not really exist.
+
+Fri Jun 15 14:34:19 2001  Christopher Faylor <cgf@cygnus.com>
+
+	* path.cc (path_conv::check): Deal more robustly with foo/ behavior.
+
+Fri Jun 15 11:15:00 2001  Corinna Vinschen <corinna@vinschen.de>
+
+	* fhandler_tape.cc (fhandler_dev_tape::tape_status): Set size
+	parameter to value expected by GetTapeParameters().
+
+Thu Jun 14 20:19:46 2001  Christopher Faylor <cgf@cygnus.com>
+
+	* fhandler.cc (fhandler_disk_file::fstat): Properly set executable bits
+	for directory when !ntsec && !ntea.  Also move common code prior to
+	call to get_attributes.
+
+Fri June 15 09:25:00  Robert Collins <rbtcollins@hotmail.com>
+
+	* thread.cc (pthread_cond::Signal): Release the condition access
+	variable correctly.
+
+2001-06-14  Egor Duda  <deo@logos-m.ru>
+
+	* fhandler.cc (fhandler_base::open): Set win32 access flags to 0, when
+	requested.
+	* fhandler.h: New status flag FH_QUERYOPEN.
+	(fhandler::get_query_open): New function.
+	(fhandler::set_query_open): Ditto.
+	* syscalls.cc (stat_worker): Request query-only open mode.
+
 2001-06-12  Egor Duda  <deo@logos-m.ru>
 
 	* environ.cc (set_file_api_mode): New function. Move setting
@@ -123,7 +1099,7 @@ Sat Jun  2 23:11:52 2001  Christopher Faylor <cgf@cygnus.com>
 
 Sat Jun  2 14:07:28 2001  Christopher Faylor <cgf@cygnus.com>
 
-	* cygheap.cc (cygheap_root::cygheap_rot): Remove constructor.
+	* cygheap.cc (cygheap_root::cygheap_root): Remove constructor.
 	(cygheap_root::~cygheap_root): Remove destructor.
 	(cygheap_root::operator =): Remove.
 	(cygheap_root::set): New method.
@@ -181,7 +1157,8 @@ Wed May 30 23:51:32 2001  Christopher Faylor <cgf@cygnus.com>
 
 	* fhandler.h (fhandler_base::isremote): New method.
 	(fhandler_base::set_isremote): Ditto.
-	(fhandler_base::set_execable_p): Also record "don't care if executable state".
+	(fhandler_base::set_execable_p): Also record "don't care if executable
+	state".
 	(fhandler_base::dont_care_if_execable): New method.
 	* path.cc (path_conv::check): Clear new flags.  Appropriately set
 	vol_flags, drive_type, and is_remote_drive.
@@ -2393,7 +3370,7 @@ Wed Jan 17 09:47:13 2001  Christopher Faylor <cgf@cygnus.com>
 
 	* exceptions.cc (sig_handle_tty_stop): Move setting of PID_STOPPED to
 	earlier in interrupt.
-	((interrupt_setup): i.e., here.
+	(interrupt_setup): i.e., here.
 	(sig_handle): Don't queue multiple SIGSTOPS.
 	* fhandler.h (bg_check_types): Enumerate return value of bg_check for
 	clarity.

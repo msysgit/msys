@@ -1,6 +1,6 @@
 /* dtable.cc: file descriptor support.
 
-   Copyright 1996, 1997, 1998, 1999, 2000 Cygnus Solutions.
+   Copyright 1996, 1997, 1998, 1999, 2000, 2001 Red Hat, Inc.
 
 This file is part of Cygwin.
 
@@ -26,20 +26,21 @@ details. */
 #include "pinfo.h"
 #include "cygerrno.h"
 #include "perprocess.h"
+#include "security.h"
 #include "fhandler.h"
 #include "path.h"
 #include "dtable.h"
 #include "cygheap.h"
 
-static DWORD std_consts[] = {STD_INPUT_HANDLE, STD_OUTPUT_HANDLE,
-			   STD_ERROR_HANDLE};
+static const NO_COPY DWORD std_consts[] = {STD_INPUT_HANDLE, STD_OUTPUT_HANDLE,
+			     STD_ERROR_HANDLE};
 
 /* Set aside space for the table of fds */
 void
 dtable_init (void)
 {
   if (!cygheap->fdtab.size)
-    cygheap->fdtab.extend(NOFILE_INCR);
+    cygheap->fdtab.extend (NOFILE_INCR);
 }
 
 void __stdcall
@@ -51,6 +52,13 @@ set_std_handle (int fd)
     SetStdHandle (std_consts[fd], cygheap->fdtab[fd]->get_output_handle ());
 }
 
+void
+dtable::dec_console_fds ()
+{
+  if (console_fds > 0 && !--console_fds && myself->ctty != TTY_CONSOLE)
+    FreeConsole ();
+}
+
 int
 dtable::extend (int howmuch)
 {
@@ -60,7 +68,7 @@ dtable::extend (int howmuch)
   if (howmuch <= 0)
     return 0;
 
-  /* Try to allocate more space for fd table. We can't call realloc()
+  /* Try to allocate more space for fd table. We can't call realloc ()
      here to preserve old table if memory allocation fails */
 
   if (!(newfds = (fhandler_base **) ccalloc (HEAP_ARGV, new_size, sizeof newfds[0])))
@@ -92,7 +100,7 @@ stdio_init (void)
      Also, always set them even if we're to pick up our parent's fds
      in case they're missed.  */
 
-  if (!myself->ppid_handle && NOTSTATE(myself, PID_CYGPARENT))
+  if (!myself->ppid_handle && NOTSTATE (myself, PID_CYGPARENT))
     {
       HANDLE in = GetStdHandle (STD_INPUT_HANDLE);
       HANDLE out = GetStdHandle (STD_OUTPUT_HANDLE);
@@ -128,7 +136,7 @@ stdio_init (void)
 int
 dtable::find_unused_handle (int start)
 {
-  AssertResourceOwner(LOCK_FD_LIST, READ_LOCK);
+  AssertResourceOwner (LOCK_FD_LIST, READ_LOCK);
 
   do
     {
@@ -146,8 +154,15 @@ dtable::release (int fd)
 {
   if (!not_open (fd))
     {
-      if ((fds[fd]->get_device () & FH_DEVMASK) == FH_SOCKET)
-        dec_need_fixup_before ();
+      switch (fds[fd]->get_device ())
+	{
+	case FH_SOCKET:
+	  dec_need_fixup_before ();
+	  break;
+	case FH_CONSOLE:
+	  dec_console_fds ();
+	  break;
+	}
       delete fds[fd];
       fds[fd] = NULL;
     }
@@ -206,7 +221,7 @@ cygwin_attach_handle_to_fd (char *name, int fd, HANDLE handle, mode_t bin,
 			      DWORD myaccess)
 {
   if (fd == -1)
-    fd = cygheap->fdtab.find_unused_handle();
+    fd = cygheap->fdtab.find_unused_handle ();
   fhandler_base *res = cygheap->fdtab.build_fhandler (fd, name, handle);
   res->init (handle, myaccess, bin);
   return fd;
@@ -217,7 +232,6 @@ dtable::build_fhandler (int fd, const char *name, HANDLE handle)
 {
   int unit;
   DWORD devn;
-  extern bool wsock_started;
 
   if ((devn = get_device_number (name, unit)) == FH_BAD)
     {
@@ -232,7 +246,7 @@ dtable::build_fhandler (int fd, const char *name, HANDLE handle)
 	devn = FH_CONIN;
       else if (GetConsoleScreenBufferInfo (handle, &cinfo))
 	devn= FH_CONOUT;
-      else if (wsock_started && getpeername ((SOCKET) handle, &sa, &sal))
+      else if (wsock_started && getpeername ((SOCKET) handle, &sa, &sal) == 0)
 	devn = FH_SOCKET;
       else if (GetFileType (handle) == FILE_TYPE_PIPE)
 	devn = FH_PIPE;
@@ -261,6 +275,7 @@ dtable::build_fhandler (int fd, DWORD dev, const char *name, int unit)
       case FH_CONIN:
       case FH_CONOUT:
 	fh = new (buf) fhandler_console (name);
+	inc_console_fds ();
 	break;
       case FH_PTYM:
 	fh = new (buf) fhandler_pty_master (name);
@@ -337,6 +352,7 @@ dtable::dup_worker (fhandler_base *oldfh)
 
   newfh->set_close_on_exec_flag (0);
   MALLOC_CHECK;
+  debug_printf ("duped '%s' old %p, new %p", oldfh->get_name (), oldfh->get_io_handle (), newfh->get_io_handle ());
   return newfh;
 }
 
@@ -368,9 +384,9 @@ dtable::dup2 (int oldfd, int newfd)
       goto done;
     }
 
-  SetResourceLock(LOCK_FD_LIST,WRITE_LOCK|READ_LOCK,"dup");
+  SetResourceLock (LOCK_FD_LIST, WRITE_LOCK | READ_LOCK, "dup");
 
-  if ((size_t) newfd >= cygheap->fdtab.size || newfd < 0)
+  if (newfd < 0)
     {
       syscall_printf ("new fd out of bounds: %d", newfd);
       set_errno (EBADF);
@@ -392,7 +408,7 @@ dtable::dup2 (int oldfd, int newfd)
   if ((fds[newfd]->get_device () & FH_DEVMASK) == FH_SOCKET)
     inc_need_fixup_before ();
 
-  ReleaseResourceLock(LOCK_FD_LIST,WRITE_LOCK|READ_LOCK,"dup");
+  ReleaseResourceLock (LOCK_FD_LIST, WRITE_LOCK | READ_LOCK, "dup");
   MALLOC_CHECK;
 
   if ((res = newfd) <= 2)
@@ -461,15 +477,15 @@ dtable::select_except (int fd, select_record *s)
 void
 dtable::fixup_before_fork (DWORD target_proc_id)
 {
-  SetResourceLock(LOCK_FD_LIST, WRITE_LOCK | READ_LOCK, "fixup_before_fork");
+  SetResourceLock (LOCK_FD_LIST, WRITE_LOCK | READ_LOCK, "fixup_before_fork");
   fhandler_base *fh;
   for (size_t i = 0; i < size; i++)
     if ((fh = fds[i]) != NULL)
       {
-	debug_printf ("fd %d(%s)", i, fh->get_name ());
+	debug_printf ("fd %d (%s)", i, fh->get_name ());
 	fh->fixup_before_fork_exec (target_proc_id);
       }
-  ReleaseResourceLock(LOCK_FD_LIST, WRITE_LOCK | READ_LOCK, "fixup_before_fork");
+  ReleaseResourceLock (LOCK_FD_LIST, WRITE_LOCK | READ_LOCK, "fixup_before_fork");
 }
 
 void
@@ -480,7 +496,7 @@ dtable::fixup_before_exec (DWORD target_proc_id)
   for (size_t i = 0; i < size; i++)
     if ((fh = fds[i]) != NULL && !fh->get_close_on_exec ())
       {
-	debug_printf ("fd %d(%s)", i, fh->get_name ());
+	debug_printf ("fd %d (%s)", i, fh->get_name ());
 	fh->fixup_before_fork_exec (target_proc_id);
       }
   ReleaseResourceLock (LOCK_FD_LIST, WRITE_LOCK | READ_LOCK, "fixup_before_exec");
@@ -517,9 +533,13 @@ dtable::fixup_after_fork (HANDLE parent)
       {
 	if (fh->get_close_on_exec () || fh->get_need_fork_fixup ())
 	  {
-	    debug_printf ("fd %d(%s)", i, fh->get_name ());
+	    debug_printf ("fd %d (%s)", i, fh->get_name ());
 	    fh->fixup_after_fork (parent);
 	  }
+	if (i == 0)
+	  SetStdHandle (std_consts[i], fh->get_io_handle ());
+	else if (i <= 2)
+	  SetStdHandle (std_consts[i], fh->get_output_handle ());
       }
 }
 
@@ -527,14 +547,16 @@ int
 dtable::vfork_child_dup ()
 {
   fhandler_base **newtable;
-  newtable = (fhandler_base **) ccalloc (HEAP_ARGV, size, sizeof(fds[0]));
+  SetResourceLock (LOCK_FD_LIST, WRITE_LOCK | READ_LOCK, "dup");
+  newtable = (fhandler_base **) ccalloc (HEAP_ARGV, size, sizeof (fds[0]));
   int res = 1;
 
-  SetResourceLock(LOCK_FD_LIST, WRITE_LOCK | READ_LOCK, "dup");
   for (size_t i = 0; i < size; i++)
     if (not_open (i))
       continue;
-    else if ((newtable[i] = dup_worker (fds[i])) == NULL)
+    else if ((newtable[i] = dup_worker (fds[i])) != NULL)
+      newtable[i]->set_close_on_exec (fds[i]->get_close_on_exec ());
+    else
       {
 	res = 0;
 	set_errno (EBADF);
@@ -543,15 +565,16 @@ dtable::vfork_child_dup ()
 
   fds_on_hold = fds;
   fds = newtable;
+
 out:
-  ReleaseResourceLock(LOCK_FD_LIST, WRITE_LOCK | READ_LOCK, "dup");
+  ReleaseResourceLock (LOCK_FD_LIST, WRITE_LOCK | READ_LOCK, "dup");
   return 1;
 }
 
 void
 dtable::vfork_parent_restore ()
 {
-  SetResourceLock(LOCK_FD_LIST, WRITE_LOCK | READ_LOCK, "restore");
+  SetResourceLock (LOCK_FD_LIST, WRITE_LOCK | READ_LOCK, "restore");
 
   close_all_files ();
   fhandler_base **deleteme = fds;
@@ -559,7 +582,7 @@ dtable::vfork_parent_restore ()
   fds_on_hold = NULL;
   cfree (deleteme);
 
-  ReleaseResourceLock(LOCK_FD_LIST, WRITE_LOCK | READ_LOCK, "restore");
+  ReleaseResourceLock (LOCK_FD_LIST, WRITE_LOCK | READ_LOCK, "restore");
   return;
 }
 
@@ -568,6 +591,7 @@ dtable::vfork_child_fixup ()
 {
   if (!fds_on_hold)
     return;
+  debug_printf ("here");
   fhandler_base **saveme = fds;
   fds = fds_on_hold;
 

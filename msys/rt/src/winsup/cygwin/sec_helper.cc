@@ -1,6 +1,6 @@
 /* sec_helper.cc: NT security helper functions
 
-   Copyright 2000, 2001 Cygnus Solutions.
+   Copyright 2000, 2001 Red Hat, Inc.
 
    Written by Corinna Vinschen <corinna@vinschen.de>
 
@@ -26,6 +26,7 @@ details. */
 #include <wininet.h>
 #include "cygerrno.h"
 #include "perprocess.h"
+#include "security.h"
 #include "fhandler.h"
 #include "path.h"
 #include "dtable.h"
@@ -33,17 +34,17 @@ details. */
 #include "sigproc.h"
 #include "pinfo.h"
 #include "cygheap.h"
-#include "security.h"
 
 SID_IDENTIFIER_AUTHORITY sid_auth[] = {
-        {SECURITY_NULL_SID_AUTHORITY},
-        {SECURITY_WORLD_SID_AUTHORITY},
-        {SECURITY_LOCAL_SID_AUTHORITY},
-        {SECURITY_CREATOR_SID_AUTHORITY},
-        {SECURITY_NON_UNIQUE_AUTHORITY},
-        {SECURITY_NT_AUTHORITY}
+	{SECURITY_NULL_SID_AUTHORITY},
+	{SECURITY_WORLD_SID_AUTHORITY},
+	{SECURITY_LOCAL_SID_AUTHORITY},
+	{SECURITY_CREATOR_SID_AUTHORITY},
+	{SECURITY_NON_UNIQUE_AUTHORITY},
+	{SECURITY_NT_AUTHORITY}
 };
 
+cygsid well_known_null_sid ("S-1-0-0");
 cygsid well_known_world_sid ("S-1-1-0");
 cygsid well_known_local_sid ("S-1-2-0");
 cygsid well_known_creator_owner_sid ("S-1-3-0");
@@ -54,7 +55,7 @@ cygsid well_known_interactive_sid ("S-1-5-4");
 cygsid well_known_service_sid ("S-1-5-6");
 cygsid well_known_authenticated_users_sid ("S-1-5-11");
 cygsid well_known_system_sid ("S-1-5-18");
-cygsid well_known_admin_sid ("S-1-5-32-544");
+cygsid well_known_admins_sid ("S-1-5-32-544");
 
 char *
 cygsid::string (char *nsidstr) const
@@ -347,7 +348,7 @@ set_process_privilege (const char *privilege, BOOL enable)
   DWORD size;
 
   if (!OpenProcessToken (hMainProc, TOKEN_QUERY | TOKEN_ADJUST_PRIVILEGES,
-  			 &hToken))
+			 &hToken))
     {
       __seterrno ();
       goto out;
@@ -364,7 +365,7 @@ set_process_privilege (const char *privilege, BOOL enable)
   new_priv.Privileges[0].Attributes = enable ? SE_PRIVILEGE_ENABLED : 0;
 
   if (!AdjustTokenPrivileges (hToken, FALSE, &new_priv,
-  			      sizeof orig_priv, &orig_priv, &size))
+			      sizeof orig_priv, &orig_priv, &size))
     {
       __seterrno ();
       goto out;

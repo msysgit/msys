@@ -1,8 +1,8 @@
-/* malloc.cc for WIN32.
+/* malloc.cc
 
-   Copyright 1996, 1997, 1998 Cygnus Solutions.
+   Copyright 1996, 1997, 1998, 1999, 2000, 2001 Red Hat, Inc.
 
-   Written by Steve Chamberlain of Cygnus Support
+   Originally written by Steve Chamberlain of Cygnus Support
    sac@cygnus.com
 
 This file is part of Cygwin.
@@ -14,6 +14,7 @@ details. */
 #include "winsup.h"
 #include <stdlib.h>
 #include <assert.h>
+#include "security.h"
 #include "fhandler.h"
 #include "dtable.h"
 #include "cygheap.h"
@@ -27,7 +28,7 @@ details. */
    problems if malloced on our heap and free'd on theirs.
 */
 
-static int export_malloc_called = 0;
+static int export_malloc_called;
 static int use_internal_malloc = 1;
 
 #undef in
@@ -153,8 +154,7 @@ _strdup_r (struct _reent *, const char *s)
 /* These routines are used by the application if it
    doesn't provide its own malloc. */
 
-extern "C"
-void
+extern "C" void
 export_free (void *p)
 {
   malloc_printf ("(%p), called by %x", p, ((int *)&p)[-1]);
@@ -164,8 +164,7 @@ export_free (void *p)
     user_data->free (p);
 }
 
-extern "C"
-void *
+extern "C" void *
 export_malloc (int size)
 {
   void *res;
@@ -178,8 +177,7 @@ export_malloc (int size)
   return res;
 }
 
-extern "C"
-void *
+extern "C" void *
 export_realloc (void *p, int size)
 {
   void *res;
@@ -191,8 +189,7 @@ export_realloc (void *p, int size)
   return res;
 }
 
-extern "C"
-void *
+extern "C" void *
 export_calloc (size_t nmemb, size_t size)
 {
   void *res;
@@ -233,15 +230,13 @@ malloc_init ()
     }
 }
 
-extern "C"
-void
+extern "C" void
 __malloc_lock (struct _reent *)
 {
   mprotect->acquire ();
 }
 
-extern "C"
-void
+extern "C" void
 __malloc_unlock (struct _reent *)
 {
   mprotect->release ();

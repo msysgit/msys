@@ -1,6 +1,6 @@
 /* ntdll.h.  Contains ntdll specific stuff not defined elsewhere.
 
-   Copyright 2000 Cygnus Solutions.
+   Copyright 2000, 2001 Red Hat, Inc.
 
    This file is part of Cygwin.
 
@@ -137,10 +137,10 @@ typedef struct _SYSTEM_PROCESSES
 extern "C"
 {
   NTSTATUS NTAPI NtCreateToken (PHANDLE, ACCESS_MASK, POBJECT_ATTRIBUTES,
-			        TOKEN_TYPE, PLUID, PLARGE_INTEGER, PTOKEN_USER,
-			        PTOKEN_GROUPS, PTOKEN_PRIVILEGES, PTOKEN_OWNER,
-			        PTOKEN_PRIMARY_GROUP, PTOKEN_DEFAULT_DACL,
-			        PTOKEN_SOURCE);
+				TOKEN_TYPE, PLUID, PLARGE_INTEGER, PTOKEN_USER,
+				PTOKEN_GROUPS, PTOKEN_PRIVILEGES, PTOKEN_OWNER,
+				PTOKEN_PRIMARY_GROUP, PTOKEN_DEFAULT_DACL,
+				PTOKEN_SOURCE);
   NTSTATUS NTAPI NtMapViewOfSection (HANDLE, HANDLE, PVOID *, ULONG, ULONG,
 				     PLARGE_INTEGER, PULONG, SECTION_INHERIT,
 				     ULONG, ULONG);

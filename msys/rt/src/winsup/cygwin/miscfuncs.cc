@@ -9,10 +9,12 @@ Cygwin license.  Please consult the file "CYGWIN_LICENSE" for
 details. */
 
 #include "winsup.h"
+#include "cygerrno.h"
+#include <sys/errno.h>
 
 /********************** String Helper Functions ************************/
 
-char case_folded_lower[] = {
+const char case_folded_lower[] NO_COPY = {
    0,   1,   2,   3,   4,   5,   6,   7,   8,   9,  10,  11,  12,  13,  14,  15,
   16,  17,  18,  19,  20,  21,  22,  23,  24,  25,  26,  27,  28,  29,  30,  31,
   32, '!', '"', '#', '$', '%', '&',  39, '(', ')', '*', '+', ',', '-', '.', '/',
@@ -31,7 +33,7 @@ char case_folded_lower[] = {
  240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 254, 255
 };
 
-char case_folded_upper[] = {
+const char case_folded_upper[] NO_COPY = {
    0,   1,   2,   3,   4,   5,   6,   7,   8,   9,  10,  11,  12,  13,  14,  15,
   16,  17,  18,  19,  20,  21,  22,  23,  24,  25,  26,  27,  28,  29,  30,  31,
   32, '!', '"', '#', '$', '%', '&',  39, '(', ')', '*', '+', ',', '-', '.', '/',
@@ -111,4 +113,43 @@ strcasestr (const char *searchee, const char *lookfor)
     }
 
   return NULL;
+}
+
+int __stdcall
+check_null_empty_str (const char *name)
+{
+  if (!name || IsBadStringPtr (name, MAX_PATH))
+    return EFAULT;
+
+  if (!*name)
+    return ENOENT;
+
+  return 0;
+}
+
+int __stdcall
+check_null_empty_str_errno (const char *name)
+{
+  int __err;
+  if ((__err = check_null_empty_str (name)))
+    set_errno (__err);
+  return __err;
+}
+
+int __stdcall
+__check_null_invalid_struct (const void *s, unsigned sz)
+{
+  if (!s || IsBadWritePtr ((void *) s, sz))
+    return EFAULT;
+
+  return 0;
+}
+
+int __stdcall
+__check_null_invalid_struct_errno (const void *s, unsigned sz)
+{
+  int __err;
+  if ((__err = __check_null_invalid_struct (s, sz)))
+    set_errno (__err);
+  return __err;
 }

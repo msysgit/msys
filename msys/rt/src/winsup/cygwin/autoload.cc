@@ -268,9 +268,9 @@ wsock_init ()
       int (*wsastartup) (int, WSADATA *);
 
       wsastartup = (int (*)(int, WSADATA *))
-      		   GetProcAddress ((HMODULE) (dll->handle), "WSAStartup");
+		   GetProcAddress ((HMODULE) (dll->handle), "WSAStartup");
       if (wsastartup)
-        {
+	{
 	  int res = wsastartup ((2<<8) | 2, &wsadata);
 
 	  debug_printf ("res %d", res);
@@ -283,7 +283,7 @@ wsock_init ()
 	  debug_printf ("lpVendorInfo %d", wsadata.lpVendorInfo);
 
 	  wsock_started = 1;
-        }
+	}
     }
 
   InterlockedDecrement (&here);
@@ -478,6 +478,7 @@ LoadDLLfuncEx (CancelIo, 4, kernel32, 1)
 LoadDLLfuncEx (Process32First, 8, kernel32, 1)
 LoadDLLfuncEx (Process32Next, 8, kernel32, 1)
 LoadDLLfuncEx (CreateToolhelp32Snapshot, 8, kernel32, 1)
+LoadDLLfunc (TryEnterCriticalSection, 4, kernel32)
 
 LoadDLLfuncEx (waveOutGetNumDevs, 0, winmm, 1)
 LoadDLLfuncEx (waveOutOpen, 24, winmm, 1)

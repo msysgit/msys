@@ -1,6 +1,6 @@
 /* syslog.cc
 
-   Copyright 1996, 1997, 1998 Cygnus Solutions.
+   Copyright 1996, 1997, 1998, 1999, 2000, 2001 Red Hat, Inc.
 
 This file is part of Cygwin.
 
@@ -14,6 +14,7 @@ details. */
 #include <syslog.h>
 #include <stdarg.h>
 #include <unistd.h>
+#include "security.h"
 #include "fhandler.h"
 #include "dtable.h"
 #include "cygerrno.h"
@@ -299,7 +300,7 @@ syslog (int priority, const char *message, ...)
 	      return;
 	  }
 
-	if (os_being_run != winNT)
+	if (!iswinnt)
 	  {
 	    /* Add a priority string - not needed for NT
 	       as NT has its own priority codes. */
@@ -335,7 +336,7 @@ syslog (int priority, const char *message, ...)
 
     msg_strings[0] = total_msg;
 
-    if (os_being_run == winNT)
+    if (iswinnt)
       {
 	/* For NT, open the event log and send the message */
 	HANDLE hEventSrc = RegisterEventSourceA (NULL, (process_ident != NULL) ?

@@ -1,6 +1,6 @@
 /* grp.cc
 
-   Copyright 1996, 1997, 1998, 2000 Cygnus Solutions.
+   Copyright 1996, 1997, 1998, 2000, 2001 Red Hat, Inc.
 
    Original stubs by Jason Molenda of Cygnus Support, crash@cygnus.com
    First implementation by Gunther Ebert, gunther.ebert@ixos-leipzig.de
@@ -20,19 +20,21 @@ details. */
 #include "sync.h"
 #include "sigproc.h"
 #include "pinfo.h"
+#include "security.h"
 #include "fhandler.h"
 #include "dtable.h"
+#include "path.h"
 #include "cygheap.h"
 #include "cygerrno.h"
-#include "security.h"
+#include "pwdgrp.h"
 
 /* Read /etc/group only once for better performance.  This is done
    on the first call that needs information from it. */
 
 static NO_COPY const char *etc_group = "/etc/group";
-static struct group *group_buf = NULL;		/* group contents in memory */
-static int curr_lines = 0;
-static int max_lines = 0;
+static struct group *group_buf;		/* group contents in memory */
+static int curr_lines;
+static int max_lines;
 
 /* Position in the group cache */
 #ifdef _MT_SAFE
@@ -41,17 +43,7 @@ static int max_lines = 0;
 static int grp_pos = 0;
 #endif
 
-/* Set to loaded when /etc/passwd has been read in by read_etc_passwd ().
-   Set to emulated if passwd is emulated. */
-/* Functions in this file need to check the value of passwd_state
-   and read in the password file if it isn't set. */
-enum grp_state {
-  uninitialized = 0,
-  initializing,
-  emulated,
-  loaded
-};
-static grp_state group_state = uninitialized;
+static pwdgrp_check group_state;
 
 static int
 parse_grp (struct group &grp, const char *line)
@@ -77,37 +69,37 @@ parse_grp (struct group &grp, const char *line)
     {
       *dp++ = '\0';
       if (!strlen (grp.gr_passwd))
-        grp.gr_passwd = NULL;
+	grp.gr_passwd = NULL;
 
       grp.gr_gid = strtol (dp, NULL, 10);
       dp = strchr (dp, ':');
       if (dp)
-        {
-          if (*++dp)
-            {
-              int i = 0;
-              char *cp;
+	{
+	  if (*++dp)
+	    {
+	      int i = 0;
+	      char *cp;
 
-              for (cp = dp; (cp = strchr (cp, ',')) != NULL; ++cp)
-                ++i;
-              char **namearray = (char **) calloc (i + 2, sizeof (char *));
-              if (namearray)
-                {
-                  i = 0;
-                  for (cp = dp; (cp = strchr (dp, ',')) != NULL; dp = cp + 1)
-                    {
-                      *cp = '\0';
-                      namearray[i++] = dp;
-                    }
-                  namearray[i++] = dp;
-                  namearray[i] = NULL;
-                }
+	      for (cp = dp; (cp = strchr (cp, ',')) != NULL; ++cp)
+		++i;
+	      char **namearray = (char **) calloc (i + 2, sizeof (char *));
+	      if (namearray)
+		{
+		  i = 0;
+		  for (cp = dp; (cp = strchr (dp, ',')) != NULL; dp = cp + 1)
+		    {
+		      *cp = '\0';
+		      namearray[i++] = dp;
+		    }
+		  namearray[i++] = dp;
+		  namearray[i] = NULL;
+		}
 	      grp.gr_mem = namearray;
-            }
-          else
-            grp.gr_mem = (char **) calloc (1, sizeof (char *));
-          return 1;
-        }
+	    }
+	  else
+	    grp.gr_mem = (char **) calloc (1, sizeof (char *));
+	  return 1;
+	}
     }
   return 0;
 }
@@ -153,6 +145,16 @@ read_etc_group ()
   if (group_state != initializing)
     {
       group_state = initializing;
+      if (max_lines) /* When rereading, free allocated memory first. */
+	{
+	  for (int i = 0; i < curr_lines; ++i)
+	    {
+	      free (group_buf[i].gr_name);
+	      free (group_buf[i].gr_mem);
+	    }
+	  free (group_buf);
+	  curr_lines = max_lines = 0;
+	}
 
       FILE *f = fopen (etc_group, "rt");
 
@@ -164,6 +166,7 @@ read_etc_group ()
 		add_grp_line (linebuf);
 	    }
 
+	  group_state.set_last_modified (f);
 	  fclose (f);
 	  group_state = loaded;
 	}
@@ -174,7 +177,7 @@ read_etc_group ()
 	  SID_NAME_USE acType;
 	  debug_printf ("Emulating /etc/group");
 	  if (! LookupAccountSidA (NULL ,
-				    well_known_admin_sid,
+				    well_known_admins_sid,
 				    group_name,
 				    &group_name_len,
 				    domain_name,
@@ -205,9 +208,9 @@ getgrgid (gid_t gid)
   for (int i = 0; i < curr_lines; i++)
     {
       if (group_buf[i].gr_gid == DEFAULT_GID)
-        default_grp = group_buf + i;
+	default_grp = group_buf + i;
       if (group_buf[i].gr_gid == gid)
-        return group_buf + i;
+	return group_buf + i;
     }
 
   return default_grp;
@@ -282,8 +285,8 @@ getgroups (int gidsetsize, gid_t *grouplist, gid_t gid, const char *username)
       OpenProcessToken (hMainProc, TOKEN_QUERY, &hToken))
     {
       if (GetTokenInformation (hToken, TokenGroups, NULL, 0, &size)
-          || GetLastError () == ERROR_INSUFFICIENT_BUFFER)
-        {
+	  || GetLastError () == ERROR_INSUFFICIENT_BUFFER)
+	{
 	  char buf[size];
 	  TOKEN_GROUPS *groups = (TOKEN_GROUPS *) buf;
 
@@ -307,12 +310,12 @@ getgroups (int gidsetsize, gid_t *grouplist, gid_t gid, const char *username)
 			break;
 		      }
 	    }
-        }
+	}
       else
-        debug_printf ("%d = GetTokenInformation(NULL) %E", size);
+	debug_printf ("%d = GetTokenInformation(NULL) %E", size);
       CloseHandle (hToken);
       if (cnt)
-        return cnt;
+	return cnt;
     }
 
   for (int gidx = 0; (gr = internal_getgrent (gidx)); ++gidx)

@@ -158,7 +158,9 @@ open_stackdumpfile ()
     {
       const char *p;
       /* write to progname.stackdump if possible */
-      if ((p = strrchr (myself->progname, '\\')))
+      if (!myself->progname[0])
+	p = "unknown";
+      else if ((p = strrchr (myself->progname, '\\')))
 	p++;
       else
 	p = myself->progname;
@@ -587,7 +589,10 @@ sig_handle_tty_stop (int sig)
   /* Silently ignore attempts to suspend if there is no accomodating
      cygwin parent to deal with this behavior. */
   if (!myself->ppid_handle)
-    return;
+    {
+      myself->process_state &= ~PID_STOPPED;
+      return;
+    }
   myself->stopsig = sig;
   /* See if we have a living parent.  If so, send it a special signal.
    * It will figure out exactly which pid has stopped by scanning
@@ -635,8 +640,8 @@ interruptible (DWORD pc, int testvalid = 0)
   else
     res = !strncasematch (windows_system_directory, checkdir,
 			  windows_system_directory_length);
+  sigproc_printf ("pc %p, h %p, interruptible %d, testvalid %d", pc, h, res, testvalid);
 # undef h
-  sigproc_printf ("h %p, interruptible %d", res);
   return res;
 }
 
@@ -681,6 +686,10 @@ interrupt_setup (int sig, void *handler, DWORD retaddr, DWORD *retaddr_on_stack,
       myself->stopsig = 0;
       myself->process_state |= PID_STOPPED;
     }
+  /* Clear any waiting threads prior to dispatching to handler function */
+  proc_subproc (PROC_CLEARWAIT, 1);
+  int res = SetEvent (signal_arrived);	// For an EINTR case
+  sigproc_printf ("armed signal_arrived %p, res %d", signal_arrived, res);
 }
 
 static bool interrupt_now (CONTEXT *, int, void *, struct sigaction&) __attribute__((regparm(3)));
@@ -689,7 +698,7 @@ interrupt_now (CONTEXT *ctx, int sig, void *handler, struct sigaction& siga)
 {
   interrupt_setup (sig, handler, ctx->Eip, 0, siga);
   ctx->Eip = (DWORD) sigdelayed;
-  SetThreadContext (myself->getthread2signal (), ctx); /* Restart the thread */
+  SetThreadContext (myself->getthread2signal (), ctx); /* Restart the thread in a new location */
   return 1;
 }
 
@@ -850,20 +859,15 @@ setup_handler (int sig, void *handler, struct sigaction& siga)
     }
 
  set_pending:
-  if (!interrupted)
+  if (interrupted)
+    res = 1;
+  else
     {
       pending_signals = 1;	/* FIXME: Probably need to be more tricky here */
       sig_set_pending (sig);
       sig_dispatch_pending (1);
       Sleep (0);		/* Hopefully, other process will be waking up soon. */
       sigproc_printf ("couldn't send signal %d", sig);
-    }
-  else
-    {
-      /* Clear any waiting threads prior to dispatching to handler function */
-      proc_subproc (PROC_CLEARWAIT, 1);
-      res = SetEvent (signal_arrived);	// For an EINTR case
-      sigproc_printf ("armed signal_arrived %p, res %d", signal_arrived, res);
     }
 
   if (th)
@@ -893,22 +897,25 @@ ctrl_c_handler (DWORD type)
   if (type == CTRL_LOGOFF_EVENT)
     return TRUE;
 
-  if ((type == CTRL_CLOSE_EVENT) || (type == CTRL_SHUTDOWN_EVENT))
-    /* Return FALSE to prevent an "End task" dialog box from appearing
-       for each Cygwin process window that's open when the computer
-       is shut down or console window is closed. */
+  /* Return FALSE to prevent an "End task" dialog box from appearing
+     for each Cygwin process window that's open when the computer
+     is shut down or console window is closed. */
+  if (type == CTRL_SHUTDOWN_EVENT)
+    {
+      sig_send (NULL, SIGTERM);
+      return FALSE;
+    }
+  if (type == CTRL_CLOSE_EVENT)
     {
       sig_send (NULL, SIGHUP);
       return FALSE;
     }
+
   tty_min *t = cygwin_shared->tty.get_tty (myself->ctty);
   /* Ignore this if we're not the process group lead since it should be handled
      *by* the process group leader. */
-  if (t->getpgid () && pid_exists (t->getpgid ()) &&
-      (t->getpgid () != myself->pid ||
-       (GetTickCount () - t->last_ctrl_c) < MIN_CTRL_C_SLOP))
-    return TRUE;
-  else
+  if (myself->ctty != -1 && t->getpgid () == myself->pid &&
+       (GetTickCount () - t->last_ctrl_c) >= MIN_CTRL_C_SLOP)
     /* Otherwise we just send a SIGINT to the process group and return TRUE (to indicate
        that we have handled the signal).  At this point, type should be
        a CTRL_C_EVENT or CTRL_BREAK_EVENT. */
@@ -918,6 +925,7 @@ ctrl_c_handler (DWORD type)
       t->last_ctrl_c = GetTickCount ();
       return TRUE;
     }
+  return TRUE;
 }
 
 /* Set the signal mask for this process.
@@ -1119,6 +1127,12 @@ extern "C" {
 static int __stdcall
 call_signal_handler_now ()
 {
+  if (!sigsave.sig)
+    {
+      sigproc_printf ("call_signal_handler_now called when no signal active");
+      return 0;
+    }
+
   int sa_flags = sigsave.sa_flags;
   sigproc_printf ("sa_flags %p", sa_flags);
   *sigsave.retaddr_on_stack = sigsave.retaddr;
@@ -1134,8 +1148,8 @@ static int __stdcall call_signal_handler_now_dummy ()
 int
 sigframe::call_signal_handler ()
 {
-  unregister ();
-  return call_signal_handler_now ();
+  return unregister () ? call_signal_handler_now () : 0;
+
 }
 
 #define pid_offset (unsigned)(((_pinfo *)NULL)->pid)
@@ -1154,68 +1168,61 @@ void unused_sig_wrapper ()
    to restore any mask, restores any potentially clobbered registers
    and returns to original caller. */
 __asm__ volatile ("\n\
-	.text\n\
-\n\
-_sigreturn:\n\
-	addl	$4,%%esp	# Remove argument\n\
-	movl	%%esp,%%ebp\n\
-	addl	$36,%%ebp\n\
-\n\
-	cmpl	$0,%4		# Did a signal come in?\n\
-	jz	1f		# No, if zero\n\
-	call	_call_signal_handler_now@0 # yes handle the signal\n\
-\n\
-# FIXME: There is a race here.  The signal handler could set up\n\
-# the sigsave structure between _call_signal_handler and the\n\
-# end of _set_process_mask.  This would make cygwin detect an\n\
-# incorrect signal mask.\n\
-\n\
-1:	call	_set_process_mask@4\n\
-	popl	%%eax		# saved errno\n\
-	testl	%%eax,%%eax	# Is it < 0\n\
-	jl	2f		# yup.  ignore it\n\
-	movl	%1,%%ebx\n\
-	movl	%%eax,(%%ebx)\n\
-2:	popl	%%eax\n\
-	popl	%%ebx\n\
-	popl	%%ecx\n\
-	popl	%%edx\n\
-	popl	%%edi\n\
-	popl	%%esi\n\
-	popf\n\
-	popl	%%ebp\n\
-	ret\n\
-\n\
-__no_sig_start:\n\
-_sigdelayed:\n\
-	pushl	%2			# original return address\n\
-_sigdelayed0:\n\
-	pushl	%%ebp\n\
-	movl	%%esp,%%ebp\n\
-	pushf\n\
-	pushl	%%esi\n\
-	pushl	%%edi\n\
-	pushl	%%edx\n\
-	pushl	%%ecx\n\
-	pushl	%%ebx\n\
-	pushl	%%eax\n\
-	pushl	%7			# saved errno\n\
-	pushl	%3			# oldmask\n\
-	pushl	%4			# signal argument\n\
-	pushl	$_sigreturn\n\
-\n\
-	call	_reset_signal_arrived@0\n\
-	pushl	%5			# signal number\n\
-	pushl	%8			# newmask\n\
-	movl	$0,%0			# zero the signal number as a\n\
+	.text								\n\
+_sigreturn:								\n\
+	addl	$4,%%esp	# Remove argument			\n\
+	movl	%%esp,%%ebp						\n\
+	addl	$36,%%ebp						\n\
+	call	_set_process_mask@4					\n\
+									\n\
+	cmpl	$0,%4		# Did a signal come in?			\n\
+	jz	1f		# No, if zero				\n\
+	call	_call_signal_handler_now@0 # yes handle the signal	\n\
+									\n\
+1:	popl	%%eax		# saved errno				\n\
+	testl	%%eax,%%eax	# Is it < 0				\n\
+	jl	2f		# yup.  ignore it			\n\
+	movl	%1,%%ebx						\n\
+	movl	%%eax,(%%ebx)						\n\
+2:	popl	%%eax							\n\
+	popl	%%ebx							\n\
+	popl	%%ecx							\n\
+	popl	%%edx							\n\
+	popl	%%edi							\n\
+	popl	%%esi							\n\
+	popf								\n\
+	popl	%%ebp							\n\
+	ret								\n\
+									\n\
+__no_sig_start:								\n\
+_sigdelayed:								\n\
+	pushl	%2			# original return address	\n\
+_sigdelayed0:								\n\
+	pushl	%%ebp							\n\
+	movl	%%esp,%%ebp						\n\
+	pushf								\n\
+	pushl	%%esi							\n\
+	pushl	%%edi							\n\
+	pushl	%%edx							\n\
+	pushl	%%ecx							\n\
+	pushl	%%ebx							\n\
+	pushl	%%eax							\n\
+	pushl	%7			# saved errno			\n\
+	pushl	%3			# oldmask			\n\
+	pushl	%4			# signal argument		\n\
+	pushl	$_sigreturn						\n\
+									\n\
+	call	_reset_signal_arrived@0					\n\
+	pushl	%5			# signal number			\n\
+	pushl	%8			# newmask			\n\
+	movl	$0,%0			# zero the signal number as a	\n\
 					# flag to the signal handler thread\n\
 					# that it is ok to set up sigsave\n\
-\n\
-	call	_set_process_mask@4\n\
-	popl	%%eax\n\
-	jmp	*%%eax\n\
-__no_sig_end:\n\
-\n\
+									\n\
+	call	_set_process_mask@4					\n\
+	popl	%%eax							\n\
+	jmp	*%%eax							\n\
+__no_sig_end:								\n\
 " : "=m" (sigsave.sig) : "m" (&_impure_ptr->_errno),
   "g" (sigsave.retaddr), "g" (sigsave.oldmask), "g" (sigsave.sig),
     "g" (sigsave.func), "o" (pid_offset), "g" (sigsave.saved_errno), "g" (sigsave.newmask)

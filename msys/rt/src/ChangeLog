@@ -1,3 +1,40 @@
+2001-09-03  Jeff Holcomb  <jeffh@redhat.com>
+
+	* configure.in: Enable libstdc++-v3 for h8300 targets.
+
+2001-08-30  Eric Christopher  <echristo@redhat.com>
+	    Jason Eckhardt  <jle@redhat.com>
+
+	* config.sub: Add support for mipsisa32.
+
+2001-08-30  Eric Christopher  <echristo@redhat.com>
+
+	* config.sub, config.guess: Import latest from subversions.
+
+2001-08-20  Alan Modra  <amodra@bigpond.net.au>
+
+	* config.sub, config.guess: Import latest from subversions.
+
+2001-07-26  DJ Delorie  <dj@redhat.com>
+
+	* MAINTAINERS: Clarify libiberty merge rules and procedures.
+
+2001-06-19  Alan Modra  <amodra@bigpond.net.au>
+
+	* Makefile.in: Revert 2001-06-17.
+	(VER): If AM_INIT_AUTOMAKE uses BFD_VERSION, get version from bfd/.
+
+2001-06-17  H.J. Lu <hjl@gnu.org>
+
+	* Makefile.in (gas.tar.bz2): Pass TOOL=bfd PACKAGE=gas to make.
+	(gas+binutils.tar.bz2): Likewise.
+	(binutils.tar.bz2): Pass TOOL=bfd PACKAGE=binutils to make.
+
+Fri Jun  8 11:14:02 2001  Andrew Cagney  <cagney@b1.cygnus.com>
+
+	* Makefile.in (VER): When present, extract the version number from
+ 	the file version.in.
+
 2001-06-08  Alexandre Oliva  <aoliva@redhat.com>, Jeff Sturm  <jsturm@one-point.com>
 
 	* Makefile.in (AS_FOR_TARGET, LD_FOR_TARGET, NM_FOR_TARGET): If
@@ -26,7 +63,7 @@
 2001-05-24  Tom Rix <trix@redhat.com>
 
 	* configure.in : enable ld for aix
-	
+
 2001-05-22  Alexandre Oliva  <aoliva@redhat.com>
 
 	* ltcf-cxx.sh (allow_undefined_flag, no_undefined_flag)

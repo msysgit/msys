@@ -1,6 +1,6 @@
 /* Internal format of XCOFF object file data structures for BFD.
 
-   Copyright 1995, 1996, 1997, 1998, 1999, 2000 Free Software Foundation, Inc.
+   Copyright 1995, 1996, 1997, 1998, 1999, 2000, 2001 Free Software Foundation, Inc.
    Written by Ian Lance Taylor <ian@cygnus.com>, Cygnus Support.
 
    This file is part of BFD, the Binary File Descriptor library.
@@ -122,6 +122,8 @@
 /* 		14	??? */
 #define	XMC_TC0	15		/* Read-write TOC anchor */
 #define XMC_TD	16		/* Read-write data in TOC */
+#define	XMC_SV64   17		/* Read-only 64 bit supervisor call */
+#define	XMC_SV3264 18		/* Read-only 32 or 64 bit supervisor call */
 
 /* The ldhdr structure.  This appears at the start of the .loader
    section.  */
@@ -305,6 +307,11 @@ struct xcoff_link_hash_entry
  * XCOFF_RTINIT 
  * Symbol is the __rtinit symbol 
  *
+ * XCOFF_SYSCALL32 
+ * Symbol is an imported 32 bit syscall
+ * 
+ * XCOFF_SYSCALL64 
+ * Symbol is an imported 64 bit syscall
  */
 
 #define XCOFF_REF_REGULAR      0x00000001
@@ -322,7 +329,8 @@ struct xcoff_link_hash_entry
 #define XCOFF_DESCRIPTOR       0x00001000
 #define XCOFF_MULTIPLY_DEFINED 0x00002000
 #define XCOFF_RTINIT           0x00004000
-
+#define XCOFF_SYSCALL32        0x00008000
+#define XCOFF_SYSCALL64        0x00010000 
 
 /* The XCOFF linker hash table.  */
 
@@ -425,7 +433,8 @@ struct xcoff_loader_info
  * from /usr/include/rtinit.h
  */
 struct __rtinit {
-  int		(*rtl)();		/* Pointer to runtime linker */
+  int		(*rtl) PARAMS ((void));	/* Pointer to runtime linker.
+					   XXX: Is the parameter really void?  */
   int		init_offset;		/* Offset to array of init functions
 					   (0 if none). */
   int		fini_offset;		/* Offset to array of fini functions

@@ -1,3 +1,106 @@
+2001-08-29  Kaveh R. Ghazi  <ghazi@caip.rutgers.edu>
+
+	* ansidecl.h: Update comments reflecting previous change.
+
+2001-08-27  Kaveh R. Ghazi  <ghazi@caip.rutgers.edu>
+
+	* ansidecl.h (VA_OPEN, VA_CLOSE): Allow multiple uses.
+
+2001-08-25  Nick Clifton  <nickc@cambridge.redhat.com>
+
+	* bfdlink.h (struct bfd_link_info): Change 'spare_dynamic_tags' to
+	unsigned to remove a compile time warning message.
+
+2001-08-24  H.J. Lu  <hjl@gnu.org>
+
+	* bfdlink.h (bfd_link_hash_table_type): New. The linker hash
+	table type, bfd_link_generic_hash_table and
+	bfd_link_elf_hash_table.
+	(bfd_link_hash_table): Add a new field, type, for the linker
+	hash table type.
+
+2001-08-23  Jakub Jelinek  <jakub@redhat.com>
+
+	* bfdlink.h (struct bfd_link_info): Add combreloc and
+	spare_dynamic_tags fields.
+
+2001-08-23  Lars Brinkhoff  <lars@nocrew.org>
+
+	* dyn-string.h, fibheap.h, partition.h, sort.h, splay-tree.h:
+	replace "GNU CC" with "GCC".
+
+2001-08-21  Richard Henderson  <rth@redhat.com>
+
+	* fibheap.h: Tidy formatting.
+	(fibnode_t): Limit degree to 31 bits to avoid warning.
+
+2001-08-20  Daniel Berlin  <dan@cgsoftware.com>
+
+	* fibheap.h: New file. Fibonacci heap.
+
+2001-08-20  Andrew Cagney  <ac131313@redhat.com>
+
+	* floatformat.h (floatformat_arm_ext): Document as deprecated.
+	(floatformat_arm_ext_big, floatformat_arm_ext_littlebyte_bigword)
+	(floatformat_ia64_spill_little, floatformat_ia64_quad_little)
+	(floatformat_ia64_spill_big, floatformat_ia64_quad_big)
+	(floatformat_m88110_harris_ext): Declare.
+
+2001-08-18  Zack Weinberg  <zackw@panix.com>
+
+	* ansidecl.h: Reorganize for readability, remove documentation
+	of obsolete macros, document PARAMS and VPARAMS.  Add new
+	macros VA_OPEN, VA_CLOSE, and VA_FIXEDARG for nicer variadic
+	function implementation.
+
+2001-08-16  Richard Henderson  <rth@redhat.com>
+
+	* hashtab.h (htab_hash_string): Declare.
+
+2001-06-13  Andrew Cagney  <ac131313@redhat.com>
+
+	* libiberty.h (lbasename): Change function declaration to return a
+	const char pointer.
+
+2001-08-10  Richard Sandiford  <rsandifo@redhat.com>
+
+	* opcode/mips.h (INSN_GP32): Remove.
+	(OPCODE_IS_MEMBER): Remove gp32 parameter.
+	(M_MOVE): New macro identifier.
+
+2001-08-02  Mark Kettenis  <kettenis@gnu.org>
+
+	* xregex.h (_REGEX_RE_COMP): Define.
+	(re_comp): Define to xre_comp.
+	(re_exec): Define to xre_exec.
+
+2001-08-02  Charles Wilson  <cwilson@ece.gatech.edu>
+
+        * bfdlink.h (struct bfd_link_info): add new boolean
+        field pei386_auto_import.
+
+2001-08-01  Aldy Hernandez  <aldyh@redhat.com>
+
+	* opcode/mips.h (INSN_ISA_MASK): Nuke bits 12-15.
+
+2001-07-18  Andreas Jaeger  <aj@suse.de>
+
+	* xregex2.h: Place under LGPL version 2.1.
+
+2001-07-12  Jeff Johnston  <jjohnstn@redhat.com>
+
+        * opcode/cgen.h (CGEN_INSN): Add regex support.
+        (build_insn_regex): Declare.
+
+2001-07-10  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* xregex.h: New file to support libiberty regex.
+	* xregex2.h: Ditto.
+
+2001-06-15  Hans-Peter Nilsson  <hp@axis.com>
+
+	* bfdlink.h (struct bfd_link_info): New member export_dynamic.
+
 2001-05-16  Matt Kraai  <kraai@alumni.carnegiemellon.edu>
 
 	* partition.h: Fix misspelling of `implementation'.

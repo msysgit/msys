@@ -1,6 +1,6 @@
 /* registry.cc: registry interface
 
-   Copyright 1996, 1997, 1998, 1999, 2000 Cygnus Solutions.
+   Copyright 1996, 1997, 1998, 1999, 2000, 2001 Red Hat, Inc.
 
 This file is part of Cygwin.
 
@@ -16,7 +16,7 @@ details. */
 #include <errno.h>
 #include "cygerrno.h"
 
-char cygnus_class[] = "cygnus";
+static char NO_COPY cygnus_class[] = "cygnus";
 
 reg_key::reg_key (HKEY top, REGSAM access, ...)
 {

@@ -65,6 +65,7 @@ details. */
 #include <cygwin/version.h>
 #include "cygerrno.h"
 #include "perprocess.h"
+#include "security.h"
 #include "fhandler.h"
 #include "path.h"
 #include "sync.h"
@@ -74,7 +75,6 @@ details. */
 #include "cygheap.h"
 #include "shared_info.h"
 #include "registry.h"
-#include "security.h"
 #include <assert.h>
 #include "shortcut.h"
 #include "msys.h"
@@ -377,6 +377,7 @@ path_conv::check (const char *src, unsigned opt,
   bool need_directory = 0;
   bool saw_symlinks = 0;
   int is_relpath;
+  sigframe thisframe (mainthread);
 
 #if 0
   static path_conv last_path_conv;
@@ -404,7 +405,7 @@ path_conv::check (const char *src, unsigned opt,
 
   if (!(opt & PC_NULLEMPTY))
     error = 0;
-  else if ((error = check_null_empty_path (src)))
+  else if ((error = check_null_empty_str (src)))
     return;
 
   /* This loop handles symlink expansion.  */
@@ -412,18 +413,18 @@ path_conv::check (const char *src, unsigned opt,
     {
       MALLOC_CHECK;
       assert (src);
-      char *p = strrchr (src, '/');
+
+      char *p = strrchr (src, '\0');
       /* Detect if the user was looking for a directory.  We have to strip the
 	 trailing slash initially and add it back on at the end due to Windows
 	 brain damage. */
-      if (p)
+      if (--p > src)
 	{
-	  if (p[1] == '\0' || strcmp (p, "/.") == 0)
+	  if (isdirsep (*p))
+	    need_directory = 1;
+	  else if (--p  > src && p[1] == '.' && isdirsep (*p))
 	    need_directory = 1;
 	}
-      else if ((p = strrchr (src, '\\')) &&
-	       (p[1] == '\0' || strcmp (p, "\\.") == 0))
-	need_directory = 1;
 
       is_relpath = !isabspath (src);
       error = normalize_posix_path (src, path_copy);
@@ -615,6 +616,8 @@ path_conv::check (const char *src, unsigned opt,
 	 to the symbolic link. */
       if ((p = strrchr (path_copy, '/')) == NULL)
 	p = path_copy;
+      else if (p == path_copy)
+	p++;
       *p = '\0';
 
       char *headptr;
@@ -738,7 +741,7 @@ digits (const char *name)
   return p > name && !*p ? n : -1;
 }
 
-const char *windows_device_names[] =
+const char *windows_device_names[] NO_COPY =
 {
   NULL,
   "\\dev\\console",
@@ -2451,6 +2454,7 @@ symlink (const char *topath, const char *frompath)
   char cwd[MAX_PATH + 1], *cp = NULL, c = 0;
   char w32topath[MAX_PATH + 1];
   DWORD written;
+  SECURITY_ATTRIBUTES sa = sec_none_nih;
 
   win32_path.check (frompath, PC_SYM_NOFOLLOW);
   if (allow_winsymlinks && !win32_path.error)
@@ -2512,7 +2516,11 @@ symlink (const char *topath, const char *frompath)
 	}
     }
 
-  h = CreateFileA(win32_path, GENERIC_WRITE, 0, &sec_none_nih,
+  if (allow_ntsec && win32_path.has_acls ())
+    set_security_attribute (S_IFLNK | S_IRWXU | S_IRWXG | S_IRWXO,
+			    &sa, alloca (4096), 4096);
+
+  h = CreateFileA(win32_path, GENERIC_WRITE, 0, &sa,
 		  CREATE_NEW, FILE_ATTRIBUTE_NORMAL, 0);
   if (h == INVALID_HANDLE_VALUE)
       __seterrno ();
@@ -2555,9 +2563,10 @@ symlink (const char *topath, const char *frompath)
       if (success)
 	{
 	  CloseHandle (h);
-	  set_file_attribute (win32_path.has_acls (),
-			      win32_path.get_win32 (),
-			      S_IFLNK | S_IRWXU | S_IRWXG | S_IRWXO);
+	  if (!allow_ntsec && allow_ntea)
+	    set_file_attribute (win32_path.has_acls (),
+				win32_path.get_win32 (),
+				S_IFLNK | S_IRWXU | S_IRWXG | S_IRWXO);
 	  SetFileAttributesA (win32_path.get_win32 (),
 			      allow_winsymlinks ? FILE_ATTRIBUTE_READONLY
 						: FILE_ATTRIBUTE_SYSTEM);
@@ -3044,17 +3053,11 @@ getwd (char *buf)
 }
 
 /* chdir: POSIX 5.2.1.1 */
-extern "C"
-int
+extern "C" int
 chdir (const char *in_dir)
 {
-  int dir_error = check_null_empty_path (in_dir);
-  if (dir_error)
-    {
-      syscall_printf ("NULL or invalid input to chdir");
-      set_errno (dir_error);
-      return -1;
-    }
+  if (check_null_empty_str_errno (in_dir))
+    return -1;
 
   syscall_printf ("dir '%s'", in_dir);
 
@@ -3153,23 +3156,24 @@ fchdir (int fd)
       set_errno (EBADF);
       return -1;
     }
+  debug_printf("chdir (%s)", cygheap->fdtab[fd]->get_name ());
   int ret = chdir (cygheap->fdtab[fd]->get_name ());
   if (!ret)
     {
       /* The name in the fhandler is explicitely overwritten with the full path.
-        Otherwise fchmod() to a path originally given as a relative path could
-        end up in a completely different directory. Imagine:
+	 Otherwise fchmod() to a path originally given as a relative path could
+	 end up in a completely different directory. Imagine:
 
-          fd = open ("..");
-          fchmod(fd);
-          fchmod(fd);
+	   fd = open ("..");
+	   fchmod(fd);
+	   fchmod(fd);
 
-        The 2nd fchmod should chdir to the same dir as the first call, not
-        to it's parent dir. */
+	 The 2nd fchmod should chdir to the same dir as the first call, not
+	 to it's parent dir. */
       char path[MAX_PATH];
       char posix_path[MAX_PATH];
       mount_table->conv_to_posix_path (cygheap->cwd.get (path, 0, 1),
-                                      posix_path, 0); 
+				       posix_path, 0);
       cygheap->fdtab[fd]->set_name (path, posix_path);
     }
 
@@ -3218,7 +3222,7 @@ extern "C"
 int
 cygwin_conv_to_posix_path (const char *path, char *posix_path)
 {
-  if (check_null_empty_path_errno (path))
+  if (check_null_empty_str_errno (path))
     return -1;
   mount_table->conv_to_posix_path (path, posix_path, 1);
   return 0;
@@ -3228,7 +3232,7 @@ extern "C"
 int
 cygwin_conv_to_full_posix_path (const char *path, char *posix_path)
 {
-  if (check_null_empty_path_errno (path))
+  if (check_null_empty_str_errno (path))
     return -1;
   mount_table->conv_to_posix_path (path, posix_path, 0);
   return 0;
@@ -3429,19 +3433,6 @@ cygwin_split_path (const char *path, char *dir, char *file)
 
   memcpy (file, last_slash + 1, end - last_slash - 1);
   file[end - last_slash - 1] = 0;
-}
-
-int __stdcall
-check_null_empty_path (const char *name)
-{
-  MEMORY_BASIC_INFORMATION m;
-  if (!name || !VirtualQuery (name, &m, sizeof (m)) || (m.State != MEM_COMMIT))
-    return EFAULT;
-
-  if (!*name)
-    return ENOENT;
-
-  return 0;
 }
 
 /*****************************************************************************/

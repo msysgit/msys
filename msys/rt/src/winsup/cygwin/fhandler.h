@@ -1,6 +1,6 @@
 /* fhandler.h
 
-   Copyright 1996, 1997, 1998, 1999, 2000 Cygnus Solutions.
+   Copyright 1996, 1997, 1998, 1999, 2000, 2001 Red Hat, Inc.
 
 This file is part of Cygwin.
 
@@ -50,30 +50,33 @@ details. */
 
 enum
 {
-  FH_RBINARY = 0x00001000,	/* binary read mode */
-  FH_WBINARY = 0x00002000,	/* binary write mode */
-  FH_CLOEXEC = 0x00004000,	/* close-on-exec */
-  FH_RBINSET = 0x00008000,	/* binary read mode has been explicitly set */
-  FH_WBINSET = 0x00010000,	/* binary write mode has been explicitly set */
-  FH_APPEND  = 0x00020000,	/* always append */
-  FH_ASYNC   = 0x00040000,	/* async I/O */
-  FH_HADEOF  = 0x00080000,	/* EOF seen */
+  FH_RBINARY	= 0x00001000,	/* binary read mode */
+  FH_WBINARY	= 0x00002000,	/* binary write mode */
+  FH_CLOEXEC	= 0x00004000,	/* close-on-exec */
+  FH_RBINSET	= 0x00008000,	/* binary read mode has been explicitly set */
+  FH_WBINSET	= 0x00010000,	/* binary write mode has been explicitly set */
+  FH_APPEND	= 0x00020000,	/* always append */
+  FH_ASYNC	= 0x00040000,	/* async I/O */
+  FH_SIGCLOSE	= 0x00080000,	/* signal handler should close fd on interrupt */
 
-  FH_SYMLINK = 0x00100000,	/* is a symlink */
-  FH_EXECABL = 0x00200000,	/* file looked like it would run:
+  FH_SYMLINK	= 0x00100000,	/* is a symlink */
+  FH_EXECABL	= 0x00200000,	/* file looked like it would run:
 				 * ends in .exe or .bat or begins with #! */
-  FH_W95LSBUG= 0x00400000,	/* set when lseek is called as a flag that
+  FH_W95LSBUG	= 0x00400000,	/* set when lseek is called as a flag that
 				 * _write should check if we've moved beyond
 				 * EOF, zero filling if so. */
-  FH_NOFRNAME= 0x00800000,	/* Set if shouldn't free unix_path_name and
+  FH_NOFRNAME	= 0x00800000,	/* Set if shouldn't free unix_path_name and
 				   windows_path_name_ on destruction. */
-  FH_NOEINTR = 0x01000000,	/* Set if I/O should be uninterruptible. */
-  FH_FFIXUP  = 0x02000000,	/* Set if need to fixup after fork. */
-  FH_LOCAL   = 0x04000000,	/* File is unix domain socket */
-  FH_FIFO    = 0x08000000,	/* File is FIFO */
-  FH_ISREMOTE= 0x10000000,	/* File is on a remote drive */
-  FH_DCEXEC  = 0x20000000,	/* Don't care if this is executable */
-  FH_HASACLS = 0x40000000,	/* True if fs of file has ACLS */
+  FH_NOEINTR	= 0x01000000,	/* Set if I/O should be uninterruptible. */
+  FH_FFIXUP	= 0x02000000,	/* Set if need to fixup after fork. */
+  FH_LOCAL	= 0x04000000,	/* File is unix domain socket */
+  FH_SHUTRD	= 0x08000000,	/* Socket saw a SHUT_RD */
+  FH_SHUTWR	= 0x10000000,	/* Socket saw a SHUT_WR */
+  FH_ISREMOTE	= 0x10000000,	/* File is on a remote drive */
+  FH_DCEXEC	= 0x20000000,	/* Don't care if this is executable */
+  FH_HASACLS	= 0x40000000,	/* True if fs of file has ACLS */
+  FH_QUERYOPEN	= 0x80000000,	/* open file without requesting either read
+				   or write access */
 
   /* Device flags */
 
@@ -116,6 +119,19 @@ enum
 
 #define FHSTATOFF	0
 
+/* fcntl flags used only internaly. */
+#define O_NOSYMLINK 0x080000
+#define O_DIROPEN   0x100000
+
+/* newlib used to define O_NDELAY differently from O_NONBLOCK.  Now it
+   properly defines both to be the same.  Unfortunately, we have to
+   behave properly the old version, too, to accomodate older executables. */
+#define OLD_O_NDELAY	(CYGWIN_VERSION_CHECK_FOR_OLD_O_NONBLOCK ? 4 : 0)
+
+/* Care for the old O_NDELAY flag. If one of the flags is set,
+   both flags are set. */
+#define O_NONBLOCK_MASK (O_NONBLOCK | OLD_O_NDELAY)
+
 extern const char *windows_device_names[];
 extern struct __cygwin_perfile *perfile_table;
 #define __fmode (*(user_data->fmode_ptr))
@@ -142,7 +158,7 @@ enum executable_states
 
 class fhandler_base
 {
-private:
+protected:
   DWORD status;
 public:
   int cb;
@@ -192,6 +208,9 @@ public:
   int get_flags () { return openflags; }
   void set_flags (int x) { openflags = x; }
 
+  int is_nonblocking ();
+  void set_nonblocking (int yes);
+
   int get_w_binary () { return FHISSETF (WBINARY); }
   int get_r_binary () { return FHISSETF (RBINARY); }
 
@@ -218,6 +237,14 @@ public:
 
   int get_close_on_exec () { return FHISSETF (CLOEXEC); }
   int set_close_on_exec_flag (int b) { return FHCONDSETF (b, CLOEXEC); }
+
+  LPSECURITY_ATTRIBUTES get_inheritance (bool all = 0)
+  {
+    if (all)
+      return get_close_on_exec () ? &sec_all_nih : &sec_all;
+    else
+      return get_close_on_exec () ? &sec_none_nih : &sec_none;
+  }
 
   void set_check_win95_lseek_bug (int b = 1) { FHCONDSETF (b, W95LSBUG); }
   int get_check_win95_lseek_bug () { return FHISSETF (W95LSBUG); }
@@ -251,6 +278,9 @@ public:
   int get_append_p () { return FHISSETF (APPEND); }
   void set_append_p (int val) { FHCONDSETF (val, APPEND); }
   void set_append_p () { FHSETF (APPEND); }
+
+  int get_query_open () { return FHISSETF (QUERYOPEN); }
+  void set_query_open (int val) { FHCONDSETF (val, QUERYOPEN); }
 
   int get_readahead_valid () { return raixget < ralen; }
   int puts_readahead (const char *s, size_t len = (size_t) -1);
@@ -305,7 +335,7 @@ public:
   virtual int dup (fhandler_base *child);
 
   virtual HANDLE mmap (caddr_t *addr, size_t len, DWORD access,
-                       int flags, off_t off);
+		       int flags, off_t off);
   virtual int munmap (HANDLE h, caddr_t addr, size_t len);
   virtual int msync (HANDLE h, caddr_t addr, size_t len, int flags);
   virtual BOOL fixup_mmap_after_fork (HANDLE h, DWORD access, DWORD offset,
@@ -369,6 +399,13 @@ public:
   ~fhandler_socket ();
   int get_socket () { return (int) get_handle(); }
   fhandler_socket * is_socket () { return this; }
+
+  bool saw_shutdown_read () const {return FHISSETF (SHUTRD);}
+  bool saw_shutdown_write () const {return FHISSETF (SHUTWR);}
+
+  void set_shutdown_read () {FHSETF (SHUTRD);}
+  void set_shutdown_write () {FHSETF (SHUTWR);}
+
   int write (const void *ptr, size_t len);
   int read (void *ptr, size_t len);
   int ioctl (unsigned int cmd, void *);
@@ -378,6 +415,7 @@ public:
   void hclose (HANDLE) {close ();}
   int dup (fhandler_base *child);
 
+  void set_close_on_exec (int val);
   virtual void fixup_before_fork_exec (DWORD);
   void fixup_after_fork (HANDLE);
   void fixup_after_exec (HANDLE parent) { fixup_after_fork (parent); }
@@ -392,6 +430,7 @@ public:
   void get_connect_secret (char*);
   HANDLE create_secret_event (int *secret = NULL);
   int check_peer_secret_event (struct sockaddr_in *peer, int *secret = NULL);
+  void signal_secret_event ();
   void close_secret_event ();
 };
 
@@ -403,7 +442,7 @@ public:
   /* This strange test is due to the fact that we can't rely on
      Windows shells to "do the right thing" with pipes.  Apparently
      the can keep one end of the pipe open when it shouldn't be. */
-  BOOL is_slow () {return os_being_run == winNT;}
+  BOOL is_slow () {return iswinnt;}
   select_record *select_read (select_record *s);
   select_record *select_write (select_record *s);
   select_record *select_except (select_record *s);
@@ -422,7 +461,7 @@ protected:
   int lastblk_to_read : 1;
   int is_writing      : 1;
   int has_written     : 1;
-  int varblkop        : 1;
+  int varblkop	      : 1;
   int unit;
 
   virtual void clear (void);
@@ -967,7 +1006,6 @@ private:
   int audiobits_;
   int audiochannels_;
   bool setupwav(const char *pData, int nBytes);
-  
 public:
   fhandler_dev_dsp (const char *name = 0);
   ~fhandler_dev_dsp();
@@ -1036,6 +1074,7 @@ public:
 		     fd_set *exceptfds);
   int poll (fd_set *readfds, fd_set *writefds, fd_set *exceptfds);
   int wait (fd_set *readfds, fd_set *writefds, fd_set *exceptfds, DWORD ms);
+  void cleanup ();
 };
 
 int __stdcall set_console_state_for_spawn ();

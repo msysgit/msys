@@ -3,7 +3,7 @@
 #   Copyright (C) 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001
 #   Free Software Foundation, Inc.
 
-timestamp='2001-01-12'
+timestamp='2001-08-30'
 
 # This file is (in principle) common to ALL GNU software.
 # The presence of a machine in this file suggests that SOME GNU software
@@ -117,7 +117,7 @@ esac
 # Here we must recognize all the valid KERNEL-OS combinations.
 maybe_os=`echo $1 | sed 's/^\(.*\)-\([^-]*-[^-]*\)$/\2/'`
 case $maybe_os in
-  nto-qnx* | linux-gnu* | storm-chaos* | os2-emx*)
+  nto-qnx* | linux-gnu* | storm-chaos* | os2-emx* | windows32-*)
     os=-$maybe_os
     basic_machine=`echo $1 | sed 's/^\(.*\)-\([^-]*-[^-]*\)$/\1/'`
     ;;
@@ -157,6 +157,14 @@ case $os in
 		os=-vxworks
 		basic_machine=$1
 		;;
+	-chorusos*)
+		os=-chorusos
+		basic_machine=$1
+		;;
+ 	-chorusrdb)
+ 		os=-chorusrdb
+		basic_machine=$1
+ 		;;
 	-hiux*)
 		os=-hiuxwe2
 		;;
@@ -246,7 +254,7 @@ case $basic_machine in
 	# We use `pc' rather than `unknown'
 	# because (1) that's what they normally are, and
 	# (2) the word "unknown" tends to confuse beginning users.
-	i[234567]86 | x86_64)
+	i*86 | x86_64)
 	  basic_machine=$basic_machine-pc
 	  ;;
 	# Object if more than one company name word.
@@ -504,19 +512,19 @@ case $basic_machine in
 		basic_machine=i370-ibm
 		;;
 # I'm not sure what "Sysv32" means.  Should this be sysv3.2?
-	i[34567]86v32)
+	i*86v32)
 		basic_machine=`echo $1 | sed -e 's/86.*/86-pc/'`
 		os=-sysv32
 		;;
-	i[34567]86v4*)
+	i*86v4*)
 		basic_machine=`echo $1 | sed -e 's/86.*/86-pc/'`
 		os=-sysv4
 		;;
-	i[34567]86v)
+	i*86v)
 		basic_machine=`echo $1 | sed -e 's/86.*/86-pc/'`
 		os=-sysv
 		;;
-	i[34567]86sol2)
+	i*86sol2)
 		basic_machine=`echo $1 | sed -e 's/86.*/86-pc/'`
 		os=-solaris2
 		;;
@@ -727,6 +735,16 @@ case $basic_machine in
 	ppcle-* | powerpclittle-*)
 		basic_machine=powerpcle-`echo $basic_machine | sed 's/^[^-]*-//'`
 		;;
+	ppc64)	basic_machine=powerpc64-unknown
+	        ;;
+	ppc64-*) basic_machine=powerpc64-`echo $basic_machine | sed 's/^[^-]*-//'`
+		;;
+	ppc64le | powerpc64little | ppc64-le | powerpc64-little)
+		basic_machine=powerpc64le-unknown
+	        ;;
+	ppc64le-* | powerpc64little-*)
+		basic_machine=powerpc64le-`echo $basic_machine | sed 's/^[^-]*-//'`
+		;;
 	ps2)
 		basic_machine=i386-ibm
 		;;
@@ -881,6 +899,10 @@ case $basic_machine in
 		basic_machine=hppa1.1-winbond
 		os=-proelf
 		;;
+	windows32)
+		basic_machine=i386-pc
+		os=-windows32-msvcrt
+		;;
 	xmp)
 		basic_machine=xmp-cray
 		os=-unicos
@@ -934,10 +956,10 @@ case $basic_machine in
 	we32k)
 		basic_machine=we32k-att
 		;;
-	sh3 | sh4)
+	sh3 | sh4 | sh3eb | sh4eb)
 		basic_machine=sh-unknown
 		;;
-	sparc | sparcv9)
+	sparc | sparcv9 | sparcv9b)
 		basic_machine=sparc-sun
 		;;
         cydra)
@@ -958,6 +980,9 @@ case $basic_machine in
 	c4x*)
 		basic_machine=c4x-none
 		os=-coff
+		;;
+	*-unknown)
+		# Make sure to match an already-canonicalized machine name.
 		;;
 	*)
 		echo Invalid configuration \`$1\': machine \`$basic_machine\' not recognized 1>&2
@@ -1019,12 +1044,13 @@ case $os in
 	      | -msys* | -mingw32* | -linux-gnu* | -uxpv* | -beos* | -mpeix* | -udk* \
 	      | -interix* | -uwin* | -rhapsody* | -darwin* | -opened* \
 	      | -openstep* | -oskit* | -conix* | -pw32* | -nonstopux* \
-	      | -storm-chaos* | -tops10* | -tenex* | -tops20* | -its* | -os2*)
+	      | -storm-chaos* | -tops10* | -tenex* | -tops20* | -its* \
+	      | -os2* | -vos*)
 	# Remember, each alternative MUST END IN *, to match a version number.
 		;;
 	-qnx*)
 		case $basic_machine in
-		    x86-* | i[34567]86-*)
+		    x86-* | i*86-*)
 			;;
 		    *)
 			os=-nto$os
@@ -1342,6 +1368,9 @@ case $basic_machine in
 				;;
 			-*mint | -mint[0-9]* | -*MiNT | -MiNT[0-9]*)
 				vendor=atari
+				;;
+			-vos*)
+				vendor=stratus
 				;;
 		esac
 		basic_machine=`echo $basic_machine | sed "s/unknown/$vendor/"`

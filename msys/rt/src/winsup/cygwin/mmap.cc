@@ -1,6 +1,6 @@
 /* mmap.cc
 
-   Copyright 1996, 1997, 1998, 2000, 2001 Cygnus Solutions.
+   Copyright 1996, 1997, 1998, 2000, 2001 Red Hat, Inc.
 
 This file is part of Cygwin.
 
@@ -14,6 +14,7 @@ details. */
 #include <stddef.h>
 #include <sys/mman.h>
 #include <errno.h>
+#include "security.h"
 #include "fhandler.h"
 #include "dtable.h"
 #include "cygerrno.h"
@@ -21,7 +22,7 @@ details. */
 #include "sync.h"
 #include "sigproc.h"
 #include "pinfo.h"
-#include "security.h"
+#include "sys/cygwin.h"
 
 #define PAGE_CNT(bytes) howmany(bytes,getpagesize())
 
@@ -61,7 +62,7 @@ class mmap_record
        base_address_ (b),
        map_map_ (NULL)
       {
-        if (fd >= 0 && !cygheap->fdtab.not_open (fd))
+	if (fd >= 0 && !cygheap->fdtab.not_open (fd))
 	  devtype_ = cygheap->fdtab[fd]->get_device ();
       }
 
@@ -79,16 +80,16 @@ class mmap_record
 
     void alloc_map ()
       {
-        /* Allocate one bit per page */
-        map_map_ = (DWORD *) calloc (MAPSIZE(PAGE_CNT (size_to_map_)),
+	/* Allocate one bit per page */
+	map_map_ = (DWORD *) calloc (MAPSIZE(PAGE_CNT (size_to_map_)),
 				     sizeof (DWORD));
-	if (os_being_run == winNT)
+	if (iswinnt)
 	  {
 	    DWORD old_prot;
 	    if (!VirtualProtect (base_address_, size_to_map_,
-	                         PAGE_NOACCESS, &old_prot))
+				 PAGE_NOACCESS, &old_prot))
 	      syscall_printf ("-1 = alloc_map (): %E");
-          }
+	  }
       }
     void free_map () { if (map_map_) free (map_map_); }
 
@@ -110,11 +111,11 @@ mmap_record::find_empty (DWORD pages)
   for (start = 0; start <= mapped_pages - pages; ++start)
     if (!MAP_ISSET (start))
       {
-        DWORD cnt;
-        for (cnt = 0; cnt < pages; ++cnt)
+	DWORD cnt;
+	for (cnt = 0; cnt < pages; ++cnt)
 	  if (MAP_ISSET (start + cnt))
 	    break;
-        if (cnt >= pages)
+	if (cnt >= pages)
 	  return start;
       }
   return (DWORD)-1;
@@ -142,10 +143,10 @@ mmap_record::map_map (DWORD off, DWORD len)
     {
       off = find_empty (len);
       if (off != (DWORD)-1)
-        {
-	  if (os_being_run == winNT
-              && !VirtualProtect (base_address_ + off * getpagesize (),
-	                          len * getpagesize (), prot, &old_prot))
+	{
+	  if (iswinnt
+	      && !VirtualProtect (base_address_ + off * getpagesize (),
+				  len * getpagesize (), prot, &old_prot))
 	    syscall_printf ("-1 = map_map (): %E");
 
 	  while (len-- > 0)
@@ -156,9 +157,9 @@ mmap_record::map_map (DWORD off, DWORD len)
     }
   off -= offset_;
   DWORD start = off / getpagesize ();
-  if (os_being_run == winNT
+  if (iswinnt
       && !VirtualProtect (base_address_ + start * getpagesize (),
-		          len * getpagesize (), prot, &old_prot))
+			  len * getpagesize (), prot, &old_prot))
     syscall_printf ("-1 = map_map (): %E");
 
   for (; len-- > 0; ++start)
@@ -173,9 +174,9 @@ mmap_record::unmap_map (caddr_t addr, DWORD len)
   DWORD off = addr - base_address_;
   off /= getpagesize ();
   len = PAGE_CNT (len);
-  if (os_being_run == winNT
+  if (iswinnt
       && !VirtualProtect (base_address_ + off * getpagesize (),
-		          len * getpagesize (), PAGE_NOACCESS, &old_prot))
+			  len * getpagesize (), PAGE_NOACCESS, &old_prot))
     syscall_printf ("-1 = unmap_map (): %E");
 
   for (; len-- > 0; ++off)
@@ -191,7 +192,7 @@ mmap_record::unmap_map (caddr_t addr, DWORD len)
 void
 mmap_record::fixup_map ()
 {
-  if (os_being_run != winNT)
+  if (!iswinnt)
     return;
 
   DWORD prot, old_prot;
@@ -210,7 +211,7 @@ mmap_record::fixup_map ()
 
   for (DWORD off = PAGE_CNT (size_to_map_); off > 0; --off)
     VirtualProtect (base_address_ + off * getpagesize (),
-	            getpagesize (),
+		    getpagesize (),
 		    MAP_ISSET (off - 1) ? prot : PAGE_NOACCESS,
 		    &old_prot);
 }
@@ -308,7 +309,7 @@ list::match (caddr_t addr, DWORD len, off_t start)
 {
   for (int i = start + 1; i < nrecs; ++i)
     if (addr >= recs[i].get_address ()
-        && addr + len <= recs[i].get_address () + recs[i].get_size ())
+	&& addr + len <= recs[i].get_address () + recs[i].get_size ())
       return i;
   return (off_t)-1;
 }
@@ -353,9 +354,9 @@ map::get_list_by_fd (int fd)
 #if 0 /* The fd isn't sufficient since it could already be another file. */
     if (lists[i]->fd == fd
 #else /* so we use the name hash value to identify the file unless
-         it's not an anonymous mapping. */
+	 it's not an anonymous mapping. */
     if ((fd == -1 && lists[i]->fd == -1)
-        || (fd != -1 && lists[i]->hash == cygheap->fdtab[fd]->get_namehash ()))
+	|| (fd != -1 && lists[i]->hash == cygheap->fdtab[fd]->get_namehash ()))
 #endif
       return lists[i];
   return 0;
@@ -425,10 +426,10 @@ mmap (caddr_t addr, size_t len, int prot, int flags, int fd, off_t off)
   /* copy-on-write doesn't work correctly on 9x. To have at least read
      access we use *READ mapping on 9x when appropriate. It will still
      fail when needing write access, though. */
-  if ((flags & MAP_PRIVATE) && (os_being_run == winNT || (prot & ~PROT_READ)))
+  if ((flags & MAP_PRIVATE) && (iswinnt || (prot & ~PROT_READ)))
     access = FILE_MAP_COPY;
 
-  SetResourceLock(LOCK_MMAP_LIST,READ_LOCK|WRITE_LOCK," mmap");
+  SetResourceLock(LOCK_MMAP_LIST, READ_LOCK | WRITE_LOCK, "mmap");
 
 #if 0
   /* Windows 95 does not have fixed addresses */
@@ -436,7 +437,7 @@ mmap (caddr_t addr, size_t len, int prot, int flags, int fd, off_t off)
    * CV: This assumption isn't correct. See Microsoft Platform SDK, Memory,
    * description of call `MapViewOfFileEx'.
    */
-  if ((os_being_run != winNT) && (flags & MAP_FIXED))
+  if ((!iswinnt) && (flags & MAP_FIXED))
     {
       set_errno (EINVAL);
       syscall_printf ("-1 = mmap(): win95 and MAP_FIXED");
@@ -452,7 +453,7 @@ mmap (caddr_t addr, size_t len, int prot, int flags, int fd, off_t off)
 	{
 	  set_errno (ENOMEM);
 	  syscall_printf ("-1 = mmap(): ENOMEM");
-	  ReleaseResourceLock(LOCK_MMAP_LIST,READ_LOCK|WRITE_LOCK," mmap");
+	  ReleaseResourceLock(LOCK_MMAP_LIST, READ_LOCK | WRITE_LOCK, "mmap");
 	  return MAP_FAILED;
 	}
     }
@@ -475,12 +476,12 @@ mmap (caddr_t addr, size_t len, int prot, int flags, int fd, off_t off)
 	{
 	  set_errno (EBADF);
 	  syscall_printf ("-1 = mmap(): EBADF");
-	  ReleaseResourceLock(LOCK_MMAP_LIST,READ_LOCK|WRITE_LOCK," mmap");
+	  ReleaseResourceLock(LOCK_MMAP_LIST, READ_LOCK | WRITE_LOCK, "mmap");
 	  return MAP_FAILED;
 	}
       fh = cygheap->fdtab[fd];
       if (fh->get_device () == FH_DISK)
-        {
+	{
 	  DWORD fsiz = GetFileSize (fh->get_handle (), NULL);
 	  fsiz -= gran_off;
 	  if (gran_len > fsiz)
@@ -488,7 +489,7 @@ mmap (caddr_t addr, size_t len, int prot, int flags, int fd, off_t off)
 	}
       else if (fh->get_device () == FH_ZERO)
 	/* mmap /dev/zero is like MAP_ANONYMOUS. */
-        fd = -1;
+	fd = -1;
     }
   if (fd == -1)
     {
@@ -509,7 +510,7 @@ mmap (caddr_t addr, size_t len, int prot, int flags, int fd, off_t off)
 	  off = rec->map_map (off, len);
 	  caddr_t ret = rec->get_address () + off;
 	  syscall_printf ("%x = mmap() succeeded", ret);
-	  ReleaseResourceLock(LOCK_MMAP_LIST,READ_LOCK|WRITE_LOCK," mmap");
+	  ReleaseResourceLock(LOCK_MMAP_LIST, READ_LOCK | WRITE_LOCK, "mmap");
 	  return ret;
 	}
     }
@@ -518,7 +519,7 @@ mmap (caddr_t addr, size_t len, int prot, int flags, int fd, off_t off)
 
   if (h == INVALID_HANDLE_VALUE)
     {
-      ReleaseResourceLock(LOCK_MMAP_LIST,READ_LOCK|WRITE_LOCK," mmap");
+      ReleaseResourceLock(LOCK_MMAP_LIST, READ_LOCK | WRITE_LOCK, "mmap");
       return MAP_FAILED;
     }
 
@@ -537,13 +538,13 @@ mmap (caddr_t addr, size_t len, int prot, int flags, int fd, off_t off)
       /* Create a new one */
       l = new list;
       if (l == 0)
-        {
-          fh->munmap (h, base, gran_len);
-          set_errno (ENOMEM);
-          syscall_printf ("-1 = mmap(): ENOMEM");
-          ReleaseResourceLock(LOCK_MMAP_LIST,READ_LOCK|WRITE_LOCK," mmap");
-          return MAP_FAILED;
-        }
+	{
+	  fh->munmap (h, base, gran_len);
+	  set_errno (ENOMEM);
+	  syscall_printf ("-1 = mmap(): ENOMEM");
+	  ReleaseResourceLock(LOCK_MMAP_LIST, READ_LOCK | WRITE_LOCK, "mmap");
+	  return MAP_FAILED;
+	}
       l = mmapped_areas->add_list (l, fd);
   }
 
@@ -552,7 +553,7 @@ mmap (caddr_t addr, size_t len, int prot, int flags, int fd, off_t off)
   off = rec->map_map (off, len);
   caddr_t ret = rec->get_address () + off;
   syscall_printf ("%x = mmap() succeeded", ret);
-  ReleaseResourceLock(LOCK_MMAP_LIST,READ_LOCK|WRITE_LOCK," mmap");
+  ReleaseResourceLock(LOCK_MMAP_LIST, READ_LOCK | WRITE_LOCK, "mmap");
   return ret;
 }
 
@@ -573,13 +574,13 @@ munmap (caddr_t addr, size_t len)
       return -1;
     }
 
-  SetResourceLock(LOCK_MMAP_LIST,WRITE_LOCK|READ_LOCK," munmap");
+  SetResourceLock(LOCK_MMAP_LIST, WRITE_LOCK | READ_LOCK, "munmap");
   /* Check if a mmap'ed area was ever created */
   if (mmapped_areas == NULL)
     {
       syscall_printf ("-1 = munmap(): mmapped_areas == NULL");
       set_errno (EINVAL);
-      ReleaseResourceLock(LOCK_MMAP_LIST,WRITE_LOCK|READ_LOCK," munmap");
+      ReleaseResourceLock(LOCK_MMAP_LIST, WRITE_LOCK | READ_LOCK, "munmap");
       return -1;
     }
 
@@ -596,16 +597,16 @@ munmap (caddr_t addr, size_t len)
 	    {
 	      mmap_record *rec = l->recs + li;
 	      if (rec->unmap_map (addr, len))
-	        {
+		{
 		  fhandler_base *fh = rec->alloc_fh ();
-                  fh->munmap (rec->get_handle (), addr, len);
+		  fh->munmap (rec->get_handle (), addr, len);
 		  rec->free_fh (fh);
 
 		  /* Delete the entry. */
 		  l->erase (li);
 		}
 	      syscall_printf ("0 = munmap(): %x", addr);
-	      ReleaseResourceLock(LOCK_MMAP_LIST,WRITE_LOCK|READ_LOCK," munmap");
+	      ReleaseResourceLock(LOCK_MMAP_LIST, WRITE_LOCK | READ_LOCK, "munmap");
 	      return 0;
 	    }
 	}
@@ -614,7 +615,7 @@ munmap (caddr_t addr, size_t len)
   set_errno (EINVAL);
   syscall_printf ("-1 = munmap(): EINVAL");
 
-  ReleaseResourceLock(LOCK_MMAP_LIST,WRITE_LOCK|READ_LOCK," munmap");
+  ReleaseResourceLock(LOCK_MMAP_LIST, WRITE_LOCK | READ_LOCK, "munmap");
   return -1;
 }
 
@@ -636,13 +637,13 @@ msync (caddr_t addr, size_t len, int flags)
       return -1;
     }
 
-  SetResourceLock(LOCK_MMAP_LIST,WRITE_LOCK|READ_LOCK," msync");
+  SetResourceLock(LOCK_MMAP_LIST, WRITE_LOCK | READ_LOCK, "msync");
   /* Check if a mmap'ed area was ever created */
   if (mmapped_areas == NULL)
     {
       syscall_printf ("-1 = msync(): mmapped_areas == NULL");
       set_errno (EINVAL);
-      ReleaseResourceLock(LOCK_MMAP_LIST,WRITE_LOCK|READ_LOCK," msync");
+      ReleaseResourceLock(LOCK_MMAP_LIST, WRITE_LOCK | READ_LOCK, "msync");
       return -1;
     }
 
@@ -660,15 +661,15 @@ msync (caddr_t addr, size_t len, int flags)
 	      if (rec->get_address () == addr)
 		{
 		  fhandler_base *fh = rec->alloc_fh ();
-                  int ret = fh->msync (rec->get_handle (), addr, len, flags);
+		  int ret = fh->msync (rec->get_handle (), addr, len, flags);
 		  rec->free_fh (fh);
 
-                  if (ret)
+		  if (ret)
 		    syscall_printf ("%d = msync(): %E", ret);
-                  else
+		  else
 		    syscall_printf ("0 = msync()");
 
-		  ReleaseResourceLock(LOCK_MMAP_LIST,WRITE_LOCK|READ_LOCK," msync");
+		  ReleaseResourceLock(LOCK_MMAP_LIST, WRITE_LOCK | READ_LOCK, "msync");
 		  return 0;
 		}
 	     }
@@ -679,7 +680,7 @@ msync (caddr_t addr, size_t len, int flags)
   set_errno (ENOMEM);
   syscall_printf ("-1 = msync(): ENOMEM");
 
-  ReleaseResourceLock(LOCK_MMAP_LIST,WRITE_LOCK|READ_LOCK," msync");
+  ReleaseResourceLock(LOCK_MMAP_LIST, WRITE_LOCK | READ_LOCK, "msync");
   return -1;
 }
 
@@ -697,7 +698,7 @@ msync (caddr_t addr, size_t len, int flags)
 */
 HANDLE
 fhandler_base::mmap (caddr_t *addr, size_t len, DWORD access,
-                     int flags, off_t off)
+		     int flags, off_t off)
 {
   set_errno (ENODEV);
   return INVALID_HANDLE_VALUE;
@@ -728,7 +729,7 @@ fhandler_base::fixup_mmap_after_fork (HANDLE h, DWORD access, DWORD offset,
 /* Implementation for disk files. */
 HANDLE
 fhandler_disk_file::mmap (caddr_t *addr, size_t len, DWORD access,
-                          int flags, off_t off)
+			  int flags, off_t off)
 {
   DWORD protect;
 
@@ -739,13 +740,32 @@ fhandler_disk_file::mmap (caddr_t *addr, size_t len, DWORD access,
   else
     protect = PAGE_READONLY;
 
-  HANDLE h = CreateFileMapping (get_handle (),
-  				&sec_none,
-				protect,
-				0,
-  				get_handle () == INVALID_HANDLE_VALUE ? len : 0,
-				NULL);
-  if (h == 0)
+  HANDLE h;
+
+  /* On 9x/ME try first to open the mapping by name when opening a
+     shared file object. This is needed since 9x/ME only shares
+     objects between processes by name. What a mess... */
+  if (!iswinnt
+      && get_handle () != INVALID_HANDLE_VALUE
+      && get_device () == FH_DISK
+      && !(access & FILE_MAP_COPY))
+    {
+      /* Grrr, the whole stuff is just needed to try to get a reliable
+	 mapping of the same file. Even that uprising isn't bullet
+	 proof but it does it's best... */
+      char namebuf[MAX_PATH];
+      cygwin_conv_to_full_posix_path (get_name (), namebuf);
+      for (int i = strlen (namebuf) - 1; i >= 0; --i)
+	namebuf[i] = cyg_tolower (namebuf [i]);
+
+      if (!(h = OpenFileMapping (access, TRUE, namebuf)))
+	h = CreateFileMapping (get_handle(), &sec_none, protect, 0, 0, namebuf);
+    }
+  else
+    h = CreateFileMapping (get_handle (), &sec_none, protect, 0,
+			   get_handle () == INVALID_HANDLE_VALUE ? len : 0,
+			   NULL);
+  if (!h)
     {
       __seterrno ();
       syscall_printf ("-1 = mmap(): CreateFileMapping failed with %E");
@@ -753,20 +773,20 @@ fhandler_disk_file::mmap (caddr_t *addr, size_t len, DWORD access,
     }
 
   void *base = MapViewOfFileEx (h, access, 0, off, len,
-                               (flags & MAP_FIXED) ? *addr : NULL);
+			       (flags & MAP_FIXED) ? *addr : NULL);
 
   if (!base || ((flags & MAP_FIXED) && base != *addr))
     {
       if (!base)
-        {
-          __seterrno ();
-          syscall_printf ("-1 = mmap(): MapViewOfFileEx failed with %E");
-        }
+	{
+	  __seterrno ();
+	  syscall_printf ("-1 = mmap(): MapViewOfFileEx failed with %E");
+	}
       else
-        {
+	{
 	  set_errno (EINVAL);
-          syscall_printf ("-1 = mmap(): address shift with MAP_FIXED given");
-        }
+	  syscall_printf ("-1 = mmap(): address shift with MAP_FIXED given");
+	}
       CloseHandle (h);
       return INVALID_HANDLE_VALUE;
     }
@@ -886,10 +906,10 @@ fixup_mmaps_after_fork ()
 
 	      fhandler_base *fh = rec->alloc_fh ();
 	      BOOL ret = fh->fixup_mmap_after_fork (rec->get_handle (),
-					            rec->get_access (),
-					            rec->get_offset (),
-					            rec->get_size (),
-					            rec->get_address ());
+						    rec->get_access (),
+						    rec->get_offset (),
+						    rec->get_size (),
+						    rec->get_address ());
 	      rec->free_fh (fh);
 
 	      if (!ret)

@@ -17,6 +17,7 @@ details. */
 #include "sync.h"
 #include "sigproc.h"
 #include "pinfo.h"
+#include "security.h"
 #include "fhandler.h"
 #include "dtable.h"
 #include "cygheap.h"
@@ -24,14 +25,13 @@ details. */
 #include "shared_info.h"
 #include "registry.h"
 #include "cygwin_version.h"
-#include "security.h"
 
 #define SHAREDVER (unsigned)(cygwin_version.api_major << 16 | \
 		   cygwin_version.api_minor)
 
 shared_info NO_COPY *cygwin_shared = NULL;
 mount_info NO_COPY *mount_table = NULL;
-HANDLE cygwin_mount_h = NULL;
+HANDLE cygwin_mount_h;
 
 /* General purpose security attribute objects for global use. */
 SECURITY_ATTRIBUTES NO_COPY sec_none;
@@ -43,10 +43,10 @@ char * __stdcall
 shared_name (const char *str, int num)
 {
   static NO_COPY char buf[MAX_PATH] = {0};
-  char envbuf[6];
+  extern bool _cygwin_testing;
 
-  __small_sprintf (buf, "msys-1.0%s.%s.%d", cygwin_version.shared_id, str, num);
-  if (GetEnvironmentVariable ("CYGWIN_TESTING", envbuf, 5))
+  __small_sprintf (buf, "%s.%s.%d", cygwin_version.shared_id, str, num);
+  if (!_cygwin_testing)
     strcat (buf, cygwin_version.dll_build_date);
   return buf;
 }
@@ -86,7 +86,7 @@ open_shared (const char *name, HANDLE &shared_h, DWORD size, void *addr)
       /* Probably win95, so try without specifying the address.  */
       shared = (shared_info *) MapViewOfFileEx (shared_h,
 				       FILE_MAP_READ|FILE_MAP_WRITE,
-				       0,0,0,0);
+				       0, 0, 0, 0);
     }
 
   if (!shared)
@@ -103,8 +103,6 @@ open_shared (const char *name, HANDLE &shared_h, DWORD size, void *addr)
 void
 shared_info::initialize ()
 {
-  /* Ya, Win32 provides a way for a dll to watch when it's first loaded.
-     We may eventually want to use it but for now we have this.  */
   if (inited)
     {
       if (inited != SHAREDVER)
@@ -120,23 +118,6 @@ shared_info::initialize ()
 
   /* Initialize tty table.  */
   tty.init ();
-
-  /* Fetch misc. registry entries.  */
-
-  reg_key reg (KEY_READ, NULL);
-
-  /* Note that reserving a huge amount of heap space does not result in
-  the use of swap since we are not committing it. */
-  /* FIXME: We should not be restricted to a fixed size heap no matter
-  what the fixed size is. */
-
-  heap_chunk_in_mb = reg.get_int ("heap_chunk_in_mb", 256);
-  if (heap_chunk_in_mb < 4)
-    {
-      heap_chunk_in_mb = 4;
-      reg.set_int ("heap_chunk_in_mb", heap_chunk_in_mb);
-    }
-
   inited = SHAREDVER;
 }
 
@@ -151,7 +132,6 @@ memory_init ()
 					       cygwin_shared_address);
 
   cygwin_shared->initialize ();
-  heap_init ();
 
   /* Allocate memory for the per-user mount table */
   char user_name[UNLEN + 1];
@@ -159,12 +139,6 @@ memory_init ()
 
   if (!GetUserName (user_name, &user_name_len))
     strcpy (user_name, "unknown");
-  mount_table = (mount_info *) open_shared (user_name, cygwin_mount_h,
-					    sizeof (mount_info), 0);
-  debug_printf ("opening mount table for '%s' at %p", cygheap->user.name (),
-		mount_table_address);
-  ProtectHandle (cygwin_mount_h);
-  debug_printf ("mount table version %x at %p", mount_table->version, mount_table);
 
   /* Initialize the Cygwin heap, if necessary */
   if (!cygheap)
@@ -172,8 +146,17 @@ memory_init ()
       cygheap_init ();
       cygheap->user.set_name (user_name);
     }
+
   cygheap->shared_h = shared_h;
   ProtectHandle (cygheap->shared_h);
+
+  heap_init ();
+  mount_table = (mount_info *) open_shared (user_name, cygwin_mount_h,
+					    sizeof (mount_info), 0);
+  debug_printf ("opening mount table for '%s' at %p", cygheap->user.name (),
+		mount_table_address);
+  ProtectHandle (cygwin_mount_h);
+  debug_printf ("mount table version %x at %p", mount_table->version, mount_table);
 
   /* Initialize the Cygwin per-user mount table, if necessary */
   if (!mount_table->version)
@@ -196,15 +179,26 @@ shared_terminate ()
 unsigned
 shared_info::heap_chunk_size ()
 {
+  if (!heap_chunk_in_mb)
+    {
+      /* Fetch misc. registry entries.  */
+
+      reg_key reg (KEY_READ, NULL);
+
+      /* Note that reserving a huge amount of heap space does not result in
+      the use of swap since we are not committing it. */
+      /* FIXME: We should not be restricted to a fixed size heap no matter
+      what the fixed size is. */
+
+      heap_chunk_in_mb = reg.get_int ("heap_chunk_in_mb", 256);
+      if (heap_chunk_in_mb < 4)
+	{
+	  heap_chunk_in_mb = 4;
+	  reg.set_int ("heap_chunk_in_mb", heap_chunk_in_mb);
+	}
+    }
+
   return heap_chunk_in_mb << 20;
-}
-
-/* For apps that wish to access the shared data.  */
-
-shared_info *
-cygwin_getshared ()
-{
-  return cygwin_shared;
 }
 
 /*
@@ -249,7 +243,7 @@ sec_user (PVOID sa_buf, PSID sid2, BOOL inherit)
   size_t acl_len = sizeof (ACL)
 		   + 4 * (sizeof (ACCESS_ALLOWED_ACE) - sizeof (DWORD))
 		   + GetLengthSid (sid)
-		   + GetLengthSid (well_known_admin_sid)
+		   + GetLengthSid (well_known_admins_sid)
 		   + GetLengthSid (well_known_system_sid)
 		   + GetLengthSid (well_known_creator_owner_sid);
   if (sid2)
@@ -266,7 +260,7 @@ sec_user (PVOID sa_buf, PSID sid2, BOOL inherit)
 
   if (! AddAccessAllowedAce (acl, ACL_REVISION,
 			     SPECIFIC_RIGHTS_ALL | STANDARD_RIGHTS_ALL,
-			     well_known_admin_sid))
+			     well_known_admins_sid))
     debug_printf ("AddAccessAllowedAce(admin) %E");
 
   if (! AddAccessAllowedAce (acl, ACL_REVISION,
