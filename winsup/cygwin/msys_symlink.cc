@@ -95,9 +95,9 @@ msys_symlink (const char * topath, const char * frompath)
 	*tptr = '\0';
   }
 
-  cygwin_conv_to_win32_path (frompath, w_frompath);
+  w_frompath = msys_p2w(frompath);
   debug_printf("w_frompath: %s", w_frompath);
-  cygwin_conv_to_win32_path (topath, w_topath);
+  w_topath = msys_p2w(topath);
   debug_printf("w_topath: %s", w_topath);
 
   if (destination_isdir)

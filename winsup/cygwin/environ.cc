@@ -814,22 +814,14 @@ winenv (const char * const *envp, int keep_posix)
 	*dstp = *srcp;
       else
 	{
-#if DO_CPP_NEW
-	  tptr = new char  [strlen (conv->native) + 1];
-#else
 	  tptr = (char *) alloca (strlen (conv->native) + 1);
-#endif
 	  strcpy (tptr, conv->native);
 	  *dstp = tptr;
 	}
       envblocklen += strlen (*dstp) + 1;
       if ((*dstp)[0] == '!' && isdrive ((*dstp) + 1) && (*dstp)[3] == '=')
 	{
-#if DO_CPP_NEW
-	  tptr = new char [strlen (*dstp) + 1];
-#else
 	  tptr = (char *) alloca (strlen (*dstp) + 1);
-#endif
 	  strcpy (tptr, *dstp);
 	  *tptr = '=';
 	  *dstp = tptr;
@@ -844,11 +836,7 @@ winenv (const char * const *envp, int keep_posix)
     if (!saw_forced_winenv[i])
       {
 	srcplen = strlen (forced_winenv_vars[i]);
-#if DO_CPP_NEW
-	tptr = new char [srcplen + MAX_PATH + 1];
-#else
 	tptr = (char *) alloca (srcplen + MAX_PATH + 1);
-#endif
 	strcpy (tptr, forced_winenv_vars[i]);
 	strcat (tptr, "=");
 	if (!GetEnvironmentVariable (forced_winenv_vars[i], tptr + srcplen + 1, MAX_PATH))
@@ -870,12 +858,7 @@ winenv (const char * const *envp, int keep_posix)
 
   /* Create an environment block suitable for passing to CreateProcess.  */
   char *ptr, *envblock;
-#if DO_CPP_NEW
-  envblock = new char [envblocklen + 2 + (MAX_PATH * 256)];
-#else
-  //envblock = (char *) malloc (envblocklen + 2 + (MAX_PATH * 256));
   envblock = (char *) malloc (envblocklen + 2);
-#endif
   for (srcp = newenvp, ptr = envblock; *srcp; srcp++)
     {
       srcplen = strlen(*srcp);
