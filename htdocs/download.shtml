@@ -55,8 +55,8 @@
 		      <li><a href="#hdr9">Updating MSYS</a></li>
 		    </ul>
 
-                    <a href="#Contents"><hr></a>
-                    <h2><a name="hdr1">
+		    <hr>
+                    <h2><a href="#Contents" name="hdr1">
                       MinGW and MSYS Distributions
                     </a></h2>
                     <p>
@@ -137,16 +137,16 @@
 		      of updates.
                     </p>
 
-                    <a href="#Contents"><hr></a>
-		    <h2><a name="hdr2">
+		    <hr>
+		    <h2><a href="#Contents" name="hdr2">
 		      File List
 		    </a></h2>
 		    <p>
                     <!--#include file="ssi/release.html"-->
 		    </p>
                      
-                    <a href="#Contents"><hr></a>
-                    <h2><a name="hdr3">
+		    <hr>
+                    <h2><a href="#Contents" name="hdr3">
                       Mirror Sites
                     </a></h2>
 		    <p>
@@ -168,8 +168,8 @@
                       mingw-users-admin@lists.sourceforge.net</a>.
                     </p>
 
-                    <a href="#Contents"><hr></a>
-                    <h2><a name="hdr4">
+		    <hr>
+                    <h2><a href="#Contents" name="hdr4">
                       Understanding MinGW Packaging
                     </a></h2>
 		    <p>
@@ -206,8 +206,8 @@
 		      entire package when there's an update.
 		    </p>
 
-                    <a href="#Contents"><hr></a>
-		    <h2><a name="hdr5">
+		    <hr>
+		    <h2><a href="#Contents" name="hdr5">
 		      Decompression and Unarchiving Utilities</h2>
                     </a><p>
                      <em><b>WinZip Caution:</b></em><br>
@@ -224,8 +224,8 @@
 		      and decompress in several formats.
 		    </p>
 
-                    <a href="#Contents"><hr></a>
-                    <h2><a name="hdr6">
+		    <hr>
+                    <h2><a href="#Contents" name="hdr6">
                       Installing MinGW
                     </a></h2>
 		    <p>
@@ -262,8 +262,8 @@
 		      mingw32-make.
 		    </p>
 
-                    <a href="#Contents"><hr></a>
-		    <h2><a name="hdr7">
+		    <hr>
+		    <h2><a href="#Contents" name="hdr7">
 		      Updating MinGW
 		    </a></h2>
 		    <p>
@@ -276,8 +276,8 @@
 		      the updated tarballs.
 		    </p>
 
-                    <a href="#Contents"><hr></a>
-		    <h2><a name="hdr8">
+		    <hr>
+		    <h2><a href="#Contents" name="hdr8">
 		      Installing MSYS
 		    </a></h2>
 		    <p>
@@ -298,8 +298,8 @@
 		      anyway as the package is dependent on it.
 		    </p>
 
-                    <a href="#Contents"><hr></a>
-		    <h2><a name="hdr9">
+		    <hr>
+		    <h2><a href="#Contents" name="hdr9">
 		      Updating MSYS
 		    </a></h2>
 		    <p>
@@ -342,7 +342,7 @@
     </p>
     <address>
       <br>
-      Last revised $Date: 2003-06-30 16:37:52 $
+      Last revised $Date: 2003-06-30 17:14:56 $
     </address>
   </body>
 </html>
