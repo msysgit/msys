@@ -1,3 +1,8 @@
+2002-11-01  Earnie Boyd  <earnie@users.sf.net>
+
+	* spawn.cc (spawn_guts): Ensure PATH is set regardless of msys dll 
+	dependency.
+
 2002-10-31  Earnie Boyd  <earnie@users.sf.net>
 
 	* dcrt0.cc: Apply changes from cygwin to avoid race condition in vfork.
