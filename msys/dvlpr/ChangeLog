@@ -1,3 +1,12 @@
+2002.04.26  Earnie Boyd  <earnie@users.sf.net>
+
+	* bin/msys.bat (DISPLAY): Fix filter logic.
+	* doc/msys/MSYS-1.0.7-changes.rtf: Add recent changes.  Indicate
+	Prerelease version.
+	* bin/pwd: New script.
+	* var/exe.dat (pwd.exe): Remove.
+	* var/script.dat (pwd): Add.
+
 2002.04.24  Earnie Boyd  <earnie@users.sf.net>
 
 	* var: New Directory.
