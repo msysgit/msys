@@ -67,7 +67,7 @@ There is precious little documentation at this point, and even that is
 scattered all over the place. We are looking for volunteers to work on 
 documenting the various pieces. </p>
 
-<h2 align="left">MinGW Runtime and Windows32 API</h2>
+<h2 align="left">MinGW Documentation</h2>
 
 <ul>
 <li> Laura Michaels maintains the 
@@ -75,10 +75,22 @@ documenting the various pieces. </p>
 good place to start. She has some useful information on her
 <a href="http://members.aol.com/lauram3017/index.html">homepage</a> as
 well.</li>
-<li> MinGW uses the runtime libraries distributed with the OS, but 
+</ul>
+
+<h2 align="left">GNU Development Tools Documentation</h2>
+<ul>
+<li> <a href="http://gcc.gnu.org/onlinedocs/">GCC Manual</a>.</li>
+<li> <a href="http://www.delorie.com/gnu/docs/">GNU Documentation</a> for
+documentation on all GNU tools.</li>
+</ul>
+
+<h2 align="left">Windows32 API Documentation</h2>
+<p>
+MinGW uses the runtime libraries distributed with the OS, but 
 the API documentation is not supplied with the OS and is not re-distributable.
 If you don't own a copy of Microsoft development tools or MSDN subscription,
 you can still access the API documentation from the following places:
+</p>
 <ul>
 <li> <a href="http://msdn.microsoft.com/">Microsoft's on-line library</a>.</li>
 <li> <a href="ftp://ftp.cs.virginia.edu/pub/lcc-win32/win32hlp.exe">
@@ -97,28 +109,28 @@ C runtime library documentation.</li>
 </li>
 </ul>
 
-<h2 align="left">Development Tools</h2>
-<ul>
-<li> <a href="http://gcc.gnu.org/onlinedocs/">GCC Manual</a>.</li>
-<li> <a href="http://www.delorie.com/gnu/docs/">GNU Documentation</a> for
-documentation on all GNU tools.</li>
-</ul>
+<h2 align="left">Tips, Howtos, Contributed Documentation, etc.</h2>
 
-<h2 align="left">Tips, Howtos, etc</h2>
+<h3>
+Introductions and Tutorials
+</h3>
 <ul>
 <li> Colin Peters' tutorial on 
 <a href="http://www.geocities.com/Tokyo/Towers/6162/win32/index.html">
 Win32 Programming with GNU Tools Tutorial</a>.</li>
-<li> <b>-mno-cygwin</b>: Building Mingw executables using Cygwin.<br /> Some 
-<a href="http://www.nanotech.wisc.edu/~khan/software/gnu-win32/mno-cygwin-howto.txt">
-insights and recommendations</a> on building Mingw applications using the 
-Cygwin development tools.</li>
-<li> <a href="http://www.nanotech.wisc.edu/~khan/software/gnu-win32/dllhelpers.html"> 
-How to make DLLs using GCC</a><br /> A set of helper programs and examples to 
-make DLLs in C, C++ and F77 using gcc on Mingw and Cygwin. Released v0.2.5 
-on Mar 13, 1999. Also contains some pointers to DLL related information 
-available from Microsoft's on-line archives. The next release, currently in 
+<li> <a href="http://www.nanotech.wisc.edu/~khan/software/gnu-win32/dllhelpers.html">
+How to make DLLs using GCC</a><br /> A set of helper programs and examples to
+make DLLs in C, C++ and F77 using gcc on Mingw and Cygwin. Released v0.2.5
+on Mar 13, 1999. Also contains some pointers to DLL related information
+available from Microsoft's on-line archives. The next release, currently in
 beta, will create DLLs using a much more straight forward way.</li>
+</ul>
+
+
+<h3>
+Developing Modules for Specific Software Packages
+</h3>
+<ul>
 <li> <b>Want to build Java JNI's with GNU compilers</b>? Might want to look 
 at the 
 <a href="http://www.xraylith.wisc.edu/~khan/software/gnu-win32/README.jni.txt">
@@ -137,9 +149,19 @@ Might want to look at the
 README.nsplugin</a> file first, and then download
 <a href="ftp://ftp.xraylith.wisc.edu/pub/khan/gnu-win32/mingw32/misc/nsplugin-examples.zip">
 nsplugin-examples.zip</a>. April 8, 1999.</li>
+</ul>
+
+<h3>
+Cross-compilation and Using with Other Tools
+</h3>
+<ul>
+<li> <b>-mno-cygwin</b>: Building Mingw executables using Cygwin.<br /> Some
+<a href="http://www.nanotech.wisc.edu/~khan/software/gnu-win32/mno-cygwin-howto.txt">
+insights and recommendations</a> on building Mingw applications using the
+Cygwin development tools.</li>
 <li> <a href="http://www.xraylith.wisc.edu/~khan/software/gnu-win32/mingw-cross-howto.txt">
 Build cross compiler for MinGW</a><br />
-Instructions on how to build cross and Canadian-cross development tools 
+Instructions on how to build cross and Canadian-cross development tools
 for MinGW. Feb 17, 1999.</li>
 </ul>
 
