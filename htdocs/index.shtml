@@ -70,10 +70,10 @@ Fisher for this work.
 </table>
 <!--#include file="ssi/bottombar.html"-->
 <!--#include file="ssi/footer.html"-->
-<!-- Only the main page has SourceForge logo. -->
-<p><a href="http://sourceforge.net/" target="_nw"><img
+<!-- Only the main page has SourceForge logo. --><!--Why?-->
+<!--<p><a href="http://sourceforge.net/" target="_nw"><img
  src="http://sourceforge.net/sflogo.php?group_id=2435&amp;type=1" width="88"
- height="31" alt="Powered by SourceForge" border="0"></a>
+ height="31" alt="Powered by SourceForge" border="0"></a>-->
  <!-- Maybe one day...
  <a href="http://validator.w3.org/check/referer"><img border="0"
  src="http://www.w3.org/Icons/valid-html401"
@@ -86,6 +86,6 @@ Fisher for this work.
  -->
 </p>
 <address><br>
-Last revised $Date: 2003-01-14 04:59:29 $ </address>
+Last revised $Date: 2003-06-06 17:48:12 $ </address>
 </body>
 </html>

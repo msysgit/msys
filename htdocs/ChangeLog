@@ -1,6 +1,8 @@
 2003-06-06  Earnie Boyd  <earnie@users.sf.net>
 
 	* download.shtml: Change titles and add wording for MSYS.
+	* index.shtml ssi/lsidebar.shtml: Move the SF Logo GIF to the left
+	sidebar.
 
 2003-05-30  Earnie Boyd  <earnie@users.sf.net>
 
