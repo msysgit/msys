@@ -354,17 +354,17 @@ init_cygheap::etc_changed ()
 
   if (!etc_changed_h)
     {
-      path_conv pwd ("/etc");
-      etc_changed_h = FindFirstChangeNotification (pwd, FALSE,
+      path_conv etc ("/etc");
+      etc_changed_h = FindFirstChangeNotification (etc, FALSE,
 					      FILE_NOTIFY_CHANGE_LAST_WRITE);
       if (etc_changed_h == INVALID_HANDLE_VALUE)
-	system_printf ("Can't open /etc for checking, %E", (char *) pwd,
+	system_printf ("Can't open /etc for checking, %E", (char *) etc,
 	    	       etc_changed_h);
       else if (!DuplicateHandle (hMainProc, etc_changed_h, hMainProc,
 	    			 &etc_changed_h, 0, TRUE,
 				 DUPLICATE_SAME_ACCESS | DUPLICATE_CLOSE_SOURCE))
 	{
-	  system_printf ("Can't inherit /etc handle, %E", (char *) pwd,
+	  system_printf ("Can't inherit /etc handle, %E", (char *) etc,
 	      		 etc_changed_h);
 	  etc_changed_h = INVALID_HANDLE_VALUE;
 	}
