@@ -1,4 +1,3 @@
-#!../bin/sh
 # Copyright (C)  Earnie Boyd  <earnie@users.sf.net>
 # This file is a part of msysDVLPR.
 #   http://www.mingw.org/msysdvlpr.shmtl
