@@ -1,0 +1,87 @@
+# rclock/Makefile.in	-*- Makefile -*-
+@MCOMMON@
+
+srcdir =	@srcdir@
+VPATH =		@srcdir@
+.PATH:		@srcdir@
+
+basedir = ..
+thisdir = rclock
+
+first_rule: clock
+dummy:
+
+SRCS =	rclock.c
+OBJS =	rclock.o
+HDRS =	feature.h
+
+#
+# Distribution variables
+#
+
+DIST = $(HDRS) $(SRCS) Makefile.in rclock.1.in
+
+# inference rules
+.c.o:
+	$(CC) -c $(CPPFLAGS) $(XINC) -I. -I$(basedir) -I$(srcdir) $(DEFS) $(CFLAGS) $<
+#-------------------------------------------------------------------------
+all:
+clock: alldoc allbin
+
+rclock: $(OBJS)
+	$(CC) $(LDFLAGS) -o $@ $(OBJS) $(LIBS) $(XLIB)
+
+rclock.1: $(srcdir)/rclock.1.in
+	cat $(srcdir)/rclock.1.in\
+	|sed -e 's%@RXVT_VERSION@%$(VERSION)%g;'\
+	|sed -e 's%@RXVT_DATE@%$(DATE)%g;'\
+	|sed -e 's%@RXVT_MAINT@%$(MAINT)%g;'\
+	> $@
+
+rclock.html: rclock.1
+	rman -f HTML -S -r off rclock.1\
+	|sed -e 's%&lt\;file:]*\(.*\)&gt\;%<A HREF="\1">\1</A>%g;'\
+	|sed -e 's%&lt\;\([fht]*tp://\)\([^/]*\)\(.*\)&gt\;%<A HREF="\1\2\3">\2</A>%g;'\
+	|sed -e 's%&lt\;\([^ /]*\)&gt\;%<A HREF="mailto:\1">\1</A>%g;'\
+	> $@
+
+tags: $(SRCS)
+	ctags $(SRCS)
+
+allbin: rclock
+
+alldoc:	rclock.1
+
+clean:
+	$(RMF) rclock rclock.1 core a.out *.o *.bak *~
+
+realclean: clean
+	$(RMF) tags
+
+cleandir: realclean
+
+distclean:
+	(cd $(srcdir); $(RMF) rclock rclock.1 *~ *.o core a.out)
+	if test $(srcdir) = .; then $(MAKE) realclean; fi
+	(cd $(srcdir); $(RMF) Makefile)
+
+install: allbin alldoc
+	$(INSTALL_PROGRAM) rclock $(DESTDIR)$(bindir)/$(binprefix)rclock
+	$(INSTALL_DATA) rclock.1 $(DESTDIR)$(mandir)/$(manprefix)rclock.$(manext)
+
+uninstall:
+	cd $(bindir); $(RMF) $(binprefix)rclock
+	cd $(mandir); $(RMF) $(manprefix)rclock.$(manext)
+
+distdirs:
+	mkdir $(basedir)/../$(VERNAME)/$(thisdir)
+
+distcopy:  rclock.1
+	$(CP) -p $(DIST) $(basedir)/../$(VERNAME)/$(thisdir)
+	if test -f rclock.html; then \
+	$(CP) -p rclock.html $(basedir)/../$(VERNAME)/$(thisdir); \
+	fi
+
+# -----------------------------------------------------------------------
+# DO NOT DELETE: ugly dependency list follows
+rclock.o: rclock.c feature.h
