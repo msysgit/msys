@@ -1,7 +1,7 @@
 /*--------------------------------*-C-*---------------------------------*
  * File:	init.c
  *----------------------------------------------------------------------*
- * $Id: init.c,v 1.1 2003/03/05 17:33:36 earnie Exp $
+ * $Id: init.c,v 1.2 2004/03/16 13:26:38 earnie Exp $
  *
  * All portions of code are copyright by their respective author/s.
  * Copyright (c) 1992      John Bovey, University of Kent at Canterbury <jdb@ukc.ac.uk>
@@ -1316,7 +1316,7 @@ rxvt_run_command(rxvt_t *r, const char *const *argv)
 /* need to trap SIGURG for SVR4 (Unixware) rlogin */
 /* signal (SIGURG, SIG_DFL); */
 
-#ifndef __QNX__
+#if !defined(__QNX__)
 /* spin off the command interpreter */
     switch (r->h->cmd_pid = fork()) {
     case -1:
@@ -1325,9 +1325,6 @@ rxvt_run_command(rxvt_t *r, const char *const *argv)
     case 0:
 	close(cfd);		/* only keep r->tty_fd and STDERR open */
 	close(r->Xfd);
-#ifdef __QNX__
-	rxvt_run_child(r, argv);
-#else
 	if (rxvt_control_tty(r->tty_fd, r->h->ttydev) < 0)
 	    rxvt_print_error("could not obtain control of tty");
 	else {
@@ -1339,7 +1336,6 @@ rxvt_run_command(rxvt_t *r, const char *const *argv)
 		close(r->tty_fd);
 	    rxvt_run_child(r, argv);
 	}
-#endif
 	exit(EXIT_FAILURE);
 	/* NOTREACHED */
     default:

@@ -1,0 +1,16 @@
+2003-03-16  Earnie Boyd  <earnie@users.sf.net>
+
+	* autoconf/Make.common.in (RC): Set variable.
+	* autoconf/config.guess: Update with newer version.
+	* autoconf/config.sub: Ditto.
+	* autoconf/ltmain.sh: Ditto.
+	* src/Makefile.in: Add suffix rules for .rc.
+	(rxvt_res.o): Add target.
+	* src/command.c: Add __MSYS__ filters.
+	* src/init.c: Ditto.
+	* src/init.h: Ditto.
+	* src/main.c: Ditto.
+	* src/ptytty.c: Ditto.
+	* src/rxvt.h: Ditto.
+	* src/screen.c: Ditto.
+	* ChangeLog.MSYS: New file.

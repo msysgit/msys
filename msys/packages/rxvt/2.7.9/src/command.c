@@ -1,7 +1,7 @@
 /*--------------------------------*-C-*---------------------------------*
  * File:	command.c
  *----------------------------------------------------------------------*
- * $Id: command.c,v 1.1 2003/03/05 17:33:36 earnie Exp $
+ * $Id: command.c,v 1.2 2004/03/16 13:26:38 earnie Exp $
  *
  * All portions of code are copyright by their respective author/s.
  * Copyright (c) 1992      John Bovey, University of Kent at Canterbury <jdb@ukc.ac.uk>
@@ -2895,7 +2895,7 @@ rxvt_main_loop(rxvt_t *r)
 
     h->cmdbuf_ptr = h->cmdbuf_endp = h->cmdbuf_base;
 
-#if defined(__CYGWIN32__)
+#if defined(__CYGWIN32__) || defined(__MSYS__)
     /* once we know the shell is running, send the screen size.  Again! */
     (void)rxvt_cmd_getc(r);	/* wait for something */
     h->cmdbuf_ptr--;		/* unget it - reprocess it below */

@@ -1,7 +1,7 @@
 /*--------------------------------*-C-*---------------------------------*
  * File:	main.c
  *----------------------------------------------------------------------*
- * $Id: main.c,v 1.1 2003/03/05 17:33:37 earnie Exp $
+ * $Id: main.c,v 1.2 2004/03/16 13:26:38 earnie Exp $
  *
  * All portions of code are copyright by their respective author/s.
  * Copyright (c) 1992      John Bovey, University of Kent at Canterbury <jdb@ukc.ac.uk>
@@ -263,7 +263,7 @@ rxvt_realloc(void *ptr, size_t size)
 void
 rxvt_privileges(rxvt_t *r, int mode)
 {
-#if ! defined(__CYGWIN32__)
+#if ! (defined(__CYGWIN32__) || defined (__MSYS__))
 # if !defined(HAVE_SETEUID) && defined(HAVE_SETREUID)
 /* setreuid() is the poor man's setuid(), seteuid() */
 #  define seteuid(a)	setreuid(-1, (a))

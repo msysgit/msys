@@ -1,5 +1,5 @@
 /*
- * $Id: rxvt.h,v 1.1 2003/03/05 17:33:37 earnie Exp $
+ * $Id: rxvt.h,v 1.2 2004/03/16 13:26:38 earnie Exp $
  */
 
 #ifndef _RXVT_H_		/* include once only */
@@ -70,7 +70,7 @@ typedef struct {
 #  define NO_SETOWNER_TTYDEV
 # endif
 #endif
-#if defined(__CYGWIN32__) || defined(PTYS_ARE_OPENPTY)
+#if defined(__CYGWIN32__) || defined (__MSYS__) || defined(PTYS_ARE_OPENPTY)
 # define NO_SETOWNER_TTYDEV
 #endif
 
@@ -1000,7 +1000,7 @@ struct rxvt_hidden {
     Time            selection_request_time;
     pid_t           cmd_pid;	/* process id of child */
     gid_t           ttygid;
-#if (defined(HAVE_SETEUID) || defined(HAVE_SETREUID)) && !defined(__CYGWIN32__)
+#if (defined(HAVE_SETEUID) || defined(HAVE_SETREUID)) && ! (defined(__CYGWIN32__) || defined (__MSYS__))
     uid_t           euid;
     gid_t           egid;
 #endif
@@ -1165,7 +1165,7 @@ struct rxvt_hidden {
 # define rxvt_set_window_color(r, idx, color)	(0)
 #endif
 
-#ifdef __CYGWIN32__
+#if defined (__CYGWIN32__) || defined (__MSYS__)
 # define rxvt_privileged_ttydev(r, action)	(0)
 #endif
 

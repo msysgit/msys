@@ -1,7 +1,7 @@
 /*--------------------------------*-C-*---------------------------------*
  * File:	ptytty.c
  *----------------------------------------------------------------------*
- * $Id: ptytty.c,v 1.1 2003/03/05 17:33:37 earnie Exp $
+ * $Id: ptytty.c,v 1.2 2004/03/16 13:26:38 earnie Exp $
  *
  * All portions of code are copyright by their respective author/s.
  * Copyright (c) 1999-2001 Geoff Wing <gcw@pobox.com>
@@ -46,7 +46,7 @@
 #ifdef HAVE_SYS_IOCTL_H
 # include <sys/ioctl.h>
 #endif
-#if defined(PTYS_ARE_PTMX) && !defined(__CYGWIN32__)
+#if defined(PTYS_ARE_PTMX) && ! (defined(__CYGWIN32__) || defined (__MSYS__))
 # include <sys/stropts.h>      /* for I_PUSH */
 #endif
 
