@@ -1,3 +1,7 @@
+2003-07-29  Earnie Boyd  <earnie@users.sf.net>
+
+	* include/cygwin/version.h: Bump MINOR version to 10.
+
 2003-07-07  Earnie Boyd  <earnie@users.sf.net>
 
 	* path.cc (msys_p2w): Correction for ``foo=c:/bar'' constructs.

@@ -42,10 +42,10 @@ details. */
 	 changes to the DLL and is mainly informative in nature. */
 
   /* The current cygwin version is 1.3.3 */
-  /* The current msys version is 1.0.9 */
+  /* The current msys version is 1.0.10 */
 
 #define CYGWIN_VERSION_DLL_MAJOR 1000
-#define CYGWIN_VERSION_DLL_MINOR 9
+#define CYGWIN_VERSION_DLL_MINOR 10
 
       /* Major numbers before CYGWIN_VERSION_DLL_EPOCH are
 	 incompatible. */
