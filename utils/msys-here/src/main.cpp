@@ -19,13 +19,14 @@
 
 #define APP_NAME "MSYS Here"
 #define INI_FILE_NAME "\\msys.ini"
+#define MSYS_DVLPR "MSYSTEM=MSYS"
 
 /* Globals */
 CWinApp winApp;
 extern int _argc;
 extern char **_argv;
 const char *rxvt = "bin\\rxvt";
-const char *rxvtopts = "-sl 2500 -fg Navy -bg LightYellow -sr -fn Courier-12 -tn msys";
+const char *rxvtopts = "-sl 2500 -sr -fn Courier-12 -tn msys";
 const char *rxvtexec = "/bin/sh --login -i";
 
 
@@ -87,22 +88,12 @@ int CWinApp::Run(void){
 	/*	Writes the application's data to its ini file.	*/
 
 	_WriteIniFile();
-	/*	4. Set environment variables?
-
-		if "x%MSYSTEM%" == "x" set MSYSTEM=MINGW32
+	/*	4. Set environment variables?		*/
+	
+	/*	if "x%MSYSTEM%" == "x" set MSYSTEM=MINGW32
 		if "%1" == "MSYS" set MSYSTEM=MSYS
 		
-		if NOT "x%DISPLAY%" == "x" set DISPLAY=
-		
-		rem Setup the default colors for rxvt.
-		if "x%MSYSBGCOLOR%" == "x" set MSYSBGCOLOR=White
-		if "x%MSYSFGCOLOR%" == "x" set MSYSFGCOLOR=Black
-		if "x%MINGW32BGCOLOR%" == "x" set MINGW32BGCOLOR=LightYellow
-		if "x%MINGW32FGCOLOR%" == "x" set MINGW32FGCOLOR=Navy
-		if "%MSYSTEM%" == "MSYS" set BGCOLOR=%MSYSBGCOLOR%
-		if "%MSYSTEM%" == "MSYS" set FGCOLOR=%MSYSFGCOLOR%
-		if "%MSYSTEM%" == "MINGW32" set BGCOLOR=%MINGW32BGCOLOR%
-		if "%MSYSTEM%" == "MINGW32" set FGCOLOR=%MINGW32FGCOLOR%	*/
+		if NOT "x%DISPLAY%" == "x" set DISPLAY=	*/
 		
 	/*	5. Run MSYS?
 			- Msys DVLPR?
@@ -155,6 +146,13 @@ bool CWinApp::_ReadIniFile(void){
 	// [Msys] section.
 	IniFile.GetSection(	"Msys");
 	_startRxvt = IniFile.GetInt(	"StartRxvt", 1);
+
+	// [RxvtColors] section.
+	IniFile.GetSection(	"RxvtColors");
+	IniFile.GetString(_mingw32BgColor, 	"Mingw32BgColor",	"LightYellow",	sizeof(_mingw32BgColor));
+	IniFile.GetString(_mingw32FgColor, 	"Mingw32FgColor",	"Navy",		sizeof(_mingw32FgColor));
+	IniFile.GetString(_msysBgColor, 	"MsysBgColor",		"White",		sizeof(_msysBgColor));
+	IniFile.GetString(_msysFgColor, 	"MsysFgColor",		"Black",		sizeof(_msysFgColor));
 	IniFile.Close();
 return true;
 }
@@ -191,8 +189,15 @@ bool CWinApp::_WriteIniFile(void){
 	fprintf(file, ";\tMSYS home:\n;\thttp://www.mingw.org/\n;\n\n");
 	
 	// [Msys]
-	fprintf (file, "[Msys]\nStartRxvt = %d",		_startRxvt);
+	fprintf (file, "[Msys]\n");
+	fprintf (file, "StartRxvt = %d\n\n",		_startRxvt);
 	
+	fprintf (file, "[RxvtColors]\n\n");
+	fprintf (file, "Mingw32BgColor = %s\n",	_mingw32BgColor);
+	fprintf (file, "Mingw32FgColor = %s\n\n",	_mingw32FgColor);
+	fprintf (file, "MsysBgColor = %s\n",		_msysBgColor);
+	fprintf (file, "MsysFgColor = %s\n",		_msysFgColor);
+
 return true;
 }
 
@@ -209,8 +214,9 @@ return (access(filepath, 0) ? false : true);
 }
 
 bool CWinApp::_GetOpt(void){
-	/*	Get command line options, eg:
-		msys -h"c:\change_dir".		*/
+	/*	Get command line options.
+		- MSYS Here: msys -h"c:\change_dir".
+		- MSYS DVLPR: msys -d.			*/
 	
 	while (1){
 		int option_index = 0;
@@ -221,7 +227,7 @@ bool CWinApp::_GetOpt(void){
 		int c = getopt_long(
 			_argc,
 			_argv,
-			"h:",
+			"dh:",
 			long_options,
 			&option_index);
 	
@@ -230,6 +236,10 @@ bool CWinApp::_GetOpt(void){
 		
 		switch (c){
 			case 0:
+			break;
+			
+			case 'd':
+			_dvlpr = true;
 			break;
 			
 			case 'h':
@@ -250,11 +260,19 @@ bool CWinApp::_Msys(void){
 	/*	Runs Msys.		*/
 	
 	char cmdline[512];
+	char *_bgColor = _mingw32BgColor;
+	char *_fgColor = _mingw32FgColor;
 
+	if (_dvlpr){
+		putenv(MSYS_DVLPR);
+		_bgColor = _msysBgColor;
+		_fgColor = _msysFgColor;
+	}
+	
 	if (_here && *_here){
 		_Unixify(_here);
 		if (_startRxvt){
-			if (1 > _snprintf(cmdline, sizeof(cmdline), "%s %s -e %s -c \"cd '%s' ; exec /bin/sh\"", rxvt, rxvtopts, rxvtexec, _here))
+			if (1 > _snprintf(cmdline, sizeof(cmdline), "%s -fg %s -bg %s %s -e %s -c \"cd '%s' ; exec /bin/sh\"", rxvt, _fgColor, _bgColor, rxvtopts, rxvtexec, _here))
 				return false;
 		}else{
 			if (1 > _snprintf(cmdline, sizeof(cmdline), "bin\\sh --login -i -c \"cd '%s' ; exec /bin/sh\"", _here))
@@ -262,7 +280,7 @@ bool CWinApp::_Msys(void){
 		}
 	}else{
 		if (_startRxvt){
-			if (1 > _snprintf(cmdline, sizeof(cmdline), "%s %s -e %s", rxvt, rxvtopts, rxvtexec))
+			if (1 > _snprintf(cmdline, sizeof(cmdline), "%s -fg %s -bg %s %s -e %s", rxvt, _fgColor, _bgColor, rxvtopts, rxvtexec))
 				return false;
 		}else{
 			if (1 > _snprintf(cmdline, sizeof(cmdline), "bin\\sh --login -i"))

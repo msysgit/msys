@@ -14,7 +14,7 @@
 
 class CWinApp : public CSDIBase {
 	public:
-	CWinApp() : _here(NULL) {};
+	CWinApp() : _here(NULL), _dvlpr(false) {};
 	~CWinApp() {};
 
 	int Run(void);
@@ -36,6 +36,13 @@ class CWinApp : public CSDIBase {
 	char _msysDir[_MAX_PATH];
 	char *_here;
 	bool _startRxvt;
+	bool _dvlpr;
+	char *_bgColor;
+	char *_fgColor;
+	char _mingw32BgColor[16];
+	char _mingw32FgColor[16];
+	char _msysBgColor[16];
+	char _msysFgColor[16];
 };
 
 #endif

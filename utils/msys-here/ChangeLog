@@ -1,3 +1,12 @@
 2002-12-22  Manu B  <manubee@users.sourceforge.net>
 
+	* setup/explorer.reg: New "Msys Dvlpr" menu.
+	* src/main.cpp CWinApp::_ReadIniFile): New RxvtColors section.
+	(CWinApp::_WriteIniFile): Ditto.
+	(CWinApp::_GetOpt): New -d option.
+	(CWinApp::_Msys): Set MSYSTEM environment variable and rxvt
+	colors, depending if we run MSYS DVLPR or not.
+	
+2002-12-22  Manu B  <manubee@users.sourceforge.net>
+
 	* ChangeLog started: MSYS Here version 0.1a.

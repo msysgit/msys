@@ -12,8 +12,8 @@ Signature = 45
 PrjVersion = 100
 
 [Project]
-NumFiles = 9
-BuildMakefile = 0
+NumFiles = 10
+BuildMakefile = 1
 
 [Archives]
 Directory = .
@@ -29,7 +29,7 @@ CC = g++
 WRES = windres
 TEST = gcc -v
 Build = 3
-Debug = 0
+Debug = 1
 Lang = 1
 CppFlags = 
 CcWarning = -W -Wall -pedantic
@@ -51,15 +51,15 @@ Show = 1
 
 [File3]
 Name = .\src\rsrc.h
-Show = 1
+Show = 0
 
 [File4]
 Name = .\src\rsrc.rc
-Show = 1
+Show = 0
 
 [File5]
 Name = .\winui\include\CFile.h
-Show = 1
+Show = 0
 
 [File6]
 Name = .\winui\include\CList.h
@@ -67,9 +67,13 @@ Show = 0
 
 [File7]
 Name = .\winui\include\winui.h
-Show = 1
+Show = 0
 
 [File8]
-Name = .\Readme
+Name = .\ChangeLog
 Show = 1
+
+[File9]
+Name = .\Readme
+Show = 0
 
