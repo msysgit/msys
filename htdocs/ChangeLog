@@ -1,3 +1,10 @@
+2002-12-10  Earnie Boyd  <earnie@users.sf.net>
+
+	* index.shtml: Update for MSYS-1.0.8.exe.
+	Remove release candidate for MSYS.
+	Update for release candidate gcj-3.2-20021210-1.tar.gz.
+	Add target="_nw" for all href jumping away from www.mingw.org.
+	
 2002-12-04  Earnie Boyd  <earnie@users.sf.net>
 
 	* index.shtml: Update for MSYS-1.0.8-rc-7.exe.
