@@ -579,3 +579,9 @@ void *valloc ();
 #endif
 
 char *xstrdup PARAMS ((char const *));
+
+#ifdef __CYGWIN__
+# define FOPEN_TEXT_READ "rt"
+#else
+# define FOPEN_TEXT_READ "r"
+#endif
