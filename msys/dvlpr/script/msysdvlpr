@@ -1,0 +1,2 @@
+cd /
+cmd //c start /msys.bat MSYS
