@@ -1,4 +1,4 @@
-<!-- $Id: mingwfaq.shtml,v 1.30 2002-01-26 18:13:43 stevedperkins Exp $ -->
+<!-- $Id: mingwfaq.shtml,v 1.31 2002-01-26 18:14:48 stevedperkins Exp $ -->
 
 <html>
 <head>
@@ -300,7 +300,7 @@
          decompress the contents of each archive into directories of your choosing, and 
          add the MinGW &quot;/bin&quot; subdirectory to your PATH (either within 
          MSYS's &quot;/etc/profile&quot; or in your overall system PATH).  There 
-         is no need to add MSYS's &quot;/bin&quot; to your PATH.
+         is no need to add MSYS's &quot;/bin&quot; to your system PATH.
       </p>
       <p>
          You may install the MinGW and MSYS packages anywhere on your filesystem, even nesting 
@@ -504,7 +504,7 @@
 
    <hr />
    <address>
-   <br />Last revised $Date: 2002-01-26 18:13:43 $
+   <br />Last revised $Date: 2002-01-26 18:14:48 $
    </address>
 
 </body>
