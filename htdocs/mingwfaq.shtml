@@ -397,7 +397,7 @@
           What Languages Are Supported?</a></h3>
 
       <p>As of MinGW-2.0.0-3.exe, MinGW carries support
-         for C, C++, ObjC, and Fortran 77.&nbsp; ADA is 
+         for C, C++, ObjC, and Fortran 77.&nbsp; Ada is 
          available as a seperate binary, while Java (GCJ) 
          is implemented as a release candidate.&nbsp; Continual 
          work is being done with the hope of it being included in the 
@@ -879,7 +879,7 @@
  
 <address>
   <br>
-  Last revised $Date: 2004-03-08 06:26:25 $
+  Last revised $Date: 2004-03-31 11:54:50 $
  </address>
 
 </body></html>

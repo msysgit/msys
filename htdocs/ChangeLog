@@ -1,6 +1,7 @@
 2004-03-31	Nathan Fisher <natbobc@users.sf.net>
 
 	* lists.shtml: Bug fix from bug report #926431.
+	* mingwfaq.shtml: Change ADA to Ada.
 
 2004-03-28	Luke Dunstan <infidel@users.sf.net>
 
