@@ -51,6 +51,7 @@ SYSTEM_INFO system_info;
 void __stdcall
 close_all_files (void)
 {
+  TRACE_IN;
   SetResourceLock (LOCK_FD_LIST, WRITE_LOCK | READ_LOCK, "close_all_files");
 
   fhandler_base *fh;
@@ -68,6 +69,7 @@ close_all_files (void)
 static BOOL __stdcall
 check_ttys_fds (void)
 {
+  TRACE_IN;
   int res = FALSE;
   SetResourceLock (LOCK_FD_LIST, WRITE_LOCK | READ_LOCK, "close_all_files");
   fhandler_base *fh;
@@ -84,6 +86,7 @@ check_ttys_fds (void)
 extern "C" int
 _unlink (const char *ourname)
 {
+  TRACE_IN;
   int res = -1;
   sigframe thisframe (mainthread);
 
@@ -220,6 +223,7 @@ _unlink (const char *ourname)
 extern "C" int
 remove (const char *ourname)
 {
+  TRACE_IN;
   path_conv win32_name (ourname, PC_SYM_NOFOLLOW | PC_FULL);
 
   if (win32_name.error)
@@ -239,6 +243,7 @@ remove (const char *ourname)
 extern "C" pid_t
 _getpid ()
 {
+  TRACE_IN;
   return myself->pid;
 }
 
@@ -246,6 +251,7 @@ _getpid ()
 extern "C" pid_t
 getppid ()
 {
+  TRACE_IN;
   return myself->ppid;
 }
 
@@ -253,6 +259,7 @@ getppid ()
 extern "C" pid_t
 setsid (void)
 {
+  TRACE_IN;
   if (myself->pgid != _getpid ())
     {
       if (myself->ctty == TTY_CONSOLE &&
@@ -272,6 +279,7 @@ setsid (void)
 extern "C" ssize_t
 _read (int fd, void *ptr, size_t len)
 {
+  TRACE_IN;
   int res;
   fhandler_base *fh;
   extern int sigcatchers;
@@ -1211,6 +1219,7 @@ extern int acl_access (const char *, int);
 extern "C" int
 access (const char *fn, int flags)
 {
+  TRACE_IN;
   sigframe thisframe (mainthread);
   // flags were incorrectly specified
   if (flags & ~ (F_OK|R_OK|W_OK|X_OK))
@@ -1282,6 +1291,7 @@ done:
 extern "C" int
 _rename (const char *oldpath, const char *newpath)
 {
+  TRACE_IN;
   sigframe thisframe (mainthread);
   int res = 0;
   char *lnk_suffix = NULL;
@@ -1415,6 +1425,7 @@ done:
 extern "C" int
 system (const char *cmdstring)
 {
+  TRACE_IN;
   sigframe thisframe (mainthread);
   int res;
   const char* command[4];
@@ -1451,6 +1462,7 @@ system (const char *cmdstring)
 extern "C" int
 setdtablesize (int size)
 {
+  TRACE_IN;
   if (size <= (int)cygheap->fdtab.size || cygheap->fdtab.extend (size - cygheap->fdtab.size))
     return 0;
 
@@ -1460,12 +1472,14 @@ setdtablesize (int size)
 extern "C" int
 getdtablesize ()
 {
+  TRACE_IN;
   return cygheap->fdtab.size > OPEN_MAX ? cygheap->fdtab.size : OPEN_MAX;
 }
 
 extern "C" size_t
 getpagesize ()
 {
+  TRACE_IN;
   if (!system_info.dwPageSize)
     GetSystemInfo (&system_info);
   return (int) system_info.dwPageSize;
@@ -1474,6 +1488,7 @@ getpagesize ()
 static int
 check_posix_perm (const char *fname, int v)
 {
+  TRACE_IN;
   extern int allow_ntea, allow_ntsec, allow_smbntsec;
 
   /* Windows 95/98/ME don't support file system security at all. */
@@ -1509,6 +1524,7 @@ check_posix_perm (const char *fname, int v)
 extern "C" long int
 fpathconf (int fd, int v)
 {
+  TRACE_IN;
   if (cygheap->fdtab.not_open (fd))
     {
       set_errno (EBADF);
@@ -1561,6 +1577,7 @@ fpathconf (int fd, int v)
 extern "C" long int
 pathconf (const char *file, int v)
 {
+  TRACE_IN;
   switch (v)
     {
     case _PC_PATH_MAX:
@@ -1604,6 +1621,7 @@ pathconf (const char *file, int v)
 extern "C" char *
 ttyname (int fd)
 {
+  TRACE_IN;
   if (cygheap->fdtab.not_open (fd) || !cygheap->fdtab[fd]->is_tty ())
     {
       return 0;
@@ -1614,6 +1632,7 @@ ttyname (int fd)
 extern "C" char *
 ctermid (char *str)
 {
+  TRACE_IN;
   static NO_COPY char buf[16];
   if (str == NULL)
     str = buf;
@@ -1628,6 +1647,7 @@ ctermid (char *str)
 extern "C" int
 _cygwin_istext_for_stdio (int fd)
 {
+  TRACE_IN;
   syscall_printf ("_cygwin_istext_for_stdio (%d)\n", fd);
   if (CYGWIN_VERSION_OLD_STDIO_CRLF_HANDLING)
     {
@@ -1668,6 +1688,7 @@ static int setmode_file;
 static int
 setmode_helper (FILE *f)
 {
+  TRACE_IN;
   if (fileno (f) != setmode_file)
     return 0;
   syscall_printf ("setmode: file was %s now %s\n",
@@ -1683,6 +1704,7 @@ setmode_helper (FILE *f)
 extern "C" int
 getmode (int fd)
 {
+  TRACE_IN;
   if (cygheap->fdtab.not_open (fd))
     {
       set_errno (EBADF);
@@ -1698,6 +1720,7 @@ getmode (int fd)
 extern "C" int
 setmode (int fd, int mode)
 {
+  TRACE_IN;
   if (cygheap->fdtab.not_open (fd))
     {
       set_errno (EBADF);
@@ -1754,6 +1777,7 @@ setmode (int fd, int mode)
 extern "C" int
 ftruncate (int fd, off_t length)
 {
+  TRACE_IN;
   sigframe thisframe (mainthread);
   int res = -1;
 
@@ -1792,6 +1816,7 @@ ftruncate (int fd, off_t length)
 extern "C" int
 truncate (const char *pathname, off_t length)
 {
+  TRACE_IN;
   sigframe thisframe (mainthread);
   int fd;
   int res = -1;
@@ -1813,6 +1838,7 @@ truncate (const char *pathname, off_t length)
 extern "C" long
 get_osfhandle (int fd)
 {
+  TRACE_IN;
   long res = -1;
 
   if (cygheap->fdtab.not_open (fd))
@@ -1827,6 +1853,7 @@ get_osfhandle (int fd)
 extern "C" int
 statfs (const char *fname, struct statfs *sfs)
 {
+  TRACE_IN;
   sigframe thisframe (mainthread);
   if (!sfs)
     {
@@ -1868,6 +1895,7 @@ statfs (const char *fname, struct statfs *sfs)
 extern "C" int
 fstatfs (int fd, struct statfs *sfs)
 {
+  TRACE_IN;
   sigframe thisframe (mainthread);
   if (cygheap->fdtab.not_open (fd))
     {
@@ -1882,6 +1910,7 @@ fstatfs (int fd, struct statfs *sfs)
 extern "C" int
 setpgid (pid_t pid, pid_t pgid)
 {
+  TRACE_IN;
   sigframe thisframe (mainthread);
   int res = -1;
   if (pid == 0)
@@ -1924,6 +1953,7 @@ out:
 extern "C" pid_t
 getpgid (pid_t pid)
 {
+  TRACE_IN;
   sigframe thisframe (mainthread);
   if (pid == 0)
     pid = getpid ();
@@ -1940,6 +1970,7 @@ getpgid (pid_t pid)
 extern "C" int
 setpgrp (void)
 {
+  TRACE_IN;
   sigframe thisframe (mainthread);
   return setpgid (0, 0);
 }
@@ -1947,6 +1978,7 @@ setpgrp (void)
 extern "C" pid_t
 getpgrp (void)
 {
+  TRACE_IN;
   sigframe thisframe (mainthread);
   return getpgid (0);
 }
@@ -1954,6 +1986,7 @@ getpgrp (void)
 extern "C" char *
 ptsname (int fd)
 {
+  TRACE_IN;
   sigframe thisframe (mainthread);
   if (cygheap->fdtab.not_open (fd))
     {
@@ -1967,6 +2000,7 @@ ptsname (int fd)
 extern "C" int
 regfree ()
 {
+  TRACE_IN;
   return 0;
 }
 
@@ -1979,6 +2013,7 @@ regfree ()
 extern "C" int
 mknod (const char *_path, mode_t mode, dev_t dev)
 {
+  TRACE_IN;
   set_errno (ENOSYS);
   return -1;
 }
@@ -1986,6 +2021,7 @@ mknod (const char *_path, mode_t mode, dev_t dev)
 extern "C" int
 mkfifo (const char *_path, mode_t mode)
 {
+  TRACE_IN;
   set_errno (ENOSYS);
   return -1;
 }
@@ -1994,6 +2030,7 @@ mkfifo (const char *_path, mode_t mode)
 extern "C" int
 setgid (gid_t gid)
 {
+  TRACE_IN;
   int ret = setegid (gid);
   if (!ret)
     cygheap->user.real_gid = myself->gid;
@@ -2004,6 +2041,7 @@ setgid (gid_t gid)
 extern "C" int
 setuid (uid_t uid)
 {
+  TRACE_IN;
   int ret = seteuid (uid);
   if (!ret)
     cygheap->user.real_uid = myself->uid;
@@ -2017,6 +2055,7 @@ extern struct passwd *internal_getlogin (cygheap_user &user);
 extern "C" int
 seteuid (uid_t uid)
 {
+  TRACE_IN;
   sigframe thisframe (mainthread);
   if (iswinnt)
     {
@@ -2232,6 +2271,7 @@ seteuid (uid_t uid)
 extern "C" int
 setegid (gid_t gid)
 {
+  TRACE_IN;
   sigframe thisframe (mainthread);
   if (iswinnt)
     {
@@ -2278,6 +2318,7 @@ setegid (gid_t gid)
 extern "C" int
 chroot (const char *newroot)
 {
+  TRACE_IN;
   sigframe thisframe (mainthread);
   int ret = -1;
   path_conv path (newroot, PC_SYM_NOFOLLOW | PC_FULL);
@@ -2308,6 +2349,7 @@ done:
 extern "C" int
 creat (const char *path, mode_t mode)
 {
+  TRACE_IN;
   sigframe thisframe (mainthread);
   return open (path, O_WRONLY | O_CREAT | O_TRUNC, mode);
 }
@@ -2315,12 +2357,14 @@ creat (const char *path, mode_t mode)
 extern "C" void
 __assertfail ()
 {
+  TRACE_IN;
   exit (99);
 }
 
 extern "C" int
 getw (FILE *fp)
 {
+  TRACE_IN;
   sigframe thisframe (mainthread);
   int w, ret;
   ret = fread (&w, sizeof (int), 1, fp);
@@ -2330,6 +2374,7 @@ getw (FILE *fp)
 extern "C" int
 putw (int w, FILE *fp)
 {
+  TRACE_IN;
   sigframe thisframe (mainthread);
   int ret;
   ret = fwrite (&w, sizeof (int), 1, fp);
@@ -2341,6 +2386,7 @@ putw (int w, FILE *fp)
 extern "C" int
 wcscmp (const wchar_t *s1, const wchar_t *s2)
 {
+  TRACE_IN;
   while (*s1  && *s1 == *s2)
     {
       s1++;
@@ -2353,6 +2399,7 @@ wcscmp (const wchar_t *s1, const wchar_t *s2)
 extern "C" size_t
 wcslen (const wchar_t *s1)
 {
+  TRACE_IN;
   int l = 0;
   while (s1[l])
     l++;
@@ -2365,6 +2412,7 @@ wcslen (const wchar_t *s1)
 extern "C" int
 wprintf (const char *fmt, ...)
 {
+  TRACE_IN;
   va_list ap;
   int ret;
 
@@ -2377,6 +2425,7 @@ wprintf (const char *fmt, ...)
 extern "C" int
 vhangup ()
 {
+  TRACE_IN;
   set_errno (ENOSYS);
   return -1;
 }
@@ -2384,6 +2433,7 @@ vhangup ()
 extern "C" _PTR
 memccpy (_PTR out, const _PTR in, int c, size_t len)
 {
+  TRACE_IN;
   const char *inc = (char *) in;
   char *outc = (char *) out;
 
@@ -2401,6 +2451,7 @@ memccpy (_PTR out, const _PTR in, int c, size_t len)
 extern "C" int
 nice (int incr)
 {
+  TRACE_IN;
   sigframe thisframe (mainthread);
   DWORD priority[] =
     {
@@ -2449,6 +2500,7 @@ nice (int incr)
 extern "C" int
 ffs (int i)
 {
+  TRACE_IN;
   static const unsigned char table[] =
     {
       0,1,2,2,3,3,3,3,4,4,4,4,4,4,4,4,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,
@@ -2471,6 +2523,7 @@ ffs (int i)
 extern "C" void
 login (struct utmp *ut)
 {
+  TRACE_IN;
   sigframe thisframe (mainthread);
   register int fd;
   int currtty = ttyslot ();
@@ -2496,6 +2549,7 @@ FIXME (cgf): huh?
 extern "C" int
 logout (char *line)
 {
+  TRACE_IN;
   sigframe thisframe (mainthread);
   int res = 0;
   HANDLE ut_fd;
