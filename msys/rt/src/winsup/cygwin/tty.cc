@@ -19,33 +19,30 @@ details. */
 #include "cygerrno.h"
 #include "security.h"
 #include "fhandler.h"
+#include "path.h"
 #include "dtable.h"
 #include "cygheap.h"
-#include "sync.h"
 #include "sigproc.h"
 #include "pinfo.h"
 #include "shared_info.h"
 
 extern fhandler_tty_master *tty_master;
 
-extern "C"
-int
+extern "C" int
 grantpt (int fd)
 {
   TRACE_IN;
   return 0;
 }
 
-extern "C"
-int
+extern "C" int
 unlockpt (int fd)
 {
   TRACE_IN;
   return 0;
 }
 
-extern "C"
-int
+extern "C" int
 ttyslot (void)
 {
   TRACE_IN;
@@ -58,6 +55,12 @@ void __stdcall
 tty_init (void)
 {
   TRACE_IN;
+#if 0
+# FIXME: Is this needed??  New Cygwin code.
+  if (!myself->ppid_handle && NOTSTATE (myself, PID_CYGPARENT))
+    cygheap->fdtab.get_debugger_info ();
+#endif
+
   if (NOTSTATE (myself, PID_USETTY))
     return;
   if (myself->ctty == -1)
@@ -75,20 +78,28 @@ void __stdcall
 create_tty_master (int ttynum)
 {
   TRACE_IN;
-  tty_master = (fhandler_tty_master *) cygheap->fdtab.build_fhandler (-1, FH_TTYM, "/dev/ttym", ttynum);
+  tty_master = (fhandler_tty_master *)
+    cygheap->fdtab.build_fhandler (-1, FH_TTYM, "/dev/ttym", ttynum);
   if (tty_master->init (ttynum))
     api_fatal ("Can't create master tty");
   else
     {
       /* Log utmp entry */
       struct utmp our_utmp;
+      DWORD len = sizeof our_utmp.ut_host;
 
       bzero ((char *) &our_utmp, sizeof (utmp));
       (void) time (&our_utmp.ut_time);
       strncpy (our_utmp.ut_name, getlogin (), sizeof (our_utmp.ut_name));
-      cygwin_gethostname (our_utmp.ut_host, sizeof (our_utmp.ut_host));
-      __small_sprintf (our_utmp.ut_line, "tty%d", ttynum);
+      GetComputerName (our_utmp.ut_host, &len);
+       __small_sprintf (our_utmp.ut_line, "tty%d", ttynum);
+      if ((len = strlen (our_utmp.ut_line)) >= UT_IDLEN)
+	len -= UT_IDLEN;
+      else
+	len = 0;
+      //strncpy (our_utmp.ut_id, our_utmp.ut_line + len, UT_IDLEN);
       our_utmp.ut_type = USER_PROCESS;
+      our_utmp.ut_pid = myself->pid;
       myself->ctty = ttynum;
       login (&our_utmp);
     }
@@ -148,7 +159,6 @@ tty_list::terminate (void)
       ForceCloseHandle1 (t->to_slave, to_pty);
       ForceCloseHandle1 (t->from_slave, from_pty);
       CloseHandle (tty_master->inuse);
-      WaitForSingleObject (tty_master->hThread, INFINITE);
       t->init ();
 
       char buf[20];
@@ -201,7 +211,7 @@ tty_list::allocate_tty (int with_console)
 
   if (!with_console)
     console = NULL;
-  else
+  else if (!(console = GetConsoleWindow ()))
     {
 #if DO_CPP_NEW
       char *oldtitle = new char [TITLESIZE];
@@ -227,8 +237,12 @@ tty_list::allocate_tty (int with_console)
 
       __small_sprintf (buf, "cygwin.find.console.%d", myself->pid);
       SetConsoleTitle (buf);
-      Sleep (40);
-      console = FindWindow (NULL, buf);
+      for (int times = 0; times < 25; times++)
+	{
+	  Sleep (10);
+	  if ((console = FindWindow (NULL, buf)))
+	    break;
+	}
       SetConsoleTitle (oldtitle);
 #if DO_CPP_NEW
       delete[] oldtitle;
@@ -377,21 +391,21 @@ tty::make_pipes (fhandler_pty_master *ptym)
   /* Create communication pipes */
 
   /* FIXME: should this be sec_none_nih? */
-  if (CreatePipe (&from_master, &to_slave, &sec_all, 0) == FALSE)
+  if (CreatePipe (&from_master, &to_slave, &sec_all, 128 * 1024) == FALSE)
     {
       termios_printf ("can't create input pipe");
       set_errno (ENOENT);
       return FALSE;
     }
 
-  ProtectHandle1 (to_slave, to_pty);
-  if (CreatePipe (&from_slave, &to_master, &sec_all, 0) == FALSE)
+  //ProtectHandle1NH (to_slave, to_pty);
+  if (CreatePipe (&from_slave, &to_master, &sec_all, 128 * 1024) == FALSE)
     {
       termios_printf ("can't create output pipe");
       set_errno (ENOENT);
       return FALSE;
     }
-  ProtectHandle1 (from_slave, from_pty);
+  //ProtectHandle1NH (from_slave, from_pty);
   termios_printf ("tty%d from_slave %p, to_slave %p", ntty, from_slave,
 		  to_slave);
 
