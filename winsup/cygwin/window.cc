@@ -109,10 +109,14 @@ Winmain (VOID *)
       return FALSE;
     }
 
+  ShowWindow(ourhwnd, SW_SHOW);
+  UpdateWindow(ourhwnd);
+
   /* Start the message loop. */
 
   while (GetMessage (&msg, ourhwnd, 0, 0) == TRUE)
     {
+      TranslateMessage (&msg);
       DispatchMessage (&msg);
     }
 
