@@ -1,3 +1,14 @@
+2003-01-12  Nathan Fisher <natbobc@users.sf.net>
+
+	* docs.shtml: Moved to new template
+	*	links.shtml: ditto
+	* news.shtml: ditto
+	* mingwfaq.shtml: ditto
+	* history.shtml: HTML 4.01 and CSS1 Compliant
+	* licensing.shtml: ditto
+	* lists.shtml: ditto
+	* msys.shtml: ditto
+	
 2003-01-11  Nathan Fisher <natbobc@users.sf.net>
 
 	* docs.shtml: Updates towards greater site conformance
