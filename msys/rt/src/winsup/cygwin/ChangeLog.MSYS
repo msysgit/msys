@@ -1,3 +1,10 @@
+2003-06-16  Earnie Boyd  <earnie@users.sf.net>
+
+	* path.cc (cygwin_conv_to_win32_path): Copy data to win32_path, don't
+	change the pointer value.
+	* spawn.cc (spawn_guts): Free tmpbuf if needed.  Ditto for wpath.
+	Set envblockarg to contain 0 for it's length.
+
 2003-06-13  Earnie Boyd  <earnie@users.sf.net>
 
 	* environ.cc:  Remove DO_CPP_NEW filters througout.

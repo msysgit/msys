@@ -511,9 +511,10 @@ spawn_guts (HANDLE hToken, const char * prog_arg, const char *const *argv,
 	  if (strlen(newargv[i]) < MAX_PATH)
 	    {
 	      char *tmpbuf = msys_p2w(newargv[i]);
-	      //debug_printf("%d of %d, %s, %s", i, ac, newargv[i], tmpbuf);
 	      debug_printf("newargv[%d] = %s", i, newargv[i]);
 	      newargv.replace (i, tmpbuf);
+	      if (tmpbuf != newargv[i])
+		free (tmpbuf);
 	    }
 	}
       for (int i = 0; i < newargv.argc; i++)
@@ -654,7 +655,9 @@ spawn_guts (HANDLE hToken, const char * prog_arg, const char *const *argv,
       // Is there a count of used?
       envblockcnt = ciresrv.moreinfo->envc;
 #endif
-      char **envblockarg = (char **)malloc(sizeof (char *) * (envblockcnt + 1)); 
+      char **envblockarg = (char **)malloc(sizeof (char *) * (envblockcnt + 1));
+      memset (envblockarg, 0, (sizeof (char *) * (envblockcnt + 1)));
+
       char *tptr;
       int envblocknlen = 0, envblockarglen = 0;
       envblockn = envblock;
@@ -671,7 +674,8 @@ spawn_guts (HANDLE hToken, const char * prog_arg, const char *const *argv,
 	      char *wpath = msys_p2w(tptr);
 	      debug_printf("wpath=%s", wpath);
 	      strcat(envblockarg[loop], wpath);
-	      free (wpath);
+	      if (wpath != tptr)
+		free (wpath);
 	    }
 
 	  debug_printf("envblockarg[%d] = %s", loop, envblockarg[loop]);
