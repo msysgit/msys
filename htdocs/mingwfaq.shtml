@@ -1,4 +1,4 @@
-<!-- $Id: mingwfaq.shtml,v 1.44 2002-11-05 20:10:58 earnie Exp $ -->
+<!-- $Id: mingwfaq.shtml,v 1.45 2003-01-02 08:10:20 natbobc Exp $ -->
 
 <html>
 <head>
@@ -68,7 +68,7 @@
       <li><a href="#faq-msvcdll">How can an MSVC program call a MinGW DLL, and vice versa?</a></li>
       <li><a href="#faq-cross">How can I build a cross compiler?</a></li>
       <li><a href="#faq-mingw32-gcc.exe">What's the difference between gcc.exe and mingw32-gcc.exe?"</a></li>
-      <li><a href="faq-mingw32-make.exe">Why is make named mingw32-make.exe?</a></li>
+      <li><a href="#faq-mingw32-make.exe">Why is make named mingw32-make.exe?</a></li>
       <li><a href="#faq-bugreports">How can I report bugs?</a></li>
    </ul>
 
@@ -592,7 +592,7 @@
 
    <hr />
    <address>
-   <br />Last revised $Date: 2002-11-05 20:10:58 $
+   <br />Last revised $Date: 2003-01-02 08:10:20 $
    </address>
 
 </body>

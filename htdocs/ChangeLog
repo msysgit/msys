@@ -1,4 +1,8 @@
 2002-12-27   Nathan Fisher <natbobc@users.sf.net>
+
+	* mingwfaq.shtml: Updated problem with link reference to mingw32-make section
+	
+2002-12-27   Nathan Fisher <natbobc@users.sf.net>
 	
 	* MINGW-USERS-MONTHLY.txt: Update to reflect MSYS ablility to run configure scripts
 
