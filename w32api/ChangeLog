@@ -1,5 +1,9 @@
 2001-08-21  Earnie Boyd  <earnie@SF.Net>
 
+	* include/setupapi.h: Formatting.
+
+2001-08-21  Earnie Boyd  <earnie@SF.Net>
+
 	* include/shlobj.h: Remove \r from the line endings.
 
 2001-08-21  Danny Smith  <dannysmith@users.sourceforge.net>
