@@ -7,6 +7,8 @@ This file is part of Cygwin.
 This software is a copyrighted work licensed under the terms of the
 Cygwin license.  Please consult the file "CYGWIN_LICENSE" for
 details. */
+#ifndef PATH_H
+#define PATH_H 1
 
 struct suffix_info
 {
@@ -172,3 +174,27 @@ has_exec_chars (const char *buf, int len)
 
 int pathmatch (const char *path1, const char *path2) __attribute__ ((regparm (2)));
 int pathnmatch (const char *path1, const char *path2, int len) __attribute__ ((regparm (2)));
+
+enum
+{
+  SCAN_BEG,
+  SCAN_LNK,
+  SCAN_HASLNK,
+  SCAN_JUSTCHECK,
+  SCAN_APPENDLNK,
+  SCAN_EXTRALNK,
+  SCAN_DONE,
+};
+
+class suffix_scan
+{
+  const suffix_info *suffixes, *suffixes_start;
+  int nextstate;
+  char *eopath;
+public:
+  const char *path;
+  char *has (const char *, const suffix_info *);
+  int next ();
+  int lnk_match () {return nextstate >= SCAN_EXTRALNK;}
+};
+#endif /* PATH_H */

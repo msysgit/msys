@@ -3,7 +3,7 @@
    Copyright (C) 2001 EarnieSystems
 
    This file is a copyrighted work licensed under the terms of the
-   EarnieSystems licesns.  Please consult the EarnieSystems.license
+   EarnieSystems license.  Please consult the EarnieSystems.license
    file for details of your rights and restrictions.
 
 */

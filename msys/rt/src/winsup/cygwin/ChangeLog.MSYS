@@ -1,3 +1,68 @@
+2002-05-07  Earnie Boyd  <earnie@users.sf.net>
+
+	* path.cc (pathmatch): Return non-match for ..
+	(symlink): Add debug_printf and correct some case methods.
+
+2002-04-26  Earnie Boyd  <earnie@users.sf.net>
+
+	* path.cc (pathmatch): Reinstate function.
+	(normalize_posix_path): Check for same src and return last dst.
+	Call cygwin_conv_to_full_posix_path for //foo/bar case.
+	(path_conv::check): Remove unused code.
+	(symlink_info::check): Ditto.
+
+2002-04-25  Earnie Boyd  <earnie@users.sf.net>
+
+	* dir.cc (rmdir): Remove NASTY HACK.
+	* path.cc (NEW_PATH_METHOD): Adjust filters to #if NEW_PATH_METHOD
+	throughout.
+
+2002-04-24  Earnie Boyd  <earnie@users.sf.net>
+
+	* environ.cc (parse_thing): Force MSYS values for parameters.
+	* msys.cc: Correct spelling.
+	* path.cc (NEW_PATH_METHOD): New macro.
+	(pathnmatch): Force RELAXED case checking.
+	(pathmatch): Remove unused function.
+	(path_conv::check): Document analysis for removing symlink coding.
+	And remove unused code.
+	(suffix_scan): Move the point of class declaration to path.h.
+	(suffix_scan::has): Remove symlink ".lnk" checking.
+	(suffix_scan::next): Ditto.
+	* path.h: Move suffix_scan class definition from path.cc.
+	* spawn.cc: Remove .com, .cmd, .bat and .dll from std_suffixes.
+
+2002-04-17  Earnie Boyd  <earnie@users.sf.net>
+
+	* environ.cc (putenv): Update Win32 environment strings.
+	(_addenv): Ditto.
+	* path.cc (cygwin_conv_path_to_win32): Rewrite. Add path lists.
+	(getcwd): Return the Win32 path instead of the POSIX path.
+	(cwdstuff::get): Return Win32 path with forward slashes.
+	(mount_info::read_mounts): Remove unused code.
+	(mount_info::from_registry): Ditto.
+	(mount_info::add_reg_mount): Ditto.
+	(mount_info::del_reg_mount): Ditto.
+	(mount_info::read_cygdrive_info_from_registry): Ditto.
+	(mount_info::write_cygdrive_info_from_registry): Ditto.
+	(mount_info::add_item): Ditto.
+	(mount): Ditto.
+	(umount): Ditto.
+	(symlink): Remove preprocessor conditional.
+	(symlink_info::check): Ditto.  If __MSYS__ then no symlinks.
+	(mount_info::read_mounts): Enhancements for /etc/fstab, comments,
+	blank lines and no new line requirement.
+	* strace.cc (strace::write): Change literal constant from cYg to MsYs.
+	* pfino.cc (set_myself): Ditto.
+
+2002-03-21  Earnie Boyd  <earnie@users.sf.net>
+
+	* include/cygwin/version.h (CYGWIN_VERSION_DLL_MINOR): Increment to 7.
+
+2002-03-20  Earnie Boyd  <earnie@users.sf.net>
+
+	* dir.cc (rmdir)  Fix a bug in the NASTY HACK for Circular Path error.
+
 2002-03-17  Earnie Boyd  <earnie@users.sf.net>
 
 	* dir.cc (rmdir): NASTY HACK to work around a "permissions denied"
