@@ -1,4 +1,9 @@
 
+Fri Jan 19 13:38:34 PST 2001  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	* ssi/faq-what.html: Better clarify what MinGW is and discuss the GCC
+	and bintuils ports.
+
 Fri Jan 19 06:16:52 PST 2001  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	* ssi/faq-cross.html: Add pointers to the crossgcc mail list.
