@@ -1,3 +1,14 @@
+2001-07-30  Mattia Barbon  <mbarbon@dsi.unive.it>
+
+	* include/commctrl.h (TBBUTTONINFO[AW]): Add struct definitions,
+	and UNICODE mappings, if _WIN32_IE >= 0x400.
+	(TBIF_* and TB_SETBUTTONINFO): Add defines, if _WIN32_IE >= 0x400.
+	(CDIS_*,CDDS_*,CDRF_*) : Add defines.
+	(tagNMCUSTOMDRAWINFO): Add struct definition and typedefs.
+	(tagNMLVCUSTOMDRAW): Likewise.
+	(tagNMTVCUSTOMDRAW): Likewise.
+	(tagNMLVCACHEHINT): Likewise.
+	
 2001-07-06 Danny Smith <dannysmith@users.sourceforge.net>
  
 	* include/basetsd.h (#include <_mingw.h>): Remove.
