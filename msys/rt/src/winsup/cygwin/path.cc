@@ -3100,7 +3100,7 @@ IsAbsWin32Path (const char * path)
     bool RetVal = false;
     if (((path[0] >= 'a' && path[0] <= 'z') ||
  	 (path[0] >= 'A' && path[0] <= 'Z')) &&
-	path[1] == ';')
+	path[1] == ':')
 	RetVal = true;
     return RetVal;
 }
@@ -3135,7 +3135,7 @@ cygwin_conv_to_win32_path (const char *path, char *win32_path)
   if (retpath_buflen <= retpath_len) \
     { \
       retpath_buflen = ((retpath_buflen * 2 <= retpath_len) ? \
-	  retpath_buflen * 2 : retpath_len + 1); \
+	  retpath_len + 1 : retpath_buflen * 2); \
       retpath = (char *)realloc (retpath, retpath_buflen); \
     } \
   strcat (retpath, retstr);
@@ -3150,7 +3150,7 @@ cygwin_conv_to_win32_path (const char *path, char *win32_path)
   if (retpath_buflen <= retpath_len ) \
     { \
       retpath_buflen = ((retpath_buflen * 2 <= retpath_len) ? \
-	  retpath_buflen * 2 : retpath_len + 1); \
+	  retpath_len + 1 : retpath_buflen * 2); \
       retpath = (char *)realloc (retpath, retpath_buflen); \
     } \
   strcpy (retpath, retstr);
@@ -3176,19 +3176,22 @@ cygwin_conv_to_win32_path (const char *path, char *win32_path)
     }
   //
   // Multiple forward slashes are treated special,
-  // remove one and return.
+  // Remove one and return for the form of //foo or ///bar
+  // but just return for the form of //server/share.
   //
   else if (path[0] == '/' && path[1] == '/')
     {
       int tidx = 2;
       while (spath[tidx] && spath[tidx] == '/')
 	  tidx++;
-      sspath = strchr (&spath[tidx], '/');
-      if (sspath)
+      if (strchr (&spath[tidx], '/'))
 	{
 	  retpathcpy (spath);
 	}
-      retpathcpy (&spath[1]);
+      else
+	{
+	  retpathcpy (&spath[1]);
+	}
     }
   //
   // special case confusion elimination
@@ -3232,7 +3235,6 @@ cygwin_conv_to_win32_path (const char *path, char *win32_path)
 	}
     }
   else
-  if (! path_changed)
     {
       switch (spath[0])
 	{
@@ -3325,8 +3327,7 @@ cygwin_conv_to_win32_path (const char *path, char *win32_path)
 	      retpathcat (swin32_path);
 	      break;
 	    }
-	  else
-	      retpathcpy (path);
+	  retpathcpy (path);
 	  break;
 	case '\'':
 	  //
@@ -3345,8 +3346,7 @@ cygwin_conv_to_win32_path (const char *path, char *win32_path)
 	      retpathcpy (swin32_path);
 	      break;
 	    }
-	  else
-	      retpathcpy (path);
+	  retpathcpy (path);
 	  break;
 	default:
 	  //

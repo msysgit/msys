@@ -1,5 +1,10 @@
 2002-11-16  Earnie Boyd  <earnie@users.sf.net>
 
+	* path.cc (cygwin_conv_to_win32_path): Bug and typo fixes.
+	Thanks to Luke Dunstan <infidel@users.sf.net>
+
+2002-11-16  Earnie Boyd  <earnie@users.sf.net>
+
 	* path.cc (cygwin_conv_to_win32_path): Rework to allow for relative
 	path lists.
 	* spawn.cc (spawn_guts): Rework to allow for path lists.  Modified to
