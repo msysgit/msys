@@ -1,0 +1,26 @@
+EXPORTS
+	BZ2_bzCompressInit @1
+	BZ2_bzCompress @2
+	BZ2_bzCompressEnd @3
+	BZ2_bzDecompressInit @4
+	BZ2_bzDecompress @5
+	BZ2_bzDecompressEnd @6
+	BZ2_bzReadOpen @7
+	BZ2_bzReadClose @8
+	BZ2_bzReadGetUnused @9
+	BZ2_bzRead @10
+	BZ2_bzWriteOpen @11
+	BZ2_bzWrite @12
+	BZ2_bzWriteClose @13
+	BZ2_bzWriteClose64 @14
+	BZ2_bzBuffToBuffCompress @15
+	BZ2_bzBuffToBuffDecompress @16
+	BZ2_bzlibVersion @17
+	BZ2_bzopen @18
+	BZ2_bzdopen @19
+	BZ2_bzread @20
+	BZ2_bzwrite @21
+	BZ2_bzflush @22
+	BZ2_bzclose @23
+	BZ2_bzerror @24
+
