@@ -847,7 +847,7 @@ dll_crt0_1 ()
   ignore_case_with_glob = FALSE;
 
   /* Flush signals and ensure that signal thread is up and running. Can't
-     do this for noncygwin case since the signal thread is blocked due to
+     do this for nonmsys case since the signal thread is blocked due to
      LoadLibrary serialization. */
   sig_send (NULL, __SIGFLUSH);
 
@@ -941,7 +941,7 @@ dll_crt0 (per_process *uptr)
 
 /* This must be called by anyone who uses LoadLibrary to load msys-1.0.dll */
 extern "C" void
-cygwin_dll_init ()
+msys_dll_init ()
 {
   static char **envp;
   static int _fmode;

@@ -368,17 +368,17 @@ dll_dllcrt0 (HMODULE h, per_process *p)
 }
 
 /* OBSOLETE: This function is obsolescent and will go away in the
-   future.  Cygwin can now handle being loaded from a noncygwin app
+   future.  Cygwin can now handle being loaded from a nonmsys app
    using the same entry point. */
 
 extern "C" int
-dll_noncygwin_dllcrt0 (HMODULE h, per_process *p)
+dll_nonmsys_dllcrt0 (HMODULE h, per_process *p)
 {
   return dll_dllcrt0 (h, p);
 }
 
 extern "C" void
-cygwin_detach_dll (dll *d)
+msys_detach_dll (dll *d)
 {
   dlls.detach (d);
 }
