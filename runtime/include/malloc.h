@@ -21,9 +21,9 @@
  *  DISCLAIMED. This includes but is not limited to warranties of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Revision: 1.7 $
+ * $Revision: 1.8 $
  * $Author: earnie $
- * $Date: 2002-04-09 21:06:38 $
+ * $Date: 2002-12-20 13:35:27 $
  *
  */
 
@@ -61,9 +61,15 @@ extern "C" {
    but not W9x. On latter, they always set errno to ENOSYS.
 */
 int	_heapwalk (_HEAPINFO*);
+#ifdef __GNUC__
+#define _alloca(x) __builtin_alloca((x))
+#endif
 
 #ifndef	_NO_OLDNAMES
 int	heapwalk (_HEAPINFO*);
+#ifdef __GNUC__
+#define alloca(x) __builtin_alloca((x))
+#endif
 #endif	/* Not _NO_OLDNAMES */
 
 int	_heapchk (void);	/* Verify heap integrety. */
