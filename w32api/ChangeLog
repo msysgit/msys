@@ -1,5 +1,15 @@
 2001-08-02  Danny Smith <dannysmith@users.sourceforge.net>
 
+	Apply Dmitry Bely <dbely@mail.ru> patch 437834 (with additions).
+ 	* include/oleidl.h (ISupportErrorInfo, ICreateInfo): Move from here
+	* include/oaidl.h: ... to here.
+	* include/oaidl.h ICreateErrorInfo): Add interface definition.
+	(IErrorInfo::GetGUID): Change arg to GUID.
+	(LPSUPPORTERRORINFO): Add typedef.
+	(IID_ISupportErrorInfo): Change forward decl. of type to IID.
+
+2001-08-02  Danny Smith <dannysmith@users.sourceforge.net>
+
 	* include/winsock2.h (WSAGET* and WSAMAKE*): Remove duplicate
 	defines.
 
