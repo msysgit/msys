@@ -3345,7 +3345,7 @@ cygwin_conv_to_win32_path (const char *path, char *win32_path)
 		  retval = -1;
 		  break;
 		}
-	      retpathcpy (swin32_path);
+	      retpathcat (swin32_path);
 	      break;
 	    }
 	  retpathcpy (path);
