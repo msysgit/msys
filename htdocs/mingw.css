@@ -8,6 +8,7 @@ OL.romanum { list-style-type: lower-roman; }
 
 P.centre { text-align: center; }
 P.sm { font-size: small; text-align: center; }
+P.smi { font-size: small; text-align: center; font-style: italic; }
 
 SPAN.bold { font-weight: bold; }
 
