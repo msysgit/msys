@@ -3196,6 +3196,26 @@ fchdir (int fd)
   return ret;
 }
 
+static bool
+QuotedRelativePath (const char *Path)
+{
+    if (Path[0] == '"' || Path[0] == '\'')
+      {
+	if (Path[1] == '/')
+	  {
+	    return false;
+	  }
+	else
+	  {
+	    return true;
+	  }
+      }
+    else
+      {
+	return false;
+      }
+}
+
 /******************** Exported Path Routines *********************/
 
 /* Cover functions to the path conversion routines.
@@ -3207,6 +3227,7 @@ cygwin_conv_to_win32_path (const char *path, char *win32_path)
 {
   bool found_path = true;
   const char *spath = path;
+  char *sptr;
   debug_printf("path: %s", path);
 
   if (spath[0] == '/' && strlen(spath) == 2)
@@ -3221,8 +3242,13 @@ cygwin_conv_to_win32_path (const char *path, char *win32_path)
 	{
 	  spath = strchr(spath, '=');
 	  spath++;
-	  if (*spath) 
+	  if (QuotedRelativePath (spath))
+	    found_path = false;
+	  else
+	    {
+	      spath++;
 	      found_path = true;
+	    }
 	}
       else
 	  found_path = true;
@@ -3230,9 +3256,15 @@ cygwin_conv_to_win32_path (const char *path, char *win32_path)
   else if ((spath = strchr(spath, '=')))
     {
       spath++;
-      if (spath[0] )
+      if (spath[0])
 	{
-	  found_path = true;
+	  if (QuotedRelativePath (spath))
+	      found_path = false;
+	  else
+	    {
+	      spath++;
+	      found_path = true;
+	    }
 	}
       else
 	{
@@ -3267,6 +3299,8 @@ cygwin_conv_to_win32_path (const char *path, char *win32_path)
 	  *(win32_path + (spath - path)) = '\0';
 	}
       strcat (win32_path, p.get_win32 ());
+      while (sptr = strchr(win32_path, '\\'))
+	  sptr[0] = '/';
       return 0;
     }
   else
