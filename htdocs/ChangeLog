@@ -1,3 +1,8 @@
+2002-08-05  Earnie Boyd  <earnie@users.sf.net>
+
+	* index.shtml: Change the current version links and remove the
+	"Old Version" links.
+
 2002-06-01  Luke Dunstan  <infidel@users.sourceforge.net>
 
 	* docs.shtml: Change or remove many broken and outdated links, add a
