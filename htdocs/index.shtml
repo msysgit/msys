@@ -46,7 +46,13 @@ questions more related to MSYS and to using the Minimal SYStem.
 Information for signup and links to the archives can be found by&nbsp;<a
  href="lists.shtml">clicking here</a>. You may search the archives
 using the "Search the archives" form found on the left side of
-every&nbsp;<a href="http://www.mingw.org">www.mingw.org</a> page.</p>
+every&nbsp;<a href="http://www.mingw.org">www.mingw.org</a> page.
+	    </p>
+	    <p><span class="bold">Packages, Release Candidates, etc.</span>
+We've moved this information to the <a href="download.shtml">Download</a> web
+page.  We hope that you find our new look helpful.  A big thank-you to Nathan 
+Fisher for this work.
+	    </p>
 
 <!--                     End of Main Body                                   -->
 						</td>
@@ -68,6 +74,6 @@ every&nbsp;<a href="http://www.mingw.org">www.mingw.org</a> page.</p>
  src="http://sourceforge.net/sflogo.php?group_id=2435&amp;type=1" width="88"
  height="31" alt="Powered by SourceForge" border="0"></a> </p>
 <address><br>
-Last revised $Date: 2003-01-05 21:00:43 $ </address>
+Last revised $Date: 2003-01-08 14:32:18 $ </address>
 </body>
 </html>

@@ -1,47 +1,49 @@
-2003-01-05   Nathan Fisher <natbobc@users.sf.net>
+2003-01-08  Earnie Boyd  <earnie@users.sf.net>
 
-	* download.shtml: Added release ssi after "Download location"
+	* index.shtml: Add information about the move of the package
+	information.
+	* ssi/release.html: Modifiy for new binutils release candidate.
+	* ChangeLog: Reformat a few entries.
 
-2003-01-05   Nathan Fisher <natbobc@users.sf.net>
+2003-01-05  Nathan Fisher  <natbobc@users.sf.net>
 
-	* download.shtml: Changed title to "MinGW: Download"
+	* download.shtml: Added release ssi after "Download location".
 
-2003-01-05   Nathan Fisher <natbobc@users.sf.net>
+2003-01-05  Nathan Fisher  <natbobc@users.sf.net>
 
-	* index.shtml: Changed "News:" P tag to class centre 
-	* index.shtml: Changed "News:" to "Latest News:"
-	* mingw.css: Created P class centre
+	* download.shtml: Changed title to "MinGW: Download".
 
-2003-01-05   Nathan Fisher <natbobc@users.sf.net>
+2003-01-05  Nathan Fisher  <natbobc@users.sf.net>
+
+	* index.shtml: Changed "News:" P tag to class centre.
+	* index.shtml: Changed "News:" to "Latest News:".
+	* mingw.css: Created P class centre.
+
+2003-01-05  Nathan Fisher  <natbobc@users.sf.net>
 	
-	* index.shtml: Coloured news section
-	* mingw.css: Created TD class news
-	* mingw.css: Added grey bgcolor
-	* mingw.css: Added width attribute set to 25%
+	* index.shtml: Coloured news section.
+	* mingw.css: Created TD class news.  Added grey bgcolor.
+	Added width attribute set to 25%.
 
-2002-12-27   Nathan Fisher <natbobc@users.sf.net>
-
-	* mingwfaq.shtml: Updated problem with link reference to mingw32-make section
-	
-2002-12-27   Nathan Fisher <natbobc@users.sf.net>
-	
-	* MINGW-USERS-MONTHLY.txt: Update to reflect MSYS ablility to run configure scripts
-
-2002-12-27   Nathan Fisher <natbobc@users.sf.net>
+2002-12-27  Nathan Fisher  <natbobc@users.sf.net>
 
 	* index.shtml: Change H4 tags to bold type face.
 	Removed Release info.  Add new column for news.
 	* mingw.css: Add bold class for SPAN tag.
 	* download.shtml: Change title to "Download"
 	* ssi/lsidebar.html: Reverted back to r1.12
+	* MINGW-USERS-MONTHLY.txt: Update to reflect MSYS ablility to run 
+	configure scripts.
+	* mingwfaq.shtml: Updated problem with link reference to mingw32-make 
+	section.
 
-2002-12-26   Nathan Fisher <natbobc@users.sf.net>
+2002-12-26  Nathan Fisher  <natbobc@users.sf.net>
 
 	* ssi/lsidebar.html: Update missing Download link in ssi/lsidebar.html
 	* index.shtml: Update title
 	* download.shtml: Update title
 
-2002-12-26   Nathan Fisher <natbobc@users.sf.net>
+2002-12-26  Nathan Fisher  <natbobc@users.sf.net>
 
 	* index.shtml: Remove WinZip caution from index.shtml
 	* download.shtml: Add WinZip caution
@@ -49,7 +51,7 @@
 	* index.shtml: Removed excess content
 	* ssi/release.html: Create document to contain brief info on current release/updates/etc
 
-2002-12-26   Nathan Fisher <natbobc@users.sf.net>
+2002-12-26  Nathan Fisher  <natbobc@users.sf.net>
 
 	* mirrors.shtml: Merged with download.shtml
 	* mirrors.shtml: Removed
