@@ -1,6 +1,6 @@
 /* spawn.cc
 
-   Copyright 1996, 1997, 1998, 1999, 2000, 2001 Cygnus Solutions.
+   Copyright 1996, 1997, 1998, 1999, 2000, 2001 Red Hat, Inc.
 
 This file is part of Cygwin.
 
@@ -22,6 +22,7 @@ details. */
 #include "cygerrno.h"
 #include <sys/cygwin.h>
 #include "perprocess.h"
+#include "security.h"
 #include "fhandler.h"
 #include "path.h"
 #include "dtable.h"
@@ -35,7 +36,6 @@ details. */
 #include "perthread.h"
 #include "registry.h"
 #include "environ.h"
-#include "security.h"
 
 #define LINE_BUF_CHUNK (MAX_PATH * 2)
 
@@ -131,7 +131,7 @@ find_exec (const char *name, path_conv& buf, const char *mywinenv,
     }
   while (*path && *++path);
 
-errout:
+ errout:
   /* Couldn't find anything in the given path.
      Take the appropriate action based on null_if_not_found. */
   if (null_if_notfound)
@@ -139,7 +139,7 @@ errout:
   else
     buf.check (name);
 
-out:
+ out:
   debug_printf ("%s = find_exec (%s)", (char *) buf, name);
   if (known_suffix)
     *known_suffix = suffix ?: strchr (buf, '\0');
@@ -175,7 +175,7 @@ iscmd (const char *argv0, const char *what)
 
 class linebuf
 {
-public:
+ public:
   size_t ix;
   char *buf;
   size_t alloced;
@@ -223,7 +223,7 @@ class av
 {
   char **argv;
   int calloced;
-public:
+ public:
   int argc;
   av (int ac, const char * const *av) : calloced (0), argc (ac)
   {
@@ -302,7 +302,7 @@ spawn_guts (HANDLE hToken, const char * prog_arg, const char *const *argv,
       return -1;
     }
 
-  syscall_printf ("spawn_guts (%.132s)", prog_arg);
+  syscall_printf ("spawn_guts (%d, %.132s)", mode, prog_arg);
 
   if (argv == NULL)
     {
@@ -327,8 +327,14 @@ spawn_guts (HANDLE hToken, const char * prog_arg, const char *const *argv,
   else
     chtype = PROC_EXEC;
 
-  HANDLE spr = CreateEvent (&sec_all, TRUE, FALSE, NULL);
-  ProtectHandle (spr);
+  HANDLE spr;
+  if (mode != _P_OVERLAY)
+    spr = NULL;
+  else
+    {
+      spr = CreateEvent (&sec_all, TRUE, FALSE, NULL);
+      ProtectHandle (spr);
+    }
 
   init_child_info (chtype, &ciresrv, (mode == _P_OVERLAY) ? myself->pid : 1, spr);
   if (!DuplicateHandle (hMainProc, hMainProc, hMainProc, &ciresrv.parent, 0, 1,
@@ -536,11 +542,12 @@ spawn_guts (HANDLE hToken, const char * prog_arg, const char *const *argv,
     *c++ = cstrdup1 (*e++);
   *c = NULL;
   if (mode != _P_OVERLAY ||
-      !DuplicateHandle (hMainProc, myself.shared_handle (), hMainProc, &ciresrv.moreinfo->myself_pinfo, 0,
+      !DuplicateHandle (hMainProc, myself.shared_handle (), hMainProc,
+			&ciresrv.moreinfo->myself_pinfo, 0,
 			TRUE, DUPLICATE_SAME_ACCESS))
     ciresrv.moreinfo->myself_pinfo = NULL;
 
-skip_arg_parsing:
+ skip_arg_parsing:
   PROCESS_INFORMATION pi = {NULL, 0, 0, 0};
   si.lpReserved = NULL;
   si.lpDesktop = NULL;
@@ -572,9 +579,6 @@ skip_arg_parsing:
   else
     envblock = winenv (envp, 0);
 
-  ciresrv.cygheap = cygheap;
-  ciresrv.cygheap_max = cygheap_max;
-
   /* Preallocated buffer for `sec_user' call */
   char sa_buf[1024];
 
@@ -593,6 +597,7 @@ skip_arg_parsing:
       /* FIXME: This leaks a handle in the CreateProcessAsUser case since the
 	 child process doesn't know about cygwin_mount_h. */
       ciresrv.mount_h = cygwin_mount_h;
+      cygheap_setup_for_child (&ciresrv);
       rc = CreateProcess (runpath,	/* image name - with full path */
 			  one_line.buf,	/* what was passed to exec */
 					  /* process security attrs */
@@ -611,7 +616,7 @@ skip_arg_parsing:
       cygsid sid;
       DWORD ret_len;
       if (!GetTokenInformation (hToken, TokenUser, &sid, sizeof sid, &ret_len))
-        {
+	{
 	  sid = NO_SID;
 	  system_printf ("GetTokenInformation: %E");
 	}
@@ -623,8 +628,15 @@ skip_arg_parsing:
 
       /* Remove impersonation */
       if (cygheap->user.impersonated
-          && cygheap->user.token != INVALID_HANDLE_VALUE)
+	  && cygheap->user.token != INVALID_HANDLE_VALUE)
 	RevertToSelf ();
+
+      static BOOL first_time = TRUE;
+      if (first_time)
+	{
+	  set_process_privilege (SE_RESTORE_NAME);
+	  first_time = FALSE;
+	}
 
       /* Load users registry hive. */
       load_registry_hive (sid);
@@ -647,6 +659,7 @@ skip_arg_parsing:
       strcat (wstname, dskname);
       si.lpDesktop = wstname;
 
+      cygheap_setup_for_child (&ciresrv);
       rc = CreateProcessAsUser (hToken,
 		       runpath,		/* image name - with full path */
 		       one_line.buf,	/* what was passed to exec */
@@ -669,6 +682,7 @@ skip_arg_parsing:
   MALLOC_CHECK;
   if (envblock)
     free (envblock);
+  cygheap_setup_for_child_cleanup (&ciresrv);
   MALLOC_CHECK;
 
   /* Set errno now so that debugging messages from it appear before our
@@ -689,7 +703,7 @@ skip_arg_parsing:
     {
       cygheap->fdtab.fixup_before_exec (pi.dwProcessId);
       if (mode == _P_OVERLAY)
-        ResumeThread (pi.hThread);
+	ResumeThread (pi.hThread);
     }
 
   if (mode == _P_OVERLAY)
@@ -708,9 +722,10 @@ skip_arg_parsing:
     {
       /* These are both duplicated in the child code.  We do this here,
 	 primarily for strace. */
-      strcpy (myself->progname, real_path);
       strace.execing = 1;
       hExeced = pi.hProcess;
+      strcpy (myself->progname, real_path);
+      close_all_files ();
     }
   else
     {
@@ -723,10 +738,10 @@ skip_arg_parsing:
 	  syscall_printf ("-1 = spawnve (), process table full");
 	  return -1;
 	}
-      child->progname[0] = '\0';
       child->dwProcessId = pi.dwProcessId;
       child->hProcess = pi.hProcess;
       child.remember ();
+      strcpy (child->progname, real_path);
       /* Start the child running */
       ResumeThread (pi.hThread);
     }
@@ -741,82 +756,82 @@ skip_arg_parsing:
   DWORD res;
   BOOL exited;
 
-  HANDLE waitbuf[3] = {pi.hProcess, signal_arrived, spr};
-  int nwait = 3;
-
   res = 0;
   exited = FALSE;
   MALLOC_CHECK;
-  for (int i = 0; i < 100; i++)
+  if (mode == _P_OVERLAY)
     {
-      switch (WaitForMultipleObjects (nwait, waitbuf, FALSE, INFINITE))
+      int nwait = 3;
+      HANDLE waitbuf[3] = {pi.hProcess, signal_arrived, spr};
+      for (int i = 0; i < 100; i++)
 	{
-	case WAIT_OBJECT_0:
-	  sigproc_printf ("subprocess exited");
-	  DWORD exitcode;
-	  if (!GetExitCodeProcess (pi.hProcess, &exitcode))
-	    exitcode = 1;
-	  res |= exitcode;
-	  exited = TRUE;
-	  break;
-	case WAIT_OBJECT_0 + 1:
-	  sigproc_printf ("signal arrived");
-	  ResetEvent (signal_arrived);
-	  continue;
-	case WAIT_OBJECT_0 + 2:
-	  if (mode == _P_OVERLAY)
+	  switch (WaitForMultipleObjects (nwait, waitbuf, FALSE, INFINITE))
 	    {
+	    case WAIT_OBJECT_0:
+	      sigproc_printf ("subprocess exited");
+	      DWORD exitcode;
+	      if (!GetExitCodeProcess (pi.hProcess, &exitcode))
+		exitcode = 1;
+	      res |= exitcode;
+	      exited = TRUE;
+	      break;
+	    case WAIT_OBJECT_0 + 1:
+	      sigproc_printf ("signal arrived");
+	      reset_signal_arrived ();
+	      continue;
+	    case WAIT_OBJECT_0 + 2:
 	      if (myself->ppid_handle)
 		res |= EXIT_REPARENTING;
 	      if (!my_parent_is_alive ())
 		{
-		  nwait = 1;
+		  nwait = 2;
 		  sigproc_terminate ();
 		  continue;
 		}
+	      break;
+	    case WAIT_FAILED:
+	      system_printf ("wait failed: nwait %d, pid %d, winpid %d, %E",
+			     nwait, myself->pid, myself->dwProcessId);
+	      system_printf ("waitbuf[0] %p %d", waitbuf[0],
+			     WaitForSingleObject (waitbuf[0], 0));
+	      system_printf ("waitbuf[1] %p = %d", waitbuf[1],
+			     WaitForSingleObject (waitbuf[1], 0));
+	      system_printf ("waitbuf[w] %p = %d", waitbuf[2],
+			     WaitForSingleObject (waitbuf[2], 0));
+	      set_errno (ECHILD);
+	      try_to_debug ();
+	      return -1;
 	    }
 	  break;
-	case WAIT_FAILED:
-	  system_printf ("wait failed: nwait %d, pid %d, winpid %d, %E",
-			 nwait, myself->pid, myself->dwProcessId);
-	  system_printf ("waitbuf[0] %p %d", waitbuf[0],
-			 WaitForSingleObject (waitbuf[0], 0));
-	  system_printf ("waitbuf[1] %p = %d", waitbuf[1],
-			 WaitForSingleObject (waitbuf[1], 0));
-	  system_printf ("waitbuf[w] %p = %d", waitbuf[2],
-			 WaitForSingleObject (waitbuf[2], 0));
-	  set_errno (ECHILD);
-	  try_to_debug ();
-	  return -1;
 	}
-      break;
-    }
 
-  ForceCloseHandle (spr);
+      ForceCloseHandle (spr);
 
-  sigproc_printf ("res = %x", res);
+      sigproc_printf ("res = %x", res);
 
-  if (mode == _P_OVERLAY && (res & EXIT_REPARENTING))
-    {
-      /* Try to reparent child process.
-       * Make handles to child available to parent process and exit with
-       * EXIT_REPARENTING status. Wait() syscall in parent will then wait
-       * for newly created child.
-       */
-      HANDLE oldh = myself->hProcess;
-      HANDLE h = myself->ppid_handle;
-      sigproc_printf ("parent handle %p", h);
-      int rc = DuplicateHandle (hMainProc, pi.hProcess, h, &myself->hProcess,
-				0, FALSE, DUPLICATE_SAME_ACCESS);
-      sigproc_printf ("%d = DuplicateHandle, oldh %p, newh %p",
-		      rc, oldh, myself->hProcess);
-      if (!rc && my_parent_is_alive ())
+      if (res & EXIT_REPARENTING)
 	{
-	  system_printf ("Reparent failed, parent handle %p, %E", h);
-	  system_printf ("my dwProcessId %d, myself->dwProcessId %d",
-			 GetCurrentProcessId (), myself->dwProcessId);
-	  system_printf ("old hProcess %p, hProcess %p", oldh, myself->hProcess);
+	  /* Try to reparent child process.
+	   * Make handles to child available to parent process and exit with
+	   * EXIT_REPARENTING status. Wait() syscall in parent will then wait
+	   * for newly created child.
+	   */
+	  HANDLE oldh = myself->hProcess;
+	  HANDLE h = myself->ppid_handle;
+	  sigproc_printf ("parent handle %p", h);
+	  int rc = DuplicateHandle (hMainProc, pi.hProcess, h, &myself->hProcess,
+				    0, FALSE, DUPLICATE_SAME_ACCESS);
+	  sigproc_printf ("%d = DuplicateHandle, oldh %p, newh %p",
+			  rc, oldh, myself->hProcess);
+	  if (!rc && my_parent_is_alive ())
+	    {
+	      system_printf ("Reparent failed, parent handle %p, %E", h);
+	      system_printf ("my dwProcessId %d, myself->dwProcessId %d",
+			     GetCurrentProcessId (), myself->dwProcessId);
+	      system_printf ("old hProcess %p, hProcess %p", oldh, myself->hProcess);
+	    }
 	}
+
     }
 
   MALLOC_CHECK;
@@ -846,8 +861,7 @@ skip_arg_parsing:
   return (int) res;
 }
 
-extern "C"
-int
+extern "C" int
 cwait (int *result, int pid, int)
 {
   return waitpid (pid, result, 0);
@@ -890,6 +904,7 @@ _spawnve (HANDLE hToken, int mode, const char *path, const char *const *argv,
       ret = spawn_guts (hToken, path, argv, envp, mode);
       if (vf && ret > 0)
 	{
+	  debug_printf ("longjmping due to vfork");
 	  vf->pid = ret;
 	  longjmp (vf->j, 1);
 	}
@@ -907,8 +922,7 @@ _spawnve (HANDLE hToken, int mode, const char *path, const char *const *argv,
  * Most of these based on (and copied from) newlib/libc/posix/execXX.c
  */
 
-extern "C"
-int
+extern "C" int
 spawnl (int mode, const char *path, const char *arg0, ...)
 {
   int i;
@@ -928,8 +942,7 @@ spawnl (int mode, const char *path, const char *arg0, ...)
   return _spawnve (NULL, mode, path, (char * const  *) argv, cur_environ ());
 }
 
-extern "C"
-int
+extern "C" int
 spawnle (int mode, const char *path, const char *arg0, ...)
 {
   int i;
@@ -952,8 +965,7 @@ spawnle (int mode, const char *path, const char *arg0, ...)
 		   (char * const *) envp);
 }
 
-extern "C"
-int
+extern "C" int
 spawnlp (int mode, const char *path, const char *arg0, ...)
 {
   int i;
@@ -973,8 +985,7 @@ spawnlp (int mode, const char *path, const char *arg0, ...)
   return spawnvpe (mode, path, (char * const *) argv, cur_environ ());
 }
 
-extern "C"
-int
+extern "C" int
 spawnlpe (int mode, const char *path, const char *arg0, ...)
 {
   int i;
@@ -996,30 +1007,26 @@ spawnlpe (int mode, const char *path, const char *arg0, ...)
   return spawnvpe (mode, path, (char * const *) argv, envp);
 }
 
-extern "C"
-int
+extern "C" int
 spawnv (int mode, const char *path, const char * const *argv)
 {
   return _spawnve (NULL, mode, path, argv, cur_environ ());
 }
 
-extern "C"
-int
+extern "C" int
 spawnve (int mode, const char *path, char * const *argv,
 					     const char * const *envp)
 {
   return _spawnve (NULL, mode, path, argv, envp);
 }
 
-extern "C"
-int
+extern "C" int
 spawnvp (int mode, const char *path, const char * const *argv)
 {
   return spawnvpe (mode, path, argv, cur_environ ());
 }
 
-extern "C"
-int
+extern "C" int
 spawnvpe (int mode, const char *file, const char * const *argv,
 					     const char * const *envp)
 {

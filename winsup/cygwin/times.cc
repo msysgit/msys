@@ -18,12 +18,12 @@ details. */
 #include <errno.h>
 #include "cygerrno.h"
 #include "perprocess.h"
+#include "security.h"
 #include "fhandler.h"
 #include "path.h"
 #include "sync.h"
 #include "sigproc.h"
 #include "pinfo.h"
-#include "security.h"
 
 #define FACTOR (0x19db1ded53e8000LL)
 #define NSPERSEC 10000000LL
@@ -56,7 +56,7 @@ times (struct tms * buf)
   /* Ticks is in milliseconds, convert to our ticks. Use long long to prevent
      overflow. */
   clock_t tc = (clock_t) ((long long) ticks * CLOCKS_PER_SEC / 1000);
-  if (os_being_run == winNT)
+  if (iswinnt)
     {
       GetProcessTimes (hMainProc, &creation_time, &exit_time,
 		       &kernel_time, &user_time);
@@ -102,11 +102,11 @@ settimeofday (const struct timeval *tv, const struct timezone *tz)
   tz = tz;			/* silence warning about unused variable */
 
   ptm = gmtime(&tv->tv_sec);
-  st.wYear         = ptm->tm_year + 1900;
-  st.wMonth        = ptm->tm_mon + 1;
+  st.wYear	   = ptm->tm_year + 1900;
+  st.wMonth	   = ptm->tm_mon + 1;
   st.wDayOfWeek    = ptm->tm_wday;
-  st.wDay          = ptm->tm_mday;
-  st.wHour         = ptm->tm_hour;
+  st.wDay	   = ptm->tm_mday;
+  st.wHour	   = ptm->tm_hour;
   st.wMinute       = ptm->tm_min;
   st.wSecond       = ptm->tm_sec;
   st.wMilliseconds = tv->tv_usec / 1000;
@@ -460,8 +460,10 @@ utimes (const char *path, struct timeval *tvp)
 
   /* MSDN suggests using FILE_FLAG_BACKUP_SEMANTICS for accessing
      the times of directories.  FIXME: what about Win95??? */
+  /* Note: It's not documented in MSDN that FILE_WRITE_ATTRIBUTES is
+     sufficient to change the timestamps... */
   HANDLE h = CreateFileA (win32.get_win32 (),
-			  GENERIC_WRITE,
+			  iswinnt ? FILE_WRITE_ATTRIBUTES : GENERIC_WRITE,
 			  FILE_SHARE_READ | FILE_SHARE_WRITE,
 			  &sec_none_nih,
 			  OPEN_EXISTING,

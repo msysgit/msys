@@ -1,6 +1,6 @@
 /* uinfo.cc: user info (uid, gid, etc...)
 
-   Copyright 1996, 1997, 1998 Cygnus Solutions.
+   Copyright 1996, 1997, 1998, 1999, 2000, 2001 Red Hat, Inc.
 
 This file is part of Cygwin.
 
@@ -21,11 +21,11 @@ details. */
 #include "sync.h"
 #include "sigproc.h"
 #include "pinfo.h"
+#include "security.h"
 #include "fhandler.h"
 #include "dtable.h"
 #include "cygheap.h"
 #include "registry.h"
-#include "security.h"
 
 struct passwd *
 internal_getlogin (cygheap_user &user)
@@ -40,7 +40,7 @@ internal_getlogin (cygheap_user &user)
     user.set_name (username);
   debug_printf ("GetUserName() = %s", user.name ());
 
-  if (os_being_run == winNT)
+  if (iswinnt)
     {
       LPWKSTA_USER_INFO_1 wui;
       NET_API_STATUS ret;
@@ -63,13 +63,13 @@ internal_getlogin (cygheap_user &user)
 	  sys_wcstombs (buf, wui->wkui1_username, UNLEN + 1);
 	  user.set_name (buf);
 	  sys_wcstombs (buf, wui->wkui1_logon_server,
-	  		INTERNET_MAX_HOST_NAME_LENGTH + 1);
+			INTERNET_MAX_HOST_NAME_LENGTH + 1);
 	  user.set_logsrv (buf);
 	  sys_wcstombs (buf, wui->wkui1_logon_domain,
 			INTERNET_MAX_HOST_NAME_LENGTH + 1);
 	  user.set_domain (buf);
 	  NetApiBufferFree (wui);
-      	}
+	}
       if (!user.logsrv () && get_logon_server_and_user_domain (buf, NULL))
 	{
 	  user.set_logsrv (buf + 2);
@@ -82,10 +82,14 @@ internal_getlogin (cygheap_user &user)
       /* HOMEDRIVE and HOMEPATH are wrong most of the time, too,
 	 after changing user context! */
       sys_mbstowcs (wuser, user.name (), UNLEN + 1);
-      strcat (strcpy (buf, "\\\\"), user.logsrv ());
-      sys_mbstowcs (wlogsrv, buf, INTERNET_MAX_HOST_NAME_LENGTH + 3);
+      wlogsrv[0] = '\0';
+      if (user.logsrv ())
+	{
+	  strcat (strcpy (buf, "\\\\"), user.logsrv ());
+	  sys_mbstowcs (wlogsrv, buf, INTERNET_MAX_HOST_NAME_LENGTH + 3);
+	}
       if (!NetUserGetInfo (NULL, wuser, 3, (LPBYTE *)&ui)
-	  || !NetUserGetInfo (wlogsrv, wuser, 3,(LPBYTE *)&ui))
+	  || (wlogsrv[0] && !NetUserGetInfo (wlogsrv, wuser, 3,(LPBYTE *)&ui)))
 	{
 	  sys_wcstombs (buf, ui->usri3_home_dir, MAX_PATH);
 	  if (!buf[0])
@@ -124,7 +128,7 @@ internal_getlogin (cygheap_user &user)
 	     in a process token of a currently impersonated process. */
 	  if (ptok == INVALID_HANDLE_VALUE
 	      && !OpenProcessToken (GetCurrentProcess (),
-	      			    TOKEN_ADJUST_DEFAULT | TOKEN_QUERY,
+				    TOKEN_ADJUST_DEFAULT | TOKEN_QUERY,
 				    &ptok))
 	    debug_printf ("OpenProcessToken(): %E\n");
 	  else if (!GetTokenInformation (ptok, TokenUser, &tu, sizeof tu, &siz))
@@ -184,7 +188,7 @@ internal_getlogin (cygheap_user &user)
 	      if (!SetTokenInformation (ptok, TokenOwner, &tu, sizeof tu))
 		debug_printf ("SetTokenInformation(TokenOwner): %E");
 	      if (gsid && !SetTokenInformation (ptok, TokenPrimaryGroup,
-		  			        &gsid, sizeof gsid))
+						&gsid, sizeof gsid))
 		debug_printf ("SetTokenInformation(TokenPrimaryGroup): %E");
 	    }
 

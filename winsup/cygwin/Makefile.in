@@ -1,5 +1,5 @@
 # Makefile.in for Cygwin.
-# Copyright 1995, 1996, 1997, 1998, 1999, 2000, 2001 Cygnus Solutions.
+# Copyright 1995, 1996, 1997, 1998, 1999, 2000, 2001 Red Hat, Inc.
 #
 # This file is part of Cygwin.
 #
@@ -65,6 +65,7 @@ LD:=@LD@
 DLLTOOL:=@DLLTOOL@
 WINDRES:=@WINDRES@
 AS:=@AS@
+LDSCRIPT=cygwin.sc
 
 #
 # Include common definitions for winsup directory
@@ -131,7 +132,8 @@ DLL_OFILES:=assert.o autoload.o cygheap.o dcrt0.o debug.o delqueue.o dir.o \
 
 GMON_OFILES:= gmon.o mcount.o profil.o
 
-.PHONY: all force dll_ofiles install all_target install_target all_host install_host
+.PHONY: all force dll_ofiles install all_target install_target all_host install_host \
+	install install_target install-libs install-headers
 
 .SUFFIXES:
 .SUFFIXES: .c .cc .def .a .o .d
@@ -147,11 +149,15 @@ all_host: new-$(LIB_NAME) cygrun.exe
 
 force:
 
-install: all $(install_host) $(install_target)
+install: install-libs install-headers $(install_host) $(install_target)
+
+install-libs: $(LIB_NAME)
 	$(INSTALL_DATA) new-$(DLL_NAME) $(bindir)/$(DLL_NAME); \
 	for i in $(LIB_NAME) $(GMON_START) $(LIBGMON_A) automode.o binmode.o textmode.o ; do \
 	    $(INSTALL_DATA) $$i $(tooldir)/lib/$$i ; \
-	done ; \
+	done
+
+install-headers:
 	cd $(srcdir); \
 	for sub in `find include -name '[a-z]*' -type d -print | sort`; do \
 	    for i in $$sub/*.h ; do \
@@ -188,9 +194,11 @@ new-$(LIB_NAME): $(LIB_NAME)
 
 # Rule to build cygwin.dll
 
-new-$(DLL_NAME): $(DLL_OFILES) $(DEF_FILE) $(LIBC) $(LIBM) Makefile winver_stamp
-	$(CXX) $(CXXFLAGS) -nostdlib -Wl,-shared -o $@ -e $(DLL_ENTRY) $(DEF_FILE) $(DLL_OFILES) version.o \
-	winver.o $(MALLOC_OBJ) $(LIBM) $(LIBC) -lstdc++ -lgcc -lshell32 -luuid -lkernel32
+new-$(DLL_NAME): $(LDSCRIPT) $(DLL_OFILES) $(DEF_FILE) $(DLL_IMPORTS) $(LIBC) $(LIBM) Makefile winver_stamp
+	$(CXX) $(CXXFLAGS) -nostdlib -Wl,-T$(firstword $^) -shared -o $@ \
+	-e $(DLL_ENTRY) $(DEF_FILE) $(DLL_OFILES) version.o winver.o \
+	$(DLL_IMPORTS) $(MALLOC_OBJ) $(LIBM) $(LIBC) \
+	-lstdc++ -lgcc -lshell32 -luuid -lkernel32
 
 dll_ofiles: $(DLL_OFILES)
 

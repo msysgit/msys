@@ -1,3 +1,52 @@
+2001-09-09  Egor Duda  <deo@logos-m.ru>
+
+	* dumper.cc (main): Change command-line arguments format to be
+	similar to gdb. Allow adding error_start=x:\path\to\dumper.exe to
+	CYGWIN environment variable to perform core dumping in case of
+	program crash.
+	(usage): Ditto.
+
+Wed Sep  5 22:37:21 2001  Christopher Faylor <cgf@cygnus.com>
+
+	* Makefile.in (dumper): Change logic for libbfd and libintl so that
+	they will be found either in the build tree or the installed directory.
+	* mkpasswd.c (enum_users): Add a comment as a password for NT.
+
+2001-09-03  Michael A Chase <mchase@ix.netcom.com>
+
+	* mount.cc (mount_commands): Don't write /cygdrive/u mount points.
+
+2001-09-03  Michael A Chase <mchase@ix.netcom.com>
+
+	* mount.cc (longopts): Add mount-commands to options list.
+	(usage): Add mount-commands option.
+	(mount_commands): New function.  Write commands to recreate current
+	mounts.
+
+Sat Sep  1 15:58:11 2001  Christopher Faylor <cgf@cygnus.com>
+
+	* mount.cc (main): Eliminate excess arguments in printf.
+
+2001-08-30  Egor Duda  <deo@logos-m.ru>
+
+	* dumper.h: Update copyright notice.
+	* dumper.cc: Ditto.
+	* dumper.cc: (dumper::print_core_section_list): New function.
+	* dumper.h: (dumper::print_core_section_list): Declare it.
+	* dumper.cc (print_section_name): New function.
+	(dumper::collect_process_information): Augment debugging output.
+	Stop debugee processing if it posts double exception.
+	(usage): Fix typo in option name.
+
+Tue Aug 28 14:45:02 2001  Christopher Faylor <cgf@cygnus.com>
+
+	* mount.cc (main): Issue correct warning for 'not enough arguments'.
+
+2001-08-14  Joerg Schaible <joerg.schaible@gmx.de>
+
+	* cygpath.cc (main): Support -w for Windows (System) directories and
+	return physical correct orthography for the Windows System dir.
+
 2001-07-14   Chris Genly  <chgenly@alum.mit.edu>
 
 	* regtool.cc (find_key): Handle keys with only one subkey.
@@ -51,7 +100,7 @@ Mon Apr 16 15:08:00 2001  Corinna Vinschen <vinschen@redhat.com>
 	`print_users'.
 
 2001-04-15  Michael A Chase <mchase@ix.netcom.com>
-  
+
 	* mount.cc (longopts): Add help to options list.
 	(opts): Add 'h' to options string.
 	* umount.cc (longopts): Add help to options list.

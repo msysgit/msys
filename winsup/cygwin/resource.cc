@@ -1,6 +1,6 @@
 /* resource.cc: getrusage () and friends.
 
-   Copyright 1996, 1997, 1998, 2000, 2001 Cygnus Solutions.
+   Copyright 1996, 1997, 1998, 2000, 2001 Red Hat, Inc.
 
    Written by Steve Chamberlain (sac@cygnus.com), Doug Evans (dje@cygnus.com),
    Geoffrey Noer (noer@cygnus.com) of Cygnus Support.
@@ -15,6 +15,7 @@ details. */
 #include "winsup.h"
 #include <errno.h>
 #include <unistd.h>
+#include <limits.h>
 #include "cygerrno.h"
 #include "sync.h"
 #include "sigproc.h"
@@ -106,11 +107,9 @@ int
 getrlimit (int resource, struct rlimit *rlp)
 {
   MEMORY_BASIC_INFORMATION m;
-  if (!rlp || !VirtualQuery (rlp, &m, sizeof (m)) || (m.State != MEM_COMMIT))
-    {
-      set_errno (EFAULT);
-      return -1;
-    }
+
+  if (check_null_invalid_struct_errno (rlp))
+    return -1;
 
   rlp->rlim_cur = RLIM_INFINITY;
   rlp->rlim_max = RLIM_INFINITY;
@@ -120,8 +119,19 @@ getrlimit (int resource, struct rlimit *rlp)
     case RLIMIT_CPU:
     case RLIMIT_FSIZE:
     case RLIMIT_DATA:
+      break;
     case RLIMIT_STACK:
+      if (!VirtualQuery ((LPCVOID) &m, &m, sizeof m))
+	debug_printf ("couldn't get stack info, returning def.values. %E");
+      else
+	{
+	  rlp->rlim_cur = (DWORD) &m - (DWORD) m.AllocationBase;
+	  rlp->rlim_max = (DWORD) m.BaseAddress + m.RegionSize
+			  - (DWORD) m.AllocationBase;
+	}
+      break;
     case RLIMIT_NOFILE:
+      rlp->rlim_cur = getdtablesize ();
       break;
     case RLIMIT_CORE:
       rlp->rlim_cur = rlim_core;
@@ -141,12 +151,8 @@ extern "C"
 int
 setrlimit (int resource, const struct rlimit *rlp)
 {
-  MEMORY_BASIC_INFORMATION m;
-  if (!rlp || !VirtualQuery (rlp, &m, sizeof (m)) || (m.State != MEM_COMMIT))
-    {
-      set_errno (EFAULT);
-      return -1;
-    }
+  if (check_null_invalid_struct_errno (rlp))
+    return -1;
 
   struct rlimit oldlimits;
 
@@ -168,7 +174,7 @@ setrlimit (int resource, const struct rlimit *rlp)
       break;
     case RLIMIT_NOFILE:
       if (rlp->rlim_cur != RLIM_INFINITY)
-        return setdtablesize (rlp->rlim_cur);
+	return setdtablesize (rlp->rlim_cur);
       break;
     default:
       set_errno (EINVAL);

@@ -34,6 +34,7 @@ details. */
 #include <winsock.h>
 #include "select.h"
 #include "cygerrno.h"
+#include "security.h"
 #include "fhandler.h"
 #include "dtable.h"
 #include "cygheap.h"
@@ -158,6 +159,12 @@ cygwin_select (int maxfds, fd_set *readfds, fd_set *writefds, fd_set *exceptfds,
 
   select_printf ("sel.always_ready %d", sel.always_ready);
 
+  int timeout = 0;
+  /* Allocate some fd_set structures using the number of fds as a guide. */
+  fd_set *r = allocfd_set (maxfds);
+  fd_set *w = allocfd_set (maxfds);
+  fd_set *e = allocfd_set (maxfds);
+
   /* Degenerate case.  No fds to wait for.  Just wait. */
   if (sel.start.next == NULL)
     {
@@ -167,35 +174,41 @@ cygwin_select (int maxfds, fd_set *readfds, fd_set *writefds, fd_set *exceptfds,
 	  set_sig_errno (EINTR);
 	  return -1;
 	}
-      return 0;
+      timeout = 1;
     }
-
-  /* Allocate some fd_set structures using the number of fds as a guide. */
-  fd_set *r = allocfd_set (maxfds);
-  fd_set *w = allocfd_set (maxfds);
-  fd_set *e = allocfd_set (maxfds);
-
-  if (sel.always_ready || ms == 0)
+  else if (sel.always_ready || ms == 0)
     /* Don't bother waiting. */;
-  else if (sel.wait (r, w, e, ms))
+  else if ((timeout = sel.wait (r, w, e, ms) < 0))
     return -1;	/* some kind of error */
 
+  sel.cleanup ();
   copyfd_set (readfds, r, maxfds);
   copyfd_set (writefds, w, maxfds);
   copyfd_set (exceptfds, e, maxfds);
-  return sel.poll (readfds, writefds, exceptfds);
+  return timeout ? 0 : sel.poll (readfds, writefds, exceptfds);
 }
 
-/* Cleanup */
-select_stuff::~select_stuff ()
+/* Call cleanup functions for all inspected fds.  Gets rid of any
+   executing threads. */
+void
+select_stuff::cleanup ()
 {
   select_record *s = &start;
 
   select_printf ("calling cleanup routines");
   while ((s = s->next))
     if (s->cleanup)
-      s->cleanup (s, this);
+      {
+	s->cleanup (s, this);
+	s->cleanup = NULL;
+      }
+}
 
+/* Destroy all storage associated with select stuff. */
+select_stuff::~select_stuff ()
+{
+  cleanup ();
+  select_record *s = &start;
   select_record *snext = start.next;
 
   select_printf ("deleting select records");
@@ -253,6 +266,7 @@ select_stuff::wait (fd_set *readfds, fd_set *writefds, fd_set *exceptfds,
   HANDLE w4[MAXIMUM_WAIT_OBJECTS];
   select_record *s = &start;
   int m = 0;
+  int res = 0;
 
   w4[m++] = signal_arrived;  /* Always wait for the arrival of a signal. */
   /* Loop through the select chain, starting up anything appropriate and
@@ -301,6 +315,7 @@ select_stuff::wait (fd_set *readfds, fd_set *writefds, fd_set *exceptfds,
 	  return -1;
 	case WAIT_TIMEOUT:
 	  select_printf ("timed out");
+	  res = 1;
 	  goto out;
       }
 
@@ -337,8 +352,8 @@ select_stuff::wait (fd_set *readfds, fd_set *writefds, fd_set *exceptfds,
     }
 
 out:
-  select_printf ("returning 0");
-  return 0;
+  select_printf ("returning %d", res);
+  return res;
 }
 
 static int
@@ -803,6 +818,7 @@ fhandler_dev_null::select_read (select_record *s)
     }
   s->h = get_handle ();
   s->read_selected = TRUE;
+  s->read_ready = TRUE;
   return s;
 }
 
@@ -818,6 +834,7 @@ fhandler_dev_null::select_write (select_record *s)
     }
   s->h = get_handle ();
   s->write_selected = TRUE;
+  s->write_ready = TRUE;
   return s;
 }
 
@@ -1370,6 +1387,7 @@ fhandler_socket::select_read (select_record *s)
       s->verify = verify_true;
       s->cleanup = socket_cleanup;
     }
+  s->read_ready = saw_shutdown_read ();
   s->read_selected = TRUE;
   return s;
 }
@@ -1385,6 +1403,7 @@ fhandler_socket::select_write (select_record *s)
       s->verify = verify_true;
       s->cleanup = socket_cleanup;
     }
+  s->write_ready = saw_shutdown_write ();
   s->write_selected = TRUE;
   return s;
 }
@@ -1400,6 +1419,8 @@ fhandler_socket::select_except (select_record *s)
       s->verify = verify_true;
       s->cleanup = socket_cleanup;
     }
+  /* FIXME: Is this right?  Should these be used as criteria for except? */
+  s->except_ready = saw_shutdown_write () || saw_shutdown_read ();
   s->except_selected = TRUE;
   return s;
 }

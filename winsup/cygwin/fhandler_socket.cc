@@ -23,6 +23,9 @@
 #define USE_SYS_TYPES_FD_SET
 #include <winsock2.h>
 #include "cygerrno.h"
+#include "security.h"
+#include "cygwin/version.h"
+#include "perprocess.h"
 #include "fhandler.h"
 #include "dtable.h"
 #include "cygheap.h"
@@ -32,7 +35,7 @@
 #define ENTROPY_SOURCE_NAME "/dev/urandom"
 #define ENTROPY_SOURCE_DEV_UNIT 9
 
-fhandler_dev_random* entropy_source = NULL;
+fhandler_dev_random* entropy_source;
 
 /**********************************************************************/
 /* fhandler_socket */
@@ -42,8 +45,8 @@ fhandler_socket::fhandler_socket (const char *name) :
 {
   set_cb (sizeof *this);
   set_need_fork_fixup ();
-  prot_info_ptr = (LPWSAPROTOCOL_INFOA) cmalloc (HEAP_BUF,
-					         sizeof (WSAPROTOCOL_INFOA));
+  prot_info_ptr = (LPWSAPROTOCOL_INFOA) ccalloc (HEAP_BUF, 1,
+						 sizeof (WSAPROTOCOL_INFOA));
 }
 
 fhandler_socket::~fhandler_socket ()
@@ -98,17 +101,21 @@ fhandler_socket::create_secret_event (int* secret)
   __small_sprintf (buf, SECRET_EVENT_NAME, sin.sin_port,
 		   secret_ptr [0], secret_ptr [1],
 		   secret_ptr [2], secret_ptr [3]);
-  secret_event = CreateEvent ( NULL, FALSE, FALSE, buf);
+  secret_event = CreateEvent (get_inheritance(true), FALSE, FALSE, buf);
   if (!secret_event && GetLastError () == ERROR_ALREADY_EXISTS)
     secret_event = OpenEvent (EVENT_ALL_ACCESS, FALSE, buf);
 
   if (secret_event)
-    {
-      ProtectHandle (secret_event);
-      SetEvent (secret_event);
-    }
+    ProtectHandle (secret_event);
 
   return secret_event;
+}
+
+void
+fhandler_socket::signal_secret_event ()
+{
+  if (secret_event)
+    SetEvent (secret_event);
 }
 
 void
@@ -127,14 +134,16 @@ fhandler_socket::check_peer_secret_event (struct sockaddr_in* peer, int* secret)
   int* secret_ptr = (secret ? : connect_secret);
 
   __small_sprintf (buf, SECRET_EVENT_NAME, peer->sin_port,
-                  secret_ptr [0], secret_ptr [1],
-                  secret_ptr [2], secret_ptr [3]);
-  ev = CreateEvent (NULL, FALSE, FALSE, buf);
+		  secret_ptr [0], secret_ptr [1],
+		  secret_ptr [2], secret_ptr [3]);
+  ev = CreateEvent (&sec_all_nih, FALSE, FALSE, buf);
   if (!ev && GetLastError () == ERROR_ALREADY_EXISTS)
     {
       debug_printf ("%s event already exist");
       ev = OpenEvent (EVENT_ALL_ACCESS, FALSE, buf);
     }
+
+  signal_secret_event ();
 
   if (ev)
     {
@@ -179,9 +188,9 @@ fhandler_socket::fixup_after_fork (HANDLE parent)
 		prot_info_ptr->dwServiceFlags1);
   if (prot_info_ptr &&
       (new_sock = WSASocketA (FROM_PROTOCOL_INFO,
-                              FROM_PROTOCOL_INFO,
-                              FROM_PROTOCOL_INFO,
-                              prot_info_ptr, 0, 0)) == INVALID_SOCKET)
+			      FROM_PROTOCOL_INFO,
+			      FROM_PROTOCOL_INFO,
+			      prot_info_ptr, 0, 0)) == INVALID_SOCKET)
     {
       debug_printf ("WSASocket error");
       set_winsock_errno ();
@@ -248,6 +257,15 @@ fhandler_socket::close ()
   int res = 0;
   sigframe thisframe (mainthread);
 
+  /* HACK to allow a graceful shutdown even if shutdown() hasn't been
+     called by the application. Note that this isn't the ultimate
+     solution but it helps in many cases. */
+  struct linger linger;
+  linger.l_onoff = 1;
+  linger.l_linger = 240; /* seconds. default 2MSL value according to MSDN. */
+  setsockopt (get_socket (), SOL_SOCKET, SO_LINGER,
+	      (const char *)&linger, sizeof linger);
+
   if (closesocket (get_socket ()))
     {
       set_winsock_errno ();
@@ -256,6 +274,7 @@ fhandler_socket::close ()
 
   close_secret_event ();
 
+  debug_printf ("%d = fhandler_socket::close()", res);
   return res;
 }
 
@@ -293,10 +312,10 @@ fhandler_socket::ioctl (unsigned int cmd, void *p)
 	}
       ifr->ifr_flags = IFF_NOTRAILERS | IFF_UP | IFF_RUNNING;
       if (ntohl (((struct sockaddr_in *) &ifr->ifr_addr)->sin_addr.s_addr)
-          == INADDR_LOOPBACK)
-        ifr->ifr_flags |= IFF_LOOPBACK;
+	  == INADDR_LOOPBACK)
+	ifr->ifr_flags |= IFF_LOOPBACK;
       else
-        ifr->ifr_flags |= IFF_BROADCAST;
+	ifr->ifr_flags |= IFF_BROADCAST;
       res = 0;
       break;
     case SIOCGIFBRDADDR:
@@ -386,6 +405,8 @@ fhandler_socket::ioctl (unsigned int cmd, void *p)
 	  /* Start AsyncSelect if async socket unblocked */
 	  if (*(int *) p && get_async ())
 	    WSAAsyncSelect (get_socket (), gethwnd (), WM_ASYNCIO, ASYNC_MASK);
+
+	  set_nonblocking (*(int *) p);
 	}
       break;
     }
@@ -403,20 +424,18 @@ fhandler_socket::fcntl (int cmd, void *arg)
     {
     case F_SETFL:
       {
-        /* Care for the old O_NDELAY flag. If one of the flags is set,
-           both flags are set. */
-        int new_flags = (int) arg;
-        if (new_flags & (O_NONBLOCK | OLD_O_NDELAY))
-          new_flags |= O_NONBLOCK | OLD_O_NDELAY;
-        request = (new_flags & O_NONBLOCK) ? 1 : 0;
-        current = (get_flags () & O_NONBLOCK) ? 1 : 0;
-        if (request != current && (res = ioctl (FIONBIO, &request)))
-          break;
-        if (request)
-          set_flags (get_flags () | O_NONBLOCK | OLD_O_NDELAY);
-        else
-          set_flags (get_flags () & ~(O_NONBLOCK | OLD_O_NDELAY));
-        break;
+	/* Carefully test for the O_NONBLOCK or deprecated OLD_O_NDELAY flag.
+	   Set only the flag that has been passed in.  If both are set, just
+	   record O_NONBLOCK.   */
+	int new_flags = (int) arg & O_NONBLOCK_MASK;
+	if ((new_flags & OLD_O_NDELAY) && (new_flags & O_NONBLOCK))
+	  new_flags = O_NONBLOCK;
+	current = get_flags () & O_NONBLOCK_MASK;
+	request = new_flags ? 1 : 0;
+	if (!!current != !!new_flags && (res = ioctl (FIONBIO, &request)))
+	  break;
+	set_flags ((get_flags () & ~O_NONBLOCK_MASK) | new_flags);
+	break;
       }
     default:
       res = fhandler_base::fcntl (cmd, arg);
@@ -425,3 +444,12 @@ fhandler_socket::fcntl (int cmd, void *arg)
   return res;
 }
 
+void
+fhandler_socket::set_close_on_exec (int val)
+{
+  extern WSADATA wsadata;
+  if (wsadata.wVersion < 512) /* < Winsock 2.0 */
+    set_inheritance (get_handle (), val);
+  set_close_on_exec_flag (val);
+  debug_printf ("set close_on_exec for %s to %d", get_name (), val);
+}

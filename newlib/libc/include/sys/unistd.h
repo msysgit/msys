@@ -7,6 +7,7 @@ extern "C" {
 
 #include <_ansi.h>
 #include <sys/types.h>
+#include <sys/_types.h>
 #define __need_size_t
 #define __need_ptrdiff_t
 #include <stddef.h>
@@ -20,7 +21,7 @@ unsigned  _EXFUN(alarm, (unsigned __secs ));
 int     _EXFUN(chdir, (const char *__path ));
 int     _EXFUN(chmod, (const char *__path, mode_t __mode ));
 int     _EXFUN(chown, (const char *__path, uid_t __owner, gid_t __group ));
-#if defined (__CYGWIN__) || defined (__MSYS__)
+#if defined (__CYGWIN__) || defined(__rtems__) || defined (__MSYS__)
 int     _EXFUN(chroot, (const char *__path ));
 #endif
 int     _EXFUN(close, (int __fildes ));

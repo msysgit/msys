@@ -29,12 +29,12 @@ class cygsid {
   inline const PSID assign (const PSID nsid)
     {
       if (!nsid)
-        psid = NO_SID;
+	psid = NO_SID;
       else
-        {
-          psid = (PSID) sbuf;
-          CopySid (MAX_SID_LEN, psid, nsid);
-        }
+	{
+	  psid = (PSID) sbuf;
+	  CopySid (MAX_SID_LEN, psid, nsid);
+	}
       return psid;
     }
 
@@ -64,7 +64,7 @@ public:
   inline BOOL operator== (const PSID nsid) const
     {
       if (!psid || !nsid)
-        return nsid == psid;
+	return nsid == psid;
       return EqualSid (psid, nsid);
     }
   inline BOOL operator== (const char *nsidstr) const
@@ -98,9 +98,9 @@ public:
     {
       cygsid *tmp = new cygsid [count + 1];
       if (!tmp)
-        return FALSE;
+	return FALSE;
       for (int i = 0; i < count; ++i)
-        tmp[i] = sids[i];
+	tmp[i] = sids[i];
       delete [] sids;
       sids = tmp;
       sids[count++] = nsi;
@@ -109,14 +109,14 @@ public:
   BOOL add (const PSID nsid) { return add (nsid); }
   BOOL add (const char *sidstr)
     { cygsid nsi (sidstr); return add (nsi); }
-  
+
   BOOL operator+= (cygsid &si) { return add (si); }
   BOOL operator+= (const char *sidstr) { return add (sidstr); }
 
   BOOL contains (cygsid &sid) const
     {
       for (int i = 0; i < count; ++i)
-        if (sids[i] == sid)
+	if (sids[i] == sid)
 	  return TRUE;
       return FALSE;
     }
@@ -124,13 +124,14 @@ public:
     {
       debug_printf ("-- begin sidlist ---");
       if (!count)
-        debug_printf ("No elements");
+	debug_printf ("No elements");
       for (int i = 0; i < count; ++i)
-        sids[i].debug_print (prefix);
+	sids[i].debug_print (prefix);
       debug_printf ("-- ende sidlist ---");
     }
 };
 
+extern cygsid well_known_null_sid;
 extern cygsid well_known_world_sid;
 extern cygsid well_known_local_sid;
 extern cygsid well_known_creator_owner_sid;
@@ -141,7 +142,7 @@ extern cygsid well_known_interactive_sid;
 extern cygsid well_known_service_sid;
 extern cygsid well_known_authenticated_users_sid;
 extern cygsid well_known_system_sid;
-extern cygsid well_known_admin_sid;
+extern cygsid well_known_admins_sid;
 
 inline BOOL
 legal_sid_type (SID_NAME_USE type)
@@ -150,6 +151,7 @@ legal_sid_type (SID_NAME_USE type)
       || type == SidTypeAlias || type == SidTypeWellKnownGroup;
 }
 
+extern BOOL allow_ntea;
 extern BOOL allow_ntsec;
 extern BOOL allow_smbntsec;
 
@@ -169,6 +171,9 @@ LONG __stdcall read_sd(const char *file, PSECURITY_DESCRIPTOR sd_buf, LPDWORD sd
 LONG __stdcall write_sd(const char *file, PSECURITY_DESCRIPTOR sd_buf, DWORD sd_size);
 BOOL __stdcall add_access_allowed_ace (PACL acl, int offset, DWORD attributes, PSID sid, size_t &len_add, DWORD inherit);
 BOOL __stdcall add_access_denied_ace (PACL acl, int offset, DWORD attributes, PSID sid, size_t &len_add, DWORD inherit);
+
+void set_security_attribute (int attribute, PSECURITY_ATTRIBUTES psa,
+			     void *sd_buf, DWORD sd_buf_size);
 
 /* Try a subauthentication. */
 HANDLE subauth (struct passwd *pw);

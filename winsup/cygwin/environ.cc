@@ -19,6 +19,7 @@ details. */
 #include "sigproc.h"
 #include "pinfo.h"
 #include "perprocess.h"
+#include "security.h"
 #include "fhandler.h"
 #include "path.h"
 #include "cygerrno.h"
@@ -39,7 +40,7 @@ extern int subauth_id;
 BOOL reset_com = TRUE;
 static BOOL envcache = TRUE;
 
-static char **lastenviron = NULL;
+static char **lastenviron;
 
 #define ENVMALLOC \
   (CYGWIN_VERSION_DLL_MAKE_COMBINED (user_data->api_major, user_data->api_minor) \
@@ -52,7 +53,7 @@ static char **lastenviron = NULL;
    CreateProcess.  HOME is here because most shells use it and would be
    confused by Windows style path names.  */
 static int return_MAX_PATH (const char *) {return MAX_PATH;}
-static win_env conv_envvars[] =
+static NO_COPY win_env conv_envvars[] =
   {
     {"PATH=", 5, NULL, NULL, cygwin_win32_to_posix_path_list,
      cygwin_posix_to_win32_path_list,
@@ -109,7 +110,7 @@ getwinenv (const char *env, const char *in_posix)
   for (int i = 0; conv_envvars[i].name != NULL; i++)
     if (strncmp (env, conv_envvars[i].name, conv_envvars[i].namelen) == 0)
       {
-	win_env *we = conv_envvars + i;
+	win_env * const we = conv_envvars + i;
 	const char *val;
 	if (!cur_environ () || !(val = in_posix ?: getenv(we->name)))
 	  debug_printf ("can't set native for %s since no environ yet",
@@ -290,7 +291,7 @@ extern "C" int
 putenv (const char *str)
 {
   int res;
-  if ((res = check_null_empty_path (str)))
+  if ((res = check_null_empty_str (str)))
     {
       if (res == ENOENT)
 	return 0;
@@ -312,12 +313,12 @@ extern "C" int
 setenv (const char *name, const char *value, int overwrite)
 {
   int res;
-  if ((res = check_null_empty_path (value)) == EFAULT)
+  if ((res = check_null_empty_str (value)) == EFAULT)
     {
       set_errno (res);
       return  -1;
     }
-  if ((res = check_null_empty_path (name)))
+  if ((res = check_null_empty_str (name)))
     {
       if (res == ENOENT)
 	return 0;
@@ -476,7 +477,7 @@ subauth_id_init (const char *buf)
 /* The structure below is used to set up an array which is used to
    parse the CYGWIN environment variable or, if enabled, options from
    the registry.  */
-struct parse_thing
+static struct parse_thing
   {
     const char *name;
     union parse_setting
@@ -494,7 +495,7 @@ struct parse_thing
 	DWORD i;
 	const char *s;
       } values[2];
-  } known[] =
+  } known[] NO_COPY =
 {
   {"binmode", {x: &binmode}, justset, NULL, {{O_TEXT}, {O_BINARY}}},
   {"check_case", {func: &check_case_init}, isfunc, NULL, {{0}, {0}}},
@@ -641,9 +642,9 @@ environ_init (char **envp, int envc)
   char *newp;
   int sawTERM = 0;
   bool envp_passed_in;
-  static char cygterm[] = "TERM=cygwin";
+  static char NO_COPY cygterm[] = "TERM=cygwin";
 
-  static int initted = 0;
+  static int initted;
   if (!initted)
     {
       for (int i = 0; conv_envvars[i].name != NULL; i++)
@@ -663,7 +664,7 @@ environ_init (char **envp, int envc)
 #if ! __MSYS__
 #ifdef NTSEC_ON_BY_DEFAULT
   /* Set ntsec explicit as default, if NT is running */
-  if (os_being_run == winNT)
+  if (iswinnt)
     allow_ntsec = TRUE;
 #endif
 #endif /* ! __MSYS__ */
@@ -749,7 +750,7 @@ env_sort (const void *a, const void *b)
 }
 
 /* Keep this list in upper case and sorted */
-const char* forced_winenv_vars [] =
+static const NO_COPY char* forced_winenv_vars [] =
   {
 #if __MSYS__
     "MSYSTEM",
@@ -759,7 +760,7 @@ const char* forced_winenv_vars [] =
     NULL
   };
 
-#define FORCED_WINENV_SIZE (sizeof (forced_winenv_vars) / sizeof (forced_winenv_vars[0])) 
+#define FORCED_WINENV_SIZE (sizeof (forced_winenv_vars) / sizeof (forced_winenv_vars[0]))
 
 /* Create a Windows-style environment block, i.e. a typical character buffer
    filled with null terminated strings, terminated by double null characters.

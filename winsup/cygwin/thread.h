@@ -1,11 +1,11 @@
 /* thread.h: Locking and threading module definitions
 
-   Copyright 1998, 1999, 2000 Cygnus Solutions.
+   Copyright 1998, 1999, 2000, 2001 Red Hat, Inc.
    Copyright 2001 Red Hat, Inc.
 
    Written by Marco Fuykschot <marco@ddi.nl>
    Major update 2001 Robert Collins <rbtcollins@hotmail.com>
-   
+
 This file is part of Cygwin.
 
 This software is a copyrighted work licensed under the terms of the
@@ -94,6 +94,12 @@ struct _winsup_t
 
   /* uinfo.cc */
   char _username[UNLEN + 1];
+
+  /* net.cc */
+  char *_ntoa_buf;
+  struct protoent *_protoent_buf;
+  struct servent *_servent_buf;
+  struct hostent *_hostent_buf;
 };
 
 
@@ -261,18 +267,21 @@ public:
 class pthread_mutex:public verifyable_object
 {
 public:
+  CRITICAL_SECTION criticalsection;
   HANDLE win32_obj_id;
   LONG condwaits;
   int pshared;
+  class pthread_mutex * next;
 
   int Lock ();
   int TryLock ();
   int UnLock ();
- 
-    pthread_mutex (unsigned short);
-    pthread_mutex (pthread_mutexattr *);
-    pthread_mutex (pthread_mutex_t *, pthread_mutexattr *);
-   ~pthread_mutex ();
+  void fixup_after_fork ();
+
+  pthread_mutex (unsigned short);
+  pthread_mutex (pthread_mutexattr *);
+  pthread_mutex (pthread_mutex_t *, pthread_mutexattr *);
+  ~pthread_mutex ();
 };
 
 class pthread_condattr:public verifyable_object
@@ -280,8 +289,8 @@ class pthread_condattr:public verifyable_object
 public:
   int shared;
 
-    pthread_condattr ();
-   ~pthread_condattr ();
+  pthread_condattr ();
+  ~pthread_condattr ();
 };
 
 class pthread_cond:public verifyable_object
@@ -293,9 +302,11 @@ public:
   /* to allow atomic behaviour for cond_broadcast */
   pthread_mutex_t cond_access;
   HANDLE win32_obj_id;
+  class pthread_cond * next;
   int TimedWait (DWORD dwMilliseconds);
   void BroadCast ();
   void Signal ();
+  void fixup_after_fork ();
 
     pthread_cond (pthread_condattr *);
    ~pthread_cond ();
@@ -313,10 +324,13 @@ class semaphore:public verifyable_object
 {
 public:
   HANDLE win32_obj_id;
+  class semaphore * next;
   int shared;
+  long currentvalue;
   void Wait ();
   void Post ();
   int TryWait ();
+  void fixup_after_fork ();
 
     semaphore (int, unsigned int);
    ~semaphore ();
@@ -350,12 +364,13 @@ public:
   callback *pthread_child;
   callback *pthread_parent;
 
-  /* this is an associative array for the _exclusive_ use of pshared mutex's
-   * normal mutex's don't go here to reduce overhead and prevent serialisation.
-   */
-  class pthread_mutex * pshared_mutexs[256];
+  // list of mutex's. USE THREADSAFE INSERTS AND DELETES.
+  class pthread_mutex * mutexs;
+  class pthread_cond  * conds;
+  class semaphore     * semaphores;
 
   void Init (int);
+  void fixup_after_fork (void);
 
     MTinterface ():reent_index (0), indexallocated (0), threadcount (1)
   {

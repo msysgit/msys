@@ -1,3 +1,131 @@
+2001-09-07  Jeff Law  <law@redhat.com>
+
+        * libc/sys/h8300hms/crt0.S: For H8/300H and H8/S, load address of
+        __fini with "mov.l" instead of "mov.w".
+
+2001-09-05  Corinna Vinschen  <corinna@vinschen.de>
+
+	* libc/sys/cygwin/include/unistd.h: New file, wrapping sys/unistd.h
+	and getopt.h.
+
+2001-09-04  Jason Merrill  <jason_merrill@redhat.com>
+
+	* libc/sys/h8300hms/crt0.S: Support ELF initialization.
+
+2001-09-03  Corinna Vinschen  <corinna@vinschen.de>
+
+	* libc/sys/cygwin/sys/dirent.h (struct dirent): Add version number
+	field.
+	(__DIRENT_VERSION): New define.
+
+2001-09-03  Corinna Vinschen  <corinna@vinschen.de>
+
+	* libc/sys/cygwin/sys/dirent.h (struct dirent): Add `d_fd' member.
+	Shrink __d_reserved accordingly to keep structure size.
+	(dirfd): Declare external.
+
+2001-08-29  Joel Sherrill <joel@OARcorp.com>
+
+	* libc/include/sys/unistd.h: Prototype chroot() for RTEMS.
+
+2001-08-29  Ralf Corsepius <corsepiu@faw.uni-ulm.de>
+
+	* libc/machine/i386/f_atan2.S, libc/machine/i386/f_atan2f.S,
+	  libc/machine/i386/f_exp.c, libc/machine/i386/f_expf.c,
+	  libc/machine/i386/f_frexp.S, libc/machine/i386/f_frexpf.S,
+	  libc/machine/i386/f_ldexp.S, libc/machine/i386/f_ldexpf.S,
+	  libc/machine/i386/f_log.S, libc/machine/i386/f_log10.S,
+	  libc/machine/i386/f_log10f.S, libc/machine/i386/f_logf.S,
+	  libc/machine/i386/f_pow.c, libc/machine/i386/f_powf.c,
+	  libc/machine/i386/f_tan.S, libc/machine/i386/f_tanf.S:
+	Add conditional compilation to avoid HW FPU instructions
+	when compiled for soft-float.
+
+2001-08-29  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* Makefile.am: Add check for ln failing when creating libg.a
+	so that cp gets used as a backup.
+	* Makefile.in: Regenerated.
+
+2001-08-29  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* libc/include/sys/reent.h: Add include of <sys/_types.h>.
+	No longer include time.h.  Add struct __tm to use for
+	_localtime_buf in the reentrant structure.  Add a
+	_NULL definition to use in initializing the reentrant struct.
+	* libc/include/sys/config.h: For CYGWIN32 and RTEMS, change
+	the _READ_WRITE_RETURN_TYPE to _ssize_t which is found in
+	<sys/_types.h>.
+	* libc/include/sys/unistd.h: Include <sys/_types.h>.
+	* libc/time/lcltime.c (localtime): Cast the reentrant struct
+	_localtime_buf to be struct tm *.
+
+Wed Aug 29 14:17:38 2001  J"orn Rennecke <amylaar@redhat.com>
+
+	* configure.host (h8300-*-elf*, h8500-*-elf*): New cases.
+	* libc/sys/h8300hms/crt1.c (__main): Don't reference __ctors /
+	__ctors_end.
+	* libc/sys/h8300hms/syscalls.c: Include errno.h.
+	(_unlink): New stub function.
+
+Sat Aug 25 22:22:25 2001  Christopher Faylor <cgf@cygnus.com>
+
+	* libc/include/sys/errno.h: Add a cautionary comment.
+
+2001-08-21  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* libc/stdlib/mallocr.c [!defined(MALLOC_ALIGNMENT)]: Add conditional
+	for SIZE_SZ so that alignment ends up a minimum of 8.
+
+Mon Aug 13 22:26:01 2001  Christopher Faylor <cgf@cygnus.com>
+
+	* libc/include/machine/setjmp.h: Protect sigsetjmp/siglongjmp macro
+	arguments.
+
+	* libc/include/sys/errno.h: Declare sys_errlist and sys_nerr, under
+	Cygwin.
+
+2001-08-13  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* libc/include/malloc.h (M_MXFAST, M_NLBLKS, M_GRAIN, M_KEEP): New
+	macro constants for mallopt options.
+	(M_TRIM_THRESHOLD, M_TOP_PAD, M_MMAP_THRESHOLD, M_MMAP_MAX): Ditto.
+
+2001-08-02  Jeff Johnston  <jjohnstn@redhat.com>
+
+	* libc/include/stdio.h (BUFSIZ): Define to __BUFSIZ__ if provided,
+	otherwise default.
+
+2001-07-12  Aldy Hernandez  <aldyh@redhat.com>
+
+        * libc/machine/mips/setjmp.S: Allow mips16 and mips64 to coexist.
+
+2001-06-27  Nick Clifton  <nickc@cambridge.redhat.com>
+
+	* libc/include/machine/ieeefp.h (__IEEE_BYTES_LITTLE_ENDIAN):
+	Define for little endian ARMs.
+
+	* libc/stdlib/mprec.h (Storeinc): Use little endian version if
+	__IEEE_BYTES_LITTLE_ENDIAN is defined.
+
+2001-06-11  Danny Smith  <dannysmith@users.sourceforge.net>
+
+        * /libc/include/ctype.h (is* and to* macros): Do not define if C++.
+
+2001-06-11  Egor Duda  <deo@logos-m.ru>
+
+        * libc/ctype/ctype_.c: When compiled with gcc on platforms
+        with signed char, make _ctype_[-128] ... _ctype[-1] refer to
+        initialized memory region. Platform can define COMPACT_CTYPE
+        to avoid allocation of the additional 128 bytes of data.
+        Add pointer to _ctype_ array. Always initialize all _ctype_
+        array elements.
+
+2001-06-08  Jonathan Larmour  <jlarmour@redhat.com>
+
+	* libc/stdlib/mbtowc_r.c (_mbtowc_r): Avoid dereferencing
+	NULL pointer.
+
 2001-05-28  Nick Clifton  <nickc@cambridge.redhat.com>
 
 	* libc/stdio/vfprintf.c (_VFPRINTF_R): Handle printf ("%#.0o",0)

@@ -1,3 +1,41 @@
+2001-09-04  Richard Henderson  <rth@redhat.com>
+
+	* alpha.h (R_ALPHA_OP*, R_ALPHA_IMMED*, R_ALPHA_GPVALUE): Remove.
+	(R_ALPHA_GPREL16): Rename from R_ALPHA_IMMED_GP_16.
+
+2001-08-30  Eric Christopher  <echristo@redhat.com>
+
+	* mips.h: Remove E_MIPS_MACH_MIPS32_4K.
+
+2001-08-29  Jeff Law <law@redhat.com>
+
+	* h8.h (EF_H8_MACH): New mask for encoded machine type.
+	(E_H8_MACH_H8300, E_H8_MACH_H8300H, E_H8_MACH_H8300S): New
+	machine types.
+
+Tue Aug 26 23:32:34 2001  J"orn Rennecke <amylaar@redhat.com>
+
+	* h8.h: New file.
+
+2001-08-27  Staffan Ulfberg  <staffanu@swox.se>
+
+	* ppc.h: Add relocs from the 64-bit PowerPC ELF ABI revision 1.2.
+
+2001-06-30  Daniel Berlin  <dan@cgsoftware.com>
+
+	* dwarf2.h: Remerge with gcc version,
+	including all new DWARF 2.1 extensions.
+
+2001-06-29  James Cownie <jcownie@etnus.com>
+
+	* dwarf2.h: Add DWARF 2.1 attribues.
+
+2001-06-15  Per Bothner  <per@bothner.com>
+
+	* dwarf2.h:  Partial merge with gcc version.
+	(enum dwarf_descrim_list):  Fix typo -> dwarf_discrim_list.
+	(DW_LANG_Java):  Use value from dwarf 2.1 draft (also used in gcc).
+
 2001-05-15  Ralf Baechle  <ralf@gnu.org>
 
 	* common.h: Remove definition of EM_MIPS_RS4_BE.  The constant was
@@ -30,7 +68,7 @@
 2001-04-20  Johan Rydberg  <jrydberg@opencores.org>
 
 	* openrisc.h: New file.
-	* common.h (EM_OPENRISC): New constant. 
+	* common.h (EM_OPENRISC): New constant.
 
 2001-04-23  Bo Thorsen  <bo@suse.de>
 

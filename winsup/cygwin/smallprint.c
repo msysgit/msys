@@ -1,6 +1,6 @@
 /* smallprint.c: small print routines for WIN32
 
-   Copyright 1996, 1998, 2000 Cygnus Solutions.
+   Copyright 1996, 1998, 2000, 2001 Red Hat, Inc.
 
 This file is part of Cygwin.
 
@@ -181,7 +181,7 @@ __small_sprintf (char *dst, const char *fmt,...)
 void
 small_printf (const char *fmt,...)
 {
-  char buf[2000];
+  char buf[16384];
   va_list ap;
   DWORD done;
   int count;
@@ -199,6 +199,33 @@ small_printf (const char *fmt,...)
   count = __small_vsprintf (buf, fmt, ap);
   va_end (ap);
 
-  WriteFile (GetStdHandle (STD_ERROR_HANDLE), buf, count, &done, 0);
+  WriteFile (GetStdHandle (STD_ERROR_HANDLE), buf, count, &done, NULL);
   FlushFileBuffers (GetStdHandle (STD_ERROR_HANDLE));
 }
+
+#ifdef DEBUGGING
+static HANDLE NO_COPY console_handle = NULL;
+void
+console_printf (const char *fmt,...)
+{
+  char buf[16384];
+  va_list ap;
+  DWORD done;
+  int count;
+
+  if (!console_handle)
+    console_handle = CreateFileA ("CON", GENERIC_WRITE,
+				  FILE_SHARE_READ | FILE_SHARE_WRITE,
+				  NULL, OPEN_EXISTING, 0, 0);
+
+  if (console_handle == INVALID_HANDLE_VALUE)
+    console_handle = GetStdHandle (STD_ERROR_HANDLE);
+
+  va_start (ap, fmt);
+  count = __small_vsprintf (buf, fmt, ap);
+  va_end (ap);
+
+  WriteFile (console_handle, buf, count, &done, NULL);
+  FlushFileBuffers (console_handle);
+}
+#endif

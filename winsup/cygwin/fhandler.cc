@@ -1,6 +1,6 @@
 /* fhandler.cc.  See console.cc for fhandler_console functions.
 
-   Copyright 1996, 1997, 1998, 1999, 2000, 2001 Cygnus Solutions.
+   Copyright 1996, 1997, 1998, 1999, 2000, 2001 Red Hat, Inc.
 
 This file is part of Cygwin.
 
@@ -17,21 +17,22 @@ details. */
 #include <signal.h>
 #include "cygerrno.h"
 #include "perprocess.h"
+#include "security.h"
+#include "cygwin/version.h"
 #include "fhandler.h"
 #include "dtable.h"
 #include "cygheap.h"
 #include "path.h"
 #include "shared_info.h"
 #include "host_dependent.h"
-#include "security.h"
 
 static NO_COPY const int CHUNK_SIZE = 1024; /* Used for crlf conversions */
 
-static char fhandler_disk_dummy_name[] = "some disk file";
+static NO_COPY char fhandler_disk_dummy_name[] = "some disk file";
 
-struct __cygwin_perfile *perfile_table = NULL;
+struct __cygwin_perfile *perfile_table;
 
-DWORD binmode = 0;
+DWORD binmode;
 
 inline fhandler_base&
 fhandler_base::operator =(fhandler_base &x)
@@ -299,6 +300,7 @@ fhandler_base::open (int flags, mode_t mode)
   int file_attributes;
   int shared;
   int creation_distribution;
+  SECURITY_ATTRIBUTES sa = sec_none;
 
   syscall_printf ("(%s, %p)", get_win32_name (), flags);
 
@@ -308,7 +310,11 @@ fhandler_base::open (int flags, mode_t mode)
       goto done;
     }
 
-  if (get_device () == FH_TAPE)
+  if (get_query_open ())
+    {
+      access = 0;
+    }
+  else if (get_device () == FH_TAPE)
     {
       access = GENERIC_READ | GENERIC_WRITE;
     }
@@ -366,14 +372,31 @@ fhandler_base::open (int flags, mode_t mode)
   if (get_device () == FH_SERIAL)
     file_attributes |= FILE_FLAG_OVERLAPPED;
 
+  /* CreateFile() with dwDesiredAccess == 0 when called on remote
+     share returns some handle, even if file doesn't exist. This code
+     works around this bug. */
+  if (get_query_open () &&
+      isremote () &&
+      creation_distribution == OPEN_EXISTING &&
+      GetFileAttributes (get_win32_name ()) == (DWORD) -1)
+    {
+      set_errno (ENOENT);
+      goto done;
+    }
+
+  /* If the file should actually be created and ntsec is on,
+     set files attributes. */
+  if (flags & O_CREAT && get_device () == FH_DISK && allow_ntsec && has_acls ())
+    set_security_attribute (mode, &sa, alloca (4096), 4096);
+
   x = CreateFileA (get_win32_name (), access, shared,
-		   &sec_none, creation_distribution,
+		   &sa, creation_distribution,
 		   file_attributes,
 		   0);
 
   syscall_printf ("%p = CreateFileA (%s, %p, %p, %p, %p, %p, 0)",
 		  x, get_win32_name (), access, shared,
-		  &sec_none, creation_distribution,
+		  &sa, creation_distribution,
 		  file_attributes);
 
   if (x == INVALID_HANDLE_VALUE)
@@ -385,9 +408,12 @@ fhandler_base::open (int flags, mode_t mode)
       goto done;
     }
 
-  // Attributes may be set only if a file is _really_ created.
+  /* Attributes may be set only if a file is _really_ created.
+     This code is now only used for ntea here since the files
+     security attributes are set in CreateFile () now. */
   if (flags & O_CREAT && get_device () == FH_DISK
-      && GetLastError () != ERROR_ALREADY_EXISTS)
+      && GetLastError () != ERROR_ALREADY_EXISTS
+      && !allow_ntsec && allow_ntea)
     set_file_attribute (has_acls (), get_win32_name (), mode);
 
   namehash = hash_path_name (0, get_win32_name ());
@@ -553,7 +579,7 @@ fhandler_base::write (const void *ptr, size_t len)
 
   if (get_append_p ())
     SetFilePointer (get_handle(), 0, 0, FILE_END);
-  else if (os_being_run != winNT && get_check_win95_lseek_bug ())
+  else if (!iswinnt && get_check_win95_lseek_bug ())
     {
       /* Note: this bug doesn't happen on NT4, even though the documentation
 	 for WriteFile() says that it *may* happen on any OS. */
@@ -759,7 +785,7 @@ fhandler_base::lseek (off_t offset, int whence)
 }
 
 int
-fhandler_base::close (void)
+fhandler_base::close ()
 {
   int res = -1;
 
@@ -924,27 +950,20 @@ fhandler_disk_file::fstat (struct stat *buf)
   /* Using a side effect: get_file_attibutes checks for
      directory. This is used, to set S_ISVTX, if needed.  */
   if (local.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
-    buf->st_mode |= S_IFDIR;
-  if (get_symlink_p ())
-    buf->st_mode |= S_IFLNK;
-  if (!get_file_attribute (has_acls (),
-			   get_win32_name (),
-			   &buf->st_mode,
-			   &buf->st_uid,
-			   &buf->st_gid))
+    buf->st_mode = S_IFDIR;
+  else if (get_symlink_p ())
+    buf->st_mode = S_IFLNK;
+  else if (get_socket_p ())
+    buf->st_mode = S_IFSOCK;
+  if (get_file_attribute (has_acls (), get_win32_name (), &buf->st_mode,
+			  &buf->st_uid, &buf->st_gid) == 0)
     {
       /* If read-only attribute is set, modify ntsec return value */
       if ((local.dwFileAttributes & FILE_ATTRIBUTE_READONLY)
-          && !get_symlink_p ())
+	  && !get_symlink_p ())
 	buf->st_mode &= ~(S_IWUSR | S_IWGRP | S_IWOTH);
 
-      if (buf->st_mode & S_IFMT)
-	/* already set */;
-      else if (get_socket_p ())
-	buf->st_mode |= S_IFSOCK;
-      else if (local.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
-	buf->st_mode |= S_IFDIR;
-      else
+      if (!(buf->st_mode & S_IFMT))
 	buf->st_mode |= S_IFREG;
     }
   else
@@ -955,8 +974,10 @@ fhandler_disk_file::fstat (struct stat *buf)
 	buf->st_mode |= STD_WBITS;
       /* | S_IWGRP | S_IWOTH; we don't give write to group etc */
 
-      if (buf->st_mode & S_IFMT)
-	/* already set */;
+      if (buf->st_mode & S_IFDIR)
+	buf->st_mode |= S_IFDIR | STD_XBITS;
+      else if (buf->st_mode & S_IFMT)
+	/* nothing */;
       else if (get_socket_p ())
 	buf->st_mode |= S_IFSOCK;
       else
@@ -967,35 +988,30 @@ fhandler_disk_file::fstat (struct stat *buf)
 	    buf->st_mode |= S_IFCHR;
 	    break;
 	  case FILE_TYPE_DISK:
-	    if (local.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
-	      buf->st_mode |= S_IFDIR | STD_XBITS;
-	   else
-	     {
-		buf->st_mode |= S_IFREG;
-		if (!dont_care_if_execable () && !get_execable_p ())
-		  {
-		    DWORD cur, done;
-		    char magic[3];
+	    buf->st_mode |= S_IFREG;
+	    if (!dont_care_if_execable () && !get_execable_p ())
+	      {
+		DWORD cur, done;
+		char magic[3];
 
-		    /* First retrieve current position, set to beginning
-		       of file if not already there. */
-		    cur = SetFilePointer (get_handle(), 0, NULL, FILE_CURRENT);
-		    if (cur != INVALID_SET_FILE_POINTER &&
-		        (!cur ||
-			 SetFilePointer (get_handle(), 0, NULL, FILE_BEGIN)
-			 != INVALID_SET_FILE_POINTER))
-		      {
-			/* FIXME should we use /etc/magic ? */
-			magic[0] = magic[1] = magic[2] = '\0';
-			if (ReadFile (get_handle (), magic, 3, &done, 0) &&
-			    done == 3 && has_exec_chars (magic, done))
-			    set_execable_p ();
-			SetFilePointer (get_handle(), cur, NULL, FILE_BEGIN);
-		      }
+		/* First retrieve current position, set to beginning
+		   of file if not already there. */
+		cur = SetFilePointer (get_handle(), 0, NULL, FILE_CURRENT);
+		if (cur != INVALID_SET_FILE_POINTER &&
+		    (!cur ||
+		     SetFilePointer (get_handle(), 0, NULL, FILE_BEGIN)
+		     != INVALID_SET_FILE_POINTER))
+		  {
+		    /* FIXME should we use /etc/magic ? */
+		    magic[0] = magic[1] = magic[2] = '\0';
+		    if (ReadFile (get_handle (), magic, 3, &done, NULL) &&
+			has_exec_chars (magic, done))
+			set_execable_p ();
+		    SetFilePointer (get_handle(), cur, NULL, FILE_BEGIN);
 		  }
-		if (get_execable_p ())
-		  buf->st_mode |= STD_XBITS;
-	     }
+	      }
+	    if (get_execable_p ())
+	      buf->st_mode |= STD_XBITS;
 	    break;
 	  case FILE_TYPE_PIPE:
 	    buf->st_mode |= S_IFSOCK;
@@ -1078,16 +1094,14 @@ int fhandler_base::fcntl (int cmd, void *arg)
 	 * Since O_ASYNC isn't defined in fcntl.h it's currently
 	 * ignored as well.
 	 */
-        const int allowed_flags = O_APPEND | O_NONBLOCK | OLD_O_NDELAY;
-
-        /* Care for the old O_NDELAY flag. If one of the flags is set,
-           both flags are set. */
-	int new_flags = (int) arg;
-        if (new_flags & (O_NONBLOCK | OLD_O_NDELAY))
-          new_flags |= O_NONBLOCK | OLD_O_NDELAY;
-
-        int flags = get_flags () & ~allowed_flags;
-        set_flags (flags | (new_flags & allowed_flags));
+	const int allowed_flags = O_APPEND | O_NONBLOCK_MASK;
+	int new_flags = (int) arg & allowed_flags;
+	/* Carefully test for the O_NONBLOCK or deprecated OLD_O_NDELAY flag.
+	   Set only the flag that has been passed in.  If both are set, just
+	   record O_NONBLOCK.   */
+	if ((new_flags & OLD_O_NDELAY) && (new_flags & O_NONBLOCK))
+	  new_flags = O_NONBLOCK;
+	set_flags ((get_flags () & ~allowed_flags) | new_flags);
       }
       res = 0;
       break;
@@ -1235,7 +1249,7 @@ fhandler_disk_file::open (const char *path, int flags, mode_t mode)
        || !(flags & O_CREAT) || real_path.case_clash))
     {
       set_errno (flags & O_CREAT && real_path.case_clash ? ECASECLASH
-      							 : real_path.error);
+							 : real_path.error);
       syscall_printf ("0 = fhandler_disk_file::open (%s, %p)", path, flags);
       return 0;
     }
@@ -1303,8 +1317,8 @@ out:
 int
 fhandler_disk_file::close ()
 {
-  int res;
-  if ((res = this->fhandler_base::close ()) == 0)
+  int res = this->fhandler_base::close ();
+  if (!res)
     cygwin_shared->delqueue.process_queue ();
   return res;
 }
@@ -1412,7 +1426,7 @@ fhandler_disk_file::lock (int cmd, struct flock *fl)
 
   BOOL res;
 
-  if (os_being_run == winNT)
+  if (iswinnt)
     {
       DWORD lock_flags = (cmd == F_SETLK) ? LOCKFILE_FAIL_IMMEDIATELY : 0;
       lock_flags |= (fl->l_type == F_WRLCK) ? LOCKFILE_EXCLUSIVE_LOCK : 0;
@@ -1531,13 +1545,16 @@ fhandler_base::set_inheritance (HANDLE &h, int not_inheriting, const char *namep
       h = newh;
       ProtectHandle2 (h, name);
     }
+  setclexec_pid (h, not_inheriting);
 #endif
 }
 
 void
 fhandler_base::fork_fixup (HANDLE parent, HANDLE &h, const char *name)
 {
-  if (!DuplicateHandle (parent, h, hMainProc, &h, 0, !get_close_on_exec (),
+  if (!get_close_on_exec ())
+    debug_printf ("handle %p already opened", h);
+  else if (!DuplicateHandle (parent, h, hMainProc, &h, 0, !get_close_on_exec (),
 			DUPLICATE_SAME_ACCESS))
     system_printf ("%s - %E, handle %s<%p>", get_name (), name, h);
 }
@@ -1555,4 +1572,18 @@ fhandler_base::fixup_after_fork (HANDLE parent)
 {
   debug_printf ("inheriting '%s' from parent", get_name ());
   fork_fixup (parent, io_handle, "io_handle");
+}
+
+int
+fhandler_base::is_nonblocking ()
+{
+  return (openflags & O_NONBLOCK_MASK) != 0;
+}
+
+void
+fhandler_base::set_nonblocking (int yes)
+{
+  int current = openflags & O_NONBLOCK_MASK;
+  int new_flags = yes ? (!current ? O_NONBLOCK : current) : 0;
+  openflags = (openflags & ~O_NONBLOCK_MASK) | new_flags;
 }

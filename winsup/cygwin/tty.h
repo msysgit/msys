@@ -1,6 +1,6 @@
 /* tty.h: shared tty info for cygwin
 
-   Copyright 2000 Cygnus Solutions.
+   Copyright 2000, 2001 Red Hat, Inc.
 
 This file is part of Cygwin.
 
@@ -86,7 +86,8 @@ class fhandler_pty_master;
 
 class tty: public tty_min
 {
-  HANDLE get_event (const char *fmt, BOOL inherit, BOOL manual_reset = FALSE);
+  HANDLE get_event (const char *fmt, BOOL manual_reset = FALSE)
+    __attribute__ ((regparm (2)));
 public:
   HWND  hwnd;	/* Console window handle tty belongs to */
 
@@ -99,7 +100,7 @@ public:
   BOOL was_opened;	/* True if opened at least once. */
 
   void init ();
-  HANDLE create_inuse (const char *, BOOL);
+  HANDLE create_inuse (const char *);
   BOOL common_init (fhandler_pty_master *);
   BOOL alive (const char *fmt);
   BOOL slave_alive ();
@@ -107,17 +108,17 @@ public:
   HWND gethwnd () {return hwnd;}
   void sethwnd (HWND wnd) {hwnd = wnd;}
   int make_pipes (fhandler_pty_master *ptym);
-  HANDLE open_output_mutex (BOOL inherit = FALSE)
+  HANDLE open_output_mutex ()
   {
     char buf[80];
     __small_sprintf (buf, OUTPUT_MUTEX, ntty);
-    return OpenMutex (MUTEX_ALL_ACCESS, inherit, buf);
+    return OpenMutex (MUTEX_ALL_ACCESS, TRUE, buf);
   }
-  HANDLE open_input_mutex (BOOL inherit = FALSE)
+  HANDLE open_input_mutex ()
   {
     char buf[80];
     __small_sprintf (buf, INPUT_MUTEX, ntty);
-    return OpenMutex (MUTEX_ALL_ACCESS, inherit, buf);
+    return OpenMutex (MUTEX_ALL_ACCESS, TRUE, buf);
   }
   BOOL exists ()
   {

@@ -82,6 +82,10 @@ details. */
 #define CYGWIN_VERSION_CHECK_FOR_S_IEXEC \
   (CYGWIN_VERSION_DLL_MAKE_COMBINED (user_data->api_major, user_data->api_minor) >= \
   36)
+
+#define CYGWIN_VERSION_CHECK_FOR_OLD_O_NONBLOCK \
+  (CYGWIN_VERSION_DLL_MAKE_COMBINED (user_data->api_major, user_data->api_minor) <= \
+  28)
      /* We used to use the DLL major/minor to track
 	non-backward-compatible interface changes to the API.  Now we
 	use an API major/minor number for this purpose. */
@@ -134,10 +138,16 @@ details. */
        38: vscanf, vscanf_r, and random pthread functions
        39: asctime_r, ctime_r, gmtime_r, localtime_r
        40: fchdir
+       41: __signgam
+       42: sys_errlist, sys_nerr
+       43: sigsetjmp, siglongjmp fixed
+       44: Export dirfd
+       45: perprocess change, gamma_r, gammaf_r, lgamma_r, lgammaf_r
+       46: Remove cygwin_getshared
      */
 
 #define CYGWIN_VERSION_API_MAJOR 0
-#define CYGWIN_VERSION_API_MINOR 40
+#define CYGWIN_VERSION_API_MINOR 46
 
      /* There is also a compatibity version number associated with the
 	shared memory regions.  It is incremented when incompatible
