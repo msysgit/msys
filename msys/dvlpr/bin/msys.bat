@@ -47,7 +47,7 @@ if "%MSYSTEM%" == "MSYS" set FGCOLOR=%MSYSFGCOLOR%
 if "%MSYSTEM%" == "MINGW32" set BGCOLOR=%MINGW32BGCOLOR%
 if "%MSYSTEM%" == "MINGW32" set FGCOLOR=%MINGW32FGCOLOR%
 
-if EXIST bin cd bin
+if EXIST bin\nul cd bin
 if EXIST rxvt.exe goto startrxvt
 if EXIST sh.exe goto startsh
 
@@ -118,4 +118,8 @@ rem	* Fix a typo: Change COMPSPEC to COMSPEC.
 rem
 rem 2002.11.25  Earnie Boyd  mailto:earnie@users.sf.net
 rem	* Remove the SET CYGWIN since it doesn't matter any longer.
+rem
+rem 2003.02.03  Earnie Boyd  mailto:earnie@users.sf.net
+rem	* Win9x doesn't like ``EXISTS dir'' so change it to ``EXISTS dir\nul''.
+rem	Thanks to Nicolas Weber <nicolasweber@gmx.de>.
 rem
