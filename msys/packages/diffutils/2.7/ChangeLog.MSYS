@@ -1,3 +1,8 @@
+2002.10.31  Earnie Boyd  <earnie@users.sf.net>
+
+	* io.c (find_and_hash_each_line): Consider \r whitespace to aid with
+	CRLF vs LF line endings.
+
 2002.05.05  Earnie Boyd  <earnie@users.sf.net>
 
 	* ChangeLog.MSYS: New file.
