@@ -213,11 +213,16 @@ int __stdcall check_null_empty_str (const char *name) __attribute__ ((regparm(1)
 int __stdcall check_null_empty_str_errno (const char *name) __attribute__ ((regparm(1)));
 int __stdcall __check_null_invalid_struct (const void *s, unsigned sz) __attribute__ ((regparm(1)));
 int __stdcall __check_null_invalid_struct_errno (const void *s, unsigned sz) __attribute__ ((regparm(1)));
+int __stdcall __check_invalid_read_ptr_errno (const void *s, unsigned sz) __attribute__ ((regparm(2)));
 
 #define check_null_invalid_struct(s) \
   __check_null_invalid ((s), sizeof (*(s)))
 #define check_null_invalid_struct_errno(s) \
   __check_null_invalid_struct_errno ((s), sizeof (*(s)))
+
+struct iovec;
+ssize_t check_iovec_for_read (const struct iovec *, int) __attribute__ ((regparm(2)));
+ssize_t check_iovec_for_write (const struct iovec *, int) __attribute__ ((regparm(2)));
 
 #define set_winsock_errno() __set_winsock_errno (__FUNCTION__, __LINE__)
 void __set_winsock_errno (const char *fn, int ln) __attribute__ ((regparm(2)));
@@ -234,6 +239,12 @@ extern "C" void __malloc_unlock (struct _reent *);
 
 extern "C" void __malloc_lock (struct _reent *);
 extern "C" void __malloc_unlock (struct _reent *);
+
+class path_conv;
+int __stdcall stat_worker (const char *name, struct __stat64 *buf, int nofollow,
+			   path_conv *pc = NULL) __attribute__ ((regparm (3)));
+int __stdcall low_priority_sleep (DWORD) __attribute__ ((regparm (1)));
+#define SLEEP_0_STAY_LOW INFINITE
 
 /**************************** Exports ******************************/
 
