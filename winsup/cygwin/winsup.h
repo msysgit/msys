@@ -139,7 +139,7 @@ extern "C" void __stdcall _dll_crt0 ();
 extern "C" int dll_dllcrt0 (HMODULE, per_process *);
 
 /* dynamically loaded dll initialization for non-cygwin apps */
-extern "C" int dll_noncygwin_dllcrt0 (HMODULE, per_process *);
+extern "C" int dll_nonmsys_dllcrt0 (HMODULE, per_process *);
 
 /* exit the program */
 extern "C" void __stdcall do_exit (int) __attribute__ ((noreturn));

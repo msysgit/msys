@@ -1,3 +1,11 @@
+2001.09.28  Earnie Boyd  <earnie@SF.net>
+
+	* ltcf-c.sh: Add msys filters and definitions.
+	* ltcf-cxx.sh: Ditto.
+	* ltcf-gcj.sh: Ditto.
+	* ltconfig: Ditto.
+	* ltmain.sh: Ditto.
+
 2001.09.21  Earnie Boyd  <earnie@SF.net>
 
 	* config.guess: Update from FSF and add msys definitions.
