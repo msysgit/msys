@@ -18,9 +18,9 @@
  *  DISCLAMED. This includes but is not limited to warranties of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Revision: 1.2 $
- * $Author: earnie $
- * $Date: 2001-06-05 00:26:30 $
+ * $Revision: 1.3 $
+ * $Author: dannysmith $
+ * $Date: 2001-11-04 00:10:19 $
  *
  */
 
@@ -32,14 +32,14 @@
 /* All the headers include this file. */
 #include <_mingw.h>
 
-#define	_LK_UNLOCK	0	/* Unlock */
+#define	_LK_UNLCK	0	/* Unlock */
 #define	_LK_LOCK	1	/* Lock */
 #define	_LK_NBLCK	2	/* Non-blocking lock */
 #define	_LK_RLCK	3	/* Lock for read only */
 #define	_LK_NBRLCK	4	/* Non-blocking lock for read only */
 
 #ifndef	NO_OLDNAMES
-#define	LK_UNLOCK	_LK_UNLOCK
+#define	LK_UNLCK	_LK_UNLCK
 #define	LK_LOCK		_LK_LOCK
 #define	LK_NBLCK	_LK_NBLCK
 #define	LK_RLCK		_LK_RLCK
