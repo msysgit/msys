@@ -19,9 +19,9 @@
  *  DISCLAIMED. This includes but is not limited to warranties of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Revision: 1.3 $
- * $Author: dannysmith $
- * $Date: 2001-11-29 04:26:33 $
+ * $Revision: 1.4 $
+ * $Author: earnie $
+ * $Date: 2002-06-14 15:12:54 $
  *
  */
 
@@ -93,12 +93,12 @@
 #ifndef __DECLSPEC_SUPPORTED
 
 #ifdef __MSVCRT__
-extern unsigned int* __imp__fmode;
-#define	_fmode	(*__imp__fmode)
+extern unsigned int* _imp___fmode;
+#define	_fmode	(*_imp___fmode)
 #else
 /* CRTDLL */
-extern unsigned int* __imp__fmode_dll;
-#define	_fmode	(*__imp__fmode_dll)
+extern unsigned int* _imp___fmode_dll;
+#define	_fmode	(*_imp___fmode_dll)
 #endif
 
 #else /* __DECLSPEC_SUPPORTED */

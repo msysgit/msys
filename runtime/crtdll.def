@@ -17,9 +17,9 @@
 ;  DISCLAMED. This includes but is not limited to warrenties of
 ;  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 ;
-; $Revision: 1.2 $
+; $Revision: 1.3 $
 ; $Author: earnie $
-; $Date: 2001-06-05 00:26:30 $
+; $Date: 2002-06-14 15:12:54 $
 ;
 ; These three functions appear to be name mangled in some way, so GCC is
 ; probably not going to be able to use them in any case.
@@ -285,7 +285,7 @@ _flushall
 _fmode_dll DATA
 _fpclass
 _fpieee_flt
-_fpreset
+_fpreset DATA
 _fputchar
 _fputwchar
 _fsopen
@@ -414,7 +414,7 @@ _mkdir
 _mktemp
 _msize
 _nextafter
-_onexit
+_onexit DATA
 _open
 _open_osfhandle
 _osmajor_dll DATA
@@ -520,7 +520,7 @@ asctime
 asin
 atan
 atan2
-atexit
+atexit DATA
 atof
 atoi
 atol

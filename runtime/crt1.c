@@ -20,9 +20,9 @@
  *  DISCLAMED. This includes but is not limited to warrenties of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Revision: 1.2 $
+ * $Revision: 1.3 $
  * $Author: earnie $
- * $Date: 2001-06-05 00:26:30 $
+ * $Date: 2002-06-14 15:12:54 $
  *
  */
 
@@ -232,3 +232,20 @@ WinMainCRTStartup ()
   __mingw_CRTStartup ();
 }
 
+/*
+ *  We force use of library version of atexit, which is only
+ *  visible in import lib as _imp__atexit
+ */
+extern int (*_imp__atexit)(void (*)(void));
+int atexit (void (* pfn )(void) )
+{
+  return ( (*_imp__atexit)(pfn));
+}
+
+/* Likewise for non-ANSI _onexit */
+extern _onexit_t (*_imp___onexit)(_onexit_t);
+_onexit_t
+_onexit (_onexit_t pfn )
+{
+  return (*_imp___onexit)(pfn);
+}

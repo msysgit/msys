@@ -24,9 +24,9 @@
 ;  DISCLAMED. This includes but is not limited to warrenties of
 ;  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 ;
-; $Revision: 1.4 $
-; $Author: dannysmith $
-; $Date: 2002-01-11 21:53:48 $
+; $Revision: 1.5 $
+; $Author: earnie $
+; $Date: 2002-06-14 15:12:54 $
 ;
 EXPORTS
 _CIacos
@@ -210,7 +210,7 @@ _flushall
 _fmode DATA
 _fpclass
 _fpieee_flt
-_fpreset
+_fpreset DATA
 _fputchar
 _fputwchar
 _fsopen
@@ -365,7 +365,7 @@ _mkdir
 _mktemp
 _msize
 _nextafter
-_onexit
+_onexit DATA
 _open
 _open_osfhandle
 _osver DATA
@@ -546,7 +546,7 @@ asctime
 asin
 atan
 atan2
-atexit
+atexit DATA
 atof
 atoi
 atol
