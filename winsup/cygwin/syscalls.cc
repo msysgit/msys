@@ -1198,6 +1198,7 @@ stat_worker (const char *caller, const char *name, struct stat *buf,
 extern "C" int
 _stat (const char *name, struct stat *buf)
 {
+  TRACE_IN;
   sigframe thisframe (mainthread);
   return stat_worker ("stat", name, buf, 0);
 }
@@ -1206,6 +1207,7 @@ _stat (const char *name, struct stat *buf)
 extern "C" int
 lstat (const char *name, struct stat *buf)
 {
+  TRACE_IN;
   sigframe thisframe (mainthread);
   return stat_worker ("lstat", name, buf, 1);
 }
