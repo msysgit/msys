@@ -453,10 +453,6 @@ path_conv::check (const char *src, unsigned opt,
 
 // This is also used in the path_conv constructor for initialization!!!!
 
-#if 0 // #if NEW_PATH_METHOD
-    FIXME: Please!!!
-    Using the above analysis, rewrite this function.
-#else
   /* This array is used when expanding symlinks.  It is MAX_PATH * 2
      in length so that we can hold the expanded symlink plus a
      trailer.  */
@@ -477,15 +473,7 @@ path_conv::check (const char *src, unsigned opt,
   drive_type = 0;
   is_remote_drive = 0;
 
-  //MSYS - See if this works
-  //FIXME: If it does work then what can we remove from this function
-  //
-  //opt |= PC_SYM_IGNORE;
-  //OK, it doesn't work and the reason is that foo is treated as a symlink for
-  //foo.exe.  So, now maybe we can go clean this up.
-
-  error = ((opt & PC_NULLEMPTY) ? check_null_empty_str (src) : 0);
-  if (error)
+  if (error = ((opt & PC_NULLEMPTY) ? check_null_empty_str (src) : 0))
     return;
 
   /* This loop handles symlink expansion.  */
@@ -498,39 +486,36 @@ path_conv::check (const char *src, unsigned opt,
       /* Detect if the user was looking for a directory.  We have to strip the
 	 trailing slash initially and add it back on at the end due to Windows
 	 brain damage. */
-      if (p > src)
-	need_directory = (IsDirMarker (*p) || (IsDirMarker (*(p - 1)) && *p == '.'));
+      need_directory =  (p > src)
+		     && (   IsDirMarker (*p) 
+			 || (   IsDirMarker (*(p - 1)) 
+			     && *p == '.'));
 
       is_relpath = !isabspath (src);
-      error = normalize_posix_path (src, path_copy);
-      if (error)
+      if (error = normalize_posix_path (src, path_copy))
 	return;
-
-      char *tail = strchr (path_copy, '\0');   // Point to end of copy
-      char *path_end = tail;
-      tail[1] = '\0';  //FIXME: Ain't this dangerous?!?!?
 
       /* Scan path_copy from right to left looking either for a symlink
 	 or an actual existing file.  If an existing file is found, just
 	 return.  If a symlink is found exit the for loop.
 	 Also: be careful to preserve the errno returned from
 	 symlink.check as the caller may need it. */
-      /* FIXME: Do we have to worry about multiple \'s here? */
-      sym.contents[0] = '\0';
 
 	{
 	  const suffix_info *suff;
 	  char *full_path;
 
-	      suff = suffixes;
-	      sym.pflags = path_flags;
-	      full_path = this->path;
+	  suff = suffixes;
+	  full_path = this->path;
 
 	  /* Convert to native path spec sans symbolic link info. */
-	  error = mount_table->conv_to_win32_path (path_copy, full_path, devn,
-						   unit, &sym.pflags, 1);
-
-	  if (error)
+	  if (error = mount_table->conv_to_win32_path (  path_copy
+						       , full_path
+						       , devn
+						       , unit
+						       , &path_flags
+						       , 1
+						      ))
 	    return;
 
 	  update_fs_info (full_path);
@@ -555,11 +540,12 @@ path_conv::check (const char *src, unsigned opt,
 	    }
 
 	  debug_printf("%s", full_path);
+	  sym.pflags = path_flags;
 	  sym.check (full_path, suff, opt | sym_opt);
 
 	  // since I don't care about symlinks I can get rid of this, right?
 	  // No!! We can't find any thing on PATH if we don't do this.?!?!
-	    path_flags = sym.pflags;
+	  path_flags = sym.pflags;
 
 	  /* If symlink.check found an existing non-symlink file, then
 	     it sets the appropriate flag.  It also sets any suffix found
@@ -577,46 +563,7 @@ path_conv::check (const char *src, unsigned opt,
 		goto out;	// file found
 	    }
 	  /* No existing file found. */
-
-	  /* Find the "tail" of the path, e.g. in '/for/bar/baz',
-	     /baz is the tail. */
-	  char *newtail = strrchr (path_copy, '/');
-	  if (tail != path_end)
-	    *tail = '/';
-
-	  /* Exit loop if there is no tail or we are at the
-	     beginning of a UNC path */
-	  if (!newtail || newtail == path_copy || (newtail == path_copy + 1 && newtail[-1] == '/'))
-	    goto out;	// all done
-
-	  tail = newtail;
-
-	  /* Haven't found an existing pathname component yet.
-	     Pinch off the tail and try again. */
-	  *tail = '\0';
 	}
-
-      MALLOC_CHECK;
-
-      /* The tail is pointing at a null pointer.  Increment it and get the length.
-	 If the tail was empty then this increment will end up pointing to the extra
-	 \0 added to path_copy above. */
-      int taillen = strlen (++tail);
-      int buflen = strlen (sym.contents);
-      if (buflen + taillen > MAX_PATH)
-	  {
-	    error = ENAMETOOLONG;
-	    strcpy (path, "::ENAMETOOLONG::");
-	    return;
-	  }
-
-      /* Strip off current directory component since this is the part that refers
-	 to the symbolic link. */
-      if ((p = strrchr (path_copy, '/')) == NULL)
-	p = path_copy;
-      else if (p == path_copy)
-	p++;
-      *p = '\0';
 
       char *headptr;
 	  /* Copy the first part of the path and point to the end. */
@@ -626,19 +573,7 @@ path_conv::check (const char *src, unsigned opt,
       if (headptr > path_copy && headptr[-1] != '/')
 	*headptr++ = '/';
 
-      /* Copy the symlink contents to the end of path_copy.
-	 Convert slashes.  FIXME? */
-      for (p = sym.contents; *p; p++)
-	*headptr++ = *p == '\\' ? '/' : *p;
-
-      /* Copy any tail component */
-      if (tail >= path_end)
-	*headptr = '\0';
-      else
-	{
-	  *headptr++ = '/';
-	  strcpy (headptr, tail);
-	}
+      *headptr = '\0';
 
       src = path_copy;
     }
@@ -694,14 +629,10 @@ out:
   if (!error && !(path_flags & (PATH_ALL_EXEC | PATH_NOTEXEC)))
     {
       const char *p = strchr (path, '\0') - 4;
-      if (p >= path &&
-	  (strcasematch (".exe", p) ||
-	   strcasematch (".bat", p) ||
-	   strcasematch (".com", p)))
+      if (p >= path && (strcasematch (".exe", p)))
 	path_flags |= PATH_EXEC;
     }
 
-#endif
 }
 
 #define deveq(s) (strcasematch (name, (s)))
