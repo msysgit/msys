@@ -11,6 +11,7 @@ details. */
 #include "winsup.h"
 #include "cygerrno.h"
 #include <sys/errno.h>
+#include <winnls.h>
 
 /********************** String Helper Functions ************************/
 
@@ -153,3 +154,10 @@ __check_null_invalid_struct_errno (const void *s, unsigned sz)
     set_errno (__err);
   return __err;
 }
+
+UINT
+get_cp ()
+{
+  return current_codepage == ansi_cp ? GetACP() : GetOEMCP();
+}
+
