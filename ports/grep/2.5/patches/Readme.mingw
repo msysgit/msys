@@ -26,7 +26,7 @@
 
 	- build-i386-mini
 	- ChangeLog.mingw
-	- grep-2.5.tar.gz.url
+	- grep-2.5.tar.gz (Internet Shortcut)
 	- grep-2.5-mingw.patch
 	- Readme.mingw
 
@@ -61,7 +61,7 @@
 		ype
 		...
 
-	$ make chech
+	$ make check
 		...
 		Spencer bre test #13 failed
 		Spencer bre test #16 failed

@@ -5,7 +5,7 @@
 #
 
 CPPFLAGS='-DHAVE_DIR_EACCES_BUG' \
-CFLAGS='-O2 -fno-rtti -fno-exceptions \
+CFLAGS='-O2 -fno-rtti -fno-exceptions' \
 LDFLAGS='-s' ./configure --target='i386-pc-mingw32' --build='i386-pc-mingw32' \
---disable-perl-regexp --disable-nls --without-libiconv --without-libintl
-make
+--disable-perl-regexp --disable-nls --without-libiconv --without-libintl \
+&& make
