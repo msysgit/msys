@@ -13,7 +13,7 @@ P.smi { font-size: small; text-align: center; font-style: italic; }
 SPAN.bold { font-weight: bold; }
 
 TABLE { width: 100%; text-align: left; }
-TABLE.prim { padding: 1cm; }
+TABLE.prim { padding: 0cm }
 TABLE.sec { padding: 1cm; }
 
 TD { vertical-align: top; }
