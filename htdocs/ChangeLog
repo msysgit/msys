@@ -1,3 +1,7 @@
+2000-10-08  Paul Sokolovsky  <Paul.Sokolovsky@technologist.com>
+
+	* mingwfaq.shtml: remove blank lines.
+
 2000-09-30  Paul Sokolovsky  <Paul.Sokolovsky@technologist.com>
 
 	* MINGW-USERS-MONTHLY.txt: file for monthly mailing to
