@@ -11,16 +11,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-// OLE support for CShellDlg.
 #include <shlobj.h>
 #include <commdlg.h>
 #include <commctrl.h>
-
 #include "CList.h"
 
-// TODO: ListView_SetExtendedListViewStyleEx not in the headers.
-
-/* NMMOUSE is missing in MinGW headers */
+// missing in MinGW headers: ListView_SetExtendedListViewStyleEx, NMMOUSE.
+// TODO: submit missing defines.
 #ifdef __MINGW32__
 typedef struct tagNMMOUSE {
 	NMHDR   hdr;
@@ -47,26 +44,45 @@ typedef struct tagTVDISPINFOW {
 #define NMTVDISPINFO            NMTVDISPINFOA
 #define LPNMTVDISPINFO          LPNMTVDISPINFOA
 #endif
-
 #endif /* __MINGW32__ */
 
-/*	A few handy procedures.	*/
+
+/*	WinUI tools 1.0.
+	TODO: should be moved to a dedicated module containing
+	all tips and tricks.							*/
+
+// message box functions.
 int MsgBox(HWND hWnd, UINT uType, char *lpCaption, const char *format, ...);
 int debugf(const char *format, ...);
+
+// converts the client coordinates of a point to window coordinates.
 bool ClientToWindow(HWND hWnd, LPPOINT lpPoint);
 
-class CChrono {
+class CSingleInstance {
+	/*	Good trick from Redmond guys, to know
+		if another instance of an application already
+		exists.
+		
+		Reference: M$ KB (Q243953).				
+		Note: In order to use a local CSingleInstance,
+		we don't call CloseHandle().				*/
+	
 	public:
-	CChrono();
-	~CChrono() {};
-
-	void Start(void);
-	DWORD Stop(void);
-
-	protected:
-	DWORD _time;
-
-	private:   
+	CSingleInstance(LPCTSTR uniqueID){
+		_hMutex = ::CreateMutex(NULL, TRUE, uniqueID);
+		_lastError = ::GetLastError();
+	}
+	~CSingleInstance(){
+		if (_hMutex)
+			::ReleaseMutex(_hMutex);
+	}
+	bool AlreadyExists(void){
+		return (_lastError == ERROR_ALREADY_EXISTS);
+	}
+	
+	private:
+	HANDLE _hMutex;
+	DWORD _lastError;
 };
 
 class CCriticalSection {
@@ -80,11 +96,12 @@ class CCriticalSection {
 	CRITICAL_SECTION _cs; 
 };
 
-/* OLE Initialization */
 class UseOle {
+	/*	Automatic OLE Initialization.		*/
+	
 	public:
-	UseOle() {_oleError = OleInitialize(NULL);}
-	~UseOle() {OleUninitialize();}
+	UseOle() {_oleError = ::OleInitialize(NULL);}
+	~UseOle() {::OleUninitialize();}
 
 	HRESULT GetInitializeError(void) {return _oleError;}
 
@@ -92,8 +109,23 @@ class UseOle {
 	HRESULT _oleError;
 };
 
-// Forward declaration of CWindow.
-class CWindow;
+class CChrono {
+	/*	A simple chrono.		*/
+	
+	public:
+	CChrono() : _time(0) {};
+	~CChrono() {};
+
+	void Start(void) {_time = ::GetTickCount();}
+	DWORD Stop(void){
+		DWORD diff = ::GetTickCount() - _time;
+		_time = 0;
+		return diff;
+	}
+
+	protected:
+	DWORD _time;
+};
 
 
 /********************************************************************
@@ -415,21 +447,15 @@ class CWinBase : public CWindow {
 	HINSTANCE 	hPrevInst;
 	LPSTR 		lpCmdLine;
 	int 			nCmdShow;
-
-	char 			appName[64];
 	char 			msgBuf[256];
 
-	bool	Init(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, 
-												int nCmdShow);
-	bool	SetName(char * name, char * version = NULL);
+	bool	Init(HINSTANCE hInstance, HINSTANCE hPrevInstance,
+			LPSTR lpCmdLine, int nCmdShow);
 	bool	IsWinNT(void);
-
-	bool ChangeDirectory(char * dir);
+	bool	ChangeDirectory(char *dir);
 
 	protected:
 	bool	_bWinNT;
-
-	private:   
 };
 
 class CSDIBase : public CWinBase {
@@ -451,9 +477,8 @@ class CSDIBase : public CWinBase {
 	char			_mainClass[16];
 };
 
-// Forward declaration.
+// forward declaration.
 class CMDIBase;
-//class CMDIChild;
 
 class CMDIClient : public CWindow {
 	public:

@@ -20,27 +20,28 @@
 
 
 /********************************************************************
-*	Functions:	debugf, ClientToWindow.
+*	Functions:	MsgBox, debugf, ClientToWindow.
 *
-*	Purpose:	A few handy procedures.
+*	Purpose:	WinUI tools.
 *
-*	Revisions:	
+*	Revisions:	1.0
 *
 ********************************************************************/
-const char *_dbg_caption = "Debug Message !";
-char _mb_buffer[256];
+#define DBG_CAPTION "Debug Message !"
+#define _MAX_MB_BUFFER 256
 
 int MsgBox(HWND hWnd, UINT uType, char *lpCaption, const char *format, ...){
-	/*	A MessageBox-like procedure that can output formatted text to a
-		Windows message box.
-		Apparently, under Win9x, if lpCaption is NULL, MessageBoxA displays
-		a default 'Error' caption in the title bar.						*/
+	/*	A printf-like procedure for Message Boxes.
+		The function fails if 'format' exceeds _MAX_MB_BUFFER.
+		Apparently, under Win9x, if lpCaption is NULL, MessageBoxA()
+		displays a default 'Error' caption in the title bar.						*/
 
 	if (format){
-		char buffer[256];
+		char buffer[_MAX_MB_BUFFER];
 		va_list argptr;
 		va_start(argptr, format);
-		int result = _vsnprintf(buffer, sizeof(buffer), format, argptr);
+		// result is -1 if 'format' is too large.
+		int result = _vsnprintf(buffer, _MAX_MB_BUFFER, format, argptr);
 		va_end(argptr);
 		if (result != -1)
 			return MessageBox(hWnd, buffer, lpCaption, uType);
@@ -49,60 +50,33 @@ return -1;
 }
 
 int debugf(const char *format, ...){
-	/*	A printf-like procedure that can output
-		formatted text to a Windows message box.	*/
+	/*	A simplified MsgBox() for debugging messages.		*/
 
 	if (format){
+		char buffer[_MAX_MB_BUFFER];
 		va_list argptr;
 		va_start(argptr, format);
-		int result = _vsnprintf(_mb_buffer, sizeof(_mb_buffer), format, argptr);
+		int result = _vsnprintf(buffer, _MAX_MB_BUFFER, format, argptr);
 		va_end(argptr);
 		if (result != -1)
-			return MessageBox(0, _mb_buffer, _dbg_caption, MB_ICONERROR);
+			return MessageBox(0, buffer, DBG_CAPTION, MB_ICONERROR);
 	}
 return -1;
 }
 
 bool ClientToWindow(HWND hWnd, LPPOINT lpPoint){
-	/* 	The ClientToWindow function converts the client coordinates
-		of a specified point to window coordinates.				*/
+	/* 	Converts the client coordinates of a point to window coordinates.	*/
 
-	// Convert given point to screen coordinates.
-	if (!ClientToScreen(hWnd, lpPoint))
-		return false;
-
-	// Get the window rect in screen coordinates.
 	RECT rect;
-	if (!GetWindowRect(hWnd, &rect))
+	// convert to screen coordinates and get the window rect.
+	if (!ClientToScreen(hWnd, lpPoint)
+	|| !GetWindowRect(hWnd, &rect))
 		return false;
 
-	// Offset coordinates relative to the top-left of the window.
+	// offset coordinates relative to the top-left of the window.
 	lpPoint->x -= rect.left;
 	lpPoint->y -= rect.top;
 return true;
-}
-
-
-/********************************************************************
-*	Class:	CChrono.
-*
-*	Purpose:	
-*
-*	Revisions:	
-*
-********************************************************************/
-CChrono::CChrono(){
-	_time = 0;
-}
-
-void CChrono::Start(void){
-	_time = ::GetTickCount();
-}
-
-DWORD CChrono::Stop(void){
-	DWORD diff = ::GetTickCount() - _time;
-	_time = 0;
-return diff;
 }
 
 
@@ -1422,7 +1396,6 @@ CWinBase::CWinBase(){
 	nCmdShow	= SW_SHOW;
 
 	_bWinNT 	= false;
-	strcpy(	appName, 	"CWinBase");
 }
 
 CWinBase::~CWinBase(){
@@ -1434,15 +1407,6 @@ bool CWinBase::Init(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLin
 	hPrevInst	= hPrevInstance;
 	lpCmdLine	= lpCmdLine;
 	nCmdShow	= nCmdShow;
-return true;
-}	
-
-bool CWinBase::SetName(char * name, char * version){
-	strcpy(appName, name);
-	strcat(appName, " ");
-
-	if(version)
-		strcat(appName, version);
 return true;
 }	
 
