@@ -1,3 +1,8 @@
+2001-08-31  Earnie Boyd  <earnie@SF.Net>
+
+	* config.guess: Remove the \r from the end of line.
+	* config.sub: Ditto.
+
 2001-08-30  Danny Smith  <dannysmith@users.sourceforge.net>
 
 	* include/winnt.h: Allow anonymous struct in [U]LARGE_INTEGER
