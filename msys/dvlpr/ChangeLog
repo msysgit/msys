@@ -1,3 +1,11 @@
+2003.02.17  Earnie Boyd  <earnie@users.sf.net>
+
+	* doc/msys/MSYS-1.0.9-changes.rtf: Update changes for 2003-02-17 snap.
+
+2003.02.12  Earnie Boyd  <earnie@users.sf.net>
+
+	* doc/msys/MSYS-1.0.9-changes.rtf: Update changes for 2003-02-12 snap.
+
 2003.02.03  Earnie Boyd  <earnie@users.sf.net>
 
 	* bin/msys.bat: Win9x doesn't do ``EXISTS dir'' so change to
