@@ -31,5 +31,6 @@
 # For some odd reason the SMTP server isn't allowing mail to it's own domain.
 # I've added my yahoo account so that I can get notification of change.
 # ##########################################################################
+
 CVSROOT $CVSROOT/CVSROOT/syncmail %{sVv} earnie_boyd@yahoo.com earnie@users.sourceforge.net mingw-cvs-admin@lists.sourceforge.net
 DEFAULT $CVSROOT/CVSROOT/syncmail %{sVv} earnie_boyd@yahoo.com earnie@users.sourceforge.net mingw-cvs@lists.sourceforge.net
