@@ -1,0 +1,18 @@
+# The following is a list of packages used with msys.
+bash
+bzip2
+diffutils
+fileutils
+findutils
+gawk
+grep
+gzip
+m4
+make
+rxvt
+sed
+sh-utils
+tar
+texinfo
+textutils
+vim
