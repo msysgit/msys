@@ -2442,7 +2442,10 @@ typedef struct tagSTYLESTRUCT {
 #define MAKELPARAM(l,h) ((LPARAM)MAKELONG(l,h))
 #define MAKEWPARAM(l,h) ((WPARAM)MAKELONG(l,h))
 #define MAKELRESULT(l,h) ((LRESULT)MAKELONG(l,h))
-#define POINTSTOPOINT(p,ps) {(p).x=LOWORD(pts);(ps).y=HIWORD(ps);}
+#define POINTSTOPOINT(p,ps) { \
+  (p).x=LOWORD(*(DWORD *)&ps); \
+  (p).y=HIWORD(*(DWORD *)&ps); \
+}
 #define POINTTOPOINTS(p) ((POINTS)MAKELONG((p).x,(p).y))
 
 HKL WINAPI ActivateKeyboardLayout(HKL,UINT);
