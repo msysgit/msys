@@ -1,3 +1,18 @@
+2004.03.16  Earnie Boyd  <earnie@users.sf.net>
+
+	* configure.ac: Quoting and appropriate macros as per new revisions
+	of autoconf.
+	* configure: Regenerated.
+	* aclocal.m4: Ditto.
+	* Makefile.in: Ditto.
+	* doc/Makefile.in: Ditto.
+	* info/Makefile.in: Ditto.
+	* lib/Makefile.in: Ditto.
+	* m4/Makefile.in: Ditto.
+	* makeinfo/Makefile.in: Ditto.
+	* makeinfo/tests/Makefile.in: Ditto.
+	* util/Makeinfo.in: Ditto.
+	
 2003.06.17  Luke Dunstan  <infidel@users.sf.net>
 
 	* makeinfo/makeinfo.c (fix_whitespace): Treat \r as whitespace.
