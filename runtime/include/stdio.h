@@ -22,9 +22,9 @@
  *  DISCLAIMED. This includes but is not limited to warranties of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Revision: 1.13 $
- * $Author: infidel $
- * $Date: 2003-03-25 10:55:21 $
+ * $Revision: 1.14 $
+ * $Author: earnie $
+ * $Date: 2003-09-15 14:18:35 $
  *
  */
 
@@ -373,7 +373,7 @@ _CRTIMP wchar_t* __cdecl _getws (wchar_t*);
 _CRTIMP wint_t __cdecl	putwc (wint_t, FILE*);
 _CRTIMP int __cdecl	_putws (const wchar_t*);
 _CRTIMP wint_t __cdecl	putwchar (wint_t);
-_CRTIMP FILE* __cdecl	_wfdopen(int, const wchar_t *);
+_CRTIMP FILE* __cdecl	_wfdopen(int, wchar_t *);
 _CRTIMP FILE* __cdecl	_wfopen (const wchar_t*, const wchar_t*);
 _CRTIMP FILE* __cdecl	_wfreopen (const wchar_t*, const wchar_t*, FILE*);
 _CRTIMP FILE* __cdecl	_wfsopen (const wchar_t*, const wchar_t*, int);

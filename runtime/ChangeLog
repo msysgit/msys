@@ -1,3 +1,85 @@
+2003-07-03  Earnie Boyd  <earnie@users.sf.net>
+
+	* config.guess, config.sub: Update with versions from ftp.gnu.org.
+
+2003-07-03  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* mingwex/math/trunc.c (trunc): Provide lvalue for memory input constraint. 
+	* mingwex/math/truncf.c (truncf): Likewise.
+	* mingwex/math/truncl.c (truncl): Likewise.
+	* mingwex/math/modff.c (modff): Likewise.
+	* mingwex/math/modfl.c (modfl): Likewise.
+
+2003-07-03  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/search.h: New file.
+	* include/stdlib.h: Add comment about qsort, bsearch in
+	search.h.
+	* test_headers.c: Include search.h.
+	* moldname.def.in (lfind, lsearch): Add. 
+
+2003-07-03  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/process.h (_execv, _execvp, _spawnv, _spawnvp, _execve,
+	_execvpe, _spawnve, _spawnvpe, execv, execvp, spawnv, spawnvp,
+	execve, execvpe, spawnve, spawnvpe): Const-ify all the char params.
+
+2003-07-01  Earnie Boyd  <earnie@users.sf.net>
+
+	* include/_mingw.h (small, hyper): Change to __small and __hyper to
+	avoid user space name conflicts.
+
+2003-07-01  Earnie Boyd  <earnie@users.sf.net>
+
+	* include/_mingw.h (__int32, __int16, __int8, small, hyper): Define.
+	Note: Also added to w32api/include/basetyps.h.
+	* mingwex/math/tgamma.c, tgammaf.c, tgammal.c (small): 
+	Rename to Small (case difference).
+
+2003-06-18  Earnie Boyd  <earnie@users.sf.net>
+
+	* include/dirent.h (dirent): Make d_name and array instead of a pointer.
+	* mingwex/dirent.c: Modifications througout to fill d_name array.
+	* Makefile.in (LIBS): Add new MSVCRT libraries libmsvcr70 and
+	libmsvcr71, including debug versions.
+	(msvcr70.def, msvcr70d.def, msvcr71.def, msvcr71.def): New targets.
+
+2003-06-17  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* msvcrt.def.in (__badioinfo, __lc_codepage, __lc_handle,
+	__pioinfo, __setlc_active, _unguarded_readlc_active, _dstbias):
+	Mark as DATA.
+	Thanks to: Aaron W  LaFramboise   <AWLaFramboise@aol.com>
+
+2003-05-30  Sascha Sommer  <saschasommer@freenet.de>
+
+	* include/sys/types.h (_ssize_t, ssize_t):  Add typedefs.
+
+2003-05-15  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/stdlib.h (_Exit): Move out of __STRICT_ANSI__ block,
+	but still protect inline definition with __STRICT_ANSI__.
+
+2003-05-14  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* string_old.c: Remove, splitting into...
+	* strcasecmp.c: New file.
+	* strncasecmp.c: New file.
+	* wscmpi.c : New file.
+	* ctype_old.c: Remove, splitting into...
+	* isascii.c: New file.
+	* iscsym.c: New file.
+	* iscsymf.c: New file.
+	* toascii.c: New file.
+	* Makefile.in (MOLD_OBJS): Adjust.
+	(SRCDIST_FILES): Adjust.
+
+2003-05-13  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/math.h (fabs) : Remove inline definition.
+	(fabsf): Likewise.
+	(fabsl): Likewise. 
+
 2003-05-06  Earnie Boyd  <earnie@users.sf.net>
 
 	* include/_mingw.h: Change version to 3.0

@@ -153,19 +153,30 @@ CRT0S = crt1.o dllcrt1.o crt2.o dllcrt2.o CRT_noglob.o crtmt.o crtst.o \
 MINGW_OBJS = CRTglob.o CRTfmode.o CRTinit.o  dllmain.o gccmain.o \
 	     main.o crtst.o mthr_stub.o CRT_fp10.o txtmode.o \
 	     pseudo-reloc.o pseudo-reloc-list.o
-MOLD_OBJS = ctype_old.o string_old.o
 
-LIBS = libcrtdll.a libmsvcrt.a libmsvcrtd.a libmingw32.a \
-       libcoldname.a libmoldname.a libmoldnamed.a $(LIBM_A) libmingwthrd.a
+MOLD_OBJS = isascii.o iscsym.o iscsymf.o toascii.o \
+	strcasecmp.o strncasecmp.o wcscmpi.o
+
+LIBS = libcrtdll.a \
+       libmsvcrt.a libmsvcrtd.a \
+       libmsvcr70.a libmsvcr70d.a \
+       libmsvcr71.a libmsvcr71d.a \
+       libmingw32.a \
+       libcoldname.a \
+       libmoldname.a libmoldnamed.a \
+       $(LIBM_A) \
+       libmingwthrd.a
 
 DLLS = $(THREAD_DLL_NAME)
 
 SRCDIST_FILES = CRT_noglob.c CRTfmode.c CRTglob.c CRTinit.c ChangeLog \
 Makefile.in README TODO config.guess config.sub configure configure.in \
-crt1.c crtdll.def crtmt.c crtst.c ctype_old.c  dllcrt1.c dllmain.c \
+crt1.c crtdll.def crtmt.c crtst.c  dllcrt1.c dllmain.c \
 gccmain.c init.c install-sh jamfile main.c mkinstalldirs \
 moldname.def.in msvcrt.def.in \
-mthr.c mthr_init.c mthr_stub.c readme.txt string_old.c \
+mthr.c mthr_init.c mthr_stub.c readme.txt \
+isascii.c iscsym.c iscsymf.c toascii.c \
+strcasecmp.c strncasecmp.c wcscmpi.c \
 CRT_fp8.c CRT_fp10.c test_headers.c txtmode.c binmode.c pseudo-reloc.c \
 pseudo-reloc-list.c
 
@@ -230,7 +241,10 @@ libmingw32.a: $(MINGW_OBJS)
 	$(AR) rc $@ $(MINGW_OBJS)
 	$(RANLIB) $@
 
-msvcrt.def msvcrtd.def: msvcrt.def.in
+msvcrt.def msvcrtd.def \
+msvcr70.def msvcr70d.def \
+msvcr71.def msvcr71d.def \
+: msvcrt.def.in
 	$(CC) -DRUNTIME=$(basename $(notdir $@)) \
 		-D__FILENAME__=$@ \
 		-D__MSVCRT__ -C -E -P \

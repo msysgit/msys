@@ -18,9 +18,9 @@
  *  DISCLAIMED. This includes but is not limited to warranties of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Revision: 1.4 $
+ * $Revision: 1.5 $
  * $Author: earnie $
- * $Date: 2003-02-21 21:19:52 $
+ * $Date: 2003-09-15 14:18:35 $
  *
  */
 
@@ -81,22 +81,23 @@ _CRTIMP int __cdecl _cwait (int*, _pid_t, int);
 _CRTIMP _pid_t __cdecl _getpid(void);
 
 _CRTIMP int __cdecl _execl	(const char*, const char*, ...);
-_CRTIMP int __cdecl _execle		(const char*, const char*, ...);
+_CRTIMP int __cdecl _execle	(const char*, const char*, ...);
 _CRTIMP int __cdecl _execlp	(const char*, const char*, ...);
 _CRTIMP int __cdecl _execlpe	(const char*, const char*, ...);
-_CRTIMP int __cdecl _execv	(const char*, char* const*);
-_CRTIMP int __cdecl _execve	(const char*, char* const*, char* const*);
-_CRTIMP int __cdecl _execvp	(const char*, char* const*);
-_CRTIMP int __cdecl _execvpe	(const char*, char* const*, char* const*);
+_CRTIMP int __cdecl _execv	(const char*, const char* const*);
+_CRTIMP int __cdecl _execve	(const char*, const char* const*, const char* const*);
+_CRTIMP int __cdecl _execvp	(const char*, const char* const*);
+_CRTIMP int __cdecl _execvpe	(const char*, const char* const*, const char* const*);
 
 _CRTIMP int __cdecl _spawnl	(int, const char*, const char*, ...);
 _CRTIMP int __cdecl _spawnle	(int, const char*, const char*, ...);
 _CRTIMP int __cdecl _spawnlp	(int, const char*, const char*, ...);
 _CRTIMP int __cdecl _spawnlpe	(int, const char*, const char*, ...);
-_CRTIMP int __cdecl _spawnv	(int, const char*, char* const*);
-_CRTIMP int __cdecl _spawnve	(int, const char*, char* const*, char* const*);
-_CRTIMP int __cdecl _spawnvp	(int, const char*, char* const*);
-_CRTIMP int __cdecl _spawnvpe	(int, const char*, char* const*, char* const*);
+_CRTIMP int __cdecl _spawnv	(int, const char*, const char* const*);
+_CRTIMP int __cdecl _spawnve	(int, const char*, const char* const*, const char* const*);
+_CRTIMP int __cdecl _spawnvp	(int, const char*, const char* const*);
+_CRTIMP int __cdecl _spawnvpe	(int, const char*, const char* const*, const char* const*);
+
 
 /*
  * The functions _beginthreadex and _endthreadex are not provided by CRTDLL.
@@ -132,18 +133,18 @@ _CRTIMP int __cdecl execl (const char*, const char*, ...);
 _CRTIMP int __cdecl execle (const char*, const char*, ...);
 _CRTIMP int __cdecl execlp (const char*, const char*, ...);
 _CRTIMP int __cdecl execlpe (const char*, const char*, ...);
-_CRTIMP int __cdecl execv (const char*, char* const*);
-_CRTIMP int __cdecl execve (const char*, char* const*, char* const*);
-_CRTIMP int __cdecl execvp (const char*, char* const*);
-_CRTIMP int __cdecl execvpe (const char*, char* const*, char* const*);
+_CRTIMP int __cdecl execv (const char*, const char* const*);
+_CRTIMP int __cdecl execve (const char*, const char* const*, const char* const*);
+_CRTIMP int __cdecl execvp (const char*, const char* const*);
+_CRTIMP int __cdecl execvpe (const char*, const char* const*, const char* const*);
 _CRTIMP int __cdecl spawnl (int, const char*, const char*, ...);
 _CRTIMP int __cdecl spawnle (int, const char*, const char*, ...);
 _CRTIMP int __cdecl spawnlp (int, const char*, const char*, ...);
 _CRTIMP int __cdecl spawnlpe (int, const char*, const char*, ...);
-_CRTIMP int __cdecl spawnv (int, const char*, char* const*);
-_CRTIMP int __cdecl spawnve (int, const char*, char* const*, char* const*);
-_CRTIMP int __cdecl spawnvp (int, const char*, char* const*);
-_CRTIMP int __cdecl spawnvpe (int, const char*, char* const*, char* const*);
+_CRTIMP int __cdecl spawnv (int, const char*, const char* const*);
+_CRTIMP int __cdecl spawnve (int, const char*, const char* const*, const char* const*);
+_CRTIMP int __cdecl spawnvp (int, const char*, const char* const*);
+_CRTIMP int __cdecl spawnvpe (int, const char*, const char* const*, const char* const*);
 #endif	/* Not _NO_OLDNAMES */
 
 #ifdef	__cplusplus
