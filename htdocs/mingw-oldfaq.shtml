@@ -1,4 +1,4 @@
-<!--$Id: mingw-oldfaq.shtml,v 1.8 2002-06-02 05:48:10 infidel Exp $-->
+<!--$Id: mingw-oldfaq.shtml,v 1.9 2003-01-26 14:53:11 earnie Exp $-->
 <html>
 <head>
    <title>"The Old FAQ"</title>
@@ -68,18 +68,6 @@
          include:
       </p>
       <ul>
-         <li>
-            lcc-win from <a href="http://www.cs.virginia.edu/%7Elcc-win32/">
-            http://www.cs.virginia.edu/&#126;lcc-win32/</a> is a Win32 C
-            compiler complete with integrated environment.  I believe the
-            distribution includes a working GUI resource editor that has been
-            reported to work with other compilers such as mingw.
-         </li>
-         <li>
-            bloodshed Dev-C++ from <a href="http://www.bloodshed.net/devcpp.html">
-            http://www.bloodshed.net/devcpp.html</a> is a distribution of mingw32 with
-            an IDE and other integrated tools.
-         </li>
          <li>
             rsxnt, rsxntdj from <a href="http://www.mathematik.uni-bielefeld.de/%7Erainer/">
             http://www.mathematik.uni-bielefeld.de/&#126;rainer/</a>
@@ -1340,7 +1328,7 @@
 
    <hr />
    <address>
-   <br />Last revised $Date: 2002-06-02 05:48:10 $
+   <br />Last revised $Date: 2003-01-26 14:53:11 $
    </address>
 </body>
 </html>

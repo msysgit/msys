@@ -1,6 +1,9 @@
 2003-01-26  Earnie Boyd  <earnie@users.sf.net>
 
 	* news-short.html: Remove from cvs as this file is dynamically created.
+	* links.shtml, mingwfaq.shtml, mingw-oldfaq.shtml: Merging information
+	from mingw-oldfaq.shtml.  Remove the mingw-oldfaq reference from FAQ
+	page.
 
 2003-01-13  Nathan Fisher <natbobc@users.sf.net>
 

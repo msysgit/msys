@@ -48,11 +48,6 @@ Python Extensions with GCC/mingw32</a>.</li>
 <li> <a target="_nw" href="http://www.eGroups.com/group/mingw32/">Old Mingw32 mailing list 
 (use for archived information)</a>
 hosted by <a target="_nw" href="http://www.eGroups.COM">eGroups.COM</a>.</li>
-<li> <a href="mailto:daguer@geocities.com">Daniel Guerrero Miralles</a> has
-some interesting items Mingw on his 
-<a target="_nw" href="http://www.geocities.com/SiliconValley/Station/1177/index.html">
-site</a>. Mostly LCC-Win32 related, but a lot of that applies to Mingw as 
-well.</li>
 <li> <a target="_nw" href="http://mingwacr.sourceforge.net">The Mingw32 Alternate C Runtime Library</a>
 is being developed as a replacement to MSVCRT.DLL. Its purpose was to completely remove the dependency
 of MSVCRT.DLL from Mingw32. It will also allow developers to have access to the source code for the 
@@ -61,11 +56,33 @@ optimizations for some functions. It will implement all ANSI/ISO functions, incl
 Unicode functions.</li>
 </ul>
 
-<h3 align="left">Other GNU-Windows32 projects</h3>
+<h3 align="left">Sites useful for Windows32 programmers</h3>
+<ul>
+  <li> <a target="_nw" href="http://www.iseran.com/Win32/FAQ/section0.html">http://www.iseran.com/Win32/FAQ/section0.html</a> Steve Loughran's utterly unofficial and sporadically accurate list of frequently asked questions about the Win32 API.</li>
+  <li> <a target="_nw" href="http://www.blockdev.net/Community/Editors/">Free Editors for
+  Programming in Windows (32-bit)</a>
+  </li>
+  <li> <a target="_nw" href="http://www.foosyerdoos.fsnet.co.uk">FoosYerDoos Programming</a>
+  is devoted to win32 C++ programming with a variety of different compilers.
+  </li>
+  <li> <a target="_nw" href="http://freespace.virgin.net/james.brown7">Catch22 Productions</a>
+  is a web-site offering free software and tutorials for Windows.
+  </li>
+  <li> <a target = "_nw" href="http://www.winprog.org/tutorial/">theForger's Win32 API Tutorial</a>
+  attempts to get you started developing with the Win32 API as quickly and clearly as possible.
+  </li>
+  <li> <a target="_nw" href="http://www.wotsit.org/">Wotsit's Format</a> file format information on hundreds of different file types</li>
+</ul>
+
+<h3 align="left">Other Windows32 projects with compilers</h3>
 <ul>
 <li> <a target="_nw" href="http://cygwin.com">Cygwin project</a>.
      The mailing list archives are on-line, as is the Users Guide and so
      on. Please do look through these if you have a problem.</li>
+<li> <a target="_nw" href="http://www.cs.virginia.edu/%7Elcc-win32/">lcc-win</a>
+     is a Win32 C compiler complete with integrated environment.  I believe 
+     the distribution includes a working GUI resource editor that has been 
+     reported to work with other compilers such as mingw.  </li>
 <li> <a target="_nw" href="http://pw32.sourceforge.net/">PW32</a> is
 <a href="mailto:pfalcon@users.sourceforge.net">Paul Sokolovsky's</a>
 effort to provide another POSIX-compliant C runtime library. Currently
@@ -73,22 +90,7 @@ uses Mingw-hosted gcc/binutils.
 </li>
 </ul>
 
-<h3 align="left">Sites useful for Windows32 programmers</h3>
-<ul>
-  <li> <a target="_nw" href="http://www.blockdev.net/Community/Editors/">Free Editors for
-  Programming in Windows (32-bit)</a>
-  </li>
-  <li> <a href="http://www.foosyerdoos.fsnet.co.uk">FoosYerDoos Programming</a>
-  is devoted to win32 C++ programming with a variety of different compilers.
-  </li>
-  <li> <a href="http://freespace.virgin.net/james.brown7">Catch22 Productions</a>
-  is a web-site offering free software and tutorials for Windows.
-  </li>
-  <li> <a href="http://www.winprog.org/tutorial/">theForger's Win32 API Tutorial</a>
-  attempts to get you started developing with the Win32 API as quickly and clearly as possible.
-  </li>
-</ul>
-
+<h3 align="left">IDE - Integrated Development Environments</h3>
     <p>There are several IDEs (Integrated Development Environments)
     for Win32 platforms.  Some are freeware and some are not.  Some
     are specifically tailored to mingw and others are for more
@@ -101,6 +103,10 @@ uses Mingw-hosted gcc/binutils.
       <br />A "Minimalist" Open Source IDE being developed with and for the MinGW
       development tools.
       </li>
+      <li>bloodshed Dev-C++ from <a target="_nw" href="http://www.bloodshed.net/devcpp.html">
+          http://www.bloodshed.net/devcpp.html</a> is a distribution of mingw32
+	  with an IDE and other integrated tools.
+      </li>
       <li>RSXIDE, <a target="_nw" href="http://www.mathematik.uni-bielefeld.de/%7Erainer/">
       http://www.mathematik.uni-bielefeld.de/~rainer/</a>
       <br />Built in support for djgpp, rsxnt, emx/nt09d and mingw.  Works with
@@ -110,14 +116,14 @@ uses Mingw-hosted gcc/binutils.
       <li>Vide, <a target="_nw" href="http://www.objectcentral.com">http://www.objectcentral.com</a>
       <br />Tested with mingw.
       </li>
-      <li>JFE (Jen's File Editor), <a target="_nw" href="http://cs-alb-pc3.massey.ac.nz/software/">
-      http://cs-alb-pc3.massey.ac.nz/software/</a>
-      <br />For use with mingw.  The source is available in the file jfesrc.zip, but
-      appears to be written to compile using the Microsoft compiler.  The IDE is
-      available in gcc.exe along with a small gcc distribution.  Has some nice features
-      including automatically building HTML documentation files for projects and easy
-      viewing of and navigation to functions in a project.  (I personally miss the key-mapping
-      functionality of PFE though.)
+      <li>JFE (Jen's File Editor), 
+      <a target="_nw" 
+         href="http://home.t-online.de/home/Jens.Altmann/jfe_eng.htm">
+      http://home.t-online.de/home/Jens.Altmann/jfe_eng.htm</a>
+      <br />can be used with mingw.  Has some nice features including 
+      automatically building HTML documentation files for projects and easy
+      viewing of and navigation to functions in a project.  (I personally miss 
+      the key-mapping functionality of PFE though.)
       </li>
       <li>Pow! - Programmers Open Workbench, <a target="_nw" href="http://www.fim.uni-linz.ac.at/pow/Pow.htm">
       http://www.fim.uni-linz.ac.at/pow/Pow.htm</a>
@@ -127,7 +133,8 @@ uses Mingw-hosted gcc/binutils.
       <br />Can be configured to work with many languages/compilers.
       </li>
       <li>Visual Programming Armoury,
-      <a target="_nw" href="http://www.polymorph.spb.ru/">http://www.polymorph.spb.ru/</a>
+      <a target="_nw" href="http://www.polymorph.spb.ru/">
+      http://www.polymorph.spb.ru/</a>
       </li>
       <li>Assembler Laboratory, <a target="_nw" href="http://tihlde.org/%7Ekurtg/">http://tihlde.org/~kurtg/</a>
       </li>
@@ -150,6 +157,6 @@ uses Mingw-hosted gcc/binutils.
 </table>
 <!--#include file="ssi/bottombar.html"--><!--#include file="ssi/footer.html"-->
 <address> <br>
-Last revised $Date: 2003-01-12 18:17:55 $ </address>
+Last revised $Date: 2003-01-26 14:53:11 $ </address>
 </body>
 </html>

@@ -38,13 +38,6 @@
       its members, various MinGW related web sites and experience.  We would like to
       thank all who have contributed to this FAQ.
    </p>
-   <p>
-      <b>**NOTE**</b> We are currently in the process of assimilating the 
-      <a href="mingw-oldfaq.shtml">"Old FAQ"</a> contents into this consolidated 
-      FAQ.  Information currently residing on the Old FAQ page will soon find a home 
-      either here, on the "Documentation" and "Download" pages, or in the upcoming
-      <i>MinGW User's Guide</i>.
-   </p>
    
    <a name="index"></a>
    <ul>
@@ -586,6 +579,6 @@
 </table>
 <!--#include file="ssi/bottombar.html"--><!--#include file="ssi/footer.html"-->
 <address> <br>
-Last revised $Date: 2003-01-11 09:02:50 $ </address>
+Last revised $Date: 2003-01-26 14:53:11 $ </address>
 </body>
 </html>
