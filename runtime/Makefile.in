@@ -226,7 +226,7 @@ DLL_DLLTOOL_STUFF = --as=$(AS) --dllname $(THREAD_DLL_NAME) \
                     --def mingwthrd.def \
                     --base-file mingwthrd.base --output-exp mingwthrd.exp
 
-$(THREAD_DLL_NAME) mingwthrd.def: $(DLL_OFILES) Makefile
+$(THREAD_DLL_NAME) mingwthrd.def: $(DLL_OFILES) Makefile $(SUBDIRS)
 	$(DLLTOOL) --as $(AS) --output-def mingwthrd.def $(DLL_OFILES)
 	$(CC) -Wl,--base-file=mingwthrd.base $(DLL_CC_STUFF) \
 		-o mingwthrd_dummy.exe

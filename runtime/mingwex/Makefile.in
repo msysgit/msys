@@ -4,7 +4,7 @@
 # This makefile requires GNU make.
 
 srcdir = @srcdir@
-VPATH = $(srcdir):$(srcdir)/math:$(srcdir)/stdio
+VPATH = $(srcdir):$(srcdir)/math:$(srcdir)/stdio:$(srcdir)/complex
 objdir = .
 
 target_alias = @target_alias@
