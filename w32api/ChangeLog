@@ -1,3 +1,8 @@
+2001-07-06 Danny Smith <dannysmith@users.sourceforge.net>
+ 
+	* include/basetsd.h (#include <_mingw.h>): Remove.
+	(__int64): Define.
+
 2001-06-28 Danny Smith <dannysmith@users.sourceforge.net>
 
 	* include/wingdi.h (AC_SRC_OVER): Add define.
@@ -14,7 +19,6 @@
 2001-06-27 Danny Smith <dannysmith@users.sourceforge.net>
 
 	* include/basetsd.h (#include <_mingw.h>): Add directive.
-
 
 2001-06-25 Danny Smith <dannysmith@users.sourceforge.net>
 
