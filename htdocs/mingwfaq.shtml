@@ -1,4 +1,4 @@
-<!-- $Id: mingwfaq.shtml,v 1.39 2002-09-20 13:57:43 earnie Exp $ -->
+<!-- $Id: mingwfaq.shtml,v 1.40 2002-09-20 15:44:31 earnie Exp $ -->
 
 <html>
 <head>
@@ -92,7 +92,7 @@
       </p>
       <p>
          Check out the <a href="history.shtml">project history</a> for the
-	 interesting story of How MinGW Begain.
+	 interesting story of How MinGW Began.
       </p>
       <p>
 	 <!--
@@ -550,7 +550,7 @@
 
    <hr />
    <address>
-   <br />Last revised $Date: 2002-09-20 13:57:43 $
+   <br />Last revised $Date: 2002-09-20 15:44:31 $
    </address>
 
 </body>
