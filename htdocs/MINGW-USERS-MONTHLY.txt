@@ -19,10 +19,10 @@ for "native" Windows 32-bit platforms.  Please visit our website
 http://www.mingw.org for more information.
 
 
-Who is author of MinGW? How is it maintained? What is licensing?
+Who authored MinGW? How is it maintained? What is its licensing?
 ================================================================
-MinGW was created by Colin Peters and put by him into the public 
-domain.  There is no centralized force behind MinGW - it is 
+MinGW was created by Colin Peters and was placed by him into the 
+public domain.  There is no centralized force behind MinGW - it is 
 maintained by volunteers and its development directed by the user 
 community.  MinGW uses free GNU C/C++ compiler, its core libraries
 and headers (Win32 import libraries and header definitions) are in 
@@ -32,24 +32,27 @@ open- or close-sourced.  For more comprehensive licensing terms,
 please visit http://www.mingw.org/licensing.shtml
 
 
-Can MinGW be used to compile GNU or OpenSource software? MSVC one?
-==================================================================
-The MinGW runtime library adheres to ANSI C standard and offers 
-very little POSIX compatibility.  ANSI compliant and VC++ compliant
-software packages should be able to be compiled with little or no 
-changes.  Most GNU software (and OpenSource sofware in general) 
-uses GNU configure-based build procedure, which requires a Bourne
-compliant shell, and other UNIX like utilities and are not
-currently available for MinGW directly.  The solution is to cross-
-compile to MinGW from more complete environment such as Cygwin or
-Linux.  There is however a push to supply Bourne compliant shells
-and UNIX utilities for MinGW in the distant future.
+Can MinGW be used to compile GNU or OpenSource software?
+========================================================
+The MinGW runtime library adheres to the ANSI C standard and
+offers very little POSIX compatibility.  While some packages may
+compile "out of the box", many will require porting.  Most GNU
+software uses the GNU "configure; make; make install" procedure,
+which requires a borne compliant shell, and a handful of UNIX like
+utilities.  Some of this functionality is provided by MSYS, 
+please see "What is MSYS and why should I use it?" below for
+more information.
 
-MinGW was specifically created to allow "native" (read: MSVC 
-supplied runtimes) source to be compiled with GCC.  Most projects 
-compile without any changes.  Still, some changes to build proce-
-dure may be required.  Tools for automated conversion of MSVC 
-projects exist.
+
+Can MinGW be used to compile MSVC projects?
+===========================================
+Because MinGW was specifically created to allow "native" runtimes to
+be compiled with GCC, most MSVC projects will compile without change.
+However, with many projects there maybe a requirement to modify the 
+build procedure.  Tools for automating MSVC project conversion are
+available. 
+
+--?AVAILABLE CONVERSION TOOLS HERE?--
 
 
 What is MSYS and why should I use it?
@@ -76,17 +79,22 @@ related issues and announce availability of software.  Before
 posting questions, please make sure that it is not covered in the 
 comprehensive FAQ (http://www.mingw.org/mingwfaq.shtml) or already 
 discussed in the mailing list archives which are accessible from 
-the mailing list homepage.
+the mailing list homepage or the seach facility provided on the 
+leftside of the MinGW home page.
 
 
 Reporting bugs and contributing
 ===============================
 MinGW's existence and development is impossible without community
-attention and contribution.  Please submit bugreports via
-this link: http://sourceforge.net/bugs/?func=addbug&group_id=2435 
-(if you are registered SourceForge user, please submit when you are
-logged in). Submit patches for MinGW runtime/tools, corrections and
-additions for the web pages via
+attention and contribution.  
+
+For details on reporting bugs please refer to:
+ 
+http://www.mingw.org/bugs.shtml
+
+Submit patches for MinGW runtime/tools, corrections and additions 
+for the web pages via:
+
 http://sourceforge.net/patch/?func=addpatch&group_id=2435 .
 
 
