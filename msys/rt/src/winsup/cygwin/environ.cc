@@ -866,9 +866,18 @@ winenv (const char * const *envp, int keep_posix)
   envblock = (char *) malloc (envblocklen + 2 + (MAX_PATH * 256));
   for (srcp = newenvp, ptr = envblock; *srcp; srcp++)
     {
-      srcplen = strlen(*srcp);
-      memcpy (ptr, *srcp, srcplen + 1); 
-      ptr += srcplen + 1;
+      if (keep_posix) {
+	char * w32path = msys_p2w(*srcp);
+	srcplen = strlen (w32path);
+	memcpy (ptr, w32path, srcplen + 1);
+	if (w32path != *srcp)
+	  free (w32path);
+	ptr += srcplen + 1;
+      } else {
+	srcplen = strlen(*srcp);
+	memcpy (ptr, *srcp, srcplen + 1); 
+	ptr += srcplen + 1;
+      }
     }
   *ptr = '\0';		/* Two null bytes at the end */
 
