@@ -51,29 +51,49 @@
       <a name="index"></a> 
 
       <ul>
-       <li><a href="#faq-what">What is MinGW?</a></li>
-       <li><a href="#faq-msys">What is MSYS?</a></li>
-       <li><a href="#faq-w32api">What is w32api?</a></li>
-       <li><a href="#faq-where">Where can I get MinGW?</a></li>
-       <li><a href="#faq-license">How is MinGW licensed?</a></li>
-       <li><a href="download.shtml#release">What is the current version?</a></li>
-       <li><a href="#faq-usingolderversions">Can I use older versions?</a></li>
-       <li><a href="#faq-configure">How do I execute configure scripts?</a></li>
-       <li><a href="#faq-usingwithmsys">How do I use MinGW with MSYS?</a></li>
-       <li><a href="#faq-usingwithcygwin">How do I use MinGW with Cygwin?</a></li>
-       <li><a href="#faq-comsupport">Is support provided for COM?</a></li>
-       <li><a href="#faq-msvcdll">How can an MSVC program call a MinGW DLL, and vice versa?</a></li>
-       <li><a href="#faq-cross">How can I build a cross compiler?</a></li>
-       <li><a href="#faq-mingw32-gcc.exe">What's the difference between gcc.exe and mingw32-gcc.exe?"</a></li>
-       <li><a href="#faq-mingw32-make.exe">Why is make named mingw32-make.exe?</a></li>
-       <li><a href="#faq-ridconsole">How to remove DOS command windows?</a></li>
-       <li><a href="#faq-bugreports">How can I report bugs?</a></li>
+       <li><a href="#faq-what">What is MinGW?</a>
+           </li>
+       <li><a href="#faq-msys">What is MSYS?</a>
+           </li>
+       <li><a href="#faq-w32api">What is w32api?</a>
+           </li>
+       <li><a href="#faq-where">Where can I get MinGW?</a>
+           </li>
+       <li><a href="#faq-license">How is MinGW licensed?</a>
+           </li>
+       <li><a href="download.shtml#release">What is the current version?</a>
+           </li>
+       <li><a href="#faq-usingolderversions">Can I use older versions?</a>
+           </li>
+       <li><a href="#faq-configure">How do I execute configure scripts?</a>
+           </li>
+       <li><a href="#faq-usingwithmsys">How do I use MinGW with MSYS?</a>
+           </li>
+       <li><a href="#faq-usingwithcygwin">How do I use MinGW with Cygwin?</a>
+           </li>
+       <li><a href="#faq-comsupport">Is support provided for COM?</a>
+           </li>
+       <li><a href="#faq-msvcdll">
+             How can an MSVC program call a MinGW DLL, and vice versa?</a>
+           </li>
+       <li><a href="#faq-cross">How can I build a cross compiler?</a>
+           </li>
+       <li><a href="#faq-mingw32-gcc.exe">
+             What's the difference between gcc.exe and mingw32-gcc.exe?"</a>
+           </li>
+       <li><a href="#faq-mingw32-make.exe">Why is make named mingw32-make.exe?
+           </a>
+           </li>
+       <li><a href="#faq-ridconsole">How to remove DOS command windows?</a>
+           </li>
+       <li><a href="#faq-bugreports">How can I report bugs?</a>
+           </li>
       </ul>
       <hr>
 
 
       <h3><a name="faq-what">
-			    What is MinGW?</a></h3>
+          What is MinGW?</a></h3>
 
       <p>MinGW ("Minimalistic GNU
          for Windows") refers to a set of runtime headers,
@@ -107,7 +127,7 @@
 
 
       <h3><a name="faq-msys">
-			    What is MSYS?</a></h3>
+          What is MSYS?</a></h3>
 
       <p>MSYS or Minimal SYStem is a
          POSIX and Bourne shell environment use with
@@ -135,7 +155,7 @@
 
 
       <h3><a name="faq-w32api">
-			    What is w32api?</a></h3>
+          What is w32api?</a></h3>
 
       <p>The w32api is the package
          of headers and import libraries to support the
@@ -147,7 +167,8 @@
          Anders Norlander and it's license is also
          non-restrictive. For more information see the
          file 
-         <a href= "http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/mingw/w32api/README.w32api?rev=HEAD&amp;content-type=text/vnd.viewcvs-markup">README.w32api</a>
+         <a href= "http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/mingw/w32api/README.w32api?rev=HEAD&amp;content-type=text/vnd.viewcvs-markup">
+           README.w32api</a>
          .</p>
 
       <p><a href="#index">Back to index</a></p>
@@ -155,7 +176,7 @@
 
 
       <h3><a name="faq-where">
-			    Where can I get MinGW?</a></h3>
+          Where can I get MinGW?</a></h3>
 
       <p>Initially, MinGW was an
          assortment of individual packages... the MinGW
@@ -197,7 +218,7 @@
 
 
       <h3><a name="faq-license">
-			    How is MinGW licensed?</a></h3>
+          How is MinGW licensed?</a></h3>
 
       <p>When Colin Peters
          released the MinGW runtime he placed the source
@@ -231,7 +252,8 @@
               import libraries related to WIN32 API access,
               is released under</li>
 
-          <li><a href= "http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/mingw/w32api/README.w32api?rev=HEAD&amp;content-type=text/vnd.viewcvs-markup"> copyright</a>
+          <li><a href= "http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/mingw/w32api/README.w32api?rev=HEAD&amp;content-type=text/vnd.viewcvs-markup">
+                copyright</a>
               . The copyright agreement states
               no restrictions are placed on programs or
               object files compiled with the library.</li>
@@ -257,16 +279,19 @@
 
          <ul>
           <li>GNU General Public License, 
-              <a href="http://www.gnu.org/copyleft/gpl.html">http://www.gnu.org/copyleft/gpl.html</a>
+              <a href="http://www.gnu.org/copyleft/gpl.html">
+                http://www.gnu.org/copyleft/gpl.html</a>
               </li>
 
           <li>GNU Lesser General Public License,
-              <a href="http://www.gnu.org/copyleft/lgpl.html">http://www.gnu.org/copyleft/lgpl.html</a>
+              <a href="http://www.gnu.org/copyleft/lgpl.html">
+                http://www.gnu.org/copyleft/lgpl.html</a>
               </li>
 
           <li>For more information on the copyleft
               concept, 
-              <a href= "http://www.gnu.org/copyleft/">http://www.gnu.org/copyleft/</a>
+              <a href= "http://www.gnu.org/copyleft/">
+                http://www.gnu.org/copyleft/</a>
               </li>
          </ul>
 
@@ -275,7 +300,7 @@
 
 
       <h3><a name="faq-version">
-			    What is the current version?</a></h3>
+          What is the current version?</a></h3>
 
       <p>Please refer to the release section of the
          download page located 
@@ -286,7 +311,7 @@
 
 
       <h3><a name="faq-usingolderversions">
-			    Can I use older versions?</a></h3>
+          Can I use older versions?</a></h3>
 
       <p>It's highly recommended that you use the
          latest version of MinGW. Older versions may have
@@ -304,7 +329,7 @@
 
 
       <h3><a name="faq-configure">
-			    How do I execute configure scripts?</a></h3>
+          How do I execute configure scripts?</a></h3>
 
       <p>Applications using a
          UNIX-style build process will typically require a
@@ -323,7 +348,7 @@
 
 
       <h3><a name="faq-usingwithmsys">
-			    How do I use MinGW with MSYS?</a></h3>
+          How do I use MinGW with MSYS?</a></h3>
 
       <p>It's easy to
          configure an MSYS environment for MinGW useage,
@@ -351,7 +376,7 @@
 
 
       <h3><a name="faq-usingwithcygwin">
-			    How do I use MinGW with Cygwin?</a></h3>
+          How do I use MinGW with Cygwin?</a></h3>
 
       <p>For those who
          would like to use the Cygwin environment for
@@ -383,7 +408,7 @@
       <hr>
 
       <h3><a name="faq-comsupport">
-			    Is support provided for COM?</a></h3> 
+          Is support provided for COM?</a></h3> 
 
       <p>MinGW has some
          support for COM programs. Programmers have had
@@ -398,7 +423,7 @@
 
 
       <h3><a name="faq-msvcdll">
-			    How can an MSVC program call a MinGW DLL, and vice versa?</a></h3>
+          How can an MSVC program call a MinGW DLL, and vice versa?</a></h3>
 
       <p>Assume we have a
          testdll.h, testdll.c, and testmain.c. In the
@@ -453,7 +478,8 @@
          <code>reimp</code> tool from Anders Norlander
          (since his web site is no longer available, you
          may choose to download
-         <a href= "http://mywebpage.netscape.com/yongweiwu/reimp_new.zip">here</a> 
+         <a href= "http://mywebpage.netscape.com/yongweiwu/reimp_new.zip">
+            here</a> 
          a version enhanced by Jose Fonseca):</p>
 
          <blockquote>
@@ -495,7 +521,7 @@
 
 
       <h3><a name="faq-cross">
-			    How can I build a cross compiler?</a></h3>
+          How can I build a cross compiler?</a></h3>
 
       <p>Cross-compiling refers to
          building applications for one platform, with
@@ -508,7 +534,8 @@
          environment in many scenerios.</p>
 
       <p>There is a very old out-of-date 
-         <a href="http://www.nanotech.wisc.edu/%7Ekhan/software/gnu-win32/mingw-cross-howto.txt" target="_nw">mingw-cross-howto.txt</a>
+         <a href="http://www.nanotech.wisc.edu/%7Ekhan/software/gnu-win32/mingw-cross-howto.txt"
+            target="_nw">mingw-cross-howto.txt</a>
          written by Mumit Khan and stored on his site you can
          use. You'll have to update the packages. This
          needs to be rewritten, any volunteers? If so,
@@ -518,7 +545,9 @@
 
       <p>A more upto date HOWTO complete with a script
          to configure it for you can be found at
-         <a href="http://www.libsdl.org/extras/win32/cross/README.txt" target= "_nw">http://www.libsdl.org/extras/win32/cross/README.txt</a>
+         <a href="http://www.libsdl.org/extras/win32/cross/README.txt" 
+            target= "_nw">http://www.libsdl.org/extras/win32/cross/README.txt
+           </a>
          .</p>
 
       <p>You'll want to visit the 
@@ -545,7 +574,7 @@
 
 
       <h3><a name="faq-mingw32-gcc.exe">
-			    What's the difference between gcc.exe and mingw32-gcc.exe?</a></h3>
+          What's the difference between gcc.exe and mingw32-gcc.exe?</a></h3>
 
       <p>The mingw32-gcc,
          mingw32-g++, etc. binaries exist as an aid to
@@ -558,11 +587,11 @@
          executed on the mingw32 target.</p>
 
       <p><a href="#index">Back to index</a></p>
-			<hr>
+      <hr>
 
 
       <h3><a name="faq-mingw32-make.exe">
-			    Why is make named mingw32-make.exe?</a></h3>
+          Why is make named mingw32-make.exe?</a></h3>
 
       <p>The "native"
          (i.e.: MSVCRT dependent) port of make is lacking
@@ -580,25 +609,27 @@
          collision.</p>
 
       <p><a href="#index">Back to index</a></p>
-			<hr>
+      <hr>
 
 
       <h3><a name="faq-ridconsole">
-			    How to remove DOS command windows?</a></h3>
+          How to remove DOS command windows?</a></h3>
 
       <p>In the link step add
          a -mwindows switch to the command line.</p>
 
       <p><a href="#index">Back to index</a></p>
-			<hr>
+      <hr>
 
 
       <h3><a name="faq-bugreports">
-			    How can I report bugs?</a></h3>
+          How can I report bugs?</a></h3>
 
-      <p>Please refer to the <a href="bugs.shtml">Reporting Bugs</a> page</p>
+      <p>Please refer to the 
+         <a href="bugs.shtml">Reporting Bugs</a> page</p>
 
       <p><a href="#index">Back to index</a></p>
+         <hr>
 
 <!--                               End of Main Body                         -->
      </td>
@@ -613,7 +644,7 @@
 
  <address>
   <br>
-  Last revised $Date: 2003-02-07 19:13:30 $
+  Last revised $Date: 2003-02-07 19:33:24 $
  </address>
 </body>
 </html>

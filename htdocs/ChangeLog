@@ -1,5 +1,10 @@
 2003-02-04  Nathan Fisher <natbobc@users.sf.net>
 
+	* mingwfaq.shtml: Converted tabs to '  '.
+	Add missing hr.
+
+2003-02-04  Nathan Fisher <natbobc@users.sf.net>
+
 	* mingwfaq.shtml: Correct the href.
 	Thanks to James Wilson (fat_hot at users sf net)
 	
