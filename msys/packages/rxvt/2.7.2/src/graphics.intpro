@@ -1,0 +1,7 @@
+void             Gr_NewWindow            __PROTO((int nargs, int args[]));
+void             Gr_ClearWindow          __PROTO((grwin_t *grwin));
+void             Gr_Text                 __PROTO((grwin_t *grwin, grcmd_t *data));
+void             Gr_Geometry             __PROTO((grwin_t *grwin, grcmd_t *data));
+void             Gr_DestroyWindow        __PROTO((grwin_t *grwin));
+void             Gr_Dispatch             __PROTO((grwin_t *grwin, grcmd_t *data));
+void             Gr_Redraw               __PROTO((grwin_t *grwin));

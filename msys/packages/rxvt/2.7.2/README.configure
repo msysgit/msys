@@ -1,0 +1,91 @@
+--enable-utmp
+	write user and tty to utmp file (used by programs like ``w'') on
+	creation of rxvt and delete when rxvt exits.
+--enable-wtmp
+	write user and tty to wtmp file (used by programs like ``last'') on
+	creation of rxvt and write logout when rxvt exits.
+--enable-xpm-background
+ 	add support for XPM background pixmaps
+--enable-transparency
+	add support for inheriting parent backgrounds thus giving a fake
+	transparency to the term
+--enable-menubar
+	add support for our menu bar system
+--enable-graphics
+	add support for our graphics mode (see src/graphics)
+--enable-next-scroll
+	make the scrollbar look like a NeXT scrollbar
+--enable-xterm-scroll
+	make the scrollbar look like an Xterm scrollbar
+--enable-half-shadow
+	make shadows on the scrollbar only half the normal width & height.
+	only applicable to non-Xterm scrollbars
+--enable-xim
+	add support for XIM (X Input Method) protocol.  This allows using
+	alternative input methods (e.g. kinput2) and will also correctly
+	set up the input for people using dead keys.
+--enable-kanji
+	add support for Kanji characters (EUC-JP or SJIS)
+--enable-big5
+	add support for Chinese characters (BIG5)
+--enable-gb
+	add support for Chinese characters (GB) (zh_CN, i.e. GB2312)
+--enable-greek
+	add support for greek keyboard
+--enable-ttygid
+	change tty device setting to group "tty" - only use this if
+        your system uses this type of security
+--disable-backspace-key
+	disable any handling of the backspace key by us - let the X server
+	do it
+--disable-delete-key
+	disable any handling of the delete key by us - let the X server
+	do it
+--disable-resources
+	remove all resources checking
+--enable-xgetdefault
+	make resources checking via XGetDefault() instead of our small
+	version which only checks ~/.Xdefaults, or if that doesn't exist
+	then ~/.Xresources
+--enable-strings
+	add support for our possibly faster memset() function and other
+	various routines, overriding your system's versions which may
+	have been hand-crafted in assembly or may require extra libraries
+	to link in
+--disable-swapscreen
+	remove support for swap screen
+--disable-keepscrolling
+	remove support for continual scrolling of the display when you hold
+	the mouse button down on a scrollbar arrow
+--disable-mousewheel
+	remove support for scrolling via mouse wheel or buttons 4 & 5
+--disable-old-selection
+	remove support for reverting the mouse selection style to that
+	of v2.20 (and prior)
+--disable-new-selection
+	remove support for mouse selection style like that of xterm
+--enable-dmalloc
+	use Gray Watson's malloc - which is good for debugging
+	See  http://www.letters.com/dmalloc/  for details
+        If you use either this or the next option, you may need to
+	edit src/Makefile after compiling to point DINCLUDE and DLIB to
+	the right places.
+        You can only use either this option and the following (should
+	you use either) 
+--enable-dlmalloc
+	use Doug Lea's malloc - which is good for a production version
+	See  http://g.oswego.edu/dl/html/malloc.html  for details
+--with-term=NAME
+	change the environmental variable for the terminal to NAME
+	(default "xterm")
+--with-terminfo=PATH
+	change the environmental variable for the path to the terminfo
+	tree to PATH
+--with-x
+	use the X Window System (pretty much default, eh?)
+--with-xpm-includes=DIR
+	look for the XPM includes in DIR
+--with-xpm-library=DIR
+	look for the XPM library in DIR
+--with-xpm
+	not needed - define via --enable-xpm-background

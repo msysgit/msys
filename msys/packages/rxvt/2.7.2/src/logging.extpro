@@ -1,0 +1,2 @@
+void             makeutent               __PROTO((const char *pty, const char *hostname));
+void             cleanutent              __PROTO((void));

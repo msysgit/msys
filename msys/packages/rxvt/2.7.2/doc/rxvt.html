@@ -1,0 +1,729 @@
+
+
+
+<a name="versioninfo.yo"></a>
+    
+
+
+
+
+
+
+
+
+
+<a name="masonyodl.yo"></a>
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<html><head><title>1</title>
+
+<link rev="made" href="mailto:gcw@pobox.com">
+</head>
+<body>
+
+<hr>
+
+<h1>1</h1>
+<h2>X Version 11</h2>
+<h2>21 DECEMBER 1999</h2>
+
+
+    
+<h2>NAME</h2>
+    rxvt (ouR XVT) - a VT102 emulator for the X window system
+<p>
+<h2>SYNOPSIS</h2>
+    
+<p><strong>rxvt</strong> [options] [-e command [ args ]]
+<p>
+<h2>DESCRIPTION</h2>
+    
+<p><strong>rxvt</strong>, version <strong>2.7.2</strong>, is a colour vt102 terminal emulator
+intended as an <em>xterm</em>(1) replacement for users who do not require
+features such as Tektronix 4014 emulation and toolkit-style configurability.
+As a result, <strong>rxvt</strong> uses much less swap space -- a significant
+advantage on a machine serving many X sessions.
+<p>
+<p><a name="rxvt-options.yo"></a>
+    
+
+<h2>OPTIONS</h2>
+    
+<p>The <strong>rxvt</strong> options (mostly a subset of <em>xterm</em>'s) are listed below.
+In keeping with the smaller-is-better philosophy, options may be eliminated
+or default values chosen at compile-time, so options and defaults listed
+may not accurately reflect the version installed on your system.
+<p>Note that <strong>rxvt</strong> permits the resource name to be used as a long-option
+(--/++ option) so the potential command-line options are far greater than
+those listed.
+For example: `rxvt --loginShell --color1 Orange'.
+<p><dl>
+    <p></p><dt><strong><strong>-help</strong>, <strong>--help</strong></strong><dd>
+	Print out a message describing available options.
+    <p></p><dt><strong><strong>-display</strong> <em>displayname</em></strong><dd>
+	Attempt to open a window on the named X display (<strong>-d</strong> still
+	respected).  In the absence of this option, the display specified
+	by the <strong>DISPLAY</strong> environment variable is used.
+    <p></p><dt><strong><strong>-geometry</strong> <em>geom</em></strong><dd>
+	Window geometry (-g still respected);
+        resource <strong>geometry</strong>.
+    <p></p><dt><strong><strong>-rv</strong>|<strong>+rv</strong></strong><dd>
+	Turn on/off simulated reverse video;
+        resource <strong>reverseVideo</strong>.
+    <p></p><dt><strong><strong>-ip</strong>|<strong>+ip</strong></strong><dd>
+	Turn on/off inheriting parent window's pixmap;
+	resource <strong>inheritPixmap</strong>.
+    <p></p><dt><strong><strong>-bg</strong> <em>colour</em></strong><dd>
+	Window background colour;
+        resource <strong>background</strong>.
+    <p></p><dt><strong><strong>-fg</strong> <em>colour</em></strong><dd>
+	Window foreground colour;
+	resource <strong>foreground</strong>.
+    <p></p><dt><strong><strong>-pixmap:</strong> <em>file[;geom]</em></strong><dd>
+	Specify XPM file for the background and also optionally specify its
+	scaling with a geometry string.  Note you may need to add quotes to
+	avoid special shell interpretation of the `;' in the command-line;
+	resource <strong>backgroundPixmap</strong>.
+    <p></p><dt><strong><strong>-cr</strong> <em>colour</em></strong><dd>
+	The cursor colour;
+	resource <strong>cursorColor</strong>.
+    <p></p><dt><strong><strong>-pr</strong> <em>colour</em></strong><dd>
+	The mouse pointer colour;
+	resource <strong>pointerColor</strong>.
+    <p></p><dt><strong><strong>-bd</strong> <em>colour</em></strong><dd>
+	The colour of the border between the xterm scrollbar and the text;
+	resource <strong>borderColor</strong>.
+    <p></p><dt><strong><strong>-fn</strong> <em>fontname</em></strong><dd>
+	Main normal text font;
+	resource <strong>font</strong>.
+    <p></p><dt><strong><strong>-fb</strong> <em>fontname</em></strong><dd>
+	Main bold text font;
+	resource <strong>boldFont</strong>.
+    <p></p><dt><strong><strong>-fm</strong> <em>fontname</em></strong><dd>
+	Main multicharacter font;
+	resource <strong>mfont</strong>.
+    <p></p><dt><strong><strong>-km</strong> <em>mode</em></strong><dd>
+	Multiple-character font-set encoding mode;
+	<strong>eucj</strong>: EUC Japanese encoding.
+	<strong>sjis</strong>: Shift JIS encoding.
+	<strong>big5</strong>: BIG5 encoding.
+	<strong>gb</strong>: GB encoding.
+	<strong>kr</strong>: EUC Korean encoding;
+	resource <strong>multichar_encoding</strong>.
+    <p></p><dt><strong><strong>-grk</strong> <em>mode</em></strong><dd>
+	Greek keyboard translation;
+	<strong>iso</strong>: ISO-8859 mapping.
+	<strong>ibm</strong>: IBM-437 mapping;
+	resource <strong>greek_keyboard</strong>.
+    <p></p><dt><strong><strong>-name</strong> <em>name</em></strong><dd>
+	Specify the application name under which resources
+	are to be obtained, rather than the default executable file name.
+	Name should not contain `.' or `*' characters.
+	Also sets the icon and title name.
+    <p></p><dt><strong><strong>-ls</strong>|<strong>+ls</strong></strong><dd>
+	Start as a login-shell/sub-shell;
+	resource <strong>loginShell</strong>.
+    <p></p><dt><strong><strong>-ut</strong>|<strong>+ut</strong></strong><dd>
+	Inhibit/enable writing a utmp entry;
+	resource <strong>utmpInhibit</strong>.
+    <p></p><dt><strong><strong>-vb</strong>|<strong>+vb</strong></strong><dd>
+	Turn on/off visual bell on receipt of a bell character;
+	resource <strong>visualBell</strong>.
+    <p></p><dt><strong><strong>-sb</strong>|<strong>+sb</strong></strong><dd>
+	Turn on/off scrollbar;
+	resource <strong>scrollBar</strong>.
+    <p></p><dt><strong><strong>-si</strong>|<strong>+si</strong></strong><dd>
+	Turn on/off scroll-to-bottom on TTY output inhibit;
+	resource <strong>scrollTtyOutput</strong> has opposite effect.
+    <p></p><dt><strong><strong>-sk</strong>|<strong>+sk</strong></strong><dd>
+	Turn on/off scroll-to-bottom on keypress;
+	resource <strong>scrollTtyKeypress</strong>.
+    <p></p><dt><strong><strong>-sr</strong>|<strong>+sr</strong></strong><dd> 
+	Put scrollbar on right/left;
+	resource <strong>scrollBar_right</strong>.
+    <p></p><dt><strong><strong>-st</strong>|<strong>+st</strong></strong><dd> 
+	Display normal (non XTerm/NeXT) scrollbar without/with a trough;
+	resource <strong>scrollBar_floating</strong>.
+    <p></p><dt><strong><strong>-iconic</strong></strong><dd> 
+	Start iconified, if the window manager supports that option.
+    <p></p><dt><strong><strong>-sl</strong> <em>number</em></strong><dd>
+	Save <em>number</em> lines in the scrollback buffer;
+	resource <strong>saveLines</strong>.
+    <p></p><dt><strong><strong>-b</strong> <em>number</em></strong><dd>
+	Internal border of <em>number</em> pixels;
+	resource <strong>internalBorder</strong>.
+    <p></p><dt><strong><strong>-w</strong> <em>number</em></strong><dd>
+	External border of <em>number</em> pixels.  Also, <strong>-bw</strong> and
+	<strong>-borderwidth</strong>;
+	resource <strong>externalBorder</strong>.
+    <p></p><dt><strong><strong>-tn</strong> <em>termname</em></strong><dd> 
+	This option specifies the name of the terminal type to be set in the
+	<strong>TERM</strong> environment variable. This terminal type must exist in the
+	<em>termcap(5)</em> database and should have <em>li#</em> and <em>co#</em> entries;
+	resource <strong>termName</strong>.
+    <p></p><dt><strong><strong>-e</strong> <em>command [arguments]</em></strong><dd>
+	Run the command with its command-line arguments in the <strong>rxvt</strong>
+	window; also sets the window title and icon name to be the basename
+	of the program being executed if neither <em>-title</em> (<em>-T</em>) nor
+	<em>-n</em> are given on the command line.  If this option is used, it
+	must be the last on the command-line.  If there is no <strong>-e</strong> option
+	then the default is to run the program specified by the <strong>SHELL</strong>
+	environment variable or, failing that, <em>sh(1)</em>.
+    <p></p><dt><strong><strong>-title</strong> <em>text</em></strong><dd>
+	Window title (<strong>-T</strong> still respected); the default title is the
+	basename of the program specified after the <strong>-e</strong> option, if
+	any, otherwise the application name;
+	resource <strong>title</strong>.
+    <p></p><dt><strong><strong>-n</strong> <em>text</em></strong><dd>
+	Icon name; the default name is the basename of the program specified
+	after the <strong>-e</strong> option, if any, otherwise the application name;
+	resource <strong>iconName</strong>.
+    <p></p><dt><strong><strong>-C</strong></strong><dd> Capture system console messages.
+</dl>
+
+<a name="rxvt-resources.yo"></a>
+    
+
+<h2>RESOURCES (available also as long-options)</h2>
+    
+<p>If compiled with internal Xresources support (i.e. <strong>rxvt -h</strong> lists 
+<strong>.Xdefaults</strong>) then <strong>rxvt</strong> accepts application defaults set in
+XAPPLOADDIR/Rxvt (compile-time defined: usually
+<strong>/usr/lib/X11/app-defaults/Rxvt</strong>) and resources set in <strong>~/.Xdefaults</strong>,
+or <strong>~/.Xresources</strong> if <strong>~/.Xdefaults</strong> does not exist.  Note that when
+reading X resources, <strong>rxvt</strong> recognizes two class names: <strong>XTerm</strong> and
+<strong>Rxvt</strong>.  The class name <strong>XTerm</strong> allows resources common to both
+<strong>rxvt</strong> and <em>xterm</em> to be easily configured, while the class name
+<strong>Rxvt</strong> allows resources unique to <strong>rxvt</strong>, notably colours and
+key-handling, to be shared between different <strong>rxvt</strong> configurations. 
+If no resources are specified, suitable defaults will be used. 
+Command-line arguments can be used to override resource settings.  The
+following resources are allowed:
+<p><dl>
+    <p></p><dt><strong><strong>geometry:</strong> <em>geom</em></strong><dd>
+	Create the window with the specified X window geometry [default
+	80x24];
+	option <strong>-geometry</strong>.
+    <p></p><dt><strong><strong>background:</strong> <em>colour</em></strong><dd>
+	Use the specified colour as the window's background colour [default
+	White];
+	option <strong>-bg</strong>.
+    <p></p><dt><strong><strong>foreground:</strong> <em>colour</em></strong><dd>
+	Use the specified colour as the window's foreground colour [default
+	Black];
+	option <strong>-fg</strong>.
+    <p></p><dt><strong><strong>color</strong><em>n</em><strong>:</strong> <em>colour</em></strong><dd>
+	Use the specified colour for the colour value <em>n</em>, where 0-7
+	corresponds to low-intensity (normal) colours and 8-15 corresponds to
+	high-intensity (bold = bright foreground, blink = bright
+	background) colours.  The canonical names are as follows:
+	0=black, 1=red, 2=green, 3=yellow, 4=blue, 5=magenta, 6=cyan, 7=white,
+	but the actual colour names used are listed in the
+	<strong>COLORS AND GRAPHICS</strong> section.
+    <p></p><dt><strong><strong>colorBD:</strong> <em>colour</em></strong><dd>
+	Use the specified colour to display bold characters when the
+	foreground colour is the default.
+    <p></p><dt><strong><strong>colorUL:</strong> <em>colour</em></strong><dd>
+	Use the specified colour to display underlined characters when the
+	foreground colour is the default.
+    <p></p><dt><strong><strong>cursorColor:</strong> <em>colour</em></strong><dd>
+	Use the specified colour for the cursor.  The default is to use the
+	foreground colour;
+	option <strong>-cr</strong>.
+    <p></p><dt><strong><strong>cursorColor2:</strong> <em>colour</em></strong><dd>
+	Use the specified colour for the colour of the cursor text.  For this
+	to take effect, <strong>cursorColor</strong> must also be specified.  The default
+	is to use the background colour.
+    <p></p><dt><strong><strong>reverseVideo:</strong> <em>boolean</em></strong><dd>
+	<strong>True</strong>: simulate reverse video by foreground and background colours;
+	option <strong>-rv</strong>,
+	<strong>False</strong>: regular screen colours [default];
+	option <strong>+rv</strong>.
+	See note in <strong>COLORS AND GRAPHICS</strong> section.
+    <p></p><dt><strong><strong>inheritPixmap:</strong> <em>boolean</em></strong><dd>
+	<strong>True</strong>: make the background inherit the parent window's pixmap,
+	giving artificial transparency.
+	<strong>False</strong>: do not inherit the parent window's pixmap.
+    <p></p><dt><strong><strong>scrollColor:</strong> <em>colour</em></strong><dd>
+	Use the specified colour for the scrollbar [default #B2B2B2].
+    <p></p><dt><strong><strong>troughColor:</strong> <em>colour</em></strong><dd>
+	Use the specified colour for the scrollbar's trough area [default
+	#969696].  Only relevant for normal (non XTerm/NeXT) scrollbar.
+    <p></p><dt><strong><strong>backgroundPixmap:</strong> <em>file[;geom]</em></strong><dd>
+	Use the specified XPM file (note the `.xpm' extension is optional)
+	for the background and also optionally specify its scaling with a
+	geometry string <strong>WxH+X+Y</strong>, in which <strong>"W" / "H"</strong> specify the
+	horizontal/vertical scale (percent) and <strong>"X" / "Y"</strong> locate the
+	image centre (percent).  A scale of 0 displays the image with tiling.
+	A scale of 1 displays the image without any scaling.  A scale of 2 to
+	9 specifies an integer number of images in that direction.  No image
+	will be magnified beyond 10 times its original size.  The maximum
+	permitted scale is 1000.  [default 0x0+50+50]
+    <p></p><dt><strong><strong>menu:</strong> <em>file[;tag]</em></strong><dd>
+	Read in the specified menu file (note the `.menu' extension is
+	optional) and also optionally specify a starting tag to find.  See
+	the reference documentation for details on the syntax for the menuBar.
+    <p></p><dt><strong><strong>path:</strong> <em>path</em></strong><dd>
+	Specify the colon-delimited search path for finding files (XPM and
+	menus), in addition to the paths specified by the <strong>RXVTPATH</strong> and
+	<strong>PATH</strong> environment variables.
+    <p></p><dt><strong><strong>font:</strong> <em>fontname</em></strong><dd>
+	Select the main text font used [default 7x14];
+	option <strong>-fn</strong>.
+    <p></p><dt><strong><strong>font</strong><em>n</em><strong>:</strong> <em>fontname</em></strong><dd>
+	Specify the alternative font <em>n</em>.  The default font values: <br><ul><table>
+<tr> 
+<td> <strong>font</strong>: </td> 
+<td> 7x14 <br></td> 
+ 
+</tr>
+<tr> 
+<td> <strong>font1</strong>: </td> 
+<td> 6x10 <br></td> 
+ 
+</tr>
+<tr> 
+<td> <strong>font2</strong>: </td> 
+<td> 6x13 <br></td> 
+ 
+</tr>
+<tr> 
+<td> <strong>font3</strong>: </td> 
+<td> 8x13 <br></td> 
+ 
+</tr>
+<tr> 
+<td> <strong>font4</strong>: </td> 
+<td> 9x15 <br></td> 
+ 
+</tr>
+</table>  </ul>
+<p><p></p><dt><strong><strong>boldFont:</strong> <em>fontname</em></strong><dd>
+	Specify the name of the bold font to use if <strong>colorBD</strong> has not been
+	specified and it is not possible to map the default foreground colour
+	to colour 8-15 [default NONE].  This font must be the same height and
+	width as the normal font;
+	option <strong>-fb</strong>.
+    <p></p><dt><strong><strong>mfont:</strong> <em>fontname</em></strong><dd>
+	Select the main multiple-character text font used [default k14];
+	option <strong>-fk</strong>.
+    <p></p><dt><strong><strong>mfont</strong><em>n</em><strong>:</strong> <em>fontname</em></strong><dd>
+	Specify the alternative multiple-character font <em>n</em>.  If compiled
+	for multiple-character fonts, the Roman and multiple-character font
+	sizes should match.
+    <p></p><dt><strong><strong>multichar_encoding:</strong> <em>mode</em></strong><dd>
+	Set the encoding mode to be used when multicharacter encoding is
+	received;
+	<strong>eucj</strong>: EUC Japanese encoding [default for Kanji].
+	<strong>sjis</strong>: Shift JIS encoding.
+	<strong>big5</strong>: BIG5 encoding.
+	<strong>gb</strong>: GB encoding.
+	<strong>kr</strong>: EUC Korean encoding;
+	option <strong>-km</strong>.
+    <p></p><dt><strong><strong>greek_keyboard:</strong> <em>mode</em></strong><dd>
+	Set the Greek keyboard translation mode to be used;
+	<strong>iso</strong>: ISO-8859 mapping (elot-928) [default].
+	<strong>ibm</strong>: IBM-437 mapping (DOS codepage 737);
+	option <strong>-grk</strong>.
+	Use <strong>Mode_switch</strong> to toggle keyboard input.  For more details,
+	see the distributed file <strong>README.greek</strong>.
+    <p></p><dt><strong><strong>selectstyle:</strong> <em>text</em></strong><dd>
+	Set mouse selection style to <strong>old</strong> which is 2.20, <strong>oldword</strong> which
+	is xterm style with 2.20 old word selection, or anything else which
+	gives xterm style selection.
+    <p></p><dt><strong><strong>title:</strong> <em>text</em></strong><dd>
+	Set window title string, the default title is the command-line
+	specified after the <strong>-e</strong> option, if any, otherwise the application
+	name;
+	option <strong>-title</strong>.
+    <p></p><dt><strong><strong>iconName:</strong> <em>text</em></strong><dd>
+	Set the name used to label the window's icon or displayed in an icon
+	manager window, it also sets the window's title unless it is
+	explicitly set;
+	option <strong>-n</strong>.
+    <p></p><dt><strong><strong>mapAlert:</strong> <em>boolean</em></strong><dd>
+	<strong>True</strong>: de-iconify (map) on receipt of a bell character.
+	<strong>False</strong>: no de-iconify (map) on receipt of a bell character
+	[default].
+    <p></p><dt><strong><strong>visualBell:</strong> <em>boolean</em></strong><dd>
+	<strong>True</strong>: use visual bell on receipt of a bell character;
+	option <strong>-vb</strong>.
+	<strong>False</strong>: no visual bell [default];
+	option <strong>+vb</strong>.
+    <p></p><dt><strong><strong>loginShell:</strong> <em>boolean</em></strong><dd>
+	<strong>True</strong>: start as a login shell by prepending a `-' to <strong>argv[0]</strong>
+	of the shell;
+	option <strong>-ls</strong>.
+	<strong>False</strong>: start as a normal sub-shell [default];
+	option <strong>+ls</strong>.
+    <p></p><dt><strong><strong>utmpInhibit:</strong> <em>boolean</em></strong><dd>
+	<strong>True</strong>: inhibit writing record into the system log file <strong>utmp</strong>;
+	option <strong>-ut</strong>.
+	<strong>False</strong>: write record into the system log file <strong>utmp</strong> [default];
+	option <strong>+ut</strong>.
+    <p></p><dt><strong><strong>print-pipe:</strong> <em>string</em></strong><dd>
+	Specify a command pipe for vt100 printer [default <em>lpr(1)</em>].  Use
+	<strong>Print</strong> to initiate a screen dump to the printer and <strong>Ctrl-Print</strong>
+	or <strong>Shift-Print</strong> to include the scrollback as well.
+    <p></p><dt><strong><strong>scrollBar:</strong> <em>boolean</em></strong><dd>
+	<strong>True</strong>: enable the scrollbar [default];
+	option <strong>-sb</strong>.
+	<strong>False</strong>: disable the scrollbar;
+	option <strong>+sb</strong>.
+	Note that the scrollbar type (with/without arrows) is compile-time
+	selected.
+    <p></p><dt><strong><strong>smallfont_key:</strong> <em>keysym</em></strong><dd>
+	If enabled, use <strong>Alt-</strong><em>keysym</em> to toggle to a smaller font
+	[default <strong>Alt-&lt;</strong>]
+    <p></p><dt><strong><strong>bigfont_key:</strong> <em>keysym</em></strong><dd>
+	If enabled, use <strong>Alt-</strong><em>keysym</em> to toggle to a bigger font
+	[default <strong>Alt-&gt;</strong>]
+    <p></p><dt><strong><strong>saveLines:</strong> <em>number</em></strong><dd>
+	Save <em>number</em> lines in the scrollback buffer [default 64];
+	option <strong>-sl</strong>.
+    <p></p><dt><strong><strong>internalBorder:</strong> <em>number</em></strong><dd>
+	Internal border of <em>number</em> pixels;
+	option <strong>-b</strong>.
+    <p></p><dt><strong><strong>externalBorder:</strong> <em>number</em></strong><dd>
+	External border of <em>number</em> pixels;
+	option <strong>-w</strong>, <strong>-bw</strong>, <strong>-borderwidth</strong>.
+    <p></p><dt><strong><strong>termName:</strong> <em>termname</em></strong><dd>
+	Specifies the terminal type name to be set in the <strong>TERM</strong>
+	environment variable;
+	option <strong>-tn</strong>.
+    <p></p><dt><strong><strong>meta8:</strong> <em>boolean</em></strong><dd>
+	<strong>True</strong>: handle Meta (Alt) + keypress to set the 8th bit.
+	<strong>False</strong>: handle Meta (Alt) + keypress as an escape prefix [default].
+    <p></p><dt><strong><strong>backspacekey:</strong> <em>string</em></strong><dd>
+	The string to send when the backspace key is pressed.  If set to
+	<strong>DEC</strong> or unset it will send <strong>Delete</strong> (code 127) or, if shifted,
+	<strong>Backspace</strong> (code 8) - which can be reversed with the appropriate
+	DEC private mode escape sequence.
+    <p></p><dt><strong><strong>deletekey:</strong> <em>string</em></strong><dd>
+	The string to send when the delete key (not the keypad delete key) is
+	pressed.  If unset it will send the sequence traditionally associated
+	with the <strong>Execute</strong> key.
+    <p></p><dt><strong><strong>cutchars:</strong> <em>string</em></strong><dd>
+	The characters used as delimiters for double-click word selection. 
+	The built-in default: <br><strong>BACKSLASH `"'&amp;()*,;&lt;=&gt;?@[]{|}</strong>
+    <p></p><dt><strong><strong>keysym.</strong><em>sym</em>: <em>string</em></strong><dd>
+	Associate <em>string</em> with keysym <em>sym</em> (<strong>0xFF00 - 0xFFFF</strong>).  It
+	may contain escape values (\a: bell, \b: backspace, \e, \E: escape,
+	\n: newline, \r: return, \t: tab, \000: octal number) or control
+	characters (^?: delete, ^@: null, ^A ...) and may enclosed with
+	double quotes so that it can start or end with whitespace.  The
+	intervening resource name <strong>keysym.</strong> cannot be omitted.  This
+	resource is only available when compiled with KEYSYM_RESOURCE.
+</dl>
+
+<a name="rxvt-scrollbar.yo"></a>
+    
+
+<h2>THE SCROLLBAR</h2>
+    
+<p>Lines of text that scroll off the top of the <strong>rxvt</strong> window (resource:
+<strong>saveLines</strong>) and can be scrolled back using the scrollbar or by keystrokes. 
+The normal <strong>rxvt</strong> scrollbar has arrows and its behaviour is fairly
+intuitive.  The <strong>xterm-scrollbar</strong> is without arrows and its behaviour
+mimics that of <em>xterm</em>
+<p>Scroll down with <strong>Button1</strong> (<strong>xterm-scrollbar</strong>) or <strong>Shift-Next</strong>.
+Scroll up with <strong>Button3</strong> (<strong>xterm-scrollbar</strong>) or <strong>Shift-Prior</strong>.
+Continuous scroll with <strong>Button2</strong>.
+
+<a name="rxvt-mousereporting.yo"></a>
+    
+
+<h2>MOUSE REPORTING</h2>
+    
+<p>To temporarily override mouse reporting, for either the scrollbar or the
+normal text selection/insertion, hold either the Shift or the Meta (Alt) key
+while performing the desired mouse action.
+<p>If mouse reporting mode is active, the normal scrollbar actions are disabled
+-- on the assumption that we are using a fullscreen application.
+Instead, pressing Button1 and Button3 sends
+<strong>ESC[6~</strong> (Next) and <strong>ESC[5~</strong> (Prior), respectively.
+Similarly, clicking on the up and down arrows sends <strong>ESC[A</strong> (Up) and
+<strong>ESC[B</strong> (Down), respectively.
+
+<a name="rxvt-textselection.yo"></a>
+    
+
+<h2>TEXT SELECTION AND INSERTION</h2>
+    
+<p>The behaviour of text selection and insertion mechanism is similar to
+<em>xterm</em>(1).
+<p><dl>
+    <p></p><dt><strong><strong>Selection</strong>:</strong><dd>
+	Left click at the beginning of the region, drag to the end of the
+	region and release; Right click to extend the marked region;
+	Left double-click to select a word; Left triple-click to select
+	the entire line.
+<p><p></p><dt><strong><strong>Insertion</strong>:</strong><dd>
+	Pressing and releasing the Middle mouse button (or <strong>Shift-Insert</strong>)
+	in an <strong>rxvt</strong> window causes the current text selection to be inserted
+	as if it had been typed on the keyboard.
+</dl>
+
+<a name="rxvt-fonts.yo"></a>
+    
+
+<h2>CHANGING FONTS</h2>
+    
+<p>You can change fonts on-the-fly, which is to say cycle through the default
+font and others of various sizes, by using <strong>Shift-KP_Add</strong> and
+<strong>Shift-KP_Subtract</strong>.  Or, alternatively (if enabled) with
+<strong>Alt-&gt;</strong> and <strong>Alt-&lt;</strong>, where the actual key
+can be selected using resources <strong>smallfont_key</strong>/<strong>bigfont_key</strong>.
+
+<a name="rxvt-login.yo"></a>
+    
+
+<h2>LOGIN STAMP</h2>
+    
+<p><strong>rxvt</strong> tries to write an entry into the <em>utmp</em>(5) file so that it can be
+seen via the <em>who(1)</em> command, and can accept messages.  To allow this
+feature, <strong>rxvt</strong> must be installed setuid root on some systems.
+
+<a name="rxvt-colours.yo"></a>
+    
+
+<h2>COLORS AND GRAPHICS</h2>
+    
+<p>If graphics support was enabled at compile-time, <strong>rxvt</strong> can be queried
+with ANSI escape sequences and can address individual pixels instead of
+text characters.  Note the graphics support is still considered beta code.
+<p>In addition to the default foreground and background colours, <strong>rxvt</strong>
+can display up to 16 colours (8 ANSI colours plus high-intensity bold/blink
+versions of the same).
+Here is a list of the colours with their <strong>rgb.txt</strong> names.
+<p><table>
+<tr> 
+<td> <strong>color0</strong> </td> 
+<td> (black) </td> 
+<td> = Black <br></td> 
+ 
+</tr>
+<tr> 
+<td> <strong>color1</strong> </td> 
+<td> (red) </td> 
+<td> = Red3 <br></td> 
+ 
+</tr>
+<tr> 
+<td> <strong>color2</strong> </td> 
+<td> (green) </td> 
+<td> = Green3 <br></td> 
+ 
+</tr>
+<tr> 
+<td> <strong>color3</strong> </td> 
+<td> (yellow) </td> 
+<td> = Yellow3 <br></td> 
+ 
+</tr>
+<tr> 
+<td> <strong>color4</strong> </td> 
+<td> (blue) </td> 
+<td> = Blue3 <br></td> 
+ 
+</tr>
+<tr> 
+<td> <strong>color5</strong> </td> 
+<td> (magenta) </td> 
+<td> = Magenta3 <br></td> 
+ 
+</tr>
+<tr> 
+<td> <strong>color6</strong> </td> 
+<td> (cyan) </td> 
+<td> = Cyan3 <br></td> 
+ 
+</tr>
+<tr> 
+<td> <strong>color7</strong> </td> 
+<td> (white) </td> 
+<td> = AntiqueWhite <br></td> 
+ 
+</tr>
+<tr> 
+<td> <strong>color8</strong> </td> 
+<td> (bright black) </td> 
+<td> = Grey25 <br></td> 
+ 
+</tr>
+<tr> 
+<td> <strong>color9</strong> </td> 
+<td> (bright red) </td> 
+<td> = Red <br></td> 
+ 
+</tr>
+<tr> 
+<td> <strong>color10</strong> </td> 
+<td> (bright green) </td> 
+<td> = Green <br></td> 
+ 
+</tr>
+<tr> 
+<td> <strong>color11</strong> </td> 
+<td> (bright yellow) </td> 
+<td> = Yellow <br></td> 
+ 
+</tr>
+<tr> 
+<td> <strong>color12</strong> </td> 
+<td> (bright blue) </td> 
+<td> = Blue <br></td> 
+ 
+</tr>
+<tr> 
+<td> <strong>color13</strong> </td> 
+<td> (bright magenta) </td> 
+<td> = Magenta <br></td> 
+ 
+</tr>
+<tr> 
+<td> <strong>color14</strong> </td> 
+<td> (bright cyan) </td> 
+<td> = Cyan <br></td> 
+ 
+</tr>
+<tr> 
+<td> <strong>color15</strong> </td> 
+<td> (bright white) </td> 
+<td> = White <br></td> 
+ 
+</tr>
+<tr> 
+<td> <strong>foreground</strong> </td> 
+<td>  </td> 
+<td> = Black <br></td> 
+ 
+</tr>
+<tr> 
+<td> <strong>background</strong> </td> 
+<td>  </td> 
+<td> = White <br></td> 
+ 
+</tr>
+</table>  
+<p>It is also possible to specify the colour values of <strong>foreground</strong>,
+<strong>background</strong>, <strong>cursorColor</strong>, <strong>cursorColor2</strong>, <strong>colorBD</strong>, <strong>colorUL</strong>
+as a number 0-15, as a convenient shorthand to reference the colour name of
+color0-color15.
+<p>Note that <strong>-rv</strong> (<strong>"reverseVideo: True"</strong>) simulates reverse video by
+always swapping the foreground/background colours.  This is in contrast to
+<em>xterm</em>(1) where the colours are only swapped if they have not otherwise been
+specified.
+For example,
+<p><dl>
+   <p></p><dt><strong><strong>rxvt -fg Black -bg White -rv</strong></strong><dd>
+	would yield White on Black, while on <em>xterm</em>(1) it would yield
+	Black on White.
+</dl>
+
+<a name="rxvt-environment.yo"></a>
+    
+
+<h2>ENVIRONMENT</h2>
+    
+<p><strong>rxvt</strong> sets the environment variables <strong>TERM</strong>, <strong>COLORTERM</strong> and
+<strong>COLORFGBG</strong>.  The environment variable <strong>WINDOWID</strong> is set to the X window
+id number of the <strong>rxvt</strong> window and it also uses and sets the environment
+variable <strong>DISPLAY</strong> to specify which display terminal to use.  <strong>rxvt</strong> uses
+the environment variables <strong>RXVTPATH</strong> and <strong>PATH</strong> to find XPM files.
+
+<a name="rxvt-files.yo"></a>
+    
+
+<h2>FILES</h2>
+    
+<p><dl>
+    <p></p><dt><strong><strong>/etc/utmp</strong></strong><dd> System file for login records.
+    <p></p><dt><strong><strong>/usr/lib/X11/rgb.txt</strong></strong><dd> Color names.
+</dl>
+
+<p>
+<h2>SEE ALSO</h2>
+    
+<p><em>xterm</em>(1), <em>sh</em>(1), <em>resize</em>(1), <em>X</em>(1), <em>pty</em>(4), <em>tty</em>(4),
+<em>utmp</em>(5)
+<p>See rxvtRef.html rxvtRef.txt for detailed information on recognized escape
+sequences and menuBar syntax, etc.
+<p>
+<h2>BUGS</h2>
+    
+<p>Check the BUGS file for an up-to-date list.
+<p>Cursor change support is not yet implemented.
+<p>Click-and-drag doesn't work with X11 mouse report overriding.
+<p>Graphics support is fairly crude.
+<p>
+<h2>FTP LOCATION</h2>
+    
+<p>rxvt-2.7.2.tar.gz can be found at the following ftp sites
+<a href="RXVTFTPSITE()">ftp://ftp.rxvt.org/pub/rxvt</a>
+<p>
+<h2>CURRENT PROJECT COORDINATOR</h2>
+    
+<p><dl>
+    <p></p><dt><strong>Project Coordinator</strong><dd>
+	Geoff Wing <a href="mailto:RXVTMAINTEMAIL()"><em>&lt;gcw@rxvt.org&gt;</em></a><br><p></p><dt><strong>Web page maintainter</strong><dd>
+	Oezguer Kesim <a href="mailto:RXVTWEBMAINTEMAIL()"><em>&lt;oec@rxvt.org&gt;</em></a><br><a href="RXVTWEBPAGE()">&lt;http://www.rxvt.org/&gt;</a><br><p></p><dt><strong>Mailing list</strong><dd>
+	The Rxvt Workers <a href="mailto:<rxvt-workers@babayaga.math.fu-berlin.de>"><em>&lt;rxvt-workers@babayaga.math.fu-berlin.de&gt;</em></a>
+	mailing list has also been established for rxvt development, to
+	subscribe, email to 
+	<a href="mailto:<rxvt-workers-subscribe@babayaga.math.fu-berlin.de>"><em>&lt;rxvt-workers-subscribe@babayaga.math.fu-berlin.de&gt;</em></a>.
+	There is also a mailing list for announcements of new releases of
+	rxvt. To subscribe, email to
+	<a href="mailto:<rxvt-announce-subscribe@babayaga.math.fu-berlin.de>"><em>&lt;rxvt-announce-subscribe@babayaga.math.fu-berlin.de&gt;</em></a>.
+</dl>
+<p>
+<h2>AUTHORS</h2>
+    
+<p><dl>
+    <p></p><dt><strong>John Bovey</strong><dd>
+	University of Kent, 1992, wrote the original Xvt.
+    <p></p><dt><strong>Rob Nation <a href="mailto:<nation@rocket.sanders.lockheed.com>"><em>&lt;nation@rocket.sanders.lockheed.com&gt;</em></a></strong><dd>
+	very heavily modified Xvt and came up with Rxvt
+    <p></p><dt><strong>Angelo Haritsis <a href="mailto:<ah@doc.ic.ac.uk>"><em>&lt;ah@doc.ic.ac.uk&gt;</em></a></strong><dd>
+	wrote the Greek Keyboard Input
+    <p></p><dt><strong>mj olesen <a href="mailto:<olesen@me.QueensU.CA>"><em>&lt;olesen@me.QueensU.CA&gt;</em></a></strong><dd>
+	Wrote the menu system. <br>Project Coordinator (changes.txt 2.11 to 2.21)
+    <p></p><dt><strong>Oezguer Kesim <a href="mailto:<kesim@math.fu-berlin.de>"><em>&lt;kesim@math.fu-berlin.de&gt;</em></a></strong><dd>
+	Project Coordinator (changes.txt 2.21a to 2.4.5)
+    <p></p><dt><strong>Geoff Wing <a href="mailto:<gcw@pobox.com>"><em>&lt;gcw@pobox.com&gt;</em></a></strong><dd>
+	Rewrote screen display and text selection routines. <br>Project Coordinator (changes.txt 2.4.6 - )
+</dl>
+</body>
+</html>

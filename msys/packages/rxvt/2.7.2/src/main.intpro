@@ -1,0 +1,16 @@
+XErrorHandler    xerror_handler          __PROTO((const Display *display, const XErrorEvent *event));
+void             color_aliases           __PROTO((int idx));
+void             set_colorfgbg           __PROTO((void));
+void             Get_Colours             __PROTO((void));
+void             Create_Windows          __PROTO((int argc, const char * const *argv));
+void             resize_subwindows       __PROTO((int width, int height));
+void             szhints_set             __PROTO((void));
+void             szhints_recalc          __PROTO((void));
+void             set_title               __PROTO((const char *str));
+void             set_iconName            __PROTO((const char *str));
+void             set_window_color        __PROTO((int idx, const char *color));
+int              get_fontwidest          __PROTO((XFontStruct *f));
+void             init_vars               __PROTO((void));
+const char    ** init_resources          __PROTO((int argc, const char * const *argv));
+void             init_env                __PROTO((void));
+int              main                    __PROTO((int argc, const char * const *argv));

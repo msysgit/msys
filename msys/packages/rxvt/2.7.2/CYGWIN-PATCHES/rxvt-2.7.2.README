@@ -1,0 +1,166 @@
+
+Win32 enabled rxvt README
+
+rxvt is a color vt102 terminal emulator intended as a replacement
+for xterm(1) and cmd.com.
+
+
+Quick start, from a bash shell try running:
+
+rxvt -e /usr/bin/bash --login -i
+
+If this doesn't work, you may not have cygwin 1.1 or better 
+installed on your PC.  Visit: 
+   http://www.cygwin.com/
+
+If rxvt complains that it can't open the display, check that
+you are using the Win32 enabled rxvt, and that DISPLAY is either
+not set, or set to:
+  :0
+
+Setting DISPLAY to anything else causes the Win32 enabled rxvt 
+to revert to its traditional X behavior.
+
+You may set DISPLAY from the command line like so:
+
+  rxvt -display :0
+
+
+Shortcut:
+
+If you create a shortcut to the rxvt app, you should be able to 
+use it to launch a terminal.  A black console window may appear
+and quickly disappear when you run rxvt this way, this is ok.
+
+ rxvt -tn xterm -e /usr/bin/bash --login -i
+
+
+
+Fonts:
+
+You can experiment with different fonts with the -fn switch. 
+However, the font parsing code is pretty primitive.  These
+should work if you have the fonts installed:
+  rxvt -fn "Courier-bold-13" -e ...
+  rxvt -fn "-*-Courier-medium-r-*-13-*" -e ...
+  rxvt -fn "Lucida Console-10" -e ...
+
+You can also put the font definitions in your .Xdefaults to avoid
+cluttering up the command line.  An example:
+
+cat >> $HOME/.Xdefaults
+*font: -*-lucidatypewriter-medium-r-*-*-16-*-*-*-*-*-*-*
+^D
+
+If you like the DOS look, Dan Kaminsky suggests:
+  rxvt -fn fixedsys -bg black -fg grey 
+Or
+  rxvt -fn fixedsys -rv 
+
+
+
+Coloring:
+
+To make your bash prompt colorful try putting this in your .profile:
+  export PS1="\e[34m\]\w\[\e[0m\]> "
+
+File listing can be in color with the following alias:
+  alias ls=ls\ -F\ --color
+
+vi will color your source code if you set your TERM to linux
+or patch the xterm /etc/termcap entry.  As Dan recommends,
+add: 
+   xn@:op=\E[39;49m:Km=\E[M:tc=linux:
+after the line:
+   xterm-r6|xterm|xterm X11R6 version:\
+
+
+
+General Unix Shell:
+
+If you're new to bash or color xterm, try putting this in your
+.profile:
+
+ stty intr ^c susp ^z start ^q stop ^s quit ^\\ erase ^?
+
+Also, rxvt/bash uses some environmental variables which are 
+commonplace in Unix, but rare in Windows.   These are:
+  USER  set to your username
+  SHELL set to /bin/bash 
+  HOME  set to /home/username
+If you set these variables either in the autoexec.bat or 
+by right clicking "My Computer", you'll find that things
+work better.
+
+
+
+How to Insert/Paste:
+
+If you have a two button mouse and wish to paste, you may
+use Sh-Insert, or use a windows mouse program to simulate
+the middle mouse button when both buttons are pressed. 
+
+
+
+Display, or "how can I get rxvt to connect to my X-server at :0"
+
+Here's some options:
+1) run your X-server as :1 (it is, after all, the second display)
+2) set DISPLAY to localhost:0
+3) set W11_LIBRARY to libX11
+
+
+Recent fixes:
+
+- added icon
+- reverted to building as a console app.  Windows treats console
+  apps differently somehow as far as childern inheriting the console.
+- put a special case in the event code to better handle selections
+- added switching between Win32 and X libraries
+- trying -mwindows to see if console is no longer necessary
+- Mousewheel support
+- Ctrl-Space now works (thanks to Patrick Doyle for the bug report)
+- Ctrl-S doesn't hang the program (thanks to cygwin improvements)
+- Builds with cygwin-1.1.8 (thanks to Axel Kowald for the alert)
+- Fixes for supporting Japanese Fonts (thanks to Genzoo.A)
+
+
+
+Building:
+
+ 1) apply patch
+ 2) configure
+
+      ./configure --x-includes="../W11 -IW11" \
+       --x-libraries="../W11/lib -mwindows ../W11/wrap/rxvt_res.o -Wl,--subsystem,console" \
+       --with-xpm-includes=../W11 \
+       --with-xpm-library=../W11/lib \
+       --enable-menubar \
+       --enable-xpm-background 
+
+ 3) run make, you should get a couple warnings and no errors.
+
+
+Credits, bugs, updates:
+
+rxvt is used out-of-the-box from http://www.rxvt.org/
+and linked with a fake X-library that uses the Windows API.  
+
+The fake X-library is a heavily modified version of:
+ ftp://ftp.microsoft.com/developr/drg/UNIX-to-Windows/Ports/Xlib/ntxlib.zip
+
+xpm-3.4k is used out of the box and statically linked to rxvt.
+
+bugs in windows support:
+- large pastes can cause the window to hang.
+- pixmaps are experimental, must be multiple of 8 pixels wide.
+- locales are not supported.
+- native-console accesses (ReadConsole(), WriteConsole()) are not supported.
+    This is particularly true when non-cygwin programs ask for passwords.
+- expose events get lost under certain circumstances.
+- if rxvt doesn't allocate a console occasionally an unexpected
+    console will pop up while running non-cygwin apps.
+
+Check http://www.io.com/~bub/rxvt.html for updates and source.
+If you fix something, please let me know (Steve O <bub@io.com>).
+Thanks.
