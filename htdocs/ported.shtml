@@ -1,4 +1,4 @@
-<!-- $Id: ported.shtml,v 1.11 2001-08-28 01:05:44 stevedperkins Exp $ -->
+<!-- $Id: ported.shtml,v 1.12 2002-03-16 22:06:35 stevedperkins Exp $ -->
 
 <html>
 <head>
@@ -44,7 +44,7 @@ common libraries and other important software.
 <li> <a href="http://home.a-city.de/franco.bez/mc/mc.html">GNU Midnight
 Commander port</a> by Franco Bez
 </li>
-<li> <a href="http://sites.netscape.net/ptrpck/directx.htm">
+<li> <a href="http://mywebpage.netscape.com/PtrPck/directx.htm">
 DirectX 8</a> by Peter Puck
 </li>
 </ul>
@@ -65,7 +65,7 @@ corrections.</p>
 <!--#include file="ssi/footer.html"-->
 
 <address>
-<br />Last revised $Date: 2001-08-28 01:05:44 $
+<br />Last revised $Date: 2002-03-16 22:06:35 $
 </address>
 
 </body>
