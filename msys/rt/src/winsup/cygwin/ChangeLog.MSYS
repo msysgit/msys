@@ -1,3 +1,8 @@
+2003-07-01  Luke Dunstan <infidel@users.sf.net>
+
+	* syscalls.cc (check_posix_perm): Off by one allocation of memory for
+	char *root.
+
 2003-06-30  Earnie Boyd  <earnie@users.sf.net>
 
 	* environ.cc: Add debug_printf throughout.
