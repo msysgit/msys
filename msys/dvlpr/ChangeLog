@@ -1,3 +1,8 @@
+2002.05.13  Earnie Boyd  <earnie@users.sf.net>
+
+	* script/msysrls.sh (PATCHVER): Increment to 8.
+	* doc/msys/MSYS-1.0.8-changes.rtf: New file.
+
 2002.05.10  Earnie Boyd  <earnie@users.sf.net>
 
 	* etc/profile (HISTFILE): Modify filter as bash sets it before reading
