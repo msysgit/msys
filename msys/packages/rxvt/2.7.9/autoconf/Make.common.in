@@ -69,6 +69,7 @@ XLIB = @X_LIBS@ @XPM_LIBS@ -lX11 @X_EXTRA_LIBS@
 LIBTOOL = @LIBTOOL@
 COMPILE = $(CC) $(DEFS) $(INCLUDES) $(CPPFLAGS) $(CFLAGS) $(DEBUG) $(DINCLUDE) $(XINC) -I$(basedir) -I$(srcdir) -I.
 LINK = $(CC) $(CFLAGS) $(LDFLAGS)
+RC = windres --include-dir $(srcdir)
 
 # End of common section of the Makefile
 #-------------------------------------------------------------------------

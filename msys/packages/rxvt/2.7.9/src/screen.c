@@ -1,7 +1,7 @@
 /*--------------------------------*-C-*--------------------------------------*
  * File:	screen.c
  *---------------------------------------------------------------------------*
- * $Id: screen.c,v 1.1 2003-03-05 17:33:37 earnie Exp $
+ * $Id: screen.c,v 1.2 2004-03-16 13:26:38 earnie Exp $
  *
  * Copyright (c) 1997-2001 Geoff Wing <gcw@pobox.com>
  *
@@ -2802,7 +2802,7 @@ rxvt_selection_property(rxvt_t *r, Window win, Atom prop)
 	    XFree(s);
 	if (a != Success)
 	    return;
-#ifndef __CYGWIN32__
+#if ! (defined (__CYGWIN32__) || defined (__MSYS__))
 	if (atype == r->h->xa[XA_INCR]) {	/* start an INCR transfer */
 	    D_SELECT((stderr, "rxvt_selection_property: INCR: starting transfer"));
 	    XDeleteProperty(r->Xdisplay, win, prop);

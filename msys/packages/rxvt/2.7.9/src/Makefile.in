@@ -1,5 +1,7 @@
-# $Id: Makefile.in,v 1.1 2003-03-05 17:33:37 earnie Exp $
+# $Id: Makefile.in,v 1.2 2004-03-16 13:26:38 earnie Exp $
 @MCOMMON@
+
+.SUFFIXES: .rc
 
 LINT = lint -DNARROWPROTO=1 $(XINC) -chapbxz
 
@@ -34,7 +36,7 @@ HDRS =	command.h defaultfont.h feature.h grkelot.h init.h logging.h \
 
 EXTRAHDRS = rxvtlib.h
 
-OBJS =	@OBJLIST@ rxvt.o
+OBJS =	@OBJLIST@ rxvt.o rxvt_res.o
 LIBOBJS = @LIBOBJLIST@
 LIBVERSION = @LIBVERSION@
 INSTALL_LIBRXVT = @INSTALL_LIBRXVT@
@@ -72,6 +74,9 @@ DIST = $(HDRS) $(SRCS) Makefile.in gcc-Wall rxvtlib.h.in .indent.pro \
 .c.o:
 	$(COMPILE) -c $<
 
+.rc.o:
+	$(RC) -i $< -o $@
+
 .c.lo:
 	$(LIBTOOL) --mode=compile $(COMPILE) -c $<
 
@@ -95,8 +100,8 @@ DIST = $(HDRS) $(SRCS) Makefile.in gcc-Wall rxvtlib.h.in .indent.pro \
 #-------------------------------------------------------------------------
 all: allbin
 
-rxvt: version.h rxvt.o librxvt.la
-	$(LIBTOOL) --mode=link $(LINK) rxvt.o librxvt.la $(LIBS) $(XLIB) $(DLIB) -o $@
+rxvt: version.h rxvt.o rxvt_res.o librxvt.la
+	$(LIBTOOL) --mode=link $(LINK) rxvt.o rxvt_res.o librxvt.la $(LIBS) $(XLIB) $(DLIB) -o $@
 
 .protos: $(EXTPROS)
 	@$(RMF) .protos
@@ -176,6 +181,7 @@ misc.o:             misc.c      $(DEPS) misc.intpro
 netdisp.o:          netdisp.c   $(DEPS) netdisp.intpro	netdisp.h
 ptytty.o:           ptytty.c    $(DEPS) ptytty.intpro
 rxvt.o:             rxvt.c      $(DEPS) 
+rxvt_res.o:	    rxvt_res.rc rxvt_res.h
 screen.o:           screen.c    $(DEPS) screen.intpro
 scrollbar.o:        scrollbar.c $(DEPS) scrollbar.intpro
 scrollbar-rxvt.o:   scrollbar-rxvt.c  $(DEPS) scrollbar-rxvt.intpro

@@ -1,5 +1,5 @@
 /*
- * $Id: init.h,v 1.1 2003-03-05 17:33:36 earnie Exp $
+ * $Id: init.h,v 1.2 2004-03-16 13:26:38 earnie Exp $
  */
 
 #ifndef _INIT_H_
@@ -14,7 +14,7 @@
 # endif
 #endif				/* HAVE_XLOCALE */
 
-#if defined(PTYS_ARE_PTMX) && !defined(__CYGWIN32__)
+#if defined(PTYS_ARE_PTMX) && !(defined(__CYGWIN32__) || defined(__MSYS__))
 # include <sys/resource.h>	/* for struct rlimit */
 # define _NEW_TTY_CTRL		/* to get proper defines in <termios.h> */
 #endif
