@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<!-- $Id: index.shtml,v 1.51 2002-12-11 12:56:48 earnie Exp $ -->
+<!-- $Id: index.shtml,v 1.52 2002-12-20 16:42:33 earnie Exp $ -->
   <title>MinGW -- Minimalist GNU For Windows</title>
                      
   <meta name="description"
@@ -101,7 +101,7 @@ here</a>. </p>
                   <li><a
  href="http://prdownloads.sourceforge.net/mingw/binutils-2.13-20020903-1.tar.gz">binutils-2.13-20020903-1</a> <a href="#Upgraded_Packages"><em><b>Upgrade Available</b></em></a></li>
                   <li><a
- href="http://prdownloads.sourceforge.net/mingw/mingw-runtime-2.2.tar.gz" target="_nw">mingw-runtime-2.2</a></li>
+ href="http://prdownloads.sourceforge.net/mingw/mingw-runtime-2.2.tar.gz" target="_nw">mingw-runtime-2.2</a> <a href="#Upgraded_Packages"><em><b>Upgrade Available</b></em></a></li>
                   <li><a
  href="http://prdownloads.sourceforge.net/mingw/w32api-2.0.tar.gz" target="_nw">w32api-2.0</a> <a href="#Upgraded_Packages"><em><b>Upgrade Available</b></em></a></li>
                   <li><a
@@ -177,6 +177,7 @@ one of the best compression algorithms available.
 	    <ul>
 	      <li><em>Binutils:</em> <a href="http://prdownloads.sf.net/mingw/binutils-2.13.90-20021006-2.tar.gz" target="_nw">binutils-2.13.90-20021006-2.tar.gz</a></li>
 	      <li><em>W32api:</em> <a href="http://prdownloads.sf.net/mingw/w32api-2.1.tar.gz" target="_nw">w32api-2.1.tar.gz</a></li>
+	      <li><em>MinGW Runtime:</em> <a href="http://prdownloads.sf.net/mingw/mingw-runtime-2.3.tar.gz" target="_nw">mingw-runtime-2.3.tar.gz</a></li>
 	    </ul>
 	    </p>
                                                   
@@ -204,7 +205,7 @@ width="88" /></a>
 -->
 </p>
 <address><br>
-Last revised $Date: 2002-12-11 12:56:48 $</address>
+Last revised $Date: 2002-12-20 16:42:33 $</address>
 <br>
 </body>
 </html>
