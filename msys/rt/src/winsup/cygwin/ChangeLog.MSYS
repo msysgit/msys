@@ -1,3 +1,12 @@
+2004-03-30  Earnie Boyd  <earnie@users.sf.net>
+
+	* fhandler.cc (fhandler_base::open): Correct issue for setting file
+	attributes.
+	* path.cc (mount_info::read_mounts2): Remove hard mount points for /bin
+	and /usr/bin; resolves FIXME-1.0.
+	* path.h (iscygexec): Remove use of path_flags and PATH_CYGWIN_EXEC;
+	resolves FIXME-1.0.
+
 2004-03-29  Earnie Boyd  <earnie@users.sf.net>
 
 	* winsup.h (stat_worker): Remove "int nofollow" argument from

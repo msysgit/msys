@@ -1793,16 +1793,6 @@ mount_info::read_mounts2 (void)
   // Add "/" again to prevent user corruption.
   res = mount_table->add_item (RootPath, "/", mount_flags, FALSE);
   res = mount_table->add_item (RootPath, "/usr", mount_flags, FALSE);
-  //FIXME-1.0:
-  //	    In order to pass Win32 paths to Win32 programs and POSIX paths to
-  //	    MSYS programs we must know if we have MSYS programs.  The flag
-  //	    MOUNT_CYGWIN_EXEC is being used for this purpose.  Once iscygexec
-  //	    is fixed to know that we have an MSYS program based on the msys dll
-  //	    being present then we can remove this.
-  //	    NOTE: I added the /usr/bin mount point simply to mark it as
-  //		  containing MSYS programs.  It can be removed once fixed.
-  res = mount_table->add_item (DllPath, "/bin", MOUNT_CYGWIN_EXEC | mount_flags, FALSE);
-  res = mount_table->add_item (DllPath, "/usr/bin", MOUNT_CYGWIN_EXEC | mount_flags, FALSE);
 
   {
     char buf[MAX_PATH];
