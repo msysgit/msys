@@ -1,5 +1,24 @@
 2001-08-15  Danny Smith  <dannysmith@users.sourceforge.net>
 
+	* include/oaidl.h (tagVARIANT): Mark anonymous structs and unions
+	 as 	__extension__.
+	(tagTYPEDESC): Ditto.
+	(_wireBRECORD): Add structure definition.
+	(_wireSAFEARR_BRECORD): Ditto.
+	(_wireSAFEARR_HAVEIID): Ditto.
+	(_wireSAFEARRAY_UNION.u): Add fields SAFEARR_BRECORD RecordStr,
+	SAFEARR_HAVEIID HaveIidStr.
+	(tagVariant): Add fields _VARIANT_BOOL bool,*pbool. 
+	(_wireVARIANT): Change field parray to type wirePSAFEARRAY,
+	pparray to wirePSAFEARRAY*.
+	(_wireVARIANT): Add field wireBRECORD brecVal.
+	(wireVARIANT): Change typedef to struct _wireVariant*.
+	(IRecordInfo): Add interface definition.
+	(LPRECORDINFO): Add typedef for IRecordInfo*.
+	(IID_IRecordInfo): Add forward decalaration.
+
+2001-08-15  Danny Smith  <dannysmith@users.sourceforge.net>
+
 	* include/lmcons.h: Guard CNLEN and UNCLEN against prior definition.
 	* include/nddeapi.h: Likewise.
 
