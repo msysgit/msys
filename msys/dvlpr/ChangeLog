@@ -1,5 +1,11 @@
 2002.05.04  Earnie Boyd  <earnie@users.sf.net>
 
+	* script/msys.iss.in ([Run]): Add section for postinstall commands.
+	* script/msysrls.sh: Prepare for postinstall in package.
+	* var/pi.dat: New file.
+
+2002.05.04  Earnie Boyd  <earnie@users.sf.net>
+
 	* bin/start: Quote the arguments before handing to cmd.
 	* README.rtf: Begin documenting the process.
 
