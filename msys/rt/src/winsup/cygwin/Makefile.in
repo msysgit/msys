@@ -63,7 +63,7 @@ AR_FLAGS:=qv
 RANLIB:=@RANLIB@
 LD:=@LD@
 DLLTOOL:=@DLLTOOL@
-WINDRES:=@WINDRES@
+WINDRES:="@WINDRES@ --include-dir=$(srcdir)/include"
 AS:=@AS@
 LDSCRIPT=cygwin.sc
 
