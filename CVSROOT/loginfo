@@ -26,5 +26,10 @@
 #DEFAULT (echo ""; id; echo %{sVv}; date; cat) >> $CVSROOT/CVSROOT/commitlog
 
 # E-mail notifications - we use python's syncmain
+
+# ##########################################################################
+# For some odd reason the first email entry is ignored. I've cluged a fix by
+# adding myself as the first email entry.  Earnie.
+# ##########################################################################
 CVSROOT $CVSROOT/CVSROOT/syncmail %{sVv} earnie@users.sourceforge.net mingw-cvs-admin@lists.sourceforge.net
 DEFAULT $CVSROOT/CVSROOT/syncmail %{sVv} earnie@users.sourceforge.net mingw-cvs@lists.sourceforge.net
