@@ -19,11 +19,11 @@ details. */
 #include <iphlpapi.h>
 
 #include <stdlib.h>
-#include <unistd.h>
 #include <netdb.h>
 #include <fcntl.h>
 #define USE_SYS_TYPES_FD_SET
 #include <winsock2.h>
+#include <unistd.h>
 #include "cygerrno.h"
 #include "security.h"
 #include "fhandler.h"

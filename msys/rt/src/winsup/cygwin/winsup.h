@@ -1,8 +1,9 @@
 /* winsup.h: main Cygwin header file.
 
    Copyright 1996, 1997, 1998, 1999, 2000, 2001 Red Hat, Inc.
+   Copyright 2003 Earnie Boyd <earnie@users.sf.net>
 
-This file is part of Cygwin.
+This file is part of MSYS.
 
 This software is a copyrighted work licensed under the terms of the
 Cygwin license.  Please consult the file "CYGWIN_LICENSE" for
@@ -60,6 +61,7 @@ extern const char case_folded_upper[];
 #endif
 
 #define WIN32_LEAN_AND_MEAN 1
+#define _WIN32_WINNT 0x0600
 #define _WINGDI_H
 #define _WINUSER_H
 #define _WINNLS_H
@@ -69,6 +71,7 @@ extern const char case_folded_upper[];
 #include <windows.h>
 #include <wincrypt.h>
 #include <lmcons.h>
+#include <wincon.h>
 #undef _WINGDI_H
 #undef _WINUSER_H
 #undef _WINNLS_H
@@ -275,5 +278,9 @@ extern HANDLE hMainThread;
 extern HANDLE hMainProc;
 
 extern bool IsMsys (const char *);
+
+#define winsock2_active (wsadata.wVersion >= 512)
+#define winsock_active (wsadata.wVersion <= 512)
+extern struct WSAData wsadata;
 
 #endif /* defined __cplusplus */

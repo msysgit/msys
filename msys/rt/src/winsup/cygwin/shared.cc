@@ -47,18 +47,12 @@ shared_name (const char *str, int num)
   static NO_COPY char buf[MAX_PATH] = {0};
   static NO_COPY char buf2[MAX_PATH] = {0};
   extern bool _cygwin_testing;
-  char *tptr;
+  static unsigned long ulModuleHash;
 
-  //FIXME: This should be based on where the DLL actually is located.
   AbsDllPath("msys-1.0.dll", buf2, sizeof (buf2));
-  debug_printf("buf2 = %s", buf2);
-  strcpy(buf2, &buf2[3]);
-  tptr = strchr(buf2, '\\');
-  if (tptr)
-    *tptr = '\0';
-  debug_printf("buf2 = %s", buf2);
-  debug_printf("shared_id = %s", cygwin_version.shared_id);
-  __small_sprintf (buf, "%s.%s.%s.%d", buf2, cygwin_version.shared_id, str, num);
+  ulModuleHash = hash_path_name(ulModuleHash, buf2);
+  debug_printf("%d.%s.%s.%d", ulModuleHash, cygwin_version.shared_id, str, num);
+  __small_sprintf (buf, "%d.%s.%s.%d", ulModuleHash, cygwin_version.shared_id, str, num);
 /* This code was removed because cygwin_version.dll_build_date is invalid.
  * This should be put back into service once we discover the culprit.
  */
