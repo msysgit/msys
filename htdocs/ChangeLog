@@ -1,3 +1,8 @@
+2003-06-11  Earnie Boyd  <earnie@users.sf.net>
+
+	* download.shtml: Add a Contents section and unify the section titles.
+	Modify verbiage explaining the packaging conventions.
+
 2003-06-06  Earnie Boyd  <earnie@users.sf.net>
 
 	* download.shtml: Change titles and add wording for MSYS.

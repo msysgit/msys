@@ -40,7 +40,14 @@
                 <tr>
                   <td>
 <!-- ======================================================================= --><!--                                                                         --><!--                               Main Body                                 --><!--                                                                         -->
-                    <h2>
+		    <h2>Contents</h2>
+		    <ul>
+		      <li><a href="#hdr1">MinGW and MSYS Distributions</a></li>
+		      <li><a href="#hdr2">File List</a></li>
+		      <li><a href="#hdr3">Mirror Sites</a></li>
+		      <li><a href="#hdr4">Understanding MinGW Packaging</a></li>
+		    </ul>
+                    <h2><a name="hdr1" />
                       MinGW and MSYS Distributions
                     </h2>
                     <p>
@@ -88,7 +95,7 @@
                     <p>
                       The individual packages making up the MinGW
                       distribution are still produced and made
-                      available for download seperately. Updated
+                      available for download separately. Updated
                       versions of individual packages will
                       sometimes be made available in between
                       releases of the main MinGW distribution... in
@@ -96,12 +103,9 @@
                       package's content into your MinGW directory
                       to take advantage of the updates immediately.
                     </p>
-                    <h3>
-                      Download location
-                    </h3>
                     <p>
                       MinGW packages available for download are hosted by
-		      <a target="_nw" href="http://www.sf.net/">SourceForge</a>. 
+		      <a target="_nw" href="http://www.sf.net/">SourceForge</a>.
 		      SourceForge provides each project with a 
 		      <a target="_nw" href=
 		      "http://sf.net/project/showfiles.php?group_id=2435">
@@ -122,12 +126,15 @@
 		      below layout change as we perfect it.  However, we
 		      suggest that you visit this page often for the status
 		      of updates.
-                    </p><a name="download-release"></a>
+                    </p>
+		    <h2><a name="hdr2" />
+		      File List
+		    </h2>
                     <!--#include file="ssi/release.html"-->
                      
-                    <h3>
+                    <h2><a name="hdr3" />
                       Mirror Sites
-                    </h3>
+                    </h2>
                     <ul>
                       <!--<li>
                         <a href=
@@ -148,16 +155,35 @@
                       "mailto:mingw-users-admin@lists.sourceforge.net">
                       mingw-users-admin@lists.sourceforge.net</a>.
                     </p>
-                    <h3>
-                      Downloading the distribution
-                    </h3>
+
+                    <h2><a name="hdr4" />
+                      Understanding MinGW Packaging
+                    </h2>
+		    <p>
+		      Each package is the responsibility of the individual
+		      developer.  It is the developer to decide what archive,
+		      compression and distribution methods to use.  You will
+		      see any combination of file extentions, .tar.gz,
+		      .tar.bz2, .zip, .exe, etc.  Typically we use a file
+		      naming convention of 
+		      &lt;package&gt;-&lt;version&gt;-&lt;timestamp&gt;-&lt;fileversion&gt;.&lt;filetype&gt;.
+		      This is not strictly adhered to but timestamp is always
+		      in some form of YYYYMMDD format.  The fileversion if
+		      given represents the number of occurrences a file with the
+		      same name otherwise has been uploaded.  For example,
+		      a developer uploads foo-1.0-20030601-1.tar.gz and then
+		      later that day realizes he forgot something important, so
+		      he then uploads foo-1.0-20030601-2.tar.gz to correct the
+		      mistake.  The timestamp is optional on the Current release
+		      but is a must for anything else.
+		    </p>
+		    <!--
                     <p>
                       The naming scheme for the main MinGW
                       distribution file is:
                     </p>
                     <blockquote>
-                      <tt>Mingw-&lt;version&gt;[-&lt;stamp&gt;].&lt;
-		      tar.[gz|bz2], zip or exe&gt;</tt>
+                      <tt>Mingw-&lt;version&gt;[-&lt;stamp&gt;].&lt;tar.[gz|bz2], zip or exe&gt;</tt>
                     </blockquote>Where: 
                     <dl>
                       <dt>
@@ -255,6 +281,7 @@
                     binutils (which are GNU Binary Utilities)
                     2.10.91 alpha or beta release made on 5th of
                     December, 2000.<br>
+		    -->
                     <br>
                      <em><b>WinZip Caution:</b></em><br>
                     Make sure that you first <b>uncheck</b> the
@@ -522,7 +549,7 @@
     </p>
     <address>
       <br>
-      Last revised $Date: 2003-06-06 15:25:05 $
+      Last revised $Date: 2003-06-11 23:03:48 $
     </address>
   </body>
 </html>
