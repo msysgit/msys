@@ -1,4 +1,4 @@
-<!-- $Id: links.shtml,v 1.16 2002-06-02 05:48:10 infidel Exp $ -->
+<!-- $Id: links.shtml,v 1.17 2002-08-11 05:20:18 infidel Exp $ -->
 
 <html>
 <head>
@@ -67,8 +67,18 @@ uses Mingw-hosted gcc/binutils.
 
 <h3 align="left">Sites useful for Windows32 programmers</h3>
 <ul>
-<li><a target="_nw" href="http://www.blockdev.net/Community/Editors/">Free Editors for
-Programming in Windows (32-bit)</a>
+  <li> <a target="_nw" href="http://www.blockdev.net/Community/Editors/">Free Editors for
+  Programming in Windows (32-bit)</a>
+  </li>
+  <li> <a href="http://www.foosyerdoos.fsnet.co.uk">FoosYerDoos Programming</a>
+  is devoted to win32 C++ programming with a variety of different compilers.
+  </li>
+  <li> <a href="http://freespace.virgin.net/james.brown7">Catch22 Productions</a>
+  is a web-site offering free software and tutorials for Windows.
+  </li>
+  <li> <a href="http://www.winprog.org/tutorial/">theForger's Win32 API Tutorial</a>
+  attempts to get you started developing with the Win32 API as quickly and clearly as possible.
+  </li>
 </ul>
 
   <ol class="alpha" type="A">
@@ -133,7 +143,7 @@ Programming in Windows (32-bit)</a>
 <!--#include file="ssi/footer.html"-->
 
 <address>
-<br />Last revised $Date: 2002-06-02 05:48:10 $
+<br />Last revised $Date: 2002-08-11 05:20:18 $
 </address>
 
 </body>
