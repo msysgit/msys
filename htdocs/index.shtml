@@ -117,6 +117,9 @@ and AT&amp;T UWIN.</p>
   and quite stable at this point. (Jan 21, 2000)
 </p>
 
+<p><b>MinGW Users Mailing List</b>
+We have a participating mailing list.  You may join in the discussions and will find a link to the archives at <A HREF="http://lists.sourceforge.net/mailman/listinfo/mingw-users">http://lists.sourceforge.net/mailman/listinfo/mingw-users</a>.
+
 <hr noshade="noshade" size="1" />
 
 <p align="center"><b>News</b></p>
@@ -126,8 +129,8 @@ and AT&amp;T UWIN.</p>
 
 <p><b>Contributors Wanted</b>: We are looking for
 developers to work and maintain various Open Source Software
-packages for Mingw. Please email <a href="mailto:khan@nanotech.wisc.edu">
-Mumit Khan</a> if you are interested in contributing. </p>
+packages for Mingw. Please email <a href="mailto:mingw-dvlpr@lists.sourceforge.net">
+MinGW Developers</a> if you are interested in contributing.</p>
 
 <!-- <center><a href="news.shtml">more news</a></center> -->
 
@@ -185,7 +188,7 @@ width="88" /></a>
 <!--#include virtual="/cgi-bin/stats.cgi?mingw"--> visitors since
 <!--#include virtual="/cgi-bin/showstatsdate.cgi?mingw"--></a>.
 </p>
-$Id: index.shtml,v 1.2 2000-09-10 20:17:53 pfalcon Exp $
+
 </body>
 </html>
 
