@@ -1,0 +1,281 @@
+\input texinfo   @c -*-texinfo-*-
+@c %**start of header
+@setfilename which.info
+@settitle @command{which}: show full path of commands
+@include version.texi
+@c %**end of header
+
+@setchapternewpage odd
+
+@ifinfo
+@format
+
+@c !BEGIN INTRO
+This file documents `which' version 2.x@.
+@c !END INTRO
+
+@c !BEGIN COPYING
+Copyright @copyright{} 2000, by
+
+Carlo Wood, Run on IRC <carlo@@alinoe.com>
+RSA-1024 0x624ACAD5 1997-01-26                    Sign & Encrypt
+Fingerprint16 = 32 EC A7 B6 AC DB 65 A6  F6 F6 55 DD 1C DC FF 61
+
+Permission is granted to make and distribute verbatim copies of
+this manual provided the copyright notice and this permission notice
+are preserved on all copies.
+@end format
+
+@ignore
+Permission is granted to copy and distribute modified versions of this
+manual under the conditions for verbatim copying, provided also that the
+section entitled ``GNU General Public License'' is included exactly as
+in the original, and provided that the entire resulting derived work is
+distributed under the terms of a permission notice identical to this
+one.
+
+Permission is granted to copy and distribute translations of this manual
+into another language, under the above conditions for modified versions,
+except that the section entitled ``GNU General Public License'' may be
+included in a translation approved by the author instead of in the
+original English.
+@end ignore
+@c !END COPYING
+@end ifinfo
+
+@titlepage
+@title Which
+@subtitle Show the full path of commands
+@sp 1
+@subtitle Edition @value{EDITION}, for Which Version @value{VERSION}
+@subtitle @value{UPDATED}
+@c !BEGIN AUTHORS
+@author Carlo Wood <@email{carlo@@gnu.org}>
+@c !END AUTHORS
+@page
+@vskip 0pt plus 1filll
+Copyright @copyright{} 2000, by
+
+Carlo Wood, Run on IRC <carlo@@alinoe.com>
+RSA-1024 0x624ACAD5 1997-01-26                    Sign & Encrypt
+Fingerprint16 = 32 EC A7 B6 AC DB 65 A6  F6 F6 55 DD 1C DC FF 61
+
+@end titlepage
+
+@ifinfo
+@node Top, Which Program, (dir), (dir)
+@top @command{which}: Show the full path of commands
+
+The @command{which} program
+@c !BEGIN NAME
+shows the full path of (shell) commands.
+@c !END NAME
+
+@noindent
+This file documents @command{which} version @value{VERSION}, updated @value{UPDATED}.
+@end ifinfo
+
+@menu
+* Which Program::               The @command{which} Program
+* Invoking Which::              How to invoke @command{which}
+* Option Summary::              Overview of commandline options
+* Return Value::		The return value of @command{which}
+* Example::			Examples of invokation
+* Bugs::			Known bugs
+* See Also::			Related UNIX commands
+* Index::                       Index
+@end menu
+
+@node Which Program, Invoking Which, Top, Top
+@chapter The @command{which} Program
+@cindex Description of @command{which}
+
+@c !BEGIN DESCRIPTION
+@command{Which} takes one or more arguments. For each of its arguments
+it prints to stdout the full path of the executables
+that would have been executed when this argument had been
+entered at the shell prompt. It does this by searching
+for an executable or script in the directories listed in
+the environment variable @env{PATH} using the same algorithm as @command{bash(1)}.
+@c !END DESCRIPTION
+
+@node    Invoking Which, Option Summary, Which Program, Top
+@chapter Invoking @command{which}
+@cindex Invoking @command{which}
+@cindex Synopsis
+
+@noindent
+The synopsis to invoke @command{which} is
+
+@c !BEGIN SYNOPSIS
+@example
+which [options] [--] programname [...]
+@end example
+@c !END SYNOPSIS
+
+@menu
+* Option Summary::        Option summary
+@end menu
+
+@node    Option Summary, Return Value, Invoking Which, Top
+@chapter Option Summary
+@cindex Options, command line
+@cindex Command line Options
+@cindex Overview of command line options
+
+@c !BEGIN OPTIONS
+@table @samp
+@cindex @option{--all}
+@cindex @option{-a}
+@item --all
+@itemx -a
+Print all matching executables in @env{PATH}, not just the first.
+
+@cindex @option{--read-alias}
+@cindex @option{-i}
+@item --read-alias
+@itemx -i
+Read aliases from stdin, reporting matching ones on
+stdout. This is useful in combination with using an
+alias for which itself. For example@*
+@code{alias which='alias | which -i'}.
+
+@cindex @option{--skip-alias}
+@item --skip-alias
+Ignore option @option{--read-alias}, if any. This is useful to
+explicity search for normal binaries, while using
+the @option{--read-alias} option in an alias or function for which.
+
+@cindex @option{--read-functions}
+@item --read-functions
+Read shell function definitions from stdin, reporting matching
+ones on stdout. This is useful in combination with using a shell
+function for which itself.  For example:@*
+@code{which() @{ declare -f | which --read-functions $@@ @}@*export -f which}
+
+@cindex @option{--skip-functions}
+@item --skip-functions
+Ignore option @option{--read-functions}, if any. This is useful to
+explicity search for normal binaries, while using
+the @option{--read-functions} option in an alias or function for which.
+
+@cindex @option{--skip-dot}
+@item --skip-dot
+Skip directories in @env{PATH} that start with a dot.
+
+@cindex @option{--skip-tilde}
+@item --skip-tilde
+Skip directories in @env{PATH} that start with a tilde and
+executables which reside in the @env{HOME} directory.
+
+@cindex @option{--show-dot}
+@item --show-dot
+If a directory in @env{PATH} starts with a dot and a matching
+executable was found for that path, then print
+"./programname" rather than the full path.
+
+@cindex @option{--show-tilde}
+@item --show-tilde
+Output a tilde when a directory matches the @env{HOME}
+directory. This option is ignored when which is
+invoked as root.
+
+@cindex @option{--tty-only}
+@item --tty-only
+Stop processing options on the right if not on tty.
+
+@cindex @option{--version}
+@cindex @option{-v}
+@cindex @option{-V}
+@item --version, -v, -V
+Print version information on standard output then exit
+successfully.
+
+@cindex @option{--help}
+@item --help
+Print usage information on standard output then exit
+successfully.
+
+@end table
+@c !END OPTIONS
+
+@node    Return Value, Example, Option Summary, Top
+@chapter Return Value
+@cindex Return value of @command{which}
+
+@c !BEGIN RETURNVALUE
+@command{Which} returns the number of failed arguments, or -1 when
+no @file{programname} was given.
+@c !END RETURNVALUE
+
+@node    Example, Bugs, Return Value, Top
+@chapter Example
+@cindex Examples
+@cindex aliases, handling of
+
+@c !BEGIN EXAMPLE
+The recommended way to use this utility is by adding an alias (C shell)
+or shell function (Bourne shell) for @command{which} like the following:
+
+[ba]sh:
+
+@example
+@group
+which ()
+@{
+  (alias; declare -f) | /usr/bin/which --tty-only --read-alias --read-functions --show-tilde --show-dot $@@
+@}
+export -f which
+@end group
+@end example
+
+[t]csh:
+
+@example
+@group
+alias which 'alias | /usr/bin/which --tty-only --read-alias --show-dot --show-tilde'
+@end group
+@end example
+
+@noindent
+This will print the readable ~/ and ./ when starting which
+from your prompt, while still printing the full path when
+used from a script:
+
+@example
+@group
+> which q2
+~/bin/q2
+> echo `which q2`
+/home/carlo/bin/q2
+@end group
+@end example
+@c !END EXAMPLE
+
+@node    Bugs, See Also, Example, Top
+@chapter Bugs
+@cindex Bugs, known
+
+@c !BEGIN BUGS
+The @env{HOME} directory is determined by looking for the @env{HOME}
+environment variable, which aborts when this variable
+doesn't exist.  @command{Which} will consider two equivalent directories
+to be different when one of them contains a path
+with a symbolic link.
+@c !END BUGS
+
+@node    See Also, Index, Bugs, Top
+@chapter See Also
+
+@c !BEGIN SEEALSO
+@command{bash(1)}
+@c !END SEEALSO
+
+@node    Index,            ,  See Also, Top
+@comment node-name,    next,  previous,       up
+@unnumbered Index
+
+@printindex cp
+
+@contents
+@bye

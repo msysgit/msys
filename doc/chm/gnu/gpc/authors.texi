@@ -1,0 +1,447 @@
+@c Copyright (C) 1996-2002 Free Software Foundation, Inc.
+@c For copying conditions, see the file gpc.texi.
+@c This file is part of the GPC Manual.
+@c
+@c Authors: Peter Gerwinski <peter@gerwinski.de>
+@c          Frank Heckenbach <frank@pascal.gnu.de>
+@c
+@c Last modification: 2002-05-10 (file up to date)
+
+@include macros.texi
+
+@ifclear AUTHORSONLY
+@node Contributors
+@appendix Contributors to GNU Pascal.
+@cindex contributors
+@end ifclear
+
+@ifset AUTHORSONLY
+@include version.texi
+@c Note: The following line gets inserted into the destination file,
+@c       it does not apply to this Texinfo file!
+This file was generated automatically from contributors.texi.@*
+@sc{DO NOT CHANGE THIS FILE MANUALLY!}
+
+@settitle Register of Copyrights for GNU Pascal
+@node Top
+@chapter Register of Copyrights for GNU Pascal
+@end ifset
+
+@table @asis
+@item Jukka Virtanen
+invented GNU Pascal in March 1988, implemented the ISO-7185 and most
+of the ISO-10206 standard, etc.
+
+@ifset AUTHORSONLY
+He created all files except those listed below, based on the GCC
+source.
+@end ifset
+
+@item @uref{http://www.gerwinski.de/~peter/,Dr.@: Peter Gerwinski}
+@anch{peter}@c
+added Borland Pascal related and other extensions to GNU Pascal in
+summer 1995, ported GPC to EMX, does most of the development of the
+compiler since 1996, created and maintains the WWW home page,
+maintains the GNU Pascal mailing list, does some other
+administrative stuff, etc.
+
+@ifset AUTHORSONLY
+He created @file{rts/move.pas}, the files in @file{doc/} (together
+with Jan-Jaap), the (former) files in @file{config/emx/} and
+@file{gpc-nodes.def}, and extensively modified all files.
+@end ifset
+
+@item Jan-Jaap van der Heijden
+ported GPC to DJGPP and to Microsoft Windows 95/NT, added ELF
+support in spring 1996, solved a lot of configuration and
+compatibility problems, created the GPC FAQ, etc.
+
+@ifset AUTHORSONLY
+He created @file{Make-lang.in}, @file{Makefile.in},
+@file{lang-options.h}, @file{lang-specs.h}, the files in
+@file{config/} (except those in @file{config/emx/}), the files in
+@file{doc/} (together with Peter), @file{rts/Make*}, and
+@file{rts/config*}, and modified @file{module.c} and most other
+files.
+@end ifset
+
+@item @uref{http://fjf.gnu.de,Frank Heckenbach}
+@anch{frank}@c
+rewrote and maintains the Run Time System since July 1997, wrote
+most of the standard units distributed with GPC (including BP
+compatibility units), wrote a large number of test programs,
+maintains the GPC To-Do list
+@ifclear AUTHORSONLY
+(@pxref{To Do})
+@end ifclear
+etc.
+
+@ifset AUTHORSONLY
+He created most files in @file{units/}, @file{demos/},
+@file{script/}, and @samp{utils/} and the Pascal files in
+@file{rts/}, extensively modified all other files in @file{rts/},
+created many files in @file{test/} and modified most other files.
+@end ifset
+
+@item @uref{http://www.bigfoot.com/~african_chief/,Prof.@: Abimbola A.@: Olowofoyeku (``The African Chief'')}
+created the original versions of many BP compatibility units in May
+1997, contributed code to other units and the Run Time System,
+helped porting GPC and the units to Cygwin and mingw, wrote a number
+of test programs, contributed a Delphi-compatible @samp{SysUtils}
+@uref{http://www.gnu-pascal.de/contrib/chief/,unit}, etc.
+
+@ifset AUTHORSONLY
+He created @file{units/gpcutil.pas}, parts of
+@file{units/system.pas} and @file{rts/filename.pas} and a number of
+files in @file{test/}.
+@end ifset
+
+@item Nick Burrett
+fixed some bugs and cleaned up GPC in May 1998, etc.
+
+@ifset AUTHORSONLY
+He modified @file{gpc-common.c}, @file{parse.y}, @file{module.c} and
+some other files.
+@end ifset
+
+@item Matthias Klose
+integrated GPC into EGCS and Debian GNU/Linux in May 1998, improved
+the installation process, etc.
+
+@ifset AUTHORSONLY
+He modified @file{Makefile*}, the @file{configure} script and many
+other files.
+@end ifset
+
+@item Dominik Freche
+improved and extended the GPC manual in August - September 1999 and
+wrote conversion routines for Borland compatible 6 Byte floating
+point numbers in December 1999.
+
+@ifset AUTHORSONLY
+He modified @file{doc/en/reference.texi},
+@file{doc/en/programming.texi}, and @file{units/system.pas} and
+created some files in @file{test/}.
+@end ifset
+
+@item Alexey Volokhov
+improved the performance of GPC's module/unit support in June 1997.
+
+@ifset AUTHORSONLY
+He extensively modified @file{module.c} and @file{module.h}.
+@end ifset
+
+@item Bill Currie
+implemented more Borland extensions into GPC in July 1997.
+
+@ifset AUTHORSONLY
+He modified @file{parse.y}, @file{util.c}, and @file{rtscall.c}.
+@end ifset
+
+@item Eike Lange
+@anch{Eike}@c
+translated the GNU Pascal Coding Standards into German.
+
+@ifset AUTHORSONLY
+He created @file{doc/de/gpcs.texi}.
+@end ifset
+
+@end table
+
+@ifset AUTHORSONLY
+All authors listed above have assigned their copyright of past and
+future changes of GNU Pascal to the Free Software Foundation (FSF).
+@end ifset
+
+@table @asis
+
+@item Mirsad Todorovac
+@anch{mirsad}@c
+translated the GPC documentation into Croatian.
+
+@ifset AUTHORSONLY
+He created all files in @file{doc/hr/}.
+
+He has assigned his copyright of past and future changes of the
+Croatian translation of the GNU Pascal documentation to the Free
+Software Foundation (FSF).
+@end ifset
+
+@item Russ Whitaker
+updated and maintains the GNU Pascal FAQ.
+@ifclear AUTHORSONLY
+(@pxref{FAQ})
+@end ifclear
+
+@ifset AUTHORSONLY
+He modified @file{doc/en/faq.texi}.
+@end ifset
+
+@ifset AUTHORSONLY
+He has assigned his copyright of past and future changes of the GNU
+Pascal FAQ to the Free Software Foundation (FSF).
+@end ifset
+
+@end table
+
+@ifclear AUTHORSONLY
+
+The development of GNU Pascal profits a lot from independent
+contributions (which are not part of the GNU Pascal distribution):
+
+@table @asis
+
+@item Anja Gerwinski
+set up the old archives for the GPC mailing list,
+in September 1999.
+
+@item Berend de Boer
+wrote a lot of useful documentation about Extended Pascal in 1995.
+
+@item @uref{http://www.gerwinski.de/~markus/,Markus Gerwinski}
+created the drawing showing a Gnu with Blaise Pascal
+@ifset html
+@html
+<a href="GnuPascal-small.png">small (PNG, 1 kB)</a>
+<a href="GnuPascal.png">large (PNG, 10 kB)</a>
+<a href="GnuPascal-small-framed.png">small, with frame (PNG, 1 kB)</a>
+@end html
+@end ifset
+and helped to design the WWW home page in October 1996.
+
+@item Nicola Girardi
+contributed a
+@uref{http://www.gnu-pascal.de/contrib/nicola/,GPC unit} for the
+@samp{svgalib} graphics library for some platforms in February 2000.
+
+@item Eike Lange
+contributed
+@uref{http://www.gnu-pascal.de/contrib/eike/} to
+access MySQL, GNU DBM and PostgreSQL databases in August 2000, and a
+unit (now part of GPC) and tools for internationalization in
+October - December 2001.
+
+@item Eike Lange and Nicola Girardi
+together contributed a set of
+@uref{http://www.gnu-pascal.de/contrib/nicola/,GTK units} in
+February - May 2001.
+
+@item Nicola Girardi
+wrote the GNU Pascal Coding Standards in English. Eike Lange
+translated them to German.
+
+@item Prof.@: Phil Nelson
+created a bug reporting system for GPC in October 1996.
+
+@iftex
+@ifset html
+@ifhtml
+@item @uref{http://www.tu-chemnitz.de/~sho/rho/,Robert H&ouml;hne}
+@end ifhtml
+@end ifset
+@ifclear html
+@item @uref{http://www.tu-chemnitz.de/~sho/rho/,Robert H@"ohne}
+@end ifclear
+@end iftex
+@ifinfo
+@item @uref{http://www.tu-chemnitz.de/~sho/rho/,Robert Hoehne}
+@end ifinfo
+wrote @uref{http://www.tu-chemnitz.de/~rho/rhide.html,RHIDE}, an
+integrated development environment for GNU compilers running under
+Dos (DJGPP) and Linux, and added support for GNU Pascal in autumn
+1996.
+
+@item Sven Hilscher
+wrote a mostly BP compatible @samp{Graph} unit for several platforms
+in December 1996, now part of the
+@uref{http://www.gnu.de/software/grx/,GRX library}.
+
+@item @uref{http://www.geocities.com/SiliconValley/Vista/6573,Dario Anzani (``Predator Zeta'')}
+contributed documentation about the use of assembler in GNU Pascal
+in May 1997.
+@ifclear AUTHORSONLY
+(@pxref{Assembler})
+@end ifclear
+
+@item Lluis de Yzaguirre i Maura
+set up a HTML version of the GNU Pascal mailing list archives,
+@ref{Mailing List Archives}, in September 1997.
+
+@item Dieter Schmitz
+set up a German mailing list for GPC, @ref{Mailing List}, in March
+2001.
+
+@item @code{(@minus{}:@minus{}@minus{}@minus{}@minus{}@minus{}@minus{}@minus{}@minus{}@minus{}:@minus{})}
+This space is reserved for @emph{your} name. ;@minus{}) Please
+contact us at the GPC mailing list, @ref{Mailing List}, if you have
+something interesting for us.
+
+@end table
+
+We thank everybody who supports us by reporting bugs, contributing
+knowledge and good ideas, donating development tools, and giving us
+the opportunity to test GPC on a large variety of systems. We are
+particularly indebted (in alphabetical order, individuals first) to
+
+@include contributors.texi
+the @cite{BIP} at the @cite{University of Birmingham}, UK,
+the @cite{Institut fuer Festkoerperforschung (IFF)} at the @cite{Forschungszentrum Juelich}, Germany,
+CARNet (Croatian Academic and Research NETwork) and the Academy of
+Fine Arts at the University of Zagreb, Croatia,
+
+@noindent and everybody we might have forgotten to mention here.
+Thanks to all of you!
+
+@c The following text should appear in all versions of the manual,
+@c but not on the GPC home page.
+@ifset html
+@html
+<!--MAKE-HOMEPAGE-CUT-->
+@end html
+@end ifset
+
+GNU Pascal is based on GNU CC by Richard Stallman.  Several people have
+contributed to GNU CC:
+
+@c -- JJ 13jul96: should we keep all these ?
+@c I already zapped a number of irrelevant ones.
+@c
+@c Keep them, but with a note that we are talking about GNU C now.
+@c (I zapped another one who contributed to the C++ front-end.)
+@c (Or: ask the FSF.) -- PG, 2. Aug 1996
+
+@itemize @bullet
+@item
+The idea of using RTL and some of the optimization ideas came from
+the program PO written at the University of Arizona by Jack Davidson
+and Christopher Fraser.  See ``Register Allocation and Exhaustive
+Peephole Optimization'', Software Practice and Experience 14 (9),
+Sept. 1984, 857-866.
+
+@item
+Paul Rubin wrote most of the preprocessor.
+
+@item
+Leonard Tower wrote parts of the parser, RTL generator, and RTL
+definitions, and of the Vax machine description.
+
+@item
+Ted Lemon wrote parts of the RTL reader and printer.
+
+@item
+Jim Wilson implemented loop strength reduction and some other
+loop optimizations.
+
+@item
+Nobuyuki Hikichi of Software Research Associates, Tokyo, contributed
+the support for the Sony NEWS machine.
+
+@item
+Charles LaBrec contributed the support for the Integrated Solutions
+68020 system.
+
+@item
+Michael Tiemann of Cygnus Support wrote the support for inline
+functions and instruction scheduling.  Also the descriptions of the
+National Semiconductor 32000 series cpu, the SPARC cpu and part of
+the Motorola 88000 cpu.
+
+@item
+Jan Stein of the Chalmers Computer Society provided support for
+Genix, as well as part of the 32000 machine description.
+
+@item
+Randy Smith finished the Sun FPA support.
+
+@item
+Robert Brown implemented the support for Encore 32000 systems.
+
+@item
+David Kashtan of SRI adapted GNU CC to VMS.
+
+@item
+Alex Crain provided changes for the 3b1.
+
+@item
+Greg Satz and Chris Hanson assisted in making GNU CC work on HP-UX
+for the 9000 series 300.
+
+@item
+William Schelter did most of the work on the Intel 80386 support.
+
+@item
+Christopher Smith did the port for Convex machines.
+
+@item
+Paul Petersen wrote the machine description for the Alliant FX/8.
+
+@item
+Dario Dariol contributed the four varieties of sample programs that
+print a copy of their source.
+
+@item
+Alain Lichnewsky ported GNU CC to the Mips cpu.
+
+@item
+Devon Bowen, Dale Wiles and Kevin Zachmann ported GNU CC to the
+Tahoe.
+
+@item
+Jonathan Stone wrote the machine description for the Pyramid
+computer.
+
+@item
+Gary Miller ported GNU CC to Charles River Data Systems machines.
+
+@item
+Richard Kenner of the New York University Ultracomputer Research
+Laboratory wrote the machine descriptions for the AMD 29000, the DEC
+Alpha, the IBM RT PC, and the IBM RS/6000 as well as the support for
+instruction attributes.  He also made changes to better support RISC
+processors including changes to common subexpression elimination,
+strength reduction, function calling sequence handling, and
+condition code support, in addition to generalizing the code for
+frame pointer elimination.
+
+@item
+Richard Kenner and Michael Tiemann jointly developed reorg.c, the
+delay slot scheduler.
+
+@item
+Mike Meissner and Tom Wood of Data General finished the port to the
+Motorola 88000.
+
+@item
+Masanobu Yuhara of Fujitsu Laboratories implemented the machine
+description for the Tron architecture (specifically, the Gmicro).
+
+@item
+James van Artsdalen wrote the code that makes efficient use of the
+Intel 80387 register stack.
+
+@item
+Mike Meissner at the Open Software Foundation finished the port to
+the MIPS cpu, including adding ECOFF debug support, and worked on
+the Intel port for the Intel 80386 cpu.
+
+@item
+Ron Guilmette implemented the @code{protoize} and @code{unprotoize}
+tools, the support for Dwarf symbolic debugging information, and
+much of the support for System V Release 4.  He has also worked
+heavily on the Intel 386 and 860 support.
+
+@item
+Torbjorn Granlund implemented multiply- and divide-by-constant
+optimization, improved long long support, and improved leaf function
+register allocation.
+
+@item
+Mike Stump implemented the support for Elxsi 64 bit CPU.
+
+@item
+John Wehle added the machine description for the Western Electric
+32000 processor used in several 3b series machines (no relation to
+the National Semiconductor 32000 processor).
+
+@end itemize
+@end ifclear

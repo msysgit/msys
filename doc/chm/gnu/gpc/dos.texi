@@ -1,0 +1,228 @@
+@c Generated automatically from dos.pas
+@c DO NOT CHANGE THIS FILE MANUALLY!
+
+@example
+@{ Portable BP compatible Dos unit
+
+  This unit supports most of the routines and declarations of BP's
+  Dos unit.
+
+  Notes:
+
+  - The procedures Keep, GetIntVec, SetIntVec are not supported
+    since they make only sense for Dos real-mode programs (and GPC
+    compiled programs do not run in real-mode, even on IA32 under
+    Dos). The procedures Intr and MsDos are only supported under
+    DJGPP if @samp{__BP_UNPORTABLE_ROUTINES__} is defined (with the
+    @samp{-D__BP_UNPORTABLE_ROUTINES__} option). A few other routines are
+    also only supported with this define, but on all platforms (but
+    they are crude hacks, that's why they are not supported without
+    this define).
+
+  - The internal structure of file variables (FileRec and TextRec)
+    is different in GPC. However, as far as TFDDs are concerned,
+    there are other ways to achieve the same in GPC, see the GPC
+    unit.
+
+  Copyright (C) 1998-2002 Free Software Foundation, Inc.
+
+  Authors: Frank Heckenbach <frank@@pascal.gnu.de>
+           Prof. Abimbola A. Olowofoyeku <African_Chief@@bigfoot.com>
+
+  This file is part of GNU Pascal.
+
+  GNU Pascal is free software; you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published
+  by the Free Software Foundation; either version 2, or (at your
+  option) any later version.
+
+  GNU Pascal is distributed in the hope that it will be useful, but
+  WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with GNU Pascal; see the file COPYING. If not, write to the
+  Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
+  02111-1307, USA.
+
+  As a special exception, if you link this file with files compiled
+  with a GNU compiler to produce an executable, this does not cause
+  the resulting executable to be covered by the GNU General Public
+  License. This exception does not however invalidate any other
+  reasons why the executable file might be covered by the GNU
+  General Public License. @}
+
+@{$gnu-pascal,I-@}
+@{$if __GPC_RELEASE__ < 20020225@}
+@{$error This unit requires GPC release 20020225 or newer.@}
+@{$endif@}
+
+unit Dos;
+
+interface
+
+@{ GPC and this unit use @samp{AnyFile} for different meanings. Import
+  renaming helps us to avoid a conflict here. If you use both units,
+  the meaning of the latter one will be effective, but you always
+  get the meaning from the GPC module by using @samp{GPC_AnyFile}. @}
+import GPC (AnyFile => Internal_GPC_AnyFile); System;
+
+type
+  GPC_AnyFile = Internal_GPC_AnyFile;
+  Byte8 = Cardinal (8);
+  TDosAttr = Word;
+
+const
+  @{ File attribute constants @}
+  ReadOnly  = $01;
+  Hidden    = $02;  @{ set for dot files except '.' and '..' @}
+  SysFile   = $04;  @{ not supported @}
+  VolumeID  = $08;  @{ not supported @}
+  Directory = $10;
+  Archive   = $20;  @{ means: not executable @}
+  @{$local W-@} AnyFile   = $3f; @{$endlocal@}
+
+  @{ Flag bit masks -- only used by the unportable Dos routines @}
+  FCarry     = 1;
+  FParity    = 4;
+  FAuxiliary = $10;
+  FZero      = $40;
+  FSign      = $80;
+  FOverflow  = $800;
+
+  @{ DosError codes @}
+  DosError_FileNotFound = 2;
+  DosError_PathNotFound = 3;
+  DosError_AccessDenied = 5;
+  DosError_InvalidMem   = 9;
+  DosErorr_InvalidEnv   = 10;
+  DosError_NoMoreFiles  = 18;
+  DosError_IOError      = 29;
+  DosError_ReadFault    = 30;
+
+type
+  @{ String types. Not used in this unit, but declared for
+    compatibility. @}
+  ComStr  = String [127];  @{ Command line string @}
+  PathStr = String [79];   @{ File pathname string @}
+  DirStr  = String [67];   @{ Drive and directory string @}
+  NameStr = String [8];    @{ File name string @}
+  ExtStr  = String [4];    @{ File extension string @}
+
+  TextBuf = array [0 .. 127] of Char;
+
+  @{ Search record used by FindFirst and FindNext @}
+  SearchRecFill = packed array [1 .. 21] of Byte8;
+  SearchRec = @{$ifdef __BP_TYPE_SIZES__@} packed @{$endif@} record
+    Fill: SearchRecFill;
+    Attr: Byte8;
+    Time,
+    Size: LongInt;
+    Name: @{$ifdef __BP_TYPE_SIZES__@}
+          String [12]
+          @{$else@}
+          TString
+          @{$endif@}
+  end;
+
+  @{ Date and time record used by PackTime and UnpackTime @}
+  DateTime = record
+    Year, Month, Day, Hour, Min, Sec: Word
+  end;
+
+  @{ 8086 CPU registers -- only used by the unportable Dos routines @}
+  Registers = record
+  case Boolean of
+    False: (AX, BX, CX, DX, BP, SI, DI, DS, ES, Flags: Word16);
+    True : (AL, AH, BL, BH, CL, CH, DL, DH: Byte8)
+  end;
+
+var
+  @{ Error status variable @}
+  DosError: Integer = 0; asmname '_p_DosError';
+
+procedure GetDate (var Year, Month, Day, DayOfWeek: Word);
+  asmname '_p_getdate';
+procedure GetTime (var Hour, Minute, Second, Sec100: Word);
+  asmname '_p_gettime';
+procedure GetCBreak (var BreakOn: Boolean); asmname '_p_getcbreak';
+procedure SetCBreak (BreakOn: Boolean); asmname '_p_setcbreak';
+@{ GetVerify and SetVerify are dummies except for DJGPP (in the
+  assumption that any real OS knows by itself when and how to verify
+  its disks). @}
+procedure GetVerify (var VerifyOn: Boolean); asmname '_p_getverify';
+procedure SetVerify (VerifyOn: Boolean); asmname '_p_setverify';
+function  DiskFree (Drive: Byte): LongInt; asmname '_p_diskfree';
+function  DiskSize (Drive: Byte): LongInt; asmname '_p_disksize';
+procedure GetFAttr (var F @{ @@@@ anyfile: GPC_AnyFile @} ; var Attr:
+  TDosAttr); asmname '_p_getfattr';
+procedure SetFAttr (var F @{ @@@@ anyfile: GPC_AnyFile @} ; Attr:
+  TDosAttr); asmname '_p_setfattr';
+procedure GetFTime (var F @{ @@@@ anyfile: GPC_AnyFile @} ; var aTime:
+  LongInt); asmname '_p_getftime';
+procedure SetFTime (var F @{ @@@@ anyfile: GPC_AnyFile @} ; aTime:
+  LongInt); asmname '_p_setftime';
+
+@{ FindFirst and FindNext are quite inefficient since they emulate
+  all the brain-dead Dos stuff. If at all possible, the standard
+  routines OpenDir, ReadDir and CloseDir (in the GPC unit) should be
+  used instead. @}
+procedure FindFirst (const Path: String; Attr: TDosAttr; var SR:
+  SearchRec); asmname '_p_findfirst';
+procedure FindNext  (var SR: SearchRec); asmname '_p_findnext';
+
+procedure FindClose (var SR: SearchRec); asmname '_p_findclose';
+procedure UnpackTime (P: LongInt; var T: DateTime);
+  asmname '_p_unpacktime';
+procedure PackTime (const T: DateTime; var P: LongInt);
+  asmname '_p_packtime';
+function  FSearch (const aFileName, DirList: String): TString;
+  asmname '_p_fsearch';
+function  FExpand (const Path: String): TString;
+  asmname '_p_fexpand';
+procedure FSplit  (const Path: String; var Dir, Name, Ext: String);
+  asmname '_p_fsplit';
+function  EnvCount: Integer;
+function  EnvStr (EnvIndex: Integer): TString;
+function  GetEnv (const EnvVar: String): TString;
+  asmname '_p_getenv';
+procedure SwapVectors;
+@{ Exec executes a process via Execute, so RestoreTerminal is called
+  with the argument True before and False after executing the
+  process. @}
+procedure Exec (const Path, Params: String);
+function  DosExitCode: Word;
+
+@{ Unportable Dos-only routines and declarations @}
+
+@{$ifdef __BP_UNPORTABLE_ROUTINES__@}
+@{$ifdef DJGPP@}
+@{ These are unportable Dos-only declarations and routines, since
+  interrupts are Dos and CPU specific (and have no place in a
+  high-level program, anyway). @}
+procedure Intr (IntNo: Byte; var Regs: Registers);
+  asmname '_p_intr';
+procedure MsDos (var Regs: Registers); asmname '_p_msdos';
+@{$endif@}
+
+@{ Though probably all non-Dos system have versions numbers as well,
+  returning them here would usually not do what is expected, e.g.
+  testing if certain Dos features are present by comparing the
+  version number. Therefore, this routine always returns 7 (i.e.,
+  version 7.0) on non-Dos systems, in the assumption that any real
+  OS has at least the features of Dos 7. @}
+function  DosVersion: Word; asmname '_p_dosversion';
+
+@{ Changing the system date and time is a system administration task,
+  not allowed to a normal process. On non-Dos systems, these
+  routines emulate the changed date/time, but only for GetTime and
+  GetDate (not the RTS date/time routines), and only for this
+  process, not for child processes or even the parent process or
+  system-wide. @}
+procedure SetDate (Year, Month, Day: Word); asmname '_p_setdate';
+procedure SetTime (Hour, Minute, Second, Sec100: Word);
+  asmname '_p_settime';
+@{$endif@}
+
+@end example

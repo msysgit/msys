@@ -1,0 +1,242 @@
+@c Generated automatically from regex.pas
+@c DO NOT CHANGE THIS FILE MANUALLY!
+
+@example
+@{$nested-comments@}
+
+@{ Regular expression matching and replacement
+
+  The RegEx unit provides routines to match strings against regular
+  expressions and perform substitutions using matched
+  subexpressions.
+
+  To use the RegEx unit, you will need the rx library which can be
+  found in http://www.gnu-pascal.de/libs/
+
+  Regular expressions are strings with some characters having
+  special meanings. They describe (match) a class of strings. They
+  are similar to wild cards used in file name matching, but much
+  more powerful.
+
+  There are two kinds of regular expressions supported by this unit,
+  basic and extended regular expressions. The difference between
+  them is not functionality, but only syntax. The following is a
+  short overview of regular expressions. For a more thorough
+  explanation see the literature, or the documentation of the rx
+  library, or man pages of programs like grep(1) and sed(1).
+
+  Basic           Extended        Meaning
+  @samp{.}             @samp{.}             matches any single character
+  @samp{[aei-z]}       @samp{[aei-z]}       matches either @samp{a}, @samp{e}, or any
+                                  character from @samp{i} to @samp{z}
+  @samp{[^aei-z]}      @samp{[^aei-z]}      matches any character but @samp{a},
+                                  @samp{e}, or @samp{i} .. @samp{z}
+                                  To include in such a list the the
+                                  characters @samp{]}, @samp{^}, or @samp{-}, put
+                                  them first, anywhere but first, or
+                                  first or last, resp.
+  @samp{[[:alnum:]]}   @samp{[[:alnum:]]}   matches any alphanumeric character
+  @samp{[^[:digit:]]}  @samp{[^[:digit:]]}  matches anything but a digit
+  @samp{[a[:space:]]}  @samp{[a[:space:]]}  matches the letter @samp{a} or a space
+                                  character (space, tab)
+  ...                             (there are more classes available)
+  @samp{\w}            @samp{\w}            = [[:alnum:]]
+  @samp{\W}            @samp{\W}            = [^[:alnum:]]
+  @samp{^}             @samp{^}             matches the empty string at the
+                                  beginning of a line
+  @samp{$}             @samp{$}             matches the empty string at the
+                                  end of a line
+  @samp{*}             @samp{*}             matches zero or more occurences of
+                                  the preceding expression
+  @samp{\+}            @samp{+}             matches one or more occurences of
+                                  the preceding expression
+  @samp{\?}            @samp{?}             matches zero or one occurence of
+                                  the preceding expression
+  @samp{\@{N\@}}         @samp{@{N@}}           matches exactly N occurences of
+                                  the preceding expression (N is an
+                                  integer number)
+  @samp{\@{M,N\@}}       @samp{@{M,N@}}         matches M to N occurences of the
+                                  preceding expression (M and N are
+                                  integer numbers, M <= N)
+  @samp{AB}            @samp{AB}            matches A followed by B (A and B
+                                  are regular expressions)
+  @samp{A\|B}          @samp{A|B}           matches A or B (A and B are
+                                  regular expressions)
+  @samp{\( \)}         @samp{( )}           forms a subexpression, to override
+                                  precedence, and for subexpression
+                                  references
+  @samp{\7}            @samp{\7}            matches the 7'th parenthesized
+                                  subexpression (counted by their
+                                  start in the regex), where 7 is a
+                                  number from 1 to 9 ;-).
+                                  *Please note:* using this feature
+                                  can be *very* slow or take very
+                                  much memory (exponential time and
+                                  space in the worst case, if you
+                                  know what that means ...).
+  @samp{\}             @samp{\}             quotes the following character if
+                                  it's special (i.e. listed above)
+  rest            rest            any other character matches itself
+
+  Precedence, from highest to lowest:
+  * parentheses (@samp{()})
+  * repetition (@samp{*}, @samp{+}, @samp{?}, @samp{@{@}})
+  * concatenation
+  * alternation (@samp{|})
+
+  When performing substitutions using matched subexpressions of a
+  regular expression (see @samp{ReplaceSubExpressionReferences}), the
+  replacement string can reference the whole matched expression with
+  @samp{&} or @samp{\0}, the 7th subexpression with @samp{\7} (just like in the
+  regex itself, but using it in replacements is not slow), and the
+  7th subexpression converted to upper/lower case with @samp{\u7} or
+  @samp{\l7}, resp. (which also works for the whole matched expression
+  with @samp{\u0} or @samp{\l0}). A verbatim @samp{&} or @samp{\} can be specified with
+  @samp{\&} or @samp{\\}, resp.
+
+  Copyright (C) 1998-2002 Free Software Foundation, Inc.
+
+  Author: Frank Heckenbach <frank@@pascal.gnu.de>
+
+  This file is part of GNU Pascal.
+
+  GNU Pascal is free software; you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published
+  by the Free Software Foundation; either version 2, or (at your
+  option) any later version.
+
+  GNU Pascal is distributed in the hope that it will be useful, but
+  WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with GNU Pascal; see the file COPYING. If not, write to the
+  Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
+  02111-1307, USA.
+
+  As a special exception, if you link this file with files compiled
+  with a GNU compiler to produce an executable, this does not cause
+  the resulting executable to be covered by the GNU General Public
+  License. This exception does not however invalidate any other
+  reasons why the executable file might be covered by the GNU
+  General Public License.
+
+  Please also note the license of the rx library. @}
+
+@{$gnu-pascal,I-@}
+@{$if __GPC_RELEASE__ < 20000412@}
+@{$error This unit requires GPC release 20000412 or newer.@}
+@{$endif@}
+
+unit RegEx;
+
+interface
+
+uses GPC;
+
+const
+  @{ @samp{BasicRegExSpecialChars} contains all characters that have
+    special meanings in basic regular expressions.
+    @samp{ExtRegExSpecialChars} contains those that have special meanings
+    in extended regular expressions. @}
+  BasicRegExSpecialChars = ['.', '[', ']', '^', '$', '*', '\'];
+  ExtRegExSpecialChars   =
+  ['.', '[', ']', '^', '$', '*', '+', '?', '@{', '@}', '|', '(', ')', '\'];
+
+type
+  @{ The type used by the routines of the @samp{RegEx} unit to store
+    regular expressions in an internal format. The fields RegEx,
+    RegMatch, ErrorInternal, From and Length are only used
+    internally. SubExpressions can be read after @samp{NewRegEx} and will
+    contain the number of parenthesized subexpressions. Error should
+    be checked after @samp{NewRegEx}. It will be @samp{nil} when it succeeded,
+    and contain an error message otherwise. @}
+  RegExType = record
+    RegEx, RegMatch: Pointer;  @{ Internal @}
+    ErrorInternal: CString;    @{ Internal @}
+    From, Length: Integer;     @{ Internal @}
+    SubExpressions: Integer;
+    Error: PString
+  end;
+
+@{ Simple interface to regular expression matching. Matches a regular
+  expression against a string starting from a specified position.
+  Returns the position of the first match, or 0 if it does not
+  match, or the regular expression is invalid. @}
+function  RegExPosFrom (const Expression: String; ExtendedRegEx,
+  CaseInsensitive: Boolean; const s: String; From: Integer):
+  Integer; asmname '_p_regexposfrom';
+
+@{ Creates the internal format of a regular expression. If
+  ExtendedRegEx is True, Expression is assumed to denote an extended
+  regular expression, otherwise a basic regular expression.
+  CaseInsensitive determines if the case of letters will be ignored
+  when matching the expression. If NewLines is True, @samp{NewLine}
+  characters in a string matched against the expression will be
+  treated as dividing the string in multiple lines, so that @samp{$} can
+  match before the NewLine and @samp{^} can match after. Also, @samp{.} and
+  @samp{[^...]} will not match a NewLine then. @}
+procedure NewRegEx (var RegEx: RegExType; const Expression: String;
+  ExtendedRegEx, CaseInsensitive, NewLines: Boolean);
+  asmname '_p_newregex';
+
+@{ Disposes of a regular expression created with @samp{NewRegEx}. *Must*
+  be used after @samp{NewRegEx} before the RegEx variable becomes invalid
+  (i.e., goes out of scope or a pointer pointing to it is Dispose'd
+  of). @}
+procedure DisposeRegEx (var RegEx: RegExType);
+  asmname '_p_dispose_regex';
+
+@{ Matches a regular expression created with @samp{NewRegEx} against a
+  string. @}
+function  MatchRegEx (var RegEx: RegExType; const s: String;
+  NotBeginningOfLine, NotEndOfLine: Boolean): Boolean;
+  asmname '_p_matchregex';
+
+@{ Matches a regular expression created with @samp{NewRegEx} against a
+  string, starting from a specified position. @}
+function  MatchRegExFrom (var RegEx: RegExType; const s: String;
+  NotBeginningOfLine, NotEndOfLine: Boolean; From: Integer):
+  Boolean; asmname '_p_matchregexfrom';
+
+@{ Finds out where the regular expression matched, if @samp{MatchRegEx} or
+  @samp{MatchRegExFrom} were successful. If n = 0, it returns the
+  position of the whole match, otherwise the position of the n'th
+  parenthesized subexpression. MatchPosition and MatchLength will
+  contain the position (counted from 1) and length of the match, or
+  0 if it didn't match. (Note: MatchLength can also be 0 for a
+  successful empty match, so check whether MatchPosition is 0 to
+  find out if it matched at all.) MatchPosition or MatchLength may
+  be Null and is ignored then. @}
+procedure GetMatchRegEx (var RegEx: RegExType; n: Integer; var
+  MatchPosition, MatchLength: Integer); asmname '_p_getmatch_regex';
+
+@{ Checks if the string s contains any quoted characters or
+  (sub)expression references to the regular expression RegEx created
+  with @samp{NewRegEx}. These are @samp{&} or @samp{\0} for the whole matched
+  expression (if OnlySub is not set) and @samp{\1} .. @samp{\9} for the n'th
+  parenthesized subexpression. Returns 0 if it does not contain any,
+  and the number of references and quoted characters if it does. If
+  an invalid reference (i.e. a number bigger than the number of
+  subexpressions in RegEx) is found, it returns the negative value
+  of the (first) invalid reference. @}
+function  FindSubExpressionReferences (var RegEx: RegExType; const
+  s: String; OnlySub: Boolean): Integer;
+  asmname '_p_find_subexpressionreferences_regex';
+
+@{ Replaces (sub)expression references in ReplaceStr by the actual
+  (sub)expressions and unquotes quoted characters. To be used after
+  the regular expression RegEx created with @samp{NewRegEx} was matched
+  against s successfully with @samp{MatchRegEx} or @samp{MatchRegExFrom}. @}
+function  ReplaceSubExpressionReferences (var RegEx: RegExType;
+  const s, ReplaceStr: String): TString;
+  asmname '_p_replace_subexpressionreferences_regex';
+
+@{ Returns the string for a regular expression that matches exactly
+  one character out of the given set. It can be combined with the
+  usual operators to form more complex expressions. @}
+function  CharSet2RegEx (const Characters: CharSet): TString;
+  asmname '_p_CharSet2RegEx';
+
+@end example

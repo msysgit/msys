@@ -1,0 +1,211 @@
+@c Generated automatically from windos.pas
+@c DO NOT CHANGE THIS FILE MANUALLY!
+
+@example
+@{ Mostly BP compatible portable WinDos unit
+
+  This unit supports most, but not all, of the routines and
+  declarations of BP's WinDos unit.
+
+  Notes:
+
+  - The procedures GetIntVec and SetIntVec are not supported since
+    they make only sense for Dos real-mode programs (and GPC
+    compiled programs do not run in real-mode, even on IA32 under
+    Dos). The procedures Intr and MsDos are only supported under
+    DJGPP if @samp{__BP_UNPORTABLE_ROUTINES__} is defined (with the
+    @samp{-D__BP_UNPORTABLE_ROUTINES__} option). A few other routines are
+    also only supported with this define, but on all platforms (but
+    they are crude hacks, that's why they are not supported without
+    this define).
+
+  - The internal structure of file variables (TFileRec and TTextRec)
+    is different in GPC. However, as far as TFDDs are concerned,
+    there are other ways to achieve the same in GPC, see the GPC
+    unit.
+
+  Copyright (C) 1998-2002 Free Software Foundation, Inc.
+
+  Author: Frank Heckenbach <frank@@pascal.gnu.de>
+
+  This file is part of GNU Pascal.
+
+  GNU Pascal is free software; you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published
+  by the Free Software Foundation; either version 2, or (at your
+  option) any later version.
+
+  GNU Pascal is distributed in the hope that it will be useful, but
+  WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with GNU Pascal; see the file COPYING. If not, write to the
+  Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
+  02111-1307, USA.
+
+  As a special exception, if you link this file with files compiled
+  with a GNU compiler to produce an executable, this does not cause
+  the resulting executable to be covered by the GNU General Public
+  License. This exception does not however invalidate any other
+  reasons why the executable file might be covered by the GNU
+  General Public License. @}
+
+@{$gnu-pascal,I-@}
+@{$if __GPC_RELEASE__ < 20020225@}
+@{$error This unit requires GPC release 20020225 or newer.@}
+@{$endif@}
+
+@{ @@@@ Work-around for a problem with COFF debug info. Will hopefully
+     disappear with qualified identifiers. @}
+@{$ifdef DJGPP@}
+@{$local W-@} @{$no-debug-info@} @{$endlocal@}
+@{$endif@}
+
+unit WinDos;
+
+interface
+
+import GPC; System; Dos (FCarry     => Dos_FCarry,
+                         FParity    => Dos_FParity,
+                         FAuxiliary => Dos_FAuxiliary,
+                         FZero      => Dos_FZero,
+                         FSign      => Dos_FSign,
+                         FOverflow  => Dos_FOverflow,
+                         DosError   => Dos_DosError,
+                         GetCBreak  => Dos_GetCBreak,
+                         SetCBreak  => Dos_SetCBreak,
+                         GetVerify  => Dos_GetVerify,
+                         SetVerify  => Dos_SetVerify,
+                         @{$ifdef __BP_UNPORTABLE_ROUTINES__@}
+                         @{$ifdef DJGPP@}
+                         Intr       => Dos_Intr,
+                         MsDos      => Dos_MsDos,
+                         @{$endif@}
+                         DosVersion => Dos_DosVersion,
+                         SetDate    => Dos_SetDate,
+                         SetTime    => Dos_SetTime,
+                         @{$endif@}
+                         FindFirst  => Dos_FindFirst,
+                         FindNext   => Dos_FindNext,
+                         FindClose  => Dos_FindClose);
+
+const
+  @{ File attribute constants @}
+  faReadOnly  = ReadOnly;
+  faHidden    = Hidden;    @{ set for dot files except @samp{.} and @samp{..} @}
+  faSysFile   = SysFile;   @{ not supported @}
+  faVolumeID  = VolumeID;  @{ not supported @}
+  faDirectory = Directory;
+  faArchive   = Archive;   @{ means: not executable @}
+  faAnyFile   = AnyFile;
+
+  @{ Maximum file name component string lengths @}
+  fsPathName  = 79;
+  fsDirectory = 67;
+  fsFileName  = 8;
+  fsExtension = 4;
+
+  @{ FileSplit return flags @}
+  fcExtension = 1;
+  fcFileName  = 2;
+  fcDirectory = 4;
+  fcWildcards = 8;
+
+  @{ Flag bit masks -- only used by the unportable Dos routines @}
+  FCarry     = 1;
+  FParity    = 4;
+  FAuxiliary = $10;
+  FZero      = $40;
+  FSign      = $80;
+  FOverflow  = $800;
+
+type
+  PTextBuf = ^TTextBuf;
+  TTextBuf = TextBuf;
+
+  @{ Search record used by FindFirst and FindNext @}
+  TSearchRec = @{$ifdef __BP_TYPE_SIZES__@} packed @{$endif@} record
+     Fill: SearchRecFill;
+     Attr: Byte8;
+     Time, Size: LongInt;
+     Name: @{$ifdef __BP_TYPE_SIZES__@}
+           packed array [0 .. 12] of Char
+           @{$else@}
+           TStringBuf
+           @{$endif@};
+     Reserved: SearchRec
+  end;
+
+  @{ Date and time record used by PackTime and UnpackTime @}
+  TDateTime = DateTime;
+
+  @{ 8086 CPU registers -- only used by the unportable Dos routines @}
+  TRegisters = Registers;
+
+var
+  @{ Error status variable @}
+  DosError: Integer; asmname '_p_DosError'; external;
+
+procedure GetDate (var Year, Month, Day, DayOfWeek: Word);
+  asmname '_p_getdate';
+procedure GetTime (var Hour, Minute, Second, Sec100: Word);
+  asmname '_p_gettime';
+procedure GetCBreak (var BreakOn: Boolean); asmname '_p_getcbreak';
+procedure SetCBreak (BreakOn: Boolean); asmname '_p_setcbreak';
+procedure GetVerify (var VerifyOn: Boolean); asmname '_p_getverify';
+procedure SetVerify (VerifyOn: Boolean); asmname '_p_setverify';
+function  DiskFree (Drive: Byte): LongInt; asmname '_p_diskfree';
+function  DiskSize (Drive: Byte): LongInt; asmname '_p_disksize';
+procedure GetFAttr (var F @{ @@@@ anyfile: GPC_AnyFile @} ; var Attr:
+  TDosAttr); asmname '_p_getfattr';
+procedure SetFAttr (var F @{ @@@@ anyfile: GPC_AnyFile @} ; Attr:
+  TDosAttr); asmname '_p_setfattr';
+procedure GetFTime (var F @{ @@@@ anyfile: GPC_AnyFile @} ; var aTime:
+  LongInt); asmname '_p_getftime';
+procedure SetFTime (var F @{ @@@@ anyfile: GPC_AnyFile @} ; aTime:
+  LongInt); asmname '_p_setftime';
+
+@{ FindFirst and FindNext are quite inefficient since they emulate
+  all the brain-dead Dos stuff. If at all possible, the standard
+  routines OpenDir, ReadDir and CloseDir (in the GPC unit) should be
+  used instead. @}
+procedure FindFirst (Path: PChar; Attr: Word; var SR: TSearchRec);
+  asmname '_p_wfindfirst';
+procedure FindNext  (var SR: TSearchRec); asmname '_p_wfindnext';
+procedure FindClose (var SR: TSearchRec); asmname '_p_wfindclose';
+procedure UnpackTime (P: LongInt; var T: TDateTime);
+  asmname '_p_unpacktime';
+procedure PackTime (const T: TDateTime; var P: LongInt);
+  asmname '_p_packtime';
+function  FileSearch (Dest, Name, List: PChar): PChar;
+  asmname '_p_wfilesearch';
+function  FileExpand (Dest, Name: PChar): PChar;
+  asmname '_p_wfileexpand';
+function  FileSplit (Path, Dir, Name, Ext: PChar): Word;
+  asmname '_p_wfilesplit';
+function  GetCurDir (Dir: PChar; Drive: Byte): PChar;
+  asmname '_p_wgetcurdir';
+procedure SetCurDir (Dir: PChar); asmname '_p_wsetcurdir';
+procedure CreateDir (Dir: PChar); asmname '_p_wcreatedir';
+procedure RemoveDir (Dir: PChar); asmname '_p_wremovedir';
+function  GetArgCount: Integer; asmname '_p_wgetargcount';
+function  GetArgStr (Dest: PChar; ArgIndex: Integer; MaxLen: Word):
+  PChar; asmname '_p_wgetargstr';
+function  GetEnvVar (VarName: PChar): PChar;
+  asmname '_p_cstringgetenv';
+
+@{$ifdef __BP_UNPORTABLE_ROUTINES__@}
+@{$ifdef DJGPP@}
+procedure Intr (IntNo: Byte; var Regs: Registers);
+  asmname '_p_intr';
+procedure MsDos (var Regs: Registers); asmname '_p_msdos';
+@{$endif@}
+function  DosVersion: Word; asmname '_p_dosversion';
+procedure SetDate (Year, Month, Day: Word); asmname '_p_setdate';
+procedure SetTime (Hour, Minute, Second, Sec100: Word);
+  asmname '_p_settime';
+@{$endif@}
+
+@end example

@@ -1,0 +1,346 @@
+@c Generated automatically from system.pas
+@c DO NOT CHANGE THIS FILE MANUALLY!
+
+@example
+@{ BP and partly Delphi compatible System unit for GPC
+
+  This unit is released as part of the GNU Pascal project. It
+  implements some rather exotic BP and Delphi compatibility
+  features. Even many BP and Delphi programs don't need them, but
+  they're here for maximum compatibility. Most of BP's and Delphi's
+  System units' features are built into the compiler or the RTS.
+
+  Note: The things in this unit are really exotic. If you haven't
+  used BP or Delphi before, you don't want to look at this unit. :-)
+
+  This unit depends on the conditional defines @samp{__BP_TYPE_SIZES__},
+  @samp{__BP_RANDOM__} and @samp{__BP_PARAMSTR_0__}.
+
+  If @samp{__BP_TYPE_SIZES__} is defined (with the @samp{-D__BP_TYPE_SIZES__}
+  option), the integer data types will be redefined to the sizes
+  they have in BP or Delphi. Note that this might cause problems,
+  e.g. when passing var parameters of integer types between units
+  that do and don't use System. However, of the BP compatibility
+  units, only Dos and WinDos use such parameters, and they have been
+  taken care of so they work.
+
+  If @samp{__BP_RANDOM__} is defined (@samp{-D__BP_RANDOM__}), this unit will
+  provide an exactly BP compatible pseudo random number generator.
+  In particular, the range for integer randoms will be truncated to
+  16 bits like in BP. The RandSeed variable is provided, and if it's
+  set to the same value as BP's RandSeed, it produces exactly the
+  same sequence of pseudo random numbers that BP's pseudo random
+  number generator does (whoever might need this ... ;-). Even the
+  Randomize function will behave exactly like in BP. However, this
+  will not be noted unless one explicitly tests for it.
+
+  If @samp{__BP_PARAMSTR_0__} is defined (@samp{-D__BP_PARAMSTR_0__}), this
+  unit will change the value of @samp{ParamStr (0)} to that of
+  @samp{ExecutablePath}, overwriting the value actually passed by the
+  caller, to imitate BP's/Dos's behaviour. However *note*: On most
+  systems, @samp{ExecutablePath} is *not* guaranteed to return the full
+  path, so defining this symbol doesn't change anything. In general,
+  you *cannot* expect to find the full executable path, so better
+  don't even try it, or your program will (at best) run on some
+  systems. For most cases where BP programs access their own
+  executable, there are cleaner alternatives available.
+
+  Copyright (C) 1998-2002 Free Software Foundation, Inc.
+
+  Authors: Peter Gerwinski <peter@@gerwinski.de>
+           Prof. Abimbola A. Olowofoyeku <African_Chief@@bigfoot.com>
+           Frank Heckenbach <frank@@pascal.gnu.de>
+           Dominik Freche <dominik.freche@@gmx.net>
+
+  This file is part of GNU Pascal.
+
+  GNU Pascal is free software; you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published
+  by the Free Software Foundation; either version 2, or (at your
+  option) any later version.
+
+  GNU Pascal is distributed in the hope that it will be useful, but
+  WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+  General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with GNU Pascal; see the file COPYING. If not, write to the
+  Free Software Foundation, 59 Temple Place - Suite 330, Boston, MA
+  02111-1307, USA.
+
+  As a special exception, if you link this file with files compiled
+  with a GNU compiler to produce an executable, this does not cause
+  the resulting executable to be covered by the GNU General Public
+  License. This exception does not however invalidate any other
+  reasons why the executable file might be covered by the GNU
+  General Public License. @}
+
+@{$gnu-pascal,I-@}
+@{$if __GPC_RELEASE__ < 20020225@}
+@{$error This unit requires GPC release 20020225 or newer.@}
+@{$endif@}
+
+unit System;
+
+interface
+
+import GPC (MaxLongInt => GPC_MaxLongInt);
+
+var
+  @{ Chain of procedures to be executed at the end of the program @}
+  ExitProc: ^procedure = nil;
+
+  @{ Contains all the command line arguments passed to the program,
+    concatenated, with spaces between them @}
+  CmdLine: CString;
+
+  @{$ifdef __BP_RANDOM__@}
+  @{ Random seed, initialized by Randomize, but can also be set
+    explicitly @}
+  RandSeed: Integer (32) = 0;
+  @{$endif@}
+
+type
+  OrigInt = Integer;
+  OrigWord = Word;
+
+  @{ needed in the Dos unit @}
+  Int7 = Integer (7);
+  Word16 = Word (16);
+  Word32 = Word (32);
+
+  @{ Delphi @}
+  SmallInt = Integer  (16);
+  DWord    = Cardinal (32);
+
+  @{ Short BP compatible type sizes if wanted @}
+  @{$ifdef __BP_TYPE_SIZES__@}
+  ByteBool = Boolean  (8);
+  WordBool = Boolean  (16);
+  LongBool = Boolean  (32);
+  Boolean  = ByteBool;      @{ important in packed records and arrays
+  @}
+  ShortInt = Integer  (8);
+  Byte     = Cardinal (8);
+  Word     = Cardinal (16);
+  LongInt  = Integer  (32);
+  Comp     = Integer  (64);
+  LongWord = Cardinal (32);  @{ Delphi @}
+  Integer  = Integer  (16);
+  @{$endif@}
+
+  @{$if False@}  @{ @@@@ doesn't work well (dialec3.pas) -- when GPC gets
+  short
+                    strings, it will be unnecessary @}
+  @{$ifdef __BORLAND_PASCAL__@}
+  String = String [255];
+  @{$endif@}
+  @{$endif@}
+
+const
+  MaxInt     = High (Integer);
+  MaxLongInt = High (LongInt);
+
+@{ Return the lowest-order byte of x @}
+function  Lo (x: LongestInt): Byte; asmname '_p_Lo';
+
+@{ Return the lowest-but-one-order byte of x @}
+function  Hi (x: LongestInt): Byte; asmname '_p_Hi';
+
+@{ Swap the lowest- and lowest-but-one-order bytes, mask out the
+  higher ones @}
+function  Swap (x: LongestInt): Word; asmname '_p_Swap';
+
+@{ Store the current directory name (on the given drive number if
+  drive <> 0) in s @}
+procedure GetDir (Drive: Byte; var s: String); asmname '_p_GetDir';
+
+@{ Dummy routine for compatibility. @@@@Use two overloaded versions
+  rather than varargs when possible. @}
+procedure SetTextBuf (var f: Text; var Buf; ...);
+  asmname '_p_SetTextBuf';
+
+@{ Mostly useless BP compatible variables @}
+var
+  SelectorInc: Word = $1000;
+  Seg0040: Word = $40;
+  SegA000: Word = $a000;
+  SegB000: Word = $b000;
+  SegB800: Word = $b800;
+  Test8086: Byte = 2;
+  Test8087: Byte = 3;  @{ floating-point arithmetic is emulated
+                         transparently by the OS if not present
+                         in hardware @}
+  OvrCodeList: Word = 0;
+  OvrHeapSize: Word = 0;
+  OvrDebugPtr: Pointer = nil;
+  OvrHeapOrg: Word = 0;
+  OvrHeapPtr: Word = 0;
+  OvrHeapEnd: Word = 0;
+  OvrLoadList: Word = 0;
+  OvrDosHandle: Word = 0;
+  OvrEmsHandle: Word = $ffff;
+  HeapOrg: Pointer absolute HeapBegin;
+  HeapPtr: Pointer absolute HeapHigh;
+  HeapEnd: Pointer = Pointer (High (PtrCard));
+  FreeList: Pointer = nil;
+  FreeZero: Pointer = nil;
+  StackLimit: Word = 0;
+  HeapList: Word = 0;
+  HeapLimit: Word = 1024;
+  HeapBlock: Word = 8192;
+  HeapAllocFlags: Word = 2;
+  CmdShow: Integer = 0;
+  SaveInt00: Pointer = nil;
+  SaveInt02: Pointer = nil;
+  SaveInt0C: Pointer = nil;
+  SaveInt0D: Pointer = nil;
+  SaveInt1B: Pointer = nil;
+  SaveInt21: Pointer = nil;
+  SaveInt23: Pointer = nil;
+  SaveInt24: Pointer = nil;
+  SaveInt34: Pointer = nil;
+  SaveInt35: Pointer = nil;
+  SaveInt36: Pointer = nil;
+  SaveInt37: Pointer = nil;
+  SaveInt38: Pointer = nil;
+  SaveInt39: Pointer = nil;
+  SaveInt3A: Pointer = nil;
+  SaveInt3B: Pointer = nil;
+  SaveInt3C: Pointer = nil;
+  SaveInt3D: Pointer = nil;
+  SaveInt3E: Pointer = nil;
+  SaveInt3F: Pointer = nil;
+  SaveInt75: Pointer = nil;
+  RealModeRegs: array [0 .. 49] of Byte =
+    (0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+     0, 0, 0, 0, 0, 0, 0, 0);
+
+@{ Mostly useless BP compatible pointer functions @}
+function  Ofs (const X): PtrWord; asmname '_p_Ofs';
+function  Seg (const X): PtrWord; asmname '_p_Seg';
+function  Ptr (Seg, Ofs: PtrWord): Pointer; asmname '_p_Ptr';
+function  CSeg: PtrWord; asmname '_p_CSeg';
+function  DSeg: PtrWord; asmname '_p_DSeg';
+function  SSeg: PtrWord; asmname '_p_SSeg';
+function  SPtr: PtrWord; asmname '_p_SPtr';
+
+@{ Routines to handle BP's 6 byte @samp{Real} type which is formatted like
+  this:
+
+  47                                                   0
+  -|------- -------- -------- -------- --------|--------
+   |                                           |
+   +----------+                   +------------+
+  47 Sign Bit |  8..46 Mantissa   | 0..7 Biased Exponent
+
+  This format does not support infinities, NaNs and denormalized
+  numbers. The first digit after the binary point is not stored and
+  assumed to be 1. (This is called the normalized representation of
+  a binary floating point number.)
+
+  In GPC, this type is represented by the type @samp{BPReal} which is
+  binary compatible to BP's type, and can therefore be used in
+  connection with binary files used by BP programs.
+
+  The functions @samp{RealToBPReal} and @samp{BPRealToReal} convert between
+  this type and GPC's @samp{Real} type. Apart from that, @samp{BPReal} should
+  be treated as opaque.
+
+  The variables @samp{BPRealIgnoreOverflow} and @samp{BPRealIgnoreUnderflow}
+  determine what to do in the case of overflows and underflows. The
+  default values are BP compatible. @}
+
+var
+  @{ Ignore overflows, and use the highest possible value instead. @}
+  BPRealIgnoreOverflow: Boolean = False;
+
+  @{ Ignore underflows, and use 0 instead. This is BP's behaviour,
+    but has the disadvantage of diminishing computation precision. @}
+  BPRealIgnoreUnderflow: Boolean = True;
+
+type
+  BPReal = record
+    Format: array [1 .. 6] of Cardinal (8)
+  end;
+
+function RealToBPReal (R: Real): BPReal; asmname '_p_RealToBPReal';
+function BPRealToReal (const BR: BPReal): Real;
+  asmname '_p_BPRealToReal';
+
+@{ Heap management stuff @}
+
+const
+  @{ Possible return values for HeapError @}
+  HeapErrorRunError = 0;
+  HeapErrorNil      = 1;
+  HeapErrorRetry    = 2;
+
+var
+  @{ If assigned to a function, it will be called when memory
+    allocations do not find enough free memory. Its return value
+    determines if a run time error should be raised (the default),
+    or nil should be returned, or the allocation should be retried
+    (causing the routine to be called again if the allocation still
+    doesn't succeed).
+
+    Notes:
+
+    - Returning nil can cause some routines of the RTS and units
+      (shipped with GPC or third-party) to crash when they don't
+      expect nil, so better don't use this mechanism, but rather
+      CGetMem where needed.
+
+    - Letting the allocation be retried, of course, only makes sense
+      if the routine freed some memory before -- otherwise it will
+      cause an infinite loop! So, a meaningful HeapError routine
+      should dispose of some temporary objects, if available, and
+      return HeapErrorRetry, and return HeapErrorRunError when no
+      (more) of them are available. @}
+  HeapError: ^function (Size: Word): Integer = nil;
+
+@{ Just returns HeapErrorNil. When this function is assigned to
+  HeapError, GetMem and New will return a nil pointer instead of
+  causing a runtime error when the allocation fails. See the comment
+  for HeapError above. @}
+function  HeapErrorNilReturn (Size: Word): Integer;
+  asmname '_p_HeapErrorNilReturn';
+
+@{ Return the total free memory/biggest free memory block. Except
+  under Win32 and DJGPP, these are expensive routines -- try to
+  avoid them. Under Win32, MaxAvail returns the same as MemAvail, so
+  don't rely on being able to allocate a block of memory as big as
+  MaxAvail indicates. Generally it's preferable to not use these
+  functions at all in order to do a safe allocation, but just try to
+  allocate the memory needed using CGetMem, and check for a nil
+  result. What makes these routines unrealiable is, e.g., that on
+  multi-tasking systems, another process may allocate memory after
+  you've called MemAvail/MaxAvail and before you get to do the next
+  allocation. Also, please note that some systems over-commit
+  virtual memory which may cause MemAvail to return a value larger
+  than the actual (physical plus swap) memory available. Therefore,
+  if you want to be "sure" (modulo the above restrictions) that the
+  memory is actually available, use MaxAvail. @}
+function  MemAvail: Cardinal; asmname '_p_MemAvail';
+function  MaxAvail: Cardinal; asmname '_p_MaxAvail';
+
+@{ Delphi compatibility @}
+
+function  CompToDouble (x: Comp): Double; asmname '_p_CompToDouble';
+function  DoubleToComp (x: Double): Comp; asmname '_p_DoubleToComp';
+function  AllocMemCount: Integer; asmname '_p_AllocMemCount';
+function  AllocMemSize: SizeType; asmname '_p_AllocMemSize';
+procedure Assert (Condition: Boolean); asmname '_p_Assert';
+procedure DefaultAssertErrorProc (const Message, FileName: String;
+  LineNumber: Integer; ErrorAddr: Pointer);
+  asmname '_p_DefaultAssertErrorProc';
+
+var
+  AssertErrorProc: ^procedure (const Message, FileName: String;
+  LineNumber: Integer; ErrorAddr: Pointer) =
+  @@DefaultAssertErrorProc;
+  NoErrMsg: Boolean = False;
+
+@end example
