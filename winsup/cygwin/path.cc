@@ -3184,7 +3184,7 @@ msys_p2w (char const * const path)
       || (strchr (path, ';') > 0)
       )
     {
-      debug_printf("returning: %s", path);
+      debug_printf("returning AbsWin32 path: %s", path);
       return ((char *)path);
     }
   //
