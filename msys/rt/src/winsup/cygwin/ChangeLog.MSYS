@@ -1,3 +1,36 @@
+2001-02-20  Earnie Boyd  <earnie@users.sf.net>
+
+	* path.cc (QuotedRelativePath): New function.
+	(cygwin_conv_to_win32_path): Use QuotedRelativePath to filter out
+	conversion.
+	(cygwin_conv_to_win32_path): Modify all \\ to / in the win32_path.
+	* spawn.cc (dup_maybe): Remove extraneous debug strings.
+
+2001-02-06  Earnie Boyd  <earnie@users.sf.net>
+
+	* strace.cc (spawn_guts):  Filter against MAX_PATH overrun.
+	* include/cygwin/version.h: Increment to version 1.0.5
+
+2001-01-25  Earnie Boyd  <earnie@users.sf.net>
+
+	* spawn.cc (spawn_guts): Move path/switch filter code to
+	cygwin_conv_to_win32_path.  Call cygwin_conv_to_win32_path for all
+	command line arguments.
+	* path.cc (cygwin_conv_to_win32_path): Move path/switch filter code
+	from spawn_guts to here.  Pass back input if path not found.
+	(class av::replace): New function.
+	* uname.cc (uname): Change default system to MINGW32.
+	* pinfo.cc (set_myself): Don't OuputDebugString unless strace.active.
+	* include/cygwin/version.h: Increment to version 1.0.4.
+	* include/sys/strace.h (_STRACE_ON): New macro.
+	(_STRACE_OFF): Ditto.
+	(MDEBUG): Ditto.
+
+2002-01-08  Earnie Boyd  <earnie@users.sf.net>
+
+	* spawn.cc (spawn_guts): Enhance path name translation filter.
+	* include/cygwin/version.h: Increment to version 1.0.3.
+
 2001-11-30  Earnie Boyd  <earnie@users.sf.net>
 
 	* spawn.cc (spawn_guts): Add path name translation for newargv.
