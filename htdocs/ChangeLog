@@ -1,3 +1,10 @@
+2003-01-05   Nathan Fisher <natbobc@users.sf.net>
+	
+	* index.shtml: Coloured news section
+	* mingw.css: Created TD class news
+	* mingw.css: Added grey bgcolor
+	* mingw.css: Added width attribute set to 25%
+
 2002-12-27   Nathan Fisher <natbobc@users.sf.net>
 
 	* mingwfaq.shtml: Updated problem with link reference to mingw32-make section

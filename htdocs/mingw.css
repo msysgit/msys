@@ -14,5 +14,6 @@ TABLE.sec { padding: 6px; }
 
 TD { vertical-align: top; }
 TD.side { background-color: rgb( 238, 238, 238 ); width: 10%; }
+TD.news { background-color: grey; width: 25%; }
 
 UL { margin-bottom: 1em; }
