@@ -62,9 +62,11 @@
 <tr>
 <td valign="top" align="left">
 
+<!--#include virtual="news-long.html"-->
+
 <p>Please refer to the 
 <a href="http://www.xraylith.wisc.edu/~khan/software/gnu-win32/">original
-Mingw page</a> while we finish this ... </p>
+Mingw page</a> for old news ... </p>
 
 </td>
 </tr>
