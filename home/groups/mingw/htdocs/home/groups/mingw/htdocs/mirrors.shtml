@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+ <title>Mirror Sites</title>
+ <meta name="Author" content="Mumit Khan" />
+</head>
+<body bgcolor="white" text="black" link="#0000EE" vlink="#551A8B" alink="red">
+
+<h1 align="center">Mirror Sites</h1>
+
+<!-- two-column format: left sidebar and the body -->
+<table border="0" cellspacing="6" cellpadding="8">
+<tr>
+<td bgcolor="#eeeeee" valign="top" width="10%">
+
+<!-- ================================================================== -->
+<!--                                                                    -->
+<!--			     Left Sidebar                               -->
+<!--                                                                    -->
+
+<table border="0">
+
+<tr><td colspan="2"><a href="index.shtml">Mingw Home</a></td></tr>
+
+<tr><td colspan="2"><a href="docs.shtml">Documentation</a></td></tr>
+
+<tr><td><tt>&nbsp;</tt></td>
+<td><small><a href="mingwfaq.shtml">Frequently Asked Questions (FAQ)</a></small></td></tr>
+
+<tr><td colspan="2"><a href="mirrors.shtml">Mirror Sites</a></td></tr>
+
+<tr><td colspan="2"><a href="links.shtml">Related Sites</a></td></tr>
+
+<tr><td colspan="2"><a href="ported.shtml">Ported Software</a></td></tr>
+
+<tr><td colspan="2"><a href="lists.shtml">Mailing Lists</a></td></tr>
+
+<tr><td colspan="2"><a href="licensing.shtml">Licensing Terms</a></td></tr>
+
+<tr><td colspan="2"><a href="who.shtml">Who are we?</a></td></tr>
+
+<tr><td colspan="2"><a href="news.shtml">News</a></td></tr>
+
+<tr><td colspan="2"><a href="history.shtml">Project History</a></td></tr>
+
+</table>
+
+
+</td>
+<!-- 2nd column of two-column format: the body -->
+<td valign="top">
+
+<!-- ================================================================== -->
+<!--                                                                    -->
+<!--			  Main Body                                     -->
+<!--                                                                    -->
+
+<table border="0" cellspacing="6" cellpadding="0">
+<tr>
+<td valign="top" align="left">
+
+<p>The following sites have generously agreed to mirror the MinGW 
+and Cygwin related items. Please pick one closest to you. </p>
+
+<h3>Mirror Sites:</h3>
+<ul>
+<li> USA:
+<ul>
+<li> <a href="ftp://ftp.nanotech.wisc.edu/pub/khan/gnu-win32/">
+ftp://ftp.nanotech.wisc.edu/pub/khan/gnu-win32/ (Madison, WI)</a></li>
+<li> <a href="ftp://ftp.hksys.com/pub/mirrors/EGCS-Win32/">
+ftp://ftp.hksys.com/pub/mirrors/EGCS-Win32/ (Omaha, NE)</a></li>
+</ul></li>
+<li> Asia:
+<ul>
+<li> <a href="ftp://ftp1.sinica.edu.tw/pub3/GNU/gnu-win32/">
+ftp://ftp1.sinica.edu.tw/pub3/GNU/gnu-win32/ (Taiwan)</a></li>
+</ul></li>
+<li> Europe:
+<ul> 
+<li> <a href="ftp://ftp.eq.uc.pt/pub/software/msdos/prog/gnu-win32/">
+ftp://ftp.eq.uc.pt/pub/software/msdos/prog/gnu-win32/ (Portugal)</a></li>
+<li> <a href="ftp://coanda.propulsion.pub.ro/pub/gnu-win32/">
+ftp://coanda.propulsion.pub.ro/pub/gnu-win32/ (Romania)</a></li>
+<li> <a href="ftp://ftp.franken.de/pub/win32/develop/gnuwin32/mingw32/porters/Khan_Mumit">
+ftp://ftp.franken.de/pub/win32/develop/gnuwin32/mingw32/porters/Khan_Mumit/ (Germany)</a></li>
+<li> <a href="ftp://ftp.cc.foi.hr/pub/egcs-win32/">
+ftp://ftp.cc.foi.hr/pub/egcs-win32/ (Croatia)</a></li>
+<li> <a href="http://paddington.ic.uva.nl/mirror/gnu-win32/">
+http://paddington.ic.uva.nl/mirror/gnu-win32/ (Amsterdam)</a></li>
+</ul></li>
+</ul>
+
+<p>
+Many thanks to Jeremy Bettis (Omaha, NE), Nuno Oliveira (Portugal), 
+Sorin Mitran (Romania), Michael Hirmke (Germany), Tein Horng Yuan 
+(Taiwan), Dobrica Pavlinusic (Croatia), and Karel Sprenger (Amsterdam)
+for providing the mirrors.</p>
+
+</td>
+</tr>
+</table>
+
+<!-- <hr noshade="noshade" size="1" /> -->
+
+<!-- Close page table -->
+</td></tr></table>
+
+<!-- ================================================================== -->
+<!--                                                                    -->
+<!--			     Footer                                     -->
+<!--                                                                    -->
+
+<p><i><small>Please send news, announcements, and technical problems 
+(bad html, broken links) concerning these web pages to 
+<a href="mailto:mumit@users.sourceforge.net"> the web page maintainer</a>. 
+We are in the process of creating these web pages, so do expect some
+incomplete pages and broken links. We appreciate your patience. 
+</small></i></p>
+
+<p>
+<a href="http://validator.w3.org/check?uri=http%3A%2F%2Fwww.mingw.org%2Fmirrors.shtml">
+<img border="0" src="vxhtml10.gif" alt="Valid XHTML 1.0!" height="31" 
+width="88" /></a>
+</p>
+
+</body>
+</html>
+
