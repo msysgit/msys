@@ -206,31 +206,34 @@
             <li>
                <h3>How to create a def file for a dll</h3>
                <p>
-                  There are several methods that can be tried in order to create a definition file
-                  (.def) when one is not supplied.
+                  There are several methods that can be tried in order to 
+		  create a definition file (.def) when one is not supplied.
                </p>
                <ul>
                   <li>
-                     One option is the tool, pexports.  A version is available from
-                     <a href="http://www.is.lg.ua/~paul/devel/binutils.html">
-                     http://www.is.lg.ua/~paul/devel/binutils.html</a>.
-                     Another version is available from Anders Norlander's MinGW page listed
-                     in the Other resources section.  If your dll has functions that use
-                     the Pascal calling convention, you'll need to use the <code>-o</code> option.
+                     One option is the tool, pexports which is provided in the
+		     MinGW Utilities package, mingw-utils.  See the Downloads
+		     page for the Current version.  If your dll has functions 
+		     that use the Pascal calling convention, you'll need to use
+		     the <code>-o</code> option.
                   </li>      
                   <li>
                      Another option is the tool,
                      impdef.
-                     More instructions on how to create def files from dlls, a copy of impdef and
-                     more information on how to use it are available at Colin Peters' site.
+                     More instructions on how to create def files from dlls, a 
+		     copy of impdef and more information on how to use it are 
+		     available at Colin Peters' site.
                      See the <a href="#tutorials">Tutorials</a> section.
-                     Other compilers may also supply versions of the impdef program that
-                     can be used to create a .def file which will work with any compiler.  If you
-                     have another version of impdef from another compiler, you may wish to try it.
-                     Some handle the Pascal calling convention better than others.  Borland has
-                     a version of impdef and other compiler utilities available for download at their
-                     Borland Community web site.  Their Borland C++ version 5.5 compiler includes several
-                     utilities to help convert between standard formats, their formats and Microsoft's
+                     Other compilers may also supply versions of the impdef 
+		     program that can be used to create a .def file which will 
+		     work with any compiler.  If you have another version of 
+		     impdef from another compiler, you may wish to try it.
+                     Some handle the Pascal calling convention better than 
+		     others.  Borland has a version of impdef and other 
+		     compiler utilities available for download at their
+                     Borland Community web site.  Their Borland C++ version 
+		     5.5 compiler includes several utilities to help convert 
+		     between standard formats, their formats and Microsoft's
                      formats.
                   </li>
                   <li>
@@ -496,6 +499,6 @@
 </table>
 <!--#include file="ssi/bottombar.html"--><!--#include file="ssi/footer.html"-->
 <address> <br>
-Last revised $Date: 2003-05-27 11:31:50 $ </address>
+Last revised $Date: 2003-12-15 13:29:46 $ </address>
 </body>
 </html>

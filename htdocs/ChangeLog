@@ -1,3 +1,7 @@
+2003-12-15  Earnie Boyd  <earnie@users.sf.net>
+
+	* docs.shtml: Reword the pexports documentation to remove invalid links.
+
 2003-10-14  Earnie Boyd  <earnie@users.sf.net>
 
 	* index.shtml: Clarify ``3rd-party DLLs''.
