@@ -197,8 +197,13 @@ do_link (const char *source, const char *dest)
 	      && isdir (dest)))
 #endif
      )
+
     {
       /* Target is a directory; build the full filename. */
+#if __MSYS__
+      if (! strcmp (dest, ".") || ! strcmp(dest, ".."))
+	  {
+#endif
       char *new_dest;
       PATH_BASENAME_CONCAT (new_dest, dest, source);
       dest = new_dest;
@@ -210,6 +215,9 @@ do_link (const char *source, const char *dest)
 	  error (0, errno, _("accessing %s"), quote (dest));
 	  return 1;
 	}
+#if __MSYS__
+	}
+#endif
     }
 
   /* If --force (-f) has been specified without --backup, then before
@@ -248,8 +256,36 @@ do_link (const char *source, const char *dest)
     {
       if (S_ISDIR (dest_stats.st_mode))
 	{
-	  error (0, 0, _("%s: cannot overwrite directory"), quote (dest));
-	  return 1;
+#if __MSYS__
+	  if (remove_existing_files)
+	    {
+#include "remove.h"
+	      struct rm_options rmopt;
+	      struct File_spec rmfilespec;
+	      enum RM_status rmstatus;
+	      int fail = 0;
+	      rmopt.unlink_dirs = 0;
+	      rmopt.ignore_missing_files = 1;
+	      rmopt.interactive = 0;
+	      rmopt.recursive = 1;
+	      rmopt.stdin_tty = isatty (STDIN_FILENO);
+	      rmopt.verbose = 0;
+	      remove_init ();
+	      strip_trailing_slashes (dest);
+	      fspec_init_file (&rmfilespec, dest);
+	      rmstatus = rm (&rmfilespec, 1, &rmopt);
+	      if (rmstatus == RM_ERROR)
+		  fail = 1;
+	      remove_fini ();
+	      if (fail)
+		  exit (fail);
+	    }
+	  else
+#endif
+	    {
+	      error (0, 0, _("%s: cannot overwrite directory"), quote (dest));
+	      return 1;
+	    }
 	}
       if (interactive)
 	{
