@@ -2,6 +2,16 @@
 
 	* uinfo.cc (internal_getlogin): Move check for USERNAME variable to
 	global space instead of iswinnt filter.
+	* Makefile.in: Add -lnetapi32 to the DLL build command.
+	* autoload.cc: Copy verbatum from current Cygwin CVS.
+	* fhandler_socket.cc: Move include of unistd.h after winsock2.h for
+	protection of gethostname declaration.
+	* net.cc: Ditto.
+	* heap.cc: Move a FIXME declaration into the procedure instead of
+	global space.
+	* pinfo.cc: Use NtQuerySystemInformation instead of the Zw version.
+	* shared.cc (shared_name): Use hash_path_name for uniqueness.
+	* tty.cc: Incorporate current Cygwin CVS changes.
 
 2003-02-17  Earnie Boyd  <earnie@users.sf.net>
 
