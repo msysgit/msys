@@ -33,9 +33,9 @@
 
 <p>
 Mingw32 was created by
-<a href="http://webclub.kcom.ne.jp/ma/colinp/gcc.html">Colin Peters</a>.
+<a href="http://www12.canvas.ne.jp/peters/colin/gcc.html">Colin Peters</a>.
 The oldest preserved release currently available may also be found at 
-<a href="http://webclub.kcom.ne.jp/ma/colinp/mingw32_980701.tar.gz"> Colin Peters'
+<a href="http://www12.canvas.ne.jp/peters/colin/mingw32_980701.tar.gz"> Colin Peters'
  GCC website</a> and is dated July 1, 1998.
 Colin used a very early release of the  <a href="http://sources.redhat.com/cygwin">Cygwin</a> suite to compile
 this version of the Mingw compiler code. </p>  <p> The very first <i>native</i>  mingw32 compiler was provided by 
@@ -95,6 +95,6 @@ developers.
 </p>
 
 <address> <br>
-Last revised $Date: 2003-01-12 18:33:32 $ </address>
+Last revised $Date: 2004-03-28 07:01:25 $ </address>
 </body>
 </html>

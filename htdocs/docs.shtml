@@ -416,7 +416,7 @@
                   and useful external libraries and IDE's that work with MinGW.
                </li>
                <li> 
-                  <a href="http://webclub.kcom.ne.jp/ma/colinp/win32/index.html">
+                  <a href="http://www12.canvas.ne.jp/peters/colin/win32/index.html">
                   Programming Win32 with GNU C and C++</a><br>
 		  A tutorial by Coin Peters, the original author of MinGW.
                </li>
@@ -499,6 +499,6 @@
 </table>
 <!--#include file="ssi/bottombar.html"--><!--#include file="ssi/footer.html"-->
 <address> <br>
-Last revised $Date: 2003-12-15 13:29:46 $ </address>
+Last revised $Date: 2004-03-28 07:01:24 $ </address>
 </body>
 </html>

@@ -58,7 +58,7 @@
                       </li>
                       <li>
                         Colin Peters' site on <a target="_nw"
-                            href="http://webclub.kcom.ne.jp/ma/colinp/gcc.html">
+                            href="http://www12.canvas.ne.jp/peters/colin/gcc.html">
                         MinGW</a> -- this is where it all started.
                       </li>
                       <li>
@@ -152,8 +152,8 @@
                       <li>
                         Programming Win32 with GNU C and C++ by
                         Colin Peters at <a href=
-                        "http://webclub.kcom.ne.jp/ma/colinp/win32/index.html">
-                        http://webclub.kcom.ne.jp/ma/colinp/win32/index.html</a>
+                        "http://www12.canvas.ne.jp/peters/colin/win32/index.html">
+                        http://www12.canvas.ne.jp/peters/colin/win32/index.html</a>
                       </li>
 											<li>
 												Libunicows is a Unicode implementation for use
@@ -442,7 +442,7 @@
     <!--#include file="ssi/footer.html"-->
     <address>
       <br>
-      Last revised $Date: 2004-02-18 18:27:13 $
+      Last revised $Date: 2004-03-28 07:01:25 $
     </address>
   </body>
 </html>
