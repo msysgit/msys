@@ -174,12 +174,12 @@ Please submit bugs and web site problems (bad html, broken links) via
 online bugtracker form</a>
 (if you have SourceForge account,
 please
-<a href="https://sourceforge.net/account/login.php?return_to=http%3a//sourceforge.net/bugs/%3ffunc%3daddbug%26group_id%3d2435">
+<a href="https://sourceforge.net/account/login.php?return_to=/bugs/%3ffunc%3daddbug%26group_id%3d2435">
 login</a> first).
 Submit news, announcements, additions, and links via
 <a href="http://sourceforge.net/patch/?func=addpatch&group_id=2435">
 online patch form</a> (with
-<a href="https://sourceforge.net/account/login.php?return_to=http%3a//sourceforge.net/patch/%3ffunc%3daddpatch%26group_id%3d2435">
+<a href="https://sourceforge.net/account/login.php?return_to=/patch/%3ffunc%3daddpatch%26group_id%3d2435">
 SF login</a>).
 
 
@@ -202,7 +202,7 @@ width="88" /></a>
 <!--#include virtual="/cgi-bin/stats.cgi?mingw"--> visitors since
 <!--#include virtual="/cgi-bin/showstatsdate.cgi?mingw"--></a>.
 </p>
-$Id: index.shtml,v 1.6 2000-09-16 20:17:51 pfalcon Exp $
+$Id: index.shtml,v 1.7 2000-09-19 12:33:21 pfalcon Exp $
 </body>
 </html>
 

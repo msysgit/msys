@@ -116,12 +116,19 @@ The development tools such as GCC, GDB, GNU Make, etc all covered by
 <!--			     Footer                                     -->
 <!--                                                                    -->
 
-<p><i><small>Please send news, announcements, and technical problems 
-(bad html, broken links) concerning these web pages to 
-<a href="mailto:earnie@users.sourceforge.net"> the web page maintainer</a>. 
-We are in the process of creating these web pages, so do expect some
-incomplete pages and broken links. We appreciate your patience. 
-</small></i></p>
+<p><i><small>
+Please submit bugs and web site problems (bad html, broken links) via
+<a href="http://sourceforge.net/bugs/?func=addbug&group_id=2435">
+online bugtracker form</a>
+(if you have SourceForge account,
+please
+<a href="https://sourceforge.net/account/login.php?return_to=/bugs/%3ffunc%3daddbug%26group_id%3d2435">
+login</a> first).
+Submit news, announcements, additions, and links via
+<a href="http://sourceforge.net/patch/?func=addpatch&group_id=2435">
+online patch form</a> (with
+<a href="https://sourceforge.net/account/login.php?return_to=/patch/%3ffunc%3daddpatch%26group_id%3d2435">
+SF login</a>).
 
 <p>
 <a href="http://validator.w3.org/check?uri=http%3A%2F%2Fwww.mingw.org%2Flicensing.shtml">

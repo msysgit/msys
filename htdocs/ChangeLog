@@ -1,3 +1,7 @@
+2000-09-19  Paul Sokolovsky  <Paul.Sokolovsky@technologist.com>
+
+	* *.shtml: Replace footer links consistenly.
+
 2000-09-16  Paul Sokolovsky  <Paul.Sokolovsky@technologist.com>
 
 	* index.shtml: replace SourceForge logo link with one 
