@@ -1,3 +1,7 @@
+2004-04-22  Earnie Boyd  <earnie@users.sf.net>
+
+	* window.cc (Winmain): Add typical Windows messaging API.
+
 2004-04-06  Earnie Boyd  <earnie@users.sf.net>
 
 	* fhandler.cc (fhandler_base::lseek): Remove filtered out code.
