@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<!-- $Id: index.shtml,v 1.49 2002-12-10 22:20:53 earnie Exp $ -->
+<!-- $Id: index.shtml,v 1.50 2002-12-10 22:53:49 earnie Exp $ -->
   <title>MinGW -- Minimalist GNU For Windows</title>
                      
   <meta name="description"
@@ -161,7 +161,7 @@ one of the best compression algorithms available.
               <li><em>Debugger:</em> <a
  href="http://prdownloads.sf.net/mingw/gdb-5.2.1-20021009.tar.gz" target="_nw">&nbsp;gdb-5.2.1-20021009.tar.gz</a></li>
 	      <li><em>Java:</em> <a href="http://prdownloads.sf.net/mingw/gcj-3.2-20021210-1.tar.gz" target="_nw">gcj-3.2-20021210-1.tar.gz</a></li>
-	      <li><em>GCC:</em> <a href="http://prdownloads.sf.net/mingw/gcc-3.2.1-core-20021201-1.tar.gz" target="_nw">gcc-3.2.1-core-20021201-1.tar.gz</a></li>
+	      <li><em>GCC:</em> <a href="http://prdownloads.sf.net/mingw/gcc-3.2.1-core-20021201-2.tar.gz" target="_nw">gcc-3.2.1-core-20021201-2.tar.gz</a></li>
 	    </ul>
 	    </p>
 	    <p><b>Experimental/Test Packages:</b><br>
@@ -203,7 +203,7 @@ width="88" /></a>
 -->
 </p>
 <address><br>
-Last revised $Date: 2002-12-10 22:20:53 $</address>
+Last revised $Date: 2002-12-10 22:53:49 $</address>
 <br>
 </body>
 </html>

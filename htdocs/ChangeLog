@@ -3,6 +3,7 @@
 	* index.shtml: Update for MSYS-1.0.8.exe.
 	Remove release candidate for MSYS.
 	Update for release candidate gcj-3.2-20021210-1.tar.gz.
+	Update for release candidate gcc-3.2.1-core-20021201-2.tar.gz.
 	Add target="_nw" for all href jumping away from www.mingw.org.
 	
 2002-12-04  Earnie Boyd  <earnie@users.sf.net>
