@@ -1,4 +1,4 @@
-<!-- $Id: mingwfaq.shtml,v 1.27 2001-12-22 04:36:02 stevedperkins Exp $ -->
+<!-- $Id: mingwfaq.shtml,v 1.28 2002-01-20 03:01:20 stevedperkins Exp $ -->
 
 <html>
 <head>
@@ -61,20 +61,13 @@
       <li><a href="#faq-version">What is the current version?</a></li>
       <li><a href="#faq-usingolderversions">Can I use older versions?</a></li>
       <li><a href="#faq-configure">How do I execute configure scripts?</a></li>
-      <li><a href="#faq-usingwithcygwin">How do I use MinGW with Cygwin?</a></li>
       <li><a href="#faq-usingwithmsys">How do I use MinGW with MSYS?</a></li>
+      <li><a href="#faq-usingwithcygwin">How do I use MinGW with Cygwin?</a></li>
       <li><a href="#faq-runtime">Which runtime should I use?</a></li>
       <li><a href="#faq-w32api">What is w32api?</a></li>
       <li><a href="#faq-comsupport">Is support provided for COM?</a></li>
       <li><a href="#faq-cross">How can I build a cross compiler?</a></li>
       <li><a href="#faq-bugreports">How can I report bugs?</a></li>
-   <!-- 
-   The following section commented out 8/20/2001 by Steve D. Perkins
-   If the FAQ becomes too large and unwieldy, why don't we just break it into 
-   chunks based on logical subsections... rather than creating a confusing setup 
-   of "new faq" and "old faq", with neither being maintained?
-     <li><a name="i-oldfaq"	href="#faq-oldfaq">	What happened to the old FAQ?</a></li>
-   -->
    </ul>
 
    <hr />
@@ -283,8 +276,6 @@
 
 
 
-
-
       <a name="faq-configure" />
       <h3>How do I execute configure scripts?</h3>
       <p>
@@ -299,7 +290,29 @@
       <p><a href="#index">Back to index</a></p>
 
       <hr />
-      
+
+
+      <a name="faq-usingwithmsys" />
+      <h3>How do I use MinGW with MSYS?</h3>
+      <p>
+         It's easy to configure an MSYS environment for MinGW useage, since there is no
+         overlap in functionality to contend with (as there is with Cygwin).  Simply 
+         decompress the contents of each archive into directories of your choosing, and 
+         add both the MinGW &quot;/bin&quot; and the MSYS &quot;/bin&quot; subdirectories
+         to your PATH.
+      </p>
+      <p>
+         You may install the MinGW and MSYS packages anywhere on your filesystem, even nesting 
+         one within the other (creating a &quot;mingw&quot; subdirectory beneath your 
+         &quot;msys&quot; directory, for instance).  However, it is important to remember 
+         that NO executables other than what ships with MSYS should be placed in the MSYS 
+         &quot;bin&quot; subdirectory.  Therefore, do not attempt to &quot;merge&quot; the 
+         two packages.
+      </p>
+      <p>
+      <p><a href="#index">Back to index</a></p>
+
+      <hr />      
 
 
       
@@ -313,7 +326,9 @@
          to Win32... and as a result, Cygwin has grown over the years into a full 
          bash shell environment with all the familiar tools a UNIX developer would 
          work with.  Cygwin allows developers to work on a Win32 machine, and feel 
-         as if they're developing on a UNIX box.
+         as if they're developing on a UNIX box.  Work on a Cygwin-based X-Windows 
+         server has advanced to the point where it's even possible to run a Gnome 
+         or KDE session within MS-Windows using Cygwin.
       </p>
       <p>
          However, there is a downside to Cygwin (which MinGW was created to address).  
@@ -335,16 +350,18 @@
          has changed a time or two (with poor documentation), bugs have crept in, and 
          maintainence of the option has NOT be a priority in development.  There is a
          distinct possibility that "-mno-cygwin" will become depreciated in future 
-         releases of Cygwin.
+         releases of Cygwin.  If you would like to experiment with &quot;-mno-cygwin"&quot;,
+         the most intuitive documentation can be found 
+         <a href="http://www.colomsat.net.co/freehost/ngiraldo/cppcygwin.html">here</a>.
       </p>
       <p>
          For those who would like to use a Cygwin environment for development, yet 
          generate non-Cygwin-dependant executables, a much easier option to 
          "-mno-cygwin" exists.  Simply install Cygwin and the MinGW distribution 
-         in seperate directories (i.e. "C:\CYGWIN" and "C:\MINGW"), and make sure 
-         that the "/bin" subdirectory beneath your MinGW installation comes before 
-         Cygwin's "/bin" subdirectory in your PATH environment variable
-         (i.e. "PATH=%PATH%;C:\MINGW\BIN;C:\CYGWIN\BIN").  This will allow you access 
+         in seperate directories (i.e. &quot;C:\CYGWIN&quot; and &quot;C:\MINGW&quot;), and make sure 
+         that the &quot;/bin&quot; subdirectory beneath your MinGW installation comes before 
+         Cygwin's &quot;/bin&quot; subdirectory in your PATH environment variable
+         (i.e. &quot;PATH=%PATH%;C:\MINGW\BIN;C:\CYGWIN\BIN&quot;).  This will allow you access 
          to all the UNIX tools you want, while ensuring that the instance of GCC used 
          is the MinGW version.
       </p>
@@ -359,23 +376,6 @@
 
       <hr />
 
-
-      <a name="faq-usingwithmsys" />
-      <h3>How do I use MinGW with MSYS?</h3>
-      <p>
-         It's easy to configure an MSYS environment for MinGW useage in the same manner 
-         as it is for Cygwin.  If the system's PATH environment variable is set with the 
-         MinGW "/bin" subdirectory before the MSYS "/bin", you will have access to all 
-         MSYS tools while using the MinGW instance of gcc/g++.
-      </p>
-      <p>
-         Just as with Cygwin, the "/etc/profile" of MSYS places additional directories 
-         before your system-level path in its PATH.  You must be sure that the MinGW "/bin" 
-         comes first in your MSYS environment as well, either by modifying "/etc/profile" or 
-         setting it manually.
-      <p><a href="#index">Back to index</a></p>
-
-      <hr />
 
 
       <a name="faq-runtime" />
@@ -504,7 +504,7 @@
 
    <hr />
    <address>
-   <br />Last revised $Date: 2001-12-22 04:36:02 $
+   <br />Last revised $Date: 2002-01-20 03:01:20 $
    </address>
 
 </body>

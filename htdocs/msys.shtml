@@ -1,4 +1,4 @@
-<!-- $Id: msys.shtml,v 1.3 2001-12-22 04:28:21 stevedperkins Exp $ -->
+<!-- $Id: msys.shtml,v 1.4 2002-01-20 03:01:20 stevedperkins Exp $ -->
 
 <html>
 <head>
@@ -25,35 +25,36 @@
 <!--                                                                    -->
 
 <table border="0" cellspacing="6" cellpadding="0">
-<tr>
-<td valign="top" align="left">
-
-<p>
-MSYS was created out of a long lived desire to provide the MinGW community a
-Minimal SYStem with which a configure script could be executed.  We finally have
-that available and is downloadable from the SourceForge file distribution system
-which MinGW is using.
-</p><p>
-The current version is msys-1.0.2 and you need to download either the
-<a href="ftp://ftp1.sf.net/pub/sourceforge/msys-1.0.2-1.i686-bin.tar.gz">i686</a>
-binary distribution or the
-<a href="ftp://ftp1.sf.net/pub/sourceforge/msys-1.0.2-1.i386-bin.tar.gz">i386</a> 
-binary distribution.  The source distribution is delivered in
-<a href="ftp://ftp1.sf.net/pub/sourceforge/msys-1.0.2-1.src.tar.gz">this package</a> 
-and includes the source for both the runtime and all the packages from which
-the hand selected binaries were taken.
-</p><p>
-To install chose a drive device and unpack the binary distribution in the root
-of that drive.  The read the documentation in \msys\1.0\usr\doc\msys, especially
-the README file.
-</p><p>
-There is also a new mail list to discuss the use of MSYS called 
-mingw-msys@lists.sf.net.  See the <a href="lists.shtml">Mailing Lists</a> page 
-for a more
-information on this list.
-</p>
-</td>
-</tr>
+   <tr>
+      <td valign="top" align="left">
+         <p>
+            MSYS was created out of a long-lived desire to provide the MinGW community a
+            Minimal SYStem, with which a configure script could be executed.  This is finally 
+            available from the 
+            <a href="http://sourceforge.net/project/showfiles.php?group_id=2435">MinGW download area on SourceForge</a>.
+         </p>
+         <p>
+            There are three tarballs available for download, although most users will need only one.
+            The tarball flagged as &quot;src&quot; contains the source code for MSYS, unnecessary unless a 
+            manual build is desired.  The &quot;i686&quot; tarball is a binary distribution, compiled 
+            with optimizations for recent generations of the Pentium family (and compatibles).  The 
+            &quot;i386&quot; tarball is a binary distribution that will run on ANY 32-bit 
+            Intel-compatible processor.
+         </p>
+         <p>
+            To install the MSYS binaries, choose a location in your filesystem and unpack the 
+            binary distribution there.  It is recommended that you add the &quot;bin&quot; subdirectory
+            of the MSYS distribution to your system PATH.  More information about using MinGW with 
+            MSYS can be found in the <a href="http://localhost/mingw/mingwfaq.shtml#faq-usingwithmsys">FAQ</a>, 
+            and the current MSYS documentation can be found in the &quot;\msys\1.0\doc\msys&quot; 
+            subdirectory within the binary distribution.
+         </p>
+         <p>
+            There is also a new mailing list for MSYS discussion (MinGW-msys).  See the 
+            <a href="lists.shtml">Mailing Lists</a> page for more information and access to this list.
+         </p>
+      </td>
+   </tr>
 </table>
 
 <!-- <hr noshade="noshade" size="1" /> -->
@@ -66,7 +67,7 @@ information on this list.
 <!--#include file="ssi/footer.html"-->
 
 <address>
-<br />Last revised $Date: 2001-12-22 04:28:21 $
+<br />Last revised $Date: 2002-01-20 03:01:20 $
 </address>
 
 </body>
