@@ -1,4 +1,19 @@
 
+Thu Jan 18 16:18:53 PST 2001  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	* docs.shtml: Remove Laura as the specific FAQ maintainer.
+	Remove the dead link to Laura's home page.
+	* mingw-oldfaq.shtml: Rename the current FAQ.
+	* mingwfaq.shtml: New contents.
+	* ssi/faq-idx.html: New file.
+	* ssi/faq-cross.html: ditto.
+	* ssi/faq-license.html: ditto.
+	* ssi/faq-oldfaq.html: ditto.
+	* ssi/faq-runtime.html: ditto.
+	* ssi/faq-version.html: ditto.
+	* ssi/faq-w32api.html: ditto.
+	* ssi/faq-what.html: ditto.
+
 Thu Jan 18 15:31:24 PST 2001  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	* who.shtml: Mumit is now active member again, yea!

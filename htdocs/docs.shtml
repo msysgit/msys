@@ -37,12 +37,9 @@ documenting the various pieces. </p>
 <h2 align="left">MinGW Documentation</h2>
 
 <ul>
-<li> Laura Michaels maintains the 
-<a href="mingwfaq.shtml">FAQ</a>, and it's a 
-good place to start. She has some useful information on her
-<a href="http://members.aol.com/lauram3017/index.html">homepage</a> as
-well.</li>
-<li> <a href="faq.shtml">Alternative, more up-to-date FAQ</a> (not completed)
+<li> The 
+<a href="mingwfaq.shtml">MinGW FAQ</a> is a 
+good place to start. 
 </li>
 </ul>
 

@@ -3,8 +3,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
  <title>MinGW -- Minimalist GNU For Windows</title>
- <link rev="made" href="mailto:khan@mingw.org" />
- <meta name="author" content="Mumit Khan" />
+ <link rev="made" href="mailto:mingw-users@lists.sourceforge.net" />
+ <meta name="original_author" content="Mumit Khan" />
+ <meta name="maintainers" content="MinGW Developers" />
  <meta name="objecttype" content="Main" />
  <meta name="resource-type" content="document" />
  <meta name="description" content="Home of MinGW -- Minimalist GNU for Windows -- project. Contains information about the MinGW runtime library and GNU/OSS development tools for MinGW." />
@@ -120,7 +121,7 @@ width="88" /></a>
 <!--#include virtual="/cgi-bin/stats.cgi?mingw"--> visitors since
 <!--#include virtual="/cgi-bin/showstatsdate.cgi?mingw"--></a>.
 </p>
-$Id: index.shtml,v 1.16 2000-12-18 19:44:50 earnie Exp $
+$Id: index.shtml,v 1.17 2001-01-19 00:42:08 earnie Exp $
 </body>
 </html>
 
