@@ -3219,18 +3219,25 @@ cygwin_conv_to_win32_path (const char *path, char *win32_path)
 		      break;
 		    }
 		  retpathcat (swin32_path);
-		  retpathcat (";");
 		  spath = sspath + 1;
 		  sspath = strchr (spath, ':');
+		  if (sspath)
+		    {
+		      retpathcat (";");
+		    }
 		}
-	      sret = cygwin_conv_to_win32_path (spath, swin32_path);
-	      if (sret)
+	      if (*spath)	// Handle colon at end of string.
 		{
-		  retpathcpy (path);
-		  retval = -1;
-		  break;
+		  retpathcat (";");
+		  sret = cygwin_conv_to_win32_path (spath, swin32_path);
+		  if (sret)
+		    {
+		      retpathcpy (path);
+		      retval = -1;
+		      break;
+		    }
+		  retpathcat (swin32_path);
 		}
-	      retpathcat (swin32_path);
 	      break;
 	    }
 	  else
