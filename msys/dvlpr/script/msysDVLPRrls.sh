@@ -1,6 +1,6 @@
 #! /bin/sh
 #############################################################################
-# msysrls.sh - Create an MSYS release                             .	    #
+# msysDVLPRrls.sh - Create an msysDVLPR release                       .	    #
 # Copyright (C) 2002  Earnie Boyd  <earnie@users.sf.net>                    #
 #                                                                           #
 # This file is part of msysDVLPR                                            #
@@ -12,13 +12,14 @@
 #       etc.
 
 # User changeable values section.
-HOST=msys
-PACKAGE=msys
+PACKAGE=msysDVLPR
 MAJORVER=1
 MINORVER=0
-PATCHVER=8
-STOREROOT=/store/${HOST}
-RLSROOT=/release/${HOST}/${PACKAGE}
+PATCHVER=0
+STOREROOT=/${PACKAGE}/store
+RLSROOT=/${PACKAGE}/rls
+RLSDEPOT=/${PACKAGE}/depot/binary/${PACKAGE}/${SHORTVER}
+ARC=$1
 SNAPDATE=\-`date +%Y.%m.%d`
 #SNAPDATE=\-rc
 #SNAPDATE=
@@ -28,7 +29,6 @@ SUBVERSION=\-1
 
 VERSION=${MAJORVER}.${MINORVER}.${PATCHVER}
 SHORTVER=${MAJORVER}.${MINORVER}
-RLSDEPOT=/depot/binary/${PACKAGE}/${SHORTVER}
 RLSOUTPUTDIR="`p2w ${RLSROOT}/${VERSION}`"
 
 if [ -z "$SNAPDATE" ]
@@ -41,7 +41,7 @@ else
     RELEASE="Snapshot${SNAPDATE}${SUBVERSION}"
 fi
 
-istore=${STOREROOT}/pkg
+istore=${STOREROOT}/${ARC}
 noarchstore=${STOREROOT}/noarch
 miscstore=${STOREROOT}/misc
 datastore=${STOREROOT}/var
@@ -144,7 +144,6 @@ cat ${noarchstore}/msys.iss.in | \
       -e "s%@INFOAFTERFILE@%${INFOAFTERFILE}%g" \
       -e "s%@RLSSOURCEDIR@%${RLSSOURCEDIR}%g" \
       -e "s%@RLSOUTPUTDIR@%${RLSOUTPUTDIR}%g" \
-  > /tmp/msys$$.iss
+  > ${RLSDEPOT}/msys.iss
 
-/c/InnoSetup2/iscc "/tmp/msys$$.iss"
-rm -f /tmp/msys$$.iss
+/c/InnoSetup2/iscc "{$RLSDEPOT}/msys.iss"

@@ -3,7 +3,7 @@
 Compression=bzip/9
 DontMergeDuplicateFiles=no
 InternalCompressLevel=9
-OutputBaseFilename=MSYS-@VERSION@@SNAPDATE@@SUBVERSION@
+OutputBaseFilename=@PACKAGE@-@VERSION@@SNAPDATE@@SUBVERSION@
 SourceDir=.
 OutputDir=@RLSOUTPUTDIR@
 ;CR - Floppy Disk Output
@@ -17,9 +17,9 @@ UseSetupLdr=yes
 
 ;Installer Related (IR)
 ;IR - Required
-AppName="Minimal SYStem"
-AppVerName="Minimal SYStem @VERSION@"
-DefaultDirName={sd}\msys\1.0
+AppName="Minimalist GNU for Win32"
+AppVerName="MinGW @VERSION@"
+DefaultDirName={sd}\MinGW
 ;IR - End Required
 AdminPrivilegesRequired=no
 AllowNoIcons=yes
@@ -31,11 +31,11 @@ AlwaysShowComponentsList=no
 AlwaysShowDirOnReadyPage=no
 AlwaysShowGroupOnReadyPage=no
 AlwaysUsePersonalGroup=no
-AppId=MSYS-1.0
-AppMutex=MSYS-1.0
+AppId=MinGW
+;AppMutex=
 AppPublisher=MinGW
 AppPublisherURL=http://www.mingw.org/
-AppSupportURL=mailto:mingw-msys@lists.sf.net
+AppSupportURL=mailto:mingw-users@lists.sf.net
 AppUpdatesURL=http://sf.net/projects/mingw/
 AppVersion=@VERSION@
 ChangesAssociations=no
@@ -53,7 +53,7 @@ DisableStartupPrompt=no
 EnableDirDoesntExistWarning=no
 ExtraDiskSpaceRequired=0
 InfoBeforeFile=@INFOBEFOREFILE@
-;InfoAfterFile=@INFOAFTERFILE@
+InfoAfterFile=@INFOAFTERFILE@
 LicenseFile=@LICENSEFILE@
 MessagesFile=compiler:DEFAULT.ISL
 MinVersion=4,4
@@ -155,9 +155,6 @@ Source: @RLSSOURCEDIR@\*; DestDir: "{app}";  Components: "i386";  Flags: recurse
 ;EXAMPLES:
 ;Name: "{group}\My Program"; Filename: "{app}\MYPROG.EXE"; WorkingDir: "{app}"
 
-Name: "{group}\MSYS\msys"; Filename: "{app}\msys.bat"; WorkingDir: "{app}\bin";  IconFilename: "{app}\m.ico"
-Name: "{group}\MSYS\uninstall"; Filename: "{app}\uninstall\unins000.exe"; WorkingDir: "\"; IconFilename: "{app}\uninstall\unins000.exe"
-Name: "{userdesktop}\MSYS"; Filename: "{app}\msys.bat"; WorkingDir: "{app}\bin";  IconFilename: "{app}\m.ico"
 
 [INI]
 ;This section
@@ -167,8 +164,8 @@ Name: "{userdesktop}\MSYS"; Filename: "{app}\msys.bat"; WorkingDir: "{app}\bin";
 ;Filename: "{win}\MYPROG.INI"; Section: "InstallSettings"; Flags: uninsdeletesection
 ;Filename: "{win}\MYPROG.INI"; Section: "InstallSettings"; Key: "InstallPath"; String: "{app}"
 
-Filename: "{win}\MSYS.INI"; Section: "InstallSettings"; Flags: uninsdeletesection
-Filename: "{win}\MSYS.INI"; Section: "InstallSettings"; Key: "InstallPath"; String: "{app}"
+Filename: "{win}\MinGW.INI"; Section: "InstallSettings"; Flags: uninsdeletesection
+Filename: "{win}\MinGW.INI"; Section: "InstallSettings"; Key: "InstallPath"; String: "{app}"
 
 [InstallDelete]
 ;This section
@@ -231,10 +228,8 @@ BeveledLabel="MinGW - Minimalist Gnu for Windows"
 ;Filename: "{app}\README.TXT"; Description: "View the README file"; Flags: postinstall shellexec skipifsilent
 ;Filename: "{app}\MYPROG.EXE"; Description: "Launch application"; Flags: postinstall nowait skipifsilent unchecked
 
-Filename: "{app}\postinstall\pi.bat"; Description: "Normalize MSYS"; WorkingDir: "{app}\postinstall"; Parameters: "pi.sh"; StatusMsg: "Normalizing your environment"; 
-Filename: "{app}\bin\rm.exe"; Description: "Remove postinstall"; WorkingDir: "{app}\bin"; Parameters: "-rf ../postinstall/"; StatusMsg: "Removing postinstall"; Flags: runminimized 
-Filename: "{app}\doc\msys\MSYS_WELCOME.rtf"; Description: "Welcome to MSYS"; StatusMSG: "View Welcome"; flags: postinstall shellexec
-Filename: "{app}\doc\msys\README.rtf"; Description: "README"; StatusMsg: "View README"; flags: postinstall shellexec
+;Filename: "{app}\doc\MinGW\MinGW_WELCOME.rtf"; Description: "Welcome to MinGW"; StatusMSG: "View Welcome"; flags: postinstall shellexec
+;Filename: "{app}\doc\MinGW\MinGW_PACKAGES.rtf"; Description: "List of Packages"; StatusMsg: "View README"; flags: postinstall shellexec
 
 [UninstallDelete]
 ;This section
