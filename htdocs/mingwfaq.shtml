@@ -72,7 +72,8 @@
       <hr>
 
 
-      <h3><a name="faq-what">What is MinGW?</a></h3>
+      <h3><a name="faq-what">
+			    What is MinGW?</a></h3>
 
       <p>MinGW ("Minimalistic GNU
          for Windows") refers to a set of runtime headers,
@@ -105,7 +106,8 @@
       <hr>
 
 
-      <h3><a name="faq-msys">What is MSYS?</a></h3>
+      <h3><a name="faq-msys">
+			    What is MSYS?</a></h3>
 
       <p>MSYS or Minimal SYStem is a
          POSIX and Bourne shell environment use with
@@ -132,7 +134,8 @@
       <hr>
 
 
-      <h3><a name="faq-w32api">What is w32api?</a></h3>
+      <h3><a name="faq-w32api">
+			    What is w32api?</a></h3>
 
       <p>The w32api is the package
          of headers and import libraries to support the
@@ -144,14 +147,15 @@
          Anders Norlander and it's license is also
          non-restrictive. For more information see the
          file 
-         <a href= "http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/mingw/w32api/README.w32api?rev=HEAD&amp;content-type=text/vnd.viewcvs-markup"> README.w32api</a>
+         <a href= "http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/mingw/w32api/README.w32api?rev=HEAD&amp;content-type=text/vnd.viewcvs-markup">README.w32api</a>
          .</p>
 
       <p><a href="#index">Back to index</a></p>
       <hr>
 
 
-      <h3><a name="faq-where">Where can I get MinGW?</a></h3>
+      <h3><a name="faq-where">
+			    Where can I get MinGW?</a></h3>
 
       <p>Initially, MinGW was an
          assortment of individual packages... the MinGW
@@ -192,7 +196,8 @@
       <hr>
 
 
-      <h3><a name="faq-license">How is MinGW licensed?</a></h3>
+      <h3><a name="faq-license">
+			    How is MinGW licensed?</a></h3>
 
       <p>When Colin Peters
          released the MinGW runtime he placed the source
@@ -269,7 +274,8 @@
       <hr>
 
 
-      <h3><a name="faq-version">What is the current version?</a></h3>
+      <h3><a name="faq-version">
+			    What is the current version?</a></h3>
 
       <p>Please refer to the release section of the
          download page located 
@@ -279,7 +285,8 @@
       <hr>
 
 
-      <h3><a name="faq-usingolderversions">Can I use older versions?</a></h3>
+      <h3><a name="faq-usingolderversions">
+			    Can I use older versions?</a></h3>
 
       <p>It's highly recommended that you use the
          latest version of MinGW. Older versions may have
@@ -296,7 +303,8 @@
       <hr>
 
 
-      <h3><a name="faq-configure">How do I execute configure scripts?</a></h3>
+      <h3><a name="faq-configure">
+			    How do I execute configure scripts?</a></h3>
 
       <p>Applications using a
          UNIX-style build process will typically require a
@@ -314,7 +322,8 @@
       <hr>
 
 
-      <h3><a name="faq-usingwithmsys">How do I use MinGW with MSYS?</a></h3>
+      <h3><a name="faq-usingwithmsys">
+			    How do I use MinGW with MSYS?</a></h3>
 
       <p>It's easy to
          configure an MSYS environment for MinGW useage,
@@ -341,7 +350,8 @@
       <hr>
 
 
-      <h3><a name="faq-usingwithcygwin">How do I use MinGW with Cygwin?</a></h3>
+      <h3><a name="faq-usingwithcygwin">
+			    How do I use MinGW with Cygwin?</a></h3>
 
       <p>For those who
          would like to use the Cygwin environment for
@@ -372,7 +382,8 @@
       <p><a href="#index">Back to index</a></p>
       <hr>
 
-      <h3><a name="faq-comsupport">Is support provided for COM?</a></h3> 
+      <h3><a name="faq-comsupport">
+			    Is support provided for COM?</a></h3> 
 
       <p>MinGW has some
          support for COM programs. Programmers have had
@@ -386,7 +397,8 @@
       <hr>
 
 
-      <h3><a name="faq-msvcdll">How can an MSVC program call a MinGW DLL, and vice versa?</a></h3>
+      <h3><a name="faq-msvcdll">
+			    How can an MSVC program call a MinGW DLL, and vice versa?</a></h3>
 
       <p>Assume we have a
          testdll.h, testdll.c, and testmain.c. In the
@@ -441,7 +453,7 @@
          <code>reimp</code> tool from Anders Norlander
          (since his web site is no longer available, you
          may choose to download
-         <a href= "http://mywebpage.netscape.com/yongweiwu/reimp_new.zip"> here</a> 
+         <a href= "http://mywebpage.netscape.com/yongweiwu/reimp_new.zip">here</a> 
          a version enhanced by Jose Fonseca):</p>
 
          <blockquote>
@@ -455,9 +467,8 @@
          prefix an underscore to <code>__stdcall</code>
          functions while MinGW will not. The right way is
          to produce the DEF file using the
-         <code>pexports</code> tool from 
-         <a href="http://www.is.lg.ua/%7Epaul/devel/binutils.html"> http://www.is.lg.ua/~paul/devel/binutils.html</a>
-         and filter off the first underscore by
+         <code>pexports</code> tool included in the mingw-utils
+         package and filter off the first underscore by
          <code>sed</code>:</p>
 
          <blockquote>
@@ -483,7 +494,8 @@
       <hr>
 
 
-      <h3><a name="faq-cross">How can I build a cross compiler?</a></h3>
+      <h3><a name="faq-cross">
+			    How can I build a cross compiler?</a></h3>
 
       <p>Cross-compiling refers to
          building applications for one platform, with
@@ -523,7 +535,7 @@
 
       <ul>
        <li>Linux: 
-           <a href="http://www.libsdl.org/extras/win32/cross/mingw32-linux-x86-glibc-2.2.tar.gz"> mingw32-linux-x86-glibc-2.2.tar.gz</a></li>
+           <a href="http://www.libsdl.org/extras/win32/cross/mingw32-linux-x86-glibc-2.2.tar.gz">mingw32-linux-x86-glibc-2.2.tar.gz</a></li>
 
        <li>If you know of others let us know.</li>
       </ul>
@@ -532,7 +544,8 @@
       <hr>
 
 
-      <h3><a name="faq-mingw32-gcc.exe">What's the difference between gcc.exe and mingw32-gcc.exe?</a></h3>
+      <h3><a name="faq-mingw32-gcc.exe">
+			    What's the difference between gcc.exe and mingw32-gcc.exe?</a></h3>
 
       <p>The mingw32-gcc,
          mingw32-g++, etc. binaries exist as an aid to
@@ -545,8 +558,11 @@
          executed on the mingw32 target.</p>
 
       <p><a href="#index">Back to index</a></p>
+			<hr>
 
-      <h3><a name="faq-mingw32-make.exe">Why is make named mingw32-make.exe?</a></h3>
+
+      <h3><a name="faq-mingw32-make.exe">
+			    Why is make named mingw32-make.exe?</a></h3>
 
       <p>The "native"
          (i.e.: MSVCRT dependent) port of make is lacking
@@ -564,15 +580,21 @@
          collision.</p>
 
       <p><a href="#index">Back to index</a></p>
+			<hr>
 
-      <h3><a name="faq-ridconsole">How to remove DOS command windows?</a></h3>
+
+      <h3><a name="faq-ridconsole">
+			    How to remove DOS command windows?</a></h3>
 
       <p>In the link step add
          a -mwindows switch to the command line.</p>
 
       <p><a href="#index">Back to index</a></p>
+			<hr>
 
-      <h3><a name="faq-bugreports">How can I report bugs?</a></h3>
+
+      <h3><a name="faq-bugreports">
+			    How can I report bugs?</a></h3>
 
       <p>Please refer to the <a href="bugs.shtml">Reporting Bugs</a> page</p>
 
@@ -591,7 +613,7 @@
 
  <address>
   <br>
-  Last revised $Date: 2003-02-07 18:37:24 $
+  Last revised $Date: 2003-02-07 19:13:30 $
  </address>
 </body>
 </html>
