@@ -28,8 +28,8 @@
 # E-mail notifications - we use python's syncmain
 
 # ##########################################################################
-# For some odd reason the first email entry is ignored. I've cluged a fix by
-# adding myself as the first email entry.  Earnie.
+# For some odd reason the SMTP server isn't allowing mail to it's own domain.
+# I've added my yahoo account so that I can get notification of change.
 # ##########################################################################
-CVSROOT $CVSROOT/CVSROOT/syncmail %{sVv} earnie@users.sourceforge.net mingw-cvs-admin@lists.sourceforge.net
-DEFAULT $CVSROOT/CVSROOT/syncmail %{sVv} earnie@users.sourceforge.net mingw-cvs@lists.sourceforge.net
+CVSROOT $CVSROOT/CVSROOT/syncmail %{sVv} earnie_boyd@yahoo.com earnie@users.sourceforge.net mingw-cvs-admin@lists.sourceforge.net
+DEFAULT $CVSROOT/CVSROOT/syncmail %{sVv} earnie_boyd@yahoo.com earnie@users.sourceforge.net mingw-cvs@lists.sourceforge.net
