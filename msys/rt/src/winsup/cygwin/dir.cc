@@ -363,12 +363,40 @@ rmdir (const char *dir)
   int res = -1;
 
   path_conv real_dir (dir, PC_SYM_NOFOLLOW);
+#ifdef __MSYS__
+  //  FIXME: NASTY HACK
+  //  This is a nasty hack to work a problem of the dll sitting in the directory
+  //  I want to delete.  What really needs to occur is to find out what method
+  //  is doing this and fix it.
+  path_conv cwd (".", PC_SYM_NOFOLLOW | PC_FULL);
+  if (cwd.error)
+    {
+      set_errno (cwd.error);
+      goto done;
+    }
+  debug_printf("real_dir: >%s<", real_dir.get_win32 ());
+  debug_printf("cwd: >%s<", cwd.get_win32 ());
+#endif
 
   if (real_dir.error)
     {
       set_errno (real_dir.error);
       goto done;
     }
+
+#ifdef __MSYS__
+  //  FIXME: NASTY HACK
+  if (*real_dir.get_win32 () == *cwd.get_win32 ())
+    {
+      char chdirstr[MAX_PATH];
+      strcpy (chdirstr, cwd.get_win32 ());
+      strcat (chdirstr, "\\..");
+      debug_printf("chdirstr = %s", chdirstr);
+      if (chdir (chdirstr))
+	  debug_printf("Error on chdir(%s)", chdirstr);
+      path_conv cwd (".", PC_SYM_NOFOLLOW);
+    }
+#endif
 
   /* Does the file exist? */
   if (real_dir.file_attributes () == (DWORD) -1)

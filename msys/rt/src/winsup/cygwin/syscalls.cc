@@ -1066,7 +1066,7 @@ stat_worker (const char *caller, const char *name, struct stat *buf,
 
   MALLOC_CHECK;
 
-  debug_printf ("%s (%s, %p) %s", caller, name, buf, buf);
+  debug_printf ("stat_worker (%s (%s, %p) %s, %d)", caller, name, buf, buf, nofollow);
 
   path_conv real_path (name, (nofollow ? PC_SYM_NOFOLLOW : PC_SYM_FOLLOW) |
 					 PC_FULL, stat_suffixes);
