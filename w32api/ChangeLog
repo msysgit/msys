@@ -1,3 +1,8 @@
+2001-10-30  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/winuser.h (CREATESTRUCT): UNICODE it.
+	(CBT_CREATEWND): Likewise.
+
 2001-10-12  Pedro A Aranda  <paaguti@hotmail.com>
 
 	* include/winuser.h (POINTSTOPOINT): Use explicit casts
