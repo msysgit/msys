@@ -1,4 +1,4 @@
-#if defined MALLOC_PROVIDED && ! defined __MSYS__
+#if defined MALLOC_PROVIDED
 int _dummy_mallocr = 1;
 #else
 /* ---------- To make a malloc.h, start cutting here ------------ */
@@ -305,6 +305,11 @@ extern "C" {
 #define MALLOC_UNLOCK __malloc_unlock(reent_ptr)
 
 #ifdef __CYGWIN__
+# undef _WIN32
+# undef WIN32
+#endif
+
+#ifdef __MSYS__
 # undef _WIN32
 # undef WIN32
 #endif
@@ -1076,8 +1081,7 @@ struct mallinfo mALLINFo();
 
 #ifdef WIN32
 
-#define AlignPage(add) (((add) + (malloc_getpagesize-1)) &
-~(malloc_getpagesize-1))
+#define AlignPage(add) (((add) + (malloc_getpagesize-1)) & ~(malloc_getpagesize-1))
 
 /* resrve 64MB to insure large contiguous space */ 
 #define RESERVED_SIZE (1024*1024*64)
