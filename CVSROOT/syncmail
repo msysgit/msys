@@ -31,14 +31,11 @@ Usage:
 
     %(PROGRAM)s [options] <%%S> email-addr [email-addr ...]
 
-Where options is:
+Where options are:
 
     --cvsroot=<path>
     	Use <path> as the environment variable CVSROOT.  Otherwise this
     	variable must exist in the environment.
-
-    --help / -h
-        Print this text.
 
     --context=#
     -C #
@@ -50,8 +47,19 @@ Where options is:
     -u
         Produce a unified diff (smaller).
 
-    --quiet/-q
+    --quiet / -q
         Don't print as much status to stdout.
+
+    --fromhost=hostname
+    -f hostname
+        The hostname that email messages appear to be coming from.  The From:
+        header will of the outgoing message will look like user@hostname.  By
+        default, hostname is the machine's fully qualified domain name.
+
+    --help / -h
+        Print this text.
+
+The rest of the command line arguments are:
 
     <%%S>
         CVS %%s loginfo expansion.  When invoked by CVS, this will be a single
@@ -65,12 +73,31 @@ Where options is:
 """
 import os
 import sys
+import re
 import time
 import string
 import getopt
 import smtplib
 import pwd
 import socket
+
+try:
+    from socket import getfqdn
+except ImportError:
+    def getfqdn():
+        # Python 1.5.2 :(
+        hostname = socket.gethostname()
+        byaddr = socket.gethostbyaddr(socket.gethostbyname(hostname))
+        aliases = byaddr[1]
+        aliases.insert(0, byaddr[0])
+        aliases.insert(0, hostname)
+        for fqdn in aliases:
+            if '.' in fqdn:
+                break
+        else:
+            fqdn = 'localhost.localdomain'
+        return fqdn
+    
 
 from cStringIO import StringIO
 
@@ -94,6 +121,11 @@ BINARY_EXPLANATION_LINES = [
     "(This appears to be a binary file; contents omitted.)\n"
     ]
 
+REVCRE = re.compile("^(NONE|[0-9.]+)$")
+NOVERSION = "Couldn't generate diff; no version number found in filespec: %s"
+BACKSLASH = "Couldn't generate diff: backslash in filespec's filename: %s"
+
+
 
 def usage(code, msg=''):
     print __doc__ % globals()
@@ -104,17 +136,37 @@ def usage(code, msg=''):
 
 
 def calculate_diff(filespec, contextlines):
-    try:
-        file, oldrev, newrev = string.split(filespec, ',')
-    except ValueError:
-        # No diff to report
-        return '***** Bogus filespec: %s' % filespec
+    file, oldrev, newrev = string.split(filespec, ',')
+    # Make sure we can find a CVS version number
+    if not REVCRE.match(oldrev):
+        return NOVERSION % filespec
+    if not REVCRE.match(newrev):
+        return NOVERSION % filespec
+
+    if string.find(file, '\\') <> -1:
+        # I'm sorry, a file name that contains a backslash is just too much.
+        # XXX if someone wants to figure out how to escape the backslashes in
+        # a safe way to allow filenames containing backslashes, this is the
+        # place to do it.  --Zooko 2002-03-17
+        return BACKSLASH % filespec
+
+    if string.find(file, "'") <> -1:
+        # Those crazy users put single-quotes in their file names!  Now we
+        # have to escape everything that is meaningful inside double-quotes.
+        filestr = string.replace(file, '`', '\`')
+        filestr = string.replace(filestr, '"', '\"')
+        filestr = string.replace(filestr, '$', '\$')
+        # and quote it with double-quotes.
+        filestr = '"' + filestr + '"'
+    else:
+        # quote it with single-quotes.
+        filestr = "'" + file + "'"
     if oldrev == 'NONE':
         try:
             if os.path.exists(file):
                 fp = open(file)
             else:
-                update_cmd = 'cvs -fn update -r %s -p %s' % (newrev, file)
+                update_cmd = "cvs -fn update -r %s -p %s" % (newrev, filestr)
                 fp = os.popen(update_cmd)
             lines = fp.readlines()
             fp.close()
@@ -140,8 +192,8 @@ def calculate_diff(filespec, contextlines):
             difftype = "-C " + str(contextlines)
         else:
             difftype = "-u"
-        diffcmd = "/usr/bin/cvs -f diff -kk %s --minimal -r %s -r %s '%s'" % (
-            difftype, oldrev, newrev, file)
+        diffcmd = "/usr/bin/cvs -f diff -kk %s --minimal -r %s -r %s %s" \
+                  % (difftype, oldrev, newrev, filestr)
         fp = os.popen(diffcmd)
         lines = fp.readlines()
         sts = fp.close()
@@ -157,27 +209,7 @@ def calculate_diff(filespec, contextlines):
 
 
 
-def getdomain():
-    try:
-        fqdn = socket.getfqdn()
-    except AttributeError:
-        # Python 1.5.2 :(
-        hostname = socket.gethostname()
-        byaddr = socket.gethostbyaddr(socket.gethostbyname(hostname))
-        aliases = byaddr[1]
-        aliases.insert(0, byaddr[0])
-        aliases.insert(0, hostname)
-        for fqdn in aliases:
-            if '.' in fqdn:
-                break
-        else:
-            fqdn = 'localhost.localdomain'
-    parts = string.split(fqdn, DOT)
-    return string.join(parts[1:], DOT)
-
-
-
-def blast_mail(subject, people, filestodiff, contextlines):
+def blast_mail(subject, people, filestodiff, contextlines, fromhost):
     # cannot wait for child process or that will cause parent to retain cvs
     # lock for too long.  Urg!
     if not os.fork():
@@ -188,7 +220,7 @@ def blast_mail(subject, people, filestodiff, contextlines):
         conn = smtplib.SMTP()
         conn.connect(MAILHOST, MAILPORT)
         user = pwd.getpwuid(os.getuid())[0]
-        domain = getdomain()
+        domain = fromhost or getfqdn()
         author = '%s@%s' % (user, domain)
         s = StringIO()
         sys.stdout = s
@@ -217,14 +249,16 @@ Subject: %(subject)s
 # scan args for options
 def main():
     try:
-        opts, args = getopt.getopt(sys.argv[1:], 'hC:cuq',
-                                   ['context=', 'cvsroot=', 'help', 'quiet'])
+        opts, args = getopt.getopt(
+            sys.argv[1:], 'hC:cuqf:',
+            ['fromhost=', 'context=', 'cvsroot=', 'help', 'quiet'])
     except getopt.error, msg:
         usage(1, msg)
 
     # parse the options
     contextlines = 2
     verbose = 1
+    fromhost = None
     for opt, arg in opts:
         if opt in ('-h', '--help'):
             usage(0)
@@ -239,6 +273,8 @@ def main():
             contextlines = 0
         elif opt in ('-q', '--quiet'):
             verbose = 0
+        elif opt in ('-f', '--fromhost'):
+            fromhost = arg
 
     # What follows is the specification containing the files that were
     # modified.  The argument actually must be split, with the first component
@@ -276,7 +312,7 @@ def main():
 
     if verbose:
         print 'Generating notification message...'
-    blast_mail(subject, people, specs[1:], contextlines)
+    blast_mail(subject, people, specs[1:], contextlines, fromhost)
     if verbose:
         print 'Generating notification message... done.'
 
