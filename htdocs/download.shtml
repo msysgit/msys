@@ -10,11 +10,8 @@
   <link href="mingw.css" type="text/css" rel="stylesheet" title="MinGW">
   <title>Download</title>
 </head>
-
 <body link="#000099" vlink="#990099" alink="#000099">
-
 <h1 align="center">MinGW: Download</h1>
-
 <table class="prim" cellspacing="6" border="0">
   <tbody>
     <tr>
@@ -24,8 +21,7 @@
       <table class="sec" cellspacing="6" border="0">
         <tbody>
           <tr>
-            <td>
-<!-- ======================================================================= --><!--                                                                         --><!--                               Main Body                                 --><!--                                                                         -->
+            <td><!-- ======================================================================= --><!--                                                                         --><!--                               Main Body                                 --><!--                                                                         -->
             <h2>Downloading MinGW</h2>
             <p> Development of MinGW is done within a framework of
 inter-related <i>packages</i>.  There is a package for the MinGW
@@ -60,7 +56,8 @@ updates immediately. </p>
 SourceForge</a>.  This page contains the latest version of the main
 MinGW distribution archive, as well as all available pacakges files to
 download.<br>
-            </p><!--#include file="ssi/release.html"-->
+            </p>
+<!--#include file="ssi/release.html"-->
             <h3>Mirror Sites</h3>
             <ul>
               <li> 	 <a href="http://prdownloads.sf.net/mingw/"> 	
@@ -136,33 +133,121 @@ of the Options menu. <br>
             <em><a href="http://www.7-zip.org" target="_nw">7-Zip</a></em><br>
             <p>We've found that this zip/unzip utility is fast and
 reliable for differing compression algorithms.  If you need a
-decompression utility, you should visit <a
- href="http://www.7-Zip.org" target="_nw">7-Zip</a> for the latest
-version.  If you don't need a compression/decompression utility, I
-suggest you visit <a href="http://www.7-Zip.org"
- target="_nw">7-Zip</a> for one of the best compression algorithms
-available. <b> </b></p>
+decompression utility, you should visit <a href="http://www.7-Zip.org"
+ target="_nw">7-Zip</a> for the latest version.  If you don't need a
+compression/decompression utility, I suggest you visit <a
+ href="http://www.7-Zip.org" target="_nw">7-Zip</a> for one of the best
+compression algorithms available. <b> </b></p>
             <hr>
             <h2>Installing MinGW</h2>
-            <p> The recommended method of installation for beginners
-involves downloading the             latest version of the single-file
-distribution, rather than any individual             packages. </p>
-            <p> After downloading the archive, create a directory on
-your system that you wish             to serve as the base of the
-installation (i.e. <tt>C:\MINGW</tt>).  Extract the distribution
-archive into this directory.  If your compression/extraction
-application does not by default preserve the directory structure of    
-archive contents, be sure that you instruct it to do so manually. </p>
-            <p> The last step is to add the <tt>/bin</tt> subdirectory
-of MinGW installation to             your PATH (the procedure for doing
-this varies based on the operating system             version you are
-using). Remember to place MinGW ahead of Cygwin in your PATH if
-applicable (see the <a href="mingwfaq.shtml#faq-usingwithcygwin">FAQ</a>
-for more detail). </p>
-            <p> To verify that installation completed properly, run "<tt>gcc
--v</tt>". You             should see output close to the following: </p>
-            <pre>   Reading specs from c:/mingw/bin/../lib/gcc-lib/mingw32/2.95.3-5/specs<br>            </pre>
-(Note that your base installation directory may differ)<!--                            End of Main Body                             --> </td>
+            <span style="font-weight: bold;">Installing MinGW using
+MinGW-__VERSION__.exe:<br>
+            </span><br>
+            <span style="text-decoration: underline;">Summary for the
+click happy and impatient:</span><br>
+            <ul>
+              <li>Make sure you read and understand the License
+agreement.</li>
+              <li>Accept all of the defaults unless you have reason not
+to (ie/ installation dir to c:\msys\__VERSION__\mingw for a combined
+MinGW/MSYS installation).</li>
+            </ul>
+            <span style="text-decoration: underline;">Detailed
+Instructions:</span><br>
+            <span style="font-weight: bold;"></span>
+            <ol>
+              <li>Download the latest MinGW binary executable.</li>
+              <li>Run the executable.</li>
+              <li>Click "<span style="text-decoration: underline;">N</span>ext"
+if you wish to continue with the installation.<br>
+              </li>
+              <li>Carefully read through the License Agreement.</li>
+              <li>Click "<span style="text-decoration: underline;">Y</span>es"
+only if you agree with the terms of the license.</li>
+              <li>Read through the Setup Info.</li>
+              <li>Click "<span style="text-decoration: underline;">N</span>ext".</li>
+              <li>Select your installation directory or accept the
+default.</li>
+              <li>Click "<span style="text-decoration: underline;">N</span>ext".</li>
+              <li>An architecture dialog will be displayed, accept the
+default.</li>
+              <li>Click "<span style="text-decoration: underline;">N</span>ext".</li>
+              <li>Review the installation summary go "<span
+ style="text-decoration: underline;">B</span>ack" if necessary.</li>
+              <li>Click "Install" to continue with the installation.</li>
+              <li>A progress bar will be displayed indicating the
+current install progress.</li>
+              <li>Upon completion click "<span
+ style="text-decoration: underline;">N</span>ext"</li>
+              <li>Click "<span style="text-decoration: underline;">F</span>inish"
+to finalize the installation.</li>
+            </ol>
+            <span style="font-weight: bold;">Normalizing MinGW with
+your build environment<br>
+            <br>
+Windows Command prompt:<br>
+            <br>
+            </span><span style="text-decoration: underline;">Summary:</span><br>
+            <ul>
+              <li>set PATH=c:\__MinGW_Install_Dir__\bin;%PATH%</li>
+              <li>test installation with "gcc -v"<br>
+              </li>
+              <li>add the above path to c:\autoexec.bat</li>
+            </ul>
+            <span style="text-decoration: underline;">Detailed
+Instructions:<br>
+            </span>
+            <ol>
+              <li>run command.com (98 or ME) or cmd.exe (NT, 2000 or XP)</li>
+              <li>type "set PATH=c:\__MinGW_Install_Dir__\bin;%PATH%",
+substituting __MinGW_Install_Dir__ with the directory path you installed
+MinGW into.</li>
+              <li>type "gcc -v" and ensure that it outputs version
+information which will start similar to the following:<br>
+                <pre>   Reading specs from c:/mingw/bin/../lib/gcc-lib/i386-pc-mingw32/3.2.1/specs<br>            </pre>
+              </li>
+              <li>To permanently set the path type "notepad
+c:\autoexec.bat" at the command prompt</li>
+              <li>In notepad goto the last line and add the 'set PATH'
+command you typed in step 2.</li>
+              <li>Save and close notepad.</li>
+            </ol>
+            <span style="font-weight: bold;">pre-MSYS:<br>
+            </span><br>
+            <span style="text-decoration: underline;">Summary:</span><br>
+            <ul>
+              <li>During the MSYS install specify your MinGW directory
+during the environment normalization</li>
+            </ul>
+            <span style="text-decoration: underline;">Detailed
+Instructions:<br>
+            <span style="text-decoration: underline;"></span></span>Sorry
+on the todo list<span style="text-decoration: underline;"><span
+ style="text-decoration: underline;"></span><br>
+            <br>
+            </span> <span style="font-weight: bold;">post-MSYS:<br>
+            <br>
+            </span><span style="text-decoration: underline;">Summary:<br>
+            </span>
+            <ul>
+              <li>Start up msys, copy /etc/fstab.sample to /etc/fstab</li>
+              <li>Edit /etc/fstab updating the location of your MinGW
+installation appropriately</li>
+            </ul>
+            <span style="text-decoration: underline;">Detailed
+Instructions:</span><br>
+Sorry on the todo list<br>
+            <br>
+            <span style="text-decoration: underline;"></span><span
+ style="font-weight: bold;">Cygwin:<br>
+            </span>Sorry on the todo list<br>
+            <br>
+            <span style="font-weight: bold;">Other:<br>
+            </span>Please submit to suggestions as a&nbsp; patch.<!--                            End of Main Body                             --> </td>
+          </tr>
+          <tr>
+            <td style="vertical-align: top;"><br>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -171,16 +256,13 @@ for more detail). </p>
   </tbody>
 </table>
 <!--#include file="ssi/bottombar.html"--><!--#include file="ssi/footer.html"-->
-<p>
-      <a href="http://validator.w3.org/check/referer"><img border="0"
-          src="http://www.w3.org/Icons/valid-html401"
-          alt="Valid HTML 4.01!" height="31" width="88"></a>
-<a href="http://jigsaw.w3.org/css-validator/">
-<img style="border:0;width:88px;height:31px"
-       src="http://jigsaw.w3.org/css-validator/images/vcss" 
-       alt="Valid CSS!"></a>	
-</p>
+<p> <a href="http://validator.w3.org/check/referer"><img border="0"
+ src="http://www.w3.org/Icons/valid-html401" alt="Valid HTML 4.01!"
+ height="31" width="88"></a> <a
+ href="http://jigsaw.w3.org/css-validator/"> <img
+ style="border: 0pt none ; width: 88px; height: 31px;"
+ src="http://jigsaw.w3.org/css-validator/images/vcss" alt="Valid CSS!"></a>	</p>
 <address> <br>
-Last revised $Date: 2003-01-10 08:29:30 $ </address>
+Last revised $Date: 2003-02-03 06:08:57 $ </address>
 </body>
 </html>
