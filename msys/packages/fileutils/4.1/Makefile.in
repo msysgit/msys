@@ -142,8 +142,8 @@ ACLOCAL_AMFLAGS = -I m4
 rm_subst = \
   s!(rm -f (rm|\$$\(bin_PROGRAMS\)))$$!$$1 > /dev/null 2>&1 || /bin/$$1!
 
-EXEEXT =
-OBJEXT = o
+EXEEXT = @EXEEXT@
+OBJEXT = @OBJEXT@
 subdir = .
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
