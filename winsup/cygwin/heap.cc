@@ -83,6 +83,7 @@ heap_init ()
 
 #define pround(n) (((size_t)(n) + page_const) & ~page_const)
 
+FIXME;
 /* FIXME: This function no longer handles "split heaps". */
 
 extern "C" void *
