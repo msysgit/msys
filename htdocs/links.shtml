@@ -32,45 +32,41 @@
 
 <h3 align="left">MinGW</h3>
 <ul>
-<li> <a href="http://www.nanotech.wisc.edu/~khan/software/gnu-win32/">
+<li> <a target="_nw" href="http://www.nanotech.wisc.edu/~khan/software/gnu-win32/">
 Mumit Khan's MinGW site</a></li>
-<li> <a href="http://gcc.gnu.org/">GNU Compiler Collection (GCC)</a></li>
-<li> Laura Michaels' <a href="mingwfaq.shtml">
-Mingw FAQ</a>. Also see 
-<a href="http://members.aol.com/lauram3017/index.html">Laura's homepage</a> 
-for other useful information.</li>
+<li> <a target="_nw" href="http://gcc.gnu.org/">GNU Compiler Collection (GCC)</a></li>
 <li> Colin Peters' site on
-<a href="http://www.geocities.com/Tokyo/Towers/6162/gcc.html">MinGW</a> --
+<a target="_nw" href="http://www.geocities.com/Tokyo/Towers/6162/gcc.html">MinGW</a> --
 this is where it all started.</li>
 <li> J.J.vanderHeijden's 
-<a href="http://agnes.dida.physik.uni-essen.de/~janjaap/mingw32/index.html">
+<a target="_nw" href="http://agnes.dida.physik.uni-essen.de/~janjaap/mingw32/index.html">
 GNU mingw32 tools</a>. Contains some useful tools, and also old versions 
 of GCC (2.8.x).</li>
 <li> Jon Beniston <a href="mailto:jon@sentinelware.freeserve.co.uk">
 &lt;jon@sentinelware.freeserve.co.uk&gt;</a> is working on porting 
 the Java runtime to Cygwin. If you are using the GNU Java front-end, 
 you definitely want to visit 
-<a href="http://www.cs.bris.ac.uk/~jb7216/libgcj/">
+<a target="_nw" href="http://www.cs.bris.ac.uk/~jb7216/libgcj/">
 http://www.cs.bris.ac.uk/~jb7216/libgcj/</a>.</li>
 <li> <a href="mailto:kern@caltech.edu">Robert Kern</a>'s instructions
-for <a href="http://starship.python.net/crew/kernr/mingw32/Notes.html">
+for <a target="_nw" href="http://starship.python.net/crew/kernr/mingw32/Notes.html">
 Python Extensions with GCC/mingw32</a>.</li>
-<li> <a href="http://www.eGroups.com/group/mingw32/">Old Mingw32 mailing list 
+<li> <a target="_nw" href="http://www.eGroups.com/group/mingw32/">Old Mingw32 mailing list 
 (use for archived information)</a>
-hosted by <a href="http://www.eGroups.COM">eGroups.COM</a>.</li>
+hosted by <a target="_nw" href="http://www.eGroups.COM">eGroups.COM</a>.</li>
 <li> <a href="mailto:daguer@geocities.com">Daniel Guerrero Miralles</a> has
 some interesting items Mingw on his 
-<a href="http://www.geocities.com/SiliconValley/Station/1177/index.html">
+<a target="_nw" href="http://www.geocities.com/SiliconValley/Station/1177/index.html">
 site</a>. Mostly LCC-Win32 related, but a lot of that applies to Mingw as 
 well.</li>
 </ul>
 
 <h3 align="left">Other GNU-Windows32 projects</h3>
 <ul>
-<li> <a href="http://sources.redhat.com/cygwin/">Cygwin project</a>.
+<li> <a target="_nw" href="http://cygwin.com">Cygwin project</a>.
      The mailing list archives are on-line, as is the Users Guide and so
      on. Please do look through these if you have a problem.</li>
-<li> <a href="http://pw32.sourceforge.net/">PW32</a> is
+<li> <a target="_nw" href="http://pw32.sourceforge.net/">PW32</a> is
 <a href="mailto:pfalcon@users.sourceforge.net">Paul Sokolovsky's</a>
 effort to provide another POSIX-compliant C runtime library. Currently
 uses Mingw-hosted gcc/binutils.
@@ -79,7 +75,7 @@ uses Mingw-hosted gcc/binutils.
 
 <h3 align="left">Sites useful for Windows32 programmers</h3>
 <ul>
-<li><a href="http://www.blockdev.net/Community/Editors/">Free Editors for
+<li><a target="_nw" href="http://www.blockdev.net/Community/Editors/">Free Editors for
 Programming in Windows (32-bit)</a>
 </ul>
 
@@ -90,20 +86,20 @@ Programming in Windows (32-bit)</a>
     general use.
     </p>
     <ul>
-      <li>RSXIDE, <a href="http://www.mathematik.uni-bielefeld.de/%7Erainer/">
+      <li>RSXIDE, <a target="_nw" href="http://www.mathematik.uni-bielefeld.de/%7Erainer/">
       http://www.mathematik.uni-bielefeld.de/~rainer/</a>
       <br />Built in support for djgpp, rsxnt, emx/nt09d and mingw.  Works with
       any editor that supports DDE.  This program in conjunction with an editor
       like PFE makes an easy-to-use but flexible IDE.
       </li>
-      <li>DFE95, <a href="http://www.musc.edu/%7Ebrannanp/dfe95/">
+      <li>DFE95, <a target="_nw" href="http://www.musc.edu/%7Ebrannanp/dfe95/">
       http://www.musc.edu/~brannanp/dfe95/</a>
       <br />Works with mingw.
       </li>
-      <li>Vide, <a href="http://www.objectcentral.com">http://www.objectcentral.com</a>
+      <li>Vide, <a target="_nw" href="http://www.objectcentral.com">http://www.objectcentral.com</a>
       <br />Tested with mingw.
       </li>
-      <li>JFE (Jen's File Editor), <a href="http://cs-alb-pc3.massey.ac.nz/software/">
+      <li>JFE (Jen's File Editor), <a target="_nw" href="http://cs-alb-pc3.massey.ac.nz/software/">
       http://cs-alb-pc3.massey.ac.nz/software/</a>
       <br />For use with mingw.  The source is available in the file jfesrc.zip, but
       appears to be written to compile using the Microsoft compiler.  The IDE is
@@ -112,25 +108,25 @@ Programming in Windows (32-bit)</a>
       viewing of and navigation to functions in a project.  (I personally miss the key-mapping
       functionality of PFE though.)
       </li>
-      <li>Code Magic, <a href="http://www.petes-place.com/codemagic.html">
+      <li>Code Magic, <a target="_nw" href="http://www.petes-place.com/codemagic.html">
       http://www.petes-place.com/codemagic.html</a>
       </li>
-      <li>Super IDE, <a href="http://protostar.hypermart.net/">
+      <li>Super IDE, <a target="_nw" href="http://protostar.hypermart.net/">
       http://protostar.hypermart.net/</a>
       </li>
-      <li>Pow! - Programmers Open Workbench, <a href="http://www.fim.uni-linz.ac.at/pow/Pow.htm">
+      <li>Pow! - Programmers Open Workbench, <a target="_nw" href="http://www.fim.uni-linz.ac.at/pow/Pow.htm">
       http://www.fim.uni-linz.ac.at/pow/Pow.htm</a>
       </li>
-      <li>ACIDE, <a href="http://pages.zoom.co.uk/andyc/">
+      <li>ACIDE, <a target="_nw" href="http://pages.zoom.co.uk/andyc/">
       http://pages.zoom.co.uk/andyc/</a>
       <br />Can be configured to work with many languages/compilers.
       </li>
       <li>Visual Programming Armoury,
-      <a href="http://polymorph.i-real.spb.ru/">http://polymorph.i-real.spb.ru/</a>
+      <a target="_nw" href="http://polymorph.i-real.spb.ru/">http://polymorph.i-real.spb.ru/</a>
       </li>
-      <li>Assembler Laboratory, <a href="http://tihlde.org/%7Ekurtg/">http://tihlde.org/~kurtg/</a>
+      <li>Assembler Laboratory, <a target="_nw" href="http://tihlde.org/%7Ekurtg/">http://tihlde.org/~kurtg/</a>
       </li>
-      <li>Octopod, <a href="http://www.octopod.net">http://www.octopod.net</a>
+      <li>Octopod, <a target="_nw" href="http://www.octopod.net">http://www.octopod.net</a>
       <br />Commercial IDE.
       </li>
     </ul>
