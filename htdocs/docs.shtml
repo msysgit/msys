@@ -184,7 +184,7 @@
                <pre>
    gcc -c hello.c
    gcc -c -DBUILD_DLL dllfct.c
-   dllwrap --output-lib=libtstdll.a --dllname=tst.dll --driver-name=gcc dllfct.o
+   gcc -shared -o tst.dll -Wl,--out-implib,libtstdll.a dllfct.o
    gcc -o hello.exe hello.o -L./ -ltstdll
                </pre>
                <p>
