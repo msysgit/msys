@@ -1,3 +1,8 @@
+2001-11-06  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/errno.h (_errno): Use __STDC__ prototype.
+	Thanks to: Jim Barton.
+
 2001-11-04  "stefan" <stefan@lkcc.org>
 
 	* include/sys/locking.h (_LK_UNLCK, LK_UNLCK): Correct names.
