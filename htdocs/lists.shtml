@@ -32,24 +32,65 @@
 <p>There are several mailing lists available for the MinGW users; the 
 searchable on-line archives provide a very useful resource.</p>
 
-<ul>
 
-<a name="mingw">
-<li> <a href="http://lists.sourceforge.net/mailman/listinfo/mingw-users">Mingw</a>: This
-is the general mailing list for MinGW users. Note that while anyone can
-access the online archive, list membership is a prerequisite for posting.</li>
+<h3> MinGW Mailing Lists </h3>
+<p>
+<a href="http://lists.sourceforge.net/mailman/listinfo/mingw-users">
+<strong>MinGW-users</strong></a>: 
+This is the general mailing list for MinGW users.  Please search the
+<a href="http://www.geocrawler.com/redir-sf.php3?list=mingw-users">
+<strong>archives</strong></a> before posting.
+</p><p>
+<a href="http://lists.sourceforge.net/mailman/listinfo/mingw-dvlpr">
+<strong>MinGW-dvlpr</strong></a>: 
+This is a private mailing list for MinGW developers.  You can check what
+the developers are discussing at the
+<a href="http://www.geocrawler.com/redir-sf.php3?list=mingw-dvlpr">
+<strong>archives</strong></a>.
+</p><p>
+<a href="http://lists.sourceforge.net/mailman/listinfo/mingw-patches">
+<strong>MinGW-patches</strong></a>: 
+This list is to be used to discuss patches.  You can check previous
+patches in the
+<a href="http://www.geocrawler.com/redir-sf.php3?list=mingw-patches">
+<strong>archives</strong></a>.
+</p><p>
+<a href="http://lists.sourceforge.net/mailman/listinfo/mingw-editor">
+<strong>MinGW-editor</strong></a>: 
+This list is a private list used to discuss changes to the MinGW site and 
+documentation.  You can check out proposed changes in the 
+<a href="http://www.geocrawler.com/redir-sf.php3?list=mingw-editor">
+<strong>archives</strong></a>.
+</p><p>
+<a href="http://lists.sourceforge.net/mailman/listinfo/mingw-cvs">
+<strong>MinGW-cvs</strong></a>: 
+This is a notification list for cvs changes.
+There are 
+<a href="http://www.geocrawler.com/redir-sf.php3?list=mingw-cvs">
+<strong>archives</strong></a> but I doubt it'll be interesting.
+</p><p>
+<a href="http://lists.sourceforge.net/mailman/listinfo/mingw-notify">
+<strong>MinGW-notify</strong></a>: 
+This is a notification list for sourceforge.net control changes.
+There are 
+<a href="http://www.geocrawler.com/redir-sf.php3?list=mingw-notify">
+<strong>archives</strong></a> so you can know what happened to a bug report
+or a patch, etc.
+</p>
 
-<li> <a href="http://sourceware.cygnus.com/ml/cygwin/">Cygwin</a>: The
-development tools for MinGW and Cygwin share the same backend, and so
+<h3> Other Lists of Interest </h3>
+<p>
+<a href="http://cygwin.com/ml/cygwin/"><strong>Cygwin</strong></a>: 
+The development tools for MinGW and Cygwin share the same backend, and so
 there is a lot of cooperation between these two projecs. MinGW started 
-out as a Cygwin "sub-target".</li>
-
-<li> <a href="http://gcc.gnu.org/lists.html">GCC</a>: There are various
-lists for GCC that you can use to post compiler-specific bugs.</li>
-<li> <a href="http://sourceware.cygnus.com/binutils/">Binutils</a>: The
-GNU binutils groups maintains a few mailing lists.</li>
-</ul>
-
+out as a Cygwin "sub-target".
+</p><p>
+<a href="http://gcc.gnu.org/lists.html"><strong>GCC</strong></a>: There are 
+various lists for GCC that you can use to post compiler-specific bugs.
+</p><p>
+<a href="http://sourceware.cygnus.com/binutils/"><strong>Binutils</strong></a>: 
+The GNU binutils groups maintains a few mailing lists.
+</p>
 </td>
 </tr>
 </table>
