@@ -10,6 +10,7 @@ P.centre { text-align: center; }
 P.sm { font-size: small; text-align: center; }
 P.smi { font-size: small; text-align: center; font-style: italic; }
 
+SPAN.underline { text-decoration: underline; }
 SPAN.bold { font-weight: bold; }
 
 TABLE { width: 100%; text-align: left; }

@@ -1,3 +1,8 @@
+2003-02-17  Nathan Fisher <natbobc@users.sf.net>
+
+	* bugs.shtml: Update version info retrieval.
+	* mingw.css:	Add underline class to span.
+	 
 2003-02-12  Nathan Fisher <natbobc@users.sf.net>
 
 	* bugs.shtml: Add info for contacting package maintainers.

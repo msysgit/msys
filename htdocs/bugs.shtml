@@ -16,16 +16,10 @@
     :visited { color: #990099 }
     :active { color: #000099 }
     img.c3 {border:0;width:88px;height:31px}
-    span.c2 {font-weight: bold; text-decoration: underline;}
-    h1.c1 {text-align: center}
-    </style>
-    <style type="text/css">
-    span.c2 {text-decoration: underline;}
-    span.c1 {font-weight: bold;}
     </style>
   </head>
   <body>
-    <h1 class="c1">
+    <h1>
       Reporting bugs
     </h1>
     <table class="prim" cellspacing="6" border="0">
@@ -39,10 +33,10 @@
               <tbody>
                 <tr>
                   <td>
-                    <!-- ======================================================================= -->
-                    <!--                                                                         -->
-                    <!--                               Main Body                                 -->
-                    <!--                                                                         -->
+<!-- ======================================================================= -->
+<!--                                                                         -->
+<!--                               Main Body                                 -->
+<!--                                                                         -->
                     So you think you have found a bug and want to
                     report the problem? Before reporting a bug
                     please ensure you have applied all applicable
@@ -55,26 +49,37 @@
                      
                     <ul>
                       <li>
-                        gcc version
+                        gcc version ( `gcc -v` )
                       </li>
                       <li>
-                        mingw version<br>
+                        ld version ( `ld -v` )<br>
                       </li>
                       <li>
-                        build environment (MSYS, Cygwin,
-                        Cross-Compiler, etc)
+                        mingw version ( name of installer package
+                        eg/ MinGW-2.0.0-3.exe )<br>
+                      </li>
+                      <li>
+                        build environment ( MSYS, Cygwin,
+                        Cross-Compiler, etc )
+                      </li>
+                      <li>
+                        if using MSYS version number ( `uname -a`
+                        )<br>
                       </li>
                       <li>
                         small test case demonstrating the bug
-                        <span class="c2">OR</span>
+                        <span class="underline">OR</span>
                       </li>
                       <li>
                         MSDN documentation references for missing
                         w32api or mingw-runtime features
                       </li>
                       <li>
-                        win32api version (refer to include/_win32.h
-                        for version information)
+                        mingw-runtime version ( include/_mingw.h
+                        )<br>
+                      </li>
+                      <li>
+                        w32api version ( include/_win32.h )
                       </li>
                       <li>
                         any other detailed information pertinent to
@@ -91,10 +96,10 @@
                         "https://sourceforge.net/account/register.php">follow
                         this link to register for one.</a><br>
                     <br>
-                     <span class="c1">Generic Package
+                     <span class="bold">Generic Package
                     Bugs</span><br>
                     <br>
-                    Under certain circumstances you may find a bug
+                     Under certain circumstances you may find a bug
                     in a base package, such as gcc, that is
                     platform independent (ie/ can be reproduced on
                     another platform other than Win32).&nbsp; In
@@ -102,7 +107,7 @@
                     case that illustrates the bug using only
                     standard headers and libraries.&nbsp; Please
                     submit the bug following the procedure detailed
-                    above <span class="c2">prior</span> to
+                    above <span class="underline">prior</span> to
                     submiting it to the primary maintainers. After
                     receiving verification from a MinGW developer
                     that the bug is indeed platform independent,
@@ -119,7 +124,7 @@
                     package maintainer seek assistance on the MinGW
                     users list.<br>
                     <br>
-                     <span class="c1">External Bug Reporting Lists
+                     <span class="bold">External Bug Reporting Lists
                     and Guidelines<br>
                     <br></span> 
                     <ul>
@@ -140,7 +145,7 @@
                         "http://sources.redhat.com/lists.html">http://sources.redhat.com/lists.html</a><br>
                         </li>
                     </ul>
-                    <!--                            End of Main Body                             -->
+<!--                            End of Main Body                             -->
                     </td>
                 </tr>
               </tbody>
@@ -161,7 +166,7 @@
     </p>
     <address>
       <br>
-       Last revised $Date: 2003-02-13 03:01:48 $
+       Last revised $Date: 2003-02-18 05:46:11 $
     </address>
   </body>
 </html>
