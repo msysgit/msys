@@ -1,0 +1,6 @@
+2001.09.22  Earnie Boyd  <earnie@SF.net>
+
+	* ChangeLog.cygwin: Renamed original ChangeLog.
+	* winsup.api/ltp/link04.c: Add preprocessor filters for __MSYS__.
+	* winsup.api/ltp/select01.c: Ditto.
+	* winsup.api/ltp/unlink07.c: Ditto.

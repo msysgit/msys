@@ -1,0 +1,5 @@
+2001-09-04  Earnie Boyd  <earnie@SF.Net>
+
+	* ChangeLog.cygwin: Original ChangeLog.
+	* ChangeLog: New file.
+	* Makefile.in (docfile): Use $(CC) instead of gcc -g directly.
