@@ -141,15 +141,13 @@
 		    <h2><a href="#Contents" name="hdr2">
 		      File List
 		    </a></h2>
-		    <p>
+		    
                     <!--#include file="ssi/release.html"-->
-		    </p>
                      
 		    <hr>
                     <h2><a href="#Contents" name="hdr3">
                       Mirror Sites
                     </a></h2>
-		    <p>
                     <ul>
                       <li>
                         <a href=
@@ -160,7 +158,6 @@
                         "http://gd.tuwien.ac.at/gnu/mingw/">http://gd.tuwien.ac.at/gnu/mingw/</a>
                       </li>
                     </ul>
-		    </p>
                     <p>
                       If you wish to mirror the MinGW distributions
                       then please send a request to <a href=
@@ -342,7 +339,7 @@
     </p>
     <address>
       <br>
-      Last revised $Date: 2003-06-30 17:14:56 $
+      Last revised $Date: 2003-06-30 17:23:44 $
     </address>
   </body>
 </html>
