@@ -1,6 +1,7 @@
 2003.06.05  Earnie Boyd  <earnie@users.sf.net>
 
 	* bin/msysinfo: New file.  Thanks to John Kane.
+	* doc/msys/MSYS-1.0.9-changes.rtf: Update future plans for GCC version.
 
 2003.06.03  Earnie Boyd  <earnie@users.sf.net>
 
