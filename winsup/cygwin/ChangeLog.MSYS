@@ -1,3 +1,9 @@
+2004-04-30  Earnie Boyd  <earnie@users.sf.net>
+
+	* Makefile.in (new-$(DLL_NAME)): Add -luser32 to link command.
+	* window.cc: Add TRACE_IN throughout.
+	(Winmain): Revert the changes from 04-22.  Add a FIXME MessageBox.
+
 2004-04-22  Earnie Boyd  <earnie@users.sf.net>
 
 	* window.cc (Winmain): Add typical Windows messaging API.
