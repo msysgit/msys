@@ -2773,6 +2773,10 @@ patch -o file.cpp ..\old\file.cpp patch.fil
         ftp://ftp.franken.de/pub/win32/develop/gnuwin32/incoming/</a>
 
         </p>
+		
+		<p> Glut libraries for mingw are available at <a href="http://sites.netscape.net/zaqhaq/glut.htm">
+		http://sites.netscape.net/zaqhaq/glut.htm</a>
+		</p>
 
         </li>
 
@@ -3542,7 +3546,7 @@ utility.  For more information, see the <a href="#patches">Patches</a> section.
 
 </body>
 
-$Id: mingwfaq.shtml,v 1.4 2000-09-21 21:51:50 pgarceau Exp $
+$Id: mingwfaq.shtml,v 1.5 2000-10-04 23:33:39 pgarceau Exp $
 
 </html>
 
