@@ -1,7 +1,7 @@
 #!/bin/sh
 # mkRelease
 # Copyright (C) 2003 Earnie Boyd, earnie@users.sourceforge.net
-# $Id: mkRelease.tcl,v 1.2 2003-12-29 19:03:09 earnie Exp $
+# $Id: mkRelease.tcl,v 1.3 2004-12-29 17:08:57 earnie Exp $
 #\
 exec tclsh "$0" "$@"
 
@@ -112,43 +112,43 @@ proc process_current_files_page {} {
 	  set prelcat ""
 	}
 	set prelease $trelease
-	puts -nonewline $release_html {<tr><td width="8%">}
+	puts -nonewline $release_html {<tr><td width="8%" valign="top"><h4>}
 	puts -nonewline $release_html $trelease
-	puts $release_html {</td>}
-	puts -nonewline $release_html {    <td><table border="4" width="100%"> <tr> }
+	puts $release_html {</h4></td>}
+	puts -nonewline $release_html {    <td valign="top"><table border="4" width="100%"> <tr> }
       }
       if {$prelcat != $trelcat} {
 	if {$prelcat != ""} {
 	  puts $release_html {		    </table></td></tr>}
 	  puts -nonewline $release_html {		<tr>}
 	}
-	puts -nonewline $release_html {<td width="15%">}
+	puts -nonewline $release_html {<td width="15%" valign="top"><h5>}
 	puts -nonewline $release_html [lindex $lrelease 1]
 	set prelcat $trelcat
-	puts $release_html {</td>}
-	puts -nonewline $release_html {		    <td width="85%"><table border="2" width="100%"> <tr> <td width="5%">}
+	puts $release_html {</h5></td>}
+	puts -nonewline $release_html {		    <td width="85%" valign="top"><table border="2" width="100%"> <tr> <td width="5%" valign="top">}
       } else {
-	puts -nonewline $release_html {		   		<tr> <td width="5%">}
+	puts -nonewline $release_html {		   		<tr> <td width="5%" valign="top">}
       }
       set lfile $files($I)
       puts -nonewline $release_html [lindex $lfile 0]
       puts $release_html {</td>}
-      puts -nonewline $release_html {				     <td width="64%">}
+      puts -nonewline $release_html {				     <td width="64%" valign="top">}
       puts -nonewline $release_html {<a href="http://prdownloads.sf.net/mingw/}
       puts -nonewline $release_html [lindex $lfile 1]
       puts $release_html {?download" target="_nw">}
       puts -nonewline $release_html [lindex $lfile 1]
       puts $release_html {</a></td>}
-      puts -nonewline $release_html {				     <td width="11%" nowrap>}
+      puts -nonewline $release_html {				     <td width="11%" nowrap valign="top">}
       puts -nonewline $release_html $FtpFiles([lindex $lfile 1],size)
       puts $release_html {</td>}
-      puts -nonewline $release_html {				     <td width="15%" nowrap>}
+      puts -nonewline $release_html {				     <td width="15%" nowrap valign="top">}
       set ldate [split "$FtpFiles([lindex $lfile 1],date)"]
       set date "[lindex $ldate 0] [lindex $ldate 1] [lindex $ldate 2]"
       set time "[lindex $ldate 3]"
       puts -nonewline $release_html $date
       puts $release_html {</td>}
-      puts -nonewline $release_html {				     <td width="5%" nowrap>}
+      puts -nonewline $release_html {				     <td width="5%" nowrap valign="top">}
       puts -nonewline $release_html $time
       puts $release_html {</td>}
       puts $release_html {				</tr>}
