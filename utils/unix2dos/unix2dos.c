@@ -3,7 +3,7 @@
  *  Documentation:
  *    Convert lf ('\x0a') characters in a file to cr lf ('\x0d' '\x0a')
  *    combinations.
- *  Version: $$Id: unix2dos.c,v 1.1 2002-04-10 13:39:07 jrfonseca Exp $$
+ *  Version: $$Id: unix2dos.c,v 1.2 2002-09-29 23:31:47 jrfonseca Exp $$
  *
  *  Copyright (c) 1994, 1995 Benjamin Lin.
  *  All rights reserved.
@@ -47,8 +47,8 @@
 
 
 #define RCS_AUTHOR   "$$Author: jrfonseca $$"
-#define RCS_DATE     "$$Date: 2002-04-10 13:39:07 $$"
-#define RCS_REVISION "$$Revision: 1.1 $$"
+#define RCS_DATE     "$$Date: 2002-09-29 23:31:47 $$"
+#define RCS_REVISION "$$Revision: 1.2 $$"
 #define VER_AUTHOR   "Benjamin Lin"
 #define VER_DATE     "1995.03.31"
 #define VER_REVISION "2.2"
@@ -105,7 +105,7 @@ void PrintVersion(void)
   fprintf(stderr, "VER_AUTHOR: %s\n", VER_AUTHOR);
   fprintf(stderr, "VER_DATE: %s\n", VER_DATE);
   fprintf(stderr, "VER_REVISION: %s\n", VER_REVISION);
-#endif DEBUG
+#endif /* DEBUG */
 }
 
 
@@ -181,7 +181,7 @@ int ConvertUnixToDos(FILE* ipInF, FILE* ipOutF, CFlag *ipFlag)
 #ifdef DEBUG
             fprintf(stderr, "unix2dos: program error, invalid conversion mode %d\n",ipFlag->ConvMode);
             exit(1);
-#endif DEBUG
+#endif /* DEBUG */
   }
   return RetVal;
 }
@@ -210,7 +210,7 @@ int ConvertUnixToDosNewFile(char *ipInFN, char *ipOutFN, CFlag *ipFlag)
 
 #ifdef DEBUG
   fprintf(stderr, "unix2dos: using %s as temp file\n", TempPath);
-#endif DEBUG
+#endif /* DEBUG */
 
   /* can open in file? */
   if ((!RetVal) && ((InF=OpenInFile(ipInFN)) == NULL))
@@ -289,7 +289,7 @@ int ConvertUnixToDosOldFile(char* ipInFN, CFlag *ipFlag)
 
 #ifdef DEBUG
   fprintf(stderr, "unix2dos: using %s as temp file\n", TempPath);
-#endif DEBUG    
+#endif /* DEBUG */
 
   /* can open in file? */
   if ((!RetVal) && ((InF=OpenInFile(ipInFN)) == NULL))

@@ -1,11 +1,11 @@
 #ifndef __UNIX2DOS_H
 #define __UNIX2DOS_H
 
-/* $$Id: unix2dos.h,v 1.1 2002-04-10 13:39:07 jrfonseca Exp $$ */
+/* $$Id: unix2dos.h,v 1.2 2002-09-29 23:31:47 jrfonseca Exp $$ */
 
 #ifdef __GNUC__
 #  define strcmpi(s1, s2) strcasecmp(s1, s2)
-#endif __GNUC__
+#endif /* __GNUC__ */
 
 /* SunOS ASCII -> DOS ASCII */
 
@@ -123,4 +123,4 @@ static int U2DIsoTable[256] =
   '\xf2', '\x97', '\xa3', '\x96', '\x81', '\xc4', '\xb3', '\x98',
 };
 
-#endif  __UNIX2DOS_H
+#endif /* __UNIX2DOS_H */

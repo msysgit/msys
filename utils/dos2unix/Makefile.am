@@ -1,5 +1,5 @@
 bin_PROGRAMS = dos2unix
 
-dos2unix_SOURCES = dos2unix.c dos2unix.h
+man_MANS = dos2unix.1
 
-dos2unix_MANS = dos2unix.1
+dos2unix_SOURCES = dos2unix.c dos2unix.h

@@ -22,6 +22,7 @@
 #include <fcntl.h>
 #include <process.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 /* Here's the deal.  We need to pass the command-line arguments to the
@@ -30,8 +31,40 @@
    we need to disable response files processing.  That's why we must
    link with CRT_noglob.o!  */
 
-extern void *xmalloc(size_t);
-extern void *xrealloc(void *, size_t);
+void xmalloc_failed(size_t size)
+{
+  fprintf(stderr, "Out of memory allocating %lu bytes\n", (unsigned long) size);
+  exit(1);
+}  
+
+void *xmalloc (size_t size)
+{
+  void *newmem;
+
+  if (size == 0)
+    size = 1;
+  newmem = malloc (size);
+  if (!newmem)
+    xmalloc_failed (size);
+
+  return (newmem);
+}
+
+void *xrealloc(void *oldmem, size_t size)
+{
+  void *newmem;
+
+  if (size == 0)
+    size = 1;
+  if (!oldmem)
+    newmem = malloc (size);
+  else
+    newmem = realloc (oldmem, size);
+  if (!newmem)
+    xmalloc_failed (size);
+
+  return (newmem);
+}
 
 int display_exit_code=0;
 int std_err_fid;

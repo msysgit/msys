@@ -134,7 +134,7 @@ int MakeDirectoryTree(void)
 
   RD = (PIMAGE_RESOURCE_DIRECTORY)Directory.Image;
   RD -> Characteristics      = 0;
-  RD -> TimeStamp            = ResourceTime;
+  RD -> TimeDateStamp        = ResourceTime;
   RD -> MajorVersion         = DECLARED_MAV;
   RD -> MinorVersion         = DECLARED_MIV;
   RD -> NumberOfNamedEntries = 0;
@@ -172,7 +172,7 @@ int MakeDirectoryTree(void)
     RD = (PIMAGE_RESOURCE_DIRECTORY)((BYTE *)Directory.Image + RDOfs);
     
     RD -> Characteristics      = 0;
-    RD -> TimeStamp            = ResourceTime;
+    RD -> TimeDateStamp        = ResourceTime;
     RD -> MajorVersion         = DECLARED_MAV;
     RD -> MinorVersion         = DECLARED_MIV;
     RD -> NumberOfNamedEntries = ResInfo[RDNum].named;
@@ -216,7 +216,7 @@ int MakeDirectoryTree(void)
       ThisOffset += sizeof(IMAGE_RESOURCE_DIRECTORY);
 
       RDLast -> Characteristics      = 0;
-      RDLast -> TimeStamp            = ResourceTime;
+      RDLast -> TimeDateStamp        = ResourceTime;
       RDLast -> MajorVersion         = DECLARED_MAV;
       RDLast -> MinorVersion         = DECLARED_MIV;
       RDLast -> NumberOfNamedEntries = 0;

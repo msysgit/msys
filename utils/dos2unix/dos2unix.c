@@ -10,7 +10,7 @@
  *  Name: dos2unix
  *  Documentation:
  *    Remove cr ('\x0d') characters from a file.
- *  Version: $$Id: dos2unix.c,v 1.1 2002-04-10 13:39:04 jrfonseca Exp $$
+ *  Version: $$Id: dos2unix.c,v 1.2 2002-09-29 23:31:46 jrfonseca Exp $$
  * 
  *  Copyright (c) 1994, 1995 Benjamin Lin.
  *  All rights reserved.
@@ -55,8 +55,8 @@
 
 
 #define RCS_AUTHOR   "$$Author: jrfonseca $$"
-#define RCS_DATE     "$$Date: 2002-04-10 13:39:04 $$"
-#define RCS_REVISION "$$Revision: 1.1 $$"
+#define RCS_DATE     "$$Date: 2002-09-29 23:31:46 $$"
+#define RCS_REVISION "$$Revision: 1.2 $$"
 #define VER_AUTHOR   "Christian Wurll"
 #define VER_DATE     "Thu Nov 19 1998"
 #define VER_REVISION "3.1"
@@ -121,7 +121,7 @@ void PrintVersion(void)
   fprintf(stderr, "VER_AUTHOR: %s\n", VER_AUTHOR);
   fprintf(stderr, "VER_DATE: %s\n", VER_DATE);
   fprintf(stderr, "VER_REVISION: %s\n", VER_REVISION);
-#endif DEBUG
+#endif /* DEBUG */
 }
 
 
@@ -233,7 +233,7 @@ int ConvertDosToUnix(FILE* ipInF, FILE* ipOutF, CFlag *ipFlag)
 #ifdef DEBUG
       fprintf(stderr, "dos2unix: program error, invalid conversion mode %d\n",ipFlag->ConvMode);
       exit(1);
-#endif DEBUG
+#endif /* DEBUG */
     }
     
     return RetVal;
@@ -263,7 +263,7 @@ int ConvertDosToUnixNewFile(char *ipInFN, char *ipOutFN, CFlag *ipFlag)
 
 #ifdef DEBUG
   fprintf(stderr, "dos2unix: using %s as temp file\n", TempPath);
-#endif DEBUG
+#endif /* DEBUG */
 
   /* can open in file? */
   if ((!RetVal) && ((InF=OpenInFile(ipInFN)) == NULL))
@@ -343,7 +343,7 @@ int ConvertDosToUnixOldFile(char* ipInFN, CFlag *ipFlag)
 
 #ifdef DEBUG
   fprintf(stderr, "dos2unix: using %s as temp file\n", TempPath);
-#endif DEBUG
+#endif /* DEBUG */
 
   /* can open in file? */
   if ((!RetVal) && ((InF=OpenInFile(ipInFN)) == NULL))

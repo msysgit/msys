@@ -3,8 +3,6 @@
 #ifndef __RES2COFF_H__
 # define __RES2COFF_H__
 
-# define WIN32
-
 # include <windows.h>
 # include <stdio.h>
 # include <stdarg.h>
@@ -44,6 +42,7 @@ typedef struct {
 }  RESOURCEHEAD,*PRESOURCEHEAD;
 
 
+#if 0
 /*
  * This code added by Colin Peters <colin@bird.fu.is.saga-u.ac.jp>.
  * November 15, 1996. You should ifdef this out if you have complete
@@ -241,6 +240,7 @@ typedef struct _IMAGE_SECTION_HEADER* PIMAGE_SECTION_HEADER;
 /*
  * End of modification by Colin Peters.
  */ 
+#endif
 
 
 // This is the storage for the COFF image chunks
