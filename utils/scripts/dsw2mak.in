@@ -1,4 +1,4 @@
-#!/usr/bin/gawk -f
+#!@AWK@ -f
 # dsw2mak.awk
 #
 # An Awk script that generates a unix Makefile from a
@@ -144,7 +144,7 @@ function parse_dsp(infile, outfile, i) {
 	debug = 0
 
 	# this specifies a prefix to the binutils and gcc binaries
-	prefix = "i386-mingw32msvc-"
+	prefix = "@host_alias@-"
 
 	# this specifies the name of the 'rm -f' or equivalent command
 	rm = "rm -f"
