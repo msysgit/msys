@@ -151,27 +151,19 @@ path_prefix_p (const char *path1, const char *path2, int len1)
   return SLASH_P (path2[len1]) || path2[len1] == 0 || path1[len1 - 1] == ':';
 }
 
-/* Return non-zero if paths match in first len chars.
-   Check is dependent of the case sensitivity setting. */
+/* Return non-zero if paths match in first len chars. */
 int
 pathnmatch (const char *path1, const char *path2, int len)
 {
   return (strncasecmp (path1, path2, len) ? 0 : 1);
 }
 
-#if 0 //Suspect unused function.
-/* Return non-zero if paths match. Check is dependent of the case
-   sensitivity setting. */
+/* Return non-zero if paths match. */
 int
 pathmatch (const char *path1, const char *path2)
 {
-  int a = strcmp (path1, path2);
-  if (a)
-      return 0;
-  else
-      return 1;
+  return (strcasecmp (path1, path2) ? 0 : 1);
 }
-#endif
 
 /* Normalize a POSIX path.
    \'s are converted to /'s in the process.
@@ -185,12 +177,22 @@ normalize_posix_path (const char *src, char *dst)
 {
   const char *src_start = src;
   char *dst_start = dst;
+  static char last_src[MAX_PATH] = "\0";
+  static char last_dst[MAX_PATH] = "\0";
+  if (pathmatch(src, last_src))
+    {
+      strcpy (dst, last_dst);
+      return 0;
+    }
+  strcpy (last_src, src);
 
   syscall_printf ("src %s", src);
   syscall_printf ("dst %s", dst);
-  if (isdrive (src) || strpbrk (src, "\\:"))
+  if (isdrive (src) || strpbrk (src, "\\:") || 
+      (isslash (src[0]) && isslash(src[1])))
     {
       cygwin_conv_to_full_posix_path (src, dst);
+      strcpy (last_dst, dst_start);
       return 0;
     }
   if (!isslash (src[0]))
@@ -278,6 +280,7 @@ done:
     *dst = '\0';
 
   debug_printf ("%s = normalize_posix_path (%s)", dst_start, src_start);
+  strcpy (last_dst, dst_start);
   return 0;
 }
 
@@ -794,13 +797,6 @@ out:
 	path_flags |= PATH_EXEC;
     }
 
-#if 0
-  if (!error)
-    {
-      last_path_conv = *this;
-      strcpy (last_src, src);
-    }
-#endif
 #endif
 }
 
@@ -2582,73 +2578,6 @@ symlink_info::check (char *path, const suffix_info *suffixes, unsigned opt)
 
       ext_tacked_on = !!*ext_here;
 
-#ifndef __MSYS__
-      if (pcheck_case != PCHECK_RELAXED && !case_check (path)
-	  || (opt & PC_SYM_IGNORE))
-#endif
-	goto file_not_symlink;
-
-      int sym_check;
-
-      sym_check = 0;
-
-      if (fileattr & FILE_ATTRIBUTE_DIRECTORY)
-	goto file_not_symlink;
-
-      /* Windows shortcuts are treated as symlinks. */
-      if (suffix.lnk_match ())
-	sym_check = 1;
-
-      /* This is the old Cygwin method creating symlinks: */
-      /* A symlink will have the `system' file attribute. */
-      /* Only files can be symlinks (which can be symlinks to directories). */
-      if (fileattr & FILE_ATTRIBUTE_SYSTEM)
-	sym_check = 2;
-
-      if (!sym_check)
-	goto file_not_symlink;
-
-      if (sym_check > 0 && opt & PC_CHECK_EA &&
-	  (res = get_symlink_ea (suffix.path, contents, sizeof (contents))) > 0)
-	{
-	  pflags = PATH_SYMLINK;
-	  debug_printf ("Got symlink from EA: %s", contents);
-	  break;
-	}
-
-      /* Open the file.  */
-
-      h = CreateFileA (suffix.path, GENERIC_READ, FILE_SHARE_READ, &sec_none_nih, OPEN_EXISTING,
-		       FILE_ATTRIBUTE_NORMAL, 0);
-      res = -1;
-      if (h == INVALID_HANDLE_VALUE)
-	goto file_not_symlink;
-
-      /* FIXME: if symlink isn't present in EA, but EAs are supported,
-       * should we write it there?
-       */
-      switch (sym_check)
-	{
-	case 1:
-	  res = check_shortcut (suffix.path, fileattr, h, contents, &error, &pflags);
-	  if (res)
-	    break;
-	  /* If searching for `foo' and then finding a `foo.lnk' which is
-	     no shortcut, return the same as if file not found. */
-	  if (!suffix.lnk_match () || !ext_tacked_on)
-	    goto file_not_symlink;
-
-	  fileattr = (DWORD) -1;
-	  continue;		/* in case we're going to tack *another* .lnk on this filename. */
-	case 2:
-	  res = check_sysfile (suffix.path, fileattr, h, contents, &error, &pflags);
-	  if (!res)
-	    goto file_not_symlink;
-	  break;
-	}
-      break;
-
-    file_not_symlink:
       is_symlink = FALSE;
       syscall_printf ("not a symlink");
       res = 0;
