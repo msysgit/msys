@@ -6,7 +6,7 @@ rem   http://www.mingw.org/msys.shtml
 rem
 rem File:	    msys.bat
 rem Revision:	    2.2
-rem Revision Date:  March 30th, 2004
+rem Revision Date:  March 28th, 2004
 
 rem ember to set the "Start in:" field of the shortcut.
 rem A value similar to C:\msys\1.0\bin is what the "Start in:" field needs
@@ -23,8 +23,6 @@ goto _WindowsNT
 rem ember that we only execute here if we are in command.com.
 :_Windows
 
-set WD=%0\..\
-
 if "x%COMSPEC%" == "x" set COMSPEC=command.com
 start %COMSPEC% /e:4096 /c %0 GOTO: _Resume %0 %1 %2 %3 %4 %5 %6 %7 %8 %9
 goto EOF
@@ -32,11 +30,12 @@ goto EOF
 rem ember that we execute here if we recursed.
 :_Resume
 for %%F in (1 2 3) do shift
+set WD=.\bin\
 
 rem ember that we get here even in command.com.
 :_WindowsNT
 
-if "x%WD%" == "x" set WD=%~dp0
+if "x%WD%" == "x" set WD=%~dp0\bin\
 
 rem ember Set up option to use rxvt based on value of %1
 if "x%MSYSCON%" == "x" set MSYSCON=rxvt.exe
@@ -66,7 +65,7 @@ exit 1
 rem If you don't want to use rxvt then rename the file rxvt.exe to something
 rem else.  Then sh.exe will be used instead.
 :startrxvt
-if NOT EXIST %WD%bin\rxvt.exe goto notfound
+if NOT EXIST %WD%rxvt.exe goto notfound
 
 rem Setup the default colors for rxvt.
 if "x%MSYSBGCOLOR%" == "x" set MSYSBGCOLOR=White
@@ -78,12 +77,12 @@ if "%MSYSTEM%" == "MSYS" set FGCOLOR=%MSYSFGCOLOR%
 if "%MSYSTEM%" == "MINGW32" set BGCOLOR=%MINGW32BGCOLOR%
 if "%MSYSTEM%" == "MINGW32" set FGCOLOR=%MINGW32FGCOLOR%
 
-start %WD%bin\rxvt -backspacekey  -sl 2500 -fg %FGCOLOR% -bg %BGCOLOR% -sr -fn Courier-12 -tn msys -geometry 80x25 -e /bin/sh --login -i
+start %WD%rxvt -backspacekey  -sl 2500 -fg %FGCOLOR% -bg %BGCOLOR% -sr -fn Courier-12 -tn msys -geometry 80x25 -e /bin/sh --login -i
 exit
 
 :startsh
-if NOT EXIST %WD%bin\sh.exe goto notfound
-start %WD%bin\sh --login -i
+if NOT EXIST %WD%\sh.exe goto notfound
+start %WD%sh --login -i
 exit
 
 :EOF
@@ -153,9 +152,9 @@ rem	* Add -geometry parameter to work around an off by one issue with
 rem       the default values.
 rem	Thanks to Dave Schuyler mailto:parameter@users.sf.net
 rem
-rem 2004.03.30  Earnie Boyd  mailto:earnie@users.sf.net
+rem 2004.03.28  Earnie Boyd  mailto:earnie@users.sf.net
 rem	* Add -norxvt or --norxvt switch argument.
-rem	Thanks to Keith Marshal mailto:Keith.Marshall@total.com.
+rem	Thanks to Keith Marshall mailto:Keith.Marshall@total.com.
 rem	* Add method to determine absolute path of msys.bat so that we no
 rem	longer need to change to the bin directory.  This allows msys.bat to be
 rem	called from any working directory.
