@@ -1,0 +1,7 @@
+2002-11-08  Manu B  <manubee@users.sourceforge.net>
+
+	* Readme.mingw: New file.
+	* build-i386-mini: Ditto.
+	* src/grep.c (reset): Add a _WIN32 filter. (S_ISSOCK doesn't define with MinGW)
+	* intl/localename.c: Define LANG_SORBIAN.
+	* ChangeLog created.

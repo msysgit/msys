@@ -1,0 +1,30 @@
+diff -rup grep-2.5/intl/localename.c grep-2.5-mingw/intl/localename.c
+--- grep-2.5/intl/localename.c	Wed Mar 13 13:39:06 2002
++++ grep-2.5-mingw/intl/localename.c	Sat Oct 26 19:47:18 2002
+@@ -136,6 +136,9 @@
+ # ifndef LANG_SERBIAN
+ # define LANG_SERBIAN 0x1a
+ # endif
++# ifndef LANG_SORBIAN
++# define LANG_SORBIAN 0x02e
++# endif
+ # ifndef LANG_SINDHI
+ # define LANG_SINDHI 0x59
+ # endif
+diff -rup grep-2.5/src/grep.c grep-2.5-mingw/src/grep.c
+--- grep-2.5/src/grep.c	Wed Mar 13 14:49:52 2002
++++ grep-2.5-mingw/src/grep.c	Sat Oct 26 16:43:20 2002
+@@ -262,10 +262,10 @@ reset (int fd, char const *file, struct 
+     }
+   if (directories == SKIP_DIRECTORIES && S_ISDIR (stats->stat.st_mode))
+     return 0;
+-#ifndef DJGPP
+-  if (devices == SKIP_DEVICES && (S_ISCHR(stats->stat.st_mode) || S_ISBLK(stats->stat.st_mode) || S_ISSOCK(stats->stat.st_mode)))
+-#else
++#if defined(DJGPP) || defined(_WIN32)
+   if (devices == SKIP_DEVICES && (S_ISCHR(stats->stat.st_mode) || S_ISBLK(stats->stat.st_mode)))
++#else
++  if (devices == SKIP_DEVICES && (S_ISCHR(stats->stat.st_mode) || S_ISBLK(stats->stat.st_mode) || S_ISSOCK(stats->stat.st_mode)))
+ #endif
+     return 0;
+   if (S_ISREG (stats->stat.st_mode))
