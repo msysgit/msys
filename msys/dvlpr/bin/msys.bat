@@ -122,7 +122,7 @@ rem	* Remove the SET CYGWIN since it doesn't matter any longer.
 rem
 rem 2003.02.03  Earnie Boyd  mailto:earnie@users.sf.net
 rem	* Win9x doesn't like ``EXISTS dir'' so change it to ``EXISTS dir\nul''.
-rem	Thanks to Nicolas Weber <nicolasweber@gmx.de>.
+rem	Thanks to Nicolas Weber mailto:nicolasweber@gmx.de.
 rem
 rem 2003.03.06  Earnie Boyd  mailto:earnie@users.sf.net
 rem	* Add -backspacekey swtich to rxvt startup.
