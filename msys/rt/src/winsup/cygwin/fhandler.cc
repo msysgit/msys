@@ -850,6 +850,7 @@ rootdir(char *full_path)
    * \\server\share... -> \\server\share\
    * else current drive.
    */
+  debug_printf("%s", full_path);
   char *root = full_path;
 
   if (full_path[1] == ':')
