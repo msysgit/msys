@@ -625,8 +625,11 @@ spawn_guts (HANDLE hToken, const char * prog_arg, const char *const *argv,
 
   /* Build windows style environment list */
   char *envblock;
+  /* FIXME:
+   * Why do we need to call winenv() for MSYS binary?
+   */
   if (real_path.iscygexec () || IsMsys((char *)real_path))
-    envblock = NULL;
+    envblock = winenv (envp, 0);
   else
     {
       envblock = winenv (envp, 0);
