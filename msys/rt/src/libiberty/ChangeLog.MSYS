@@ -1,0 +1,6 @@
+
+2001.09.21  Earnie Boyd  <earnie.SF.net>
+
+	* ChangeLog.cygwin: Renamed original ChangeLog.
+	* getpwd.c: Add __MSYS__ preprocessor filters.
+	* pexecute.c: Ditto.
