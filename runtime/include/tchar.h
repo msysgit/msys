@@ -29,9 +29,9 @@
  *  DISCLAIMED. This includes but is not limited to warranties of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Revision: 1.4 $
- * $Author: dannysmith $
- * $Date: 2001-11-29 04:26:33 $
+ * $Revision: 1.5 $
+ * $Author: earnie $
+ * $Date: 2002-01-25 20:05:26 $
  *
  */
 
@@ -55,6 +55,7 @@
 #ifndef _TCHAR_DEFINED
 #ifndef RC_INVOKED
 typedef	wchar_t	TCHAR;
+typedef wchar_t _TCHAR;
 #endif	/* Not RC_INVOKED */
 #define _TCHAR_DEFINED
 #endif
@@ -209,6 +210,7 @@ typedef	wchar_t	TCHAR;
 #ifndef _TCHAR_DEFINED
 #ifndef RC_INVOKED
 typedef char	TCHAR;
+typedef char	_TCHAR;
 #endif
 #define _TCHAR_DEFINED
 #endif
