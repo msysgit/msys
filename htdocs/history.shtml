@@ -4,6 +4,7 @@
 <head>
  <title>Project History</title>
  <meta name="Author" content="Mumit Khan" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 </head>
 <body bgcolor="white" text="black" link="#0000EE" vlink="#551A8B" alink="red">
 
@@ -64,24 +65,27 @@
 <p>
 Mingw32 was created by
 <a href="http://www.geocities.com/Tokyo/Towers/6162/gcc.html">Colin Peters</a>.
-The oldest preserved release is of
-<a href="http://www.geocities.com/Tokyo/Towers/6162/mingw32_980701_tar.gz">1998-07-01</a>.
-Colin used <a href="http://sources.redhat.com">Cygwin</a> suite to compile
-code. First <i>native</i> mingw32 compiler was provided by 
+The oldest preserved release currently available may also be found at 
+<a href="http://www.geocities.com/Tokyo/Towers/6162/mingw32_980701_tar.gz"> Colin Peters'
+ GCC website</a> and is dated July 1, 1998.
+Colin used a very early release of the  <a href="http://sources.redhat.com/cygwin">Cygwin</a> suite to compile
+this version of the Mingw compiler code. </p>  <p> The very first <i>native</i>  mingw32 compiler was provided by 
 <a href="http://agnes.dida.physik.uni-essen.de/~janjaap/mingw32/links.html">
-Jan-Jaap van der Heijden</a>. Besides GCC 2.8.1, his packages included
-GNU binutils, GNU make - i.e. everything to develop your own programs 
-with Mingw32.
+Jan-Jaap van der Heijden</a>. Besides GCC 2.8.1, Meister van der Heijdens'  contributions included
+GNU binutils, GNU make  and just about everything else needed to develop your own software 
+using Mingw32 (Minimalist Gnu-Win32).</p>
+
+<p>
 <a href="http://www.xraylith.wisc.edu/~khan/software/gnu-win32/">Mumit Khan</a>
-took the baton and over a couple of following years has been doing greate work
+took the baton and over a couple of following years has been doing great work
 of maintanance and development of Mingw32. He did many developments for
 supporting Win32-specific features in GCC and Binutils (which is of
-course of greate value for entire GNU/Win32), provided binary releases of
+course of great value for entire GNU/Win32), provided binary releases of
 them (with each new release of GCC and often before one was available
 for Cygwin) and developed more comprehensive bindings for runtime libraries.
 Significant addition to Mingw32 was
 <a href="">Anders Norlander</a>'s w32api headers, which brought more
-comprehensive bindings for Win32 API that were available before.
+comprehensive bindings for Win32 API than what were previously available.
 </p>
 
 <p>

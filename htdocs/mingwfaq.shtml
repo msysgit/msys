@@ -3246,7 +3246,7 @@ utility.  For more information, see the <a href="#patches">Patches</a> section.
 
     <ul>
 
-      <li>Virtually UN*X, <a href="http://virtunix.itribe.net//">http://virtunix.itribe.net//</a>
+      <li>Virtually UN*X, <a href="http://virtunix.itribe.net/">http://virtunix.itribe.net/</a>
 
       <br />Win32 versions of many Unix tools.
 
@@ -3542,7 +3542,7 @@ utility.  For more information, see the <a href="#patches">Patches</a> section.
 
 </body>
 
-$Id: mingwfaq.shtml,v 1.3 2000-09-21 01:06:55 pgarceau Exp $
+$Id: mingwfaq.shtml,v 1.4 2000-09-21 21:51:50 pgarceau Exp $
 
 </html>
 

@@ -4,6 +4,7 @@
 <head>
  <title>Related Sites</title>
  <meta name="Author" content="Mumit Khan" />
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 </head>
 <body bgcolor="white" text="black" link="#0000EE" vlink="#551A8B" alink="red">
 
@@ -98,7 +99,7 @@ effort to provide a POSIX-compliant C runtime library for Mingw.
 
 <h3 align="left">Cygwin</h3>
 <ul>
-<li> <a href="http://sourceware.cygnus.com/cygwin/">Cygwin project</a>.
+<li> <a href="http://sources.redhat.com/cygwin/">Cygwin project</a>.
      The mailing list archives are on-line, as is the Users Guide and so
      on. Please do look through these if you have a problem.</li>
 </ul>
