@@ -1,4 +1,4 @@
-<!-- $Id: index.shtml,v 1.38 2002-09-30 20:17:32 earnie Exp $ -->
+<!-- $Id: index.shtml,v 1.39 2002-10-01 02:28:04 earnie Exp $ -->
 
 <html>
 <head>
@@ -76,15 +76,35 @@ Windows32 API functionality. Please see the
 </p>
 -->
 
+<p><b>Mailing Lists:</b>
+We have several <a href=lists.shtml>mailing list</a> you are 
+encouraged to join and participate in.  There is a general discussion
+list <a href="mailto:mingw-users@lists.sf.net">mingw-users@lists.sf.net
+</a> for general MinGW questions and a general discussion list <a href=
+"mailto:mingw-msys@lists.sf.net">mingw-msys@lists.sf.net</a> for 
+questions more related to MSYS and to using the Minimal SYStem.  
+Information for signup and links to the archives can be found by <A HREF=
+"lists.shtml"> clicking here</a>. You may <em>search</em> the archives 
+using the <b>"Search the archives"</b> form found on the left side of 
+every <a href="http://www.mingw.org">www.mingw.org</a> page.
+</p>
+
 <p><b>Latest Releases:</b>
+<br><br><em>NOTE:</em>
+The Latest Releases may not contain the most recent versions of each
+individual package.  You may find the most recent versions of the
+individual packages by 
+<a href="https://sourceforge.net/project/showfiles.php?group_id=2435">
+clicking here</a>.
+
 <ul>
 <li><em>MinGW</em>
   <a href="http://prdownloads.sourceforge.net/mingw/MinGW-2.0.0-3.exe">
 Version 2.0.0</a>.  Bundles the executables from these packages:
 <ul>
-<li><a href="http://prdownloads.sourceforge.net/mingw/GCC-3.2-core-20020817-1.tar.gz">GCC-3.2-core-20020817-1</a></li>
+<li><a href="http://prdownloads.sourceforge.net/mingw/gcc-3.2-core-20020817-1.tar.gz">gcc-3.2-core-20020817-1</a></li>
 <li><a href="http://prdownloads.sourceforge.net/mingw/binutils-2.13-20020903-1.tar.gz">binutils-2.13-20020903-1</a></li>
-<li><a href="prdownloads.sourceforge.net/mingw/mingw-runtime-2.2.tar.gz">mingw-runtime-2.2</a></li>
+<li><a href="http://prdownloads.sourceforge.net/mingw/mingw-runtime-2.2.tar.gz">mingw-runtime-2.2</a></li>
 <li><a href="http://prdownloads.sourceforge.net/mingw/w32api-2.0.tar.gz">w32api-2.0</a></li>
 <li><a href="http://prdownloads.sourceforge.net/mingw/gdb-5.1.1-1.tar.gz">gdb-5.1.1-1</a></li>
 <li><a href="http://prdownloads.sourceforge.net/mingw/make-3.79.1-20010722.tar.gz">make-3.79.1-20010722</a> <em>(make.exe renamed as mingw32-make.exe)</em></li>
@@ -105,20 +125,13 @@ Version 1.0.7</a>.  Bundles select executables from:
 <li>sed</li>
 <li>sh-utils</li>
 <li>tar</li>
-<li>textutils</li>
+<li>texinfo</li>
 <li>textutils</li>
 <li>vim</li>
 </ul></li>
 </ul>
 
-<br><br><em>NOTE:</em><br>
-The Latest Releases may not contain the most recent versions of each
-individual package.  You may find the most recent versions of the
-individual packages by 
-<a href="https://sourceforge.net/project/showfiles.php?group_id=2435">
-clicking here</a>.
-
-<br><br><em>WinZip Cautions:</em><br>
+<em><b>WinZip Caution:</b></em><br>
 Make sure that you first <b>uncheck</b> the "TAR file smart CR/LF
 conversion" checkbox found in the Configuration -&gt; Miscellaneous tab
 of the Options menu.
@@ -133,12 +146,6 @@ algorithms available.
 
 </p>
 
-<p><b>MinGW Users Mailing List</b>
-We have a participating user <a href=lists.shtml>mailing list</a> you are 
-encouraged to join and participate in.  Information for signup and links to 
-the archives can be found by <A HREF="lists.shtml">clicking here</a>. You may
-<em>search</em> the archives using the <b>"Search the archives"</b> form found
-on the left side of every <u>www.mingw.org</u> page.
 
 <hr noshade="noshade" size="1" />
 
@@ -175,7 +182,7 @@ width="88" /></a>
 <!--#include virtual="/cgi-bin/showstatsdate.cgi?mingw"--></a>.
 </p>
 <address>
-<br />Last revised $Date: 2002-09-30 20:17:32 $
+<br />Last revised $Date: 2002-10-01 02:28:04 $
 </address>
 
 </body>
