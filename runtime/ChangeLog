@@ -1,3 +1,14 @@
+2001-11-29   Wu Yongwei  <adah@netstd.com>
+ 
+	* include/_mingw.h,assert.h,conio.h,ctype.h,dir.h,direct.h
+	dirent.h,dos.h,errno.h,excpt.h,fcntl.h,float.h,io.h,
+	limits.h,locale.h,malloc.h,math.h,process.h,setjmp.h,
+	share.h,signal.h,stdarg.h,stddef.h,stdint.h,stdio.h,
+	stdlib.h,string.h,tchar.h,time.h,varargs.h,wchar.h,
+	wctype.h,sys/stat.h,sys/timeb.h,sys/types.h,sys/utime.h:
+	Correct spelling of "disclaimed" in comments.
+	* include/excpt.h: Another spelling correction. 
+
 2001-11-07  Danny Smith  <dannysmith@users.sourceforge.net> 
 
 	* include/ctype.h (tolower, toupper,_tolower,_toupper): Comment 

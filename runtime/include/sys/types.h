@@ -16,12 +16,12 @@
  *
  *  This code is distributed in the hope that it will be useful but
  *  WITHOUT ANY WARRANTY. ALL WARRENTIES, EXPRESS OR IMPLIED ARE HEREBY
- *  DISCLAMED. This includes but is not limited to warrenties of
+ *  DISCLAIMED. This includes but is not limited to warrenties of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Revision: 1.2 $
- * $Author: earnie $
- * $Date: 2001-06-05 00:26:30 $
+ * $Revision: 1.3 $
+ * $Author: dannysmith $
+ * $Date: 2001-11-29 04:26:33 $
  *
  */
 

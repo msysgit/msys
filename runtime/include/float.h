@@ -24,12 +24,12 @@
  *
  *  This code is distributed in the hope that it will be useful but
  *  WITHOUT ANY WARRANTY. ALL WARRANTIES, EXPRESS OR IMPLIED ARE HEREBY
- *  DISCLAMED. This includes but is not limited to warranties of
+ *  DISCLAIMED. This includes but is not limited to warranties of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Revision: 1.5 $
+ * $Revision: 1.6 $
  * $Author: dannysmith $
- * $Date: 2001-11-06 08:06:35 $
+ * $Date: 2001-11-29 04:26:33 $
  *
  */
 
