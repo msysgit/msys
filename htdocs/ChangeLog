@@ -1,3 +1,7 @@
+2002-09-06  Earnie Boyd  <earnie@users.sf.net>
+
+	* index.shtml: Change the href to point to MinGW-2.0.0-2.exe.
+
 2002-09-05  Earnie Boyd  <earnie@users.sf.net>
 
 	* index.shtml  Change the current version links.
