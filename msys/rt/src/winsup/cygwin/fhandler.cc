@@ -422,13 +422,20 @@ fhandler_base::open (int flags, mode_t mode)
       goto done;
     }
 
-  /* Attributes may be set only if a file is _really_ created.
-     This code is now only used for ntea here since the files
-     security attributes are set in CreateFile () now. */
+  // Attributes may be set only if a file is _really_ created.
   if (flags & O_CREAT && get_device () == FH_DISK
-      && GetLastError () != ERROR_ALREADY_EXISTS
-      && !allow_ntsec && allow_ntea)
-    set_file_attribute (has_acls (), get_win32_name (), mode);
+      && GetLastError () != ERROR_ALREADY_EXISTS)
+    {
+      if (mode & (S_IWUSR | S_IWGRP | S_IWOTH))
+	file_attributes &= ~FILE_ATTRIBUTE_READONLY;
+      else
+	file_attributes |= FILE_ATTRIBUTE_READONLY;
+
+      if (S_ISLNK (mode) || S_ISSOCK (mode))
+	file_attributes |= FILE_ATTRIBUTE_SYSTEM;
+
+      SetFileAttributes (get_win32_name (), file_attributes);
+    }
 
   namehash = hash_path_name (0, get_win32_name ());
   set_io_handle (x);
