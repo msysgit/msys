@@ -3520,8 +3520,16 @@ int
 cygwin_conv_to_win32_path (const char *path, char *win32_path)
 {
   TRACE_IN;
-  win32_path = msys_p2w(path);
-  return ((win32_path == path) ? -1 : 0);
+  char *tptr = msys_p2w(path);
+  int rval = 0;
+  if (tptr == path) {
+    rval = -1;
+    strcpy(win32_path, path);
+  } else {
+    strcpy(win32_path, tptr);
+    free (tptr);
+  }
+  return rval;
 }
 
 extern "C"
