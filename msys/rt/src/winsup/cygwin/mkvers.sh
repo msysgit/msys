@@ -125,7 +125,7 @@ cat <<EOF
 EOF
 done | tee /tmp/mkvers.$$ 1>&9
 
-trap "brm -f /tmp/mkvers.$$" 0 1 2 15
+trap "rm -f /tmp/mkvers.$$" 0 1 2 15
 
 if [ -n "$snapshotdate" ]; then
   usedate="`echo $snapshotdate | sed 's/-\\(..:..[^-]*\\).*$/ \1SNP/'`"
