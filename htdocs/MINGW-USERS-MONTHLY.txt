@@ -1,0 +1,76 @@
+To: paul@is.lg.ua
+Subject: [mini-FAQ/reminder]
+
+Introduction
+============
+
+You receive this message because you are subscribed to the MinGW
+mailing list. This is reminder/mini-FAQ sent once a month. If you
+want to unsubscribe, please visit
+http://lists.sourceforge.net/mailman/listinfo/mingw-users . Have
+your password handy (if you can't find it, you'll be offered an
+option to have it mailed to you).
+
+What is MinGW?
+==============
+
+MinGW stands for "Minimalist GNU for Windows" and is development
+package (as well as target) which allows to compile software for
+"native" Windows 32-bit platforms. Please visit http://www.mingw.org 
+for more information.
+
+Who is author of MinGW? How is it maintained? What is licensing?
+================================================================
+
+MinGW was created by Colin Peters and put by him in public domain.
+There is no centralized force behind MinGW - it is maintained by
+volunteers and its development directed by the user community.
+MinGW uses free GNU C/C++ compiler, its core libraries/headers are
+in public domain and it uses vendor-supplied runtime library, so
+in short, you can use it to develop royalty-free software, either
+open- or close-sourced. For more comprehensive licensing terms,
+please visit http://www.mingw.org/licensing.shtml
+
+Can MinGW be used to compile GNU or OpenSource software? MSVC one?
+==================================================================
+
+MinGW runtime library adheres to ANSI C standard and offers some bits
+of POSIX compatibility, so many software packages can be compiled with
+little or no changes. However, most GNU software (and OpenSource
+sofware in general) nowadays uses GNU configure-based build procedure,
+which cannot be handled by MinGW directly. The solution is to
+cross-compile to MinGW from more complete environment.
+
+MinGW was specifically created to allow "native" (read: MSVC-hosted)
+source to be compiled with GCC. Most projects compile without any
+changes. Still, some changes to build procedure may be required.
+Tools for automated conversion of MSVC projects exist.
+
+Support
+=======
+
+MinGW's web site is http://www.mingw.org . There, you can find
+general information, download and installation instructions,
+links to ported software, FAQ, history and news, etc. MinGW
+mailing list (http://lists.sourceforge.net/mailman/listinfo/mingw-users)
+is a place to aks questions, discuss MinGW-related issues and
+announce availability of software. Before posting questions,
+please make sure that it is not covered in comprehnsive FAQ
+(http://www.mingw.org/mingwfaq.shtml). Searching mailing
+list archives may be laso helpful (archives accessible from
+the mailing list homepage).
+
+Reporting bugs and contributing
+===============================
+
+MinGW existence and development is impossible without community
+attention and contribution. Please submit bugreports via
+this link: http://sourceforge.net/bugs/?func=addbug&group_id=2435 
+(if you are registered SourceForge user, please submit when you are
+logged in). Submit patches for MinGW runtime/tools, corrections and
+additions for the web pages via
+http://sourceforge.net/patch/?func=addpatch&group_id=2435 .
+
+
+MinGW maintainers,
+http://sourceforge.net/projects/mingw/
