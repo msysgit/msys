@@ -1,3 +1,7 @@
+2003.04.18  Earnie Boyd  <earnie@users.sf.net>
+
+	* Add inclusion definition for /usr/include/c++/3.2.2 so that c++
+	header files can be found.
 
 2001.07.27  Earnie Boyd  <earnie@sourceforge.net>
 

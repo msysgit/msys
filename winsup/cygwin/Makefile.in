@@ -217,8 +217,8 @@ winver_stamp: mkvers.sh include/cygwin/version.h winver.rc $(DLL_OFILES)
 	touch $@ && \
 	$(COMPILE_CXX) -o version.o version.cc
 
-cygrun.exe : cygrun.o $(LIB_NAME)
-	$(CC) -nodefaultlibs -o $@ $^ -luser32 -lshell32 -lkernel32
+cygrun.exe : cygrun.o
+	$(CC) -nodefaultlibs -o $@ $^ -lgcc $(LIB_NAME) -luser32 -lshell32 -lkernel32
 
 #
 

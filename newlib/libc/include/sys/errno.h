@@ -18,10 +18,10 @@ extern int *__errno _PARAMS ((void));
 /* Please don't use these variables directly.
    Use strerror instead. */
 extern __IMPORT _CONST char * _CONST _sys_errlist[];
-extern __IMPORT int _sys_nerr;
+extern __IMPORT _CONST int _sys_nerr;
 #if defined (__CYGWIN__) || defined (__MSYS__)
 extern __IMPORT const char * const sys_errlist[];
-extern __IMPORT int sys_nerr;
+extern __IMPORT const int sys_nerr;
 #endif
 
 #define __errno_r(ptr) ((ptr)->_errno)
