@@ -8,7 +8,7 @@
   <meta name="keywords"
  content="mingw, mingw32, programming, C++, C, C/C++, libraries, software, development tools, editors, IDEs, GNU">
   <link href="mingw.css" type="text/css" rel="stylesheet" title="MinGW">
-  <title>MinGW - Reporting bugs</title>
+  <title>MinGW - Download Sites</title>
 </head>
 <body link="#000099" vlink="#990099" alink="#000099">
 <h1 align="center">MinGW: Minimalist GNU For Windows</h1>
@@ -168,6 +168,6 @@ for more detail). </p>
 </table>
 <!--#include file="ssi/bottombar.html"--><!--#include file="ssi/footer.html"-->
 <address> <br>
-Last revised $Date: 2002-12-26 11:56:09 $ </address>
+Last revised $Date: 2002-12-26 12:18:43 $ </address>
 </body>
 </html>
