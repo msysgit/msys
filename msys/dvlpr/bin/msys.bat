@@ -125,5 +125,10 @@ rem	* Win9x doesn't like ``EXISTS dir'' so change it to ``EXISTS dir\nul''.
 rem	Thanks to Nicolas Weber mailto:nicolasweber@gmx.de.
 rem
 rem 2003.03.06  Earnie Boyd  mailto:earnie@users.sf.net
-rem	* Add -backspacekey swtich to rxvt startup.
+rem	* Add -backspacekey switch to rxvt startup.
 rem	* Move RXVT color setup to startrxvt label
+rem
+rem 2004.01.30  Earnie Boyd  mailto:earnie@users.sf.net
+rem	* Add -geometry parameter to work around an off by one issue with
+rem       the default values.
+rem	Thanks to Dave Schuyler mailto:parameter@users.sf.net
