@@ -1,6 +1,6 @@
 2003-02-18  Nathan Fisher <natbobc@users.sf.net>
 
-	* bugs.shtml: Change include/_win32.h to include/win32.h
+	* bugs.shtml: Change include/_win32.h to include/win32.h.
 
 2003-02-18  Nathan Fisher <natbobc@users.sf.net>
 
