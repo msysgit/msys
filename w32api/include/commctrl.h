@@ -54,7 +54,7 @@ extern "C" {
 #define WC_LISTVIEWW	L"SysListView32"
 #define WC_TABCONTROLA	"SysTabControl32"
 #define WC_TABCONTROLW	L"SysTabControl32"
-#define WC_TREEVIEWA	("SysTreeView32")
+#define WC_TREEVIEWA	"SysTreeView32"
 #define WC_TREEVIEWW	L"SysTreeView32"
 #define WC_HEADERA	"SysHeader32"
 #define WC_HEADERW 	L"SysHeader32"
@@ -416,6 +416,9 @@ extern "C" {
 #define TBSTATE_HIDDEN	8
 #define TBSTATE_INDETERMINATE	16
 #define TBSTATE_WRAP	32
+#if (_WIN32_IE >= 0x0300)
+#define TBSTATE_ELLIPSES 0x40
+#endif
 #if (_WIN32_IE >= 0x0400)
 #define TBSTATE_MARKED	0x0080
 #endif
@@ -513,6 +516,9 @@ extern "C" {
 #define TB_PRESSBUTTON	(WM_USER+3)
 #define TB_HIDEBUTTON	(WM_USER+4)
 #define TB_INDETERMINATE	(WM_USER+5)
+#if (_WIN32_IE >= 0x0400)
+#define TB_MARKBUTTON           (WM_USER+6)
+#endif
 #define TB_ISBUTTONENABLED	(WM_USER+9)
 #define TB_ISBUTTONCHECKED	(WM_USER+10)
 #define TB_ISBUTTONPRESSED	(WM_USER+11)
@@ -605,6 +611,8 @@ extern "C" {
 #define TB_SETINSERTMARKCOLOR	(WM_USER+88)
 #define TB_GETINSERTMARKCOLOR	(WM_USER+89)
 #define TB_MAPACCELERATORW	(WM_USER+90)
+#define TB_GETSTRINGW		(WM_USER+91)
+#define TB_GETSTRINGA		(WM_USER+92)
 #define TB_SETCOLORSCHEME	CCM_SETCOLORSCHEME
 #define TB_GETCOLORSCHEME	CCM_GETCOLORSCHEME
 #define TB_SETUNICODEFORMAT	CCM_SETUNICODEFORMAT
@@ -1036,6 +1044,8 @@ extern "C" {
 #define LVM_GETHOVERTIME	(LVM_FIRST+72)
 #define LVM_SETTOOLTIPS	(LVM_FIRST+74)
 #define LVM_GETTOOLTIPS	(LVM_FIRST+78)
+#define LVM_SETUNICODEFORMAT CCM_SETUNICODEFORMAT
+#define LVM_GETUNICODEFORMAT CCM_GETUNICODEFORMAT
 #endif /* _WIN32_IE >= 0x0400 */
 #define LVNI_ALL	0
 #define LVNI_FOCUSED	1
@@ -1548,6 +1558,8 @@ extern "C" {
 #define MCM_GETMONTHDELTA 0x1013
 #define MCM_SETMONTHDELTA 0x1014
 #define MCM_GETMAXTODAYWIDTH 0x1015
+#define MCM_GETUNICODEFORMAT CCM_GETUNICODEFORMAT
+#define MCM_SETUNICODEFORMAT CCM_SETUNICODEFORMAT
 #define MCN_SELCHANGE	  ((UINT)-749)
 #define MCN_GETDAYSTATE	((UINT)-747)
 #define MCN_SELECT		((UINT)-746)
@@ -1596,6 +1608,10 @@ extern "C" {
 #define RBBS_HIDDEN 8
 #define RBBS_NOVERT 16
 #define RBBS_FIXEDBMP 32
+#if (_WIN32_IE >= 0x0501)
+#define RBBS_HIDETITLE 0x400
+#define RBBS_TOPALIGN 0x800
+#endif /* _WIN32_IE >= 0x0501 */
 #define RBBIM_STYLE 1
 #define RBBIM_COLORS 2
 #define RBBIM_TEXT 4
@@ -1877,6 +1893,22 @@ typedef struct {
 	LPWSTR pszText;
 	int cchText;
 } NMTBDISPINFOW, *LPNMTBDISPINFOW;
+typedef struct tagNMTBGETINFOTIPA
+{
+	NMHDR hdr;
+	LPSTR pszText;
+	int cchTextMax;
+	int iItem;
+	LPARAM lParam;
+} NMTBGETINFOTIPA, *LPNMTBGETINFOTIPA;
+typedef struct tagNMTBGETINFOTIPW
+{
+	NMHDR hdr;
+	LPWSTR pszText;
+	int cchTextMax;
+	int iItem;
+	LPARAM lParam;
+} NMTBGETINFOTIPW, *LPNMTBGETINFOTIPW;
 typedef struct tagNMMOUSE {
 	NMHDR hdr;
 	DWORD_PTR dwItemSpec;
@@ -2825,6 +2857,7 @@ typedef LRESULT (CALLBACK *SUBCLASSPROC)(HWND,UINT,WPARAM,LPARAM,UINT_PTR,DWORD_
 #define FOURTH_IPADDRESS(a) (a & 0xff)
 #define Animate_Create(w,i,s,hI) CreateWindow(ANIMATE_CLASS,NULL,s,0,0,0,0,w,(HMENU)(i),hI,NULL)
 #define Animate_Open(w,f) (BOOL)SNDMSG(w,ACM_OPEN,0,(LPARAM)f)
+#define Animate_OpenEx(w,h,s) (BOOL)SNDMSG(w,ACM_OPEN,(WPARAM)h,(LPARAM)(LPTSTR)(s))
 #define Animate_Play(w,f,t,r) (BOOL)SNDMSG(w,ACM_PLAY,(r),(LPARAM)MAKELONG(f,t))
 #define Animate_Stop(w)	(BOOL)SNDMSG(w,ACM_STOP,0,0)
 #define Animate_Close(w)	Animate_Open(w,NULL)
@@ -2838,12 +2871,12 @@ HWND WINAPI CreateUpDownControl(DWORD,int,int,int,int,HWND,int,HINSTANCE,HWND,in
 #define DateTime_GetMonthCalColor(hwnd, icolor) SNDMSG(hwnd, DTM_GETMONTHCAL, (WPARAM)icolor,0)
 #define DateTime_GetMonthCalFont(hwnd) SNDMSG(hwnd,DTM_GETMCFONT,0,0)
 #define DateTime_GetRange(hwnd,lpsystimearray) SNDMSG(hwnd,DTM_GETRANGE,0,(LPARAM)lpsystimearray)
-#define DateTime_GetSystemTime(hwnd,lpsystime) SNDMSG(hwnd,DTM_GETSYSTEMTIME,0,(LPARAM)lpsystime)
+#define DateTime_GetSystemtime(hwnd,lpsystime) SNDMSG(hwnd,DTM_GETSYSTEMTIME,0,(LPARAM)lpsystime)
 #define DateTime_SetFormat(hwnd,lpszformat) SNDMSG(hwnd,DTM_SETFORMAT,0,(LPARAM)lpszformat)
 #define DateTime_SetMonthCalColor(hwnd,icolor,clr) SNDMSG(hwnd,DTM_SETMCCOLOR,(WPARAM)icolor,(LPARAM)clr)
 #define DateTime_SetMonthCalFont(hwnd,hfont,lparam) SNDMSG(hwnd,DTM_SETMCFONT,(WPARAM)hfont,(LPARAM)lparam)
 #define DateTime_SetRange(hwnd,flags,lpsystimearray) SNDMSG(hwnd,DTM_SETRANGE,(WPARAM)flags,(LPARAM)lpsystimearray)
-#define DateTime_SetSystemTime(hwnd,flag,lpsystime) SNDMSG(hwnd,DTM_SETSYSTEMTIME,(WPARAM)flag,(LPARAM)lpsystime)
+#define DateTime_SetSystemtime(hwnd,flag,lpsystime) SNDMSG(hwnd,DTM_SETSYSTEMTIME,(WPARAM)flag,(LPARAM)lpsystime)
 void WINAPI DrawInsert(HWND,HWND,int);
 void WINAPI DrawStatusTextA(HDC,LPRECT,LPCSTR,UINT);
 void WINAPI DrawStatusTextW(HDC,LPRECT,LPCWSTR,UINT);
@@ -2859,6 +2892,13 @@ void WINAPI GetEffectiveClientRect(HWND,LPRECT,LPINT);
 #define Header_GetItemRect(w,i,r) (BOOL)SNDMSG((w),HDM_GETITEMRECT,(WPARAM)(i),(LPARAM)(r))
 #define Header_GetOrderArray(w,l,a) (BOOL)SNDMSG((w),HDM_GETORDERARRAY,(WPARAM)(l),(LPARAM)(a))
 #define Header_SetOrderArray(w,l,a) (BOOL)SNDMSG((w),HDM_SETORDERARRAY,(WPARAM)(l),(LPARAM)(a))
+#define Header_CreateDragImage(w, i) (HIMAGELIST)SNDMSG((w), HDM_CREATEDRAGIMAGE, (WPARAM)i, 0)
+#define Header_SetImageList(w,l) (HIMAGELIST)SNDMSG((w), HDM_SETIMAGELIST, 0, (LPARAM)l)
+#define Header_GetImageList(w) (HIMAGELIST)SNDMSG((w),HDM_GETIMAGELIST,0,0)
+#endif
+#if (_WIN32_IE >= 0x0400)
+#define Header_GetUnicodeFormat(w) (BOOL)SNDMSG((w),HDM_GETUNICODEFORMAT,0,0)
+#define Header_SetUnicodeFormat(w,f) (BOOL)SNDMSG((w),HDM_SETUNICODEFORMAT,(WPARAM)(f),0)
 #endif
 HDSA WINAPI DSA_Create(INT,INT);
 BOOL WINAPI DSA_Destroy(HDSA);
@@ -2939,6 +2979,9 @@ BOOL WINAPI ImageList_SetOverlayImage(HIMAGELIST,int,int);
 #ifdef _OBJIDL_H
 HIMAGELIST WINAPI ImageList_Read(LPSTREAM);
 BOOL WINAPI ImageList_Write(HIMAGELIST,LPSTREAM);
+#endif
+#if (_WIN32_IE >= 0x0400)
+HIMAGELIST WINAPI ImageList_Duplicate(HIMAGELIST himl);
 #endif
 void WINAPI InitCommonControls(void);
 #if (_WIN32_IE >= 0x0300)
@@ -3021,6 +3064,7 @@ int WINAPI LBItemFromPt(HWND,POINT,BOOL);
 #define ListView_GetSelectedCount(w) (UINT)SNDMSG((w),LVM_GETSELECTEDCOUNT,0,0)
 #define ListView_GetCheckState(w,i) ((((UINT)(SNDMSG((w),LVM_GETITEMSTATE,(WPARAM)(i),LVIS_STATEIMAGEMASK)))>>12)-1)
 #define ListView_SetCheckState(w,i,f) ListView_SetItemState(w,i,INDEXTOSTATEIMAGEMASK((f)+1),LVIS_STATEIMAGEMASK)
+#define ListView_GetISearchString(w, lpsz) (BOOL)SNDMSG((w), LVM_GETISEARCHSTRING, 0, (LPARAM) (LPTSTR)(lpsz)) 
 
 BOOL WINAPI MakeDragList(HWND);
 void WINAPI MenuHelp(UINT,WPARAM,LPARAM,HMENU,HINSTANCE,HWND,PUINT);
@@ -3043,10 +3087,10 @@ void WINAPI MenuHelp(UINT,WPARAM,LPARAM,HMENU,HINSTANCE,HWND,PUINT);
 #define MonthCal_SetFirstDayOfWeek(hwnd,iday) SNDMSG(hwnd,MCM_SETFIRSTDAYOFWEEK,0,(LPARAM)iday)
 #define MonthCal_SetMaxSelCount(hwnd,imax) SNDMSG(hwnd,MCM_SETMAXSELCOUNT,(WPARAM)imax,0)
 #define MonthCal_SetMonthDelta(hwnd,idelta) SNDMSG(hwnd,MCM_SETMONTHDELTA,(WPARAM)idelta,0)
-#define MonthCal_SetRange(hwnd,whichlimit,systimearray) SNDMSG(hwnd,MCM_SETRANGE,whichlimit,systimearray)
 #define MonthCal_SetSelRange(hwnd,systimearray) SNDMSG(hwnd,MCM_SETSELRANGE,0,(LPARAM)systimearray)
 #define MonthCal_SetToday(hwnd,systime) SNDMSG(hwnd,MCM_SETTODAY,0,(LPARAM)systime)
 #define MonthCal_SetUnicodeFormat(hwnd,unicode) SNDMSG(hwnd,MCM_SETUNICODEFORMAT,(WPARAM)unicode,0)
+#define MonthCal_SetRange(w,f,st) (BOOL)SNDMSG((w),MCM_SETRANGE,(WPARAM)(f),(LPARAM)(st))
 BOOL WINAPI ShowHideMenuCtl(HWND,UINT,PINT);
 #define TabCtrl_GetItem(w,i,p) (BOOL)SNDMSG((w),TCM_GETITEM,i,(LPARAM)(TC_ITEM*)(p))
 #define TabCtrl_SetItem(w,i,p) (BOOL)SNDMSG((w),TCM_SETITEM,i,(LPARAM)(TC_ITEM*)(p))
@@ -3122,6 +3166,7 @@ BOOL WINAPI _TrackMouseEvent(LPTRACKMOUSEEVENT);
 #define ListView_SetHotItem(w,i) (int)SNDMSG((w),LVM_SETHOTITEM,(WPARAM)(i),0)
 #define ListView_SetIconSpacing(w,x,y) (DWORD)SNDMSG((w),LVM_SETICONSPACING,0,MAKELONG(x,y))
 #define ListView_SubItemHitTest(w,p) (int)SNDMSG((w),LVM_SUBITEMHITTEST,0,(LPARAM)(LPLVHITTESTINFO)(p))
+#define ListView_SetItemCountEx(w, i, f) SNDMSG((w), LVM_SETITEMCOUNT, (WPARAM)(i), (LPARAM)(f))
 WINBOOL WINAPI ImageList_SetImageCount(HIMAGELIST,UINT);
 WINBOOL WINAPI ImageList_Copy(HIMAGELIST,int,HIMAGELIST,int,UINT);
 WINBOOL WINAPI ImageList_DrawIndirect(IMAGELISTDRAWPARAMS*);
@@ -3136,13 +3181,15 @@ WINBOOL WINAPI ImageList_DrawIndirect(IMAGELISTDRAWPARAMS*);
 #define ListView_SetExtendedListViewStyleEx(w,m,s) (DWORD)SNDMSG((w),LVM_SETEXTENDEDLISTVIEWSTYLE,(m),(s))
 #define ListView_SetWorkAreas(w,n,r) (BOOL)SNDMSG((w),LVM_SETWORKAREAS,(WPARAM)(n),(LPARAM)(RECT *)(r))
 #define ListView_GetWorkAreas(w,n,r) (BOOL)SNDMSG((w),LVM_GETWORKAREAS,(WPARAM)(n),(LPARAM)(RECT *)(r))
-#define ListView_GetNumberOfWorkAreas(w,n) (BOOL)SNDMSG((w),LVM_GETNUMBEROFWORKAREAS,0,(LPARAM)(UINT *)(pnWorkAreas))
+#define ListView_GetNumberOfWorkAreas(w,n) (BOOL)SNDMSG((w),LVM_GETNUMBEROFWORKAREAS,0,(LPARAM)(UINT *)(n))
 #define ListView_SetHoverTime(w,t) (DWORD)SNDMSG((w),LVM_SETHOVERTIME,0,(LPARAM)(t))
 #define ListView_GetHoverTime(w) (DWORD)SNDMSG((w),LVM_GETHOVERTIME,0,0)
 #define ListView_GetSelectionMark(w) (INT)SNDMSG((w),LVM_GETSELECTIONMARK,0,0)
 #define ListView_SetSelectionMark(w,i) (INT)SNDMSG((w),LVM_SETSELECTIONMARK,0,(LPARAM)(i))
 #define ListView_SetToolTips(w,n) (HWND)SNDMSG((w),LVM_SETTOOLTIPS,(WPARAM)(n),0)
 #define ListView_GetToolTips(w) (HWND)SNDMSG((w),LVM_GETTOOLTIPS,0,0)
+#define ListView_SetUnicodeFormat(w, f) (BOOL)SNDMSG((w), LVM_SETUNICODEFORMAT, (WPARAM)(f), 0)
+#define ListView_GetUnicodeFormat(w) (BOOL)SNDMSG((w), LVM_GETUNICODEFORMAT, 0, 0)
 #define TabCtrl_HighlightItem(hwnd, i, fHighlight) SNDMSG((hwnd), TCM_HIGHLIGHTITEM, (WPARAM)i, (LPARAM)MAKELONG (fHighlight, 0))
 #define TabCtrl_SetExtendedStyle(hwnd, dw) SNDMSG((hwnd), TCM_SETEXTENDEDSTYLE, 0, dw)
 #define TabCtrl_GetExtendedStyle(hwnd) SNDMSG((hwnd), TCM_GETEXTENDEDSTYLE, 0, 0)
@@ -3161,9 +3208,18 @@ WINBOOL WINAPI ImageList_DrawIndirect(IMAGELISTDRAWPARAMS*);
 #define TreeView_SetInsertMark(w,i,a) (BOOL)SNDMSG((w),TVM_SETINSERTMARK,(WPARAM)(a),(LPARAM)(i))
 #define TreeView_SetUnicodeFormat(w,u) (BOOL)SNDMSG((w),TVM_SETUNICODEFORMAT,(WPARAM)(u),0)
 #define TreeView_GetUnicodeFormat(w) (BOOL)SNDMSG((w),TVM_GETUNICODEFORMAT,0,0)
+#define TreeView_GetLastVisible(w) TreeView_GetNextItem(w,NULL,TVGN_LASTVISIBLE)
 #endif
 #if (_WIN32_IE >= 0x0500)
 #define TreeView_GetItemState(w,i,m) (UINT)SNDMSG((w),TVM_GETITEMSTATE,(WPARAM)(i),(LPARAM)(m))
+#define TreeView_SetItemState(w,i,d,m) \
+{ \
+	TVITEM _tvi;\
+	_tvi.mask=TVIF_STATE;\
+	_tvi.stateMask=m;\
+	_tvi.state=d;\
+	SNDMSG((w),TVM_SETITEM,0,(LPARAM)(TVITEM*)&_tvi);\
+}
 #endif
 
 #ifdef UNICODE
@@ -3231,11 +3287,14 @@ typedef NMHDDISPINFOW NMHDDISPINFO, *LPNMHDDISPINFO;
 #define TB_INSERTBUTTON TB_INSERTBUTTONW
 #define TB_ADDBUTTONS TB_ADDBUTTONSW
 #define TB_MAPACCELERATOR TB_MAPACCELERATORW
+#define TB_GETSTRING TB_GETSTRINGW
 #define TBBUTTONINFO TBBUTTONINFOW
 #define LPTBBUTTONINFO LPTBBUTTONINFOW
 #define TBN_GETDISPINFO TBN_GETDISPINFOW
 #define NMTBDISPINFO NMTBDISPINFOW
 #define LPNMTBDISPINFO LPNMTBDISPINFOW
+#define NMTBGETINFOTIP NMTBGETINFOTIPW
+#define LPNMTBGETINFOTIP LPNMTBGETINFOTIPW
 #endif
 #define TBNOTIFY TBNOTIFYW
 #define LPTBNOTIFY LPTBNOTIFYW
@@ -3291,6 +3350,7 @@ typedef NMHDDISPINFOW NMHDDISPINFO, *LPNMHDDISPINFO;
 #define LPNMLVGETINFOTIP LPNMLVGETINFOTIPW
 #define LV_DISPINFO LV_DISPINFOW
 #define NMLVDISPINFO NMLVDISPINFOW
+#define LPNMLVDISPINFO LPNMLVDISPINFOW
 #define TVM_INSERTITEM TVM_INSERTITEMW
 #define TVM_GETITEM TVM_GETITEMW
 #define TVM_SETITEM TVM_SETITEMW
@@ -3368,6 +3428,7 @@ typedef NMHDDISPINFOW NMHDDISPINFO, *LPNMHDDISPINFO;
 #define TB_INSERTBUTTON TB_INSERTBUTTONA
 #define TB_ADDBUTTONS TB_ADDBUTTONSA
 #define TB_MAPACCELERATOR TB_MAPACCELERATORA
+#define TB_GETSTRING TB_GETSTRINGA
 #define NMCOMBOBOXEX	NMCOMBOBOXEXA
 #define PNMCOMBOBOXEX	PNMCOMBOBOXEXA
 #define CBEN_DRAGBEGIN	CBEN_DRAGBEGINA
@@ -3378,6 +3439,8 @@ typedef NMHDDISPINFOW NMHDDISPINFO, *LPNMHDDISPINFO;
 #define TBN_GETDISPINFO TBN_GETDISPINFOA
 #define NMTBDISPINFO NMTBDISPINFOA
 #define LPNMTBDISPINFO LPNMTBDISPINFOA
+#define NMTBGETINFOTIP NMTBGETINFOTIPA
+#define LPNMTBGETINFOTIP LPNMTBGETINFOTIPA
 #endif /* _WIN32_IE >= 0x0400 */
 #define SB_GETTEXT	SB_GETTEXTA
 #define SB_SETTEXT	SB_SETTEXTA
@@ -3460,6 +3523,7 @@ typedef NMHDDISPINFOW NMHDDISPINFO, *LPNMHDDISPINFO;
 #define LPNMLVGETINFOTIP LPNMLVGETINFOTIPA
 #define LV_DISPINFO LV_DISPINFOA
 #define NMLVDISPINFO NMLVDISPINFOA
+#define LPNMLVDISPINFO LPNMLVDISPINFOA
 #define TVM_INSERTITEM TVM_INSERTITEMA
 #define TVM_GETITEM TVM_GETITEMA
 #define TVM_SETITEM TVM_SETITEMA

@@ -1,5 +1,6 @@
 #ifndef _WINGDI_H
 #define _WINGDI_H
+#define _WINGDI_
 #if __GNUC__ >= 3
 #pragma GCC system_header
 #endif
@@ -2014,6 +2015,14 @@ typedef struct tagENHMETAHEADER {
 	DWORD nPalEntries;
 	SIZEL szlDevice;
 	SIZEL szlMillimeters;
+#if (WINVER >= 0x0400)
+	DWORD cbPixelFormat;
+	DWORD offPixelFormat;
+	DWORD bOpenGL;
+#endif
+#if (WINVER >= 0x0500)
+	SIZEL szlMicrometers;
+#endif
 } ENHMETAHEADER,*LPENHMETAHEADER;
 typedef struct tagMETARECORD {
 	DWORD rdSize;
@@ -2114,6 +2123,21 @@ typedef struct _GLYPHMETRICS {
 	short gmCellIncX;
 	short gmCellIncY;
 } GLYPHMETRICS,*LPGLYPHMETRICS;
+#if (_WIN32_WINNT >= 0x0500)
+typedef struct tagWCRANGE
+{
+	WCHAR wcLow;
+	USHORT cGlyphs;
+} WCRANGE, *PWCRANGE, *LPWCRANGE;
+typedef struct tagGLYPHSET
+{
+	DWORD cbThis;
+	DWORD flAccel;
+	DWORD cGlyphsSupported;
+	DWORD cRanges;
+	WCRANGE ranges[1];
+} GLYPHSET, *PGLYPHSET, *LPGLYPHSET;
+#endif
 typedef struct tagKERNINGPAIR {
 	WORD wFirst;
 	WORD wSecond;
@@ -2210,7 +2234,7 @@ typedef struct _POLYTEXTA {
 	UINT uiFlags;
 	RECT rcl;
 	int *pdx;
-} POLYTEXTA, *PPOLYTEXTA;
+} POLYTEXTA, *PPOLYTEXTA, *LPPOLYTEXTA;
 typedef struct _POLYTEXTW {
 	int x;
 	int y;
@@ -2219,7 +2243,7 @@ typedef struct _POLYTEXTW {
 	UINT uiFlags;
 	RECT rcl;
 	int *pdx;
-} POLYTEXTW, *PPOLYTEXTW;
+} POLYTEXTW, *PPOLYTEXTW, *LPPOLYTEXTW;
 typedef struct tagPIXELFORMATDESCRIPTOR {
 	WORD nSize;
 	WORD nVersion;
@@ -2348,8 +2372,8 @@ typedef struct tagENUMLOGFONTEXA {
 typedef struct tagENUMLOGFONTEXW {
 	LOGFONTW elfLogFont;
 	WCHAR elfFullName[LF_FULLFACESIZE];
-	BYTE elfStyle[LF_FACESIZE];
-	BYTE elfScript[LF_FACESIZE];
+	WCHAR elfStyle[LF_FACESIZE];
+	WCHAR elfScript[LF_FACESIZE];
 } ENUMLOGFONTEXW,*LPENUMLOGFONTEXW;
 typedef struct tagPOINTFX {
 	FIXED x;
@@ -2414,6 +2438,18 @@ typedef struct _DESIGNVECTOR {
 	DWORD dvNumAxes;
 	LONG dvValues[MM_MAX_NUMAXES];
 } DESIGNVECTOR, *PDESIGNVECTOR, FAR *LPDESIGNVECTOR;
+#if _WIN32_WINNT >= 0x0500
+typedef struct tagENUMLOGFONTEXDVA
+{
+	ENUMLOGFONTEXA elfEnumLogfontEx;
+	DESIGNVECTOR elfDesignVector;
+} ENUMLOGFONTEXDVA, *PENUMLOGFONTEXDVA, *LPENUMLOGFONTEXDVA;
+typedef struct tagENUMLOGFONTEXDVW
+{
+	ENUMLOGFONTEXW elfEnumLogfontEx;
+	DESIGNVECTOR elfDesignVector;
+} ENUMLOGFONTEXDVW, *PENUMLOGFONTEXDVW, *LPENUMLOGFONTEXDVW;
+#endif /* _WIN32_WINNT >= 0x0500 */
 typedef USHORT COLOR16;
 typedef struct _TRIVERTEX {
 	LONG x;
@@ -2463,12 +2499,23 @@ typedef void (CALLBACK *LINEDDAPROC)(int,int,LPARAM);
 typedef UINT (CALLBACK *LPFNDEVMODE)(HWND,HMODULE,LPDEVMODEA,LPSTR,LPSTR,LPDEVMODEA,LPSTR,UINT);
 typedef DWORD (CALLBACK *LPFNDEVCAPS)(LPSTR,LPSTR,UINT,LPSTR,LPDEVMODEA);
 
-
-#define RGB(r,g,b)	((DWORD)(((BYTE)(r)|((WORD)(g)<<8))|(((DWORD)(BYTE)(b))<<16)))
 #define MAKEPOINTS(l) (*((POINTS*)&(l)))
 #define MAKEROP4(f,b)	(DWORD)((((b)<<8)&0xFF000000)|(f))
+
+#define GetCValue(cmyk) ((BYTE)(cmyk))
+#define GetMValue(cmyk) ((BYTE)((cmyk)>> 8))
+#define GetYValue(cmyk) ((BYTE)((cmyk)>>16))
+#define GetKValue(cmyk) ((BYTE)((cmyk)>>24))
+#define CMYK(c,m,y,k) ((COLORREF)((BYTE)(k)|((BYTE)(y)<<8)|((BYTE)(m)<<16)|((BYTE)(c)<<24)))
+
+#define GetRValue(c) ((BYTE)(c))
+#define GetGValue(c) ((BYTE)(((WORD)(c))>>8))
+#define GetBValue(c) ((BYTE)((c)>>16))
+#define RGB(r,g,b) ((COLORREF)((BYTE)(r)|((BYTE)(g) << 8)|((BYTE)(b) << 16)))
+
 #define PALETTEINDEX(i)	((0x01000000|(COLORREF)(WORD)(i)))
 #define PALETTERGB(r,g,b)	(0x02000000|RGB(r,g,b))
+
 int WINAPI AbortDoc(HDC);
 BOOL WINAPI AbortPath(HDC);
 int WINAPI AddFontResourceA(LPCSTR);
@@ -2584,14 +2631,6 @@ BOOL WINAPI GdiComment(HDC,UINT,const BYTE*);
 BOOL WINAPI GdiFlush(void);
 DWORD WINAPI GdiGetBatchLimit(void);
 DWORD WINAPI GdiSetBatchLimit(DWORD);
-#define GetCValue(cmyk) ((BYTE)(cmyk))
-#define GetMValue(cmyk) ((BYTE)((cmyk)>> 8))
-#define GetYValue(cmyk) ((BYTE)((cmyk)>>16))
-#define GetKValue(cmyk) ((BYTE)((cmyk)>>24))
-#define CMYK(c,m,y,k) ((COLORREF)((((BYTE)(c)|((WORD)((BYTE)(m))<<8))|(((DWORD)(BYTE)(y))<<16))|(((DWORD)(BYTE)(k))<<24)))
-#define GetRValue(c) ((BYTE)(c))
-#define GetGValue(c) ((BYTE)(((WORD)(c))>>8))
-#define GetBValue(c) ((BYTE)((c)>>16))
 int WINAPI GetArcDirection(HDC);
 BOOL WINAPI GetAspectRatioFilterEx(HDC,LPSIZE);
 LONG WINAPI GetBitmapBits(HBITMAP,LONG,PVOID);
@@ -2843,10 +2882,15 @@ typedef TEXTMETRICW TEXTMETRIC,*PTEXTMETRIC,*LPTEXTMETRIC;
 #define ICMENUMPROC ICMENUMPROCW
 #define FONTENUMPROC FONTENUMPROCW
 typedef DEVMODEW DEVMODE,*PDEVMODE,*LPDEVMODE;
+#if _WIN32_WINNT >= 0x0500
+typedef ENUMLOGFONTEXDVW ENUMLOGFONTEXDV;
+typedef PENUMLOGFONTEXDVW PENUMLOGFONTEXDV;
+typedef LPENUMLOGFONTEXDVW LPENUMLOGFONTEXDV;
+#endif
 typedef EXTLOGFONTW EXTLOGFONT,*PEXTLOGFONT,*LPEXTLOGFONT;
 typedef GCP_RESULTSW GCP_RESULTS,*LPGCP_RESULTS;
 typedef OUTLINETEXTMETRICW OUTLINETEXTMETRIC,*POUTLINETEXTMETRIC,*LPOUTLINETEXTMETRIC;
-typedef POLYTEXTW POLYTEXT;
+typedef POLYTEXTW POLYTEXT,*PPOLYTEXT,*LPPOLYTEXT;
 typedef LOGCOLORSPACEW LOGCOLORSPACE,*LPLOGCOLORSPACE;
 typedef NEWTEXTMETRICW NEWTEXTMETRIC,*PNEWTEXTMETRIC,*LPNEWTEXTMETRIC;
 typedef NEWTEXTMETRICEXW NEWTEXTMETRICEX;
@@ -2912,10 +2956,15 @@ typedef TEXTMETRICA TEXTMETRIC,*PTEXTMETRIC,*LPTEXTMETRIC;
 #define ICMENUMPROC ICMENUMPROCA
 #define FONTENUMPROC FONTENUMPROCA
 typedef DEVMODEA DEVMODE,*PDEVMODE,*LPDEVMODE;
+#if _WIN32_WINNT >= 0x0500
+typedef ENUMLOGFONTEXDVA ENUMLOGFONTEXDV;
+typedef PENUMLOGFONTEXDVA PENUMLOGFONTEXDV;
+typedef LPENUMLOGFONTEXDVA LPENUMLOGFONTEXDV;
+#endif
 typedef EXTLOGFONTA EXTLOGFONT,*PEXTLOGFONT,*LPEXTLOGFONT;
 typedef GCP_RESULTSA GCP_RESULTS,*LPGCP_RESULTS;
 typedef OUTLINETEXTMETRICA OUTLINETEXTMETRIC,*POUTLINETEXTMETRIC,*LPOUTLINETEXTMETRIC;
-typedef POLYTEXTA POLYTEXT;
+typedef POLYTEXTA POLYTEXT,*PPOLYTEXT,*LPPOLYTEXT;
 typedef LOGCOLORSPACEA LOGCOLORSPACE,*LPLOGCOLORSPACE;
 typedef NEWTEXTMETRICA NEWTEXTMETRIC,*PNEWTEXTMETRIC,*LPNEWTEXTMETRIC;
 typedef NEWTEXTMETRICEXA NEWTEXTMETRICEX;
