@@ -3118,24 +3118,25 @@ cygwin_conv_to_win32_path (const char *path, char *win32_path)
   int retval = 0;
     
 #define retpathcat(retstr) \
+  retpath_len += strlen(retstr); \
   if (retpath_buflen <= retpath_len) \
     { \
-      retpath_buflen += MAX_PATH; \
+      retpath_buflen = ((retpath_buflen * 2 <= retpath_len) ? \
+	  retpath_buflen * 2 : retpath_len + 1); \
       retpath = (char *)realloc (retpath, retpath_buflen); \
     } \
-  strcat (retpath, retstr); \
-  retpath_len += strlen(retstr);
+  strcat (retpath, retstr);
 
 #define retpathcpy(retstr) \
-  retpath_len = 0; \
+  retpath_len = strlen (retstr); \
   *retpath = '\0'; \
   if (retpath_buflen <= retpath_len ) \
     { \
-      retpath_buflen += MAX_PATH; \
+      retpath_buflen = ((retpath_buflen * 2 <= retpath_len) ? \
+	  retpath_buflen * 2 : retpath_len + 1); \
       retpath = (char *)realloc (retpath, retpath_buflen); \
     } \
-  strcpy (retpath, retstr); \
-  retpath_len += strlen(retstr);
+  strcpy (retpath, retstr);
 
   if (!path || !*path)
     {

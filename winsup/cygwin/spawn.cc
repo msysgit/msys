@@ -625,7 +625,7 @@ spawn_guts (HANDLE hToken, const char * prog_arg, const char *const *argv,
 
   /* Build windows style environment list */
   char *envblock;
-  if (real_path.iscygexec ())
+  if (real_path.iscygexec () || IsMsys((char *)real_path))
     envblock = NULL;
   else
     {
