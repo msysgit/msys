@@ -57,18 +57,18 @@ shared_name (const char *str, int num)
   if (tptr)
     *tptr = '\0';
   debug_printf("buf2 = %s", buf2);
+  debug_printf("shared_id = %s", cygwin_version.shared_id);
   __small_sprintf (buf, "%s.%s.%s.%d", buf2, cygwin_version.shared_id, str, num);
-#if 0
 /* This code was removed because cygwin_version.dll_build_date is invalid.
  * This should be put back into service once we discover the culprit.
  */
+  debug_printf("_cygwin_testing = %d", _cygwin_testing);
+  debug_printf("buf = %s", buf);
+  debug_printf("dll_build_date = %s", cygwin_version.dll_build_date);
   if (!_cygwin_testing)
     {
-      debug_printf("%s", buf);
-      debug_printf("%s", cygwin_version.dll_build_date);
       strcat (buf, cygwin_version.dll_build_date);
     }
-#endif
   return buf;
 }
 
