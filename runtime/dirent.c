@@ -9,9 +9,9 @@
  * Significantly revised and rewinddir, seekdir and telldir added by Colin
  * Peters <colin@fu.is.saga-u.ac.jp>
  *	
- * $Revision: 1.3 $
- * $Author: dannysmith $
- * $Date: 2001-09-09 21:20:07 $
+ * $Revision: 1.4 $
+ * $Author: earnie $
+ * $Date: 2002-05-28 13:06:46 $
  *
  */
 
@@ -40,6 +40,7 @@ opendir (const char *szPath)
 {
   DIR *nd;
   unsigned int rc;
+  char szFullPath[MAX_PATH];
 	
   errno = 0;
 
@@ -56,7 +57,7 @@ opendir (const char *szPath)
     }
 
   /* Attempt to determine if the given path really is a directory. */
-  rc = GetFileAttributes(szPath);
+  rc = GetFileAttributes (szPath);
   if (rc == -1)
     {
       /* call GetLastError for more error info */
@@ -70,9 +71,12 @@ opendir (const char *szPath)
       return (DIR *) 0;
     }
 
+  /* Make an absolute pathname.  */
+  _fullpath (szFullPath, szPath, MAX_PATH);
+
   /* Allocate enough space to store DIR structure and the complete
    * directory path given. */
-  nd = (DIR *) malloc (sizeof (DIR) + strlen (szPath) + strlen (SLASH) +
+  nd = (DIR *) malloc (sizeof (DIR) + strlen (szFullPath) + strlen (SLASH) +
 		       strlen (SUFFIX));
 
   if (!nd)
@@ -83,7 +87,7 @@ opendir (const char *szPath)
     }
 
   /* Create the search expression. */
-  strcpy (nd->dd_name, szPath);
+  strcpy (nd->dd_name, szFullPath);
 
   /* Add on a slash if the path does not end with one. */
   if (nd->dd_name[0] != '\0' &&
