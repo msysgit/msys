@@ -16,7 +16,7 @@
 
 <!--#include virtual="ssi/lside.html" -->
 
-<!--#include virtual="ssi/rside.html" -->
+<!--#include virtual="news-short.html" -->
 
 <div id="Content">
 <h1>MinGW - Home</h1>

@@ -1,5 +1,11 @@
 2004-05-06  Earnie Boyd  <earnie@users.sf.net>
 
+	* index.shtml: Include news-short.html instead of rside.html.  This
+	must remain dynamic.
+	* rside.shtml: Delete file.
+
+2004-05-06  Earnie Boyd  <earnie@users.sf.net>
+
 	* ssi/rside.html: Include news-short.html instead of posting static
 	news in the CVS.
 
