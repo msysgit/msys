@@ -1,3 +1,9 @@
+2002-04-22  José Fonseca  <jrfonseca@users.sf.net>
+
+	* include/GL/gl.h: New file.
+	* include/GL/glext.h: Ditto.
+	* include/GL/glu.h: Ditto.
+
 2002-04-09  Earnie Boyd  <earnie@users.sf.net>
 
 	* Makefile.in (bindist): Use * instead of . for file list for tar
