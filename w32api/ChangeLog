@@ -1,3 +1,53 @@
+2002-05-20  Philip Aston  <philipa@mail.com>
+
+	* include/pbt.h (PBT_APMRESUMESUSPEND): Correct value is 7.
+
+2002-05-20  René Møller Fonseca  <fonseca@users.sourceforge.net>
+
+	* include/lmaccess.h: (NetAccess*, NetGroup*,
+	NetLocalGroup*, NetUser*, NetGet*, INetLogonControl[2],
+	NetQueryDisplayInfotmationIndex): Replace LPWSTR with LPCWSTR.
+
+2002-05-08  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/commctrl.h (ImageList_DragShowNolock): Remove
+	conflicting redeclaration.
+
+2002-05-07  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/windows.h: Move ANONYMOUS_UNION, _ANONYMOUS_STRUCT,
+	STRICT and related defines to ...
+	* include/windef.h: Here.
+
+2002-05-03  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/winsock2.h (int32): Remove typedef.
+	(SERVICETYPE): Add typedef.
+	(struct _flowspec):Revise struct definition,  Comment
+	on types used for members.
+
+2002-05-02  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/winnt.h (EVENT_*, SEMAPHORE_*,MUTEX_*): Remove
+	more defines added in earlier change.
+	* lib/Makefile.in (TEST_OPTIONS): Add -Wsystem-headers flag.
+
+2002-05-02  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/winnt.h (THREAD_PRIORITY_*): Remove defines
+	added in last change.
+
+2002-05-02  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/winnt.h (THREAD_*, EVENT_*, MUTANT_*,
+	SEMAPHORE_*, MUTEX_*, TIMER_*): Add new defines.
+
+2002-05-01  Manu B  <contact.manu@wanadoo.fr>
+
+	* include/commctrl.h (SNDMSG): Define and use throughout
+	in other macros instead of SendMessage.
+	* include/commdlg.h (SNDMSG): Ditto.
+
 2002-04-22  José Fonseca  <jrfonseca@users.sf.net>
 
 	* include/GL/gl.h: New file.
