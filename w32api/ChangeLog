@@ -1,5 +1,12 @@
 2001-08-15  Danny Smith  <dannysmith@users.sourceforge.net>
 
+	* include/winsock2.h (#include <wtypes.h): Don't.
+	(_BLOB): Define instead, if not already done.
+	(__BLOB_T_DEFINED: New define for guarding _BLOB.
+	* include/wtypes.h (_BLOB): Guard against prior definition. 
+
+2001-08-15  Danny Smith  <dannysmith@users.sourceforge.net>
+
 	* include/oaidl.h (tagVARIANT): Mark anonymous structs and unions
 	 as 	__extension__.
 	(tagTYPEDESC): Ditto.
