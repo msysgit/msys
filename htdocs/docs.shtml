@@ -1,4 +1,4 @@
-<!-- $Id: docs.shtml,v 1.21 2002-06-02 05:48:10 infidel Exp $ -->
+<!-- $Id: docs.shtml,v 1.22 2002-10-01 01:38:18 infidel Exp $ -->
 <html>
 <head>
  <title>Documentation</title>
@@ -84,7 +84,7 @@
    #include &lt;iostream&gt;
    int main(int argc, char **argv)
    {
-     cout &lt;&lt; "Hello" &lt;&lt; endl;
+     std::cout &lt;&lt; "Hello" &lt;&lt; std::endl;
      return (0);
    }
                </pre>
