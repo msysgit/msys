@@ -193,7 +193,7 @@ typedef struct _DISK_PERFORMANCE {
     DWORD ReadCount;
     DWORD WriteCount;
     DWORD QueueDepth;
-} DISK_PERFORMANCE. *PDISK_PERFORMANCE;
+} DISK_PERFORMANCE, *PDISK_PERFORMANCE;
 typedef struct _DISK_RECORD {
 	LARGE_INTEGER ByteOffset;
 	LARGE_INTEGER StartTime;

@@ -1,4 +1,12 @@
 2001-08-21  Danny Smith  <dannysmith@users.sourceforge.net>
+	* include/winioctl.h (_DISK_PERFORMANCE): Correct typo.
+
+2001-08-21  Mattia Barbon  <mbarbon@dsi.unive.it>
+
+	* include/richedit.h (ENLINK): Add structure definition.
+	(EM_AUTOURLDETECT, EN_LINK, ENM_LINK): Add defines.
+
+2001-08-21  Danny Smith  <dannysmith@users.sourceforge.net>
 
 	* include/shlobj.h (CMIC_*): Remove duplicate defines.
 	(CMDSTR_*): Remove duplicates; UNICODE string constants.
