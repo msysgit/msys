@@ -390,6 +390,32 @@ static int
 install_file_in_file (const char *from, const char *to,
 		      const struct cp_options *x)
 {
+  int temp_fd;
+
+  /* CYGNUS LOCAL - dj/install */
+  /* dos/win hack - silently add .exe if it was silently added by gcc.
+     Note that cygwin's stat() checks foo and foo.exe for us (how nice)
+     but open() doesn't */
+  if ((temp_fd = open (from, O_RDONLY | O_BINARY)) < 0)
+    {
+      /* This isn't freed, but the program exits quickly */
+      char *new_from = (char *) xmalloc (strlen(from) + 5);
+      strcpy(new_from, from);
+      strcat(new_from, ".exe");
+      if ((temp_fd = open (new_from, O_RDONLY | O_BINARY)) >= 0)
+      {
+        char *new_to = (char *) xmalloc (strlen(to) + 5);
+        strcpy(new_to, to);
+        strcat(new_to, ".exe");
+        from = new_from;
+        to = new_to;
+        close (temp_fd);
+      }
+    }
+  else
+    close (temp_fd);
+  /* END CYGNUS LOCAL - dj/install */
+
   if (copy_file (from, to, x))
     return 1;
   if (strip_files)
