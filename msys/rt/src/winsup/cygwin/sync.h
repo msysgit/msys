@@ -30,7 +30,9 @@ public:
   muto() {}
   /* The real constructor. */
   muto(int inh, const char *name);
+#if 0
   ~muto ();
+#endif
   int acquire (DWORD ms = INFINITE) __attribute__ ((regparm(1))); /* Acquire the lock. */
   int release ();		     /* Release the lock. */
 

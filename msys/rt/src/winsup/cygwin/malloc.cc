@@ -21,6 +21,7 @@ details. */
 #include "heap.h"
 #include "sync.h"
 #include "perprocess.h"
+#include "msys.h"
 
 /* we provide these stubs to call into a user's
    provided malloc if there is one - otherwise
@@ -50,6 +51,7 @@ _sbrk_r (struct _reent *, size_t incr_arg)
 extern "C" void *
 _malloc_r (struct _reent *, size_t size)
 {
+  TRACE_IN;
   export_malloc_called = 1;
   return malloc (size);
 }
@@ -58,6 +60,7 @@ _malloc_r (struct _reent *, size_t size)
 extern "C" void *
 _calloc_r (struct _reent *, size_t nmemb, size_t size)
 {
+  TRACE_IN;
   export_malloc_called = 1;
   return calloc (nmemb, size);
 }
@@ -66,6 +69,7 @@ _calloc_r (struct _reent *, size_t nmemb, size_t size)
 extern "C" void
 _free_r (struct _reent *, void *p)
 {
+  TRACE_IN;
   export_malloc_called = 1;
   assert (!incygheap (p));
   assert (inheap (p));
@@ -76,6 +80,7 @@ _free_r (struct _reent *, void *p)
 extern "C" void *
 _realloc_r (struct _reent *, void *p, size_t size)
 {
+  TRACE_IN;
   export_malloc_called = 1;
   assert (!incygheap (p));
   assert (inheap (p));
@@ -86,6 +91,7 @@ _realloc_r (struct _reent *, void *p, size_t size)
 extern "C" char *
 strdup_dbg (const char *s, const char *file, int line)
 {
+  TRACE_IN;
   char *p;
   export_malloc_called = 1;
   if ((p = (char *) malloc_dbg (strlen (s) + 1, file, line)) != NULL)
@@ -97,6 +103,7 @@ strdup_dbg (const char *s, const char *file, int line)
 extern "C" char *
 strdup (const char *s)
 {
+  TRACE_IN;
   return strdup_dbg (s, __FILE__, __LINE__);
 }
 #else /* ! MALLOC_DEBUG */
@@ -107,7 +114,9 @@ strdup (const char *s)
 void *
 malloc (size_t size)
 {
+  TRACE_IN;
   void *res;
+  malloc_printf("called by %x", ((int *)&size)[-1]);
   res = user_data->malloc (size);
   return res;
 }
@@ -115,13 +124,16 @@ malloc (size_t size)
 void
 free (void *p)
 {
+  TRACE_IN;
   user_data->free (p);
 }
 
 void *
 realloc (void *p, size_t size)
 {
+  TRACE_IN;
   void *res;
+  malloc_printf("called by %x", ((int *)&p)[-1]);
   res = user_data->realloc (p, size);
   return res;
 }
@@ -129,6 +141,7 @@ realloc (void *p, size_t size)
 void *
 calloc (size_t nmemb, size_t size)
 {
+  TRACE_IN;
   void *res;
   res = user_data->calloc (nmemb, size);
   return res;
@@ -137,6 +150,7 @@ calloc (size_t nmemb, size_t size)
 extern "C" char *
 strdup (const char *s)
 {
+  TRACE_IN;
   char *p;
   size_t len = strlen (s) + 1;
   if ((p = (char *) malloc (len)) != NULL)
@@ -147,6 +161,7 @@ strdup (const char *s)
 extern "C" char *
 _strdup_r (struct _reent *, const char *s)
 {
+  TRACE_IN;
   return strdup (s);
 }
 #endif
@@ -157,6 +172,7 @@ _strdup_r (struct _reent *, const char *s)
 extern "C" void
 export_free (void *p)
 {
+  TRACE_IN;
   malloc_printf ("(%p), called by %x", p, ((int *)&p)[-1]);
   if (use_internal_malloc)
     _free_r (_impure_ptr, p);
@@ -167,6 +183,7 @@ export_free (void *p)
 extern "C" void *
 export_malloc (int size)
 {
+  TRACE_IN;
   void *res;
   export_malloc_called = 1;
   if (use_internal_malloc)
@@ -180,6 +197,8 @@ export_malloc (int size)
 extern "C" void *
 export_realloc (void *p, int size)
 {
+  TRACE_IN;
+  malloc_printf ("called by %x", ((int *)&p)[-1]);
   void *res;
   if (use_internal_malloc)
     res = _realloc_r (_impure_ptr, p, size);
@@ -192,6 +211,7 @@ export_realloc (void *p, int size)
 extern "C" void *
 export_calloc (size_t nmemb, size_t size)
 {
+  TRACE_IN;
   void *res;
   if (use_internal_malloc)
     res = _calloc_r (_impure_ptr, nmemb, size);
@@ -213,6 +233,7 @@ static NO_COPY muto *mprotect = NULL;
 void
 malloc_init ()
 {
+  TRACE_IN;
   mprotect = new_muto (FALSE, "mprotect");
   /* Check if mallock is provided by application. If so, redirect all
      calls to export_malloc/free/realloc to application provided. This may
@@ -233,11 +254,13 @@ malloc_init ()
 extern "C" void
 __malloc_lock (struct _reent *)
 {
+  TRACE_IN;
   mprotect->acquire ();
 }
 
 extern "C" void
 __malloc_unlock (struct _reent *)
 {
+  TRACE_IN;
   mprotect->release ();
 }
