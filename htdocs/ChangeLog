@@ -1,4 +1,8 @@
 
+Fri Dec 22 07:16:51 PST 2000  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	* docs.shtml: oops. Missed the change for ssi. Changed to use ssi.
+
 Mon Dec 18 11:37:39 PST 2000  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	* index.shtml: reformat Paul Sokolovsky's change slightly.
