@@ -1,3 +1,46 @@
+2002-06-13  Earnie Boyd  <earnie@users.sf.net>
+
+	* msys_symlink.cc: New file.
+	* msys_symlink.h: Ditto.
+	* Makefile.in (DLL_OFILES) Add msys_symlink.o
+	* dcrt0.cc (quoted): Add some debugging output.
+	Increment pointers instead of strcpy pointer + 1.
+	* environ.cc (winenv): Use more intelligible variable names.
+	Use new operator instead of malloc for memory management.
+	* exec.cc: Debugging output throughout.
+	* passwd.cc (read_etc_passwd): Remove unused code.
+	* path.cc: Define NO_SYMLINK
+	(symlink): Use msys_symlink.
+	Use new operator instead of alloca.
+	(hash_path_name): Use new operator instead of alloca.
+	(QuotedRelativePath): Remove.
+	(cygwin_conv_to_win32_path): Use new operator instead of malloc.
+	Remove meaningless code from retpathcpy and retpathcat.
+	Add check for NULL pointer and NULL value for path.
+	Filter debugging output to DEBUGGING.
+	(cwdstuff::get): Use new operator instead of malloc.
+	* path.h (msys_symlink): Define prototype.
+	* poll.cc (poll); Use new operator instead of alloca.
+	* select.cc (allocfd_set): Ditto.
+	* syscalls.cc (check_posix_perm): Ditto.
+	* registry.cc (reg_key::regkey): Remove unused code.
+	* shared.cc (shared_name): Add another parameter to small_printf to
+	make the name unique based on dll location.
+	(shared_info::heap_chunk_size): Make 6 MB the default instead of 4 MB.
+	* spawn.cc (spawn_guts): Add debugging output.
+	Convert envblock to Win32 paths.
+	Use new operator instead of malloc.
+	(_spawnve): Add debugging output.
+	(spawnl): Ditto.
+	(spawnle): Ditto.
+	(spawnlp): Ditto.
+	(spawnlpe): Ditto.
+	(spawnv): Ditto.
+	(spawnvp): Ditto.
+	(spawnvpe): Ditto.
+	* winsup.h (HMMMcnt): Remove.
+	(HMMM) Use __LINE__ instead of HMMMcnt.
+
 2002-05-13  Earnie Boyd  <earnie@users.sf.net>
 
 	* path.cc (normalize_posix_path): Workaround a path bug where the src

@@ -31,8 +31,16 @@ _execve (const char *path, char *const argv[], char *const envp[])
 {
   static char *const empty_env[] = { 0 };
   MALLOC_CHECK;
+#if DEBUGGING
+  for (int i=0;argv[i];i++)
+      debug_printf("argv[%d] = %s", i, argv[i]);
+#endif
   if (!envp)
     envp = empty_env;
+#if DEBUGGING
+  for (int i=0;envp[i];i++)
+      debug_printf("envp[%d] = %s", i, envp[i]);
+#endif
   return _spawnve (NULL, _P_OVERLAY, path, argv, envp);
 }
 
@@ -48,7 +56,12 @@ execl (const char *path, const char *arg0, ...)
   argv[0] = arg0;
   i = 1;
   do
+    {
       argv[i] = va_arg (args, const char *);
+#if DEBUGGING
+      debug_printf("argv[%d] = %s", i, argv[i]);
+#endif
+    }
   while (argv[i++] != NULL);
   va_end (args);
   MALLOC_CHECK;
@@ -60,6 +73,10 @@ int
 execv (const char *path, char * const *argv)
 {
   MALLOC_CHECK;
+#if DEBUGGING
+  for (int i=0;argv[i];i++)
+      debug_printf("argv[%d] = %s", i, argv[i]);
+#endif
   return _execve (path, (char * const *) argv, cur_environ ());
 }
 
@@ -70,6 +87,10 @@ pid_t
 sexecve (HANDLE hToken, const char *path, const char *const argv[],
 	 const char *const envp[])
 {
+#if DEBUGGING
+  for (int i=0;argv[i];i++)
+      debug_printf("argv[%d] = %s", i, argv[i]);
+#endif
   _spawnve (hToken, _P_OVERLAY, path, argv, envp);
   return -1;
 }
@@ -87,7 +108,12 @@ sexecl (HANDLE hToken, const char *path, const char *arg0, ...)
   i = 1;
 
   do
+    {
       argv[i] = va_arg (args, const char *);
+#if DEBUGGING
+      debug_printf("argv[%d] = %s", i, argv[i]);
+#endif
+    }
   while (argv[i++] != NULL);
 
   va_end (args);
@@ -110,7 +136,12 @@ sexecle (HANDLE hToken, const char *path, const char *arg0, ...)
   i = 1;
 
   do
-    argv[i] = va_arg (args, const char *);
+    {
+      argv[i] = va_arg (args, const char *);
+#if DEBUGGING
+      debug_printf("argv[%d] = %s", i, argv[i]);
+#endif
+    }
   while (argv[i++] != NULL);
 
   envp = va_arg (args, const char * const *);
@@ -133,7 +164,12 @@ sexeclp (HANDLE hToken, const char *path, const char *arg0, ...)
   i = 1;
 
   do
+    {
       argv[i] = va_arg (args, const char *);
+#if DEBUGGING
+      debug_printf("argv[%d] = %s", i, argv[i]);
+#endif
+    }
   while (argv[i++] != NULL);
 
   va_end (args);
@@ -156,7 +192,12 @@ sexeclpe (HANDLE hToken, const char *path, const char *arg0, ...)
   i = 1;
 
   do
-    argv[i] = va_arg (args, const char *);
+    {
+      argv[i] = va_arg (args, const char *);
+#if DEBUGGING
+      debug_printf("argv[%d] = %s", i, argv[i]);
+#endif
+    }
   while (argv[i++] != NULL);
 
   envp = va_arg (args, const char * const *);
@@ -179,6 +220,10 @@ int
 sexecp (HANDLE hToken, const char *path, const char * const *argv)
 {
   MALLOC_CHECK;
+#if DEBUGGING
+  for (int i=0;argv[i];i++)
+      debug_printf("argv[%d] = %s", i, argv[i]);
+#endif
   return sexecvpe (hToken, path, argv, cur_environ ());
 }
 
@@ -206,5 +251,9 @@ sexecvpe (HANDLE hToken, const char *file, const char * const *argv,
 {
   path_conv buf;
   MALLOC_CHECK;
+#if DEBUGGING
+  for (int i=0;argv[i];i++)
+      debug_printf("argv[%d] = %s", i, argv[i]);
+#endif
   return sexecve (hToken, find_exec (file, buf), argv, envp);
 }

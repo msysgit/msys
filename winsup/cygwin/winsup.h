@@ -21,8 +21,7 @@ details. */
 #endif
 
 #define FIXME(FIXNO) debug_printf("%s-%s", "FIXME", (FIXNO))
-static int HMMMcnt = 0;
-#define HMMM(HUM) debug_printf("%s-%d: %s", "HMMM", HMMMcnt++, (HUM))
+#define HMMM(HUM) debug_printf("%s-%d: %s", "HMMM", __LINE__, (HUM))
 
 #define alloca __builtin_alloca
 #define strlen __builtin_strlen

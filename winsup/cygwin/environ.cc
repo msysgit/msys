@@ -769,80 +769,80 @@ static const NO_COPY char* forced_winenv_vars [] =
 char * __stdcall
 winenv (const char * const *envp, int keep_posix)
 {
-  int len, n, tl;
+  int srcplen, envc, envblocklen;
   const char * const *srcp;
   const char **dstp;
   bool saw_forced_winenv[FORCED_WINENV_SIZE] = {0};
-  char *p;
+  char *tptr;
 
   debug_printf ("envp %p, keep_posix %d", envp, keep_posix);
 
-  tl = 0;
+  envblocklen = 0;
 
-  for (n = 0; envp[n]; n++)
+  for (envc = 0; envp[envc]; envc++)
     continue;
 
-  const char *newenvp[n + 1 + FORCED_WINENV_SIZE];
+  const char *newenvp[envc + 1 + FORCED_WINENV_SIZE];
 
   for (srcp = envp, dstp = newenvp; *srcp; srcp++, dstp++)
     {
-      len = strcspn (*srcp, "=");
+      srcplen = strcspn (*srcp, "=");
       win_env *conv;
 
-      if (keep_posix || !(conv = getwinenv (*srcp, *srcp + len + 1)))
+      if (keep_posix || !(conv = getwinenv (*srcp, *srcp + srcplen + 1)))
 	*dstp = *srcp;
       else
 	{
-	  p = (char *) alloca (strlen (conv->native) + 1);
-	  strcpy (p, conv->native);
-	  *dstp = p;
+	  tptr = new char  [strlen (conv->native) + 1];
+	  strcpy (tptr, conv->native);
+	  *dstp = tptr;
 	}
-      tl += strlen (*dstp) + 1;
+      envblocklen += strlen (*dstp) + 1;
       if ((*dstp)[0] == '!' && isdrive ((*dstp) + 1) && (*dstp)[3] == '=')
 	{
-	  p = (char *) alloca (strlen (*dstp) + 1);
-	  strcpy (p, *dstp);
-	  *p = '=';
-	  *dstp = p;
+	  tptr = new char [strlen (*dstp) + 1];
+	  strcpy (tptr, *dstp);
+	  *tptr = '=';
+	  *dstp = tptr;
 	}
 
       for (int i = 0; forced_winenv_vars[i]; i++)
 	if (!saw_forced_winenv[i])
-	  saw_forced_winenv[i] = strncasematch (forced_winenv_vars[i], *srcp, len);
+	  saw_forced_winenv[i] = strncasematch (forced_winenv_vars[i], *srcp, srcplen);
     }
 
   for (int i = 0; forced_winenv_vars[i]; i++)
     if (!saw_forced_winenv[i])
       {
-	len = strlen (forced_winenv_vars[i]);
-	p = (char *) alloca (len + MAX_PATH + 1);
-	strcpy (p, forced_winenv_vars[i]);
-	strcat (p, "=");
-	if (!GetEnvironmentVariable (forced_winenv_vars[i], p + len + 1, MAX_PATH))
+	srcplen = strlen (forced_winenv_vars[i]);
+	tptr = new char [srcplen + MAX_PATH + 1];
+	strcpy (tptr, forced_winenv_vars[i]);
+	strcat (tptr, "=");
+	if (!GetEnvironmentVariable (forced_winenv_vars[i], tptr + srcplen + 1, MAX_PATH))
 	  debug_printf ("warning: %s not present in environment", *srcp);
 	else
 	  {
-	    *dstp++ = p;
-	    tl += strlen (p) + 1;
+	    *dstp++ = tptr;
+	    envblocklen += strlen (tptr) + 1;
 	  }
       }
 
   *dstp = NULL;		/* Terminate */
 
   int envlen = dstp - newenvp;
-  debug_printf ("env count %d, bytes %d", envlen, tl);
+  debug_printf ("env count %d, bytes %d", envlen, envblocklen);
 
   /* Windows programs expect the environment block to be sorted.  */
   qsort (newenvp, envlen, sizeof (char *), env_sort);
 
   /* Create an environment block suitable for passing to CreateProcess.  */
   char *ptr, *envblock;
-  envblock = (char *) malloc (tl + 2);
+  envblock = new char [envblocklen + 2 + (MAX_PATH * 256)];
   for (srcp = newenvp, ptr = envblock; *srcp; srcp++)
     {
-      len = strlen (*srcp);
-      memcpy (ptr, *srcp, len + 1);
-      ptr += len + 1;
+      srcplen = strlen(*srcp);
+      memcpy (ptr, *srcp, srcplen + 1); 
+      ptr += srcplen + 1;
     }
   *ptr = '\0';		/* Two null bytes at the end */
 
