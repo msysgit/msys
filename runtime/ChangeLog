@@ -1,5 +1,21 @@
 2001-11-06  Danny Smith  <dannysmith@users.sourceforge.net>
 
+	* include/float.h (_clearfp, _statusfp, _fpreset, fpreset,
+	__fpecode): Use __STDC__ prototypes.
+ 
+
+2001-11-06 Thomas Pfaff <tpfaff@gmx.net>
+
+ 	* mthr_stub.c (__mingwthr_remove_key_dtor) New.
+ 	* mthr_init.c (DllMain) Run dtors if a process terminates.
+ 	* mthr.c  (__mingwthr_add_key_dtor)  Removed.
+ 	(___mingwthr_add_key_dtor)  New.
+ 	(___mingwthr_remove_key_dtor) New.
+ 	(__mingwthr_run_key_dtors) Complete rewrite.
+  	(__mingwthr_remove_key_dtor) New.
+
+2001-11-06  Danny Smith  <dannysmith@users.sourceforge.net>
+
 	* include/errno.h (_errno): Use __STDC__ prototype.
 	Thanks to: Jim Barton.
 
