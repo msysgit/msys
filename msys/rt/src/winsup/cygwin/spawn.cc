@@ -632,40 +632,12 @@ spawn_guts (HANDLE hToken, const char * prog_arg, const char *const *argv,
   /*
    * Why do we need to call winenv() for MSYS binary?
    */
+  if (envblockarg)
+    free (envblockarg);
   if (real_path.iscygexec ())
     envblockarg = winenv (envp, 1);
-  else
-    {
-      envblock = winenv (envp, 0);
-      char *envblockn = envblock;
-      int envblockcnt = ciresrv.moreinfo->envc;
-      const int oneK = 1024;
-      const int envchunk = 4 * oneK;
-      int envchunkcnt = 1;
-      if (envblockarg)
-	free (envblockarg);
-      envblockarg = (char *)malloc(envchunk);
-
-      int envblockarglen = 0;
-
-      for (int loop=0;loop < envblockcnt;loop++)
-	{
-	  char *wpath = msys_p2w(envblockn);
-	  int wpathlen = strlen(wpath) + 1;
-	  envblockarglen += wpathlen;
-	  if (envblockarglen > (envchunk * envchunkcnt)) {
-	    envchunkcnt++;
-	    envblockarg = (char *) realloc (envblockarg, envchunk * envchunkcnt);
-	  }
-	  memcpy (envblockarg + envblockarglen - wpathlen, wpath, wpathlen);
-	  if (wpath != envblockn)
-	    free (wpath);
-	  envblockn += strlen (envblockn) + 1;
-	} // END FOR (int loop=0;loop < envblockcnt;loop++)
-
-      if (envblock)
-	free (envblock);
-    }
+  else 
+    envblockarg = winenv (envp, 0);
 
   /* Preallocated buffer for `sec_user' call */
   char sa_buf[1024];
