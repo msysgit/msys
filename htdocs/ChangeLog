@@ -1,3 +1,7 @@
+2004-03-31	Nathan Fisher <natbobc@users.sf.net>
+
+	* lists.shtml: Bug fix from bug report #926431.
+
 2004-03-28	Luke Dunstan <infidel@users.sf.net>
 
 	* docs.shtml, history.shtml, links.shtml: Update links to Colin
@@ -7,11 +11,11 @@
 
 	* bugs.shtml: Minor fix.
 
-2004-03-08	Nathan Fisher <nfisher@users.sf.net>
+2004-03-08	Nathan Fisher <natbobc@users.sf.net>
 
 	* mingwfaq.shtml: Fix link from bug report #911315.
 
-2004-02-18	Nathan Fisher <nfisher@users.sf.net>
+2004-02-18	Nathan Fisher <natbobc@users.sf.net>
 
 	* links.shtml: Add libunicow reference to the page.
 
@@ -20,11 +24,11 @@
 	* download.shmtl: Revert change to 1.25 version.
 	* ssi/files.html: Remove.
 
-2003-12-24	Nathan Fisher <nfisher@users.sf.net>
+2003-12-24	Nathan Fisher <natbobc@users.sf.net>
 
 	* ssi/files.html: Add to CVS and ran through HTML tidy.
 
-2003-12-24	Nathan Fisher <nfisher@users.sf.net>
+2003-12-24	Nathan Fisher <natbobc@users.sf.net>
 
 	* download.shtml: Change server-side include from release.html to files.html.
 
