@@ -1,2 +1,17 @@
-Version 1.0 of MSYS is distributed under the CYGWIN_LICENSE as found in a file
-of this name in this directory.
+File:		     MSYS_LICENSE
+Copyright (C):	     2001, Earnie Boyd  <earnie@users.sf.net>
+File $Revision:	      $
+File Revision $Date:  $
+MSYS Release:	     1.0.2
+MSYS Release Date:   November 30th, 2001
+
+The software, both source and binary forms, are covered via differing licenses.
+Each license has it's own set of rules so please make sure you read them
+carefully to see how it applies to you, particularly if you're going to
+distribute the software.
+
+The MSYS runtime software source can found in the winsup/cygwin directory.  The
+existing code portions of this source is covered by the CYGWIN_LICENSE which can
+be found in this directory in a file by the name of CYGWIN_LICENSE.  MSYS
+specific software code added regardless of existing license is covered by the 
+ESPL which can be found in a file by the same name.

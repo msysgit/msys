@@ -1066,7 +1066,7 @@ stat_worker (const char *caller, const char *name, struct stat *buf,
 
   MALLOC_CHECK;
 
-  debug_printf ("%s (%s, %p)", caller, name, buf);
+  debug_printf ("%s (%s, %p) %s", caller, name, buf, buf);
 
   path_conv real_path (name, (nofollow ? PC_SYM_NOFOLLOW : PC_SYM_FOLLOW) |
 					 PC_FULL, stat_suffixes);
@@ -1088,7 +1088,7 @@ stat_worker (const char *caller, const char *name, struct stat *buf,
 
   atts = real_path.file_attributes ();
 
-  debug_printf ("%d = file_attributes for '%s'", atts, real_path.get_win32 ());
+  debug_printf ("%s %d = file_attributes for '%s'", caller, atts, real_path.get_win32 ());
 
   dtype = real_path.get_drive_type ();
 
