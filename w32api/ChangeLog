@@ -1,3 +1,8 @@
+2001-11-04  "stefan"  <stefan@lkcc.org>
+
+	* include/winnt.h (GetCurrentFiber): Add prototype.
+	(GetFiberData): Likewise.
+
 2001-11-01  Danny Smith  <dannysmith@users.sourceforge.net>
 
 	* include/basetyps.h (DECLARE_INTERFACE): Don't add
@@ -11,7 +16,6 @@
 	(PrintDlgEx[AW]): Add function declaration.
 	* lib/comdlg32.def (PrintDlgEx[AW]): Add function stubs.
 	* ChangeLog: Fix typo in last entry.
-	
 
 2001-11-01  TAMURA Kent  <tkent@users.sourceforge.net>
 
