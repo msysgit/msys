@@ -1,4 +1,4 @@
-<!-- $Id: mingwfaq.shtml,v 1.38 2002-08-12 01:28:20 infidel Exp $ -->
+<!-- $Id: mingwfaq.shtml,v 1.39 2002-09-20 13:57:43 earnie Exp $ -->
 
 <html>
 <head>
@@ -56,6 +56,7 @@
    <ul>
       <li><a href="#faq-what">What is MinGW?</a></li>
       <li><a href="#faq-msys">What is MSYS?</a></li>
+      <li><a href="#faq-w32api">What is w32api?</a></li>
       <li><a href="#faq-where">Where can I get MinGW?</a></li>
       <li><a href="#faq-license">How is MinGW licensed?</a></li>
       <li><a href="#faq-version">What is the current version?</a></li>
@@ -63,8 +64,6 @@
       <li><a href="#faq-configure">How do I execute configure scripts?</a></li>
       <li><a href="#faq-usingwithmsys">How do I use MinGW with MSYS?</a></li>
       <li><a href="#faq-usingwithcygwin">How do I use MinGW with Cygwin?</a></li>
-      <li><a href="#faq-runtime">Which runtime should I use?</a></li>
-      <li><a href="#faq-w32api">What is w32api?</a></li>
       <li><a href="#faq-comsupport">Is support provided for COM?</a></li>
       <li><a href="#faq-msvcdll">How can an MSVC program call a MinGW DLL, and vice versa?</a></li>
       <li><a href="#faq-cross">How can I build a cross compiler?</a></li>
@@ -76,19 +75,27 @@
       <a name="faq-what" />
       <h3>What is MinGW?</h3>
       <p>
-         MinGW ("Minimalistic GNU for Windows") refers to a set of runtime headers, used in building 
-         a compiler system based on the GNU GCC and binutils projects.  It compiles and links code 
-         to be run on Win32 platforms... providing C, C++ and Fortran compilers plus other related 
-         tools.  If you see references to "mingw32" instead of "MinGW", they are referring to the 
-         same compiler system. The project's name 
-         changed from mingw32 to MinGW is to prevent the implication that MinGW will only 
-         works on 32 bit systems (as 64 and higher bit machines become more common, MinGW 
-         will evolve to work with them).  MinGW uses the Microsoft runtime libraries, distributed 
-         with the Windows operating system. Unlike other ports of GCC to Windows, the 
-         runtime libraries are not distributed using Gnu's General Public License (GPL). You, 
-         therefore, do not have to distribute your source code with your programs. 
+         MinGW ("Minimalistic GNU for Windows") refers to a set of runtime 
+	 headers, used in building a compiler system based on the GNU GCC and 
+	 binutils projects.  It compiles and links code to be run on Win32 
+	 platforms... providing C, C++ and Fortran compilers plus other related 
+         tools.  If you see references to "mingw32" instead of "MinGW", they 
+	 are referring to the same compiler system. The project's name 
+         changed from mingw32 to MinGW is to prevent the implication that MinGW 
+	 will only works on 32 bit systems (as 64 and higher bit machines 
+	 become more common, MinGW will evolve to work with them).  MinGW uses 
+	 the Microsoft runtime libraries, distributed with the Windows 
+	 operating system. Unlike other ports of GCC to Windows, the runtime 
+	 libraries are not distributed using Gnu's General Public License (GPL).
+	 You, therefore, do not have to distribute your source code with your 
+	 programs unless, of course, you use a GPL library in your programs.. 
       </p>
       <p>
+         Check out the <a href="history.shtml">project history</a> for the
+	 interesting story of How MinGW Begain.
+      </p>
+      <p>
+	 <!--
          The project was originally started by Colin Peters, who created headers and import 
          definitions for Microsoft's crtdll C runtime in an effort to remove the dependancy of 
          the Cygwin1.dll from applications built by Cygwin's implementation of GCC.  It is that 
@@ -118,6 +125,7 @@
          funding in the project.  If you would like to volunteer please let us know
          via email to the <a href="mailto:mingw-users@sourceforge.net">MinGW mail list</a>
       </p>
+      -->
       <p><a href="#index">Back to index</a></p>
 
       <hr />
@@ -126,16 +134,39 @@
       <a name="faq-msys" />
       <h3>What is MSYS?</h3>
       <p>
-         MSYS ("Minimal SYStem") refers to a shell environment and set of tools for use with 
-         MinGW.  It provides just enough of POSIX and Bourne to allow a typical configuration 
-         script to execute, for building applications using the native MinGW version of GCC. 
-         The source for MSYS is an offshoot of <a href="http://sources.redhat.com/cygwin">Cygwin</a> 
-         (a full POSIX layer and UNIX-like development environment for Win32), but is intended 
-         for developers whose needs do not require the bloat of a full POSIX layer.
+         MSYS or Minimal SYStem is a POSIX and Bourne shell environment use with
+         MinGW.  It provides a hand picked set of tools to allow a typical 
+	 configuration script with Bourne syntax to execute.  This allows most
+	 of the GNU packages to create a Makefile just from executing the
+	 typical configure script which can then be used to build the package 
+	 using the native MinGW version of GCC.
       </p>
       <p>
-         For more MSYS-specific information, please see the <a href="msys.shtml">MSYS section</a> 
-         of this website.
+         The POSIX layer used by MSYS is a fork of the 1.3.3 version of 
+	 <a href="http://sources.redhat.com/cygwin">Cygwin</a>.  Cygwin is a 
+         full POSIX layer and UNIX-like environment for Win32 providing both
+	 server and client utilites.
+      </p>
+      <p>
+         For more MSYS-specific information, please see the 
+	 <a href="msys.shtml">MSYS section</a> of this website.
+      </p>
+      <p><a href="#index">Back to index</a></p>
+
+      <hr />
+
+
+
+      <a name="faq-w32api" />
+      <h3>What is w32api?</h3>
+      <p>
+         The w32api is the package of headers and import libraries to support 
+	 the Win32 Application Programming Interface as created by Microsoft.  
+	 The MinGW development team are the current maintainers of the w32api 
+	 since without that package Windows Programming would not be possible.  
+	 The package was created by Anders Norlander and it's license is also 
+	 non-restrictive.  For more information see Anders' README file 
+         <a href="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/mingw/w32api/README?rev=1.1.1.1&content-type=text/vnd.viewcvs-markup"> README.w32api</a>.  
       </p>
       <p><a href="#index">Back to index</a></p>
 
@@ -146,27 +177,30 @@
       <a name="faq-where" />
       <h3>Where can I get MinGW?</h3>
       <p>
-         Initially, MinGW was an assortment of individual packages... the MinGW runtime, various 
-         applications built using that runtime (gcc, ld, etc.), and other useful components (the 
-         w32api headers needed to code for the Win32 API).  Developers "rolled their own" 
-         MinGW environments by downloading the latest versions of each individual package needed.
-         This was necessary given the dynamic nature of early package versions (updates being 
-         posted constantly)... but was oftentimes confusing for newbies, and made it difficult for 
-         application/library vendors to design products that build with a "standard" MinGW 
+         Initially, MinGW was an assortment of individual packages... the MinGW 
+	 runtime, various applications built using that runtime (gcc, ld, etc.),
+	 and other useful components (the w32api headers needed to code for the 
+	 Win32 API).  Developers "rolled their own" MinGW environments by 
+	 downloading the latest versions of each individual package needed.
+         This was necessary given the dynamic nature of early package versions 
+	 (updates being posted constantly)... but was oftentimes confusing for 
+	 newbies, and made it difficult for application/library vendors to 
+	 design products that build with a "standard" MinGW 
          environment.
       </p> 
       <p>
-         Therefore, around mid-2001 when development had matured and updates were not being 
-         packaged as rapidly, the decision was made to create a single-file distribution of the 
-         standard MinGW environment.  This single archive contains the files from each component 
-         package, bundled and ready to extract.  The individual component packages are still 
-         available for download... if a particular package is updated in between releases of the 
-         overall distribution, it's possible to simply drop the newer package in place over a 
-         distribution install.
+         Therefore, around mid-2001 when development had matured and updates 
+	 were not being packaged as rapidly, the decision was made to create a 
+	 single-file distribution of the standard MinGW environment.  This 
+	 single archive contains the files from each component package, bundled 
+	 and ready to extract.  The individual component packages are still 
+         available for download... if a particular package is updated in 
+	 between releases of the overall distribution, it's possible to simply 
+	 drop the newer package in place over a distribution install.
       </p>
       <p>
-         MinGW files are hosted by SourceForge.  For more information and links to download, visit 
-         the <a href="download.shtml">Download</a> page.
+         MinGW files are hosted by SourceForge.  For more information and links 
+	 to download, visit the <a href="download.shtml">Download</a> page.
       </p>
       <p><a href="#index">Back to index</a></p>
 
@@ -178,12 +212,13 @@
       <a name="faq-license" />
       <h3>How is MinGW licensed?</h3>
       <p>
-         When Colin Peters released the MinGW runtime he placed the source into the
-         public domain.  No one owns a copyright (C) to the source because of this.
-         You as a software manufacturer are free to use the MinGW runtime in your
-         proprietary and OpenSource software as you see fit.  The only thing you can't
-         do is to claim ownership of the source and use Colin Peters' name, the MinGW
-         name or the name of any of it's contributors in endorsement of any product.
+         When Colin Peters released the MinGW runtime he placed the source into 
+	 the public domain.  No one owns a copyright (C) to the source because 
+	 of this.  You as a software manufacturer are free to use the MinGW 
+	 runtime in your proprietary and OpenSource software as you see fit.  
+	 The only thing you can't do is to claim ownership of the source and 
+	 use Colin Peters' name, the MinGW name or the name of any of it's 
+	 contributors in endorsement of any product.
       </p>
       <p>
          For those interested in the actual legal details and technical
@@ -201,12 +236,13 @@
             CRTDLL/MSVCRT.
          </li>
          <li>
-            W32API, which consists of the headers and import libraries related to
-            WIN32 API access, is released under
+            W32API, which consists of the headers and import libraries related 
+	    to WIN32 API access, is released under
             <a href="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/mingw/w32api/README?rev=1.1.1.1&content-type=text/vnd.viewcvs-markup">copyright</a>.  
-            The copyright agreement states no restrictions are placed on programs or object 
-            files compiled with the library.  There are restrictions if you wish to 
-            distribute the library as part of another package.
+            The copyright agreement states no restrictions are placed on 
+	    programs or object files compiled with the library.  There are 
+	    restrictions if you wish to distribute the library as part of 
+	    another package.
          </li>
          <li>
             Mingw development tools, which include compilers, linkers, other
@@ -246,11 +282,12 @@
       <a name="faq-version" />
       <h3>What is the current version?</h3>
       <p>
-         The current version of the MinGW environment distribution is 1.0.1, released on 
-         July 26, 2001.  This version number and last release data are to the individual 
-         MinGW runtime package, upon which the applications in the overall distribution 
-         are built.  It is likely that these will stay in sync going forward (new versions 
-         of the overall distribution being released as the core runtime is updated).
+         The current version of the MinGW environment distribution is 1.0.1, 
+	 released on July 26, 2001.  This version number and last release data 
+	 are to the individual MinGW runtime package, upon which the 
+	 applications in the overall distribution are built.  It is likely that 
+	 these will stay in sync going forward (new versions of the overall 
+	 distribution being released as the core runtime is updated).
       </p>
       <p><a href="#index">Back to index</a></p>
 
@@ -281,12 +318,12 @@
       <h3>How do I execute configure scripts?</h3>
       <p>
          Applications using a UNIX-style build process will typically require a 
-         shell environment and set of POSIX tools, for executing configure scripts 
-         and building the application.  The Cygwin environment was once the only 
-         choice available to fill this role, although recently the MSYS environment 
-         was released to offer MinGW developers a more lightweight alternative.  
-         The use of both these environments with MinGW is described in more detail 
-         below.
+         shell environment and set of POSIX tools, for executing configure 
+	 scripts and building the application.  The Cygwin environment was once 
+	 the only choice available to fill this role, although recently the MSYS
+	 environment was released to offer MinGW developers a more lightweight 
+	 alternative.  The use of both these environments with MinGW is 
+	 described in more detail below.
       </p>
       <p><a href="#index">Back to index</a></p>
 
@@ -296,20 +333,22 @@
       <a name="faq-usingwithmsys" />
       <h3>How do I use MinGW with MSYS?</h3>
       <p>
-         It's easy to configure an MSYS environment for MinGW useage, since there is no
-         overlap in functionality to contend with (as there is with Cygwin).  Simply 
-         decompress the contents of each archive into directories of your choosing, and 
-         add the MinGW &quot;/bin&quot; subdirectory to your PATH (either within 
-         MSYS's &quot;/etc/profile&quot; or in your overall system PATH).  There 
-         is no need to add MSYS's &quot;/bin&quot; to your system PATH.
+         It's easy to configure an MSYS environment for MinGW useage, since 
+	 there is no overlap in functionality to contend with (as there is with 
+	 Cygwin).  Simply decompress the contents of each archive into 
+	 directories of your choosing, and add the MinGW &quot;/bin&quot; 
+	 subdirectory to your PATH (either within MSYS's &quot;
+	 /etc/profile&quot; or in your overall system PATH).  There is no need 
+	 to add MSYS's &quot;/bin&quot; to your system PATH.
       </p>
       <p>
-         You may install the MinGW and MSYS packages anywhere on your filesystem, even nesting 
-         one within the other (creating a &quot;mingw&quot; subdirectory beneath your 
-         &quot;msys&quot; directory, for instance).  However, it is important to remember 
-         that NO executables other than what ships with MSYS should be placed in the MSYS 
-         &quot;bin&quot; subdirectory.  Therefore, do not attempt to &quot;merge&quot; the 
-         two packages.
+         You may install the MinGW and MSYS packages anywhere on your 
+	 filesystem, even nesting one within the other (creating a &quot;
+	 mingw&quot; subdirectory beneath your &quot;msys&quot; directory, for 
+	 instance).  However, it is important to remember that NO executables 
+	 other than what ships with MSYS should be placed in the MSYS &quot;
+	 bin&quot; subdirectory.  Therefore, do not attempt to &quot;merge&quot;
+	 the two packages.
       </p>
       <p>
       <p><a href="#index">Back to index</a></p>
@@ -321,95 +360,24 @@
       <a name="faq-usingwithcygwin" />
       <h3>How do I use MinGW with Cygwin?</h3>
       <p>
-         <a href="http://sources.redhat.com/cygwin">Cygwin</a> refers to a GPL'ed 
-         implementation of a POSIX emulation layer for the Win32 platform (POSIX being 
-         a standard specification for certain OS services within the UNIX world).  
-         This POSIX emulation layer makes it easier to port applications from UNIX 
-         to Win32... and as a result, Cygwin has grown over the years into a full 
-         bash shell environment with all the familiar tools a UNIX developer would 
-         work with.  Cygwin allows developers to work on a Win32 machine, and feel 
-         as if they're developing on a UNIX box.  Work on a Cygwin-based X-Windows 
-         server has advanced to the point where it's even possible to run a Gnome 
-         or KDE session within MS-Windows using Cygwin.
+         For those who would like to use the Cygwin environment for development,
+	 yet generate non-Cygwin-dependant executables, a much easier option to 
+	 "-mno-cygwin" does exist.  Simply install Cygwin and the MinGW 
+	 distribution in seperate directories (i.e. &quot;C:\CYGWIN&quot; and 
+	 &quot;C:\MINGW&quot;), and make sure that the &quot;/bin&quot; 
+	 subdirectory beneath your MinGW installation comes before Cygwin's 
+	 &quot;/bin&quot; subdirectory in your PATH environment variable
+         (i.e. &quot;PATH=%PATH%;C:\MINGW\BIN;C:\CYGWIN\BIN&quot;).  This will 
+	 allow you access to all the UNIX tools you want, while ensuring that 
+	 the instance of GCC used is the MinGW version.
       </p>
       <p>
-         However, there is a downside to Cygwin (which MinGW was created to address).  
-         All executables built by Cygwin's port of GCC have a dependency on the 
-         Cygwin DLL, which provides the POSIX emulation layer to applications.  In 
-         addition to decreasing the execution speed of apps, the fact that 
-         all applications have a dependency on a GPL'ed component means that 
-         <b><i>ALL</i></b> applications built with Cygwin's GCC are legally bound 
-         by the GPL as well!
-      </p>
-      <p>
-         There is command-line option that can be passed to Cygwin's GCC,
-         "-mno-cygwin", that was intended to address these concerns. When Cygwin's
-         GCC is invoked with the "-mno-cygwin" option, executables are built without
-         a dependency on the Cygwin DLL.  However, while this works effortlessly for
-         C applications, using "-mno-cygwin" to compile C++ applications requires
-         additional configuration work up-front.  A large amount of documentation on
-         this is in circulation, but the most up-to-date can be found 
-         <a href="http://www.colomsat.net.co/freehost/ngiraldo/cppcygwin.html">here</a>.
-      </p>         
-      <p>
-         For those who would like to use the Cygwin environment for development, yet
-         generate non-Cygwin-dependant executables, a much easier option to "-mno-cygwin"
-         does exist.  Simply install Cygwin and the MinGW distribution 
-         in seperate directories (i.e. &quot;C:\CYGWIN&quot; and &quot;C:\MINGW&quot;), and make sure 
-         that the &quot;/bin&quot; subdirectory beneath your MinGW installation comes before 
-         Cygwin's &quot;/bin&quot; subdirectory in your PATH environment variable
-         (i.e. &quot;PATH=%PATH%;C:\MINGW\BIN;C:\CYGWIN\BIN&quot;).  This will allow you access 
-         to all the UNIX tools you want, while ensuring that the instance of GCC used 
-         is the MinGW version.
-      </p>
-      <p>
-         Bear in mind that within the "/etc/profile" file, Cygwin by default places 
-         "/usr/local/bin", "/usr/bin", and "/bin" ahead of your system-level PATH.  Therefore, 
-         it is not enough to have the MinGW's "/bin" ahead of Cygwin in your Windows 
-         path... it must also be set to come first within the Cygwin environment (either 
-         by modifying "/etc/profile" or setting it manually).
-      </p>
-      <p><a href="#index">Back to index</a></p>
-
-      <hr />
-
-
-
-      <a name="faq-runtime" />
-      <h3>Which runtime should I use?</h3>
-      <p>
-         MinGW requires you to have the Microsoft runtime library MSVCRT.DLL on your
-         system (Windows 95 OSR2, NT 4.0, and later versions of both OS families).  Support 
-         for CRTDLL.DLL (Win32s, used by Windows 3.11 and NT 3.5) is no 
-         longer being maintained.  The CRTDLL legacy code will remain for some time but 
-         will not be guaranteed to be present in future releases.  The only problem you 
-         may have is that if you try to use a program built with MSVCRT.DLL on a Windows 
-         95 Release 1 system.  On  these systems the MSVCRT.DLL wasn't present, however, 
-         it is freely available from 
-         <a href="http://www.microsoft.com" target="_nw">http://www.microsoft.com</a>.
-      <p>
-         Other runtime libraries are usable with MinGW... one such library in the works 
-         is PW32, the Posix-over-Win32 layer. It provides a subset of POSIX and UNIX functions. 
-         To find out more about PW32, try it out, or volunteer to help... see 
-         <a href="http://pw32.sourceforge.net/">http://pw32.sourceforge.net</a>. 
-      </p>
-      <p><a href="#index">Back to index</a></p>
-
-      <hr />
-
-
-
-
-      <a name="faq-w32api" />
-      <h3>What is w32api?</h3>
-      <p>
-         The w32api is the package of headers and import libraries to support the
-         Win32 Application Programming Interface as created by Microsoft.  The MinGW
-         development team are the current maintainers of the w32api since without
-         that package Windows Programming would not be possible.  The package was
-         created by Anders Norlander and it's license is also non-restrictive.  For
-         more information see Anders' README file 
-         <a href="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/mingw/w32api/README?rev=1.1.1.1&content-type=text/vnd.viewcvs-markup"> README.w32api</a>.  
+         Bear in mind that within the "/etc/profile" file, Cygwin by default 
+	 places "/usr/local/bin", "/usr/bin", and "/bin" ahead of your 
+	 system-level PATH.  Therefore, it is not enough to have the MinGW's 
+	 "/bin" ahead of Cygwin in your Windows path... it must also be set to 
+	 come first within the Cygwin environment (either by modifying 
+	 "/etc/profile" or setting it manually).
       </p>
       <p><a href="#index">Back to index</a></p>
 
@@ -434,30 +402,32 @@
       <a name="faq-msvcdll" />
       <h3>How can an MSVC program call a MinGW DLL, and vice versa?</h3>
       <p>
-        Assume we have a testdll.h, testdll.c, and testmain.c.  In the first case,
-        we will compile testdll.c with MinGW, and let the MSVC-compiled testmain
-        call it.  You should use
+        Assume we have a testdll.h, testdll.c, and testmain.c.  In the first 
+	case, we will compile testdll.c with MinGW, and let the MSVC-compiled 
+	testmain call it.  You should use
         <blockquote>
         <code>gcc -shared -o testdll.dll testdll.c \<br />
         &nbsp;&nbsp;&nbsp; -Wl,--output-def,testdll.def,--out-implib,libtestdll.a</code>
         </blockquote>
-        to produce the DLL and DEF files.  MSVC cannot use the MinGW library, but
-        since you have already the DEF file you may easily produce one by the Microsoft
+        to produce the DLL and DEF files.  MSVC cannot use the MinGW library, 
+	but since you have already the DEF file you may easily produce one by 
+	the Microsoft
         <code>LIB</code> tool:
         <blockquote>
           <code>lib /machine:i386 /def:testdll.def</code>
         </blockquote>
       </p>
       <p>
-        Once you have testdll.lib, it is trivial to produce the executable with MSVC:
+        Once you have testdll.lib, it is trivial to produce the executable with 
+	MSVC:
         <blockquote>
           <code>cl testmain.c testdll.lib</code>
         </blockquote>
       </p>
       <p>
-        Now for MinGW programs calling an MSVC DLL.  We have two methods.  One way
-        is to specify the LIB files directly on the command line <i>after</i> the
-        main program.  For example, after
+        Now for MinGW programs calling an MSVC DLL.  We have two methods.  One 
+	way is to specify the LIB files directly on the command line <i>after
+	</i> the main program.  For example, after
         <blockquote>
           <code>cl /LD testdll.c</code>
         </blockquote>
@@ -467,10 +437,12 @@
         </blockquote>
       </p>
       <p>
-        The other way is to produce the .a files for GCC.  For <code>__cdecl</code>
-        functions (in most cases), it is simple: you only need to apply the <code>reimp</code>
-        tool from Anders Norlander (since his web site is no longer available, you may choose
-        to download <a href="http://mywebpage.netscape.com/yongweiwu/reimp_new.zip">here</a>
+        The other way is to produce the .a files for GCC.  For <code>__cdecl
+	</code>
+        functions (in most cases), it is simple: you only need to apply the 
+	<code>reimp</code> tool from Anders Norlander (since his web site is 
+	no longer available, you may choose to download 
+	<a href="http://mywebpage.netscape.com/yongweiwu/reimp_new.zip">here</a>
         a version enhanced by Jose Fonseca):
         <blockquote>
           <code>reimp testdll.lib</code><br />
@@ -478,10 +450,10 @@
         </blockquote>
       </p>
       <p>
-        However, for <code>__stdcall</code> functions, the above method does not work.
-        For MSVC will prefix an underscore to <code>__stdcall</code> functions while
-        MinGW will not.  The right way is to produce the DEF file using the
-        <code>pexports</code> tool from
+        However, for <code>__stdcall</code> functions, the above method does 
+	not work.  For MSVC will prefix an underscore to <code>__stdcall</code> 
+	functions while MinGW will not.  The right way is to produce the DEF 
+	file using the <code>pexports</code> tool from
         <a href="http://www.is.lg.ua/~paul/devel/binutils.html">http://www.is.lg.ua/~paul/devel/binutils.html</a>
         and filter off the first underscore by <code>sed</code>:
         <blockquote>
@@ -507,38 +479,42 @@
       <a name="faq-cross" />
       <h3>How can I build a cross compiler?</h3>
       <p>
-         Cross-compiling refers to building applications for one platform, with development 
-         occuring on another platfrom (i.e. compiling MS-Windows executables from within a Linux 
-         environment, or vice-versa).  As GCC is found on literally dozens of platforms, it 
-         is theoretically possible to use the MinGW runtime in creating a cross-compilation 
+         Cross-compiling refers to building applications for one platform, with 
+	 development occuring on another platfrom (i.e. compiling MS-Windows 
+	 executables from within a Linux environment, or vice-versa).  As GCC 
+	 is found on literally dozens of platforms, it is theoretically 
+	 possible to use the MinGW runtime in creating a cross-compilation 
          development environment in many scenerios.
       </p>
       <p>
          There is a very old out-of-date 
          <a href="http://www.nanotech.wisc.edu/%7Ekhan/software/gnu-win32/mingw-cross-howto.txt" 
          target="_nw">mingw-cross-howto.txt</a> written by Mumit Khan and stored
-         on his site you can use.  You'll have to update the packages.  This needs
-         to be rewritten, any volunteers?  If so, please speak up in the 
+         on his site you can use.  You'll have to update the packages.  This 
+	 needs to be rewritten, any volunteers?  If so, please speak up in the 
          <a href="mailto:mingw-users@lists.sourceforge.net">mingw-users</a> list.
       </p>
       <p>
-         A more upto date HOWTO complete with a script to configure it for you can
-         be found at <a href="http://www.libsdl.org/extras/win32/cross/README.txt" 
+         A more upto date HOWTO complete with a script to configure it for you 
+	 can be found at 
+	 <a href="http://www.libsdl.org/extras/win32/cross/README.txt" 
          target="_nw">http://www.libsdl.org/extras/win32/cross/README.txt</a>.
       </p>
       <p>
-         You'll want to visit the <a href="mailto:crossgcc@sources.redhat.com">crossgcc</a> 
-         mail list <a href="http://sources.redhat.com/ml/crossgcc/">archives</a>.  You'll also 
-         find a link to a crossgcc FAQ and another for an ftp download site of some useful scripts 
-         on the <a href="http://sources.redhat.com/ml/crossgcc/">archives</a> search page.
+         You'll want to visit the 
+	 <a href="mailto:crossgcc@sources.redhat.com">crossgcc</a> mail list 
+	 <a href="http://sources.redhat.com/ml/crossgcc/">archives</a>.  You'll 
+	 also find a link to a crossgcc FAQ and another for an ftp download 
+	 site of some useful scripts on the 
+	 <a href="http://sources.redhat.com/ml/crossgcc/">archives</a> search 
+	 page.
       </p>
       <p>
          There are also some pre-built versions:
          <ul>
             <li>
                Linux: 
-               <a href="http://www.libsdl.org/extras/win32/cross/mingw32-linux-x86-glibc-2.2.tar.gz">
-               mingw32-linux-x86-glibc-2.2.tar.gz</a>
+               <a href="http://www.libsdl.org/extras/win32/cross/mingw32-linux-x86-glibc-2.2.tar.gz">mingw32-linux-x86-glibc-2.2.tar.gz</a>
             </li>
             <li>If you know of others let us know.</li>
          </ul>
@@ -552,11 +528,12 @@
       <a name="faq-bugreports" />
       <h3>How can I report bugs?</h3>
       <p>
-         When sending in a bug report, please be sure to send a short example of the problem.  
-         If the problem cannot be recreated, it cannot be debugged.  You can now report bugs 
-         through the <a href="http://sourceforge.net/tracker/?atid=102435&group_id=2435&func=browse">
-         defect tracking tool</a> at SourceForge.  You can also bring problems up on the 
-         MinGW <a href="lists.shtml">mailing list</a>.
+         When sending in a bug report, please be sure to send a short example of
+	 the problem.  If the problem cannot be recreated, it cannot be 
+	 debugged.  You can now report bugs through the 
+	 <a href="http://sourceforge.net/tracker/?atid=102435&group_id=2435&func=browse"> defect tracking tool</a> 
+	 at SourceForge.  You can also bring problems up on the MinGW 
+	 <a href="lists.shtml">mailing list</a>.
       </p>
       <p><a href="#index">Back to index</a></p>
 
@@ -573,7 +550,7 @@
 
    <hr />
    <address>
-   <br />Last revised $Date: 2002-08-12 01:28:20 $
+   <br />Last revised $Date: 2002-09-20 13:57:43 $
    </address>
 
 </body>

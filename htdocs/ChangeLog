@@ -1,3 +1,10 @@
+2002-09-20  Earnie Boyd  <earnei@users.sf.net>
+
+	* mingwfaq.shtml: Format to 80 columns throughout.
+	(faq-runtime): Remove.
+	(faq-w32api): Move up in order.
+	(faq-cygwin): Remove much unneeded verbiage.
+
 2002-09-16  Luke Dunstan  <infidel@users.sf.net>
 
 	* msys.shtml: Update download instructions for newer MSYS versions.
