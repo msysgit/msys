@@ -3,6 +3,7 @@
 	* Makefile.in (new-$(DLL_NAME)): Add -luser32 to link command.
 	* window.cc: Add TRACE_IN throughout.
 	(Winmain): Revert the changes from 04-22.  Add a FIXME MessageBox.
+	* path.cc (msys_p2w): Add recognition of path after comma in switch.
 
 2004-04-22  Earnie Boyd  <earnie@users.sf.net>
 
