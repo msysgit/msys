@@ -155,7 +155,8 @@ int APIENTRY WinMain(HINSTANCE hInst, HINSTANCE hPrevInst,
         case '-':
         case '/':
         case ' ':
-        default: break;
+        default: 
+	  break;
         }
     }
   LaunchConfig();
