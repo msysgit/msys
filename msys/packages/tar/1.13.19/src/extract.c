@@ -1136,8 +1136,10 @@ apply_delayed_symlinks (void)
 	 there.  If the placeholder isn't there, don't worry about it, as
 	 it may have been removed by a later extraction.  */
       if (lstat (file, &st) == 0
+#ifndef __CYGWIN__ /* These aren't safe tests under Cygwin. */
 	  && st.st_dev == p->dev
 	  && st.st_ino == p->ino
+#endif
 	  && st.st_mtime == p->mtime)
 	{
 	  if (unlink (file) != 0)

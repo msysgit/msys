@@ -237,8 +237,11 @@ name_init (int argc, char *const *argv)
 	{
 	  request_stdin ("-T");
 	  name_file = stdin;
+#ifdef __CYGWIN__
+	  setmode (fileno (stdin), O_TEXT);
+#endif
 	}
-      else if (name_file = fopen (files_from_option, "r"), !name_file)
+      else if (name_file = fopen (files_from_option, FOPEN_TEXT_READ), !name_file)
 	open_fatal (files_from_option);
     }
 }
