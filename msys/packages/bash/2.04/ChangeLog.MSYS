@@ -1,3 +1,8 @@
+2005.03.29  Earnie Boyd  <earnie@users.sf.net>
+
+	* variables.c (make_variable_value): For variable named prefix convert
+	the value to a win32 path.
+
 2002.04.26  Earnie Boyd  <earnie@users.sf.net>
 
 	* builtins/cd.def: Add ``pwd -W'' option.

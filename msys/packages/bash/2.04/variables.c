@@ -1406,6 +1406,7 @@ make_variable_value (var, value)
      char *value;
 {
   char *retval;
+  char *wbuffer = xmalloc(PATH_MAX);
   long lval;
   int expok;
 
@@ -1430,6 +1431,12 @@ make_variable_value (var, value)
 	  retval = xmalloc (1);
 	  retval[0] = '\0';
 	}
+#if defined(__MSYS__)
+      if (strncmp (var->name, "prefix", 6) == 0) {
+	cygwin_conv_to_win32_path (retval, wbuffer);
+	retval = wbuffer;
+      }
+#endif
     }
   else
     retval = (char *)NULL;
