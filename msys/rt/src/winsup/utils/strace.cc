@@ -345,7 +345,7 @@ handle_output_debug_string (DWORD id, LPVOID p, unsigned mask, FILE *ofile)
 {
   int len;
   int special;
-  char alen[3 + 8 + 1];
+  char alen[4 + 8 + 1];
   DWORD nbytes;
   child_list *child = get_child (id);
   HANDLE hchild = child->hproc;
@@ -364,9 +364,9 @@ handle_output_debug_string (DWORD id, LPVOID p, unsigned mask, FILE *ofile)
 	   id, hchild, GetLastError ());
 #endif
 
-  if (strncmp (alen, "cYg", 3))
+  if (strncmp (alen, "MsYs", 4))
     return;
-  len = (int) strtoul (alen + 3, NULL, 16);
+  len = (int) strtoul (alen + 4, NULL, 16);
   if (!len)
     return;
 
