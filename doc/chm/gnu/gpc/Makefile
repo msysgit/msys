@@ -1,7 +1,14 @@
-TOP_DIR = ../..
+GARNAME = gpc
+GARVERSION = 2.1
+MASTER_SITES = http://www.gnu-pascal.de/current/
+DISTFILES = $(GARNAME)-$(GARVERSION).tar.gz
 
-VERSION = 2.1
-BOOKS = gpc.texi
+WORKSRC = $(WORKDIR)/$(GARNAME)-20020510/p
 
-include $(TOP_DIR)/rules.mak
+BOOKS = $(WORKSRC)/doc/en/gpc.texi
 
+FIGURES = $(WORKSRC)/doc/images/*
+
+include ../../gar.mk
+
+MAKEINFO_FLAGS += -I .. -I ../generated

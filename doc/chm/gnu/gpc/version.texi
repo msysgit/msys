@@ -1,7 +1,0 @@
-@c Generated automatically from version.h
-@c DO NOT CHANGE THIS FILE MANUALLY!
-
-@set GPCMajor 2
-@set GPCMinor 1
-@set GPCVersion 20020510
-@set GCCVersion 2.95.x

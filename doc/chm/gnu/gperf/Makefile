@@ -1,7 +1,8 @@
-TOP_DIR = ../..
+GARNAME = gperf
+GARVERSION = 2.7.2
+MASTER_SITES = ftp://ftp.gnu.org/pub/gnu/$(GARNAME)/
+DISTFILES = $(GARNAME)-$(GARVERSION).tar.gz
 
-VERSION = 2.7.2
-BOOKS = gperf.texi
+BOOKS = $(WORKSRC)/doc/gperf.texi
 
-include $(TOP_DIR)/rules.mak
-
+include ../../gar.mk

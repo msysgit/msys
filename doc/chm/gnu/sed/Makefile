@@ -1,7 +1,9 @@
-TOP_DIR = ../..
+GARNAME = sed
+GARVERSION = 4.0.7
+MASTER_SITES = ftp://ftp.gnu.org/pub/gnu/$(GARNAME)/
+DISTFILES = $(GARNAME)-$(GARVERSION).tar.gz
 
-VERSION = 3.02
-BOOKS = sed.texi
+BOOKS = $(WORKSRC)/doc/sed.texi
 
-include $(TOP_DIR)/rules.mak
+include ../../gar.mk
 

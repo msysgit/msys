@@ -1,7 +1,8 @@
-TOP_DIR = ../..
+GARNAME = automake
+GARVERSION = 1.7.2
+MASTER_SITES = ftp://ftp.gnu.org/pub/gnu/$(GARNAME)/
+DISTFILES = $(GARNAME)-$(GARVERSION).tar.bz2
 
-VERSION = 1.5
-BOOKS = automake.texi
+BOOKS = $(WORKSRC)/automake.texi
 
-include $(TOP_DIR)/rules.mak
-
+include ../../gar.mk

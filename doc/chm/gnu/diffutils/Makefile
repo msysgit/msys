@@ -1,7 +1,9 @@
-TOP_DIR = ../..
+GARNAME = diffutils
+GARVERSION = 2.8.1
+MASTER_SITES = ftp://ftp.gnu.org/pub/gnu/$(GARNAME)/
+DISTFILES = $(GARNAME)-$(GARVERSION).tar.gz
 
-VERSION = 2.7
-BOOKS = diff.texi
+BOOKS = $(WORKSRC)/doc/diff.texi
 
-include $(TOP_DIR)/rules.mak
+include ../../gar.mk
 

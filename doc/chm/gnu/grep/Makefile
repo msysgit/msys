@@ -1,7 +1,11 @@
-TOP_DIR = ../..
+GARNAME = grep
+GARVERSION = 2.5.1
+MASTER_SITES = ftp://ftp.gnu.org/pub/gnu/$(GARNAME)/
+DISTFILES = $(GARNAME)-$(GARVERSION).tar.bz2
 
-VERSION = 2.4.2 
-BOOKS = grep.texi
+CONFIGURE_SCRIPTS = $(WORKSRC)/configure
+BUILD_SCRIPTS = $(WORKSRC)/doc/Makefile
 
-include $(TOP_DIR)/rules.mak
+BOOKS = $(WORKSRC)/doc/grep.texi
 
+include ../../gar.mk

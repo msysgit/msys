@@ -1,16 +1,39 @@
-TOP_DIR = ../..
+GARNAME = binutils
+GARVERSION = 2.13.2.1
+MASTER_SITES = \
+	ftp://ftp.gnu.org/gnu/$(GARNAME)/ \
+	ftp://ftp.kernel.org/pub/linux/devel/$(GARNAME)/
+DISTFILES = $(GARNAME)-$(GARVERSION).tar.bz2
 
-VERSION = 2.12.90.0.7
-BOOKS = as.texi bfd.texinfo bfdint.texi binutils.texi ld.texinfo ldint.texinfo libiberty.texi standards.texi
+#CONFIGURE_SCRIPTS = \
+	$(WORKSRC)/bfd/configure \
+	$(WORKSRC)/gas/configure \
+	$(WORKSRC)/ld/configure
+CONFIGURE_SCRIPTS = \
+	$(WORKSRC)/configure
+BUILD_SCRIPTS = \
+	$(WORKSRC)/bfd/doc/Makefile \
+	$(WORKSRC)/binutils/doc/Makefile \
+	$(WORKSRC)/gas/doc/Makefile \
+	$(WORKSRC)/ld/Makefile
 
-TEXI2HTML_FLAGS = --expand=tex
+BOOKS = \
+	$(WORKSRC)/bfd/doc/bfd.texinfo \
+	$(WORKSRC)/bfd/doc/bfdint.texi \
+	$(WORKSRC)/binutils/doc/binutils.texi \
+	$(WORKSRC)/gas/doc/as.texi \
+	$(WORKSRC)/ld/ld.texinfo \
+	$(WORKSRC)/ld/ldint.texinfo
+NODIST_BOOKS = \
+	$(WORKSRC)/liberty/libiberty.texi \
+	$(WORKSRC)/etc/standards.texi
 
-all: gasver.texi ldver.texi
+include ../../gar.mk
 
-include $(TOP_DIR)/rules.mak
+MAKEINFO_FLAGS += -I ../bfd/doc
 
-gasver.texi ldver.texi:
-	echo "@set VERSION $(VERSION)" > $@
+build-$(WORKSRC)/bfd/doc/Makefile: BUILD_ARGS = bfd.info
+build-$(WORKSRC)/binutils/doc/Makefile: BUILD_ARGS = binutils.info
+build-$(WORKSRC)/ld/Makefile: BUILD_ARGS = ld.info
 
-clean:
-	rm -f gasver.texi ldver.texi
+

@@ -1,7 +1,9 @@
-TOP_DIR = ../..
+GARNAME = tar
+GARVERSION = 1.13
+MASTER_SITES = ftp://ftp.gnu.org/pub/gnu/$(GARNAME)/
+DISTFILES = $(GARNAME)-$(GARVERSION).tar.gz
 
-VERSION = 1.13
-BOOKS = tar.texi
+BOOKS = $(WORKSRC)/doc/tar.texi
 
-include $(TOP_DIR)/rules.mak
+include ../../gar.mk
 

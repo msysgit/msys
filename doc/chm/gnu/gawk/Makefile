@@ -1,7 +1,9 @@
-TOP_DIR = ../..
+GARNAME = gawk
+GARVERSION = 3.1.2
+MASTER_SITES = ftp://ftp.gnu.org/pub/gnu/$(GARNAME)/
+DISTFILES = $(GARNAME)-$(GARVERSION).tar.bz2
 
-VERSION = 3.1.0
-BOOKS = gawk.texi gawkinet.texi
+BOOKS = $(WORKSRC)/doc/gawk.texi $(WORKSRC)/doc/gawkinet.texi
 
-include $(TOP_DIR)/rules.mak
+include ../../gar.mk
 

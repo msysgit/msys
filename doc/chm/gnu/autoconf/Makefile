@@ -1,7 +1,10 @@
-TOP_DIR = ../..
+GARNAME = autoconf
+GARVERSION = 2.57
+MASTER_SITES = ftp://ftp.gnu.org/pub/gnu/$(GARNAME)/
+DISTFILES = $(GARNAME)-$(GARVERSION).tar.bz2
 
-VERSION = 2.52
-BOOKS = autoconf.texi standards.texi
+BOOKS = $(WORKSRC)/doc/autoconf.texi
+NODIST_BOOKS = $(WORKSRC)/doc/standards.texi
 
-include $(TOP_DIR)/rules.mak
+include ../../gar.mk
 

@@ -1,12 +1,13 @@
-TOP_DIR = ../..
+GARNAME = flex
+GARVERSION = 2.5.4a
+MASTER_SITES = ftp://ftp.gnu.org/pub/non-gnu/$(GARNAME)/
+DISTFILES = $(GARNAME)-$(GARVERSION).tar.gz
 
-VERSION = 2.5.4
-BOOKS = flex.texi
+BOOKS = $(WORKSRC)/MISC/texinfo/flex.texi
 
-include $(TOP_DIR)/rules.mak
+WORKSRC = work/flex-2.5.4
 
-flex.texi: orig/flex.texi
+include ../../gar.mk
+
+$(WORKDIR)/flex.texi: $(WORKSRC)/MISC/texinfo/flex.texi
 	sed -e "s/@section/@chapter/g" $< > $@
-
-clean:
-	rm -f flex.texi

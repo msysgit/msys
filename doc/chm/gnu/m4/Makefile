@@ -1,7 +1,9 @@
-TOP_DIR = ../..
+GARNAME = m4
+GARVERSION = 1.4
+MASTER_SITES = ftp://ftp.gnu.org/pub/gnu/$(GARNAME)/
+DISTFILES = $(GARNAME)-$(GARVERSION).tar.gz
 
-VERSION = 1.4
-BOOKS = m4.texinfo
+BOOKS = $(WORKSRC)/doc/m4.texinfo
 
-include $(TOP_DIR)/rules.mak
+include ../../gar.mk
 

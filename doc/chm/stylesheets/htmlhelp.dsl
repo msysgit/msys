@@ -44,56 +44,154 @@
   #t)
 
 
+;; Element generation (based on Norman Walsh's htmlhelp.dsl)
+
+(define (extract-gi args)
+  (let ((gi (member gi: args)))
+    (if gi
+	(car (cdr gi))
+	"")))
+
+(define (extract-node args)
+  (let ((node (member node: args)))
+    (if node
+	(car (cdr node))
+	#f)))
+
+(define (extract-attributes args)
+  (let ((attr (member attributes: args)))
+    (if attr
+	(car (cdr attr))
+	'())))
+
+(define (extract-sosofos args)
+  (let loop ((l args) (results '()))
+    (if (null? l)
+	results
+	(if (not (keyword? (car l)))
+	    (loop (cdr l) (append results (list (car l))))
+	    (loop (cdr (cdr l)) results)))))
+
+(define (make-element #!rest args)
+  ;; Args _MUST_ be '( gi: "gi" attributes: '() sosofo...) where sosofo
+  ;; is optional.
+  (let* ((node       (if (extract-node args)
+			 (extract-node args)
+			 (current-node)))
+	 (giname     (extract-gi args))
+	 (attr       (extract-attributes args))
+	 (sosofo     (extract-sosofos args)))
+    (sosofo-append
+      (make formatting-instruction data: (string-append "<" giname))
+      (if (null? attr)
+	  (empty-sosofo)
+	  (let loop ((a attr))
+	    (if (null? a)
+		(empty-sosofo)
+		(make sequence
+		  (let* ((attrlist (car a))
+			 (name (car attrlist))
+			 (value (car (cdr attrlist))))
+		    (make formatting-instruction 
+		      data: (string-append " " name "=\"" (if value value "whatthe") "\"")))
+		  (loop (cdr a))))))
+      
+      (make formatting-instruction data: ">")
+      (htmlnewline)
+
+      (if sosofo
+	  (apply sosofo-append sosofo)
+	  (current-node))
+
+      (make formatting-instruction data: (string-append "</" giname ">"))
+      (htmlnewline ))))
+
+(define (make-empty-element #!rest args)
+  ;; Args _MUST_ be '( gi: "gi" attributes: '() sosofo)
+  (let* ((giname (extract-gi args))
+	 (attributes (extract-attributes args))
+	 (attr attributes))
+    (sosofo-append
+      (make formatting-instruction data: (string-append "<" giname))
+      (if (null? attr)
+	  (empty-sosofo)
+	  (let loop ((a attr))
+	    (if (null? a)
+		(empty-sosofo)
+		(make sequence
+		  (make formatting-instruction 
+		    data: (string-append " " 
+					 (car (car a)) 
+					 "=\"" 
+					 (car (cdr (car a)))
+					 "\""))
+		  (loop (cdr a))))))
+
+      (make formatting-instruction data: ">")
+      (htmlnewline))))
+
 ;; Table of Contents generation (based on dbautoc.dsl, v1.76)
 
 (define (htmlhelp-toc-depth)
   10)
 
-(define (build-htmlhelp-toc2 nd depth #!optional (first? #t))
+(define (build-htmlhelp-toc nd depth #!optional (first? #t))
   (let ((toclist (toc-list-filter 
 		  (node-list-filter-by-gi (children nd)
 					  (append (division-element-list)
 						  (component-element-list)
-						  (section-element-list)))))
-	(wrappergi (if first? "chapters" "sub"))
-	(wrapperattr (if first? '()  
-(list
-				 (list "name" (element-title-string nd))
-				 (list "link" (href-to nd)))
-)))
+						  (section-element-list))))))
     (if (or (<= depth 0) 
 	    (and (node-list-empty? toclist) #f))
-	(empty-sosofo)
-	(make element gi: wrappergi
-	      attributes: wrapperattr
-		    (let loop ((nl toclist))
-		      (if (node-list-empty? nl)
-			  (empty-sosofo)
-			  (sosofo-append
-			    (build-htmlhelp-toc (node-list-first nl) 
-				       (- depth 1) #f)
-			    (loop (node-list-rest nl)))))))))
-
+      (empty-sosofo)
+      (make sequence
+        (make-element gi: "LI"
+	  (make-element gi: "OBJECT"
+	    attributes: '(("type" "text/sitemap"))
+	    (make-empty-element gi: "param"
+	      attributes: (list (list "name" "Name")
+			  (list "value" (element-title-string nd))))
+	    (make-empty-element gi: "param"
+	      attributes: (list (list "name" "Local")
+			  (list "value" (href-to nd))))))
+	  (make-element gi: "UL"
+	    (let loop ((nl toclist))
+	      (if (node-list-empty? nl)
+		  (empty-sosofo)
+		  (sosofo-append
+		    (build-htmlhelp-toc (node-list-first nl) 
+			       (- depth 1) #f)
+		    (loop (node-list-rest nl))))))))))
 
 (define (make-htmlhelp-contents)
-  (make entity
-    system-id: (string-append "the" rootgi ".hhc")
+  (make sequence
+    (make document-type
+      name: "HTML"
+      public-id: "-//IETF//DTD HTML//EN")
+    (make-element gi: "HTML"
+      (make-element gi: "BODY"
+	(make-element gi: "UL"
+	  (build-htmlhelp-toc (sgml-root-element) (htmlhelp-toc-depth)))))))
+
+(define (make-htmlhelp-contents2)
+  (make sequence
     (make document-type
       name: "HTML"
       public-id: "-//IETF//DTD HTML//EN")
     (make element gi: "HTML"
       (make element gi: "BODY"
 	(make element gi: "UL"
-	  (make-element gi: "LI"
-	    (make-element gi: "OBJECT"
+	  (make element gi: "LI"
+	    (make element gi: "OBJECT"
 	      attributes: '(("type" "text/sitemap"))
-	      (make-empty-element gi: "param"
+	      (make empty-element gi: "param"
 		attributes: (list (list "name" "Name")
 			    (list "value" (element-title-string (sgml-root-element)))))
-	      (make-empty-element gi: "param"
+	      (make empty-element gi: "param"
 		attributes: (list (list "name" "Local")
-			    (list "value" (html-base-filename (sgml-root-element)))))))
-	  (build-htmlhelp-toc (sgml-root-element) (htmlhelp-toc-depth)))))))
+			    (list "value" (html-base-filename (sgml-root-element))))))
+	    (make element gi: "UL"
+	      (build-htmlhelp-toc (sgml-root-element) (htmlhelp-toc-depth)))))))))
 
 ;; Index processing (based on dbindes.dsl, v1.76)
 
@@ -191,8 +289,7 @@
 )
 
 (define (make-htmlhelp-index)
-  (make entity
-    system-id: (string-append "the" rootgi ".hhk")
+  (make sequence
     (make document-type
       name: "HTML"
       public-id: "-//IETF//DTD HTML//EN")
@@ -204,15 +301,43 @@
 ;; Generates a HTML help project
 
 (define (make-htmlhelp-project)
-  (make entity
-    system-id: (string-append "the" rootgi ".hhp")
-;    (make formatting-instruction data: "\less-than-sign;?xml version=\"1.0\"?\greater-than-sign;&#13;")
-    (make element gi: "UL"
-	    attributes: (list 
-		(list "title" (element-title-string (sgml-root-element)))
-		(list "link" (html-base-filename (sgml-root-element))))
-	  (make-html-contents)
-          (make-htmlhelp-index))))
+  (let* ((rootgi (case-fold-down (gi (sgml-root-element))))
+	 (chm (string-append rootgi ".chm"))
+	 (hhp (string-append rootgi ".hhp"))
+	 (hhc (string-append rootgi ".hhc"))
+	 (hhk (string-append rootgi ".hhk"))
+	 (top (html-base-filename (sgml-root-element))))
+    (make sequence
+      (make entity
+	system-id: hhp
+	(make sequence
+	  (make formatting-instruction data: "[OPTIONS]&#13;")
+	  (make formatting-instruction data: "Auto Index=Yes&#13;")
+	  (make formatting-instruction data: "Compatibility=1.1&#13;")
+	  (make formatting-instruction data: (string-append "Compiled file=" chm "&#13;"))
+	  (make formatting-instruction data: (string-append "Contents file=" hhc "&#13;"))
+	  (make formatting-instruction data: "Default Window=Default&#13;")
+	  (make formatting-instruction data: (string-append "Default topic=" top "&#13;"))
+	  (make formatting-instruction data: "Full-text search=Yes&#13;")
+	  (make formatting-instruction data: (string-append "Index file=" hhk "&#13;"))
+	  (make formatting-instruction data: "Language=0x409 English (United States)&#13;")
+	  (make formatting-instruction data: "&#13;")
+	  (make formatting-instruction data: "[WINDOWS]&#13;")
+	  (make formatting-instruction data: (string-append "Default=," hhc "," hhk "," top "," top ",,,,,0x22520,,0x384e,,,,,,,,0&#13;"))
+	  (make formatting-instruction data: "&#13;")
+	  (make formatting-instruction data: "[FILES]&#13;")
+	  (let loop ((node (current-node)))
+	    (if (node-list-empty? node)
+		(empty-sosofo)
+		(make sequence
+		  (make formatting-instruction data: (string-append (html-file node) "&#13;"))
+		  (loop (next-chunk-element node)))))))
+      (make entity
+	system-id: hhc
+	  (make-htmlhelp-contents))
+      (make entity
+	system-id: hhk
+	  (make-htmlhelp-index)))))
 
 ;; Overrides the root node definition (taken from docbook.dsl, v1.76)
 
@@ -225,8 +350,7 @@
        (with-mode htmlindex
 	 (process-children))
        (empty-sosofo))
-   (make-htmlhelp))
-)
+   (make-htmlhelp-project)))
 
 </style-specification-body>
 </style-specification>

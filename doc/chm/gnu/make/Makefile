@@ -1,7 +1,8 @@
-TOP_DIR = ../..
+GARNAME = make
+GARVERSION = 3.80
+MASTER_SITES = ftp://ftp.gnu.org/pub/gnu/$(GARNAME)/
+DISTFILES = $(GARNAME)-$(GARVERSION).tar.bz2
 
-VERSION = 3.79.1
-BOOKS = make.texinfo
+BOOKS = $(WORKSRC)/doc/make.texi
 
-include $(TOP_DIR)/rules.mak
-
+include ../../gar.mk

@@ -1,7 +1,9 @@
-TOP_DIR = ../..
+GARNAME = findutils
+GARVERSION = 4.1
+MASTER_SITES = ftp://ftp.gnu.org/pub/gnu/$(GARNAME)/
+DISTFILES = $(GARNAME)-$(GARVERSION).tar.gz
 
-VERSION = 4.1
-BOOKS = find.texi
+BOOKS = $(WORKSRC)/doc/find.texi
 
-include $(TOP_DIR)/rules.mak
+include ../../gar.mk
 
