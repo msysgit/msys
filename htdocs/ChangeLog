@@ -1,3 +1,8 @@
+2003-07-21  Earnie Boyd  <earnie@users.sf.net>
+
+	* lists.shtml: Add verbiage about search forms.  Add gmane alternative
+	search.
+
 2003-06-30  Earnie Boyd  <earnie@users.sf.net>
 
 	* download.shtml: Correct ending tags throughout.
