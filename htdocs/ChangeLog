@@ -4,6 +4,7 @@
 	(faq-runtime): Remove.
 	(faq-w32api): Move up in order.
 	(faq-cygwin): Remove much unneeded verbiage.
+	(faq-version): Update to show the current version of MinGW and MSYS.
 
 2002-09-16  Luke Dunstan  <infidel@users.sf.net>
 

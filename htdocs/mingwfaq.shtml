@@ -1,4 +1,4 @@
-<!-- $Id: mingwfaq.shtml,v 1.40 2002-09-20 15:44:31 earnie Exp $ -->
+<!-- $Id: mingwfaq.shtml,v 1.41 2002-09-20 16:25:56 earnie Exp $ -->
 
 <html>
 <head>
@@ -238,11 +238,9 @@
          <li>
             W32API, which consists of the headers and import libraries related 
 	    to WIN32 API access, is released under
-            <a href="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/mingw/w32api/README?rev=1.1.1.1&content-type=text/vnd.viewcvs-markup">copyright</a>.  
+            <a href="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/mingw/w32api/README.w32api?rev=HEAD&content-type=text/vnd.viewcvs-markup">copyright</a>.  
             The copyright agreement states no restrictions are placed on 
-	    programs or object files compiled with the library.  There are 
-	    restrictions if you wish to distribute the library as part of 
-	    another package.
+	    programs or object files compiled with the library.
          </li>
          <li>
             Mingw development tools, which include compilers, linkers, other
@@ -251,8 +249,11 @@
          </li>
          <li>
             Profiled code, which is code compiled and linked with the
-            <code>-pg</code> option for runtime
-            profiling, also falls under the GNU General Public License.
+            <code>-pg</code> option for runtime profiling, also falls under 
+	    the GNU General Public License. <em><b>CAUTION:</b> do not 
+	    distribute proprietary source with profiling enabled.  The 
+	    profiling library is covered by the GPL which infects your product 
+	    to conform to the GPL as well.</em>
          </li>
       </ul>
       <p>
@@ -264,7 +265,7 @@
             GNU General Public License,
             <a href="http://www.gnu.org/copyleft/gpl.html">http://www.gnu.org/copyleft/gpl.html</a>
          </li>
-         <li>GNU Library General Public License,
+         <li>GNU Lesser General Public License,
             <a href="http://www.gnu.org/copyleft/lgpl.html">http://www.gnu.org/copyleft/lgpl.html</a>
          </li>
          <li>
@@ -282,12 +283,20 @@
       <a name="faq-version" />
       <h3>What is the current version?</h3>
       <p>
-         The current version of the MinGW environment distribution is 1.0.1, 
-	 released on July 26, 2001.  This version number and last release data 
-	 are to the individual MinGW runtime package, upon which the 
-	 applications in the overall distribution are built.  It is likely that 
-	 these will stay in sync going forward (new versions of the overall 
-	 distribution being released as the core runtime is updated).
+         The current MinGW package bundle is 
+	 <a href="http://prdownloads.sourcefourge.net/mingw/MinGW-2.0.0-3.exe">MinGW-2.0.0-3.exe</a>.
+	 This release contains the binaries from the following individual 
+	 packages:
+	 <li><a href="http://prdownloads.sourceforge.net/mingw/mingw-runtime-2.2.tar.gz">mingw-runtime-2.2.tar.gz</a></li>
+	 <li><a href="http://prdownloads.sourceforge.net/mingw/w32api-2.0.tar.gz">w32api-2.0.tar.gz</a></li>
+	 <li><a href="http://prdownloads.sourceforge.net/mingw/gcc-3.2-core-20020817-1.tar.gz">gcc-3.2-core-20020817-1.tar.gz</a></li>
+	 <li><a href="http://prdownloads.sourceforge.net/mingw/binutils-2.13-20020913-1.tar.gz">bintuils-2.13-20020913-1.tar.gz</a>
+	 <li><a href="http://prdownloads.sourceforge.net/mingw/make-3.79.1-20010722.tar.gz">make-3.79.1-20010722.tar.gz</a></li>
+	 <li><a href="http://prdownloads.sourceforge.net/mingw/gdb-5.1.1-mingw.tar.gz">gdb-5.1.1-mingw.tar.gz</a></li>
+      </p>
+      <p>
+	 The current MSYS package bundle is
+	 <a href="http://prdownloads.sourceforge.net/mingw/MSYS-1.0.7-i386-2.exe">MSYS-1.0.7-i386-2.exe</a>
       </p>
       <p><a href="#index">Back to index</a></p>
 
@@ -550,7 +559,7 @@
 
    <hr />
    <address>
-   <br />Last revised $Date: 2002-09-20 15:44:31 $
+   <br />Last revised $Date: 2002-09-20 16:25:56 $
    </address>
 
 </body>
