@@ -1,3 +1,8 @@
+2002-11-08  Luke Dunstan  <infidel@users.sourceforge.net>
+
+	* pexports.c (dump_exports): fix exports incorrectly
+	determined to be forwarders.
+
 1999-04-02  Paul Sokolovsky  <Paul.Sokolovsky@technologist.com>
 
 	* pexports.c: now distinguishes data/non-data symbols,

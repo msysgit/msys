@@ -185,8 +185,14 @@ dump_exports(DWORD exports_rva)
   DWORD *function_table;
   int i;
   static int first = 1;
+  DWORD exports_end;
 
   section = find_section(exports_rva);
+
+  if (nt_hdr->OptionalHeader.DataDirectory[0].Size == 0)
+    exports_end = section->VirtualAddress + section->SizeOfRawData;
+  else
+    exports_end = exports_rva + nt_hdr->OptionalHeader.DataDirectory[0].Size;
 
   if (verbose)
     printf("; Reading exports from section: %s\n",
@@ -231,7 +237,7 @@ dump_exports(DWORD exports_rva)
   for (i = 0; i < exports->NumberOfFunctions; i++)
     {
       if ( (function_table[i] >= exports_rva) && 
-           (function_table[i] <= (section->VirtualAddress + section->SizeOfRawData)))
+           (function_table[i] < exports_end))
         {
           dump_symbol(strchr(RVA_TO_PTR(function_table[i],char*), '.')+1,
                       i + exports->Base,
