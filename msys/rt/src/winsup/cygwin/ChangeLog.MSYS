@@ -1,3 +1,12 @@
+2004-04-06  Earnie Boyd  <earnie@users.sf.net>
+
+	* fhandler.cc (fhandler_base::lseek): Remove filtered out code.
+	* syscalls.cc: Add TRACE_IN throughout.
+	* winsup.h (TRACE_IN): Modify so that -DTRACING can be defined without
+	-DDEBUGGING to limit the amount of data.
+	NOTE: ../utils/strace.cc needs to be modified to recognize TRACE_IN as
+	acceptable string for display.
+
 2004-03-30  Earnie Boyd  <earnie@users.sf.net>
 
 	* fhandler.cc (fhandler_base::open): Correct issue for setting file
