@@ -1,4 +1,4 @@
-<!-- $Id: msys.shtml,v 1.2 2001-12-22 03:21:22 stevedperkins Exp $ -->
+<!-- $Id: msys.shtml,v 1.3 2001-12-22 04:28:21 stevedperkins Exp $ -->
 
 <html>
 <head>
@@ -47,7 +47,9 @@ To install chose a drive device and unpack the binary distribution in the root
 of that drive.  The read the documentation in \msys\1.0\usr\doc\msys, especially
 the README file.
 </p><p>
-There is also a new mail list to discuss the use of MSYS called mingw-msys@lists.sf.net.  See the <a href="lists.shtml">lists.shtml</a> document for a more
+There is also a new mail list to discuss the use of MSYS called 
+mingw-msys@lists.sf.net.  See the <a href="lists.shtml">Mailing Lists</a> page 
+for a more
 information on this list.
 </p>
 </td>
@@ -64,7 +66,7 @@ information on this list.
 <!--#include file="ssi/footer.html"-->
 
 <address>
-<br />Last revised $Date: 2001-12-22 03:21:22 $
+<br />Last revised $Date: 2001-12-22 04:28:21 $
 </address>
 
 </body>

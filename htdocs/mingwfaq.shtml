@@ -1,4 +1,4 @@
-<!-- $Id: mingwfaq.shtml,v 1.25 2001-12-20 15:59:48 earnie Exp $ -->
+<!-- $Id: mingwfaq.shtml,v 1.26 2001-12-22 04:28:21 stevedperkins Exp $ -->
 
 <html>
 <head>
@@ -55,15 +55,16 @@
    <a name="index"></a>
    <ul>
       <li><a href="#faq-what">What is MinGW?</a></li>
+      <li><a href="#faq-msys">What is MSYS?</a></li>
       <li><a href="#faq-where">Where can I get MinGW?</a></li>
       <li><a href="#faq-license">How is MinGW licensed?</a></li>
       <li><a href="#faq-version">What is the current version?</a></li>
       <li><a href="#faq-usingolderversions">Can I use older versions?</a></li>
-      <li><a href="#faq-usingwithcygwin">How can I use MinGW within a Cygwin environment?</a></li>
+      <li><a href="#faq-configure">How do I execute configure scripts?</a></li>
+      <li><a href="#faq-usingwithcygwin">How do I use MinGW with Cygwin?</a></li>
+      <li><a href="#faq-usingwithmsys">How do I use MinGW with MSYS?</a></li>
       <li><a href="#faq-runtime">Which runtime should I use?</a></li>
       <li><a href="#faq-w32api">What is w32api?</a></li>
-      <li><a href="#faq-msys">What is MSYS?</a></li>
-      <li><a href="#faq-msys">How do I execute configure scripts?</a></li>
       <li><a href="#faq-comsupport">Is support provided for COM?</a></li>
       <li><a href="#faq-cross">How can I build a cross compiler?</a></li>
       <li><a href="#faq-bugreports">How can I report bugs?</a></li>
@@ -122,6 +123,25 @@
          We have a few developers working in their spare time with no corporate
          funding in the project.  If you would like to volunteer please let us know
          via email to the <a href="mailto:mingw-users@sourceforge.net">MinGW mail list</a>
+      </p>
+      <p><a href="#index">Back to index</a></p>
+
+      <hr />
+
+
+      <a name="faq-msys" />
+      <h3>What is MSYS?</h3>
+      <p>
+         MSYS ("Minimal SYStem") refers to a shell environment and set of tools for use with 
+         MinGW.  It provides just enough of POSIX and Bourne to allow a typical configuration 
+         script to execute, for building applications using the native MinGW version of GCC. 
+         The source for MSYS is an offshoot of <a href="http://sources.redhat.com/cygwin">Cygwin</a> 
+         (a full POSIX layer and UNIX-like development environment for Win32), but is intended 
+         for developers whose needs do not require the bloat of a full POSIX layer.
+      </p>
+      <p>
+         For more MSYS-specific information, please see the <a href="msys.shtml">MSYS section</a> 
+         of this website.
       </p>
       <p><a href="#index">Back to index</a></p>
 
@@ -263,9 +283,28 @@
 
 
 
+
+
+      <a name="faq-configure" />
+      <h3>How do I execute configure scripts?</h3>
+      <p>
+         Applications using a UNIX-style build process will typically require a 
+         shell environment and set of POSIX tools, for executing configure scripts 
+         and building the application.  The Cygwin environment was once the only 
+         choice available to fill this role, although recently the MSYS environment 
+         was released to offer MinGW developers a more lightweight alternative.  
+         The use of both these environments with MinGW is described in more detail 
+         below.
+      </p>
+      <p><a href="#index">Back to index</a></p>
+
+      <hr />
+      
+
+
       
       <a name="faq-usingwithcygwin" />
-      <h3>How can I use MinGW within a Cygwin environment?</h3>
+      <h3>How do I use MinGW with Cygwin?</h3>
       <p>
          <a href="http://sources.redhat.com/cygwin">Cygwin</a> refers to a GPL'ed 
          implementation of a POSIX emulation layer for the Win32 platform (POSIX being 
@@ -321,6 +360,17 @@
       <hr />
 
 
+      <a name="faq-usingwithmsys" />
+      <h3>How do I use MinGW with MSYS?</h3>
+      <p>
+         It's easy to configure an MSYS environment for MinGW useage in the same manner 
+         as it is for Cygwin.  If the system's PATH environment variable is set with the 
+         MinGW "/bin" subdirectory before the MSYS "/bin", you will have access to all 
+         MSYS tools while using the MinGW instance of gcc/g++.
+      </p>
+      <p><a href="#index">Back to index</a></p>
+
+      <hr />
 
 
       <a name="faq-runtime" />
@@ -339,7 +389,7 @@
          Other runtime libraries are usable with MinGW... one such library in the works 
          is PW32, the Posix-over-Win32 layer. It provides a subset of POSIX and UNIX functions. 
          To find out more about PW32, try it out, or volunteer to help... see 
-         <a href=http://pw32.sourceforge.net/">http://pw32.sourceforge.net</a>. 
+         <a href="http://pw32.sourceforge.net/">http://pw32.sourceforge.net</a>. 
       </p>
       <p><a href="#index">Back to index</a></p>
 
@@ -359,21 +409,6 @@
          more information see Anders' README file 
          <a href="http://www.acc.umu.se/%7Eanorland/gnu-win32/README.w32api" 
          target="_nw"> README.w32api</a>.  
-      </p>
-      <p><a href="#index">Back to index</a></p>
-
-      <hr />
-
-
-
-      <a name="faq-msys" />
-      <h3>What is MSYS?</h3>
-      <h3>And how do I execute configure scripts?</h3>
-      <p>
-         MSYS is a "Minimal SYStem" providing just enough of POSIX and Bourne
-	 to allow a typical configuration script to execute and use the native
-	 MinGW version of gcc.  For more information please see <a href="msys.shtml">
-	 msys.shtml</a>.
       </p>
       <p><a href="#index">Back to index</a></p>
 
@@ -464,7 +499,7 @@
 
    <hr />
    <address>
-   <br />Last revised $Date: 2001-12-20 15:59:48 $
+   <br />Last revised $Date: 2001-12-22 04:28:21 $
    </address>
 
 </body>
