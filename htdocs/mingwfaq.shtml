@@ -1,4 +1,4 @@
-<!-- $Id: mingwfaq.shtml,v 1.26 2001-12-22 04:28:21 stevedperkins Exp $ -->
+<!-- $Id: mingwfaq.shtml,v 1.27 2001-12-22 04:36:02 stevedperkins Exp $ -->
 
 <html>
 <head>
@@ -368,6 +368,11 @@
          MinGW "/bin" subdirectory before the MSYS "/bin", you will have access to all 
          MSYS tools while using the MinGW instance of gcc/g++.
       </p>
+      <p>
+         Just as with Cygwin, the "/etc/profile" of MSYS places additional directories 
+         before your system-level path in its PATH.  You must be sure that the MinGW "/bin" 
+         comes first in your MSYS environment as well, either by modifying "/etc/profile" or 
+         setting it manually.
       <p><a href="#index">Back to index</a></p>
 
       <hr />
@@ -499,7 +504,7 @@
 
    <hr />
    <address>
-   <br />Last revised $Date: 2001-12-22 04:28:21 $
+   <br />Last revised $Date: 2001-12-22 04:36:02 $
    </address>
 
 </body>
