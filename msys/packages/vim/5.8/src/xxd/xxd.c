@@ -71,6 +71,9 @@
 #if defined(MSDOS) || defined(WIN32) || defined(OS2)
 # include <io.h>	/* for setmode() */
 #else
+# if defined (__MSYS__)
+#  include <io.h>
+# endif
 # ifdef UNIX
 #  include <unistd.h>
 # endif
@@ -134,12 +137,12 @@ char osver[] = "";
 # endif
 #endif
 
-#if defined(MSDOS) || defined(WIN32) || defined(OS2) || defined(CYGWIN) || defined(CYGWIN32)
+#if defined(MSDOS) || defined(_WIN32) || defined(OS2) || defined(__CYGWIN__) || defined(__MSYS__)
 # define BIN_READ(yes)  ((yes) ? "rb" : "rt")
 # define BIN_WRITE(yes) ((yes) ? "wb" : "wt")
 # define BIN_CREAT(yes) ((yes) ? (O_CREAT|O_BINARY) : O_CREAT)
 # define BIN_ASSIGN(fp, yes) setmode(fileno(fp), (yes) ? O_BINARY : O_TEXT)
-# if defined(CYGWIN) || defined(CYGWIN32)
+# if defined(__CYGWIN__) || defined(__MSYS__)
 #  define PATH_SEP '/'
 # else
 #  define PATH_SEP '\\'

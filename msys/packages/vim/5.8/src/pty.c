@@ -36,7 +36,7 @@
  * 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA
  */
 
-/* RCS_ID("$Id: pty.c,v 1.2 2002-12-06 22:17:04 earnie Exp $ FAU") */
+/* RCS_ID("$Id: pty.c,v 1.3 2002-12-06 22:42:20 earnie Exp $ FAU") */
 
 #include "vim.h"
 
@@ -49,7 +49,7 @@
 
 #include <signal.h>
 
-#ifdef __CYGWIN32__
+#if defined (__CYGWIN32__) || defined (__MSYS__)
 # include <sys/termios.h>
 #endif
 
@@ -436,7 +436,7 @@ SetupSlavePTY(fd)
  *
  *  (history removed, not very interesting.  See the "screen" sources.)
  */
-/* RCS_ID("$Id: pty.c,v 1.2 2002-12-06 22:17:04 earnie Exp $ FAU") */
+/* RCS_ID("$Id: pty.c,v 1.3 2002-12-06 22:42:20 earnie Exp $ FAU") */
 
 #if !defined(HAVE_SETENV) && !defined(HAVE_PUTENV)
 

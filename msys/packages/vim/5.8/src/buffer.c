@@ -800,7 +800,11 @@ buflist_new(ffname, sfname, lnum, use_curbuf)
 
 #ifdef UNIX
     if (sfname == NULL || mch_stat((char *)sfname, &st) < 0)
+#if defined (__MSYS__)
+	st.st_dev = -1;
+#else /* ! __MSYS__ */
 	st.st_dev = (unsigned)-1;
+#endif /* ! __MSYS__ */
 #endif
 
     /*
@@ -1107,7 +1111,11 @@ buflist_findname(ffname)
     struct stat st;
 
     if (mch_stat((char *)ffname, &st) < 0)
+#if defined (__MSYS__)
+	st.st_dev = -1;
+#else /* ! __MSYS__ */
 	st.st_dev = (unsigned)-1;
+#endif /* ! __MSYS__ */
     return buflist_findname_stat(ffname, &st);
 }
 
@@ -1570,7 +1578,11 @@ setfname(ffname, sfname, message)
 	curbuf->b_ffname = NULL;
 	curbuf->b_sfname = NULL;
 #ifdef UNIX
+#if defined (__MSYS__)
+	st.st_dev = -1;
+#else /* ! __MSYS__ */
 	st.st_dev = (unsigned)-1;
+#endif /* ! __MSYS__ */
 #endif
     }
     else
@@ -1592,7 +1604,11 @@ setfname(ffname, sfname, message)
 	 */
 #ifdef UNIX
 	if (mch_stat((char *)ffname, &st) < 0)
+#if defined (__MSYS__)
+	    st.st_dev = -1;
+#else /* ! __MSYS__ */
 	    st.st_dev = (unsigned)-1;
+#endif /* ! __MSYS__ */
 	buf = buflist_findname_stat(ffname, &st);
 #else
 	buf = buflist_findname(ffname);
@@ -1754,7 +1770,11 @@ otherfile_buf(buf, ffname
 	if (stp == NULL)
 	{
 	    if (buf->b_dev < 0 || mch_stat((char *)ffname, &st) < 0)
+#if defined (__MSYS__)
+		st.st_dev = -1;
+#else /* ! __MSYS__ */
 		st.st_dev = (unsigned)-1;
+#endif /* ! __MSYS__ */
 	    stp = &st;
 	}
 	/* Use dev/ino to check if the files are the same, even when the names

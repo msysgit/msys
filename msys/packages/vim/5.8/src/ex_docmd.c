@@ -4420,7 +4420,11 @@ do_source(fname, check_other, is_vimrc)
 #ifdef macintosh
     slash_n_colon_adjust(fname_exp);
 #endif
+#if defined (__CYGWIN__) || defined (__MSYS__)
+    cookie.fp = mch_fopen((char *)fname_exp, "rt");
+#else
     cookie.fp = mch_fopen((char *)fname_exp, READBIN);
+#endif
     if (cookie.fp == NULL && check_other)
     {
 	/*
@@ -4437,7 +4441,11 @@ do_source(fname, check_other, is_vimrc)
 		*p = '.';
 	    else
 		*p = '_';
+#if defined (__CYGWIN__) || defined (__MSYS__)
+	    cookie.fp = mch_fopen((char *)fname_exp, "rt");
+#else
 	    cookie.fp = mch_fopen((char *)fname_exp, READBIN);
+#endif
 	}
     }
 

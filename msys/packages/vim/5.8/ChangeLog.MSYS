@@ -1,0 +1,10 @@
+2002-12-06  Earnie Boyd  <earnie@users.sf.net>
+
+	* ChangeLog.MSYS: New file.
+	* src/Makefile: Changes for the MSYS host.
+	* src/buffer.c: CPP Filters for __MSYS__.
+	* src/ex_docmd.c: Ditto.
+	* src/os_unix.c: Ditto.
+	* src/pty.c: Ditto.
+	* src/vim.h: Ditto.
+	* src/xxd/xxd.c: Ditto.

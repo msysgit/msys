@@ -2958,7 +2958,7 @@ RealWaitForChar(fd, msec, check_for_gpm)
 	FD_ZERO(&rfds); /* calls bzero() on a sun */
 	FD_ZERO(&efds);
 	FD_SET(fd, &rfds);
-# if !defined(__QNX__) && !defined(__CYGWIN32__)
+# if !defined(__QNX__) && !defined(__CYGWIN__) && !defined (__MSYS__)
 	/* For QNX select() always returns 1 if this is set.  Why? */
 	FD_SET(fd, &efds);
 # endif
