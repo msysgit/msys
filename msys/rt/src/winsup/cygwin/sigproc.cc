@@ -132,6 +132,7 @@ static DWORD WINAPI wait_subproc (VOID *);
 BOOL __stdcall
 my_parent_is_alive ()
 {
+  TRACE_IN;
   DWORD res;
   if (!myself->ppid_handle)
     {
@@ -166,6 +167,7 @@ out:
 __inline static void
 wait_for_me ()
 {
+  TRACE_IN;
   /* See if this is the first signal call after initialization.
    * If so, wait for notification that all initialization has completed.
    * Then set the handle to NULL to avoid checking this again.
@@ -181,6 +183,7 @@ wait_for_me ()
 static BOOL __stdcall
 proc_can_be_signalled (_pinfo *p)
 {
+  TRACE_IN;
   if (p == myself_nowait || p == myself_nowait_nonmain || p == myself)
     {
       wait_for_me ();
@@ -195,6 +198,7 @@ proc_can_be_signalled (_pinfo *p)
 BOOL __stdcall
 pid_exists (pid_t pid)
 {
+  TRACE_IN;
   pinfo p (pid);
   return proc_exists (p);
 }
@@ -204,6 +208,7 @@ pid_exists (pid_t pid)
 BOOL __stdcall
 proc_exists (_pinfo *p)
 {
+  TRACE_IN;
   return p && !(p->process_state & (PID_INITIALIZING | PID_EXITED));
 }
 
@@ -213,6 +218,7 @@ proc_exists (_pinfo *p)
 int __stdcall
 mychild (int pid)
 {
+  TRACE_IN;
   for (int i = 0; i < nchildren; i++)
     if (pchildren[i]->pid == pid)
       return 1;
@@ -228,6 +234,7 @@ mychild (int pid)
 int __stdcall
 proc_subproc (DWORD what, DWORD val)
 {
+  TRACE_IN;
   int rc = 1;
   int potential_match;
   _pinfo *child;
@@ -427,6 +434,7 @@ out1:
 void __stdcall
 proc_terminate (void)
 {
+  TRACE_IN;
   sigproc_printf ("nchildren %d, nzombies %d", nchildren, nzombies);
   /* Signal processing is assumed to be blocked in this routine. */
   if (hwait_subproc)
@@ -492,6 +500,7 @@ proc_terminate (void)
 void __stdcall
 sig_clear (int sig)
 {
+  TRACE_IN;
   (void) InterlockedExchange (myself->getsigtodo (sig), 0L);
   return;
 }
@@ -501,6 +510,7 @@ sig_clear (int sig)
 extern "C" int __stdcall
 sig_dispatch_pending (int justwake)
 {
+  TRACE_IN;
   if (!hwait_sig)
     return 0;
 
@@ -544,6 +554,7 @@ sig_dispatch_pending (int justwake)
 void __stdcall
 sigproc_init ()
 {
+  TRACE_IN;
   wait_sig_inited = CreateEvent (&sec_none_nih, TRUE, FALSE, NULL);
   ProtectHandle (wait_sig_inited);
 
@@ -587,6 +598,7 @@ sigproc_init ()
 void __stdcall
 sigproc_terminate (void)
 {
+  TRACE_IN;
   HANDLE h = hwait_sig;
   hwait_sig = NULL;
 
@@ -652,6 +664,7 @@ sigproc_terminate (void)
 int __stdcall
 sig_send (_pinfo *p, int sig, DWORD ebp, bool exception)
 {
+  TRACE_IN;
   int rc = 1;
   DWORD tid = GetCurrentThreadId ();
   BOOL its_me;
@@ -802,6 +815,7 @@ out:
 void __stdcall
 sig_set_pending (int sig)
 {
+  TRACE_IN;
   (void) InterlockedIncrement (myself->getsigtodo (sig));
   return;
 }
@@ -812,6 +826,7 @@ sig_set_pending (int sig)
 void __stdcall
 subproc_init (void)
 {
+  TRACE_IN;
   if (hwait_subproc)
     return;
 
@@ -832,6 +847,7 @@ subproc_init (void)
 void __stdcall
 init_child_info (DWORD chtype, child_info *ch, pid_t pid, HANDLE subproc_ready)
 {
+  TRACE_IN;
   memset (ch, 0, sizeof *ch);
   ch->cb = sizeof *ch;
   ch->type = chtype;
@@ -846,6 +862,7 @@ init_child_info (DWORD chtype, child_info *ch, pid_t pid, HANDLE subproc_ready)
 static int __stdcall
 checkstate (waitq *parent_w)
 {
+  TRACE_IN;
   int potential_match = 0;
 
   sigproc_printf ("nchildren %d, nzombies %d", nchildren, nzombies);
@@ -889,6 +906,7 @@ out:
 static HANDLE __stdcall
 getsem (_pinfo *p, const char *str, int init, int max)
 {
+  TRACE_IN;
   HANDLE h;
 
   if (p != NULL)
@@ -946,6 +964,7 @@ getsem (_pinfo *p, const char *str, int init, int max)
 static BOOL
 get_proc_lock (DWORD what, DWORD val)
 {
+  TRACE_IN;
   Static int lastwhat = -1;
   if (!sync_proc_subproc)
     return FALSE;
@@ -966,6 +985,7 @@ get_proc_lock (DWORD what, DWORD val)
 static void __stdcall
 remove_zombie (int ci)
 {
+  TRACE_IN;
   sigproc_printf ("removing %d, pid %d, nzombies %d", ci, zombies[ci]->pid,
 		  nzombies);
 
@@ -995,6 +1015,7 @@ remove_zombie (int ci)
 static int __stdcall
 stopped_or_terminated (waitq *parent_w, _pinfo *child)
 {
+  TRACE_IN;
   int potential_match;
   waitq *w = parent_w->next;
 
@@ -1064,6 +1085,7 @@ stopped_or_terminated (waitq *parent_w, _pinfo *child)
 static DWORD WINAPI
 wait_sig (VOID *)
 {
+  TRACE_IN;
   /* Initialization */
   (void) SetThreadPriority (hwait_sig, WAIT_SIG_PRIORITY);
 
@@ -1234,6 +1256,7 @@ wait_sig (VOID *)
 static DWORD WINAPI
 wait_subproc (VOID *)
 {
+  TRACE_IN;
   sigproc_printf ("starting");
   int errloop = 0;
 
@@ -1312,6 +1335,7 @@ extern "C" {
 DWORD __stdcall
 WFSO (HANDLE hHandle, DWORD dwMilliseconds)
 {
+  TRACE_IN;
   DWORD ret;
   sigframe thisframe (mainthread);
   ret = WaitForSingleObject (hHandle, dwMilliseconds);
@@ -1323,6 +1347,7 @@ WFSO (HANDLE hHandle, DWORD dwMilliseconds)
 DWORD __stdcall
 WFMO (DWORD nCount, CONST HANDLE *lpHandles, BOOL fWaitAll, DWORD dwMilliseconds)
 {
+  TRACE_IN;
   DWORD ret;
   sigframe thisframe (mainthread);
   ret = WaitForMultipleObjects (nCount, lpHandles, fWaitAll, dwMilliseconds);
