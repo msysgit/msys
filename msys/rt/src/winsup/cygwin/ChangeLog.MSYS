@@ -1,3 +1,8 @@
+2002-05-07  Earnie Boyd  <earnie@users.sf.net>
+
+	* path.cc (pathmatch): Return non-match for ..
+	(symlink): Add debug_printf and correct some case methods.
+
 2002-04-26  Earnie Boyd  <earnie@users.sf.net>
 
 	* path.cc (pathmatch): Reinstate function.

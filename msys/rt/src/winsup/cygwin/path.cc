@@ -155,6 +155,18 @@ path_prefix_p (const char *path1, const char *path2, int len1)
 int
 pathnmatch (const char *path1, const char *path2, int len)
 {
+  debug_printf("pathnmatch(%s, %s, %d))", path1, path2, len);
+  // Paths of just dots can't be matched so don't say they are.
+  if (path1[0] == '.' && path2[0] == '.')
+    {
+      if (len > 1 && path1[1] && path2[1])
+	{
+	  if (path1[1] == '.' && path2[1] == '.')
+	      return 0;
+	}
+      else
+	  return 0;
+    }
   return (strncasecmp (path1, path2, len) ? 0 : 1);
 }
 
@@ -162,6 +174,18 @@ pathnmatch (const char *path1, const char *path2, int len)
 int
 pathmatch (const char *path1, const char *path2)
 {
+  debug_printf("pathmatch(%s, %s))", path1, path2);
+  // Paths of just dots can't be matched so don't say they are.
+  if (path1[0] == '.' && path2[0] == '.')
+    {
+      if (path1[1] && path2[1])
+	{
+	  if (path1[1] == '.' && path2[1] == '.')
+	      return 0;
+	}
+      else
+	  return 0;
+    }
   return (strcasecmp (path1, path2) ? 0 : 1);
 }
 
@@ -2279,6 +2303,7 @@ symlink (const char *topath, const char *frompath)
 	    {
 	      c = *cp;
 	      *cp = '\0';
+	      debug_printf("chdir(from=%s)", from);
 	      chdir (from);
 	    }
 	  backslashify (topath, w32topath, 0);
@@ -2292,6 +2317,7 @@ symlink (const char *topath, const char *frompath)
       if (cp)
 	{
 	  *cp = c;
+	  debug_printf("chrdir(cwd=%s)", cwd);
 	  chdir (cwd);
 	}
     }
@@ -2503,7 +2529,18 @@ suffix_scan::next ()
 	    suffixes++;
 	  nextstate = SCAN_EXTRALNK;
 	}
+#else
+      if (!suffixes)
+	nextstate = SCAN_JUSTCHECK;
+      else
+	{
+	  if (!*suffixes->name)
+	    suffixes++;
+	  nextstate = SCAN_DONE;
+	}
+#endif // ! NEW_PATH_METHOD
       return 1;
+#if ! NEW_PATH_METHOD
     case SCAN_HASLNK:
       nextstate = SCAN_EXTRALNK;	/* Skip SCAN_BEG */
       return 1;
@@ -2514,7 +2551,11 @@ suffix_scan::next ()
       return 1;
 #endif
     case SCAN_JUSTCHECK:
+#if ! NEW_PATH_METHOD
       nextstate = SCAN_APPENDLNK;
+#else
+      nextstate = SCAN_DONE;
+#endif
       return 1;
 #if ! NEW_PATH_METHOD
     case SCAN_APPENDLNK:
@@ -2552,6 +2593,8 @@ symlink_info::check (char *path, const suffix_info *suffixes, unsigned opt)
   int res = 0;
   suffix_scan suffix;
   contents[0] = '\0';
+
+  debug_printf("path: %s", path);
 
   is_symlink = TRUE;
   ext_here = suffix.has (path, suffixes);
