@@ -1,4 +1,4 @@
-<!-- $Id: mingwfaq.shtml,v 1.28 2002-01-20 03:01:20 stevedperkins Exp $ -->
+<!-- $Id: mingwfaq.shtml,v 1.29 2002-01-26 17:46:39 stevedperkins Exp $ -->
 
 <html>
 <head>
@@ -202,7 +202,7 @@
          <li>
             W32API, which consists of the headers and import libraries related to
             WIN32 API access, is released under
-            <a href="http://www.acc.umu.se/%7Eanorland/gnu-win32/README.w32api">copyright</a>.  
+            <a href="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/mingw/w32api/README?rev=1.1.1.1&content-type=text/vnd.viewcvs-markup">copyright</a>.  
             The copyright agreement states no restrictions are placed on programs or object 
             files compiled with the library.  There are restrictions if you wish to 
             distribute the library as part of another package.
@@ -412,8 +412,7 @@
          that package Windows Programming would not be possible.  The package was
          created by Anders Norlander and it's license is also non-restrictive.  For
          more information see Anders' README file 
-         <a href="http://www.acc.umu.se/%7Eanorland/gnu-win32/README.w32api" 
-         target="_nw"> README.w32api</a>.  
+         <a href="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/mingw/w32api/README?rev=1.1.1.1&content-type=text/vnd.viewcvs-markup"> README.w32api</a>.  
       </p>
       <p><a href="#index">Back to index</a></p>
 
@@ -504,7 +503,7 @@
 
    <hr />
    <address>
-   <br />Last revised $Date: 2002-01-20 03:01:20 $
+   <br />Last revised $Date: 2002-01-26 17:46:39 $
    </address>
 
 </body>
