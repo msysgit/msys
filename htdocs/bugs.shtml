@@ -59,7 +59,12 @@ to register for one.</a>
   </tbody>
 </table>
 <!--#include file="ssi/bottombar.html"--><!--#include file="ssi/footer.html"-->
+<p>
+ <a href="http://validator.w3.org/check/referer"><img border="0"
+ src="http://www.w3.org/Icons/valid-html401"
+ alt="Valid HTML 4.01!" height="31" width="88"></a>
+</p>
 <address> <br>
-Last revised $Date: 2002-12-20 16:48:48 $ </address>
+Last revised $Date: 2003-01-10 08:02:12 $ </address>
 </body>
 </html>
