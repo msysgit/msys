@@ -113,8 +113,59 @@ uses Mingw-hosted gcc/binutils.
 Programming in Windows (32-bit)</a>
 </ul>
 
-<p>The <a href="mingwfaq.shtml">MinGW FAQ</a>
-contains various other useful links.</p>
+  <ol class="alpha" type="A">
+    <p>There are several IDEs (Integrated Development Environments)
+    for Win32 platforms.  Some are freeware and some are not.  Some
+    are specifically tailored to mingw and others are for more
+    general use.
+    </p>
+    <ul>
+      <li>RSXIDE, <a href="http://www.mathematik.uni-bielefeld.de/%7Erainer/">
+      http://www.mathematik.uni-bielefeld.de/~rainer/</a>
+      <br />Built in support for djgpp, rsxnt, emx/nt09d and mingw.  Works with
+      any editor that supports DDE.  This program in conjunction with an editor
+      like PFE makes an easy-to-use but flexible IDE.
+      </li>
+      <li>DFE95, <a href="http://www.musc.edu/%7Ebrannanp/dfe95/">
+      http://www.musc.edu/~brannanp/dfe95/</a>
+      <br />Works with mingw.
+      </li>
+      <li>Vide, <a href="http://www.objectcentral.com">http://www.objectcentral.com</a>
+      <br />Tested with mingw.
+      </li>
+      <li>JFE (Jen's File Editor), <a href="http://cs-alb-pc3.massey.ac.nz/software/">
+      http://cs-alb-pc3.massey.ac.nz/software/</a>
+      <br />For use with mingw.  The source is available in the file jfesrc.zip, but
+      appears to be written to compile using the Microsoft compiler.  The IDE is
+      available in gcc.exe along with a small gcc distribution.  Has some nice features
+      including automatically building HTML documentation files for projects and easy
+      viewing of and navigation to functions in a project.  (I personally miss the key-mapping
+      functionality of PFE though.)
+      </li>
+      <li>Code Magic, <a href="http://www.petes-place.com/codemagic.html">
+      http://www.petes-place.com/codemagic.html</a>
+      </li>
+      <li>Super IDE, <a href="http://protostar.hypermart.net/">
+      http://protostar.hypermart.net/</a>
+      </li>
+      <li>Pow! - Programmers Open Workbench, <a href="http://www.fim.uni-linz.ac.at/pow/Pow.htm">
+      http://www.fim.uni-linz.ac.at/pow/Pow.htm</a>
+      </li>
+      <li>ACIDE, <a href="http://pages.zoom.co.uk/andyc/">
+      http://pages.zoom.co.uk/andyc/</a>
+      <br />Can be configured to work with many languages/compilers.
+      </li>
+      <li>Visual Programming Armoury,
+      <a href="http://polymorph.i-real.spb.ru/">http://polymorph.i-real.spb.ru/</a>
+      </li>
+      <li>Assembler Laboratory, <a href="http://tihlde.org/%7Ekurtg/">http://tihlde.org/~kurtg/</a>
+      </li>
+      <li>Octopod, <a href="http://www.octopod.net">http://www.octopod.net</a>
+      <br />Commercial IDE.
+      </li>
+    </ul>
+    </li>
+  </ol>
 
 </td>
 </tr>

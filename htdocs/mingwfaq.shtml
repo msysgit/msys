@@ -18,6 +18,12 @@
 </head>
 <body>
 <h1>MinGW FAQ</h1>
+<address>
+<br />Original document by Laura Michaels
+<br />Current maintainer ?
+<br />Copyright © 1999 All Rights Reserved
+<br />Last revised: $Id: mingwfaq.shtml,v 1.8 2000-11-04 13:48:13 pfalcon Exp $
+</address>
 <p>If you have any further questions, please refer them to the
 mingw32 mailing list.  I will update this page as I have time to do so.
 Information provided here was obtained from the mingw32 mailing list,
@@ -549,93 +555,9 @@ g++ -Wl,-Map,file.map -o file file.o otherfile.o
 </pre>
   </li> 
   <li><a id="idesandeditors" name="idesandeditors">IDEs and editors</a>
-  <ol class="alpha" type="A">
-    <li><a id="whatidesareavailable" name="whatidesareavailable">What IDEs are available?</a>
-    <p>There are several IDEs (Integrated Development Environments)
-    for Win32 platforms.  Some are freeware and some are not.  Some
-    are specifically tailored to mingw and others are for more
-    general use.
-    </p>
-    <ul>
-      <li>RSXIDE, <a href="http://www.mathematik.uni-bielefeld.de/%7Erainer/">
-      http://www.mathematik.uni-bielefeld.de/~rainer/</a>
-      <br />Built in support for djgpp, rsxnt, emx/nt09d and mingw.  Works with
-      any editor that supports DDE.  This program in conjunction with an editor
-      like PFE makes an easy-to-use but flexible IDE.
-      </li>
-      <li>DFE95, <a href="http://www.musc.edu/%7Ebrannanp/dfe95/">
-      http://www.musc.edu/~brannanp/dfe95/</a>
-      <br />Works with mingw.
-      </li>
-      <li>Vide, <a href="http://www.objectcentral.com">http://www.objectcentral.com</a>
-      <br />Tested with mingw.
-      </li>
-      <li>Quincy 99, <a href="ftp://ftp.midifitz.com/quincy99">ftp://ftp.midifitz.com/quincy99</a>
-      <br />From Al Stevens.  Covered in various Dr. Dobb's articles and Al 
-      Stevens books on learning C++.  The latest version appears to have 
-      a bug when running on Windows NT.
-      </li>
-      <li>JFE (Jen's File Editor), <a href="http://cs-alb-pc3.massey.ac.nz/software/">
-      http://cs-alb-pc3.massey.ac.nz/software/</a>
-      <br />For use with mingw.  The source is available in the file jfesrc.zip, but
-      appears to be written to compile using the Microsoft compiler.  The IDE is
-      available in gcc.exe along with a small gcc distribution.  Has some nice features
-      including automatically building HTML documentation files for projects and easy
-      viewing of and navigation to functions in a project.  (I personally miss the key-mapping
-      functionality of PFE though.)
-      </li>
-      <li>Code Magic, <a href="http://www.petes-place.com/codemagic.html">
-      http://www.petes-place.com/codemagic.html</a>
-      </li>
-      <li>Super IDE, <a href="http://protostar.hypermart.net/">
-      http://protostar.hypermart.net/</a>
-      </li>
-      <li>Pow! - Programmers Open Workbench, <a href="http://www.fim.uni-linz.ac.at/pow/Pow.htm">
-      http://www.fim.uni-linz.ac.at/pow/Pow.htm</a>
-      </li>
-      <li>ACIDE, <a href="http://pages.zoom.co.uk/andyc/">
-      http://pages.zoom.co.uk/andyc/</a>
-      <br />Can be configured to work with many languages/compilers.
-      </li>
-      <li>Visual Programming Armoury,
-      <a href="http://polymorph.i-real.spb.ru/">http://polymorph.i-real.spb.ru/</a>
-      </li>
-      <li>Assembler Laboratory, <a href="http://tihlde.org/%7Ekurtg/">http://tihlde.org/~kurtg/</a>
-      </li>
-      <li>Octopod, <a href="http://www.octopod.net">http://www.octopod.net</a>
-      <br />Commercial IDE.
-      </li>
-    </ul>
-    </li>
-    <li><a id="whateditorsareavailable" name="whateditorsareavailable">What editors are available?</a>
-    <ul>
-      <li>PFE (Programmer's File Editor), <a href="ftp://ftp.n-shropshire.ac.uk/Utility/TextEdit/pfe101i.zip">
-      ftp://ftp.n-shropshire.ac.uk/Utility/TextEdit/pfe101i.zip</a>
-      </li>
-      <li>Vim (Vi Improved), <a href="http://www.vim.org/">http://www.vim.org/</a>
-      </li>
-      <li>JED, <a href="http://space.mit.edu/%7Edavis/jed.html">http://space.mit.edu/~davis/jed.html</a>
-      </li>
-      <li>Emacs, several versions are available.  Check the
-      Gnu web site or your favorite search engine.
-      </li>
-      <li>Scintilla and SciTE, <a href="http://www.scintilla.org/">http://www.scintilla.org/</a>
-      <br />Scintilla is an Open Source editing component and SciTE is a 
-      text based editor which uses it.
-      </li>
-    </ul>
-    </li>
-    <li><a id="otherreferencesites" name="otherreferencesites">Other reference sites</a>
-    <ul>
-      <li>Free Editors for C/C++ Programming with Windows at 
-      <a href="http://www.blockdev.net/Community/Editors/">http://www.blockdev.net/Community/Editors/</a>
-      lists other editor and IDE resources.
-      </li>
-      <li>For those who prefer DOS editors, there are many good options such as edwin and pedit.
-      </li>
-    </ul>
-    </li>
-  </ol>
+  <p>
+  Please visit <a href="links.shtml">Links section</a> of Mingw site.
+  </p>
 <pre>
 </pre>
   </li>
@@ -1689,11 +1611,5 @@ utility.  For more information, see the <a href="#patches">Patches</a> section.
 <!--#include virtual="/cgi-bin/stats.cgi?faq"--> visitors since
 <!--#include virtual="/cgi-bin/showstatsdate.cgi?faq"--></a></p>
 <hr />
-<address>
-<br />Original document by Laura Michaels
-<br />Copyright © 1999 All Rights Reserved
-<br />Last revised 20000907
-</address>
 </body>
-$Id: mingwfaq.shtml,v 1.7 2000-11-01 06:42:34 pgarceau Exp $
 </html>
