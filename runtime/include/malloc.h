@@ -21,9 +21,9 @@
  *  DISCLAMED. This includes but is not limited to warranties of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Revision: 1.4 $
+ * $Revision: 1.5 $
  * $Author: dannysmith $
- * $Date: 2001-06-26 02:55:56 $
+ * $Date: 2001-06-27 23:23:12 $
  *
  */
 
@@ -70,7 +70,7 @@ size_t	_msize (void*);
 }
 #endif
 
-#endif	RC_INVOKED
+#endif	/* RC_INVOKED */
 
 #endif /* Not _MALLOC_H_ */
 

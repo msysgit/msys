@@ -1,3 +1,6 @@
+2001-06-28  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/malloc.h: Fix non-ANSI comment after #endif.
 
 2001-06-11  Danny Smith  <danny_r_smith_2001@yahoo.co.nz>
 
