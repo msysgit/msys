@@ -1,5 +1,13 @@
 2002-12-27   Nathan Fisher <natbobc@users.sf.net>
 
+            *  added News: to news column in index.shtml
+
+2002-12-27   Nathan Fisher <natbobc@users.sf.net>
+
+           * changed title for download.shtml to Download
+
+2002-12-27   Nathan Fisher <natbobc@users.sf.net>
+
 	* changed H4 tags to bold type face in index.shtml
 	* removed Release info from index.shtml
 	* created new column for news in index.shtml
