@@ -3203,8 +3203,10 @@ cygwin_conv_to_win32_path (const char *path, char *win32_path)
     }
   //
   // Check for POSIX path lists.
+  // But we have to allow processing of quoted strings and switches first
+  // which uses recursion so this code will be seen again.
   //
-  else if ((sspath = strchr (spath, ':')))
+  else if ((sspath = strchr (spath, ':')) && ! strchr("-\"\'", *spath))
     {
       //
       // Yes, convert to Win32 path list.
@@ -3393,9 +3395,23 @@ cygwin_conv_to_win32_path (const char *path, char *win32_path)
 	}
     }
   //
-  // Copy the return value and exit.
+  // Copy the return value.
   //
   strcpy (win32_path, retpath);
+
+  //
+  // If we modified the path then convert all \ to /.
+  // 
+  if (path_changed)
+    {
+      spath = win32_path;
+      while ((sspath = strchr(spath, '\\')))
+	{
+	  *sspath = '/';
+	  spath = sspath + 1;
+	}
+    }
+
   if (swin32_path)
     free (swin32_path);
   *retpath = '\0';
