@@ -52,7 +52,7 @@
 # include <sys/types.h>
 #endif
 
-#ifdef (__CYGWIN__)
+#ifdef __CYGWIN__
 # include <unistd.h>
 # include <fcntl.h>
 #endif
@@ -165,7 +165,7 @@ main(argc, argv)
 	case 'e':
 #ifdef __MSYS__
 	  if (!newz)
-	      the_program = compile_string(the_program, "s/$//");
+	      the_program = compile_string(the_program, "s/\\$//");
 	  newz = 1;
 #endif
 	  the_program = compile_string(the_program, optarg);
@@ -173,7 +173,7 @@ main(argc, argv)
 	case 'f':
 #ifdef __MSYS__
 	  if (!newz)
-	      the_program = compile_string(the_program, "s/$//");
+	      the_program = compile_string(the_program, "s/\\$//");
 	  newz = 1;
 #endif
 	  the_program = compile_file(the_program, optarg);
@@ -206,7 +206,7 @@ to the extent permitted by law.\n\
 	{
 #ifdef __MSYS__
 	  if (!newz)
-	      the_program = compile_string(the_program, "s/$//");
+	      the_program = compile_string(the_program, "s/\\$//");
 	  newz = 1;
 #endif
 	  the_program = compile_string(the_program, argv[optind++]);
