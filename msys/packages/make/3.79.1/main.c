@@ -707,7 +707,7 @@ find_and_set_default_shell(char *token)
     struct variable *v = lookup_variable ("Path", 4);
 
     /* CYGNUS LOCAL: need to check PATH if Path doesn't yield a result */
-#if defined (__CYGWIN__) || defined (__CYGWIN__)
+#if defined (__CYGWIN__) || defined (__MSYS__)
     if (!v)
       v = lookup_variable ("PATH", 4);
 #endif
