@@ -22,7 +22,7 @@
 <br />Original document by Laura Michaels
 <br />Current maintainer ?
 <br />Copyright © 1999 All Rights Reserved
-<br />Last revised: $Id: mingwfaq.shtml,v 1.11 2000-11-14 22:42:25 pfalcon Exp $
+<br />Last revised: $Id: mingwfaq.shtml,v 1.12 2000-11-19 14:56:32 pfalcon Exp $
 </address>
 <p>If you have any further questions, please refer them to the
 mingw32 mailing list.  I will update this page as I have time to do so.
@@ -216,7 +216,7 @@ for his source code examples and other suggestions.
     </p>
     </li>
   </ol>
-  <li><a id="howtoinstall" name="howtoinstall">How to install</a>
+  <li><a id="howtoinstall" name="howtoinstall"><h2>How to install</h2></a>
   <p>To install mingw, choose the distribution you want, either
   mingw using crtdll.dll or mingw using mscvrt.dll.  Download
   the distribution.  Unzip it.  (Zip/unzip utilities are available
@@ -268,7 +268,7 @@ SET PATH=C:\mingw\bin;%PATH%
 <pre>
 </pre>
   </li>
-  <li><a id="mailinglist" name="mailinglist">Mailing list</a>
+  <li><a id="mailinglist" name="mailinglist"><h2>Mailing list</h2></a>
   <p>There is a mailing list for mingw.  You can join or find out
   more about it from <a href="http://lists.sourceforge.net/mailman/listinfo/mingw-users">
   http://lists.sourceforge.net/mailman/listinfo/mingw-users</a>.
