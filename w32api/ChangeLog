@@ -1,3 +1,7 @@
+2001-06-28 Danny Smith <dannysmith@users.sourceforge.net>
+
+	* include/shlobj.h:  Add BIF_* defines.
+
 2001-06-27 Danny Smith <dannysmith@users.sourceforge.net>
 
 	* include/winerror.h (E_PENDING): Add error code define.
