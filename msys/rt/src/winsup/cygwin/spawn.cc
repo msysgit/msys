@@ -656,16 +656,16 @@ spawn_guts (HANDLE hToken, const char * prog_arg, const char *const *argv,
       // Is there a count of used?
       envblockcnt = ciresrv.moreinfo->envc;
 #endif
-      char **envblockarg = (char **)cmalloc(HEAP_STR, sizeof (char *) * (envblockcnt + 1)); 
+      char **envblockarg = (char **)malloc(sizeof (char *) * (envblockcnt + 1)); 
       char *tptr, *wpath;
       int envblocknlen = 0, envblockarglen = 0;
       envblockn = envblock;
       for (int loop=0;loop < envblockcnt;loop++)
 	{
 	  envblocknlen = strlen(envblockn);
-	  envblockarg[loop] = (char *) cmalloc(HEAP_1_STR, envblocknlen + MAX_PATH);
+	  envblockarg[loop] = (char *) malloc(envblocknlen + MAX_PATH);
 	  memset (envblockarg[loop], 0, envblocknlen + MAX_PATH);
-	  wpath = (char *)cmalloc (HEAP_STR, envblocknlen + MAX_PATH);
+	  wpath = (char *)malloc (envblocknlen + MAX_PATH);
 	  memset (wpath, 0, envblocknlen + MAX_PATH);
 
 	  if ((tptr = strchr(envblockn, '=')))
@@ -680,7 +680,7 @@ spawn_guts (HANDLE hToken, const char * prog_arg, const char *const *argv,
 	  envblockarglen += strlen(envblockarg[loop]) + 1;
 	  envblockn = envblockn + envblocknlen + 1;
 	  if (wpath)
-	    cfree (wpath);
+	    free (wpath);
 	} // END FOR (int loop=0;loop < envblockcnt;loop++)
 
       if (envblock)
@@ -694,11 +694,11 @@ spawn_guts (HANDLE hToken, const char * prog_arg, const char *const *argv,
 	  memcpy (tptr, envblockarg[i], envblocknlen);
 	  tptr += envblocknlen;
 	  if (envblockarg[i])
-	    cfree (envblockarg[i]);
+	    free (envblockarg[i]);
 	}
       *++tptr = '\0';
       if (envblockarg)
-	cfree (envblockarg);
+	free (envblockarg);
     }
 
   /* Preallocated buffer for `sec_user' call */
