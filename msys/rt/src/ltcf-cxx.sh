@@ -682,7 +682,7 @@ if test "$with_gcc" = yes; then
   beos* | irix5* | irix6* | osf3* | osf4* | osf5*)
     # PIC is the default for these OSes.
     ;;
-  cygwin* | mingw* | os2*)
+  cygwin* | mingw* | os2* | msys*)
     # This hack is so that the source file can tell whether it is being
     # built for inclusion in a dll (and should export symbols for example).
     ac_cv_prog_cc_pic='-DDLL_EXPORT'

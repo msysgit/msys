@@ -559,7 +559,7 @@ if test -z "$show_help"; then
 
     # On Cygwin there's no "real" PIC flag so we must build both object types
     case $host_os in
-    cygwin* | mingw* | pw32* | os2*)
+    cygwin* | mingw* | pw32* | os2* | msys*)
       pic_mode=default
       ;;
     esac
@@ -792,7 +792,7 @@ EOF
   link | relink)
     modename="$modename: link"
     case $host in
-    *-*-cygwin* | *-*-mingw* | *-*-pw32* | *-*-os2*)
+    *-*-cygwin* | *-*-mingw* | *-*-pw32* | *-*-os2* | *-*-msys*)
       # It is impossible to link a dll without this setting, and
       # we shouldn't force the makefile maintainer to figure out
       # which system we are compiling for in order to pass an extra
@@ -1201,7 +1201,7 @@ EOF
 	  ;;
 	esac
 	case $host in
-	*-*-cygwin* | *-*-mingw* | *-*-pw32* | *-*-os2*)
+	*-*-cygwin* | *-*-mingw* | *-*-pw32* | *-*-os2* | *-*-msys*)
 	  case :$dllsearchpath: in
 	  *":$dir:"*) ;;
 	  *) dllsearchpath="$dllsearchpath:$dir";;
@@ -1214,7 +1214,7 @@ EOF
       -l*)
 	if test "X$arg" = "X-lc" || test "X$arg" = "X-lm"; then
 	  case $host in
-	  *-*-cygwin* | *-*-pw32* | *-*-beos*)
+	  *-*-cygwin* | *-*-pw32* | *-*-beos* | *-*-msys*)
 	    # These systems don't actually have a C or math library (as such)
 	    continue
 	    ;;
@@ -1240,7 +1240,7 @@ EOF
 
       -no-install)
 	case $host in
-	*-*-cygwin* | *-*-mingw* | *-*-pw32* | *-*-os2*)
+	*-*-cygwin* | *-*-mingw* | *-*-pw32* | *-*-os2* | *-*-msys*)
 	  # The PATH hackery in wrapper scripts is required on Windows
 	  # in order for the loader to find any dlls it needs.
 	  $echo "$modename: warning: \`-no-install' is ignored for $host" 1>&2
@@ -2060,7 +2060,7 @@ EOF
 	    elif test -n "$soname_spec"; then
 	      # bleh windows
 	      case $host in
-	      *cygwin*)
+	      *cygwin* | *msys*)
 		major=`expr $current - $age`
 		versuffix="-$major"
 		;;
@@ -2744,7 +2744,7 @@ EOF
       if test "$build_libtool_libs" = yes; then
 	if test -n "$rpath"; then
 	  case $host in
-	  *-*-cygwin* | *-*-mingw* | *-*-pw32* | *-*-os2* | *-*-beos*)
+	  *-*-cygwin* | *-*-mingw* | *-*-pw32* | *-*-os2* | *-*-beos* | *-*-msys*)
 	    # these systems don't actually have a c library (as such)!
 	    ;;
 	  *-*-rhapsody* | *-*-darwin1.[012])
@@ -3506,7 +3506,7 @@ EOF
 
     prog)
       case $host in
-	*cygwin*) output=`echo $output | sed -e 's,.exe$,,;s,$,.exe,'` ;;
+	*cygwin* | *msys*) output=`echo $output | sed -e 's,.exe$,,;s,$,.exe,'` ;;
       esac
       if test -n "$vinfo"; then
 	$echo "$modename: warning: \`-version-info' is ignored for programs" 1>&2
@@ -3574,7 +3574,7 @@ EOF
 	  esac
 	fi
 	case $host in
-	*-*-cygwin* | *-*-mingw* | *-*-pw32* | *-*-os2*)
+	*-*-cygwin* | *-*-mingw* | *-*-pw32* | *-*-os2* | *-*-msys*)
 	  case :$dllsearchpath: in
 	  *":$libdir:"*) ;;
 	  *) dllsearchpath="$dllsearchpath:$libdir";;
@@ -3959,9 +3959,9 @@ static const void *lt_preloaded_setup() {
 	case $output in
 	  *.exe) output=`echo $output|sed 's,.exe$,,'` ;;
 	esac
-	# test for cygwin because mv fails w/o .exe extensions
+	# test for cygwin or msys because mv fails w/o .exe extensions
 	case $host in
-	  *cygwin*) exeext=.exe ;;
+	  *cygwin* | *msys*) exeext=.exe ;;
 	  *) exeext= ;;
 	esac
 	$rm $output
@@ -4114,7 +4114,7 @@ else
 	case $host in
 	# win32 systems need to use the prog path for dll
 	# lookup to work
-	*-*-cygwin* | *-*-pw32*)
+	*-*-cygwin* | *-*-pw32* | *-*-msys*)
 	  $echo >> $output "\
       exec \$progdir/\$program \${1+\"\$@\"}
 "
@@ -4351,10 +4351,11 @@ fi\
 	    dlprefiles="$newdlprefiles"
 	  fi
 	  $rm $output
-	  # place dlname in correct position for cygwin
+	  # place dlname in correct position for cygwin or msys
 	  tdlname=$dlname
 	  case $host,$output,$installed,$module,$dlname in
 	    *cygwin*,*lai,yes,no,*.dll) tdlname=../bin/$dlname ;;
+	    *msys*,*lai,yes,no,*.dll) tdlname=../bin/$dlname ;;
 	  esac
 	  $echo > $output "\
 # $outputname - a libtool library file
@@ -4793,6 +4794,7 @@ relink_command=\"$relink_command\""
 	# one anyways
 	case $install_prog,$host in
 	*/usr/bin/install*,*cygwin*)
+	*/usr/bin/install*,*msys*)
 	  case $file:$destfile in
 	  *.exe:*.exe)
 	    # this is ok

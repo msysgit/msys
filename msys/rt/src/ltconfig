@@ -1067,12 +1067,13 @@ bsdi4*)
   # libtool to hard-code these into programs
   ;;
 
-cygwin* | mingw* | pw32*)
+cygwin* | mingw* | pw32* | msys*)
   version_type=windows
   need_version=no
   need_lib_prefix=no
   case $with_gcc,$host_os in
   yes,cygwin*)
+  yes,msys*)
     library_names_spec='$libname.dll.a'
     soname_spec='`echo ${libname} | sed -e 's/^lib/cyg/'``echo ${release} | [sed -e 's/[.]/-/g']`${versuffix}.dll'
     postinstall_cmds='dlpath=`bash 2>&1 -c '\''. $dir/${file}i; echo \$dlname'\''`~
@@ -1377,7 +1378,7 @@ case $host_os in
 aix*)
   symcode='[BCDT]'
   ;;
-cygwin* | mingw* | pw32*)
+cygwin* | mingw* | pw32* | msys*)
   symcode='[ABCDGISTW]'
   ;;
 hpux*) # Its linker distinguishes data from code symbols
@@ -1529,7 +1530,7 @@ echo "checking if libtool supports shared libraries... $can_build_shared" 1>&6
 # Only try to build win32 dlls if AC_LIBTOOL_WIN32_DLL was used in
 # configure.in, otherwise build static only libraries.
 case $host_os in
-cygwin* | mingw* | pw32* | os2*)
+cygwin* | mingw* | pw32* | os2* | msys*)
   if test x$can_build_shared = xyes; then
     test x$enable_win32_dll = xno && can_build_shared=no
     echo "checking if package supports dlls... $can_build_shared" 1>&6
@@ -2275,13 +2276,13 @@ STRIP=$STRIP
 # Used to examine libraries when file_magic_cmd begins "file"
 MAGIC_CMD=$MAGIC_CMD
 
-# Used on cygwin: DLL creation program.
+# Used on msys: DLL creation program.
 DLLTOOL="$DLLTOOL"
 
-# Used on cygwin: object dumper.
+# Used on msys: object dumper.
 OBJDUMP="$OBJDUMP"
 
-# Used on cygwin: assembler.
+# Used on msys: assembler.
 AS="$AS"
 
 # The name of the directory that contains temporary libtool files.
@@ -2517,7 +2518,7 @@ EOF
       ;;
     esac
     case $host in
-    *-*-cygwin* | *-*-mingw* | *-*-pw32* | *-*-os2*)
+    *-*-cygwin* | *-*-mingw* | *-*-pw32* | *-*-os2* | *-*-msys*)
       cat <<'EOF' >> "$ofile"
       # This is a source program that is used to create dlls on Windows
       # Don't remove nor modify the starting and closing comments

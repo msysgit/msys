@@ -131,11 +131,10 @@ div
 _div = div
 _dll_crt0@0
 dll_crt0__FP11per_process
-cygwin_dll_init
+msys_dll_init
 dll_dllcrt0
-dll_noncygwin_dllcrt0
-cygwin_detach_dll
-cygwin32_detach_dll = cygwin_detach_dll
+dll_nonmsys_dllcrt0
+msys_detach_dll
 @DEF_DLL_ENTRY@
 drem
 _drem = drem
