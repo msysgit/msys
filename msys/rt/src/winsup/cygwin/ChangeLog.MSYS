@@ -1,3 +1,8 @@
+2003-03-21  Earnie Boyd  <earnie@users.sf.net>
+
+	* uinfo.cc (internal_getlogin): Move check for USERNAME variable to
+	global space instead of iswinnt filter.
+
 2003-02-17  Earnie Boyd  <earnie@users.sf.net>
 
 	* cygheap.cc (init_cygheap::etc_changed): Use more appropriate object
