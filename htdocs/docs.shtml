@@ -41,9 +41,17 @@ documenting the various pieces. </p>
 <a href="mingwfaq.shtml">MinGW FAQ</a> is a 
 good place to start. 
 </li>
+<!-- 
+This following section commented out 8/20/2001 by Steve D. Perkins.
+It's already intuitive enough that installation instructions are located 
+on the "Download" page (which shouldn't have been named "faq.shtml" in 
+the first place.  It's already confusing enough that there are TWO faq's 
+on the MinGW website... referring to the Downloads section as a "third faq" 
+is perhaps getting out of hand
 <li> <a href="faq.shtml">Alternative FAQ</a> covers
 mostly installation procedure.
 </li>
+-->
 </ul>
 
 <h2 align="left">GNU Development Tools Documentation</h2>

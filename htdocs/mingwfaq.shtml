@@ -47,17 +47,1527 @@ its members, various MinGW related web sites and experience.  We would like to
 thank all who have contributed to this FAQ.
 </p>
 
-<!--#include file="ssi/faq-idx.html"-->
+<!-- 
+The following section commented out 8/20/2001 by Steve D. Perkins
+Man, menubars and headers/footers are one thing... but some of this SSI stuff 
+looks like it was done just for the sake of saying that it was done that way.  
+How can anyone pretend that having a seperate file for EACH question in the 
+FAQ is easier to maintain than simply having a single file?!?
+include file="ssi/faq-idx.html
 
 <hr />
 
-<!--#include file="ssi/faq-what.html"-->
-<!--#include file="ssi/faq-license.html"-->
-<!--#include file="ssi/faq-runtime.html"-->  
-<!--#include file="ssi/faq-version.html"-->
-<!--#include file="ssi/faq-w32api.html"-->
-<!--#include file="ssi/faq-cross.html"-->
-<!--#include file="ssi/faq-oldfaq.html"-->
+include file="ssi/faq-what.html
+include file="ssi/faq-license.html
+include file="ssi/faq-runtime.html
+include file="ssi/faq-version.html
+include file="ssi/faq-w32api.html
+include file="ssi/faq-cross.html
+include file="ssi/faq-oldfaq.html
+-->
+
+<a name="index"></a>
+<ul>
+   <li><a href="#faq-what">What is MinGW?</a></li>
+   <li><a href="#faq-where">Where can I get MinGW?</a></li>
+   <li><a href="#faq-license">How is MinGW licensed?</a></li>
+   <li><a href="#faq-version">What is the current version?</a></li>
+   <li><a href="#faq-usingolderversions">Can I use older versions?</a></li>
+   <li><a href="#faq-runtime">Which runtime should I use?</a></li>
+   <li><a href="#faq-w32api">What is w32api?</a></li>
+   <li><a href="#faq-cross">How can I build a cross compiler?</a></li>
+<!-- 
+The following section commented out 8/20/2001 by Steve D. Perkins
+If the FAQ becomes too large and unwieldy, why don't we just break it into 
+chunks based on logical subsections... rather than creating a confusing setup 
+of "new faq" and "old faq", with neither being maintained?
+  <li><a name="i-oldfaq"	href="#faq-oldfaq">	What happened to the old FAQ?</a></li>
+-->
+</ul>
+<hr />
+<center>
+   <b>THE FOLLOWING Q's WERE IMPORTED FROM "The Old MinGW FAQ" IN RAW FORM, AND 
+   HAVE NOT YET BEEN SIGNIFICANTLY MODIFIED (OTHER THAN FORMATTING AND CHANGING 
+   "mingw" and "mingw32" REFERENCES TO "MinGW").  OVER THE NEXT FEW DAYS THE APPROPRIATE 
+   CONTENT WILL BE EITHER ASSIMILATED INTO "The FAQ" (ALL Q's ABOVE THIS NOTICE) OR OTHER 
+   AREAS OF THIS SITE.</b>
+</center>
+<hr />
+<ul>
+   <li><a href="#othercompilerdistributions">Other compiler distributions</a></li>
+   <li><a href="#help">Help</a></li>
+   <li><a href="#debugging">Debugging</a></li>
+   <li><a href="#idesandeditors">IDEs and editors</a></li>
+   <li><a href="#compilingandbuilding">Compiling and building</a></li>
+   <li><a href="#morecompilingandbuildingissues">More compiling and building issues</a></li>
+   <li><a href="#compileroutput">Compiler output</a></li>
+   <li><a href="#comsupport">COM support</a></li>
+   <li><a href="#makeprograms">Make programs</a></li>
+   <li><a href="#patches">Patches</a></li>
+   <li><a href="#guisapplicationframeworksuserinterfaces">GUIs/application frameworks/user interfaces</a></li>
+   <li><a href="#libraries">Libraries</a></li>
+   <li><a href="#otherprogrammingtools">Other programming tools</a></li>
+   <li><a href="#howwheretoreportbugs">How/where to report bugs</a></li>
+   <li><a href="#otherresources">Other resources</a></li>
+</ul>
+
+
+
+
+<hr/>
+
+   <a name="faq-what" />
+   <h3>What is MinGW?</h3>
+   <p>
+      MinGW ("Minimalistic GNU for Windows") is a compiler system based on the GNU GCC and 
+      binutils projects, it compiles and links code to be run on Win32 platforms... providing C, 
+      C++ and Fortran compilers plus other related tools.  If you see references to "mingw32" 
+      instead of "MinGW", they are referring to the same compiler system. The project's name 
+      change from mingw32 to MinGW is to prevent the implication that MinGW will only 
+      works on 32 bit systems (as 64 and higher bit machines become more common, MinGW 
+      will evolve to work with them).  MinGW uses the Microsoft runtime libraries, distributed 
+      with the Windows operating system. Unlike other ports of GCC to Windows, the 
+      runtime libraries are not distributed using Gnu's General Public License (GPL). You, 
+      therefore, do not have to distribute your source code with your programs. 
+   <p>
+      The project was originally started by Colin Peters, who created headers and import 
+      definitions for Microsoft's crtdll C runtime in an effort to remove the dependancy of 
+      the Cygwin1.dll from applications built by Cygwin's implemtation of GCC.  It is that 
+      set of headers and import definitions that constitute what MinGW is and is interchangeably 
+      refered to as the MinGW runtime.  
+   </p>
+   <p>
+      The MinGW runtime was used to create a port of GCC and binutils
+      to the Win32 platform and to create native binaries for it.  These ports
+      have commonly been mistaken for MinGW itself... in reality these ports are
+      just using MinGW.  However, the distinction is growing increasingly blurred as the project 
+      migrates from a collection of indivual packages to a single-file versioned distribution.  
+      The MinGW team will continue to port these utilities and bundle them with the archived
+      distribution as new releases of the utilities are created.  It is our hope that the
+      source code base for these utilities incorporate our work so that we don't
+      have to continually apply our patches.  
+   </p>
+   <p>
+      Colin maintains a website about MinGW at 
+      <a href="http://www.geocities.com/Tokyo/Towers/6162/gcc.html" target="_nw">
+      http://www.geocities.com/Tokyo/Towers/6162/gcc.html</a> which lists some interesting 
+      details you won't find here.  Other history details can be found on our 
+      <a href="history.shtml">history</a> page.  The MinGW project was eventually taken over 
+      by Mumit Khan, and is now maintained by a group of developers through the 
+      <a href="http://sourceforge.net/projects/mingw/">SourceForge</a> web site.
+      We have a few developers working in their spare time with no corporate
+      funding in the project.  If you would like to volunteer please let us know
+      via email to the <a href="mailto:mingw-users@sourceforge.net">MinGW mail list</a>
+   </p>
+   <p><a href="#index">Back to index</a></p>
+
+   <a name="faq-where" />
+   <h3>Where can I get MinGW?</h3>
+   <p>
+      Initially, MinGW was an assortment of individual packages... the MinGW runtime, various 
+      applications built using that runtime (gcc, ld, etc.), and other useful components (the 
+      w32api headers needed to code for the Win32 API).  Developers "rolled their own" 
+      MinGW environments by downloading the latest versions of each individual package needed.
+      This was necessary given the dynamic nature of early package versions (updates being 
+      posted constantly)... but was oftentimes confusing for newbies, and made it difficult for 
+      application/library vendors to design products that build with a "standard" MinGW 
+      environment.
+   </p> 
+   <p>
+      Therefore, around mid-2001 when development had matured and updates were not being 
+      packaged as rapidly, the decision was made to create a single-file distribution of the 
+      standard MinGW environment.  This single archive contains the files from each component 
+      package, bundled and ready to extract.  The individual component packages are still 
+      available for download... if a particular package is updated in between releases of the 
+      overall distribution, it's possible to simply drop the newer package in place over a 
+      distribution install.
+   </p>
+   <p>
+      MinGW files are hosted by SourceForge.  For more information and links to download, visit 
+      the <a href="download.shtml">Download</a> page.
+   </p>
+   <p><a href="#index">Back to index</a></p>
+
+   <a name="faq-license" />
+   <h3>How is MinGW licensed?</h3>
+   <p>
+      When Colin Peters released the MinGW runtime he placed the source into the
+      public domain.  No one owns a copyright (C) to the source because of this.
+      You as a software manufacturer are free to use the MinGW runtime in your
+      proprietary and OpenSource software as you see fit.  The only thing you can't
+      do is to claim ownership of the source and use Colin Peters' name, the MinGW
+      name or the name of any of it's contributors in endorsement of any product.
+   </p>
+   <p>
+      For those interested in the actual legal details and technical
+      points regarding copyright of the MinGW compiler system, copyright
+      information is included in the headers and the source files of the
+      compiler distribution package.
+      The following also applies:
+   </p>
+   <ul>
+      <li>
+         The MinGW basic runtime system, which is basically the glue
+         to the underlying operating system, is completely in the public
+         domain.  The runtime system includes MinGW headers (such as stdio.h),
+         libraries (such as libmingw32.a) and import libraries for
+         CRTDLL/MSVCRT.
+      </li>
+      <li>
+         W32API, which consists of the headers and import libraries related to
+         WIN32 API access, is released under
+         <a href="http://www.acc.umu.se/%7Eanorland/gnu-win32/README.w32api">copyright</a>.  
+         The copyright agreement states no restrictions are placed on programs or object 
+         files compiled with the library.  There are restrictions if you wish to 
+         distribute the library as part of another package.
+      </li>
+      <li>
+         Mingw development tools, which include compilers, linkers, other
+         tools in the bin directory, etc., are released under the
+         GNU General Public License.
+      </li>
+      <li>
+         Profiled code, which is code compiled and linked with the
+         <code>-pg</code> option for runtime
+         profiling, also falls under the GNU General Public License.
+      </li>
+   </ul>
+   <p>
+      Here are some further reference sources for the various
+      licenses that apply to pieces of the MinGW distribution:
+   </p>
+   <ul>
+      <li>
+         GNU General Public License,
+         <a href="http://www.gnu.org/copyleft/gpl.html">http://www.gnu.org/copyleft/gpl.html</a>
+      </li>
+      <li>GNU Library General Public License,
+         <a href="http://www.gnu.org/copyleft/lgpl.html">http://www.gnu.org/copyleft/lgpl.html</a>
+      </li>
+      <li>
+         For more information on the copyleft concept,
+         <a href="http://www.gnu.org/copyleft/">http://www.gnu.org/copyleft/</a>
+      </li>
+   </ul>
+   <p><a href="#index">Back to index</a></p>
+
+   <a name="faq-version" />
+   <h3>What is the current version?</h3>
+   <p>
+      The current version of the MinGW environment distribution is 1.0.1, released on 
+      July 26, 2001.  This version number and last release data are to the individual 
+      MinGW runtime package, upon which the applications in the overall distribution 
+      are built.  It is likely that these will stay in sync going forward (new versions 
+      of the overall distribution being released as the core runtime is updated).
+   </p>
+   <p><a href="#index">Back to index</a></p>
+
+   <a name="faq-usingolderversions">
+   <h3>Can I use older versions?</h3></a>
+   <p>
+      It's highly recommended that you use the latest version of
+      MinGW.  Older versions may have more bugs and can
+      be more difficult to install or use than the latest version.  
+      Please be sure that you have downloaded and are working with the
+      latest version, especially if you are having any difficulties with
+      installation or use.  If you are not sure of your version, you can
+      type <code>gcc -dumpversion</code> to find out what you are
+      using.  
+   </p>
+   <p><a href="#index">Back to index</a></p>
+   
+   <a name="faq-runtime" />
+   <h3>Which runtime should I use?</h3>
+   <p>
+      MinGW requires you to have the Microsoft runtime library MSVCRT.DLL on your
+      system (Windows 95 OSR2, NT 4.0, and later versions of both OS families).  Support 
+      for CRTDLL.DLL (Win32s, used by Windows 3.11 and NT 3.5) is no 
+      longer being maintained.  The CRTDLL legacy code will remain for some time but 
+      will not be guaranteed to be present in future releases.  The only problem you 
+      may have is that if you try to use a program built with MSVCRT.DLL on a Windows 
+      95 Release 1 system.  On  these systems the MSVCRT.DLL wasn't present, however, 
+      it is freely available from 
+      <a href="http://www.microsoft.com" target="_nw">http://www.microsoft.com</a>.
+   <p>
+      Other runtime libraries are usable with MinGW... one such library in the works 
+      is PW32, the Posix-over-Win32 layer. It provides a subset of POSIX and UNIX functions. 
+      To find out more about PW32, try it out, or volunteer to help... see 
+      <a href=http://pw32.sourceforge.net/">http://pw32.sourceforge.net</a>. 
+   </p>
+   <p><a href="#index">Back to index</a></p>
+
+   <a name="faq-w32api" />
+   <h3>What is w32api?</h3>
+   <p>
+      The w32api is the package of headers and import libraries to support the
+      Win32 Application Programming Interface as created by Microsoft.  The MinGW
+      development team are the current maintainers of the w32api since without
+      that package Windows Programming would not be possible.  The package was
+      created by Anders Norlander and it's license is also non-restrictive.  For
+      more information see Anders' README file 
+      <a href="http://www.acc.umu.se/%7Eanorland/gnu-win32/README.w32api" 
+      target="_nw"> README.w32api</a>.  
+   </p>
+   <p><a href="#index">Back to index</a></p>
+
+   <a name="faq-cross" />
+   <h3>How can I build a cross compiler?</h3>
+   <p>
+      Cross-compiling refers to building applications for one platform, with development 
+      occuring on another platfrom (i.e. compiling MS-Windows executables from within a Linux 
+      environment, or vice-versa).  As GCC is found on literally dozens of platforms, it 
+      is theoretically possible to use the MinGW runtime in creating a cross-compilation 
+      development environment in many scenerios.
+   </p>
+   <p>
+      There is a very old out-of-date 
+      <a href="http://www.nanotech.wisc.edu/%7Ekhan/software/gnu-win32/mingw-cross-howto.txt" 
+      target="_nw">mingw-cross-howto.txt</a> written by Mumit Khan and stored
+      on his site you can use.  You'll have to update the packages.  This needs
+      to be rewritten, any volunteers?  If so, please speak up in the 
+      <a href="mailto:mingw-users@lists.sourceforge.net">mingw-users</a> list.
+   </p>
+   <p>
+      A more upto date HOWTO complete with a script to configure it for you can
+      be found at <a href="http://www.devolution.com/~slouken/SDL/Xmingw32/crossgcc/index.html" 
+      target="_nw">http://www.devolution.com/~slouken/SDL/Xmingw32/crossgcc/index.html</a>.
+   </p>
+   <p>
+      You'll want to visit the <a href="mailto:crossgcc@sources.redhat.com">crossgcc</a> 
+      mail list <a href="http://sources.redhat.com/ml/crossgcc/">archives</a>.  You'll also 
+      find a link to a crossgcc FAQ and another for an ftp download site of some useful scripts 
+      on the <a href="http://sources.redhat.com/ml/crossgcc/">archives</a> search page.
+   </p>
+   <p>
+      There are also some pre-built versions:
+      <ul>
+         <li>
+            Linux: 
+            <a href="http://www.devolution.com/~slouken/SDL/Xmingw32/mingw32-linux-x86-glibc-2.1.tar.gz">
+            mingw32-linux-x86-glibc-2.1.tar.gz</a>
+         </li>
+	      <li>If you know of others let us know.</li>
+      </ul>
+   </p>
+   <p><a href="#index">Back to index</a></p>
+
+<hr />
+<b>BEGIN "Old FAQ" CONTENT</b>
+<hr />
+
+   <a name="compilingandbuilding"></a>
+   <h3>Compiling and Building</h3>
+   <li>
+      <h4>How to create a console application</h4></a>
+      <p>
+         Here's an example.  The following is a code sample for a simple C program.  Cut 
+         and paste it into a file named hello.c to try it out.
+      </p>
+      <pre>
+   #include &lt;stdio.h&gt;
+
+   int main(int argc, char **argv)
+   {
+      printf ("Hello\n");
+      return (0);
+   }
+      </pre>  
+      If you want to create a console mode executable hello.exe
+      from a c file called hello.c, try the following:
+      <pre>
+   gcc -c hello.c
+      </pre>
+      This compiles hello.c into an object file, hello.o
+      <pre>
+   gcc -o hello hello.o
+      </pre>
+      This creates an executable hello.exe from hello.o. Alternatively, you can compile 
+      and link in one step using:
+      <pre>
+   gcc -o hello hello.c 
+      </pre>
+      <p>The following is a code sample for a simple C++ program.  Cut and paste it into 
+      a file named hello.cpp to try it out.
+      </p>
+      <pre>
+   #include &lt;iostream&gt;
+   int main(int argc, char **argv)
+   {
+     cout &lt;&lt; "Hello" &lt;&lt; endl;
+     return (0);
+   }
+      </pre>
+      <p>
+         For the C++ program, use the following to compile and link:
+      </p>
+      <pre>
+   g++ -c hello.cpp
+   g++ -o hello hello.o
+      </pre>
+   </li>
+   <li>
+      <h4>How to create a windows application?</h4>
+      <p>
+         Here's an example.  The following is a code sample for a simple
+         Windows program.  Cut and paste it into a file named hello.c to try it out.
+      </p>
+      <pre>
+   #include &lt;windows.h&gt;
+
+   int WINAPI WinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR szCmdLine, int iCmdShow) 
+   {
+      MessageBox (NULL, "Hello", "Hello Demo", MB_OK);
+      return (0);
+   }
+      </pre>
+      <p>
+         If you want to create a Windows executable hello.exe, from a c file called 
+         hello.c, try the following:
+      </p>
+      <pre>
+   gcc -c hello.c
+      </pre>
+      This compiles hello.c into an object file, hello.o
+      <pre>
+   gcc -o hello hello.o -mwindows
+      </pre>
+      This creates an executable hello.exe from hello.o
+      The <code>-mwindows</code> switch is needed to create Windows executables
+      instead of console applications.  It assures the appropriate Windows libraries
+      are linked in for you.  To get a console screen along with a standard windows 
+      application, add the <code>-mconsole</code> flag as well as <code>-mwindows</code>.
+      <p>
+         If you have resources from a resource file (.rc) that also need
+         to be added to your executable, you'll need to compile the resource
+         file as well as your other source files and include the compiled resources
+         when linking to create the executable.  Here's an example that shows how to
+         compile and link in a resource file named resfile.rc.
+      </p>
+      <pre>
+   windres -o resfile.o resfile.rc
+   gcc -o hello hello.o resfile.o -mwindows
+      </pre>
+   </li>
+   <li>
+      <h4>How to create a dll</h4>
+      <p>
+         Here's an example.  Cut and paste the following into a file
+         named dllfct.h:
+      </p>
+      <pre>
+   #ifdef BUILD_DLL
+   // the dll exports
+   #define EXPORT __declspec(dllexport)
+   #else
+   // the exe imports
+   #define EXPORT __declspec(dllimport)
+   #endif
+
+   // function to be imported/exported
+   EXPORT void tstfunc (void);
+      </pre>
+      <p>
+         Cut and paste the following into a file named dllfct.c:
+      </p>
+      <pre>
+   #include &lt;stdio.h&gt;
+   #include "dllfct.h"
+
+   EXPORT void tstfunc (void)
+   {
+      printf ("Hello\n");
+   }
+      </pre>
+      <p>
+         Cut and paste the following into a file named hello.c:
+      </p>
+      <pre>
+   #include "dllfct.h"
+
+   int main ()
+   {
+      tstfunc ();
+      return (0);
+   }
+      </pre>
+      <p>
+         To create the dll and an executable that uses it, try the following:
+      </p>
+      <pre>
+   gcc -c hello.c
+   gcc -c -DBUILD_DLL dllfct.c
+   dllwrap --output-lib=libtstdll.a --dllname=tst.dll --driver-name=gcc dllfct.o
+   gcc -o hello.exe hello.o -L./ -ltstdll
+      </pre>
+      <p>
+         For more information on dlls, see
+         <a href="http://www.nanotech.wisc.edu/%7Ekhan/software/gnu-win32/dllhelpers.html">
+       http://www.nanotech.wisc.edu/&#126;khan/software/gnu-win32/dllhelpers.html</a>
+      </p>
+   </li>
+   <li>
+      <h4>How to create a def file for a dll</h4>
+      <p>
+         There are several methods that can be tried in order to create a definition file
+         (.def) when one is not supplied.
+      </p>
+      <ol>
+         <li>
+            One option is the tool, pexports.  A version is available from
+            <a href="http://www.is.lg.ua/~paul/devel/binutils.html">
+            http://www.is.lg.ua/~paul/devel/binutils.html</a>.
+            Another version is available from Anders Norlander's MinGW page listed
+            in the Other resources section.  If your dll has functions that use
+            the Pascal calling convention, you'll need to use the <code>-o</code> option.
+         </li>      
+         <li>
+            Another option is the tool,
+            <a href="http://www.geocities.com/Tokyo/Towers/6162/impdef.zip">impdef</a>.
+            More instructions on how to create def files from dlls, a copy of impdef and
+            more information on how to use it are available at Colin Peters' site.
+            See the <a href="#tutorials">Tutorials</a> section.
+            Other compilers may also supply versions of the impdef program that
+            can be used to create a .def file which will work with any compiler.  If you
+            have another version of impdef from another compiler, you may wish to try it.
+            Some handle the Pascal calling convention better than others.  Borland has
+            a version of impdef and other compiler utilities available for download at their
+            Borland Community web site.  Their Borland C++ version 5.5 compiler includes several
+            utilities to help convert between standard formats, their formats and Microsoft's
+            formats.
+         </li>
+         <li>
+            Another option is to use nm which comes with the MinGW distribution.
+            This option will not work for all dlls.  Problems may occur if the dll is stripped or
+            compiled as 16 bit.  To use this technique, you'll need to filter the output from nm to
+            create a def file.  This can be done by hand in an editor or automated using tools like
+            Perl (Practical Extraction and Report Language) or grep (global regular expression print)
+            and sed (stream editor).  Even with the automated methods, you may have to
+            make some changes by hand if the Pascal calling convention is used by the dll.
+            See Colin Peters' site for more details on this case.
+            (Versions of sed and grep are available from various sites
+            including archives that host gnuish MSDOS and archives such as Virtually Un*x that contain
+            Win32 ports of common Unix tools and from the self-hosting MinGW port distribution.  The
+            ActiveState version of Perl works well on Win32 platforms.)
+            Here are examples of possible filtering techniques.
+            <li>
+               <p>
+                  This example uses grep and sed.  If you have a dll named file.dll that you wish 
+                  to create a def file for named file.def, try the following:
+               </p>
+               <pre> 
+   echo EXPORTS &gt; file.def
+   nm file.dll | grep ' T _' | sed 's/.* T _//' &gt;&gt; file.def
+               </pre>
+               <p>
+                  To create a library file named file.a from the dll and def file, type:
+               </p>
+               <pre>
+   dlltool --def file.def --dllname file.dll --output-lib file.a
+               </pre>
+            </li>
+            <li>
+               <p>
+                  This example uses Perl.  Copy the following Perl script
+                  to a file called dll.pl and use it:
+               </p>
+               <pre>
+   open (OUTFILE,"&gt;dll.def");
+   print OUTFILE "EXPORTS\n";
+   open (INFILE,"dll.fil");
+   while(&lt;INFILE&gt;)
+   {
+      if ($_ =~ /T _/)
+      {
+         $line = $_;
+         $line =~ s/.* T _//;
+         print OUTFILE $line;
+      }
+   }
+   close (INFILE);
+   close (OUTFILE);
+               </pre>
+               <p>
+                  If you have a dll file named file.dll.  At the command line, type:
+               </p>
+               <pre>
+   nm file.dll &gt; dll.fil
+   perl dll.pl
+               </pre>
+               <p>
+                  A def file named dll.def will be created.  You can rename this
+                  as needed.  You'll also probably want to delete dll.fil when you're finished
+                  with this process.
+               </p>
+            </li>
+            <li>
+               <p>
+                  If you don't have any of these tools on your system, you can still use nm
+                  to create a def file and edit it by hand through an editor.  For example:
+               </p>
+               <pre>
+   nm file.dll &gt; dll.fil
+   find " T _" dll.fil &gt; dll.def
+               </pre>
+               <p>
+                  Replace the line at the top of dll.def that was created by the find program
+                  and shows a file name with a line that says EXPORTS.  Set your editor to search for 
+                  <code>T _</code> and erase it and anything on the line before it, leaving
+                  only the routine names in the file.
+               </p>
+            </li>
+         </li>
+         <li>
+            If the previous options don't work, you can still try to create a def file
+            using the output from the objdump program (from the MinGW distribution).
+            Here's an example.
+            <pre> 
+   objdump -p file.dll &gt; dll.fil
+            </pre>
+               Search for <code>[Ordinal/Name Pointer] Table</code> in dll.fil and use the list 
+               of functions following it to create your def file.
+         </li>
+      </ol>
+   </li>
+   <p><a href="#index">Back to index</a></p>
+
+
+   <a name="morecompilingandbuildingissues" />
+   <h3>More compiling and building issues</h3>
+   <ol>
+      <li>
+         <h4>main or WinMain?</h4>
+         <p>
+            Windows programs use WinMain instead of main.  However, MinGW is set up so 
+            that you can use either.
+         </p>
+      </li>
+      <li>
+         <h4>Why are my executable sizes large?</h4>
+         <p>
+            Some users on the MinGW mailing list have noticed
+            ending up with unusually large executable sizes.  This can happen
+            if you leave in debugging information.  To make your executables
+            smaller, try linking with the -s switch or use the strip program
+            on the final executable (not the object or library files).  Compiling
+            without the -g option is another alternative.
+         </p>
+      </li>
+      <li>
+         <h4>Linking to other compilers' libraries</h4>
+         <p>
+            Due to binary compatibility issues between different compilers, you cannot
+            directly link in libraries or object code from one compiler to another compiler such
+            as MinGW and expect it to work.  The reverse is true as well.  Even dlls are not
+            completely portable across compilers.  To deal with this issue, various
+            standards such as COM and CORBA were created.
+         </p>
+         <p>   
+            If you want to use a library or objects from one compiler with another,
+            the easiest way to do it is to have the source (.c, .cpp, .rc, .def, etc.) and
+            to compile and build that code with the desired compiler and its tools.  You 
+            can use the same dll with different compilers with varying degrees of success.  
+            You'll need either a .def file or to use calls such as LoadLibrary/GetProcAddress 
+            to do so.  The self-hosting version of MinGW provides better support of Visual C++ 
+            binary compatibility.  You can use certain libraries built with Visual C++ with this 
+            version of MinGW without having to rebuild them using MinGW and vice versa.
+         </p>
+      </li>
+      <li>
+         <h4>Linking libraries</h4>
+         <p>
+            If you place libraries before the object files that reference them,
+            the linker will be unable to find them.  The linker works left-to-right,
+            single pass.  The easiest way to avoid the problem is to place all libraries
+            after the object files.  It is also recommended that libraries to be linked
+            with should not be repeated on the command line.  While listing the same library
+            more than once works with several linkers, the MinGW linker currently has problems
+            with this situation and may leave needed routines out of the link when this is done.
+         </p>
+         <p>
+            Here's an example of a line that links in multiple objects and libraries:
+         </p>
+         <pre>
+   gcc -o hello hello.o util.o pdcurses.a -ltstdll
+         </pre>
+         <p>   
+            The command links in the libraries pdcurses.a and libtstdll.a to create
+            an executable hello.exe.
+         </p>
+      </li>
+      <li>
+         <h4>Linking to dlls</h4>
+         <p>
+            Although dlls are supposed to be fairly portable across different Windows 
+            compilers, accessing dlls through a library file (.lib or .a) is not.  The 
+            library file formats are specific to particular compilers and cannot be used
+            portably with different compilers unless the compiler provides support
+            for it.  
+         </p>
+         <p>
+            There are two ways to link to a dll.
+         </p>
+         <ul>
+            <li>
+               Provide a library file to let the program know what routines are
+               in the dll and where to find them.
+            </li>
+            <li>
+               Use LoadLibrary/FreeLibrary and GetProcAddress.
+            </li>
+         </ul>
+         In order to use Microsoft or other compiler dlls, you can use any
+         of the following methods:
+         <ul>
+            <li>
+               Create def and library files.  If you have the object files for the dll
+               created using MinGW, you can create a def file and a library file using
+               the following method.
+               <pre>
+   dlltool --output-def file.def --output-lib libfile.a [list of objects]
+               </pre>
+               Substitute your object file names for <code>[list of objects]</code>.
+               If you only have the dll file, see the
+               <a href="#howtocreateadeffileforadll">How to create a def file for a dll</a>
+               section for alternative techniques.
+               Once you have a def file, you can create a library file (.a)
+               in the proper format for MinGW using dlltool.  For example:
+               <pre>
+   dlltool --def file.def --dllname file.dll --output-lib file.a
+               </pre>
+            </li>
+            <li>
+               The self-hosting version of MinGW has additional Microsoft compatible support
+               and should allow you to link directly with library files in Microsoft .lib
+               format.  See the links in the <a href="#otherresources">Other resources</a>
+               section.
+            </li>
+            <li>
+               Use LoadLibrary/FreeLibrary and GetProcAddress.  With this method, no library
+               file (.lib or .a) is required.  You can connect directly to the dll.  LoadLibrary
+               must be called before the dll can be accessed.  FreeLibrary should be called
+               before exiting the program.  GetProcAddress is used to access specific functions
+               in the dll by retrieving their addresses.  You'll need to call GetProcAddress for
+               each function from the dll you want to work with.  Check a Win32 reference such as
+               those found in the <a href="#help">Help</a> links for more information on the use
+               of these functions.
+            </li>
+         </ul>
+         <p>
+            (Note:  While C functions in dlls are generally portable across compilers,
+            I'm told that this isn't necessarily true for C++.  When writing your
+            own dlls, you can mark C++ functions and data in dlls as extern "C" to
+            help bridge some of the C++ portability issues between compilers.  See
+            the MinGW mailing list archives for more portability concerns regarding dlls.)
+         </p>
+      </li>
+      <li>
+         <h4>What are other useful compiler flags?</h4>
+         <p>
+            You can get help by using the <code>--help</code> option.
+            <br />
+            For example:
+         </p>
+         <pre>
+   gcc --help
+         </pre>
+         You can display the compiler version using the <code>-dumpversion</code> option.
+         You can display the platform using the <code>-dumpmachine</code> option.
+         You can specify include files not in your path by using <code>-I</code>.
+         <br />
+         For example:
+         <pre>
+   gcc -c hello.c -I../pdcurses
+         </pre>
+         You can specify a directory for library files indicated by the <code>-l</code>
+         option by using <code>-L</code>.
+         You can use <code>-g</code> to add debug information for the debugger to work
+         properly.
+         You can use <code>-D</code> to specify a define.
+         <br />
+         For example:
+         <pre>
+   gcc -c hello.c -D__WINDOWS__
+         </pre>
+         You can use <code>-v</code> to find out more about the executables being
+         invoked.
+         <br />
+         For example:
+         <pre>
+   gcc -v
+         </pre>
+      </li>
+   </ol>
+   <p><a href="#index">Back to index</a></p>
+
+
+
+
+   <a name="compileroutput" />
+   <h3>Compiler output</h3>
+   <ol>
+      <li>
+         <h4>Error redirection</h4>
+            <p>
+               MinGW displays compilation and linking errors to stderr instead
+               of stdout.  To easily view these errors, you may need to redirect
+               the output to stdout or a file.  Some methods to do so include using 
+               one of the following programs:
+            </p>
+            <ul>
+               <li>
+                  redir,
+                  <a href="ftp://ftp.xraylith.wisc.edu/pub/khan/gnu-win32/mingw32/ports/redir.zip">
+                  ftp://ftp.xraylith.wisc.edu/pub/khan/gnu-win32/mingw32/ports/redir.zip</a>
+               </li>
+               <li>
+                  errfix,
+                  <a href="http://www.brokersys.com/snippets/">
+                  http://www.brokersys.com/snippets/</a>
+                  <br />
+                  See the Errfix.C file
+               </li>
+               <li>
+                  On Windows NT systems stderr can be redirected.
+                  <br />
+                  For example:  gcc --help 2&gt;&amp;1|more
+               </li>
+            </ul>
+         </li>
+         <li>
+            <h4>Keeping the dos box open</h4>
+            <p>
+               Some users have had trouble with the dos box closing after
+               building a program and haven't been able to see their errors.  The
+               MinGW mailing list came up with several suggestions on how to
+               deal with this.  One suggestion from Franco Bez is as follows:
+            </p>
+            <p>
+               By modifying a few Registry Keys - you can add a context menu item 
+               <code>Run - stay open</code>, so you simply <em>right click</em> on
+               the Batch file and choose <code>Run - stay open</code> and your batch
+               runs and stays open.
+            </p>
+            <p>
+               The following Registry files do this and a little more: 
+            </p>
+            <ul>
+            <li>
+               context menu <code>DOS Box</code> for Folders and files - opens a dos box 
+               in the folder
+            </li>
+            <li>
+               context menu <code>Notepad</code> for all files, even those with 
+               missing/unknown extension - opens the file in Notepad for editing
+            </li>
+            <li>
+               context menu <code>Run - stay open</code> for bat, com and exe files
+            </li>
+         </ul>
+         <p>
+            Place the following lines in a file (such as Win95_98.reg or WinNT.reg) and
+            simply merge the file for your system to your registry by doubleclicking it.
+            The example below is for Windows NT.  If you are using a Windows 95 or 98
+            system, change all the occurrences of <code>cmd</code> to 
+            <code>command.com</code>.
+         </p>
+         <pre>
+   REGEDIT4
+
+   [HKEY_CLASSES_ROOT\*]
+
+   [HKEY_CLASSES_ROOT\*\shell]
+
+   [HKEY_CLASSES_ROOT\*\shell\dos_box]
+   @="DOS Box"
+
+   [HKEY_CLASSES_ROOT\*\shell\dos_box\command]
+   @="cmd"
+
+   [HKEY_CLASSES_ROOT\*\shell\open]
+   @="Notepad"
+
+   [HKEY_CLASSES_ROOT\*\shell\open\command]
+   @="Notepad.exe %1"
+
+   [HKEY_CLASSES_ROOT\Folder\shell]
+
+   [HKEY_CLASSES_ROOT\Folder\shell\dos_box]
+   @="DOS Box"
+
+   [HKEY_CLASSES_ROOT\Folder\shell\dos_box\command]
+   @="cmd /k cd %1"
+
+   [HKEY_CLASSES_ROOT\batfile\shell]
+
+   [HKEY_CLASSES_ROOT\batfile\shell\runstayopen]
+   @="R&amp;un - Stay open"
+
+   [HKEY_CLASSES_ROOT\batfile\shell\runstayopen\command]
+   @="cmd /k %1"
+
+   [HKEY_CLASSES_ROOT\comfile\shell]
+
+   [HKEY_CLASSES_ROOT\comfile\shell\runstayopen]
+   @="R&amp;un - Stay open"
+
+   [HKEY_CLASSES_ROOT\comfile\shell\runstayopen\command]
+   @="cmd /k %1"
+
+   [HKEY_CLASSES_ROOT\exefile\shell]
+
+   [HKEY_CLASSES_ROOT\exefile\shell\runstayopen]
+   @="R&amp;un - Stay open"
+
+   [HKEY_CLASSES_ROOT\exefile\shell\runstayopen\command]
+   @="cmd /k %1"
+         </pre>
+      </li>
+   </ol>
+   <p><a href="#index">Back to index</a></p>
+
+
+
+   <a name="comsupport" />
+   <h3>COM support</h3>
+   <p>
+      MinGW has some support for COM programs.  Programmers have had
+      much better luck writing COM applications in C than C++.  Work is in
+      progress to improve support.  Check the MinGW mailing list archives
+      for more details on COM and more links to example files.
+   </p>
+   <p><a href="#index">Back to index</a></p>
+
+
+
+   <a name="makeprograms" />
+   <h3>Make programs</h3>
+   <p>
+      To keep from having to continually type all your compiler
+      commands on the command line, working with a make program is one very
+      good solution.  There are several versions of make available both as
+      freeware and commercially.  
+      Here are some URLs:
+   </p>
+   <ul>
+      <li>
+         gnu make, 
+         <a href="ftp://ftp.xraylith.wisc.edu/pub/khan/gnu-win32/mingw32/ports/make-3.77-mingw32.zip">
+         ftp://ftp.xraylith.wisc.edu/pub/khan/gnu-win32/mingw32/ports/make-3.77-mingw32.zip</a>
+      </li>
+      <li>
+         nmake, <a href="ftp://ftp.microsoft.com/Softlib/MSLFILES/nmake15.exe">
+         ftp://ftp.microsoft.com/Softlib/MSLFILES/nmake15.exe</a>
+         <br />
+         Microsoft's make program.
+      </li>
+   </ul>
+   <p><a href="#index">Back to index</a></p>
+
+
+  
+   <a name="patches" />
+   <h3>Patches</h3>
+   <p>
+      If you have changes to source code, it may be easier to distribute
+      them as patches than to send the entire code to someone or list the changes by hand.
+      Patching is an automated process of updating files using tools such as
+      patch and diff.
+   </p>
+   <p>
+      Patches can be created by comparing two files with the diff program or
+      from various version control systems such as RCS.  Several versions of diff
+      have been ported to Windows and DOS.  See sites such as Virtually Un*x listed
+      in the Other programming tools section.  There are also several versions of
+      patch available for use in applying patches to source code.  One site that
+      includes it is Mumit's site also listed in the Other programming tools section.
+      Detailed help information on using diff and patch and the various options available
+      for working with them is also available in WinHelp format from the Virtually Un*x
+      site.
+   </p>
+   <p>
+      To create a patch, compare the two versions of the file with diff.  Here's an 
+      example:
+   </p>
+   <pre>
+   diff --ignore-all-space old\file.cpp current\file.cpp &gt; patch.fil
+   </pre>
+   <p>
+      The example ignores whitespace and compares the old version of file.cpp
+      in directory old with the latest version in directory current.  The
+      output is redirected to a file.  Most patches these days also include
+      the <code>-c</code> or <code>-u</code> option which allows programmers
+      to figure out what has changed in a file by viewing the context of the
+      lines around it.  Another common option is <code>-r</code> for working
+      with entire directories instead of single files.  The option <code>-p</code>
+      may also be useful.  It adds information on what C functions a change
+      appears in.
+   </p>
+   <p>
+      To patch a file, you'll need the original source file (old version)
+      and the file with the patches created by diff.  Here's an example of
+      how to call patch:
+   </p>
+   <pre>
+   patch -o file.cpp ..\old\file.cpp patch.fil
+   </pre>
+   <p>
+      The command patches file.cpp in the old directory and outputs the updated
+      file to file.cpp (specified by the <code>-o</code> option).  Another useful
+      switch for use with patch is <code>-p</code> which can affect the naming/location
+      of files and can be used when working with compared directories.
+   </p>
+   <p><a href="#index">Back to index</a></p>
+
+
+
+   <a name="guisapplicationframeworksuserinterfaces" />
+   <h3>GUIs/application frameworks/user interfaces</h3>
+   <ol>
+      <li>
+         <h4>Can I use MFC or OWL?</h4>
+         <p>
+            MinGW provides access to the Win32 API.  Theoretically, if you
+            own the MFC source code you could build MFC libraries for MinGW.
+            No one's tried this so far.  If anyone does successfully accomplish
+            it, please say so and it will be added to this document.
+         </p>
+         <p>
+            For OWL owners, there is a port with additional features which
+            supports various compilers including the gcc compiler line.  See
+            <a href="http://owlnext.starbase21.com/">http://owlnext.starbase21.com/</a>
+            for details.  Thanks to Greg Chicares for supplying this information.
+         </p>
+      </li>
+      <li>
+         <h4>What GUIs/application frameworks/user interface libraries are available?</h4>
+         <p>
+            There are a number of these available.  The following are known
+            to have worked with MinGW.  There are several other libraries
+            out there.
+         </p>
+         <ul>
+            <li>
+               Curses, PDCurses, 
+               <a href="http://www.lightlink.com/hessling/">http://www.lightlink.com/hessling/</a>
+            </li>
+            <li>
+               Windows++, 
+               <a href="http://www.dilascia.com/wpp.htm">http://www.dilascia.com/wpp.htm</a>
+            </li>
+            <li>
+               wxWindows, <a href="http://wxwindows.org">http://wxwindows.org</a>
+            </li>
+            <li>
+               V, <a href="http://www.objectcentral.com/">http://www.objectcentral.com/</a>
+            </li>
+            <li>
+               fltk, <a href="http://www.fltk.org/">http://www.fltk.org/</a>
+            </li>
+            <li>
+               Fox, <a href="http://cyberia.cfdrc.com/FOX/fox.html">
+               http://cyberia.cfdrc.com/FOX/fox.html</a>
+            </li>
+            <li>
+               Open Amulet, <a href="http://www.openip.org/">http://www.openip.org/</a>
+            </li>
+            <li>
+               GTK+, <a href="http://user.sgic.fi/%7Etml/gimp/win32/">
+               http://user.sgic.fi/&#126;tml/gimp/win32/</a>
+            </li>
+            <li>
+               QT (see MinGW mailing list for information on what was done to 
+               get this library to compile)
+            </li>
+         </ul>
+      </li>
+   </ol>
+   <p><a href="#index">Back to index</a></p>
+
+
+
+   <a name="libraries" />
+   <h3>Libraries</h3>
+   <p>
+      If you've had luck with building other programming libraries and would like 
+      to see them added to the list, please e-mail information on where 
+      these libraries can be found and what you needed to do to build 
+      them.
+   </p>
+   <p>
+      Here is a list of some of the libraries and programs that
+      can be built with MinGW.
+   </p>
+   <ol>
+      <li>
+         <h4>Graphics libraries</h4>
+         <ul>
+            <li>
+               <h5>OpenGL</h5>
+               <ol>
+                  <li>
+                     <i>Where to get it?</i>
+                     <p>
+                        You can get access to OpenGL when you install a framework like
+                        fltk or wxWindows.  You can also install it yourself and
+                        use it directly.  See the <a href="#tutorials">Tutorials</a> section 
+                        for more information on working with OpenGL on a Win32 platform.  
+                     </p>
+                     <p>
+                        If you wish to install it yourself, OpenGL and glut headers
+                        are available from 
+                        <a href="http://www.cim.pe.u-tokyo.ac.jp/%7Ekawachi/software/cygwin_glut-e.html">
+                        http://www.cim.pe.u-tokyo.ac.jp/&#126;kawachi/software/cygwin_glut-e.html</a>
+                     </p>
+                     <p>
+                        Create a GL directory under your include directory
+                        (for example:   <code>i386-mingw32/include/GL</code>).
+                     </p>
+                     <p>
+                        You will need to move the <code>gl*.h</code> files to this directory.  If you
+                        do not have <code>glut32.dll</code> installed on your system, move it to your 
+                        Windows system directory.
+                     </p>
+                     <p>
+                        To get a copy of the <code>glaux.h</code> header, you can download it from 
+                        <a href="http://people.montana.com/%7Ebowman/Software/ming.htm">
+                        http://people.montana.com/&#126;bowman/Software/ming.htm</a>
+                     </p>
+                  </li>
+                  <li>
+                     <i>How to compile OpenGL applications</i>
+                     <p>
+                        There are some sample OpenGL programs available from 
+                        <a href="http://trant.sgi.com/opengl/examples/win32_tutorial/win32_tutorial.html">
+                        http://trant.sgi.com/opengl/examples/win32_tutorial/win32_tutorial.html</a>
+                        <br />
+                        While they don't include a make file, you can compile them just
+                        as you would any other programs.  To link, don't forget the flags:
+                        <br />
+                        <code>-mwindows -lglut -lglu32 -lopengl32</code>
+                     </p>
+                     <p>
+                        For the examples included at
+                        <a href="http://www.cim.pe.u-tokyo.ac.jp/%7Ekawachi/software/cygwin_glut-e.html">
+                        http://www.cim.pe.u-tokyo.ac.jp/&#126;kawachi/software/cygwin_glut-e.html</a>,
+                        link with the following flags:
+                        <br />
+                        <code>-mwindows -lglut32 -lglu32 -lopengl32</code>
+                     </p>
+                  </li>
+               </ol>
+            </li>
+            <li>
+               <h5>DirectX</h5>
+               <p>
+                  The latest version of DirectX for gcc is available from
+                  <a href="http://pws.prserv.net/thefortins/cyg-directx.html">
+                  http://pws.prserv.net/thefortins/cyg-directx.html</a>
+               </p>
+               <p>
+                  An alternative version of DirectX is available from
+                  <a href="http://people.montana.com/%7Ebowman/Software/ming.htm">
+                  http://people.montana.com/&#126;bowman/Software/ming.htm</a>.
+                  If you're using MinGW version 2.95 or later, you only need
+                  to do step 2 and add only the files that are not already in your
+                  current MinGW distribution.  Many of the OpenGL and DirectX libraries and
+                  includes have already been added to 2.95 and later distributions and
+                  overwriting them can cause problems.
+               </p>
+               <p>
+                  There are some compatibility issues for Windows NT 4.  It does
+                  not provide full DirectX support for the latest versions of DirectX.  See
+                  the MinGW mailing list for more information.
+               </p>
+               <p>
+                  For installation tips and getting started, see
+                  <a href="http://nrmassey.future.easyspace.com/Dx">
+                  http://nrmassey.future.easyspace.com/Dx</a>
+               </p>
+            </li>
+            <li>
+               <h5>libpng and libjpeg</h5>
+               <p>
+                  Information on building and using these libraries with
+                  MinGW is available from
+                  <a href="http://www.wonderstorm.com/techstuff/gcc-mingw32.html">
+                  http://www.wonderstorm.com/techstuff/gcc-mingw32.html</a>
+               </p>
+            </li>
+            <li>
+               <h5>Mesa</h5>
+               <p>
+                  See <a href="ftp://ftp.teleport.com/pub/users/pgarceau">
+                  ftp://ftp.teleport.com/pub/users/pgarceau</a> for more information.
+               </p>
+            </li>
+            <li>
+               <h5>Simple DirectMedia Layer, libu and other multimedia libraries</h5>
+               <p>
+                  <a href="http://www.devolution.com/%7Eslouken/SDL/intro/toc.html">
+                  http://www.devolution.com/&#126;slouken/SDL/intro/toc.html</a>
+                  <br />
+                  Simple DirectMedia Layer (SDL), cross-platform multimedia library.
+               </p>
+               <p>
+                  <a href="http://www.rhrk.uni-kl.de/%7Eklaux/libu.html">
+                  http://www.rhrk.uni-kl.de/&#126;klaux/libu.html</a>
+                  <br />
+                  Libu C++ toolkit for SDL.
+                  Also has links to cross-compiled versions of Freetype, libpng and zlib.
+               </p>
+            </li>
+         </ul>
+      </li>
+      <li>
+         <h4>Database libraries</h4>
+         <ul>
+            <li>
+               <h5>Xbase</h5>
+               <p>
+                  <a href="http://linux.techass.com/projects/xdb/">
+                  http://linux.techass.com/projects/xdb/</a>
+                  <br />
+                  Dbase/Clipper compatible, cross-platform database library.
+                  Successfully compiled with file locking off under MinGW.
+               </p>
+            </li>
+            <li>
+               <h5>MetaKit</h5>
+               <p>
+                  <a href="http://www.equi4.com/metakit/">
+                  http://www.equi4.com/metakit/</a>
+                  <br />
+                  Cross platform, C++ database library.
+               </p>
+            </li>
+            <li>
+               <h5>libodbc++</h5>
+               <p>
+                  <a href="http://www.orcane.net/freeodbc++/">
+                  http://www.orcane.net/freeodbc++/</a>
+                  <br />
+                  C++ class library, similar to JDBC, for ODBC access.
+                  Compiled and built successfully with MinGW.  For now, see the
+                  MinGW mailing list for some of the changes that were needed.
+                  See also, ODBC access below since ODBC is required to use this library.
+               </p>
+            </li>
+            <li>
+               <h5>Oracle access</h5>
+               <p>
+                  Oracle can be accessed using Oracle's pro*c and sqllib80.dll
+                  (or sqllib18.dll for those with older versions of pro*c).
+                  There's an example article on how to access Oracle from unsupported
+                  compilers at <a href="http://technet.oracle.com">http://technet.oracle.com</a>.
+                  Oracle's OCI interface also works in some cases using oci.dll or ociw32.dll.
+                  If there's enough interest, I'll add source code for doing this to the FAQ as well.
+               </p>
+            </li>
+            <li>
+               <h5>ODBC access</h5>
+               <p>
+                  An ODBC manager (such as ODBC Data Sources program accessible via the
+                  Control Panel) is necessary to run ODBC programs.  If anyone has any
+                  URLs for where to get an ODBC manager, please let me know.
+                  Some possibilities if you don't already have one on your system
+                  are to check the following:
+               </p>
+               <ul>
+                  <li>
+                     <a href="http://www.microsoft.com/data/odbc/">
+                     http://www.microsoft.com/data/odbc/</a>
+                  </li>
+                  <li>
+                     <a href="http://support.novell.com/cgi-bin/show_information?FileName=odbcbeta.exe">
+                     http://support.novell.com/cgi-bin/show_information?FileName=odbcbeta.exe</a>
+                  </li>
+                  <li>
+                     <a href="http://users.ids.net/%7Ebjepson/freeODBC/index.html">
+                     http://users.ids.net/&#126;bjepson/freeODBC/index.html</a>
+                  </li>
+                  <li>
+                     <a href="http://www.bulletproof.com/odbc/">http://www.bulletproof.com/odbc/</a>
+                     <br />
+                     Danny Smith recommended this link for ODBC 3.0 driver manager
+                     and Access, SQL Server, DBase, Oracle, FoxPro and Paradox drivers.
+                  </li>
+               </ul>
+               <p>
+                  I'd be interested to hear if anyone has any luck with these.
+               </p>
+            </li>
+         </ul>
+      </li>
+      <li>
+         <h4>Other libraries</h4>
+         <ul>
+            <!-->
+            <li><h5>Virtual Windows Class Library</h5>
+            <p><a href="http://www.vwcl.org/">http://www.vwcl.org/</a>
+            </p>
+            </li>
+            <--!>
+            <li>
+               <h5>GNU gettext</h5>
+               <p>
+                  <a href="http://home.a-city.de/franco.bez/gettext/gettext_win32_en.html">
+                  http://home.a-city.de/franco.bez/gettext/gettext_win32_en.html</a>
+                  <br />
+                  Library/Tool used to help write internationalized and localized programs.
+               </p>
+            </li>
+            <li>
+               <h5>GNU readline</h5>
+               <p>
+                  <a href="http://www.is.lg.ua/%7Epaul/devel/readline/">
+                  http://www.is.lg.ua/&#126;paul/devel/readline/</a>
+                  <br />
+                  Gnu library for command line editing.
+               </p>
+            </li>
+            <li>
+               <h5>zlib</h5>
+               <p>
+                  <a href="ftp://ftp.freesoftware.com/pub/infozip/zlib/">
+                  ftp://ftp.freesoftware.com/pub/infozip/zlib/</a>
+                  <br />
+                  Compression library.  Includes makefile for MinGW.
+               </p>
+            </li>
+         </ul>
+      </li>
+      <li>
+         <h4>Other programs</h4>
+         <ul>
+            <li>
+               <h5>Jam</h5>
+               <p>
+                  <a href="http://www.geocities.com/Tokyo/Towers/6162/gcc.html">
+                  http://www.geocities.com/Tokyo/Towers/6162/gcc.html</a>
+                  <br />
+                  Used to build executables.
+               </p>
+            </li>
+            <li>
+               <h5>Midnight Commander</h5>
+               <p>
+                  <a href="http://home.a-city.de/franco.bez/mc/mc.html">
+                  http://home.a-city.de/franco.bez/mc/mc.html</a>
+                  <br />
+                  File manager/shell.
+               </p>
+            </li>
+            <li>
+               <h5>Perl</h5>
+               <p>
+                  Programmers have reported some success in compiling
+                  Perl 5.005_63.  Source for Perl is available from
+                  <a href="http://www.cpan.org/src/index.html">http://www.cpan.org/src/index.html</a>
+                  <br />
+                  See the patch for MinGW at
+                  <a href="http://www.xray.mpe.mpg.de/mailing-lists/perl5-porters/1999-12/msg00396.html">
+                  http://www.xray.mpe.mpg.de/mailing-lists/perl5-porters/1999-12/msg00396.html</a>
+                  <br />
+                  Thanks to Brent Williams for the information regarding building Perl with MinGW.
+               </p>
+            </li>
+         </ul>
+      </li>
+   </ol>
+   <p><a href="#index">Back to index</a></p>
+
+
+
+
+   <a name="otherprogrammingtools" />
+   <h3>Other programming tools</h3>
+   <p>
+      I have links to various tools throughout the FAQ such as
+      in the Make, IDEs and editors, Debugging and Other resources links, but here are
+      some that weren't specifically mentioned elsewhere.
+   </p>
+   <ol>
+      <li>
+         Unix style tools
+         <p>
+            Many users have found Win32 or DOS versions of Unix programming
+            tools very helpful.  Here are some places to find ports of well-known
+            Unix tools.
+         </p>
+         <ul>
+            <li>
+               Virtually UN*X, 
+               <a href="http://virtunix.itribe.net/">http://virtunix.itribe.net/</a>
+               <br />
+               Win32 versions of many Unix tools.
+            </li>
+            <li>
+               Gnuish MS-DOS, 
+               <a href="ftp://ftp.simtel.net/pub/simtelnet/gnu/gnuish/">
+               ftp://ftp.simtel.net/pub/simtelnet/gnu/gnuish/</a>.
+               <br />
+               A port of many GNU tools to 16 bit DOS.
+            </li>
+            <li>
+               Less, 
+               <a href="http://www.flash.net/%7Emarknu/less/">http://www.flash.net/&#126;marknu/less/</a>
+               <br />
+               File filter for viewing files quickly.  Similar to DOS more program.
+            </li>
+            <li>
+               New Technology Shell (NTsh),
+               <a href="http://wwwcip.informatik.uni-erlangen.de/user/mnwaitz/zips/ntsh-src.zip">
+               http://wwwcip.informatik.uni-erlangen.de/user/mnwaitz/zips/ntsh-src.zip</a>
+            </li>
+            <li>
+               ISpell, <a href="http://fmg-www.cs.ucla.edu/geoff/ispell.html">
+               http://fmg-www.cs.ucla.edu/geoff/ispell.html</a>
+               <br />
+               Spell checker.
+            </li>
+            <li>
+               Ghostview, Ghostscript, <a href="http://www.cs.wisc.edu/%7Eghost/aladdin/index.html">
+               http://www.cs.wisc.edu/&#126;ghost/aladdin/index.html</a>
+               <br />
+               Postscript viewer.
+            </li>
+            <li>
+               Ron's Utilities, <a href="http://www.mossbayeng.com/%7Eron/vim/builds.html">
+               http://www.mossbayeng.com/&#126;ron/vim/builds.html</a>
+               <br />
+               Ports and patches for several GNU utilities to MinGW.
+            </li>
+            <li>
+               A Linux-like Windows, 
+               <a href="http://www.datacomm.ch/mwoog/software/linux_windows.htm">
+               http://www.datacomm.ch/mwoog/software/linux_windows.htm</a>
+               <br />
+               Links to various Win32 ports.
+            </li>
+         </ul>
+      </li>
+      <li>
+         Other tools
+         <p>
+            For those who prefer working with tools other than those found in Unix
+            environments, here are some sites to check.  If anyone else has favorite
+            programming tools to add, feel free to suggest them.
+         </p>
+         <ul>
+            <li>
+               DOS utilities, <a href="http://www.freedos.org/freedos/software/">
+               http://www.freedos.org/freedos/software/</a>
+               <br />
+               If you want utilities similar to standard MS DOS ones, check this
+               site.  It even includes a deltree version that works on Windows NT.  All
+               tools here are compiled for DOS 16 bit systems.  Source is included with most.
+            </li>
+         </ul> 
+      </li>
+   </ol>  
+   <p><a href="#index">Back to index</a></p>
+
+
+
+   <a name="howwheretoreportbugs" />
+   <h3>How/where to report bugs</h3>
+   <p>
+      When sending in a bug report, please be sure to send a short 
+      example of the problem.  If the problem cannot be recreated, it 
+      cannot be debugged.  Also, see the list of known problems at 
+      <a href="http://www.nanotech.wisc.edu/%7Ekhan/software/gnu-win32/gcc.html">
+      http://www.nanotech.wisc.edu/&#126;khan/software/gnu-win32/gcc.html</a>
+      before reporting a problem.  
+   </p>
+   <p>
+      You can now report bugs through the MinGW site hosted at Sourceforge.
+      You can also report bugs to cygwin.  See <a href="http://gcc.gnu.org/faq.html#bugreport">
+      http://gcc.gnu.org/faq.html#bugreport</a> for more information.
+      You can also bring problems up on the MinGW mailing list.
+   </p>
+   <p><a href="#index">Back to index</a></p>
+
+
+
+   <a name="otherresources" />
+   <h3>Other resources</h3>
+   <p>
+      If anyone has any other MinGW pages they've put together that they'd like to add,
+      they can be placed here.
+   </p>
+   <ul>
+      <li>  
+         Self-hosting version of MinGW,
+         <a href="ftp://ftp.franken.de/pub/win32/develop/gnuwin32/mingw32/porters/Mikey/">
+         ftp://ftp.franken.de/pub/win32/develop/gnuwin32/mingw32/porters/Mikey/</a>
+         <br />
+         Emulates VC++ and GNU development environments for MinGW.
+         <br />
+         I personally recommend use of the latest versions of PDCurses (2.4) and less (346), if
+         you've downloaded earlier ones.  See the Libraries and Other programming tools sections for
+         links to the latest versions.
+      </li>
+      <li>
+         Miscellaneous MinGW utilities and examples,
+         <a href="ftp://ftp.xraylith.wisc.edu/pub/khan/gnu-win32/mingw32/misc/">
+         ftp://ftp.xraylith.wisc.edu/pub/khan/gnu-win32/mingw32/misc/</a>
+         <br />
+         Includes COM, DLL and LoadLibrary examples, redir program, patch program plus more.
+      </li>
+      <li>
+         Anders Norlander's MinGW page,
+         <a href="http://www.acc.umu.se/%7Eanorland/gnu-win32/index.html">
+         http://www.acc.umu.se/&#126;anorland/gnu-win32/index.html</a>
+         <br />
+         Includes various tools and utilities for MinGW, including reimp, pexports
+         (for working with dlls) and uuidgen (for working with COM).
+      </li>
+      <li>
+         Paul Sokolovsky's Development Page,
+         <a href="http://www.is.lg.ua/%7Epaul/devel/">http://www.is.lg.ua/&#126;paul/devel/</a>
+         <br />
+         Various ports of libraries, alternative binutils and some tutorials on dlls.
+      </li>
+      <li>
+         Fredos Homepage, 
+         <a href="http://penguin.at0.net/%7Efredo/">http://penguin.at0.net/&#126;fredo/</a>
+         <br />
+         More MinGW related ports.
+      </li>
+      <li>
+         The Code Foundry, <a href="http://www.geocities.com/SiliconValley/Station/1177/foundry.html">
+         http://www.geocities.com/SiliconValley/Station/1177/foundry.html</a>
+         <br />
+         Win32 code including a conio library.  Other useful information on
+         Win32 programming also available at this site.
+      </li>
+      <li>
+         Command line globbing,
+         <a href="http://sourceware.cygnus.com/ml/cygwin/1999-11/msg00052.html">
+         http://sourceware.cygnus.com/ml/cygwin/1999-11/msg00052.html</a>
+         <br />
+         Bruce E. Wampler recommended this information on globbing for MinGW.
+      </li>
+      <li>
+         UTF-8 support for windres,
+         <a href="http://www.egroups.com/group/mingw32/1511.html">
+         http://www.egroups.com/group/mingw32/1511.html</a>
+      </li>
+      <li>
+         Vijay Mukhi's Technology Cornucopia,
+         <a href="http://users.neca.com/vmis/">http://users.neca.com/vmis/</a>
+         <br />
+         Socket, COM, OLE and other programming examples.
+      </li>
+      <li>
+         The Code Project, <a href="http://www.codeproject.com/">http://www.codeproject.com/</a>
+         <br />
+         Lots of code samples and some tutorials.  Unfortunately, the emphasis here is mainly 
+         MFC and Visual C++, but there is some Win32 code if you look for it and the site 
+         maintainers have said they'd welcome any type of programming related submissions.
+      </li>
+   </ul>
+   <p><a href="#index">Back to index</a></p>
 
 </td>
 </tr>
@@ -77,4 +1587,4 @@ width="88" /></a>
 
 </body>
 </html>
-<!--$Id: mingwfaq.shtml,v 1.19 2001-01-19 00:42:08 earnie Exp $-->
+<!--$Id: mingwfaq.shtml,v 1.20 2001-08-22 04:41:13 stevedperkins Exp $-->
