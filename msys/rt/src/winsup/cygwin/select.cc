@@ -80,7 +80,11 @@ typedef long fd_mask;
 #define UNIX_FD_ZERO(p, n) \
   bzero ((caddr_t)(p), sizeof_fd_set ((n)))
 
+#if DO_CPP_NEW
 #define allocfd_set(n) ((fd_set *) memset ((new fd_set [(sizeof_fd_set (n))]), 0, sizeof_fd_set (n)))
+#else
+#define allocfd_set(n) ((fd_set *) memset (alloca (sizeof_fd_set (n)), 0, sizeof_fd_set (n)))
+#endif
 #define copyfd_set(to, from, n) memcpy (to, from, sizeof_fd_set (n));
 
 /* Make a fhandler_foo::ready_for_ready method.

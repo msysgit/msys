@@ -59,6 +59,7 @@ HANDLE hExeced;
 static const char *
 perhaps_suffix (const char *prog, path_conv &buf)
 {
+  TRACE_IN;
   char *ext;
 
   debug_printf ("prog '%s'", prog);
@@ -87,6 +88,7 @@ const char * __stdcall
 find_exec (const char *name, path_conv& buf, const char *mywinenv,
 	   int null_if_notfound, const char **known_suffix)
 {
+  TRACE_IN;
   const char *suffix = "";
   debug_printf ("find_exec (%s)", name);
   char *retval = buf;
@@ -152,6 +154,7 @@ find_exec (const char *name, path_conv& buf, const char *mywinenv,
 static HANDLE
 handle (int n, int direction)
 {
+  TRACE_IN;
   fhandler_base *fh = cygheap->fdtab[n];
 
   if (!fh)
@@ -166,6 +169,7 @@ handle (int n, int direction)
 int
 iscmd (const char *argv0, const char *what)
 {
+  TRACE_IN;
   int n;
   n = strlen (argv0) - strlen (what);
   if (n >= 2 && argv0[1] != ':')
@@ -192,6 +196,7 @@ class linebuf
 void
 linebuf::add (const char *what, int len)
 {
+  TRACE_IN;
   size_t nbufidx;
   if ((nbufidx = bufidx + len) >= alloced || !buf)
     {
@@ -206,6 +211,7 @@ linebuf::add (const char *what, int len)
 void
 linebuf::prepend (const char *what, int len)
 {
+  TRACE_IN;
   int buflen;
   size_t nbufidx;
   if ((nbufidx = bufidx + len) >= alloced)
@@ -230,21 +236,24 @@ class av
   int argc;
   av (int ac, const char * const *av) : calloced (0), argc (ac)
   {
+  TRACE_IN;
     argv = (char **) cmalloc (HEAP_1_ARGV, (argc + 5) * sizeof (char *));
     memcpy (argv, av, (argc + 1) * sizeof (char *));
   }
   ~av ()
   {
+  TRACE_IN;
     for (int i = 0; i < calloced; i++)
       cfree (argv[i]);
     cfree (argv);
   }
   int unshift (const char *what, int conv = 0);
-  operator char **() {return argv;}
-  void all_calloced () {calloced = argc;}
+  operator char **() {TRACE_IN; return argv;}
+  void all_calloced () {TRACE_IN; calloced = argc;}
   void replace0_maybe (const char *arg0)
   {
     /* Note: Assumes that argv array has not yet been "unshifted" */
+  TRACE_IN;
     if (!calloced)
       {
 	argv[0] = cstrdup1 (arg0);
@@ -253,15 +262,18 @@ class av
   }
   void replace (int i, const char *arg)
     {
+  TRACE_IN;
       argv[i] = cstrdup1 (arg);
     }
   void dup_maybe (int i)
   {
+  TRACE_IN;
     if (i >= calloced)
       argv[i] = cstrdup1 (argv[i]);
   }
   void dup_all ()
   {
+  TRACE_IN;
     for (int i = calloced; i < argc; i++)
       argv[i] = cstrdup1 (argv[i]);
   }
@@ -270,6 +282,7 @@ class av
 int
 av::unshift (const char *what, int conv)
 {
+  TRACE_IN;
   char **av;
   av = (char **) crealloc (argv, (argc + 2) * sizeof (char *));
   if (!av)
@@ -296,6 +309,7 @@ static int __stdcall
 spawn_guts (HANDLE hToken, const char * prog_arg, const char *const *argv,
 	    const char *const envp[], int mode)
 {
+  TRACE_IN;
   BOOL rc;
   pid_t cygpid;
   sigframe thisframe (mainthread);
@@ -485,14 +499,14 @@ spawn_guts (HANDLE hToken, const char * prog_arg, const char *const *argv,
 
   FIXME(1.0);
   // iscygexec needs adjusted so that it truely identifies an MSYS executable.
-  if (real_path.iscygexec ())
+  if (real_path.iscygexec () || IsMsys((char *)real_path))
     newargv.dup_all ();
   else
     {
       for (int i = 0; i < newargv.argc; i++)
 	{
 	  //convert argv to win32
-	  char tmpbuf[MAX_PATH];
+	  char tmpbuf[MAX_PATH] = "\0";
 
 	  if (strlen(newargv[i]) < MAX_PATH)
 	    {
@@ -620,27 +634,46 @@ spawn_guts (HANDLE hToken, const char * prog_arg, const char *const *argv,
       int envblockcnt;
       envblockcnt = 0;
       debug_printf("envblockn");
+#if 0
       while (*envblockn)
 	{
 	  envblockcnt++;
 	  debug_printf("%s", envblockn);
 	  envblockn = strchr(envblockn, '\0') + 1;
 	}
+#else
+      envblockcnt = ciresrv.moreinfo->envc;
+#endif
+#if DO_CPP_NEW
       char **envblockarg = new char *[envblockcnt + 1], *tptr, *wpath;
+#else
+      char **envblockarg = (char **) malloc (sizeof (char *) * (envblockcnt + 1)), *tptr, *wpath;
+#endif
       int envblocknlen, envblockarglen = 0;
       envblockn = envblock;
       for (int i=0;i < envblockcnt;i++)
 	{
 	  envblocknlen = strlen(envblockn);
+#if DO_CPP_NEW
 	  envblockarg[i] = new char [envblocknlen + MAX_PATH];
+#else
+	  envblockarg[i] = (char *) malloc (envblocknlen + MAX_PATH);
+#endif
 	  memset (envblockarg[i], 0, envblocknlen + MAX_PATH);
+#if DO_CPP_NEW
 	  wpath = new char [envblocknlen + MAX_PATH];
+#else
+	  wpath = (char *) malloc (envblocknlen + MAX_PATH);
+#endif
 	  memset (wpath, 0, envblocknlen + MAX_PATH);
 	  if ((tptr = strchr(envblockn, '=')))
 	    {
 	      tptr++;
 	      strncpy (envblockarg[i], envblockn, tptr - envblockn);
-	      if (*tptr == '/')
+	      //FIXME: There's a better way to do this!!
+	      if (*tptr == '/' && 
+		  strncmp(envblockn, "PATH=", 5) &&
+		  strncmp(envblockn, "MSYS_WPATH=", 11))
 		{
 		  cygwin_conv_to_win32_path (tptr, wpath);
 		  strcat(envblockarg[i], wpath);
@@ -653,20 +686,41 @@ spawn_guts (HANDLE hToken, const char * prog_arg, const char *const *argv,
 	  debug_printf("%s", envblockarg[i]);
 	  envblockarglen += strlen(envblockarg[i]) + 1;
 	  envblockn = strchr (envblockn, '\0') + 1;
+#if DO_CPP_NEW
 	  delete[] wpath;
+#else
+	  if (wpath)
+	    free (wpath);
+#endif
 	}
+#if DO_CPP_NEW
       delete[] envblock;
       envblock = new char [envblockarglen + 1];
+#else
+      if (envblock)
+	free (envblock);
+      envblock = (char *) malloc (envblockarglen + 1);
+#endif
       tptr = envblock;
       for (int i=0;i < envblockcnt;i++)
 	{
 	  envblocknlen = strlen (envblockarg[i]) + 1;
 	  memcpy (tptr, envblockarg[i], envblocknlen);
 	  tptr += envblocknlen;
+#if DO_CPP_NEW
 	  delete[] envblockarg[i];
+#else
+	  //if (envblockarg[i])
+	    //free (envblockarg[i]);
+#endif
 	}
       *++tptr = '\0';
+#if DO_CPP_NEW
       delete[] envblockarg;
+#else
+      if (envblockarg)
+	free (envblockarg);
+#endif
     }
 
   /* Preallocated buffer for `sec_user' call */
@@ -770,7 +824,12 @@ spawn_guts (HANDLE hToken, const char * prog_arg, const char *const *argv,
     }
 
   MALLOC_CHECK;
+#if DO_CPP_NEW
   delete[] envblock;
+#else
+  if (envblock)
+    free (envblock);
+#endif
   cygheap_setup_for_child_cleanup (&ciresrv);
   MALLOC_CHECK;
 
@@ -953,6 +1012,7 @@ spawn_guts (HANDLE hToken, const char * prog_arg, const char *const *argv,
 extern "C" int
 cwait (int *result, int pid, int)
 {
+  TRACE_IN;
   return waitpid (pid, result, 0);
 }
 
@@ -965,6 +1025,7 @@ extern "C" int
 _spawnve (HANDLE hToken, int mode, const char *path, const char *const *argv,
 	  const char *const *envp)
 {
+  TRACE_IN;
   int ret;
   vfork_save *vf = vfork_storage.val ();
 #if DEBUGGING
@@ -1018,6 +1079,7 @@ _spawnve (HANDLE hToken, int mode, const char *path, const char *const *argv,
 extern "C" int
 spawnl (int mode, const char *path, const char *arg0, ...)
 {
+  TRACE_IN;
   int i;
   va_list args;
   const char *argv[256];
@@ -1043,6 +1105,7 @@ spawnl (int mode, const char *path, const char *arg0, ...)
 extern "C" int
 spawnle (int mode, const char *path, const char *arg0, ...)
 {
+  TRACE_IN;
   int i;
   va_list args;
   const char * const *envp;
@@ -1071,6 +1134,7 @@ spawnle (int mode, const char *path, const char *arg0, ...)
 extern "C" int
 spawnlp (int mode, const char *path, const char *arg0, ...)
 {
+  TRACE_IN;
   int i;
   va_list args;
   const char *argv[256];
@@ -1096,6 +1160,7 @@ spawnlp (int mode, const char *path, const char *arg0, ...)
 extern "C" int
 spawnlpe (int mode, const char *path, const char *arg0, ...)
 {
+  TRACE_IN;
   int i;
   va_list args;
   const char * const *envp;
@@ -1123,6 +1188,7 @@ spawnlpe (int mode, const char *path, const char *arg0, ...)
 extern "C" int
 spawnv (int mode, const char *path, const char * const *argv)
 {
+  TRACE_IN;
 #if DEBUGGING
   for (int i=0;argv[i];i++)
       debug_printf("argv[%d] = %s", i, argv[i]);
@@ -1134,6 +1200,7 @@ extern "C" int
 spawnve (int mode, const char *path, char * const *argv,
 					     const char * const *envp)
 {
+  TRACE_IN;
 #if DEBUGGING
   for (int i=0;argv[i];i++)
       debug_printf("argv[%d] = %s", i, argv[i]);
@@ -1144,6 +1211,7 @@ spawnve (int mode, const char *path, char * const *argv,
 extern "C" int
 spawnvp (int mode, const char *path, const char * const *argv)
 {
+  TRACE_IN;
 #if DEBUGGING
   for (int i=0;argv[i];i++)
       debug_printf("argv[%d] = %s", i, argv[i]);
@@ -1155,6 +1223,7 @@ extern "C" int
 spawnvpe (int mode, const char *file, const char * const *argv,
 					     const char * const *envp)
 {
+  TRACE_IN;
   path_conv buf;
 #if DEBUGGING
   for (int i=0;argv[i];i++)
