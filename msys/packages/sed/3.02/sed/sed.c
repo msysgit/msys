@@ -51,6 +51,12 @@
 #ifdef HAVE_SYS_TYPES_H
 # include <sys/types.h>
 #endif
+
+#ifdef (__CYGWIN__)
+# include <unistd.h>
+# include <fcntl.h>
+#endif
+
 #include "regex-sed.h"
 #include "getopt.h"
 #include "basicdefs.h"
@@ -93,6 +99,7 @@ Usage: %s [OPTION]... {script-only-if-no-other-script} [input-file]...\n\
                  add the script to the commands to be executed\n\
   -f script-file, --file=script-file\n\
                  add the contents of script-file to the commands to be executed\n\
+  -c  --nocr     turn off \\r$ translation; must be first switch on command line\n\
       --help     display this help and exit\n\
   -V, --version  output version information and exit\n\
 \n\
@@ -107,6 +114,10 @@ Be sure to include the word ``%s'' somewhere in the ``Subject:'' field.\n",
   exit(status);
 }
 
+#ifdef __MSYS__
+  int newz;
+#endif
+  
 int
 main(argc, argv)
   int argc;
@@ -116,6 +127,7 @@ main(argc, argv)
     {"rxtest", 0, NULL, 'r'},
     {"expression", 1, NULL, 'e'},
     {"file", 1, NULL, 'f'},
+    {"nocr", 0, NULL, 'c'},
     {"quiet", 0, NULL, 'n'},
     {"silent", 0, NULL, 'n'},
     {"version", 0, NULL, 'V'},
@@ -138,8 +150,12 @@ main(argc, argv)
   rx_basic_unfaniverse_delay = 512 * 4;
 #endif /*STUB_FROM_RX_LIBRARY_USAGE*/
 
+#ifdef __CYGWIN__
+  setmode(STDIN_FILENO, O_TEXT);
+#endif
+
   myname = *argv;
-  while ((opt = getopt_long(argc, argv, "hnrVe:f:", longopts, NULL)) != EOF)
+  while ((opt = getopt_long(argc, argv, "chnrVe:f:", longopts, NULL)) != EOF)
     {
       switch (opt)
 	{
@@ -147,12 +163,24 @@ main(argc, argv)
 	  no_default_output = 1;
 	  break;
 	case 'e':
+#ifdef __MSYS__
+	  if (!newz)
+	      the_program = compile_string(the_program, "s/$//");
+	  newz = 1;
+#endif
 	  the_program = compile_string(the_program, optarg);
 	  break;
 	case 'f':
+#ifdef __MSYS__
+	  if (!newz)
+	      the_program = compile_string(the_program, "s/$//");
+	  newz = 1;
+#endif
 	  the_program = compile_file(the_program, optarg);
 	  break;
-
+	case 'c':
+	  newz = 1;
+	  break;
 	case 'r':
 	  use_extended_syntax_p = 1;
 	  rx_testing = 1;
@@ -175,7 +203,14 @@ to the extent permitted by law.\n\
   if (!the_program)
     {
       if (optind < argc)
-	the_program = compile_string(the_program, argv[optind++]);
+	{
+#ifdef __MSYS__
+	  if (!newz)
+	      the_program = compile_string(the_program, "s/$//");
+	  newz = 1;
+#endif
+	  the_program = compile_string(the_program, argv[optind++]);
+	}
       else
 	usage(4);
     }
