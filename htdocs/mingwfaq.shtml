@@ -274,7 +274,7 @@
       <h3>What is the current version?</h3>
       <p>
          The current MinGW package bundle is 
-	 <a href="http://prdownloads.sourcefourge.net/mingw/MinGW-2.0.0-3.exe">MinGW-2.0.0-3.exe</a>.
+	 <a href="http://prdownloads.sourceforge.net/mingw/MinGW-2.0.0-3.exe">MinGW-2.0.0-3.exe</a>.
 	 This release contains the binaries from the following individual 
 	 packages:
 	 <li><a href="http://prdownloads.sourceforge.net/mingw/mingw-runtime-2.2.tar.gz">mingw-runtime-2.2.tar.gz</a></li>
@@ -587,6 +587,6 @@
 </table>
 <!--#include file="ssi/bottombar.html"--><!--#include file="ssi/footer.html"-->
 <address> <br>
-Last revised $Date: 2003-01-26 17:38:33 $ </address>
+Last revised $Date: 2003-02-03 18:18:11 $ </address>
 </body>
 </html>
