@@ -18,14 +18,11 @@
  *  DISCLAIMED. This includes but is not limited to warranties of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Revision: 1.4 $
+ * $Revision: 1.5 $
  * $Author: earnie $
- * $Date: 2003-02-21 21:19:52 $
+ * $Date: 2004-04-19 17:22:41 $
  *
  */
-
-#ifndef	__STRICT_ANSI__
-
 #ifndef	_UTIME_H_
 #define	_UTIME_H_
 
@@ -60,12 +57,23 @@ struct utimbuf
 };
 #endif	/* Not _NO_OLDNAMES */
 
+struct __utimbuf64
+{
+	__time64_t actime;
+	__time64_t modtime;
+};
+
 
 #ifdef	__cplusplus
 extern "C" {
 #endif
 
 _CRTIMP int __cdecl	_utime (const char*, struct _utimbuf*);
+
+#ifndef	_NO_OLDNAMES
+_CRTIMP int __cdecl	utime (const char*, struct utimbuf*);
+#endif	/* Not _NO_OLDNAMES */
+
 _CRTIMP int __cdecl	_futime (int, struct _utimbuf*);
 
 /* The wide character version, only available for MSVCRT versions of the
@@ -73,9 +81,13 @@ _CRTIMP int __cdecl	_futime (int, struct _utimbuf*);
 #ifdef __MSVCRT__
 _CRTIMP int __cdecl	_wutime (const wchar_t*, struct _utimbuf*);
 #endif /* MSVCRT runtime */
-#ifndef	_NO_OLDNAMES
-_CRTIMP int __cdecl	utime (const char*, struct utimbuf*);
-#endif	/* Not _NO_OLDNAMES */
+
+/* These require newer versions of msvcrt.dll (6.10 or higher).  */ 
+#if __MSVCRT_VERSION__ >= 0x0601
+_CRTIMP int __cdecl	_utime64 (const char*, struct __utimbuf64*);
+_CRTIMP int __cdecl	_wutime64 (const wchar_t*, struct __utimbuf64*);
+_CRTIMP int __cdecl	_futime64 (int, struct __utimbuf64*);
+#endif /* __MSVCRT_VERSION__ >= 0x0601 */
 
 #ifdef	__cplusplus
 }
@@ -84,6 +96,3 @@ _CRTIMP int __cdecl	utime (const char*, struct utimbuf*);
 #endif	/* Not RC_INVOKED */
 
 #endif	/* Not _UTIME_H_ */
-
-#endif	/* Not __STRICT_ANSI__ */
-

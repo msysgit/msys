@@ -18,9 +18,9 @@
  *  DISCLAIMED. This includes but is not limited to warranties of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Revision: 1.16 $
+ * $Revision: 1.17 $
  * $Author: earnie $
- * $Date: 2003-10-10 15:02:04 $
+ * $Date: 2004-04-19 17:22:40 $
  *
  */
 
@@ -175,7 +175,9 @@ _CRTIMP double __cdecl fmod (double, double);
 
 #ifndef __STRICT_ANSI__
 
-/* Complex number (for cabs). This really belongs in complex.h */
+/* Complex number (for _cabs). This is the MS version. The ISO
+   C99 counterpart _Complex is an intrinsic type in GCC and
+   'complex' is defined as a macro.  See complex.h  */
 struct _complex
 {
 	double	x;	/* Real part */
@@ -220,7 +222,6 @@ _CRTIMP int __cdecl _isnan (double);
 
 #if !defined (_NO_OLDNAMES)
 
-_CRTIMP double __cdecl cabs (struct _complex);
 _CRTIMP double __cdecl j0 (double);
 _CRTIMP double __cdecl j1 (double);
 _CRTIMP double __cdecl jn (int, double);
@@ -233,14 +234,31 @@ _CRTIMP double __cdecl scalb (double, long);
 _CRTIMP int __cdecl finite (double);
 _CRTIMP int __cdecl fpclass (double);
 
+#define FP_SNAN    _FPCLASS_SNAN
+#define FP_QNAN    _FPCLASS_QNAN
+#define FP_NINF    _FPCLASS_NINF
+#define FP_PINF    _FPCLASS_PINF
+#define FP_NDENORM _FPCLASS_ND
+#define FP_PDENORM _FPCLASS_PD
+#define FP_NZERO   _FPCLASS_NZ
+#define FP_PZERO   _FPCLASS_PZ
+#define FP_NNORM   _FPCLASS_NN
+#define FP_PNORM   _FPCLASS_PN
+
 #endif /* Not _NO_OLDNAMES */
+
+/* This require msvcr70.dll or higher. */ 
+#if __MSVCRT_VERSION__ >= 0x0700
+_CRTIMP int __cdecl _set_SSE2_enable (int);
+#endif /* __MSVCRT_VERSION__ >= 0x0700 */
+
 
 #endif /* __STRICT_ANSI__ */
 
 
 #ifndef __NO_ISOCEXT
 #if (defined (__STDC_VERSION__) && __STDC_VERSION__ >= 199901L) \
-	|| !defined __STRICT_ANSI__ || defined __GLIBCPP__
+	|| !defined __STRICT_ANSI__ || defined __cplusplus
 
 #define NAN (0.0F/0.0F)
 #define HUGE_VALF (1.0F/0.0F)

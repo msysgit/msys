@@ -22,9 +22,9 @@
  *  DISCLAIMED. This includes but is not limited to warranties of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Revision: 1.15 $
+ * $Revision: 1.16 $
  * $Author: earnie $
- * $Date: 2003-10-10 15:02:04 $
+ * $Date: 2004-04-19 17:22:40 $
  *
  */
 
@@ -197,11 +197,16 @@ _CRTIMP int __cdecl	remove (const char*);
 _CRTIMP int __cdecl	rename (const char*, const char*);
 _CRTIMP FILE* __cdecl	tmpfile (void);
 _CRTIMP char* __cdecl	tmpnam (char*);
+
+#ifndef __STRICT_ANSI__
 _CRTIMP char* __cdecl	_tempnam (const char*, const char*);
+_CRTIMP int  __cdecl    _rmtmp(void);
 
 #ifndef	NO_OLDNAMES
 _CRTIMP char* __cdecl	tempnam (const char*, const char*);
+_CRTIMP int __cdecl     rmtmp(void);
 #endif
+#endif /* __STRICT_ANSI__ */
 
 _CRTIMP int __cdecl	setvbuf (FILE*, char*, int, size_t);
 
@@ -265,28 +270,28 @@ _CRTIMP int __cdecl	_flsbuf (int, FILE*);
 __CRT_INLINE int __cdecl getc (FILE* __F)
 {
   return (--__F->_cnt >= 0)
-    ?  (int) *__F->_ptr++
+    ?  (int) (unsigned char) *__F->_ptr++
     : _filbuf (__F);
 }
 
 __CRT_INLINE int __cdecl putc (int __c, FILE* __F)
 {
   return (--__F->_cnt >= 0)
-    ?  (int)(*__F->_ptr++ = (char)__c)
+    ?  (int) (unsigned char) (*__F->_ptr++ = (char)__c)
     :  _flsbuf (__c, __F);
 }
 
 __CRT_INLINE int __cdecl getchar (void)
 {
   return (--stdin->_cnt >= 0)
-    ?  (int) *stdin->_ptr++
+    ?  (int) (unsigned char) *stdin->_ptr++
     : _filbuf (stdin);
 }
 
 __CRT_INLINE int __cdecl putchar(int __c)
 {
   return (--stdout->_cnt >= 0)
-    ?  (int)(*stdout->_ptr++ = (char)__c)
+    ?  (int) (unsigned char) (*stdout->_ptr++ = (char)__c)
     :  _flsbuf (__c, stdout);}
 
 #else  /* Use library functions.  */
@@ -347,9 +352,20 @@ _CRTIMP int __cdecl	fsetpos (FILE*, const fpos_t*);
  * Error Functions
  */
 
-_CRTIMP void __cdecl	clearerr (FILE*);
 _CRTIMP int __cdecl	feof (FILE*);
 _CRTIMP int __cdecl	ferror (FILE*);
+
+#ifdef __cplusplus
+inline int __cdecl feof (FILE* __F)
+  { return __F->_flag & _IOEOF; }
+inline int __cdecl ferror (FILE* __F)
+  { return __F->_flag & _IOERR; }
+#else
+#define feof(__F)     ((__F)->_flag & _IOEOF)
+#define ferror(__F)   ((__F)->_flag & _IOERR)
+#endif
+
+_CRTIMP void __cdecl	clearerr (FILE*);
 _CRTIMP void __cdecl	perror (const char*);
 
 
@@ -374,22 +390,23 @@ _CRTIMP int __cdecl	_fputchar (int);
 _CRTIMP FILE* __cdecl	_fdopen (int, const char*);
 _CRTIMP int __cdecl	_fileno (FILE*);
 _CRTIMP int __cdecl	_fcloseall(void);
+_CRTIMP FILE* __cdecl	_fsopen(const char*, const char*, int);
 #ifdef __MSVCRT__
 _CRTIMP int __cdecl	_getmaxstdio(void);
 _CRTIMP int __cdecl	_setmaxstdio(int);
 #endif
-
-#define _fileno(__F) ((__F)->_file)
 
 #ifndef _NO_OLDNAMES
 _CRTIMP int __cdecl	fgetchar (void);
 _CRTIMP int __cdecl	fputchar (int);
 _CRTIMP FILE* __cdecl	fdopen (int, const char*);
 _CRTIMP int __cdecl	fileno (FILE*);
-
-#define fileno(__F) ((__F)->_file)
-
 #endif	/* Not _NO_OLDNAMES */
+
+#define _fileno(__F) ((__F)->_file)
+#ifndef _NO_OLDNAMES
+#define fileno(__F) ((__F)->_file)
+#endif
 
 #endif	/* Not __STRICT_ANSI__ */
 

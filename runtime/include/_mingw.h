@@ -52,6 +52,7 @@
 #  define _CRTIMP  __declspec(dllimport)
 # endif
 # define __DECLSPEC_SUPPORTED
+# define __attribute__(x) /* nothing */
 #else /* __GNUC__ */
 # ifdef __declspec
 #  ifndef __MINGW_IMPORT
@@ -106,8 +107,23 @@
 #define __CRT_INLINE extern __inline__
 #endif
 
-#define __MINGW32_VERSION 3.2
+#ifdef __cplusplus
+# define __UNUSED_PARAM(x) 
+#else 
+# ifdef __GNUC__
+#  define __UNUSED_PARAM(x) x __attribute__((unused))
+# else
+#  define __UNUSED_PARAM(x) x
+# endif
+#endif
+
+#ifndef __MSVCRT_VERSION__
+/*  High byte is the major version, low byte is the minor. */
+# define __MSVCRT_VERSION__ 0x0600
+#endif
+
+#define __MINGW32_VERSION 3.3
 #define __MINGW32_MAJOR_VERSION 3
-#define __MINGW32_MINOR_VERSION 2
+#define __MINGW32_MINOR_VERSION 3
 
 #endif /* __MINGW_H */

@@ -18,13 +18,11 @@
  *  DISCLAIMED. This includes but is not limited to warranties of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Revision: 1.4 $
+ * $Revision: 1.5 $
  * $Author: earnie $
- * $Date: 2002-08-12 13:06:35 $
+ * $Date: 2004-04-19 17:22:40 $
  *
  */
-
-#ifndef	__STRICT_ANSI__
 
 #ifndef	_SHARE_H_
 #define	_SHARE_H_
@@ -38,8 +36,6 @@
 #define	_SH_DENYRD	0x30	/* Deny read */
 #define	_SH_DENYNO	0x40	/* Deny nothing */
 
-#ifndef __STRICT_ANSI__
-
 #ifndef _NO_OLDNAMES
 
 /* Non ANSI names */
@@ -50,9 +46,4 @@
 
 #endif	/* Not _NO_OLDNAMES */
 
-#endif	/* Not __STRICT_ANSI__ */
-
 #endif	/* Not _SHARE_H_ */
-
-#endif	/* Not __STRICT_ANSI__ */
-

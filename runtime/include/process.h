@@ -18,13 +18,11 @@
  *  DISCLAIMED. This includes but is not limited to warranties of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Revision: 1.5 $
+ * $Revision: 1.6 $
  * $Author: earnie $
- * $Date: 2003-09-15 14:18:35 $
+ * $Date: 2004-04-19 17:22:40 $
  *
  */
-
-#ifndef	__STRICT_ANSI__
 
 #ifndef	_PROCESS_H_
 #define	_PROCESS_H_
@@ -154,6 +152,3 @@ _CRTIMP int __cdecl spawnvpe (int, const char*, const char* const*, const char* 
 #endif	/* Not RC_INVOKED */
 
 #endif	/* _PROCESS_H_ not defined */
-
-#endif	/* Not __STRICT_ANSI__ */
-

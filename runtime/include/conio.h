@@ -19,13 +19,11 @@
  *  DISCLAIMED. This includes but is not limited to warranties of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Revision: 1.4 $
+ * $Revision: 1.5 $
  * $Author: earnie $
- * $Date: 2003-02-21 21:19:51 $
+ * $Date: 2004-04-19 17:22:40 $
  *
  */
-
-#ifndef	__STRICT_ANSI__
 
 #ifndef	_CONIO_H_
 #define	_CONIO_H_
@@ -69,5 +67,3 @@ _CRTIMP int __cdecl	ungetch (int);
 #endif	/* Not RC_INVOKED */
 
 #endif	/* Not _CONIO_H_ */
-
-#endif	/* Not __STRICT_ANSI__ */

@@ -22,9 +22,9 @@
  *  DISCLAIMED. This includes but is not limited to warranties of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Revision: 1.4 $
+ * $Revision: 1.5 $
  * $Author: earnie $
- * $Date: 2002-08-12 13:06:35 $
+ * $Date: 2004-04-19 17:22:40 $
  *
  */
 
@@ -33,8 +33,6 @@
 
 /* All the headers include this file. */
 #include <_mingw.h>
-
-#ifndef	__STRICT_ANSI__
 
 #include <windef.h>
 
@@ -117,7 +115,5 @@ typedef PEXCEPTION_REGISTRATION PEXCEPTION_REGISTRATION_RECORD;
 #endif
 
 #endif	/* Not RC_INVOKED */
-
-#endif	/* Not strict ANSI */
 
 #endif	/* _EXCPT_H_ not defined */

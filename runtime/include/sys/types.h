@@ -19,9 +19,9 @@
  *  DISCLAIMED. This includes but is not limited to warrenties of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Revision: 1.6 $
+ * $Revision: 1.7 $
  * $Author: earnie $
- * $Date: 2003-10-10 15:11:05 $
+ * $Date: 2004-04-19 17:22:41 $
  *
  */
 
@@ -45,8 +45,10 @@ typedef	long	time_t;
 #define	_TIME_T_DEFINED
 #endif
 
-
-#ifndef	__STRICT_ANSI__
+#ifndef _TIME64_T_DEFINED
+typedef __int64 __time64_t;
+#define _TIME64_T_DEFINED
+#endif
 
 #ifndef	_OFF_T_
 #define	_OFF_T_
@@ -120,7 +122,6 @@ typedef _ssize_t ssize_t;
 #endif
 #endif /* Not _SSIZE_T_ */ 
 
-#endif	/* Not __STRICT_ANSI__ */
 
 #endif	/* Not RC_INVOKED */
 

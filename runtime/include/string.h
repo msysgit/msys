@@ -18,9 +18,9 @@
  *  DISCLAIMED. This includes but is not limited to warranties of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Revision: 1.7 $
+ * $Revision: 1.8 $
  * $Author: earnie $
- * $Date: 2003-10-10 15:02:04 $
+ * $Date: 2004-04-19 17:22:40 $
  *
  */
 
@@ -140,7 +140,11 @@ _CRTIMP wchar_t* __cdecl _wcsupr (wchar_t*);
 
 #ifdef __MSVCRT__
 _CRTIMP int __cdecl  _wcsncoll(const wchar_t*, const wchar_t*, size_t);
-_CRTIMP int __cdecl  _wcsnicoll(const wchar_t*, const wchar_t*, size_t);
+_CRTIMP int   __cdecl _wcsnicoll(const wchar_t*, const wchar_t*, size_t);
+#if __MSVCRT_VERSION__ >= 0x0700
+_CRTIMP  wchar_t* __cdecl _wcserror(int);
+_CRTIMP  wchar_t* __cdecl __wcserror(const wchar_t*);
+#endif
 #endif
 
 

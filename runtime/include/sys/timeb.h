@@ -18,19 +18,18 @@
  *  DISCLAIMED. This includes but is not limited to warranties of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Revision: 1.4 $
+ * $Revision: 1.5 $
  * $Author: earnie $
- * $Date: 2003-02-21 21:19:52 $
+ * $Date: 2004-04-19 17:22:41 $
  *
  */
-
-#ifndef	__STRICT_ANSI__
 
 #ifndef	_TIMEB_H_
 #define	_TIMEB_H_
 
 /* All the headers include this file. */
 #include <_mingw.h>
+#include <sys/types.h>
 
 #ifndef	RC_INVOKED
 
@@ -58,6 +57,13 @@ struct timeb
 };
 #endif
 
+struct __timeb64
+{
+	__time64_t time;
+	short millitm;
+	short timezone;
+	short dstflag;
+};
 
 #ifdef	__cplusplus
 extern "C" {
@@ -70,6 +76,11 @@ _CRTIMP void __cdecl	_ftime (struct _timeb*);
 _CRTIMP void __cdecl	ftime (struct timeb*);
 #endif	/* Not _NO_OLDNAMES */
 
+/* This requires newer versions of msvcrt.dll (6.10 or higher).  */ 
+#if __MSVCRT_VERSION__ >= 0x0601
+_CRTIMP void __cdecl	_ftime64 (struct __timeb64*);
+#endif /* __MSVCRT_VERSION__ >= 0x0601 */
+
 #ifdef	__cplusplus
 }
 #endif
@@ -77,6 +88,3 @@ _CRTIMP void __cdecl	ftime (struct timeb*);
 #endif	/* Not RC_INVOKED */
 
 #endif	/* Not _TIMEB_H_ */
-
-#endif	/* Not __STRICT_ANSI__ */
-

@@ -18,13 +18,11 @@
  *  DISCLAIMED. This includes but is not limited to warranties of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Revision: 1.4 $
- * $Author: dannysmith $
- * $Date: 2001-11-29 04:26:33 $
+ * $Revision: 1.5 $
+ * $Author: earnie $
+ * $Date: 2004-04-19 17:22:41 $
  *
  */
-
-#ifndef	__STRICT_ANSI__
 
 #ifndef	_LOCKING_H_
 #define	_LOCKING_H_
@@ -47,6 +45,3 @@
 #endif	/* Not NO_OLDNAMES */
 
 #endif	/* Not _LOCKING_H_ */
-
-#endif	/* Not __STRICT_ANSI__ */
-

@@ -15,14 +15,11 @@
  *  DISCLAIMED. This includeds but is not limited to warranties of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Revision: 1.6 $
+ * $Revision: 1.7 $
  * $Author: earnie $
- * $Date: 2003-09-15 14:18:35 $
+ * $Date: 2004-04-19 17:22:40 $
  *
  */
-
-#ifndef	__STRICT_ANSI__
-
 #ifndef _DIRENT_H_
 #define _DIRENT_H_
 
@@ -140,6 +137,3 @@ void __cdecl _wseekdir (_WDIR*, long);
 #endif	/* Not RC_INVOKED */
 
 #endif	/* Not _DIRENT_H_ */
-
-#endif	/* Not __STRICT_ANSI__ */
-

@@ -19,14 +19,11 @@
  *  DISCLAIMED. This includes but is not limited to warranties of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Revision: 1.6 $
+ * $Revision: 1.7 $
  * $Author: earnie $
- * $Date: 2002-11-12 15:29:38 $
+ * $Date: 2004-04-19 17:22:40 $
  *
  */
-
-#ifndef __STRICT_ANSI__
-
 #ifndef _FCNTL_H_
 #define _FCNTL_H_
 
@@ -86,6 +83,3 @@
 #endif	/* Not _NO_OLDNAMES */
 
 #endif	/* Not _FCNTL_H_ */
-
-#endif	/* Not __STRICT_ANSI__ */
-
