@@ -223,13 +223,13 @@ struct termios {
 	speed_t		c_ospeed;
 };
 
-#ifdef CYGWIN_VERSION_DLL_IS_OLD_TERMIOS
+#ifdef DLL_VERSION_IS_OLD_TERMIOS
 #ifdef __GNUC__
 # define __tonew_termios(ti) \
   ({ \
     struct termios *__newti; \
    \
-    if (!CYGWIN_VERSION_DLL_IS_OLD_TERMIOS) \
+    if (!DLL_VERSION_IS_OLD_TERMIOS) \
       __newti = (struct termios *) ti; \
     else \
       { \
@@ -247,12 +247,12 @@ struct termios {
   })
 
 # define __makenew_termios(ti) \
-  (CYGWIN_VERSION_DLL_IS_OLD_TERMIOS ? \
+  (DLL_VERSION_IS_OLD_TERMIOS ? \
    (struct termios *) alloca (sizeof (struct termios)) : (ti))
 
 # define __toapp_termios(toti, fromti) \
   ({ \
-    if (!CYGWIN_VERSION_DLL_IS_OLD_TERMIOS) \
+    if (!DLL_VERSION_IS_OLD_TERMIOS) \
       toti = fromti; \
     else \
       { \

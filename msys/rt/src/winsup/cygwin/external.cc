@@ -89,6 +89,7 @@ fillout_pinfo (pid_t pid, int winpid)
   return &ep;
 }
 
+#ifdef UNREMOVE
 static DWORD
 get_cygdrive_info (char *user, char *system, char *user_flags,
 		   char *system_flags)
@@ -97,7 +98,9 @@ get_cygdrive_info (char *user, char *system, char *user_flags,
 					    system_flags);
   return (res == ERROR_SUCCESS) ? 1 : 0;
 }
+#endif
 
+#ifdef UNREMOVE
 static DWORD
 get_cygdrive_prefixes (char *user, char *system)
 {
@@ -106,6 +109,7 @@ get_cygdrive_prefixes (char *user, char *system)
   DWORD res = get_cygdrive_info (user, system, user_flags, system_flags);
   return res;
 }
+#endif
 
 extern "C" DWORD
 cygwin_internal (cygwin_getinfo_types t, ...)
@@ -135,7 +139,7 @@ cygwin_internal (cygwin_getinfo_types t, ...)
 	return (DWORD) fillout_pinfo (va_arg (arg, DWORD), 0);
 
       case CW_GETVERSIONINFO:
-	return (DWORD) cygwin_version_strings;
+	return (DWORD) dll_version_strings;
 
       case CW_USER_DATA:
 	return (DWORD) &__cygwin_user_data;
@@ -144,12 +148,14 @@ cygwin_internal (cygwin_getinfo_types t, ...)
 	perfile_table = va_arg (arg, struct __cygwin_perfile *);
 	return 0;
 
+#ifdef UNREMOVE
       case CW_GET_CYGDRIVE_PREFIXES:
 	{
 	  char *user = va_arg (arg, char *);
 	  char *system = va_arg (arg, char *);
 	  return get_cygdrive_prefixes (user, system);
 	}
+#endif
 
       case CW_GETPINFO_FULL:
 	return (DWORD) fillout_pinfo (va_arg (arg, pid_t), 1);
@@ -158,6 +164,7 @@ cygwin_internal (cygwin_getinfo_types t, ...)
 	init_exceptions ((exception_list *) arg);
 	return 0;
 
+#ifdef UNREMOVE
       case CW_GET_CYGDRIVE_INFO:
 	{
 	  char *user = va_arg (arg, char *);
@@ -166,6 +173,7 @@ cygwin_internal (cygwin_getinfo_types t, ...)
 	  char *system_flags = va_arg (arg, char *);
 	  return get_cygdrive_info (user, system, user_flags, system_flags);
 	}
+#endif
 
       default:
 	return (DWORD) -1;

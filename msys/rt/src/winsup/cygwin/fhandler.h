@@ -126,7 +126,7 @@ enum
 /* newlib used to define O_NDELAY differently from O_NONBLOCK.  Now it
    properly defines both to be the same.  Unfortunately, we have to
    behave properly the old version, too, to accomodate older executables. */
-#define OLD_O_NDELAY	(CYGWIN_VERSION_CHECK_FOR_OLD_O_NONBLOCK ? 4 : 0)
+#define OLD_O_NDELAY	(DLL_VERSION_CHECK_FOR_OLD_O_NONBLOCK ? 4 : 0)
 
 /* Care for the old O_NDELAY flag. If one of the flags is set,
    both flags are set. */

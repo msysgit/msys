@@ -25,8 +25,8 @@ details. */
 /* This is needed to avoid including path.h which is a pure C++ header. */
 #define PATH_SYMLINK	 MOUNT_SYMLINK
 #define PATH_EXEC	 MOUNT_EXEC
-#define PATH_CYGWIN_EXEC MOUNT_CYGWIN_EXEC
-#define PATH_ALL_EXEC	 (PATH_CYGWIN_EXEC | PATH_EXEC)
+#define PATH_MSYS_EXEC   MOUNT_MSYS_EXEC
+#define PATH_ALL_EXEC	 (PATH_MSYS_EXEC | PATH_EXEC)
 
 /* TODO: Ditto. */
 static BOOL

@@ -35,6 +35,7 @@ extern int cygwin_win32_to_posix_path_list_buf_size (const char *);
 extern int cygwin_posix_to_win32_path_list (const char *, char *);
 extern int cygwin_posix_to_win32_path_list_buf_size (const char *);
 extern int cygwin_conv_to_win32_path (const char *, char *);
+extern char * msys_p2w (char const * const);
 extern int cygwin_conv_to_full_win32_path (const char *, char *);
 extern int cygwin_conv_to_posix_path (const char *, char *);
 extern int cygwin_conv_to_full_posix_path (const char *, char *);
@@ -126,7 +127,9 @@ struct per_process
   char *initial_sp;
 
   /* The offset of these 3 values can never change. */
-  /* magic_biscuit is the size of this class and should never change. */
+  /* magic_biscuit is the size of this class and should never change.
+   * If the size of per_process changes then there is binary incompatibility
+   * with the executables. */
   unsigned long magic_biscuit;
   unsigned long dll_major;
   unsigned long dll_minor;
@@ -177,7 +180,7 @@ struct per_process
      add an item. */
   DWORD unused2[5];
 
-#if defined (__INSIDE_CYGWIN__) || defined (__INSIDE_MSYS__)
+#if defined (__INSIDE_MSYS__)
   ResourceLocks *resourcelocks;
   MTinterface *threadinterface;
 #else

@@ -43,8 +43,8 @@ static BOOL envcache = TRUE;
 static char **lastenviron;
 
 #define ENVMALLOC \
-  (CYGWIN_VERSION_DLL_MAKE_COMBINED (user_data->api_major, user_data->api_minor) \
-	  <= CYGWIN_VERSION_DLL_MALLOC_ENV)
+  (DLL_VERSION_MAKE_COMBINED (user_data->api_major, user_data->api_minor) \
+	  <= DLL_VERSION_MALLOC_ENV)
 
 /* List of names which are converted from dos to unix
    on the way in and back again on the way out.
@@ -78,6 +78,7 @@ void
 win_env::add_cache (const char *in_posix, const char *in_native)
 {
   TRACE_IN;
+  debug_printf("called by %x", ((int *)&in_posix)[-1]);
   posix = (char *) realloc (posix, strlen (in_posix) + 1);
   strcpy (posix, in_posix);
   if (in_native)
@@ -109,7 +110,9 @@ getwinenv (const char *env, const char *in_posix)
   if (!conv_start_chars[(unsigned char)*env])
     return NULL;
 
-  for (int i = 0; conv_envvars[i].name != NULL; i++)
+  for (int i = 0; 
+      /* conv_envars[] is an object of win_env */conv_envvars[i].name != NULL; 
+      i++)
     if (strncmp (env, conv_envvars[i].name, conv_envvars[i].namelen) == 0)
       {
 	win_env * const we = conv_envvars + i;
@@ -206,7 +209,7 @@ envsize (const char * const *in_envp, int debug_print)
   const char * const *envp;
   for (envp = in_envp; *envp; envp++)
     if (debug_print)
-      debug_printf ("%s", *envp);
+      debug_printf ("(%d) %s", (envp - in_envp), *envp);
   return (1 + envp - in_envp) * sizeof (const char *);
 }
 
@@ -233,7 +236,10 @@ _addenv (const char *name, const char *value, int overwrite)
       if (issetenv && strlen (p) >= valuelen)
 	{
 	  strcpy (p, value);
-	  SetEnvironmentVariable (name, value);
+	  char *wvalue = msys_p2w(value);
+	  SetEnvironmentVariable (name, wvalue);
+	  if (wvalue !=value)
+            free (wvalue);
 	  return 0;
 	}
     }
@@ -291,7 +297,10 @@ _addenv (const char *name, const char *value, int overwrite)
   if ((spenv = getwinenv (envhere)))
     spenv->add_cache (value);
 
-  SetEnvironmentVariable (name, value);
+  char *wvalue = msys_p2w(value);
+  SetEnvironmentVariable (name, wvalue);
+  if (wvalue != value)
+    free (wvalue);
   return 0;
 }
 
@@ -314,7 +323,10 @@ putenv (const char *str)
 
   /* Remove str from the environment. */
   unsetenv (str);
+  char *wstr = msys_p2w(str);
   SetEnvironmentVariable(str, NULL);
+  if (wstr != str)
+    free (wstr);
   return 0;
 }
 
@@ -630,22 +642,24 @@ regopt (const char *name)
   TRACE_IN;
   MALLOC_CHECK;
   /* FIXME: should not be under mount */
-  reg_key r (KEY_READ, CYGWIN_INFO_PROGRAM_OPTIONS_NAME, NULL);
+  reg_key r (KEY_READ, REGISTRY_PROGRAM_NAME, NULL);
   char buf[MAX_PATH];
   char lname[strlen(name) + 1];
   strlwr (strcpy (lname, name));
   MALLOC_CHECK;
   if (r.get_string (lname, buf, sizeof (buf) - 1, "") == ERROR_SUCCESS)
     parse_options (buf);
+#ifdef UNREMOVE
   else
     {
       reg_key r1 (HKEY_LOCAL_MACHINE, KEY_READ, "SOFTWARE",
-		  CYGWIN_INFO_CYGNUS_REGISTRY_NAME,
-		  CYGWIN_INFO_CYGWIN_REGISTRY_NAME,
-		  CYGWIN_INFO_PROGRAM_OPTIONS_NAME, NULL);
+		  REGISTRY_PROJECT_NAME,
+		  REGISTRY_PACKAGE_NAME,
+		  REGISTRY_PROGRAM_NAME, NULL);
       if (r1.get_string (lname, buf, sizeof (buf) - 1, "") == ERROR_SUCCESS)
 	parse_options (buf);
     }
+#endif
   MALLOC_CHECK;
 }
 
@@ -790,6 +804,16 @@ char * __stdcall
 winenv (const char * const *envp, int keep_posix)
 {
   TRACE_IN;
+  FIXME;
+  // For some reason keep_posix appears to be reversed in the logic flow.
+  // I'm adding this reversing algorithm because I've just spent days of time
+  // chasing a bug that kept leading me here.
+  keep_posix = keep_posix ? 0 : 1;
+  // The meaning of keep_posix is supposed to allow a msys dll dependent binary
+  // from needing to convert the environment to win32 format.  A ``FIXME'' in
+  // the spawn.cc (spawn_guts) function asks why we need to call this function
+  // for an msys dll dependent process anyway.  This function needs fixed.
+
   int srcplen, envc, envblocklen;
   const char * const *srcp;
   const char **dstp;
@@ -799,9 +823,10 @@ winenv (const char * const *envp, int keep_posix)
   debug_printf ("envp %p, keep_posix %d", envp, keep_posix);
 
   envblocklen = 0;
-
   for (envc = 0; envp[envc]; envc++)
     continue;
+
+  debug_printf ("envc = %d", envc);
 
   const char *newenvp[envc + 1 + FORCED_WINENV_SIZE];
 
@@ -814,22 +839,14 @@ winenv (const char * const *envp, int keep_posix)
 	*dstp = *srcp;
       else
 	{
-#if DO_CPP_NEW
-	  tptr = new char  [strlen (conv->native) + 1];
-#else
 	  tptr = (char *) alloca (strlen (conv->native) + 1);
-#endif
 	  strcpy (tptr, conv->native);
 	  *dstp = tptr;
 	}
       envblocklen += strlen (*dstp) + 1;
       if ((*dstp)[0] == '!' && isdrive ((*dstp) + 1) && (*dstp)[3] == '=')
 	{
-#if DO_CPP_NEW
-	  tptr = new char [strlen (*dstp) + 1];
-#else
 	  tptr = (char *) alloca (strlen (*dstp) + 1);
-#endif
 	  strcpy (tptr, *dstp);
 	  *tptr = '=';
 	  *dstp = tptr;
@@ -844,11 +861,7 @@ winenv (const char * const *envp, int keep_posix)
     if (!saw_forced_winenv[i])
       {
 	srcplen = strlen (forced_winenv_vars[i]);
-#if DO_CPP_NEW
-	tptr = new char [srcplen + MAX_PATH + 1];
-#else
 	tptr = (char *) alloca (srcplen + MAX_PATH + 1);
-#endif
 	strcpy (tptr, forced_winenv_vars[i]);
 	strcat (tptr, "=");
 	if (!GetEnvironmentVariable (forced_winenv_vars[i], tptr + srcplen + 1, MAX_PATH))
@@ -870,12 +883,7 @@ winenv (const char * const *envp, int keep_posix)
 
   /* Create an environment block suitable for passing to CreateProcess.  */
   char *ptr, *envblock;
-#if DO_CPP_NEW
-  envblock = new char [envblocklen + 2 + (MAX_PATH * 256)];
-#else
-  //envblock = (char *) malloc (envblocklen + 2 + (MAX_PATH * 256));
-  envblock = (char *) malloc (envblocklen + 2);
-#endif
+  envblock = (char *) malloc (envblocklen + 2 + (MAX_PATH * 256));
   for (srcp = newenvp, ptr = envblock; *srcp; srcp++)
     {
       srcplen = strlen(*srcp);

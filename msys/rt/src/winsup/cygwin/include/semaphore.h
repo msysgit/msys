@@ -20,7 +20,7 @@ extern "C"
 {
 #endif
 
-#if !(defined (__INSIDE_CYGWIN__) || defined (__INSIDE_MSYS__))
+#if !(defined (__INSIDE_MSYS__))
   typedef void *sem_t;
 #endif
 

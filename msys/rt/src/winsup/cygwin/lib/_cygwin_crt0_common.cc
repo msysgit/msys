@@ -53,10 +53,10 @@ _msys_crt0_common (MainFunc f, per_process *u)
   u->magic_biscuit = sizeof (per_process);
 
   /* cygwin.dll version number in effect at the time the app was created.  */
-  u->dll_major = CYGWIN_VERSION_DLL_MAJOR;
-  u->dll_minor = CYGWIN_VERSION_DLL_MINOR;
-  u->api_major = CYGWIN_VERSION_API_MAJOR;
-  u->api_minor = CYGWIN_VERSION_API_MINOR;
+  u->dll_major = DLL_VERSION_MAJOR;
+  u->dll_minor = DLL_VERSION_MINOR;
+  u->api_major = DLL_VERSION_API_MAJOR;
+  u->api_minor = DLL_VERSION_API_MINOR;
 
   u->ctors = &__CTOR_LIST__;
   u->dtors = &__DTOR_LIST__;

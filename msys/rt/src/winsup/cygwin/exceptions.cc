@@ -21,6 +21,7 @@ details. */
 #include "shared_info.h"
 #include "perprocess.h"
 #include "security.h"
+#include "cygwin_version.h"
 
 #define CALL_HANDLER_RETRY 20
 
@@ -197,10 +198,15 @@ exception (EXCEPTION_RECORD *e,  CONTEXT *in)
 
 #ifdef __i386__
 #define HAVE_STATUS
+  small_printf ("MSYS-%d.%d.%d Build:%s\r\n",
+	cygwin_version.dll_major / 1000, 
+	cygwin_version.dll_major % 1000, 
+	cygwin_version.dll_minor, 
+	cygwin_version.dll_build_date);
   if (exception_name)
     small_printf ("Exception: %s at eip=%08x\r\n", exception_name, in->Eip);
   else
-    small_printf ("Exception %d at eip=%08x\r\n", e->ExceptionCode, in->Eip);
+    small_printf ("Exception: %d at eip=%08x\r\n", e->ExceptionCode, in->Eip);
   small_printf ("eax=%08x ebx=%08x ecx=%08x edx=%08x esi=%08x edi=%08x\r\n",
 	      in->Eax, in->Ebx, in->Ecx, in->Edx, in->Esi, in->Edi);
   small_printf ("ebp=%08x esp=%08x program=%s\r\n",
@@ -504,7 +510,7 @@ handle_exceptions (EXCEPTION_RECORD *e, void *, CONTEXT *in, void *)
 	      if (status_info[i].code == e->ExceptionCode)
 		{
 		  if (!myself->ppid_handle)
-		    system_printf ("Exception: %s", status_info[i].name);
+		    system_printf ("%s\nException: %s", DLL_VERSION_COMBINED, status_info[i].name);
 		  break;
 		}
 	    }

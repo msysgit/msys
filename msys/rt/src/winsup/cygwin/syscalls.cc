@@ -120,14 +120,6 @@ _unlink (const char *ourname)
       goto done;
     }
 
-  /* Check for shortcut as symlink condition. */
-  if (atts & FILE_ATTRIBUTE_READONLY)
-    {
-      int len = strlen (win32_name);
-      if (len > 4 && strcasematch (win32_name + len - 4, ".lnk"))
-	SetFileAttributes (win32_name, atts & ~FILE_ATTRIBUTE_READONLY);
-    }
-
   DWORD lasterr;
   lasterr = 0;
   for (int i = 0; i < 2; i++)
@@ -139,7 +131,7 @@ _unlink (const char *ourname)
 	}
 
       lasterr = GetLastError ();
-      if (i || lasterr != ERROR_ACCESS_DENIED || win32_name.issymlink ())
+      if (i || lasterr != ERROR_ACCESS_DENIED)
 	break;		/* Couldn't delete it. */
 
       /* if access denied, chmod to be writable, in case it is not,
@@ -1155,8 +1147,6 @@ stat_worker (const char *caller, const char *name, struct stat *buf,
       buf->st_ino = hash_path_name (0, real_path.get_win32 ());
       if (atts != -1 && (atts & FILE_ATTRIBUTE_DIRECTORY))
 	buf->st_mode = S_IFDIR;
-      else if (real_path.issymlink ())
-	buf->st_mode = S_IFLNK;
       else if (real_path.issocket ())
 	buf->st_mode = S_IFSOCK;
       else
@@ -1169,8 +1159,6 @@ stat_worker (const char *caller, const char *name, struct stat *buf,
 	  buf->st_mode |= STD_RBITS | STD_XBITS;
 	  if ((atts & FILE_ATTRIBUTE_READONLY) == 0)
 	    buf->st_mode |= STD_WBITS;
-	  if (real_path.issymlink ())
-	    buf->st_mode |= S_IRWXU | S_IRWXG | S_IRWXO;
 	  get_file_attribute (FALSE, real_path.get_win32 (),
 			      NULL, &buf->st_uid, &buf->st_gid);
 	}
@@ -1301,20 +1289,6 @@ _rename (const char *oldpath, const char *newpath)
 
   path_conv real_new (newpath, PC_SYM_NOFOLLOW);
 
-  /* Shortcut hack. */
-  char new_lnk_buf[MAX_PATH + 5];
-  if (real_old.issymlink () && !real_new.error && !real_new.case_clash)
-    {
-      int len_old = strlen (real_old.get_win32 ());
-      if (strcasematch (real_old.get_win32 () + len_old - 4, ".lnk"))
-	{
-	  strcpy (new_lnk_buf, newpath);
-	  strcat (new_lnk_buf, ".lnk");
-	  newpath = new_lnk_buf;
-	  real_new.check (newpath, PC_SYM_NOFOLLOW);
-	}
-    }
-
   if (real_new.error || real_new.case_clash)
     {
       syscall_printf ("-1 = rename (%s, %s)", oldpath, newpath);
@@ -1343,12 +1317,6 @@ _rename (const char *oldpath, const char *newpath)
       real_new.file_attributes () & FILE_ATTRIBUTE_READONLY)
     SetFileAttributesA (real_new.get_win32 (),
 			real_new.file_attributes () & ~FILE_ATTRIBUTE_READONLY);
-
-  /* Shortcut hack No. 2, part 1 */
-  if (!real_old.issymlink () && !real_new.error && real_new.issymlink () &&
-      real_new.known_suffix && strcasematch (real_new.known_suffix, ".lnk") &&
-      (lnk_suffix = strrchr (real_new.get_win32 (), '.')))
-     *lnk_suffix = '\0';
 
   if (!MoveFile (real_old.get_win32 (), real_new.get_win32 ()))
     res = -1;
@@ -1492,7 +1460,7 @@ check_posix_perm (const char *fname, int v)
   if (!allow_ntsec)
     return 0;
 
-  char *root = rootdir (strcpy (new char [(strlen (fname))], fname));
+  char *root = rootdir (strcpy ((char *)alloca (strlen (fname) + 1), fname));
 
   if (!allow_smbntsec
       && ((root[0] == '\\' && root[1] == '\\')
@@ -1633,7 +1601,7 @@ extern "C" int
 _cygwin_istext_for_stdio (int fd)
 {
   syscall_printf ("_cygwin_istext_for_stdio (%d)\n", fd);
-  if (CYGWIN_VERSION_OLD_STDIO_CRLF_HANDLING)
+  if (DLL_VERSION_OLD_STDIO_CRLF_HANDLING)
     {
       syscall_printf (" _cifs: old API\n");
       return 0; /* we do it for old apps, due to getc/putc macros */

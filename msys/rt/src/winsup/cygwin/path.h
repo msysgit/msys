@@ -22,7 +22,6 @@ enum pathconv_arg
   PC_SYM_FOLLOW		= 0x0001,
   PC_SYM_NOFOLLOW	= 0x0002,
   PC_SYM_IGNORE		= 0x0004,
-  PC_SYM_CONTENTS	= 0x0008,
   PC_FULL		= 0x0010,
   PC_NULLEMPTY		= 0x0020,
   PC_CHECK_EA		= 0x0040
@@ -42,11 +41,10 @@ enum case_checking
 enum path_types
 {
   PATH_NOTHING = 0,
-  PATH_SYMLINK = MOUNT_SYMLINK,
   PATH_BINARY = MOUNT_BINARY,
   PATH_EXEC = MOUNT_EXEC,
-  PATH_CYGWIN_EXEC = MOUNT_CYGWIN_EXEC,
-  PATH_ALL_EXEC = (PATH_CYGWIN_EXEC | PATH_EXEC),
+  PATH_MSYS_EXEC = MOUNT_MSYS_EXEC,
+  PATH_ALL_EXEC = (PATH_MSYS_EXEC | PATH_EXEC),
   PATH_ISDISK =	      0x04000000,
   PATH_NOTEXEC =      0x08000000,
   PATH_HAS_SYMLINKS = 0x10000000,
@@ -64,7 +62,6 @@ class path_conv
   DWORD fs_flags;
   DWORD fs_serial;
   DWORD sym_opt; /* additional options to pass to symlink_info resolver */
-  void add_ext_from_sym (symlink_info&);
   void update_fs_info (const char*);
   DWORD drive_type;
   bool is_remote_drive;
@@ -79,13 +76,14 @@ class path_conv
   int hasgood_inode () const {return path_flags & PATH_HASACLS;}  // Not strictly correct
   int has_buggy_open () const {return path_flags & PATH_HASBUGGYOPEN;}
   int isbinary () const {return path_flags & PATH_BINARY;}
-  int issymlink () const {return path_flags & PATH_SYMLINK;}
   int issocket () const {return path_flags & PATH_SOCKET;}
   // FIXME-1.0: 
   //	    Need to change iscygexec based on whether or not the .exe contains
   //	    a msys-1.0.dll or not.  When this fix occurs, changes to spawn.cc
   //	    with a FIXME-1.0 designator will need to occur.
-  int iscygexec () const {return path_flags & PATH_CYGWIN_EXEC;}
+  int iscygexec () const {return ((path_flags & PATH_MSYS_EXEC)
+				  || IsMsys (path));}
+
   executable_states exec_state ()
   {
     extern int _check_for_executable;
@@ -99,7 +97,6 @@ class path_conv
   }
 
   void set_binary () {path_flags |= PATH_BINARY;}
-  void set_symlink () {path_flags |= PATH_SYMLINK;}
   void set_has_symlinks () {path_flags |= PATH_HAS_SYMLINKS;}
   void set_isdisk () {path_flags |= PATH_ISDISK;}
   void set_exec (int x = 1) {path_flags |= x ? PATH_EXEC : PATH_NOTEXEC;}
@@ -131,7 +128,7 @@ class path_conv
     check (src, opt | PC_NULLEMPTY, suffixes);
   }
 
-  path_conv (): path_flags (0), known_suffix (NULL), error (0), devn (0), unit (0), fileattr (0xffffffff) {path[0] = '\0';}
+  path_conv (): path_flags (0), known_suffix (NULL), error (0), devn (0), unit (0), fileattr ((DWORD)-1) {path[0] = '\0';}
 
   inline char *get_win32 () { return path; }
   operator char *() {return path; }

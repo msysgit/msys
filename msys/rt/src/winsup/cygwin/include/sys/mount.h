@@ -23,7 +23,7 @@ enum
   MOUNT_SYSTEM =	0x008,	/* mount point came from system table */
   MOUNT_EXEC   =	0x010,	/* Any file in the mounted directory gets 'x' bit */
   MOUNT_AUTO   =	0x020,	/* mount point refers to auto device mount */
-  MOUNT_CYGWIN_EXEC =	0x040,	/* file or directory is or contains a cygwin
+  MOUNT_MSYS_EXEC =	0x040,	/* file or directory is or contains a cygwin
 				   executable */
   MOUNT_MIXED	=	0x080,	/* reads are text, writes are binary */
 };

@@ -96,7 +96,7 @@ __BEGIN_DECLS
 /* CYGNUS LOCAL: normal protos */
 
 #undef DLLEXPORT
-#if defined (__INSIDE_CYGWIN__) || defined (__INSIDE_MSYS__)
+#if defined (__INSIDE_MSYS__)
 # define DLLEXPORT
 #else
 # define DLLEXPORT __declspec(dllimport)

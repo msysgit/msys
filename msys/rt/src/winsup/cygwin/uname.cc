@@ -37,15 +37,15 @@ uname (struct utsname *name)
   GetComputerNameA (name->nodename, &len);
 
   /* Cygwin dll release */
-  __small_sprintf (name->release, "%d.%d.%d%s(%d.%d/%d/%d)",
+  __small_sprintf (name->release, "%d.%d.%d%s(%d.%d/%d)",
 		   cygwin_version.dll_major / 1000,
 		   cygwin_version.dll_major % 1000,
 		   cygwin_version.dll_minor,
 		   snp ? "s" : "",
 		   cygwin_version.api_major,
 		   cygwin_version.api_minor,
-		   cygwin_version.shared_data,
-		   cygwin_version.mount_registry);
+		   cygwin_version.shared_data
+		   );
 
   /* Cygwin "version" aka build date */
   strcpy (name->version, cygwin_version.dll_build_date);

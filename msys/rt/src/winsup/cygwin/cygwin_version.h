@@ -18,24 +18,23 @@ extern "C" {
 class shared_info *cygwin_getshared (void);
 #endif
 
-struct cygwin_version_info
+struct dll_version_info
 {
   unsigned short api_major;
   unsigned short api_minor;
   unsigned short dll_major;
   unsigned short dll_minor;
   unsigned short shared_data;
-  unsigned short mount_registry;
   const char *dll_build_date;
-  char shared_id[sizeof (CYGWIN_VERSION_DLL_IDENTIFIER) + 64];
+  char shared_id[sizeof (DLL_VERSION_IDENTIFIER) + 64];
 };
 
 #ifndef __cplusplus
-typedef struct cygwin_version_info cygwin_version_info;
+typedef struct dll_version_info dll_version_info;
 #endif
 
-extern cygwin_version_info cygwin_version;
-extern const char *cygwin_version_strings;
+extern dll_version_info cygwin_version;
+extern const char *dll_version_strings;
 #ifdef __cplusplus
 }
 #endif

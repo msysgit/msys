@@ -1,12 +1,18 @@
 /* syslog.cc
 
    Copyright 1996, 1997, 1998, 1999, 2000, 2001 Red Hat, Inc.
+   Copyright 2003 Earnie Boyd <earnie@users.sf.net>
 
 This file is part of Cygwin.
 
 This software is a copyrighted work licensed under the terms of the
 Cygwin license.  Please consult the file "CYGWIN_LICENSE" for
-details. */
+details. 
+ 
+This file is part of MSYS.
+ 
+This software is a copyrighted work licensed under the terms of the
+MSYS license.  Please consolt the file "MSYS_LICENSE" for details.*/
 
 #include "winsup.h"
 #include <stdlib.h>
@@ -21,11 +27,12 @@ details. */
 #include "cygheap.h"
 #include "thread.h"
 
+FIXME;
 /* FIXME: These should probably be in the registry. */
 /* FIXME: The Win95 path should be whatever slash is */
 
-#define WIN95_EVENT_LOG_PATH "C:\\CYGWIN_SYSLOG.TXT"
-#define CYGWIN_LOG_NAME "Cygwin"
+#define WIN95_EVENT_LOG_PATH "C:\\MSYS_SYSLOG.TXT"
+#define MSYS_LOG_NAME "MSYS"
 
 /*
  * Utility function to help enable moving
@@ -37,6 +44,7 @@ get_win95_event_log_path ()
   return WIN95_EVENT_LOG_PATH;
 }
 
+FIXME;
 /* FIXME: For MT safe code these will need to be replaced */
 
 #ifdef _MT_SAFE
@@ -196,6 +204,7 @@ pass_handler::print_va (const char *fmt, va_list list)
     return -1;
 }
 
+FIXME;
 /*
  * syslog: creates the log message and writes to system
  * log (NT) or log file (95). FIXME. WinNT log error messages
@@ -340,7 +349,7 @@ syslog (int priority, const char *message, ...)
       {
 	/* For NT, open the event log and send the message */
 	HANDLE hEventSrc = RegisterEventSourceA (NULL, (process_ident != NULL) ?
-					 process_ident : CYGWIN_LOG_NAME);
+					 process_ident : MSYS_LOG_NAME);
 	if (hEventSrc == NULL)
 	  {
 	    debug_printf ("RegisterEventSourceA failed with %E");

@@ -17,7 +17,7 @@ extern "C"
 #ifndef _CYGWIN_TYPES_H
 #define _CYGWIN_TYPES_H
 
-#if !(defined(__INSIDE_CYGWIN__) || defined (__INSIDE_MSYS__)) || !defined(__cplusplus)
+#if !(defined (__INSIDE_MSYS__)) || !defined(__cplusplus)
 
 typedef void *pthread_t;
 typedef void *pthread_mutex_t;
@@ -55,7 +55,7 @@ typedef class pthread_rwlockattr *pthread_rwlockattr_t;
 
 /* semaphores types */
 typedef class semaphore *sem_t;
-#endif /* __INSIDE_CYGWIN__ */
+#endif /* __INSIDE_MSYS__ */
 #endif /* _CYGWIN_TYPES_H */
 
 #ifdef __cplusplus

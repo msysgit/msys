@@ -31,8 +31,8 @@ reg_key::reg_key (REGSAM access, ...)
   va_list av;
 
   new (this) reg_key (HKEY_CURRENT_USER, access, "SOFTWARE",
-		 CYGWIN_INFO_CYGNUS_REGISTRY_NAME,
-		 CYGWIN_INFO_CYGWIN_REGISTRY_NAME, NULL);
+		 "MinGW",
+		 "MSYS", NULL);
 
   HKEY top = key;
   va_start (av, access);
@@ -45,9 +45,9 @@ reg_key::reg_key (REGSAM access, ...)
 reg_key::reg_key (REGSAM access)
 {
   new (this) reg_key (HKEY_CURRENT_USER, access, "SOFTWARE",
-		 CYGWIN_INFO_CYGNUS_REGISTRY_NAME,
-		 CYGWIN_INFO_CYGWIN_REGISTRY_NAME,
-		 CYGWIN_INFO_CYGWIN_MOUNT_REGISTRY_NAME, NULL);
+		 REGISTRY_PROJECT_NAME,
+		 REGISTRY_PACKAGE_NAME,
+		 REGISTRY_PROGRAM_NAME, NULL);
 }
 
 void
