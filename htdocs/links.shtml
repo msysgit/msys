@@ -45,9 +45,9 @@ of GCC (2.8.x).</li>
 <li> <a href="mailto:kern@caltech.edu">Robert Kern</a>'s instructions
 for <a target="_nw" href="http://starship.python.net/crew/kernr/mingw32/Notes.html">
 Python Extensions with GCC/mingw32</a>.</li>
-<li> <a target="_nw" href="http://www.eGroups.com/group/mingw32/">Old Mingw32 mailing list 
-(use for archived information)</a>
-hosted by <a target="_nw" href="http://www.eGroups.COM">eGroups.COM</a>.</li>
+<li> <a target="_nw" href="http://groups.yahoo.com/group/mingw32/">
+Old Mingw32 mailing list (use for archived information)</a>
+hosted by <a target="_nw" href="http://groups.yahoo.com">groups.yahoo.com</a>.</li>
 <li> <a target="_nw" href="http://mingwacr.sourceforge.net">The Mingw32 Alternate C Runtime Library</a>
 is being developed as a replacement to MSVCRT.DLL. Its purpose was to completely remove the dependency
 of MSVCRT.DLL from Mingw32. It will also allow developers to have access to the source code for the 
@@ -157,6 +157,6 @@ uses Mingw-hosted gcc/binutils.
 </table>
 <!--#include file="ssi/bottombar.html"--><!--#include file="ssi/footer.html"-->
 <address> <br>
-Last revised $Date: 2003-01-26 14:53:11 $ </address>
+Last revised $Date: 2003-01-26 15:30:08 $ </address>
 </body>
 </html>
