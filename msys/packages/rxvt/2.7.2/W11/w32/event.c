@@ -166,6 +166,8 @@ LONG NT_handleMsg(
 	
     switch (message) {
 			/* we'll handle these, later */
+		case WM_SIZE:			
+			Sleep (0);
 		case WM_KILLFOCUS:
 		case WM_SETFOCUS:
 		case WM_QUIT:
@@ -182,7 +184,6 @@ LONG NT_handleMsg(
 #if defined(WIN9X)
 		case WM_SIZING:
 #endif			
-		case WM_SIZE:			
 			QEvent(wineventq,window,message,wParam,lParam);
 			break;
 		case WM_DESTROYCLIPBOARD:

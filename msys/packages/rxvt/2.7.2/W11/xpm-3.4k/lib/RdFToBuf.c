@@ -39,13 +39,13 @@
 
 #include "XpmI.h"
 #include <sys/stat.h>
-#if !defined(FOR_MSW) && !defined(WIN32)
+#if (!defined(FOR_MSW) && !defined(WIN32)) || defined (_unix)
 #include <unistd.h>
 #endif
 #ifndef VAX11C
 #include <fcntl.h>
 #endif
-#if defined(FOR_MSW) || defined(WIN32)
+#if (defined(FOR_MSW) || defined(WIN32)) && !defined (_unix)
 #include <io.h>
 #define stat _stat
 #define fstat _fstat
