@@ -1,3 +1,155 @@
+2002-10-14  Earnie Boyd  <earnie@users.sf.net>
+
+	* Makefile.in: Add components for lib/ddk.  Adjust for autoconf-2.53.
+	* configure.in: Ditto.
+	* lib/Makefile.in: Ditto.
+	* lib/ddk/Makefile.in: Correct installation procedure.  Adjust for
+	autoconf-2.53.
+	* configure: Regenerate.
+
+2002-10-14  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/windows.h: Don't include basetyps.h.
+	* include/objfwd.h: Do include basetyps.h.
+
+2002-10-13  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/objbase.h: Include rpc.h and rpcndr.h
+	before header guard.
+
+2002-10-11  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/olectl.h (PROPPAGEINFO): Change type of
+	field cb to ULONG.
+
+2002-10-11  Steven Edwards  <Steven_Ed4153@yahoo.com>
+
+	* lib/ntdll.def (RtlAcquireResourceExclusive,
+	RtlAcquireResourceShared, RtlDeleteResource,
+	RtlInitializeResource, RtlReleaseResource,
+	RtlTimeToSecondsSince1970) : Added missing exports.
+
+2002-10-08  Heiko Gerdau  <hg@technosis.de>
+
+	* include/oleacc.h: New file.
+	* include/winuser.h (ENDSESSION_LOGOFF) Add define.
+	(OBJID_*) Add defines.
+	* lib/uuid.c: Add DEFINE_GUID for IID_IAccessible.
+	* lib/test.c: Include oleacc.h.
+
+2002-10-06  Casper Hornstrup  <chorns@it.dk>
+
+	* include/ddk: New subdir.
+	* lib/ddk: Ditto.
+	* include/ddk/(atm.h, batclass.h, cfg.h, cfgmgr32.h, d4drvif.h,
+	d4iface.h, ddkmapi.h, hidclass.h, hidpi.h, hidusage.h, mcd.h,
+	miniport.h, minitape.h, mountdev.h, mountmgr.h, ndis.h,
+	ndisquid.h, ndistapi.h, ndisvan.h, netevent.h, netpnp.h,
+	netdev.h, ntapi.h, ntdd8042.h, ntddbeep.h, ntddcdrm.h,
+	ntddcdvd.h, ntddchgr.h, ntdddisk.h, ntddk.h, ntddkbd.h,
+	ntddmou.h, ntddndis.h, ntddpar.h, ntddpcm.h, ntddscsi.h,
+	ntddser.h, ntddstor.h, ntddtape.h, ntddtdi.h, ntddvdeo.h,
+	ntddvol.h, ntifs.h, ntpoapi.h, ntstatus.h, parallel.h, pfhook.h,
+	poclass.h, scsi.h, scsiscan.h, scsiwmi.h, smbus.h, srb.h,
+	storport.h, tdi.h, tdiinfo.h, tdikrnl.h, tdistat.h, tvout.h,
+	upssvc.h, usb.h, usb100.h, usbcamdi.h, usbdi.h, usbioctl.h,
+	usbiodef.h, usbscan.h, usbuser.h, video.h, videoagp.h, win2k.h,
+	winddi.h, winddk.h, winnt4.h, winxp.h, ws2san.h, 
+	xfilter.h): New files.
+	* lib/ddk/(Makefile.in, apcups.def, cfgmgr32.def, dxapi.def,
+	hal.def, hid.def, hidparse.def, mcd.def, ndis.def, ntoskrnl.def,
+	scsiport.def, tdi.def, usbcamd.def, usbcamd2.def, videoprt.def,
+	win32k.def): Ditto.
+
+2002-10-04  Steven Edwards  <Steven_Ed4153@yahoo.com>
+
+	* lib/ntdll.def (NtAccessCheck, NtAdjustPrivilegesToken,
+	NtCreateKey, NtDeleteKey, NtDeleteValueKey, NtEnumerateKey,
+	NtEnumerateValueKey, NtOpenKey, NtOpenProcessToken,
+	NtOpenThreadToken, NtQueryInformationToken, NtQueryKey,
+	NtQueryValueKey, NtSetSecurityObject, NtSetValueKey,
+	RtlAddAccessAllowedAce, RtlCreateAcl,
+	RtlCreateSecurityDescriptor, RtlCreateUnicodeStringFromAsciiz,
+	RtlGetAce, RtlGetControlSecurityDescriptor,
+	RtlGetDaclSecurityDescriptor,RtlGetGroupSecurityDescriptor,
+	RtlGetOwnerSecurityDescriptor,RtlGetSaclSecurityDescriptor,
+	RtlImpersonateSelf, RtlIsTextUnicode, RtlLargeIntegerAdd,
+	RtlLengthSecurityDescriptor, RtlMakeSelfRelativeSD,  
+	RtlMultiByteToUnicodeN RtlMultiByteToUnicodeSize,
+	RtlOpenCurrentUser, RtlSetDaclSecurityDescriptor,
+	RtlSetGroupSecurityDescriptor, RtlSetOwnerSecurityDescriptor,
+	RtlSetSaclSecurityDescriptor, RtlValidSecurityDescriptor,
+	ZwAccessCheck, ZwAdjustPrivilegesToken, ZwCreateKey,
+	ZwDeleteValueKey, ZwEnumerateKey, ZwEnumerateValueKey,
+	ZwOpenKey, ZwOpenProcessToken, ZwOpenThreadToken,
+	ZwQueryInformationToken, ZwQueryKey, ZwQueryValueKey
+	ZwSetSecurityObject, ZwSetValueKey): Added missing exports.
+
+2002-10-04  "KJK::Hyperion"  <noog@libero.it>
+
+	*include/windef.h (WPARAM): Update typedef.
+	(LPARAM): Ditto.
+	(LRESULT): Ditto.
+
+2002-10-04  "KJK::Hyperion"  <noog@libero.it>
+
+	* include/shlobj.h (CSIDL_*): Add defines.
+
+2002-09-24  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/ws2tcpip.h: Throw error if winsock.h, not winsock2.h
+	has been included first.
+
+2002-09-24  René Møller Fonseca  <fonseca@users.sourceforge.net>
+
+	* include/winbase.h (FindFirstFileEx): Fixed ANSI mode.
+	* include/wingdi.h (PFD_SWAP_LAYER_BUFFERS):Added define.
+	* include/winuser.h (AppendMenu[AW]): Fixed prototypes.
+
+2002-09-18  Eric R. Krause  <ekrause_98@users.sourceforge.net>
+
+	* include/winuser.h (DS_SHELLFONT): Define.
+
+2002-09-17  Daniel Schlyder  <daniel@dascdev.net>
+
+	* include/winnt.h (VER_SUITE_BLADE): Define.
+
+2002-09-17  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/shlobj.h (SHGetSpecialFolderPath[AW]):
+	Add _WIN32_IE guard. Correct prototype for wide version.
+	(SHGetFolderPath): Add comment on shfolder.dll.
+	(SHGetFolderLocation): Add prototyope for WinME and W2K.
+	(SHGetFolderPathAndSubDir[AW]): Add prototypes for XP.
+
+2002-09-16  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* lib/shell32.def (SHGetFolderPath[AW]): Add comment.
+	* lib/shfolder.def: New file.
+
+2002-09-12  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/winsock.h (timeval): Guard struct and associated
+	macros with _TIMEVAL_DEFINED.
+	* include/winsock2.h (timeval): Likewise.
+
+2002-09-11  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* lib/shell32.def (SHBindtoParent,SHCreateDirectoryEx[AW],
+	SHCreateProcessAsUserW,SHCreateQueryCancelAutoPlayMoniker,
+	SHCreateShellItem,SHEmptyRecycleBin[AW],
+	SHEnumerateUnreadMailAccountsW,SHExtractIconsW,
+	SHGetDataFromIDList[AW],SHGetDiskFreeSpace[AW],
+	SHGetDiskFreeSpaceEx[AW],SHGetFolderLocation,
+	SHGetFolderPathAndSubDir[AW],SHGetIconOverlayIndex[AW],
+	SHGetNewLinkInfo[AW],SHGetSettings,SHGetUnreadMailCountW,
+	SHInvokePrinterCommand[AW],SHIsFileAvailableOffline,
+	SHLoadNonloadedIconOverlayIdentifiers,
+	SHOpenFolderAndSelectItems,SHParseDisplayName,
+	SHPathPrepareForWrite[AW],SHQueryRecycleBin[AW],
+	SHSetLocalizedName,SHSetUnreadMailCountW,
+	SHUpdateRecycleBinIcon: Add missing stubs.
+
 2002-09-07  Earnie Boyd  <earnie@users.sf.net>
 
 	* include/windef.h (WINVER): Add documentation.
@@ -1014,7 +1166,7 @@
 	* include/rpcnsip.h: Ditto.
 	* include/rpcproxy.h: Ditto.
 	* include/windef.h: Ditto.
-									
+
 2002-01-07  Danny Smith  <dannysmith@users.sourceforge.net>
 
 	* lib/vfw32.def (LIBRARY): Change to MSVFW32.DLL.
@@ -1056,7 +1208,7 @@
 
 	* include/winsvc.h: Add ChangeServiceConfig2() &
 	QueryServiceConfig2() definition
-    
+	
 2001-12-17  Robert Collins  <rbtcollins@hotmail.com>
 
 	* include/commctrl.h: New typedefs for HDLAYOUT and LPHDLAYOUT based
@@ -1117,11 +1269,11 @@
 
 2001-12-04  Danny Smith  <dannysmith@users.sourceforge.net>
 
-        Cleanup merge between SourceForge and winsup CVS.
-        * include/winbase.h (OSVERSIONINFO[AW], OSVERSIONINFOEX[AW]: Remove 
+	Cleanup merge between SourceForge and winsup CVS.
+	* include/winbase.h (OSVERSIONINFO[AW], OSVERSIONINFOEX[AW]: Remove 
 	definitions.
-        * include/winnt.h (VER_NT*): Remove duplicate defines.
-        (VER_SUITE*): Group with VER_PLATFORM*, VER_NT* defines.
+	* include/winnt.h (VER_NT*): Remove duplicate defines.
+	(VER_SUITE*): Group with VER_PLATFORM*, VER_NT* defines.
 
 2001-12-03  Earnie Boyd  <earnie@users.sf.net>
 
@@ -1749,11 +1901,11 @@ Sun Apr  8 20:48:01 2001  Christopher Faylor <cgf@cygnus.com>
 
 2001-04-08  Michael Soderstrom <ichaelsoderstro@hotmail.com>
 
-        * include/commctrl.h Updated TreeView and ListView defines and macros.
+	* include/commctrl.h Updated TreeView and ListView defines and macros.
 
 2001-04-08  Danny Smith <dannysmith@users.sourceforge.net>
 
-        * include/winuser.h (MB_SERVICE_NOTIFICATION): Correct value for NT4
+	* include/winuser.h (MB_SERVICE_NOTIFICATION): Correct value for NT4
 	and above.
 
 2001-03-30  Earnie Boyd  <earnie@users.sourceforge.net>
@@ -1818,7 +1970,7 @@ Sun Apr  8 20:48:01 2001  Christopher Faylor <cgf@cygnus.com>
 	* include/mswsock.h: New file.
 	* include/ws2tcpip.h: New file.
 	* include/winsock.h (IPPROTO_IGMP): New define.
-	(IPPROTO_GGP): Correct value.		
+	(IPPROTO_GGP): Correct value.
 	(SO_* macros): Remove mswsock defines.
 	(TCP_BSDURGENT): Likewise.
 	(IP_* macros): Add comment warning of WinSock2 incompatibility

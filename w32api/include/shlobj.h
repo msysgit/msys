@@ -150,12 +150,36 @@ extern "C" {
 #define CSIDL_COMMON_DESKTOPDIRECTORY	25
 #define CSIDL_APPDATA   26
 #define CSIDL_PRINTHOOD 27
+#define CSIDL_LOCAL_APPDATA 28
 #define CSIDL_ALTSTARTUP    29
 #define CSIDL_COMMON_ALTSTARTUP	30
 #define CSIDL_COMMON_FAVORITES	31
 #define CSIDL_INTERNET_CACHE   32
 #define CSIDL_COOKIES	33
 #define CSIDL_HISTORY	34
+#define CSIDL_COMMON_APPDATA	35
+#define CSIDL_WINDOWS	36
+#define CSIDL_SYSTEM	37
+#define CSIDL_PROGRAM_FILES	38
+#define CSIDL_MYPICTURES	39
+#define CSIDL_PROFILE	40
+#define CSIDL_SYSTEMX86	41
+#define CSIDL_PROGRAM_FILESX86	42
+#define CSIDL_PROGRAM_FILES_COMMON	43
+#define CSIDL_PROGRAM_FILES_COMMONX86	44
+#define CSIDL_COMMON_TEMPLATES	45
+#define CSIDL_COMMON_DOCUMENTS	46
+#define CSIDL_COMMON_ADMINTOOLS	47
+#define CSIDL_ADMINTOOLS	48
+#define CSIDL_CONNECTIONS	49
+#define CSIDL_COMMON_MUSIC	53
+#define CSIDL_COMMON_PICTURES	54
+#define CSIDL_COMMON_VIDEO	55
+#define CSIDL_RESOURCES	56
+#define CSIDL_RESOURCES_LOCALIZED	57
+#define CSIDL_COMMON_OEM_LINKS	58
+#define CSIDL_CDBURN_AREA	59
+#define CSIDL_COMPUTERSNEARME	61
 #define CFSTR_SHELLIDLIST	TEXT("Shell IDList Array")
 #define CFSTR_SHELLIDLISTOFFSET	TEXT("Shell Object Offsets")
 #define CFSTR_NETRESOURCES	TEXT("Net Resource")
@@ -740,11 +764,20 @@ BOOL WINAPI SHGetPathFromIDListA(LPCITEMIDLIST,LPSTR);
 BOOL WINAPI SHGetPathFromIDListW(LPCITEMIDLIST,LPWSTR);
 HRESULT WINAPI SHGetSpecialFolderLocation(HWND,int,LPITEMIDLIST*);
 HRESULT WINAPI SHLoadInProc(REFCLSID);
-/* FIXME/TODO: Only valid for _WIN32_IE >= 400? */
+#if (_WIN32_IE >= 0x0400)
 BOOL WINAPI SHGetSpecialFolderPathA(HWND,LPSTR,int,BOOL);
-BOOL WINAPI SHGetSpecialFolderPathW(HWND,LPSTR,int,BOOL);
-BOOL WINAPI SHGetFolderPathA(HWND,int,HANDLE,DWORD,LPTSTR);
-BOOL WINAPI SHGetFolderPathW(HWND,int,HANDLE,DWORD,LPTSTR);
+BOOL WINAPI SHGetSpecialFolderPathW(HWND,LPWSTR,int,BOOL);
+#endif 
+/* SHGetFolderPath in shfolder.dll on W9x, NT4, also in shell32.dll on W2K */
+BOOL WINAPI SHGetFolderPathA(HWND,int,HANDLE,DWORD,LPSTR);
+BOOL WINAPI SHGetFolderPathW(HWND,int,HANDLE,DWORD,LPWSTR);
+#if (_WIN32_WINDOWS >= 0x0490) || (_WIN32_WINNT >= 0x0500) /* ME or W2K */
+HRESULT WINAPI SHGetFolderLocation(HWND,int,HANDLE,DWORD,LPITEMIDLIST*);
+#endif
+#if (_WIN32_WINNT >= 0x0501) /* XP */
+HRESULT WINAPI SHGetFolderPathAndSubDirA(HWND,int,HANDLE,DWORD,LPCSTR,LPSTR);
+HRESULT WINAPI SHGetFolderPathAndSubDirW(HWND,int,HANDLE,DWORD,LPCWSTR,LPWSTR);
+#endif
 
 #ifdef UNICODE
 typedef IShellExecuteHookW IShellExecuteHook;
@@ -753,9 +786,14 @@ typedef BROWSEINFOW BROWSEINFO,*PBROWSEINFO,*LPBROWSEINFO;
 #define SHBrowseForFolder SHBrowseForFolderW
 #define SHGetDataFromIDList SHGetDataFromIDListW
 #define SHGetPathFromIDList SHGetPathFromIDListW
-/* FIXME/TODO: Only valid for _WIN32_IE >= 400? */
+#if (_WIN32_IE >= 0x0400)
 #define SHGetSpecialFolderPath SHGetSpecialFolderPathW
-#define SHGetFolderPath SHGetFolderPathW
+#endif
+#define SHGetFolderPath SHGetFolderPathW 
+#if (_WIN32_WINNT >= 0x0501)
+#define SHGetFolderPathAndSubDir SHGetFolderPathAndSubDirW
+#endif
+
 #else
 typedef IShellExecuteHookA IShellExecuteHook;
 typedef IShellLinkA IShellLink;
@@ -763,10 +801,14 @@ typedef BROWSEINFOA BROWSEINFO,*PBROWSEINFO,*LPBROWSEINFO;
 #define SHBrowseForFolder SHBrowseForFolderA
 #define SHGetDataFromIDList SHGetDataFromIDListA
 #define SHGetPathFromIDList SHGetPathFromIDListA
-/* FIXME/TODO: Only valid for _WIN32_IE >= 400? */
+#if (_WIN32_IE >= 0x0400)
 #define SHGetSpecialFolderPath SHGetSpecialFolderPathA
-#define SHGetFolderPath SHGetFolderPathA
 #endif
+#define SHGetFolderPath SHGetFolderPathA
+#if (_WIN32_WINNT >= 0x0501)
+#define SHGetFolderPathAndSubDir SHGetFolderPathAndSubDirA
+#endif
+#endif /* UNICODE */
 
 #pragma pack(pop)
 #ifdef __cplusplus
