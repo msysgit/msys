@@ -1,4 +1,4 @@
-<!-- $Id: index.shtml,v 1.35 2002-09-27 11:49:30 earnie Exp $ -->
+<!-- $Id: index.shtml,v 1.36 2002-09-30 14:57:54 earnie Exp $ -->
 
 <html>
 <head>
@@ -36,16 +36,29 @@
 <td valign="top" align="left">
 
 <p>
-MinGW is a collection of header files and import libraries that allow one 
-to use GCC and produce native Windows32 programs that do not rely on any 
-3rd-party DLLs. The current set of tools include <a href="http://gcc.gnu.org/">
+<b>MinGW:</b> A collection of freely available and freely distributable 
+Windows specific header files and import libraries combined with GNU 
+toolsets that allow one to produce native Windows programs that do not 
+rely on any 3rd-party DLLs.
+</p>
+
+<p>
+<b>MSYS:</b> A Minimal SYStem to allow the typical POSIX/Bourne configure
+script to execute to create a Makefile so that you can execute make.
+</p>
+
+<!--
+<p>
+The current set of tools include <a href="http://gcc.gnu.org/">
 GNU Compiler Collection (GCC)</a>, 
 <a href="http://sources.redhat.com/binutils/">GNU Binary Utilities 
 (Binutils)</a>, <a href="http://sources.redhat.com/gdb/"> GNU debugger (Gdb)
 </a>, GNU make, and a assorted other utilities. We are currently working on 
 creating a complete set of Mingw-hosted GNU toolchain, and looking for 
 volunteers. </p>
+-->
 
+<!--
 <p>
 At the basic level, MinGW is a set of include files and import libraries 
 that allow a console-mode or a GUI-mode program to use Microsoft's standard C 
@@ -61,6 +74,7 @@ you (potentially) have full access to both the C Runtime (CRT) and
 Windows32 API functionality. Please see the
 <a href="licensing.shtml">licensing</a> information on the various pieces.
 </p>
+-->
 
 <p><b>Latest MinGW Release:</b>
   <a href="http://prdownloads.sourceforge.net/mingw/MinGW-2.0.0-3.exe">
@@ -134,7 +148,7 @@ width="88" /></a>
 <!--#include virtual="/cgi-bin/showstatsdate.cgi?mingw"--></a>.
 </p>
 <address>
-<br />Last revised $Date: 2002-09-27 11:49:30 $
+<br />Last revised $Date: 2002-09-30 14:57:54 $
 </address>
 
 </body>
