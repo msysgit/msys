@@ -1,3 +1,8 @@
+2000-09-08  Earnie Boyd <earnie_boyd@yahoo.com>
+
+        * all *.shtml files: change the "web page maintainer" from
+	  mumit@users.sourceforge.com to earnie@users.sourceforge.com
+
 2000-03-01  Mumit Khan  <khan@nanotech.wisc.edu>
 
 	* all *.shtml files: Update the local links to use .shtml instead
