@@ -2,15 +2,17 @@ BODY { color: black; background-color: white; }
 
 H1 { text-align: center; }
 
+OL { margin-top: 1em; margin-bottom: 1em;  }
+OL.alpha { list-style-type: upper-alpha; }
+OL.romanum { list-style-type: lower-roman; }
+
+SPAN.bold { font-weight: bold; }
+
 TABLE { border: 0; width: 100%; text-align: left; }
 TABLE.prim { padding: 8; }
 TABLE.sec { padding: 0; }
 
 TD { vertical-align: top; text-align: left; }
 TD.side { background-color: rgb( 238, 238, 238 ); width: 10%; }
-
-OL { margin-top: 1em; margin-bottom: 1em;  }
-OL.alpha { list-style-type: upper-alpha; }
-OL.romanum { list-style-type: lower-roman; }
 
 UL { margin-bottom: 1em; }

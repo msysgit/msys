@@ -1,23 +1,31 @@
-2002-12-26   Nathan Fisher <natbobc@users.sf.net>
+2002-12-27   Nathan Fisher <natbobc@users.sf.net>
+
+	* changed H4 tags to bold type face in index.shtml
+	* removed Release info from index.shtml
+	* created new column for news in index.shtml
+	* added bold class for SPAN tag in mingw.css
+
+2002-12-27   Nathan Fisher <natbobc@users.sf.net>
 	
-	* index.shtml: Fixed incorrect title.
-	* download.shtml: Ditto.
+	* reverted ssi/lsidebar.html back to r1.12
 
 2002-12-26   Nathan Fisher <natbobc@users.sf.net>
 
-	* index.shtml: Moved WinZip caution to download.shtml.
-	Removed some extraneous words.
-	* download.stml: Merged WinZip caution previously in index.shtml.
-	* ssi/lsidebar.html: Changed the order to alphabetic. Except for 
-	home being first.
-	* ssi/release.html: New file.
+	* fixed missing Download link in ssi/lsidebar.html
+	* fixed incorrect title for index.shtml and download.shtml
 
 2002-12-26   Nathan Fisher <natbobc@users.sf.net>
 
-	* mirrors.shtml: Deleted file.
-	* download.shtml: Merged data from mirrors.shtml.
-	* ssi/lsidebar.html: Removed mirror.shmtl link.
-	* ssi/bottombar.html: Ditto.
+	* moved WinZip caution from index.shtml to download.shtml
+	* changed the order of ssi/lsidebar.html to alphabetic. Except for the home being first.
+	* cut some fat from the index.shtml
+	* created ssi/release.html to contain brief info on current release/updates/etc
+
+2002-12-26   Nathan Fisher <natbobc@users.sf.net>
+
+	* merged mirrors.shtml with download.shtml
+	* removed mirror link from ssi/lsidebar.html
+	* removed mirror link from ssi/bottombar.html
 
 2002-12-20  Earnie Boyd  <earnie@users.sf.net>
 

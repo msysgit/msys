@@ -15,7 +15,8 @@
 <table class="prim" cellspacing="6" border="0">
   <tbody>
     <tr>
-      <td class="side"><!--#include file="ssi/lsidebar.html"-->&nbsp;</td>
+      <td class="side"><!--#include file="ssi/lsidebar.html"--><br>
+      </td>
       <td>
       <table class="sec" cellspacing="6" border="0">
         <tbody>
@@ -25,32 +26,31 @@
 <!--                                                                         -->
 <!--                               Main Body                                 -->
 <!--                                                                         -->
-            <h4>MinGW:</h4>
-            <p> A collection of freely available and freely
-distributable Windows specific header files and import libraries
-combined with GNU toolsets that allow one to produce native Windows
-programs that do not rely on any 3rd-party DLLs. </p>
-            <h4>MSYS:</h4>
-            <p> A Minimal SYStem to provide POSIX/Bourne configure
-scripts the ability to execute and create a Makefile used by make.<br>
+            <p><span class="bold">MinGW:</span> A
+collection of freely available and freely distributable Windows
+specific header files and import libraries combined with GNU toolsets
+that allow one to produce native Windows programs that do not rely on
+any 3rd-party DLLs.</p>
+            <p><span class="bold">MSYS:</span> A Minimal
+SYStem to provide POSIX/Bourne configure scripts the ability to execute
+and create a Makefile used by make.<br>
             </p>
-            <h4>Mailing Lists:</h4>
-            <p>We have several <a href="lists.shtml">mailing lists</a>
-you are encouraged to join and participate in. There is a general
-discussion list&nbsp;<a href="mailto:mingw-users@lists.sf.net">mingw-users@lists.sf.net</a>
-for general MinGW questions and a general discussion list&nbsp;<a
+            <p><span class="bold">Mailing Lists:</span> We
+have several <a href="lists.shtml">mailing lists</a> you are encouraged
+to join and participate in. There is a general discussion list&nbsp;<a
+ href="mailto:mingw-users@lists.sf.net">mingw-users@lists.sf.net</a> for
+general MinGW questions and a general discussion list&nbsp;<a
  href="mailto:mingw-msys@lists.sf.net">mingw-msys@lists.sf.net</a> for
 questions more related to MSYS and to using the Minimal SYStem.
 Information for signup and links to the archives can be found by&nbsp;<a
  href="lists.shtml">clicking here</a>. You may search the archives
 using the "Search the archives" form found on the left side of
 every&nbsp;<a href="http://www.mingw.org">www.mingw.org</a> page.</p>
-<!--#include file="ssi/release.html"-->
-<h4>News:</h4>
-<!--#include virtual="news-short.html"-->
 
-<!--                     End of Main Body                                   --> 
+<!--                     End of Main Body                                   -->
 						</td>
+						<td><!--#include virtual="news-short.html"--> 						<br>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -61,8 +61,8 @@ every&nbsp;<a href="http://www.mingw.org">www.mingw.org</a> page.</p>
 <!-- Only the main page has SourceForge logo. -->
 <p><a href="http://sourceforge.net/" target="_nw"><img
  src="http://sourceforge.net/sflogo.php?group_id=2435&amp;type=1" width="88"
- height="31" alt="Powered by SourceForge" border="0"></a>
+ height="31" alt="Powered by SourceForge" border="0"></a> </p>
 <address><br>
-Last revised $Date: 2002-12-26 12:18:43 $ </address>
+Last revised $Date: 2002-12-27 21:00:59 $ </address>
 </body>
 </html>
