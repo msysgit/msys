@@ -1,3 +1,10 @@
+2002-11-16  Earnie Boyd  <earnie@users.sf.net>
+
+	* path.cc (cygwin_conv_to_win32_path): Rework to allow for relative
+	path lists.
+	* spawn.cc (spawn_guts): Rework to allow for path lists.  Modified to
+	use operators new and delete.
+
 2002-11-10  Luke Dunstan  <infidel@users.sf.net>
 
 	* path.cc (cygwin_conv_to_win32_path): Handle a path list with
