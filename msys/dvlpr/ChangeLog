@@ -1,3 +1,7 @@
+2004.02.02  Earnie Boyd  <earnie@users.sf.net>
+
+	* doc/msys/MSYS-1.0.10-changes.rtf: Add info about msys.bat changes.
+
 2004.01.30  Earnie Boyd  <earnie@users.sf.net>
 
 	* bin/msys.bat: Add -geometry specification for rxvt startup to work
