@@ -1,3 +1,37 @@
+2002-11-29 20:59  jrfonseca
+
+	* drmingw/: Makefile.am, debugger.c, dialog.c, exchndl.c, log.c,
+	main.c, misc.c, module.c, symbols.c, doc/drmingw.html: Updated
+	Dr.Mingw HTML documentation.  Updated my email on the sources. 
+	Enabled the build of exchndl.dll.
+
+2002-11-08 13:15  jrfonseca
+
+	* pexports/: AUTHORS, README: Removed deprecated information in
+	README and split the author information into AUTHORS.
+
+2002-11-08 02:56  infidel
+
+	* pexports/: ChangeLog, pexports.c: 2002-11-08	Luke Dunstan 
+	<infidel@users.sourceforge.net>
+	
+		* pexports.c (dump_exports): fix exports incorrectly
+		determined to be forwarders.
+
+2002-11-07 11:06  jrfonseca
+
+	* scripts/dsw2mak.in: Fix bug in the linker output target
+	determination. (Alain Touret)
+
+2002-11-07 10:58  jrfonseca
+
+	* scripts/dsw2mak.in: Support for C++ source files with .cc and
+	.cxx extensions. (Alain Touret)
+
+2002-10-06 10:58  jrfonseca
+
+	* ChangeLog: [no log message]
+
 2002-10-06 10:55  jrfonseca
 
 	* AUTHORS, autogen.sh, configure.ac, dos2unix/dos2unix.c,

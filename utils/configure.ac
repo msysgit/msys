@@ -1,6 +1,6 @@
 # Process this file with autoconf 2.53 or better to produce a configure script.
 
-AC_INIT(mingw-utils,0.1)
+AC_INIT(mingw-utils,0.2)
 AC_PREREQ(2.53)
 AM_INIT_AUTOMAKE(1.6 no-define dist-bzip2)
 #AM_INIT_AUTOMAKE(1.6 foreign no-define no-dependencies no-installman dist-bzip2)
@@ -10,6 +10,7 @@ AM_MAINTAINER_MODE
 
 # Checks for programs.
 AC_PROG_CC
+AC_PROG_CXX
 AC_PROG_INSTALL
 AC_PROG_MAKE_SET
 AC_PROG_AWK
