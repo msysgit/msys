@@ -1,3 +1,7 @@
+2002-01-07  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* lib/vfw32.def (LIBRARY): Change to MSVFW32.DLL.
+
 2002-01-04  TAMURA Kent  <tkent@users.sourceforge.net>
 
 	* include/wingdi.h (BI_JPEG, BI_PNG, GGO_BEZIER,GGO_UNHINTED,
