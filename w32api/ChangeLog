@@ -1,3 +1,7 @@
+2001-12-03  Earnie Boyd  <earnie@users.sf.net>
+
+	* include/accctrl.h: Change \r\n to \n.
+
 2001-11-30  Danny Smith  <dannysmith@users.sourceforge.net>
 
 	* include/ipexport.h (IP_UNIDIRECTIONAL_ADAPTER_ADDRESS):
