@@ -1,3 +1,10 @@
+2002-12-03  Earnie Boyd  <earnie@users.sf.net>
+
+	* path.cc (cygwin_conv_to_win32_path): Add filtering to handle strings
+	of ``http://some.string/'' and ``foo:echo /abcdef'' from being 
+	considered path lists.
+	* shared_info.h (MAX_MOUNTS): Increase from 30 to 128.
+
 2002-12-02  Earnie Boyd  <earnie@users.sf.net>
 
 	* mkvers.sh: Revert accidental checkin.
