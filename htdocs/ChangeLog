@@ -1,3 +1,10 @@
+2003-09-16  Nathan Fisher <natbobc@users.sf.net>
+
+	* mingwfaq.shtml: Add info on C++ file sizes.
+	* lists.shtml: Add forums info.
+	Add List Etiquette.
+	* ssi/lsidebar.html: Update Mailing List & Forums.
+	
 2003-07-21  Earnie Boyd  <earnie@users.sf.net>
 
 	* lists.shtml: Add verbiage about search forms.  Add gmane alternative

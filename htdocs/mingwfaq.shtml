@@ -124,6 +124,8 @@
            </li>
        <li><a href="#faq-languages">What Languages Are Supported?</a>
            </li>
+       <li><a href="#faq-C++size">Why are C++ programs so large?</a>
+           </li>
        <li><a href="#faq-configure">How do I execute configure scripts?</a>
            </li>
        <li><a href="#faq-usingwithmsys">How do I use MinGW with MSYS?</a>
@@ -138,8 +140,7 @@
            </li>
        <li><a href="#faq-cross">How can I build a cross compiler?</a>
            </li>
-       <li><a href="#faq-mingw32-gcc.exe">
-           What's the difference between gcc.exe and mingw32-gcc.exe?"</a>
+       <li><a href="#faq-mingw32-gcc.exe">What's the difference between gcc.exe and mingw32-gcc.exe?</a>
            </li>
        <li><a href="#faq-Makefile">What is a Makefile and how do I create one?</a>
            </li>
@@ -313,7 +314,8 @@
               import libraries related to WIN32 API access,
               is released under
               </li>
-          <li><a href="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/mingw/w32api/README.w32api?rev=HEAD&amp;content-type=text/vnd.viewcvs-markup">
+          <li>
+<a href="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/mingw/w32api/README.w32api?rev=HEAD&amp;content-type=text/vnd.viewcvs-markup">
                 copyright</a>
               . The copyright agreement states
               no restrictions are placed on programs or
@@ -403,6 +405,27 @@
          And last, but not least Pascal is available as a
          contributed package (GPC).</p>
 
+
+      <p><a href="#index">Back to index</a></p>
+
+<hr>
+
+      <h3><a name="faq-C++size">
+          Why is my C++ binary so large?</a></h3>
+
+      <p>C++ programs using the Standard Template Library
+	(ie/ #include &lt;iostream&gt;) cause a large part of the
+	library to be statically linked into the binary.  The need to
+	statically link the stdc++ into the binary is two fold. First
+	MSVCRT.dll does not contain C++ stdlib constructs.  Second
+	the legal implications of generating a libstdc++.dll are
+	restricted by the licensing associated with the library.  If
+	you wish to keep your file size down use strip to remove
+	debugging information and other verbatim found in the 
+	binary.</p>
+	<code>
+         strip --strip-all SOMEBINARY.exe
+         </code>
 
       <p><a href="#index">Back to index</a></p>
 
@@ -756,7 +779,7 @@
             all: $(EXE)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;                             # all is dependent on $(EXE) to be complete<br>
            <br>
            $(EXE): $(OBJ)&nbsp;&nbsp;                     # $(EXE) is dependent on all of the files in $(OBJ) to exist<br>
-           &nbsp;&nbsp;&nbsp;&nbsp; $(CC) $(OBJ) $(LDFLAGS)<br>
+           &nbsp;&nbsp;&nbsp;&nbsp; $(CC) $(OBJ) $(LDFLAGS) -o $@<br>
            <br>
            .PHONY : clean&nbsp;&nbsp;                    # .PHONY ignores files named clean<br>
            clean:<br>
@@ -847,32 +870,16 @@
 <!--#include file="ssi/bottombar.html"--><!--#include file="ssi/footer.html"-->
 
 
-
-
-
- 
-
 <p>
- <a href="http://validator.w3.org/check/referer"><img border="0" src="http://www.w3.org/Icons/valid-html401" alt="Valid HTML 4.01!" height="31" width="88"></a>
+ <a href="http://validator.w3.org/check/referer">
+<img border="0" src="http://www.w3.org/Icons/valid-html401" alt="Valid HTML 4.01!" height="31" width="88"></a>
  <a href="http://jigsaw.w3.org/css-validator/">
   <img style="border: 0pt none ; width: 88px; height: 31px;" src="http://jigsaw.w3.org/css-validator/images/vcss" alt="Valid CSS!"></a>
 </p>
-
-
-
-
-
-
-
  
 <address>
   <br>
-  Last revised $Date: 2003-03-17 04:27:50 $
+  Last revised $Date: 2003-09-16 18:30:47 $
  </address>
-
-
-
-
-
 
 </body></html>

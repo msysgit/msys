@@ -14,7 +14,7 @@
 </head>
 <body link="#000099" vlink="#990099" alink="#000099">
 
-<h1>Mailing Lists</h1>
+<h1>Mailing Lists and Forums</h1>
 
 <table class="prim" cellspacing="6" border="0">
   <tbody>
@@ -26,16 +26,28 @@
         <tbody>
           <tr>
             <td>
-<!-- ======================================================================= -->
-<!--                                                                         -->
-<!--                               Main Body                                 -->
-<!--                                                                         -->
+<!-- ====================================================================== -->
+<!--                                                                        -->
+<!--                             Main Body                                  -->
+<!--                                                                        -->
 <p>
 There are several mailing lists available for the MinGW users; the 
 searchable on-line archives provide a very useful resource.  You can either
 use the search form to the left of this page or you can click on the archive 
 link and use the search from in the upper left corner of the SF site.  If the
 archive links appear broken, it is due to SF Maintenance on the site.
+</p>
+
+<h3>Mailing List Etiquette</h3>
+<p>
+MinGW is an open source project, as such people are dedicating their SPARE 
+time to the goals and development of the project, please keep that in mind 
+when posting.  The lists are for the benefit of the MinGW community, judge
+yourself accordingly in both posting and responding to others.  Please do 
+not post any comments which slander this project or any other as they will
+not be tolerated.  Because there is a great deal of information in the lists
+please use the search facility prior to posting a question to ensure the 
+question has not already been answered in a previous thread.
 </p>
 
 
@@ -45,40 +57,56 @@ archive links appear broken, it is due to SF Maintenance on the site.
 <strong>MinGW-users</strong></a>: 
 This is the general mailing list for MinGW users.  Please search the
 <a href="http://sourceforge.net/mailarchive/forum.php?forum=mingw-users">
-<strong>archives</strong></a> before posting. <a href="http://search.gmane.org/search.php?query=&email=&group=gmane.comp.gnu.mingw.user&sort=date">gmane alternative search</a>
-</p><p>
+<strong>archives</strong></a> before posting.
+<a href="http://search.gmane.org/search.php?query=&email=&group=gmane.comp.gnu.mingw.user&sort=date">gmane alternative search</a>
+</p>
+
+<p>
 <a href="http://lists.sourceforge.net/mailman/listinfo/mingw-msys">
 <strong>MinGW-msys</strong></a>: 
 This is the general mailing list for MSYS users.  Please search the
 <a href="http://sourceforge.net/mailarchive/forum.php?forum=mingw-msys">
-<strong>archives</strong></a> before posting. <a href="http://search.gmane.org/search.php?query=&email=&group=gmane.comp.gnu.mingw.msys&sort=date">gmane alternative search</a>
-</p><p>
+<strong>archives</strong></a> before posting.
+<a href="http://search.gmane.org/search.php?query=&email=&group=gmane.comp.gnu.mingw.msys&sort=date">gmane alternative search</a>
+</p>
+
+<p>
 <a href="http://lists.sourceforge.net/mailman/listinfo/mingw-dvlpr">
 <strong>MinGW-dvlpr</strong></a>: 
 This is a private mailing list for MinGW developers.  You can check what
 the developers are discussing at the
 <a href="http://sourceforge.net/mailarchive/forum.php?forum=mingw-dvlpr">
-<strong>archives</strong></a>.  <a href="http://search.gmane.org/search.php?query=&email=&group=gmane.comp.gnu.mingw.devel&sort=date">gmane alternative search</a>
-</p><p>
+<strong>archives</strong></a>.
+<a href="http://search.gmane.org/search.php?query=&email=&group=gmane.comp.gnu.mingw.devel&sort=date">gmane alternative search</a>
+</p>
+
+<p>
 <a href="http://lists.sourceforge.net/mailman/listinfo/mingw-patches">
 <strong>MinGW-patches</strong></a>: 
 This list is to be used to discuss patches.  You can check previous
 patches in the
 <a href="http://sourceforge.net/mailarchive/forum.php?forum=mingw-patches">
-<strong>archives</strong></a>.  <a href="http://search.gmane.org/search.php?query=&email=&group=gmane.comp.gnu.mingw.patches&sort=date">gmane alternative search</a>
-</p><p>
+<strong>archives</strong></a>.
+<a href="http://search.gmane.org/search.php?query=&email=&group=gmane.comp.gnu.mingw.patches&sort=date">gmane alternative search</a>
+</p>
+
+<p>
 <a href="http://lists.sourceforge.net/mailman/listinfo/mingw-editor">
 <strong>MinGW-editor</strong></a>: 
 This list is a private list used to discuss changes to the MinGW site and 
 documentation.  You can check out proposed changes in the 
 <a href="http://sourceforge.net/mailarchive/forum.php?forum=mingw-editor">
 <strong>archives</strong></a>.
-</p><p>
+</p>
+
+<p>
 <a href="http://lists.sourceforge.net/mailman/listinfo/mingw-cvs">
 <strong>MinGW-cvs</strong></a>: 
 This is a notification list for cvs changes.  There are no archives for this
 list.
-</p><p>
+</p>
+
+<p>
 <a href="http://lists.sourceforge.net/mailman/listinfo/mingw-notify">
 <strong>MinGW-notify</strong></a>: 
 This is a notification list for sourceforge.net control changes.
@@ -87,6 +115,59 @@ There are
 <strong>archives</strong></a> so you can know what happened to a bug report
 or a patch, etc.
 </p>
+
+<h3>Forums</h3>
+
+<p>
+You are welcome to use theses forums for the benefit of discussing particulars about the referenced link. You are encouraged to encourage each other to stay On Topic. There is no guarantee that an expert is monitoring this list. However, the MinGW team will consider all questions important and will hope to direct you in some way to an answer. These forums should eventually show up in the nntp.sourceforge.net news service. The only supported clients at this time for this service are Outlook and Mozilla. The SourceForge news service is still in beta mode.
+</p>
+
+<ul>
+<li>
+<a href="http://sourceforge.net/forum/forum.php?forum_id=286532" 
+target="_blank">ADA</a>
+</li>
+
+<li>
+<a href="http://sourceforge.net/forum/forum.php?forum_id=286529" 
+target="_blank">C/C++</a>
+</li>
+
+<li>
+<a href="http://sourceforge.net/forum/forum.php?forum_id=286531" 
+target="_blank">Fortran</a>
+</li>
+
+<li>
+<a href="http://sourceforge.net/forum/forum.php?forum_id=286644" 
+target="_blank">HowtoPPD</a>
+</li>
+
+<li>
+<a href="http://sourceforge.net/forum/forum.php?forum_id=286533" 
+target="_blank">Java</a>
+</li>
+
+<li>
+<a href="http://sourceforge.net/forum/forum.php?forum_id=286534" 
+target="_blank">Pascal</a>
+</li>
+
+<li>
+<a href="http://sourceforge.net/forum/forum.php?forum_id=7134" 
+target="_blank">StupidTechiQuestions</a>
+</li>
+
+<li>
+<a href="http://sourceforge.net/forum/forum.php?forum_id=290275" 
+target="_blank">Unix2Windows2Unix</a>
+</li>
+
+<li>
+<a href="http://sourceforge.net/forum/forum.php?forum_id=286641" 
+target="_blank">Windows API</a>
+</li>
+</ul>
 
 <h3> Other Lists of Interest </h3>
 <p>
@@ -121,6 +202,6 @@ The GNU binutils groups maintains a few mailing lists.
        alt="Valid CSS!"></a>
 </p>
 <address> <br>
-Last revised $Date: 2003-07-21 22:28:25 $ </address>
+Last revised $Date: 2003-09-16 18:30:47 $ </address>
 </body>
 </html>
