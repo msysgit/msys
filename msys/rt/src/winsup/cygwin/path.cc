@@ -2885,11 +2885,7 @@ readlink (const char *path, char *buf, int buflen)
       return -1;
     }
 
-#if __GNUC__ < 3
   int len = min (buflen, (int) strlen (pathbuf.get_win32 ()));
-#else
-  int len = std::min (buflen, (int) strlen (pathbuf.get_win32 ()));
-#endif
   memcpy (buf, pathbuf.get_win32 (), len);
 
   /* errno set by symlink.check if error */
