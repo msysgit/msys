@@ -1,5 +1,9 @@
 2003-01-05   Nathan Fisher <natbobc@users.sf.net>
 
+	* download.shtml: Changed title to "MinGW: Download"
+
+2003-01-05   Nathan Fisher <natbobc@users.sf.net>
+
 	* index.shtml: Changed "News:" P tag to class centre 
 	* index.shtml: Changed "News:" to "Latest News:"
 	* mingw.css: Created P class centre

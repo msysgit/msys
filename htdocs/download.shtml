@@ -13,7 +13,7 @@
 
 <body link="#000099" vlink="#990099" alink="#000099">
 
-<h1 align="center">MinGW Download</h1>
+<h1 align="center">MinGW: Download</h1>
 
 <table class="prim" cellspacing="6" border="0">
   <tbody>
@@ -172,6 +172,6 @@ for more detail). </p>
 </table>
 <!--#include file="ssi/bottombar.html"--><!--#include file="ssi/footer.html"-->
 <address> <br>
-Last revised $Date: 2002-12-27 22:20:32 $ </address>
+Last revised $Date: 2003-01-05 21:20:08 $ </address>
 </body>
 </html>
