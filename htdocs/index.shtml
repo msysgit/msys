@@ -35,7 +35,7 @@
 
 <tr><td colspan="2"><a href="index.shtml">Mingw Home</a></td></tr>
 
-<tr><td colspan="2"><a href="https://sourceforge.net/project/showfiles.php?group_id=2435&release_id=15084">File Release</a></td></tr>
+<tr><td colspan="2"><a href="https://sourceforge.net/project/showfiles.php?group_id=2435&release_id=15084">Download</a></td></tr>
 
 <tr><td colspan="2"><a href="docs.shtml">Documentation</a></td></tr>
 
@@ -204,7 +204,7 @@ width="88" /></a>
 <!--#include virtual="/cgi-bin/stats.cgi?mingw"--> visitors since
 <!--#include virtual="/cgi-bin/showstatsdate.cgi?mingw"--></a>.
 </p>
-$Id: index.shtml,v 1.9 2000-11-02 01:16:37 pgarceau Exp $
+$Id: index.shtml,v 1.10 2000-11-04 14:07:15 pfalcon Exp $
 </body>
 </html>
 
