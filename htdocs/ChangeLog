@@ -1,3 +1,10 @@
+
+Tue Dec 26 13:39:25 PST 2000  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	* ssi/lsidebar.html: Revert previous change
+	* ssi/bottombar.html: ditto
+	* who.shtml: Instruct user to SF memberlist.php
+
 2000-12-22  Paul Sokolovsky  <Paul.Sokolovsky@technologist.com>
 
 	* docs.shtml: Added link to faq.shtml
