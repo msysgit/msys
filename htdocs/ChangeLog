@@ -1,3 +1,11 @@
+2003-02-12  Nathan Fisher <natbobc@users.sf.net>
+
+	* bugs.shtml: Add info for contacting package maintainers.
+
+2003-02-12  Nathan Fisher <natbobc@users.sf.net>
+
+	* MINGW-MONTHLY-USERS.txt: Add reference to mingw-utils.
+
 2003-02-10  Earnie Boyd  <earnie@users.sf.net>
 
 	* ssi/release.html: Modify versions for bison snapshot.
