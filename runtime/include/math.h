@@ -18,9 +18,9 @@
  *  DISCLAMED. This includes but is not limited to warranties of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Revision: 1.3 $
+ * $Revision: 1.4 $
  * $Author: dannysmith $
- * $Date: 2001-06-26 02:00:32 $
+ * $Date: 2001-06-26 02:55:56 $
  *
  */
 
@@ -171,25 +171,6 @@ double yn (int, double);
 #endif	/* Not _NO_OLDNAMES */
 
 #endif	/* Not __STRICT_ANSI__ */
-
-/*
- * IEEE recommended functions 
- * Also in float.h.  Keep in sync.
- */
-
-#ifndef __MATH_IEEE
-#define __MATH_IEEE
-double	_chgsign	(double);  /* not ANSI */
-double	_copysign	(double, double); /* C99 */
-double	_logb		(double); /* C99 */
-double	_nextafter	(double, double); /* C99 */
-double	_scalb		(double, long); /* C99 */
-
-int	_finite		(double); /* C99 */
-int	_fpclass	(double); /* not ANSI: C99 has fpclassify */
-int	_isnan		(double); /* C99 */
-#endif /* __MATH_IEEE */
-
 
 #ifdef __cplusplus
 }
