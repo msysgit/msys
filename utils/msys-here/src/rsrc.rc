@@ -1,0 +1,17 @@
+/********************************************************************
+*	Module:	rsrc.rc. This is part of MSYS Here.
+*
+*	Purpose:	Resource file.
+*
+*	License:	Public domain.
+*			2002 Manu B.
+*
+*	Revisions:
+*
+********************************************************************/
+#ifdef __MINGW32__
+#include <windows.h>
+#endif
+#include "rsrc.h"
+
+500 ICON MOVEABLE PURE LOADONCALL DISCARDABLE "m.ico"

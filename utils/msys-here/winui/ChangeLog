@@ -1,0 +1,12 @@
+2002-12-21  Manu B  <manubee@users.sourceforge.net>
+	
+	* include/winui.h: Rely on MinGW headers.
+	
+2002-12-06  Manu B  <manubee@users.sourceforge.net>
+
+	* src/CFile.cpp: Moved from Visual-MinGW.
+	* src/CList.cpp: Moved from Visual-MinGW.
+	* src/winui.cpp: Moved from Visual-MinGW.
+	* src/CFile.cpp (CPath::SetPath) changes reverted.
+	* ChangeLog started: WinUI version 1.0a.
+	WinUI becomes Public Domain.
