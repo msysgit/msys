@@ -1,0 +1,36 @@
+#! /bin/sh
+# p2w
+# posix to windows path conversion
+# Copyright (C) 2005 Earnie Boyd
+#
+# This script is to be used by developers of MSYS and is offered to the public
+# for that purpose only.  Other uses of this script must be given by the
+# copyright holder.  Send email to earnie@users.sf.net with a ``p2w script
+# usage - request for permission'' in the subject.
+
+for I in $@
+do
+  if [ ! -z "$needsp" ]; 
+  then
+    echo -n ' '; 
+  else
+    needsp='true'; 
+  fi
+  if [ ! -d $I ]; 
+  then
+    A=`dirname $I`;
+    B=`basename $I`;
+    while ([ ! -d $A ] && [ ! -z "$A" ]); 
+    do
+      C=`basename $A`;
+      A=`dirname $A`;
+      B="$C/$B"; 
+    done;
+    if [ -z "$A" ]; then
+      A='/'; fi;
+    rval="`cd $A && pwd -W`/$B"; 
+  else
+    rval=`cd $I && pwd -W`;
+  fi
+  echo -n $rval;
+done
