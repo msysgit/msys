@@ -1,4 +1,11 @@
 
+2001-02-10  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	* faq.shtml: Change the title to Download and use target="_nw" for
+	links.
+	* ssi/lsidebar.html: (Download): Point to faq.shtml
+	* ssi/bottombar.html: ditto.
+
 Tue Jan 30 19:10:03 PST 2001  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	* links.shtml: Remove some dead links.  Add a target="_nw" throughout.

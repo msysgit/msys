@@ -2,13 +2,13 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
- <title>FAQ</title>
+ <title>Download</title>
  <meta name="Author" content="MinGW Developers">
  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 </head>
 <body bgcolor="white" text="black" link="#0000EE" vlink="#551A8B" alink="red">
 
-<h1 align="center">FAQ</h1>
+<h1 align="center">Download</h1>
 
 <!-- two-column format: left sidebar and the body -->
 <table border="0" cellspacing="6" cellpadding="8">
@@ -47,7 +47,7 @@ of MinGW is GNU packages developed in collaborative way), and quick bugs
 turnaround. From the other side, users can make use of this flexible
 maintanance scheme by deciding themselves what and when they install or
 upgrade. Of course new users may be overwhelmed with this possibilities
-- that's why this FAQ is writtem.
+- that's why this document is written.
 
 </p>
 
@@ -56,7 +56,7 @@ Download location
 </h3>
 <p>
 Standard MinGW download page is
-<a href="http://sourceforge.net/project/showfiles.php?group_id=2435&release_id=15084">
+<a target="_nw" href="http://sourceforge.net/project/showfiles.php?group_id=2435&release_id=15084">
 http://sourceforge.net/project/showfiles.php?group_id=2435&release_id=15084</a>.
 This page lists all available MinGW pacakges, their releases, and specific
 files to download. Also (and most importantly), it gives access to
@@ -74,9 +74,9 @@ be installed before they will work).
 
 <p>
 With this warning in mind, here's direct link leading to download directory:
-<a href="http://download.sourceforge.net/mingw/">
+<a target="_nw" href="http://download.sourceforge.net/mingw/">
 http://download.sourceforge.net/mingw/</a> (HTTP), 
-<a href="ftp://download.sourceforge.net/pub/sourceforge/mingw/">
+<a target="_nw" href="ftp://download.sourceforge.net/pub/sourceforge/mingw/">
 ftp://download.sourceforge.net/pub/sourceforge/mingw/</a> (FTP).
 
 </p>
