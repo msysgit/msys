@@ -1,0 +1,4 @@
+2002.05.05  Earnie Boyd  <earnie@users.sf.net>
+
+	* ChangeLog.MSYS: New file.
+	* diff.texi: Fix incorrect macro usage.
