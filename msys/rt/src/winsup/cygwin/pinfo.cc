@@ -64,11 +64,16 @@ set_myself (pid_t pid, HANDLE h)
   char buf[30];
   __small_sprintf (buf, "cYg%8x %x", _STRACE_INTERFACE_ACTIVATE_ADDR,
 		   &strace.active);
+#ifndef DEBUGGING
   if (strace.active)
+#endif
     OutputDebugString (buf);
 
   (void) GetModuleFileName (NULL, myself->progname,
 			    sizeof(myself->progname));
+#ifdef DEBUGGING
+  _STRACE_ON
+#endif
   if (strace.active)
     {
       extern char osname[];
