@@ -144,7 +144,8 @@ function parse_dsp(infile, outfile, i) {
 	debug = 0
 
 	# this specifies a prefix to the binutils and gcc binaries
-	prefix = "@host_alias@-"
+	#prefix = "@host_alias@-"
+	prefix = ""
 
 	# this specifies the name of the 'rm -f' or equivalent command
 	rm = "rm -f"

@@ -1,3 +1,37 @@
+2002-12-02 22:12  jrfonseca
+
+	* drmingw/include/: demangle.h, dis-asm.h, libcoff.h,
+	aout/aout64.h, aout/stab.def, aout/stab_gnu.h, coff/internal.h:
+	Updated the BFD headers from lates binutils.
+
+2002-12-02 21:45  jrfonseca
+
+	* drmingw/Makefile.am: Small chnages in the example rules to make
+	them smaller.
+
+2002-12-02 21:40  jrfonseca
+
+	* drmingw/: COPYING, COPYING.LIB: Dual license Dr.Mingw code under
+	GPL and LGPL, to match binutils license.
+
+2002-12-02 21:38  jrfonseca
+
+	* drmingw/: exchndl.c, symbols.c: Small cosmetic changes to match
+	latest binutils code.
+
+2002-12-01 14:02  jrfonseca
+
+	* ChangeLog, configure.ac, drmingw/Makefile.am,
+	drmingw/samples/test-c.c, drmingw/samples/test-cxx.cxx,
+	drmingw/samples/test-segv.cpp, drmingw/samples/test-segv.cxx,
+	drmingw/samples/test.c, drmingw/samples/testcpp.cxx,
+	pexports/Makefile.am, redir/Makefile.am, res2coff/Makefile.am,
+	scripts/Makefile.am: Bumped version number to mingw-utils-0.2. 
+	Documentation of most packages, Dr.MinGW samples and exchndl.dll
+	are now all installed with 'make install'.  Renamed Dr.MinGW
+	samples to match documentation (as it would be too much trouble to
+	do it otherwise due to the existing screenshots).
+
 2002-11-29 20:59  jrfonseca
 
 	* drmingw/: Makefile.am, debugger.c, dialog.c, exchndl.c, log.c,

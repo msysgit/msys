@@ -2,8 +2,7 @@
 
 AC_INIT(mingw-utils,0.2)
 AC_PREREQ(2.53)
-AM_INIT_AUTOMAKE(1.6 no-define dist-bzip2)
-#AM_INIT_AUTOMAKE(1.6 foreign no-define no-dependencies no-installman dist-bzip2)
+AM_INIT_AUTOMAKE(1.6 no-define)
 AC_CONFIG_SRCDIR(Makefile.am)
 AM_CONFIG_HEADER(config.h)
 AM_MAINTAINER_MODE
@@ -14,6 +13,7 @@ AC_PROG_CXX
 AC_PROG_INSTALL
 AC_PROG_MAKE_SET
 AC_PROG_AWK
+AC_PROG_RANLIB
 
 AM_PROG_LEX
 AC_PROG_YACC
@@ -23,10 +23,6 @@ AC_PATH_TOOL(WINDRES,windres,
 	[AC_MSG_WARN(Could not find a windres tool in your PATH. Will not be able to compile drmingw.)]
 )
 AC_SUBST(WINDRES)
-
-# Libtool not yet support.
-#AC_LIBTOOL_WIN32_DLL
-#AC_PROG_LIBTOOL
 
 # Checks for header files.
 AC_HEADER_STDC
