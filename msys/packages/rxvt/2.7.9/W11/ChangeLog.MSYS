@@ -1,0 +1,10 @@
+2004-03-16  Earnie Boyd  <earnie@users.sf.net>
+
+	* X11/Xlib.h (XFillRectangles): Add prototype.
+	* Makefile: Remove cygwin specific gcc flag.
+	* wrap/Makefile: Ditto.
+	* w32/xlib.c (XFillRectangles): New function.
+	* wrap/xwrappers.c (XFillRectangles): Ditto.
+	* wrap/rxvt.rc (IDI_RXVT ICON): Modify to use M.ico.
+	* xpm-3.4k/lib/RdFToBuf.c: Make sure MSYS uses unistd.h.
+	* ChangeLog.MSYS: New file.
