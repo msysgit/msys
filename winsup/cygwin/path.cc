@@ -3124,10 +3124,12 @@ cygwin_conv_to_win32_path (const char *path, char *win32_path)
   const char *spath = path;
   char *sptr;
   char * sspath;
-  char *swin32_path = (char *)calloc (1, MAX_PATH);
+  char *swin32_path = (char *)cmalloc(HEAP_STR, MAX_PATH);
+  memset (swin32_path, 0, MAX_PATH);
   int swin32_pathlen;
   // retpath will be what sets win32_path before exiting.
-  char *retpath = (char *)calloc (1, MAX_PATH);
+  char *retpath = (char *)cmalloc(HEAP_STR, MAX_PATH);
+  memset (retpath, 0, MAX_PATH);
   int retpath_len = 0;
   int retpath_buflen = MAX_PATH;
   int sret;
@@ -3140,7 +3142,7 @@ cygwin_conv_to_win32_path (const char *path, char *win32_path)
     { \
       retpath_buflen = ((retpath_buflen * 2 <= retpath_len) ? \
 	  retpath_len + 1 : retpath_buflen * 2); \
-      retpath = (char *)realloc (retpath, retpath_buflen); \
+      retpath = (char *)crealloc (retpath, retpath_buflen); \
     } \
   strcat (retpath, retstr);
 
@@ -3155,7 +3157,7 @@ cygwin_conv_to_win32_path (const char *path, char *win32_path)
     { \
       retpath_buflen = ((retpath_buflen * 2 <= retpath_len) ? \
 	  retpath_len + 1 : retpath_buflen * 2); \
-      retpath = (char *)realloc (retpath, retpath_buflen); \
+      retpath = (char *)crealloc (retpath, retpath_buflen); \
     } \
   strcpy (retpath, retstr);
 
@@ -3462,7 +3464,7 @@ cygwin_conv_to_win32_path (const char *path, char *win32_path)
     }
 
   if (swin32_path)
-    free (swin32_path);
+    cfree(swin32_path);
   *retpath = '\0';
   retpath_len = 0;
   return retval;
