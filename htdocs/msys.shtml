@@ -1,4 +1,4 @@
-<!-- $Id: msys.shtml,v 1.6 2002-02-15 20:45:42 stevedperkins Exp $ -->
+<!-- $Id: msys.shtml,v 1.7 2002-09-16 03:06:25 infidel Exp $ -->
 
 <html>
 <head>
@@ -34,18 +34,30 @@
             <a href="http://sourceforge.net/project/showfiles.php?group_id=2435">MinGW download area</a> on SourceForge.
          </p>
          <p>
-            There are three tarballs available for download, although most users will need only one.
-            The tarball flagged as &quot;src&quot; contains the source code for MSYS, unnecessary unless a 
-            manual build is desired.  The &quot;i686&quot; tarball is a binary distribution, compiled 
-            with optimizations for recent generations of the Pentium family (and compatibles).  The 
-            &quot;i386&quot; tarball is a binary distribution that will run on ANY 32-bit 
-            Intel-compatible processor.
+            Most users will need only the binary distribution of MSYS, which is provided
+            as a Windows installer executable. MSYS versions prior to 1.0.8 are available
+            for three processor architectures:
          </p>
          <p>
-            To install the MSYS binaries, choose a location in your filesystem and unpack the 
-            binary distribution there.  It is recommended that you create a shortcut pointing to 
-            &quot;msys\1.0\msys.bat&quot;, and set the &quot;Start In:&quot; field of the shortcut 
-            to &quot;msys\1.0\bin&quot;.  More information about using MinGW with 
+            <ul>
+               <li><b>i386</b>, which will run on any 32-bit Intel-compatible processor.</li>
+               <li><b>i586</b>, which will run on Pentium processors or newer (and compatibles).</li>
+               <li><b>i686</b>, which will run on Pentium Pro, Pentium II and Celeron processors or newer
+                  (and compatibles).
+            </ul>
+         </p>
+         <p>
+            MSYS versions 1.0.8 and later include only the i386 binary distribution, which will run
+            on any 32-bit Intel-compatible processor.
+            The tarball flagged as &quot;src&quot; contains the source code for MSYS, which is unnecessary unless a 
+            manual build is desired. Source tarballs may not be provided for snapshots and
+            prereleases, so the latest source should be obtained from the &quot;msys&quot; module in
+            <a href="http://sourceforge.net/cvs/?group_id=2435">MinGW CVS</a>.
+            The files flagged as &quot;odmp&quot; and &quot;perdr&quot;
+            are used to diagnose problems in MSYS itself, and are only useful for MSYS developers.
+         </p>
+         <p>
+            More information about using MinGW with 
             MSYS can be found in the <a href="mingwfaq.shtml#faq-usingwithmsys">FAQ</a>, 
             and the current MSYS documentation can be found in the &quot;\msys\1.0\doc\msys&quot; 
             subdirectory within the binary distribution.
@@ -68,7 +80,7 @@
 <!--#include file="ssi/footer.html"-->
 
 <address>
-<br />Last revised $Date: 2002-02-15 20:45:42 $
+<br />Last revised $Date: 2002-09-16 03:06:25 $
 </address>
 
 </body>
