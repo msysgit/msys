@@ -1,3 +1,9 @@
+2000-12-13  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	* mingwfaq.shtml: Revert 1.15 to 1.14 because bottom portion of file
+	was missing.  Removed popup add for Laura's web account from bottom of 
+	file.
+
 2000-12-12  Paul Sokolovsky  <Paul.Sokolovsky@technologist.com>
 
 	* docs.shtml: Added more GNU tools' docs links.
