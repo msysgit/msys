@@ -53,47 +53,7 @@ reg_key::reg_key (REGSAM access)
 void
 reg_key::build_reg (HKEY top, REGSAM access, va_list av)
 {
-#if __MSYS__
   set_errno(ENOSYS);
-#else /* !__MSYS__ */
-  char *name;
-  HKEY r = top;
-  key_is_invalid = 0;
-
-  /* FIXME: Most of the time a valid mount area should exist.  Perhaps
-     we should just try an open of the correct key first and only resort
-     to this method in the unlikely situation that it's the first time
-     the current mount areas are being used. */
-
-  while ((name = va_arg (av, char *)) != NULL)
-    {
-      DWORD disp;
-      int res = RegCreateKeyExA (r,
-				 name,
-				 0,
-				 cygnus_class,
-				 REG_OPTION_NON_VOLATILE,
-				 access,
-				 &sec_none_nih,
-				 &key,
-				 &disp);
-      if (r != top)
-	RegCloseKey (r);
-      r = key;
-      if (res != ERROR_SUCCESS)
-	{
-	  key_is_invalid = res;
-	  debug_printf ("failed to create key %s in the registry", name);
-	  break;
-	}
-
-      /* If we're considering the mounts key, check if it had to
-	 be created and set had_to_create appropriately. */
-      if (strcmp (name, CYGWIN_INFO_CYGWIN_MOUNT_REGISTRY_NAME) == 0)
-	if (disp == REG_CREATED_NEW_KEY)
-	  mount_table->had_to_create_mount_areas++;
-    }
-#endif /* !__MSYS__ */
 }
 
 /* Given the current registry key, return the specific int value

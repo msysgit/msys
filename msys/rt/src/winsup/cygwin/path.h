@@ -197,4 +197,6 @@ public:
   int next ();
   int lnk_match () {return nextstate >= SCAN_EXTRALNK;}
 };
+
+extern "C" int msys_symlink(const char *, const char *);
 #endif /* PATH_H */

@@ -141,33 +141,11 @@ read_etc_passwd ()
 	    curr_lines = max_lines = 0;
 	  }
 
-#if ! __MSYS__
-	FILE *f = fopen ("/etc/passwd", "rt");
-
-	if (f)
-	  {
-	    while (fgets (linebuf, sizeof (linebuf), f) != NULL)
-	      {
-		if (strlen (linebuf))
-		  add_pwd_line (linebuf);
-	      }
-
-	    passwd_state.set_last_modified (f);
-	    fclose (f);
-	    passwd_state = loaded;
-	  }
-	else
-	  {
-#endif //! __MSYS__
 	    debug_printf ("Emulating /etc/passwd");
 	    snprintf (linebuf, sizeof (linebuf), "%s::%u:%u::%s:/bin/sh", cygheap->user.name (),
 		      DEFAULT_UID, DEFAULT_GID, getenv ("HOME") ?: "/");
 	    add_pwd_line (linebuf);
 	    passwd_state = emulated;
-#if ! __MSYS__
-	  }
-#endif //! __MSYS__
-
       }
 
   pthread_mutex_unlock (&etc_passwd_mutex);
