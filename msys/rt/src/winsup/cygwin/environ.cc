@@ -222,6 +222,8 @@ _addenv (const char *name, const char *value, int overwrite)
   int offset;
   char *p;
 
+  if (!strcmp (name, "prefix"))
+    value = msys_p2w (value);
   unsigned int valuelen = strlen (value);
   if ((p = my_findenv (name, &offset)))
     {				/* Already exists. */
@@ -736,6 +738,8 @@ environ_init (char **envp, int envc)
 	sawTERM = 1;
       if (*newp == 'C' && strncmp (newp, "CYGWIN=", sizeof("CYGWIN=") - 1) == 0)
 	parse_options (newp + sizeof("CYGWIN=") - 1);
+      if (*newp == 'p' && strncmp (newp, "prefix=", 6) == 0)
+	_addenv ("prefix", newp + 6, 1);
       if (*eq && conv_start_chars[(unsigned char)envp[i][0]])
 	posify (envp + i, *++eq ? eq : --eq);
       debug_printf ("%p: %s", envp[i], envp[i]);
