@@ -3112,17 +3112,17 @@ cygwin_conv_to_win32_path (const char *path, char *win32_path)
 #if DO_CPP_NEW
   char *swin32_path = new char [MAX_PATH * 4];
 #else
-  char *swin32_path = (char *)malloc (MAX_PATH * 4);
+  char *swin32_path = (char *)calloc (1, MAX_PATH * 4);
 #endif
   int swin32_pathlen;
   // retpath will be what sets win32_path before exiting.
 #if DO_CPP_NEW
   char *retpath = new char [MAX_PATH * 4];
 #else
-  char *retpath = (char *)malloc (MAX_PATH * 4);
+  char *retpath = (char *)calloc (1, MAX_PATH * 4);
 #endif
   int retpath_len = 0;
-  int retpath_buflen = MAX_PATH*4;
+  int retpath_buflen = MAX_PATH * 4;
   int sret;
   int retval = 0;
     

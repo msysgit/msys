@@ -43,21 +43,32 @@ SECURITY_ATTRIBUTES NO_COPY sec_all_nih;
 char * __stdcall
 shared_name (const char *str, int num)
 {
+  TRACE_IN;
   static NO_COPY char buf[MAX_PATH] = {0};
   static NO_COPY char buf2[MAX_PATH] = {0};
   extern bool _cygwin_testing;
   char *tptr;
 
   //FIXME: This should be based on where the DLL actually is located.
-  AbsDllPath("msys-1.0.dll", buf2, MAX_PATH);
+  AbsDllPath("msys-1.0.dll", buf2, sizeof (buf2));
+  debug_printf("buf2 = %s", buf2);
   strcpy(buf2, &buf2[3]);
   tptr = strchr(buf2, '\\');
   if (tptr)
     *tptr = '\0';
   debug_printf("buf2 = %s", buf2);
   __small_sprintf (buf, "%s.%s.%s.%d", buf2, cygwin_version.shared_id, str, num);
+#if 0
+/* This code was removed because cygwin_version.dll_build_date is invalid.
+ * This should be put back into service once we discover the culprit.
+ */
   if (!_cygwin_testing)
-    strcat (buf, cygwin_version.dll_build_date);
+    {
+      debug_printf("%s", buf);
+      debug_printf("%s", cygwin_version.dll_build_date);
+      strcat (buf, cygwin_version.dll_build_date);
+    }
+#endif
   return buf;
 }
 
