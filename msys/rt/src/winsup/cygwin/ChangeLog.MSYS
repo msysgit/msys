@@ -1,3 +1,11 @@
+2002-08-30  Earnie Boyd  <earnie@users.sf.net>
+
+	* msys.cc (AbsDllPath): Add debugging.
+	(__AbsDllPath): Ditto.
+	* path.cc (cygwin_conv_to_win32_path): Use calloc instead of malloc.
+	* shared.cc (shared_name): Add debugging.  Remove conditionalized
+	failing code to determine why it was failing.
+
 2002-08-25  Luke Dunstan  <infidel@users.sf.net>
 
 	* path.cc (mount_info::read_mounts): Fix handling of spaces in
