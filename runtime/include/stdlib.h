@@ -18,9 +18,9 @@
  *  DISCLAMED. This includes but is not limited to warranties of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Revision: 1.2 $
- * $Author: earnie $
- * $Date: 2001-06-05 00:26:30 $
+ * $Revision: 1.3 $
+ * $Author: dannysmith $
+ * $Date: 2001-08-01 03:46:27 $
  *
  */
 
@@ -263,14 +263,11 @@ wchar_t**  __p__wpgmptr(void);
 # ifndef __DECLSPEC_SUPPORTED
   extern char** __imp__pgmptr_dll;
 # define _pgmptr (*__imp__pgmptr_dll)
-  extern wchar_t** __imp_wpgmptr_dll;
-# define _wpgmptr (*__imp__wpgmptr_dll)
 # else /* __DECLSPEC_SUPPORTED */
  __MINGW_IMPORT char* _pgmptr_dll;
 # define _pgmptr _pgmptr_dll
- __MINGW_IMPORT wchar_t* _wpgmptr_dll;
-# define _wpgmptr _wpgmptr_dll
 # endif /* __DECLSPEC_SUPPORTED */
+/* no wide version in CRTDLL */
 #endif /* __MSVCRT__ */
 
 #endif /* Not __STRICT_ANSI__ */

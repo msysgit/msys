@@ -1,3 +1,12 @@
+2001-08-01  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/stdlib.h (_wpgmptr): Don't declare ifndef __MSVCRT__.
+	* include/stdio.h (_IORW): Change constant to 0x0080.
+	(TMP_MAX): Add new define.
+	(_P_tmpdir): Ditto.
+	(_wP_tmpdir): Ditto.
+	(L_tmpnam): Change constant to 16.
+
 2001-06-28  Danny Smith  <dannysmith@users.sourceforge.net>
 
 	* include/malloc.h: Fix non-ANSI comment after #endif.
