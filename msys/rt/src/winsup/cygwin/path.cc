@@ -2457,7 +2457,7 @@ suffix_scan::has (const char *in_path, const suffix_info *in_suffixes)
 	  }
     }
 
-#ifndef NEW_PATH_METHOD
+#if ! NEW_PATH_METHOD
   /* Didn't match.  Use last resort -- .lnk. */
   if (strcasematch (ext_here, ".lnk"))
     {
@@ -2484,7 +2484,7 @@ suffix_scan::next ()
 	else
 	  {
 	    strcpy (eopath, suffixes->name);
-#ifndef NEW_PATH_METHOD
+#if ! NEW_PATH_METHOD
 	    if (nextstate == SCAN_EXTRALNK)
 	      strcat (eopath, ".lnk");
 #endif
@@ -2498,7 +2498,7 @@ suffix_scan::next ()
     {
     case SCAN_BEG:
       suffixes = suffixes_start;
-#ifndef NEW_PATH_METHOD
+#if ! NEW_PATH_METHOD
       if (!suffixes)
 	nextstate = SCAN_LNK;
       else
@@ -2520,7 +2520,7 @@ suffix_scan::next ()
     case SCAN_JUSTCHECK:
       nextstate = SCAN_APPENDLNK;
       return 1;
-#ifndef NEW_PATH_METHOD
+#if ! NEW_PATH_METHOD
     case SCAN_APPENDLNK:
       strcat (eopath, ".lnk");
       nextstate = SCAN_DONE;
