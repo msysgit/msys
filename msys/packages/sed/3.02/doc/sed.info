@@ -1,5 +1,4 @@
-This is Info file sed.info, produced by Makeinfo version 1.68 from the
-input file sed.texi.
+This is sed.info, produced by makeinfo version 4.0 from sed.texi.
 
 START-INFO-DIR-ENTRY
 * sed: (sed).                   Stream EDitor.
@@ -177,14 +176,14 @@ address is given, then only lines matching that address are matched.
 separated by a comma (`,').  An address range matches lines starting
 from where the first address matches, and continues until the second
 address matches (inclusively).  If the second address is a REGEXP, then
-checking for the ending match will start with the line *following* the
+checking for the ending match will start with the line _following_ the
 line which matched the first address.  If the second address is a
 NUMBER less than (or equal to) the line matching the first address,
 then only the one line is matched.
 
    Appending the `!' character to the end of an address specification
 will negate the sense of the match.  That is, if the `!' character
-follows an address range, then only lines which do *not* match the
+follows an address range, then only lines which do _not_ match the
 address range will be selected.  This also works for singleton
 addresses, and, perhaps perversely, for the null address.
 
@@ -204,8 +203,8 @@ File: sed.info,  Node: Data Spaces,  Next: Common Commands,  Prev: Regular Expre
 Where SED buffers data
 ======================
 
-   SED maintains two data buffers: the active *pattern* space, and the
-auxiliary *hold* space.  In "normal" operation, SED reads in one line
+   SED maintains two data buffers: the active _pattern_ space, and the
+auxiliary _hold_ space.  In "normal" operation, SED reads in one line
 from the input stream and places it in the pattern space.  This pattern
 space is where text manipulations occur.  The hold space is initially
 empty, but there are commands for moving data between the pattern and
@@ -264,7 +263,7 @@ commands.
      FLAGS:
 
     `g'
-          Apply the replacement to *all* matches to the REGEXP, not
+          Apply the replacement to _all_ matches to the REGEXP, not
           just the first.
 
     `p'
@@ -338,7 +337,7 @@ commands.
      Instances of the `/' (or whatever other character is used in its
      stead), `\', or newlines can appear in the SOURCE-CHARS or
      DEST-CHARS lists, provide that each instance is escaped by a `\'.
-     The SOURCE-CHARS and DEST-CHARS lists *must* contain the same
+     The SOURCE-CHARS and DEST-CHARS lists _must_ contain the same
      number of characters (after de-escaping).
 
 `a\'
@@ -544,8 +543,8 @@ the exception of the SED commands and command-line options.
 * Files to be processed as input:        Invoking SED.
 * Flow of control in scripts:            Programming Commands.
 * Global substitution:                   Common Commands.
-* GNU extensions, I modifier <1>:        Common Commands.
-* GNU extensions, I modifier:            Addresses.
+* GNU extensions, I modifier <1>:        Addresses.
+* GNU extensions, I modifier:            Common Commands.
 * GNU extensions, N~M addresses:         Addresses.
 * GNU extensions, unlimited line length: Limitations.
 * Goto, in scripts:                      Programming Commands.
@@ -665,21 +664,21 @@ opions.
 
 
 Tag Table:
-Node: Top1042
-Node: Introduction1762
-Node: Invoking SED2308
-Node: sed Programs3751
-Node: Addresses4736
-Node: Regular Expressions7443
-Node: Data Spaces7802
-Node: Common Commands8325
-Node: Other Commands12456
-Node: Programming Commands16367
-Node: Examples17266
-Node: Limitations17560
-Node: Other Resources18218
-Node: Reporting Bugs19000
-Node: Concept Index19248
-Node: Command and Option Index24957
+Node: Top1016
+Node: Introduction1736
+Node: Invoking SED2282
+Node: sed Programs3725
+Node: Addresses4710
+Node: Regular Expressions7417
+Node: Data Spaces7776
+Node: Common Commands8299
+Node: Other Commands12430
+Node: Programming Commands16341
+Node: Examples17240
+Node: Limitations17534
+Node: Other Resources18192
+Node: Reporting Bugs18974
+Node: Concept Index19222
+Node: Command and Option Index24931
 
 End Tag Table

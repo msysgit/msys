@@ -1,7 +1,12 @@
+2003.03.16  Earnie Boyd  <earnie@users.sf.net>
+
+	* doc/sed.info: Regenerated.
+	* sed/sed.c: Add a backslash to the ^M search string throughout.
+
 2002.04.27  Earnie Boyd  <earnie@users.sf.net>
 
-	sed/sed.c (main): Ensure that sed always removes \r$ from the data 
+	* sed/sed.c (main): Ensure that sed always removes \r$ from the data 
 	before executing user code.
 	Add -c --nocr option to disable the \r$ change.
 	testsuite/help.good: Add format for -c --nocr option.
-	ChangeLog.MSYS: New file.
+	* ChangeLog.MSYS: New file.
