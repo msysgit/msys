@@ -202,18 +202,6 @@ reload_frozen_state (const char *name)
     }								\
   while (0)
 
-#ifdef __MSYS__
-# define SKIP_CARRIAGE_RETURNS					\
-  do								\
-    {								\
-      while (character == '\r')					\
-	GET_CHARACTER;						\
-    }								\
-  while (0)
-#else /* ! __MSYS__ */
-# define SKIP_CARRIAGE_RETURNS do { } while (0)
-#endif /* ! __MSYS__ */
-
   file = path_search (name);
   if (file == NULL)
     M4ERROR ((EXIT_FAILURE, errno, "Cannot open %s", name));
@@ -266,7 +254,6 @@ reload_frozen_state (const char *name)
 	VALIDATE (',');
 	GET_CHARACTER;
 	GET_NUMBER (number[1]);
-	SKIP_CARRIAGE_RETURNS;
 	VALIDATE ('\n');
 
 	if (operation != 'D')
@@ -303,7 +290,6 @@ reload_frozen_state (const char *name)
 
 	string[1][number[1]] = '\0';
 	GET_CHARACTER;
-	SKIP_CARRIAGE_RETURNS;
 	VALIDATE ('\n');
       
 	/* Act according to operation letter.  */
@@ -368,7 +354,6 @@ reload_frozen_state (const char *name)
 	GET_CHARACTER;
 	VALIDATE ('1');
 	GET_CHARACTER;
-	SKIP_CARRIAGE_RETURNS;
 	VALIDATE ('\n');
 	break;
 
@@ -381,5 +366,4 @@ reload_frozen_state (const char *name)
 #undef GET_CHARACTER
 #undef GET_NUMBER
 #undef VALIDATE
-#undef SKIP_CARRIAGE_RETURNS
 }

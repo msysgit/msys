@@ -59,25 +59,19 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
-build_alias = @build_alias@
-build_triplet = @build@
 host_alias = @host_alias@
 host_triplet = @host@
-target_alias = @target_alias@
-target_triplet = @target@
 ALL_LINGUAS = @ALL_LINGUAS@
 ALL_MOFILES = @ALL_MOFILES@
 ALL_POFILES = @ALL_POFILES@
 AR = @AR@
 CC = @CC@
 CPP = @CPP@
-EXEEXT = @EXEEXT@
 GETCONF = @GETCONF@
 GLOBDIR = @GLOBDIR@
 GLOBINC = @GLOBINC@
 GLOBLIB = @GLOBLIB@
 LIBOBJS = @LIBOBJS@
-MAINT = @MAINT@
 MAKEINFO = @MAKEINFO@
 MAKE_HOST = @MAKE_HOST@
 MOFILES = @MOFILES@
@@ -93,10 +87,9 @@ noinst_LIBRARIES = libglob.a
 
 libglob_a_SOURCES = glob.c glob.h fnmatch.c fnmatch.h
 
-EXTRA_DIST = COPYING.LIB Makefile.ami SCOPTIONS SMakefile \
-			configure.bat
+EXTRA_DIST = COPYING.LIB Makefile.ami SCOPTIONS SMakefile 			configure.bat
 
-mkinstalldirs = $(SHELL) $(top_srcdir)/../mkinstalldirs
+mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = ../config.h
 CONFIG_CLEAN_FILES = 
 LIBRARIES =  $(noinst_LIBRARIES)
@@ -112,8 +105,7 @@ CFLAGS = @CFLAGS@
 COMPILE = $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 CCLD = $(CC)
 LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(LDFLAGS) -o $@
-DIST_COMMON =  COPYING.LIB ChangeLog Makefile.am Makefile.in \
-acinclude.m4 configure configure.in
+DIST_COMMON =  COPYING.LIB ChangeLog Makefile.am Makefile.in
 
 
 DISTFILES = $(DIST_COMMON) $(SOURCES) $(HEADERS) $(TEXINFOS) $(EXTRA_DIST)
@@ -126,8 +118,8 @@ OBJECTS = $(libglob_a_OBJECTS)
 all: all-redirect
 .SUFFIXES:
 .SUFFIXES: .S .c .o .s
-$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am $(top_srcdir)/configure.in $(ACLOCAL_M4) 
-	cd $(top_srcdir) && $(AUTOMAKE) --cygnus glob/Makefile
+$(srcdir)/Makefile.in: Makefile.am $(top_srcdir)/configure.in $(ACLOCAL_M4) 
+	cd $(top_srcdir) && $(AUTOMAKE) --foreign --include-deps glob/Makefile
 
 Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status
 	cd $(top_builddir) \
@@ -202,9 +194,9 @@ subdir = glob
 
 distdir: $(DISTFILES)
 	@for file in $(DISTFILES); do \
-	  if test -f $$file; then d=.; else d=$(srcdir); fi; \
+	  d=$(srcdir); \
 	  if test -d $$d/$$file; then \
-	    cp -pr $$d/$$file $(distdir)/$$file; \
+	    cp -pr $$/$$file $(distdir)/$$file; \
 	  else \
 	    test -f $(distdir)/$$file \
 	    || ln $$d/$$file $(distdir)/$$file 2> /dev/null \
@@ -215,12 +207,10 @@ info-am:
 info: info-am
 dvi-am:
 dvi: dvi-am
-check-am:
+check-am: all-am
 check: check-am
 installcheck-am:
 installcheck: installcheck-am
-install-info-am: 
-install-info: install-info-am
 install-exec-am:
 install-exec: install-exec-am
 
@@ -276,11 +266,11 @@ clean-noinstLIBRARIES maintainer-clean-noinstLIBRARIES \
 mostlyclean-compile distclean-compile clean-compile \
 maintainer-clean-compile tags mostlyclean-tags distclean-tags \
 clean-tags maintainer-clean-tags distdir info-am info dvi-am dvi check \
-check-am installcheck-am installcheck install-info-am install-info \
-install-exec-am install-exec install-data-am install-data install-am \
-install uninstall-am uninstall all-redirect all-am all installdirs \
-mostlyclean-generic distclean-generic clean-generic \
-maintainer-clean-generic clean mostlyclean distclean maintainer-clean
+check-am installcheck-am installcheck install-exec-am install-exec \
+install-data-am install-data install-am install uninstall-am uninstall \
+all-redirect all-am all installdirs mostlyclean-generic \
+distclean-generic clean-generic maintainer-clean-generic clean \
+mostlyclean distclean maintainer-clean
 
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.

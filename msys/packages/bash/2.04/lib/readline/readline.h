@@ -155,8 +155,8 @@ extern int rl_yank __P((int, int));
 extern int rl_yank_pop __P((int, int));
 extern int rl_yank_nth_arg __P((int, int));
 extern int rl_yank_last_arg __P((int, int));
-/* Not available unless __CYGWIN__ is defined. */
-#if defined (__CYGWIN__) || defined(__MSYS__)
+/* Not available unless __CYGWIN32__ is defined. */
+#ifdef __CYGWIN32__
 extern int rl_paste_from_clipboard __P((int, int));
 #endif
 

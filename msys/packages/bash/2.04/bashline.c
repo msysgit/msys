@@ -457,11 +457,7 @@ snarf_hosts_from_file (filename)
   char *temp, buffer[256], name[256];
   register int i, start;
 
-#ifdef __MSYS__
-  file = fopen (filename, "rt");
-#else
   file = fopen (filename, "r");
-#endif
   if (file == 0)
     return;
 

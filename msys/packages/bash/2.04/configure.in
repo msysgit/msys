@@ -53,8 +53,7 @@ sparc-linux*)	opt_bash_malloc=no ;;	# sparc running linux; requires ELF
 *-machten4)	opt_bash_malloc=no ;;	# MachTen 4.x
 *-bsdi2.1|*-bsdi3.?)	opt_bash_malloc=no ; : ${CC:=shlicc2} ;; # for loadable builtins
 *-beos*)	opt_bash_malloc=no ;;	# they say it's suitable
-*-cygwin*)	opt_bash_malloc=no ;;	# Cygnus's CYGWIN32 environment
-*-msys*)	opt_bash_malloc=no ;;	# MinGW's MSYS environment
+*-cygwin32*)	opt_bash_malloc=no ;;	# Cygnus's CYGWIN32 environment
 esac
 
 dnl arguments to configure
@@ -284,10 +283,6 @@ dnl Set SIGNAMES_H based on whether or not we're cross-compiling.
 
 if test "x$cross_compiling" = "xyes"; then
     case "${host}" in
-    *-msys*)
-	cross_cache=${srcdir}/cross-build/cygwin32.cache
-	SIGNAMES_H='$(srcdir)/cross-build/win32sig.h'
-	;;
     *-cygwin32*)
 	cross_cache=${srcdir}/cross-build/cygwin32.cache
 	SIGNAMES_H='$(srcdir)/cross-build/win32sig.h'
@@ -697,8 +692,7 @@ lynxos*)	LOCAL_CFLAGS=-DRECYCLES_PIDS ;;
 linux*)		LOCAL_LDFLAGS=-rdynamic ;;	 # allow dynamic loading
 *qnx*)		LOCAL_CFLAGS="-Dqnx -F -3s" LOCAL_LDFLAGS="-3s -lunix -lncurses" ;;
 powerux*)	LOCAL_LIBS="-lgen" ;;
-cygwin*)	LOCAL_LIBS="-luser32" ;;
-msys*)		LOCAL_LIBS="-luser32" ;;
+cygwin32*)	LOCAL_LIBS="-luser32" ;;
 opennt*|interix*) LOCAL_CFLAGS="-DNO_MAIN_ENV_ARG" ;;
 esac
 

@@ -336,9 +336,7 @@ pwd_builtin (list)
 	}
     }
   else
-    {
-      directory = get_working_directory ("pwd");
-    }
+    directory = get_working_directory ("pwd");
 
   if (directory)
     {

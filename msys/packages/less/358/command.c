@@ -356,7 +356,7 @@ mca_char(c)
 			 * If so, display the complete name and stop 
 			 * accepting chars until user hits RETURN.
 			 */
-			struct lessoption *o;
+			struct option *o;
 			char *oname;
 			int lc;
 

@@ -1143,11 +1143,6 @@ f_mtime (file, search)
 	}
     }
 
-  /* CYGNUS LOCAL msander: remove test for future time of a file's
-     modification date.  The test was causing unwanted rebuilding of
-     files without notice if a system's clock should get out of
-     sync with an NFS server. */
-#if 0
   {
     /* Files can have bogus timestamps that nothing newly made will be
        "newer" than.  Updating their dependents could just result in loops.
@@ -1199,8 +1194,6 @@ f_mtime (file, search)
           }
       }
   }
-#endif
-  /* end CYGNUS LOCAL */
 
   /* Store the mtime into all the entries for this file.  */
   if (file->double_colon)

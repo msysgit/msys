@@ -223,18 +223,18 @@ find_and_hash_each_line (current)
 	  if (ignore_all_space_flag)
 	    while ((c = *p++) != '\n')
 	      {
-		if (! (ISSPACE (c) || c == '\r'))
+		if (! ISSPACE (c))
 		  h = HASH (h, ISUPPER (c) ? tolower (c) : c);
 	      }
 	  else if (ignore_space_change_flag)
 	    while ((c = *p++) != '\n')
 	      {
-		if (ISSPACE (c) || c == '\r')
+		if (ISSPACE (c))
 		  {
 		    for (;;)
 		      {
 			c = *p++;
-			if (!ISSPACE (c) || c == '\r')
+			if (!ISSPACE (c))
 			  break;
 			if (c == '\n')
 			  goto hashing_done;
@@ -242,8 +242,7 @@ find_and_hash_each_line (current)
 		    h = HASH (h, ' ');
 		  }
 		/* C is now the first non-space.  */
-		if (c != '\r')
-		  h = HASH (h, ISUPPER (c) ? tolower (c) : c);
+		h = HASH (h, ISUPPER (c) ? tolower (c) : c);
 	      }
 	  else
 	    while ((c = *p++) != '\n')
@@ -254,18 +253,18 @@ find_and_hash_each_line (current)
 	  if (ignore_all_space_flag)
 	    while ((c = *p++) != '\n')
 	      {
-		if (! (ISSPACE (c) || c == '\r'))
+		if (! ISSPACE (c))
 		  h = HASH (h, c);
 	      }
 	  else if (ignore_space_change_flag)
 	    while ((c = *p++) != '\n')
 	      {
-		if (ISSPACE (c) || c == '\r')
+		if (ISSPACE (c))
 		  {
 		    for (;;)
 		      {
 			c = *p++;
-			if (! (ISSPACE (c) || c == '\r'))
+			if (!ISSPACE (c))
 			  break;
 			if (c == '\n')
 			  goto hashing_done;
@@ -273,13 +272,11 @@ find_and_hash_each_line (current)
 		    h = HASH (h, ' ');
 		  }
 		/* C is now the first non-space.  */
-		if (c != '\r')
-		  h = HASH (h, c);
+		h = HASH (h, c);
 	      }
 	  else
 	    while ((c = *p++) != '\n')
-	      if (c != '\r')
-		h = HASH (h, c);
+	      h = HASH (h, c);
 	}
    hashing_done:;
 

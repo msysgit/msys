@@ -1446,20 +1446,6 @@ bind_variable (name, value)
   char *newval;
   SHELL_VAR *entry;
 
-#if defined (__MSYS__)
-  /* Remove trailing \r from value */
-  {
-    char *tpos;
-    if (value)
-      {
-	tpos = strchr(value, '\0');
-	tpos--;
-	if (*tpos == '\r')
-	    *tpos = '\0';
-      }
-  }
-#endif
-
   entry = var_lookup (name, shell_variables);
 
   if (entry == 0)
@@ -2491,7 +2477,7 @@ make_var_array (hashed_vars)
     {
       if (var->exportstr)
         {
-#if defined(__CYGWIN__) || defined (__MSYS__)
+#if defined(__CYGWIN__) || defined (__CYGWIN32__)
 	  INVALIDATE_EXPORTSTR (var);
 	  value = value_cell (var);
 #else

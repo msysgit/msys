@@ -1,6 +1,0 @@
-2002.05.13  Earnie Boyd  <earnie@users.sf.net>
-
-	* config.guess: Add patterns for msys.
-	* config.sub: Ditto.
-	* lib/strftime.c: Don't define tzname array for __MSYS__ as it's
-	defined already.

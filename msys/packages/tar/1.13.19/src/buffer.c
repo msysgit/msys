@@ -795,7 +795,7 @@ open_archive (enum access_mode wanted_access)
 
 #endif /* not MSDOS */
 
-#if defined(MSDOS) || defined(__CYGWIN__)
+#if MSDOS
   setmode (archive, O_BINARY);
 #endif
 
@@ -1367,7 +1367,7 @@ close_archive (void)
 void
 init_volume_number (void)
 {
-  FILE *file = fopen (volno_file_option, FOPEN_TEXT_READ);
+  FILE *file = fopen (volno_file_option, "r");
 
   if (file)
     {
@@ -1578,7 +1578,7 @@ new_volume (enum access_mode access)
       goto tryagain;
     }
 
-#if defined(MSDOS) || defined(__CYGWIN__)
+#if MSDOS
   setmode (archive, O_BINARY);
 #endif
 

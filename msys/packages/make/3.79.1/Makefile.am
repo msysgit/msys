@@ -1,6 +1,6 @@
 # This is a -*-Makefile-*-, or close enough
 
-AUTOMAKE_OPTIONS = 1.4 cygnus
+AUTOMAKE_OPTIONS = 1.4
 
 SUBDIRS =	$(GLOBDIR) i18n
 

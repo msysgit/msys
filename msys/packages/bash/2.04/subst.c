@@ -149,20 +149,6 @@ static inline int skip_single_quoted (), skip_double_quoted ();
 static char *extract_delimited_string ();
 static char *extract_dollar_brace_string ();
 
-#ifdef __MSYS__
-static inline void RemoveCR();
-static void
-RemoveCR (string)
-  char * string;
-{ 
-    char *pstr;
-    if (string && (pstr = strchr (string, '\0')) && *(--pstr) == '\r')
-	*pstr = '\0';
-}
-#else
-#define RemoveCR(string) /**/
-#endif
-
 /* **************************************************************** */
 /*								    */
 /*			Utility Functions			    */
@@ -3536,7 +3522,6 @@ command_substitute (string, quoted)
 	give_terminal_to (pipeline_pgrp);
 #endif /* JOB_CONTROL */
 
-      RemoveCR (istring);  //Definite need.
       return (istring);
     }
 }

@@ -19,11 +19,7 @@
 #include "m4.h"
 
 #include <getopt.h>
-#ifdef __MSYS__
-# include <signal.h>
-#else /* ! __MSYS__ */
-# include <sys/signal.h>
-#endif /* ! __MSYS__ */
+#include <sys/signal.h>
 
 static void usage _((int));
 

@@ -484,8 +484,7 @@ end_of_token (s)
   return s;
 }
 
-/* CYGNUS LOCAL: or __CYGWIN__ */
-#ifdef WIN32_OR_CYGWIN
+#ifdef WINDOWS32
 /*
  * Same as end_of_token, but take into account a stop character
  */
@@ -515,7 +514,7 @@ end_of_token_w32 (s, stopchar)
 
   return p;
 }
-#endif /* WIN32_OR_CYGWIN */
+#endif
 
 /* Return the address of the first nonwhitespace or null in the string S.  */
 

@@ -40,21 +40,6 @@ MA 02111-1307, USA.  */
 # include <fcntl.h>
 #endif
 
-/* CYGNUS LOCAL: Cygwin */
-#if defined (__CYGWIN__) || defined (__MSYS__)
-#define w32ify(s,r) (s)
-extern char *default_shell;
-typedef enum os_type {winNT, win95, win32s, unknown} os_type;
-#endif
-
-/* CYGNUS LOCAL: use path_separator_char_ variable instead of
-   using a preprocessor define */
-#if defined(__MSDOS__) || defined(WINDOWS32)
-char path_separator_char_ = ';';
-#else
-char path_separator_char_ = ':';
-#endif
-
 #ifdef _AMIGA
 int __stack = 20000; /* Make sure we have 20K of stack space */
 #endif
@@ -371,15 +356,6 @@ static const struct command_switch switches[] =
     { CHAR_MAX+4, flag, (char *) &warn_undefined_variables_flag, 1, 1, 0, 0, 0,
 	"warn-undefined-variables", 0,
 	N_("Warn when an undefined variable is referenced") },
-    /* CYGNUS LOCAL: Cygwin has two additional flags */
-#if defined (__CYGWIN__) || defined (__MSYS__)
-    { CHAR_MAX+5, flag, (char *) &unixy_shell, 1, 1, 0, 0, 0,
-        "unix", 0,
-      "Run in UNIX mode (use sh.exe subshell)" },
-    { CHAR_MAX+6, flag_off, (char *) &unixy_shell, 1, 1, 0, 0, 0,
-        "win32", 0,
-      "Run in Win32 mode (use Win32 subshell)" },
-#endif
     { '\0', }
   };
 
@@ -572,25 +548,6 @@ decode_debug_flags ()
     }
 }
 
-/* CYGNUS LOCAL: Cygwin */
-#if defined (__CYGWIN__) || defined (__MSYS__)
-#include <windows.h>
-/* Return which MS OS is being run.  Make's subshell is one thing
-   in Windows NT and another in Windows 95. */
-os_type
-get_os_type () 
-{
-  DWORD version = GetVersion ();
-
-  if (version < 0x80000000)
-    return winNT;
-  else if ((version & 0x80000000) && (version & 0xff) > 3)
-    return win95;
-  else
-    return win32s;
-}
-#endif
-
 #ifdef WINDOWS32
 /*
  * HANDLE runtime exceptions by avoiding a requestor on the GUI. Capture
@@ -666,11 +623,7 @@ handle_runtime_exceptions( struct _EXCEPTION_POINTERS *exinfo )
   return (255); /* not reached */
 #endif
 }
-/* CYGNUS LOCAL: endif WINDOWS32 */
-#endif /* WINDOWS32 */
 
-/* CYGNUS LOCAL: if WINDOWS32 or __CYGWIN__ */
-#ifdef WIN32_OR_CYGWIN
 /*
  * On WIN32 systems we don't have the luxury of a /bin directory that
  * is mapped globally to every drive mounted to the system. Since make could
@@ -685,6 +638,7 @@ find_and_set_default_shell(char *token)
   int sh_found = 0;
   char* search_token;
   PATH_VAR(sh_path);
+  extern char *default_shell;
 
   if (!token)
     search_token = default_shell;
@@ -705,12 +659,6 @@ find_and_set_default_shell(char *token)
   } else {
     char *p;
     struct variable *v = lookup_variable ("Path", 4);
-
-    /* CYGNUS LOCAL: need to check PATH if Path doesn't yield a result */
-#if defined (__CYGWIN__) || defined (__CYGWIN__)
-    if (!v)
-      v = lookup_variable ("PATH", 4);
-#endif
 
     /*
      * Search Path for shell
@@ -754,14 +702,12 @@ find_and_set_default_shell(char *token)
     }
   }
 
-#if ! defined (__CYGWIN__) && ! defined (__MSYS__)
   /* naive test */
   if (!unixy_shell && sh_found &&
       (strstr(default_shell, "sh") || strstr(default_shell, "SH"))) {
     unixy_shell = 1;
     batch_mode_shell = 0;
   }
-#endif /* __CYGWIN__ */
 
 #ifdef BATCH_MODE_ONLY_SHELL
   batch_mode_shell = 1;
@@ -769,7 +715,7 @@ find_and_set_default_shell(char *token)
 
   return (sh_found);
 }
-#endif  /* WIN32_OR_CYGWIN */
+#endif  /* WINDOWS32 */
 
 #ifdef  __MSDOS__
 
@@ -853,29 +799,8 @@ int main (int argc, char ** argv)
   no_default_sh_exe = 1;
 #endif
 
-#if defined (__CYGWIN__) || defined (__MSYS__)
-  char *unix_path = NULL;
-  char *windows32_path = NULL;
-  char *ptr;
-
-  /* start off assuming we are using native command shell */
-  unixy_shell = 1;
-#endif
-
   default_goal_file = 0;
   reading_file = 0;
-
-#if defined (__CYGWIN__) || defined (__MSYS__)
-  {
-    char *make_mode_env;
-
-    /* Read the environment variable MAKE_MODE */
-    /* If it's not "UNIX", set unixy_shell to 0. */
-    make_mode_env = getenv ("MAKE_MODE");
-    if (make_mode_env && !strcaseequ (make_mode_env, "UNIX"))
-      unixy_shell = 0;
-  }
-#endif /* __CYGWIN__ */
 
 #if defined (__MSDOS__) && !defined (_POSIX_SOURCE)
   /* Request the most powerful version of `system', to
@@ -987,8 +912,7 @@ int main (int argc, char ** argv)
 #else
       program = strrchr (argv[0], '/');
 #endif
-/* CYGNUS LOCAL: or for Cygwin */
-#if defined(__MSDOS__) || defined(__CYGWIN__) || defined (__MSYS__)
+#ifdef __MSDOS__
       if (program == 0)
 	program = strrchr (argv[0], '\\');
       else
@@ -1049,7 +973,7 @@ int main (int argc, char ** argv)
 
       while (*ep != '=')
         ++ep;
-#ifdef WIN32
+#ifdef WINDOWS32
       if (!unix_path && strneq(envp[i], "PATH=", 5))
         unix_path = ep+1;
       else if (!windows32_path && !strnicmp(envp[i], "Path=", 5)) {
@@ -1070,6 +994,23 @@ int main (int argc, char ** argv)
 	   be exported, because it was originally in the environment.  */
 	->export = v_export;
     }
+#ifdef WINDOWS32
+    /*
+     * Make sure that this particular spelling of 'Path' is available
+     */
+    if (windows32_path)
+      define_variable("Path", 4, windows32_path, o_env, 1)->export = v_export;
+    else if (unix_path)
+      define_variable("Path", 4, unix_path, o_env, 1)->export = v_export;
+    else
+      define_variable("Path", 4, "", o_env, 1)->export = v_export;
+
+    /*
+     * PATH defaults to Path iff PATH not found and Path is found.
+     */
+    if (!unix_path && windows32_path)
+      define_variable("PATH", 4, windows32_path, o_env, 1)->export = v_export;
+#endif
 #else /* For Amiga, read the ENV: device, ignoring all dirs */
     {
 	BPTR env, file, old;
@@ -1121,43 +1062,6 @@ int main (int argc, char ** argv)
 #endif
 
   decode_debug_flags ();
-
-  /* CYGNUS LOCAL: Cygwin */
-#if defined (__CYGWIN__) || defined (__MSYS__)
-  /* Now that the command line switches have been read in,
-     we need to set path_separator_char based on the contents
-     of unixy_shell since they might invoked make with --unix */
-  if (unixy_shell)
-    {
-      path_separator_char_ = ':';
-      default_shell = "/bin/sh.exe";
-    }
-  else
-    {
-      struct variable *v;
-      path_separator_char_ = ';';
-
-      v = lookup_variable ("ComSpec", 7);
-      if (!v)
-	v = lookup_variable ("COMSPEC", 7);
-      if (v)
-	{
-	  char *p;
-	  default_shell = strdup (v->value);
-	  while ((p = strchr (default_shell, '\\')) != NULL)
-	    *p = '/';
-	}
-      else
-	{
-	  if (get_os_type() == winNT)
-	    default_shell = "cmd.exe";
-	  else
-	    default_shell = "command.com";
-	  no_default_sh_exe = !find_and_set_default_shell (default_shell);
-	}
-    }
-  
-#endif /* __CYGWIN */
 
   /* Print version information.  */
 
@@ -1293,8 +1197,8 @@ int main (int argc, char ** argv)
    * at the wrong place when it was first evaluated.
    */
    no_default_sh_exe = !find_and_set_default_shell(NULL);
-#endif /* WINDOWS32 */
 
+#endif /* WINDOWS32 */
   /* Figure out the level of recursion.  */
   {
     struct variable *v = lookup_variable ("MAKELEVEL", 9);

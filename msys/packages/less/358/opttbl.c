@@ -107,7 +107,7 @@ static struct optname pound_optname  = { "shift",                NULL };
 /*
  * Table of all options and their semantics.
  */
-static struct lessoption option[] =
+static struct option option[] =
 {
 	{ 'a', &a_optname,
 		BOOL, OPT_OFF, &how_search, NULL,
@@ -340,7 +340,7 @@ static struct lessoption option[] =
 	public void
 init_option()
 {
-	register struct lessoption *o;
+	register struct option *o;
 
 	for (o = option;  o->oletter != '\0';  o++)
 	{
@@ -355,11 +355,11 @@ init_option()
 /*
  * Find an option in the option table, given its option letter.
  */
-	public struct lessoption *
+	public struct option *
 findopt(c)
 	int c;
 {
-	register struct lessoption *o;
+	register struct option *o;
 
 	for (o = option;  o->oletter != '\0';  o++)
 	{
@@ -377,18 +377,18 @@ findopt(c)
  * is updated to point after the matched name.
  * p_oname if non-NULL is set to point to the full option name.
  */
-	public struct lessoption *
+	public struct option *
 findopt_name(p_optname, p_oname, p_err)
 	char **p_optname;
 	char **p_oname;
 	int *p_err;
 {
 	char *optname = *p_optname;
-	register struct lessoption *o;
+	register struct option *o;
 	register struct optname *oname;
 	register int len;
 	int uppercase;
-	struct lessoption *maxo = NULL;
+	struct option *maxo = NULL;
 	struct optname *maxoname = NULL;
 	int maxlen = 0;
 	int ambig = 0;

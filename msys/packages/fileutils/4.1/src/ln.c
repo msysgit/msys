@@ -197,13 +197,8 @@ do_link (const char *source, const char *dest)
 	      && isdir (dest)))
 #endif
      )
-
     {
       /* Target is a directory; build the full filename. */
-#if __MSYS__
-      if (! strcmp (dest, ".") || ! strcmp(dest, ".."))
-	  {
-#endif
       char *new_dest;
       PATH_BASENAME_CONCAT (new_dest, dest, source);
       dest = new_dest;
@@ -215,9 +210,6 @@ do_link (const char *source, const char *dest)
 	  error (0, errno, _("accessing %s"), quote (dest));
 	  return 1;
 	}
-#if __MSYS__
-	}
-#endif
     }
 
   /* If --force (-f) has been specified without --backup, then before
@@ -236,11 +228,6 @@ do_link (const char *source, const char *dest)
       && (!symbolic_link || stat (source, &source_stats) == 0)
       && source_stats.st_dev == dest_stats.st_dev
       && source_stats.st_ino == dest_stats.st_ino
-#if defined (__CYGWIN__) || defined (__MSYS__)
-      && (strlen (source) < 5
-	 || strncasecmp (source, dest, strlen (dest)) != 0
-	 || strcasecmp (source + strlen (source) - 4, ".exe") != 0)
-#endif
       /* The following detects whether removing DEST will also remove
  	 SOURCE.  If the file has only one link then both are surely
  	 the same link.  Otherwise check whether they point to the same
@@ -256,36 +243,8 @@ do_link (const char *source, const char *dest)
     {
       if (S_ISDIR (dest_stats.st_mode))
 	{
-#if __MSYS__
-	  if (remove_existing_files)
-	    {
-#include "remove.h"
-	      struct rm_options rmopt;
-	      struct File_spec rmfilespec;
-	      enum RM_status rmstatus;
-	      int fail = 0;
-	      rmopt.unlink_dirs = 0;
-	      rmopt.ignore_missing_files = 1;
-	      rmopt.interactive = 0;
-	      rmopt.recursive = 1;
-	      rmopt.stdin_tty = isatty (STDIN_FILENO);
-	      rmopt.verbose = 0;
-	      remove_init ();
-	      strip_trailing_slashes (dest);
-	      fspec_init_file (&rmfilespec, dest);
-	      rmstatus = rm (&rmfilespec, 1, &rmopt);
-	      if (rmstatus == RM_ERROR)
-		  fail = 1;
-	      remove_fini ();
-	      if (fail)
-		  exit (fail);
-	    }
-	  else
-#endif
-	    {
-	      error (0, 0, _("%s: cannot overwrite directory"), quote (dest));
-	      return 1;
-	    }
+	  error (0, 0, _("%s: cannot overwrite directory"), quote (dest));
+	  return 1;
 	}
       if (interactive)
 	{
@@ -293,13 +252,7 @@ do_link (const char *source, const char *dest)
 	  if (!yesno ())
 	    return 0;
 	}
-      else if (!remove_existing_files && backup_type == none
-#if defined (__CYGWIN__) || defined (__MSYS__)
-	    && (strlen (source) < 5
-		|| strncasecmp (source, dest, strlen (dest)) != 0
-		|| strcasecmp (source + strlen (source) - 4, ".exe") != 0)
-#endif
-	    )
+      else if (!remove_existing_files && backup_type == none)
 	{
 	  error (0, 0, _("%s: File exists"), quote (dest));
 	  return 1;

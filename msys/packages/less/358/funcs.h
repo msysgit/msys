@@ -186,8 +186,8 @@
 	public void nopendopt ();
 	public int getnum ();
 	public void init_option ();
-	public struct lessoption * findopt ();
-	public struct lessoption * findopt_name ();
+	public struct option * findopt ();
+	public struct option * findopt_name ();
 	public int iread ();
 	public void intread ();
 	public long get_time ();

@@ -479,8 +479,7 @@ merge_variable_set_lists (setlist0, setlist1)
 void
 define_automatic_variables ()
 {
-  /* CYGNUS LOCAL: Cygwin */
-#ifdef WIN32_OR_CYGWIN
+#ifdef WINDOWS32
   extern char* default_shell;
 #else
   extern char default_shell[];

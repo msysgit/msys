@@ -108,7 +108,7 @@ static FUNMAP default_funmap[] = {
   { "non-incremental-reverse-search-history", rl_noninc_reverse_search },
   { "non-incremental-forward-search-history-again", rl_noninc_forward_search_again },
   { "non-incremental-reverse-search-history-again", rl_noninc_reverse_search_again },
-#if defined (__CYGWIN__) || defined (__MSYS__)
+#ifdef __CYGWIN32__
   { "paste-from-clipboard", rl_paste_from_clipboard },
 #endif
   { "possible-completions", rl_possible_completions },

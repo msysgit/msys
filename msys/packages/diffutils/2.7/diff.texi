@@ -2675,7 +2675,7 @@ first byte and line number where they differ.  Its arguments are as
 follows:
 
 @example
-cmp @var{options}@dots{} @var{from-file} @r{[}@var{to-file}@r{]}
+cmp @var{options}@dots{} @var{from-file} @r{[}@var{to-file}@var{]}
 @end example
 
 The file name @samp{-} is always the standard input.  @code{cmp} also

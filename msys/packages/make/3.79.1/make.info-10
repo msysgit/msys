@@ -70,8 +70,8 @@ Index of Functions, Variables, & Directives
 * .DEFAULT, and empty commands:          Empty Commands.
 * .DELETE_ON_ERROR <1>:                  Special Targets.
 * .DELETE_ON_ERROR:                      Errors.
-* .EXPORT_ALL_VARIABLES <1>:             Special Targets.
-* .EXPORT_ALL_VARIABLES:                 Variables/Recursion.
+* .EXPORT_ALL_VARIABLES <1>:             Variables/Recursion.
+* .EXPORT_ALL_VARIABLES:                 Special Targets.
 * .IGNORE <1>:                           Errors.
 * .IGNORE:                               Special Targets.
 * .INTERMEDIATE:                         Special Targets.
@@ -83,10 +83,10 @@ Index of Functions, Variables, & Directives
 * .PRECIOUS <1>:                         Special Targets.
 * .PRECIOUS:                             Interrupts.
 * .SECONDARY:                            Special Targets.
-* .SILENT <1>:                           Echoing.
-* .SILENT:                               Special Targets.
-* .SUFFIXES <1>:                         Suffix Rules.
-* .SUFFIXES:                             Special Targets.
+* .SILENT <1>:                           Special Targets.
+* .SILENT:                               Echoing.
+* .SUFFIXES <1>:                         Special Targets.
+* .SUFFIXES:                             Suffix Rules.
 * /usr/gnu/include:                      Include.
 * /usr/include:                          Include.
 * /usr/local/include:                    Include.
@@ -158,16 +158,16 @@ Index of Functions, Variables, & Directives
 * MAKEFILES:                             MAKEFILES Variable.
 * MAKEFLAGS:                             Options/Recursion.
 * MAKEINFO:                              Implicit Variables.
-* MAKELEVEL <1>:                         Variables/Recursion.
-* MAKELEVEL:                             Flavors.
+* MAKELEVEL <1>:                         Flavors.
+* MAKELEVEL:                             Variables/Recursion.
 * MAKEOVERRIDES:                         Options/Recursion.
 * MFLAGS:                                Options/Recursion.
 * notdir:                                File Name Functions.
 * origin:                                Origin Function.
 * OUTPUT_OPTION:                         Catalogue of Rules.
 * override:                              Override Directive.
-* patsubst <1>:                          Text Functions.
-* patsubst:                              Substitution Refs.
+* patsubst <1>:                          Substitution Refs.
+* patsubst:                              Text Functions.
 * PC:                                    Implicit Variables.
 * PFLAGS:                                Implicit Variables.
 * RFLAGS:                                Implicit Variables.
@@ -177,22 +177,22 @@ Index of Functions, Variables, & Directives
 * SHELL (command execution):             Execution.
 * sort:                                  Text Functions.
 * strip:                                 Text Functions.
-* subst <1>:                             Multiple Targets.
-* subst:                                 Text Functions.
+* subst <1>:                             Text Functions.
+* subst:                                 Multiple Targets.
 * suffix:                                File Name Functions.
 * SUFFIXES:                              Suffix Rules.
 * TANGLE:                                Implicit Variables.
 * TEX:                                   Implicit Variables.
 * TEXI2DVI:                              Implicit Variables.
 * unexport:                              Variables/Recursion.
-* vpath:                                 Selective Search.
+* vpath <1>:                             Selective Search.
+* vpath:                                 Directory Search.
 * VPATH <1>:                             Directory Search.
 * VPATH:                                 General Search.
-* vpath:                                 Directory Search.
 * warning:                               Make Control Functions.
 * WEAVE:                                 Implicit Variables.
-* wildcard <1>:                          Wildcard Function.
-* wildcard:                              File Name Functions.
+* wildcard <1>:                          File Name Functions.
+* wildcard:                              Wildcard Function.
 * word:                                  File Name Functions.
 * wordlist:                              File Name Functions.
 * words:                                 File Name Functions.

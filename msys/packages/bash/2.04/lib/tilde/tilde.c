@@ -235,7 +235,7 @@ tilde_expand (string)
       free (tilde_word);
 
       len = strlen (expansion);
-#if defined (__CYGWIN__) || defined (__MSYS__)
+#ifdef __CYGWIN32__
       /* Fix for Cygwin to prevent ~user/xxx from expanding to //xxx when
          $HOME for `user' is /.  On cygwin, // denotes a network drive. */
       if (len > 1 || *expansion != '/' || *string != '/')
