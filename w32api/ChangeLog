@@ -1,3 +1,11 @@
+2001-11-24  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/winnt.h (PACCESS_MASK): Add typedef.
+	* include/aclapi.h: New file.
+	* include/acctrl.h: New file.
+	* lib/advapi32.def: Add missing symbols.
+	* lib/test.c: Add #include <aclapi.h>.
+
 2001-11-23  Danny Smith  <dannysmith@users.sourceforge.net>
 
 	* include/winbase.h (OSVERSIONINFO[AW],VER_PLATFORM_WIN32s,
