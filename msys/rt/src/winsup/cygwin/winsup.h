@@ -1,8 +1,9 @@
 /* winsup.h: main Cygwin header file.
 
    Copyright 1996, 1997, 1998, 1999, 2000, 2001 Red Hat, Inc.
+   Copyright 2003 Earnie Boyd <earnie@users.sf.net>
 
-This file is part of Cygwin.
+This file is part of MSYS.
 
 This software is a copyrighted work licensed under the terms of the
 Cygwin license.  Please consult the file "CYGWIN_LICENSE" for
@@ -20,11 +21,12 @@ details. */
   #define __INSIDE_MSYS__ 1
 #endif
 
-#define FIXME(FIXNO) debug_printf("%s-%s", "FIXME", (FIXNO))
 #define HMMM(HUM) debug_printf("%s-%d: %s", "HMMM", __LINE__, (HUM))
 #if DEBUGGING
+# define FIXME debug_printf("FIXME - %s (%s): %d", __FILE__, __FUNCTION__, __LINE__)
 # define TRACE_IN debug_printf("TRACE_IN: %s, %d", __FILE__, __LINE__)
 #else
+# define FIXME
 # define TRACE_IN
 #endif
 
@@ -59,6 +61,7 @@ extern const char case_folded_upper[];
 #endif
 
 #define WIN32_LEAN_AND_MEAN 1
+#define _WIN32_WINNT 0x0600
 #define _WINGDI_H
 #define _WINUSER_H
 #define _WINNLS_H
@@ -68,6 +71,7 @@ extern const char case_folded_upper[];
 #include <windows.h>
 #include <wincrypt.h>
 #include <lmcons.h>
+#include <wincon.h>
 #undef _WINGDI_H
 #undef _WINUSER_H
 #undef _WINNLS_H
@@ -209,11 +213,16 @@ int __stdcall check_null_empty_str (const char *name) __attribute__ ((regparm(1)
 int __stdcall check_null_empty_str_errno (const char *name) __attribute__ ((regparm(1)));
 int __stdcall __check_null_invalid_struct (const void *s, unsigned sz) __attribute__ ((regparm(1)));
 int __stdcall __check_null_invalid_struct_errno (const void *s, unsigned sz) __attribute__ ((regparm(1)));
+int __stdcall __check_invalid_read_ptr_errno (const void *s, unsigned sz) __attribute__ ((regparm(2)));
 
 #define check_null_invalid_struct(s) \
   __check_null_invalid ((s), sizeof (*(s)))
 #define check_null_invalid_struct_errno(s) \
   __check_null_invalid_struct_errno ((s), sizeof (*(s)))
+
+struct iovec;
+ssize_t check_iovec_for_read (const struct iovec *, int) __attribute__ ((regparm(2)));
+ssize_t check_iovec_for_write (const struct iovec *, int) __attribute__ ((regparm(2)));
 
 #define set_winsock_errno() __set_winsock_errno (__FUNCTION__, __LINE__)
 void __set_winsock_errno (const char *fn, int ln) __attribute__ ((regparm(2)));
@@ -230,6 +239,12 @@ extern "C" void __malloc_unlock (struct _reent *);
 
 extern "C" void __malloc_lock (struct _reent *);
 extern "C" void __malloc_unlock (struct _reent *);
+
+class path_conv;
+int __stdcall stat_worker (const char *name, struct __stat64 *buf, int nofollow,
+			   path_conv *pc = NULL) __attribute__ ((regparm (3)));
+int __stdcall low_priority_sleep (DWORD) __attribute__ ((regparm (1)));
+#define SLEEP_0_STAY_LOW INFINITE
 
 /**************************** Exports ******************************/
 
@@ -274,5 +289,9 @@ extern HANDLE hMainThread;
 extern HANDLE hMainProc;
 
 extern bool IsMsys (const char *);
+
+#define winsock2_active (wsadata.wVersion >= 512)
+#define winsock_active (wsadata.wVersion <= 512)
+extern struct WSAData wsadata;
 
 #endif /* defined __cplusplus */

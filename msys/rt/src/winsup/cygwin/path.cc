@@ -1239,6 +1239,14 @@ conv_path_list (const char *src, char *dst, int to_posix_p)
 
 /* init: Initialize the mount table.  */
 
+#define CHECK_MOUNT_EVENT \
+  if ( ! (WaitForSingleObject (mount_table->eventH, 1) == WAIT_OBJECT_0)) \
+    { debug_printf ("Unexpected wait value"); \
+    }
+FIXME; //We need to figure out where we need to wait for this event.
+// Race issues currently abound where access to the mount data can occur at the
+// same time the mount data is being replaced.
+
 void
 mount_info::init ()
 {
@@ -1676,11 +1684,51 @@ mount_info::set_flags_from_win32_path (const char *p)
   return 0;
 }
 
+DWORD WINAPI
+mount_info::read_mounts_thread (LPVOID thrdParam)
+{
+    mount_info *info = (mount_info *)thrdParam;
+    char etcPath [MAX_PATH+1];
+    info->eventH = CreateEvent (NULL, true, false, "evtReadMounts");
+    info->read_mounts2();
+    strcpy (etcPath, info->RootPath);
+    strcat (etcPath, "/etc");
+    HANDLE ffcnH = FindFirstChangeNotification (etcPath, true,
+	      FILE_NOTIFY_CHANGE_FILE_NAME
+	    | FILE_NOTIFY_CHANGE_DIR_NAME
+	    | FILE_NOTIFY_CHANGE_SIZE
+	    | FILE_NOTIFY_CHANGE_LAST_WRITE);
+    if (ffcnH == INVALID_HANDLE_VALUE)
+      {
+	debug_printf("/etc path change notification failure, %s\n", etcPath);
+	ExitProcess (1);
+      }
+    do {
+	SetEvent (info->eventH);
+	FindNextChangeNotification (ffcnH);
+	if (WaitForSingleObject (ffcnH, INFINITE) == WAIT_OBJECT_0)
+	  {
+	    FIXME; // We need only do this if /etc/fstab actually changed and
+	    // not any change to the /etc directory.
+	    ResetEvent (info->eventH);
+	    info->nmounts = 0;
+	    info->read_mounts2 ();
+	  }
+    } while (true);
+    return 0;
+}
+
+void
+mount_info::read_mounts (reg_key& r)
+{
+    threadH = CreateThread (NULL, 0, mount_info::read_mounts_thread, this, 0, threadID);
+}
+
 /* read_mounts: Given a specific regkey, read mounts from under its
    key. */
 
 void
-mount_info::read_mounts (reg_key& r)
+mount_info::read_mounts2 (void)
 {
   TRACE_IN;
   char native_path[4];
@@ -1690,7 +1738,6 @@ mount_info::read_mounts (reg_key& r)
   int mount_flags = 0;
   int res;
   char DllPath[MAX_PATH+1];
-  char RootPath[MAX_PATH+1];
 
   mount_flags |= MOUNT_AUTO;
   mount_flags |= MOUNT_BINARY;
@@ -3097,12 +3144,16 @@ QuotedRelativePath (const char *Path)
 static bool
 IsAbsWin32Path (const char * path)
 {
-    bool RetVal = false;
     if (((path[0] >= 'a' && path[0] <= 'z') ||
  	 (path[0] >= 'A' && path[0] <= 'Z')) &&
 	path[1] == ':')
-	RetVal = true;
-    return RetVal;
+	return true;
+    if (path[0] == '\\' &&
+	path[1] == '\\' &&
+	path[2] == '.' &&
+	path[3] == '\\')
+	return true;
+    return false;
 }
 
 /******************** Exported Path Routines *********************/
@@ -3115,15 +3166,24 @@ int
 cygwin_conv_to_win32_path (const char *path, char *win32_path)
 {
   TRACE_IN;
-  bool found_path = true;
-  bool path_changed = false;
+
+  if (!path || !*path)
+    {
+      *win32_path = '\0';
+      return 0;
+    }
+
+  static bool path_list_found = false;
+  static bool path_changed = false;
   const char *spath = path;
   char *sptr;
   char * sspath;
-  char *swin32_path = (char *)calloc (1, MAX_PATH);
+  char *swin32_path = (char *)cmalloc(HEAP_STR, MAX_PATH);
+  memset (swin32_path, 0, MAX_PATH);
   int swin32_pathlen;
   // retpath will be what sets win32_path before exiting.
-  char *retpath = (char *)calloc (1, MAX_PATH);
+  char *retpath = (char *)cmalloc(HEAP_STR, MAX_PATH);
+  memset (retpath, 0, MAX_PATH);
   int retpath_len = 0;
   int retpath_buflen = MAX_PATH;
   int sret;
@@ -3136,7 +3196,7 @@ cygwin_conv_to_win32_path (const char *path, char *win32_path)
     { \
       retpath_buflen = ((retpath_buflen * 2 <= retpath_len) ? \
 	  retpath_len + 1 : retpath_buflen * 2); \
-      retpath = (char *)realloc (retpath, retpath_buflen); \
+      retpath = (char *)crealloc (retpath, retpath_buflen); \
     } \
   strcat (retpath, retstr);
 
@@ -3151,15 +3211,9 @@ cygwin_conv_to_win32_path (const char *path, char *win32_path)
     { \
       retpath_buflen = ((retpath_buflen * 2 <= retpath_len) ? \
 	  retpath_len + 1 : retpath_buflen * 2); \
-      retpath = (char *)realloc (retpath, retpath_buflen); \
+      retpath = (char *)crealloc (retpath, retpath_buflen); \
     } \
   strcpy (retpath, retstr);
-
-  if (!path || !*path)
-    {
-      *win32_path = '\0';
-      return 0;
-    }
 
   *win32_path = '\0';
 
@@ -3170,7 +3224,9 @@ cygwin_conv_to_win32_path (const char *path, char *win32_path)
   //
   // Just return win32 paths and path lists.
   //
-  if (IsAbsWin32Path (path) || strchr (path, ';'))
+  if (IsAbsWin32Path (path) 
+      || (strchr (path, ';') > 0)
+      )
     {
       retpathcpy (path);
     }
@@ -3203,12 +3259,40 @@ cygwin_conv_to_win32_path (const char *path, char *win32_path)
     }
   //
   // Check for POSIX path lists.
+  // But we have to allow processing of quoted strings and switches first
+  // which uses recursion so this code will be seen again.
   //
-  else if ((sspath = strchr (spath, ':')))
+  else 
+    {
+      sspath = strchr (spath, ':');
+      //
+      // Prevent http://some.string/ from being modified.
+      // 
+      if ((sspath > 0 && strlen (sspath) > 2)
+	  && (sspath[1] == '/')
+	  && (sspath[2] == '/')
+	  )
+	{
+	  retpathcpy (path);
+	}
+      else
+      if ((sspath > 0)
+	   && (strchr (spath, '/') > 0)
+	   // 
+	   // Prevent strings beginning with -, ", or ' from being processed,
+	   // remember that this is a recursive routine.
+	   // 
+	   && (strchr ("-\"\'", spath[0]) == 0)
+	   // 
+	   // Prevent ``foo:echo /bar/baz'' from being considered a path list.
+	   // 
+	   && (strlen (sspath) > 1 && strchr (":./", sspath[1]) > 0)
+	   )
     {
       //
       // Yes, convert to Win32 path list.
       //
+      path_list_found = true;
       while (sspath)
 	{
 	  *sspath = '\0';
@@ -3343,7 +3427,7 @@ cygwin_conv_to_win32_path (const char *path, char *win32_path)
 		  retval = -1;
 		  break;
 		}
-	      retpathcpy (swin32_path);
+	      retpathcat (swin32_path);
 	      break;
 	    }
 	  retpathcpy (path);
@@ -3374,6 +3458,7 @@ cygwin_conv_to_win32_path (const char *path, char *win32_path)
 	  break;
 	}
     }
+    }
   //
   // Check for null path because Win32 doesn't like them.
   // I.E.:  Path lists of c:/foo;;c:/bar need changed to 
@@ -3393,13 +3478,43 @@ cygwin_conv_to_win32_path (const char *path, char *win32_path)
 	}
     }
   //
-  // Copy the return value and exit.
+  // Copy the return value.
   //
   strcpy (win32_path, retpath);
+
+  //
+  // If we modified the path then convert all / to \ if we have a path list
+  // else convert all \ to /.
+  // 
+  if (path_list_found)
+    {
+      if (path_changed)
+	{
+	  spath = win32_path;
+	  while ((sspath = strchr(spath, '/')))
+	    {
+	      *sspath = '\\';
+	      spath = sspath + 1;
+	    }
+	}
+    }
+  else
+    {
+      if (path_changed)
+	{
+	  spath = win32_path;
+	  while ((sspath = strchr(spath, '\\')))
+	    {
+	      *sspath = '/';
+	      spath = sspath + 1;
+	    }
+	}
+    }
+
   if (swin32_path)
-    free (swin32_path);
-  *retpath = '\0';
-  retpath_len = 0;
+    cfree(swin32_path);
+  if (retpath)
+    cfree(retpath);
   return retval;
 }
 

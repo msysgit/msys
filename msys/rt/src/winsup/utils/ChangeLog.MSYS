@@ -1,3 +1,8 @@
+2003.02.12  Earnie Boyd  <earnie@users.sf.net>
+
+	* Makefile.in (dumper): Remove including dependency parts.
+	(EXEEXT): Set explicitly to .exe.
+
 2002.10.27  Earnie Boyd  <earnie@users.sf.net>
 
 	* Makefile.in: Use mingw32-gcc and mingw32-g++ for MinGW compilations

@@ -88,6 +88,7 @@ heap_init ()
 extern "C" void *
 _sbrk(int n)
 {
+  FIXME;
   sigframe thisframe (mainthread);
   char *newtop, *newbrk;
   unsigned commitbytes, newbrksize;

@@ -497,7 +497,7 @@ spawn_guts (HANDLE hToken, const char * prog_arg, const char *const *argv,
       HMMM(ext);
     }
 
-  FIXME(1.0);
+  FIXME;
   // iscygexec needs adjusted so that it truely identifies an MSYS executable.
   if (real_path.iscygexec () || IsMsys((char *)real_path))
     newargv.dup_all ();
@@ -567,7 +567,7 @@ spawn_guts (HANDLE hToken, const char * prog_arg, const char *const *argv,
 	}
 
 #if 0
-      FIXME(1.1);
+      FIXME;
       //    I renamed ix to bufidx and made it private.
       //    This is the only public place it's used.
       //    Null endings are handled by the linbuf class so I don't see this
@@ -626,7 +626,8 @@ spawn_guts (HANDLE hToken, const char * prog_arg, const char *const *argv,
 
   /* Build windows style environment list */
   char *envblock;
-  /* FIXME:
+  FIXME;
+  /*
    * Why do we need to call winenv() for MSYS binary?
    */
   if (real_path.iscygexec () || IsMsys((char *)real_path))
@@ -647,6 +648,7 @@ spawn_guts (HANDLE hToken, const char * prog_arg, const char *const *argv,
 	  envblockcnt++;
 	}
 #else
+      FIXME;
       // FIXME:
       // ciresrv.moreinfo->envc is the max available not the used count.
       // Is there a count of used?
@@ -707,6 +709,7 @@ spawn_guts (HANDLE hToken, const char * prog_arg, const char *const *argv,
   if (!hToken)
     {
       ciresrv.moreinfo->uid = getuid ();
+      FIXME;
       /* FIXME: This leaks a handle in the CreateProcessAsUser case since the
 	 child process doesn't know about cygwin_mount_h. */
       ciresrv.mount_h = cygwin_mount_h;
@@ -853,6 +856,9 @@ spawn_guts (HANDLE hToken, const char * prog_arg, const char *const *argv,
 	}
       child->dwProcessId = pi.dwProcessId;
       child->hProcess = pi.hProcess;
+      FIXME; // PROPOSED
+      child->copysigs (myself);
+      //END PROPOSED
       child.remember ();
       strcpy (child->progname, real_path);
       /* Start the child running */

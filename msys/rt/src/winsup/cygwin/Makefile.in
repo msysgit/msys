@@ -63,7 +63,7 @@ AR_FLAGS:=qv
 RANLIB:=@RANLIB@
 LD:=@LD@
 DLLTOOL:=@DLLTOOL@
-WINDRES:=@WINDRES@
+WINDRES:="@WINDRES@ --include-dir=$(srcdir)/include"
 AS:=@AS@
 LDSCRIPT=cygwin.sc
 
@@ -114,9 +114,11 @@ EXTRA_OFILES=$(bupdir1)/libiberty/random.o $(bupdir1)/libiberty/strsignal.o
 
 MALLOC_OFILES=@MALLOC_OFILES@
 
-DLL_OFILES:=assert.o autoload.o cygheap.o dcrt0.o debug.o delqueue.o dir.o \
-	dlfcn.o dll_init.o dtable.o environ.o  errno.o exceptions.o exec.o \
-	external.o fcntl.o fhandler.o fhandler_clipboard.o fhandler_console.o \
+DLL_OFILES:=assert.o autoload.o \
+	cygheap.o cygthread.o \
+	dcrt0.o debug.o delqueue.o dir.o dlfcn.o dll_init.o dtable.o \
+	environ.o  errno.o exceptions.o exec.o external.o \
+	fcntl.o fhandler.o fhandler_clipboard.o fhandler_console.o \
 	fhandler_dsp.o fhandler_floppy.o fhandler_mem.o fhandler_random.o \
 	fhandler_raw.o fhandler_serial.o fhandler_socket.o fhandler_tape.o \
 	fhandler_termios.o fhandler_tty.o fhandler_windows.o fhandler_zero.o \
@@ -199,7 +201,7 @@ new-$(DLL_NAME): $(LDSCRIPT) $(DLL_OFILES) $(DEF_FILE) $(DLL_IMPORTS) $(LIBC) $(
 	$(CXX) $(CXXFLAGS) -nostdlib -Wl,-T$(firstword $^) -shared -o $@ \
 	-e $(DLL_ENTRY) $(DEF_FILE) $(DLL_OFILES) version.o winver.o \
 	$(DLL_IMPORTS) $(MALLOC_OBJ) $(LIBM) $(LIBC) \
-	-lstdc++ -lgcc -lshell32 -luuid -lkernel32
+	-lstdc++ -lgcc -lshell32 -luuid -lkernel32 -lnetapi32
 
 dll_ofiles: $(DLL_OFILES)
 

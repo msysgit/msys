@@ -1,3 +1,103 @@
+2003-03-28  Earnie Boyd  <earnie@users.sf.net>
+
+	* cygthread.cc: Copy new file from Cygwin.
+	* cygthread.h: Ditto.
+	* winbase.h: Ditto.
+	* Makefile.in (DLL_OFILES): Add cygthread.o and reformat.
+	* path.cc (CHECK_MOUNT_EVENT): New macro, currently unused.
+	(mount_info::read_mounts_thread): New static function, thread to watch
+	for changes to /etc/fstab.
+	(mount_info::read_mounts): Renamed original read_mounts and created
+	a new read_mounts to call read_mounts_thread.
+	(mount_info::read_mounts2): Renamed original read_mounts to be called
+	from read_mounts_thread.
+	shared_info.h (mount_info): Add new elements.
+	spawn.cc (spawn_guts): Add a proposed Cygwin change.
+	winsup.h: Following changes copied from recent versions of Cygwin.
+	(iovec): New struct.
+	(check_iovec_for_read): New function.
+	(check_iovec_for_write): Ditto.
+	(__check_invalid_read_ptr_errno): Ditto.
+	(stat_worker): Ditto.
+	(low_priority_sleep): Ditto.
+	
+2003-03-21  Earnie Boyd  <earnie@users.sf.net>
+
+	* uinfo.cc (internal_getlogin): Move check for USERNAME variable to
+	global space instead of iswinnt filter.
+	* Makefile.in: Add -lnetapi32 to the DLL build command.
+	* autoload.cc: Copy verbatum from current Cygwin CVS.
+	* fhandler_socket.cc: Move include of unistd.h after winsock2.h for
+	protection of gethostname declaration.
+	* net.cc: Ditto.
+	* heap.cc: Move a FIXME declaration into the procedure instead of
+	global space.
+	* pinfo.cc: Use NtQuerySystemInformation instead of the Zw version.
+	* shared.cc (shared_name): Use hash_path_name for uniqueness.
+	* tty.cc: Incorporate current Cygwin CVS changes.
+
+2003-02-17  Earnie Boyd  <earnie@users.sf.net>
+
+	* cygheap.cc (init_cygheap::etc_changed): Use more appropriate object
+	name.
+	* heap.cc (heap_init): Add FIXME debug macro.
+	
+2003-02-12  Earnie Boyd  <earnie@users.sf.net>
+
+	* fhandler.cc: Add TRACE_IN throughout.
+	* fhandler_tty.cc: Ditto.
+	* signal.cc: Ditto.
+	* sigproc.cc: Ditto.
+	* select.cc: Ditto.
+	(select_stuff::test_and_set): Remove needless duplicate filters.
+	(thread_pipe): Code refactor.
+	(thread_serial): Ditto.
+	* winsup.h (FIXME): Change macro to identify file, function and line.
+	* spawn.cc: Format of FIXME changed.
+	* path.cc (cygwin_conv_to_win32_path): Move the test for a valid path
+	variable before initialization of variables.
+	Free retpath before exiting to fix resource leak.
+
+2003-01-24  Earnie Boyd  <earnie@users.sf.net>
+
+	* path.cc (cygwin_conv_to_win32_path): Use cygheap's cmalloc, crealloc
+	and cfree functions to avoid an apparent malloc misfeature.
+
+2003-01-02  Earnie Boyd  <earnie@users.sf.net>
+
+	* include/cygwin/version.h: Increment version to 1.0.9.
+
+2002-12-03  Earnie Boyd  <earnie@users.sf.net>
+
+	* path.cc (cygwin_conv_to_win32_path): Add filtering to handle strings
+	of ``http://some.string/'' and ``foo:echo /abcdef'' from being 
+	considered path lists.
+	* shared_info.h (MAX_MOUNTS): Increase from 30 to 128.
+
+2002-12-02  Earnie Boyd  <earnie@users.sf.net>
+
+	* mkvers.sh: Revert accidental checkin.
+
+2002-12-02  Earnie Boyd  <earnie@users.sf.net>
+
+	* path.cc (cygwin_conv_to_win32_path): Convert / to \ if we have a path
+	list; else convert \ to /.
+	* Makefile.in (WINDRES): Add the appropriate include directory.
+
+2002-12-01  Earnie Boyd  <earnie@users.sf.net>
+
+	* path.cc (cygwin_conv_to_win32_path): Modify the conversion of \ to /
+	to convert / to \ if we have a path list or both found in the string.
+
+2002-11-30  Luke Dunstan  <infidel@users.sf.net>
+
+	* path.cc (cygwin_conv_to_win32_path): Fix for single-quoted strings.
+
+2002-11-27  Earnie Boyd  <earnie@users.sf.net>
+
+	* path.cc (cygwin_conv_to_win32_path): Fix the -Ic:/foo regression.
+	Also, if we changed path convert all \ to /.
+
 2002-11-16  Earnie Boyd  <earnie@users.sf.net>
 
 	* path.cc (cygwin_conv_to_win32_path): Bug and typo fixes.
