@@ -1,3 +1,7 @@
+2002.04.26  Earnie Boyd  <earnie@users.sf.net>
+
+	* builtins/cd.def: Add ``pwd -W'' option.
+
 2002.02.24  Earnie Boyd  <earnie@users.sf.net>
 
 	* eval.c: Remove MSYS coding.
