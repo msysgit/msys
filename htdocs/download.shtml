@@ -27,15 +27,15 @@
 inter-related <i>packages</i>.  There is a package for the MinGW
 runtime, packages             for GCC and other tool ports, a package
 for the w32api, and so forth.             All of these packages conform
-to a set of common conventions (internal layout, directory
-structure, naming scheme).             The traditional method for
-installing MinGW was to create a directory for the installation,
-download the desired individual packages, and extract their
-contents into the installation directory (the common  internal layout
-shared by the packages made this possible). </p>
+to a set of common conventions (internal layout, directory structure,
+naming scheme).             The traditional method for installing MinGW
+was to create a directory for the installation, download the desired
+individual packages, and extract their contents into the installation
+directory (the common  internal layout shared by the packages made this
+possible). </p>
             <p> However, in mid-2001 the team began publishing a
 single-archive "MinGW distribution"... bundling the latest versions of
-all individual             packages available at the time of release. 
+all individual             packages available at the time of release.
 This was done partially to             streamline the installation
 process for newbies, and partially to             help application and
 library developers design products that will build using MinGW
@@ -46,9 +46,9 @@ individual packages, but now it is easier to verify things as being
 are still             produced and made available for download
 seperately. Updated versions of             individual packages will
 sometimes be made available in between releases             of the main
-MinGW distribution... in most cases it should be possible to
-extract a package's content into your MinGW directory to take advantage
-of the updates immediately. </p>
+MinGW distribution... in most cases it should be possible to extract a
+package's content into your MinGW directory to take advantage of the
+updates immediately. </p>
             <h3>Download location</h3>
             <p> The standard MinGW download page is hosted by <a
  target="_nw"
@@ -78,10 +78,10 @@ Where:
             <dl>
               <dt> <tt>&lt;version&gt;</tt> </dt>
               <dd> Arbitrarily chosen by the MinGW development team, the
-latest version at the                   time of this writing was 1.0.1. 
-Major updates to the distribution will involve
-incrementing the most-significant digit in the version number,  smaller
-updates will increment less-significant digits. </dd>
+latest version at the                   time of this writing was 1.0.1.
+Major updates to the distribution will involve incrementing the
+most-significant digit in the version number,  smaller updates will
+increment less-significant digits. </dd>
               <dt> <tt>&lt;stamp&gt;</tt> </dt>
               <dd> Always YYYYMMDD format, representing the date on
 which the distribution                   was bundled (not related to the
@@ -121,8 +121,23 @@ increment version for them,                         not release number). </li>
 method used. We are using <tt>zip</tt> and/or <tt>tar.gz</tt>.</dd>
             </dl>
 For example, <tt>binutils-2.10.91-20001205.zip</tt> is a binutils
-(which are GNU Binary Utilities) 2.10.91 alpha or beta release made
-on 5th of December, 2000.
+(which are GNU Binary Utilities) 2.10.91 alpha or beta release made on
+5th of December, 2000.<br>
+            <br>
+            <em><b>WinZip Caution:</b></em><br>
+Make sure that you first <b>uncheck</b> the "TAR file smart CR/LF
+conversion" checkbox found in the Configuration -&gt; Miscellaneous tab
+of the Options menu. <br>
+            <br>
+            <em><a href="http://www.7-zip.org" target="_nw">7-Zip</a></em><br>
+            <p>We've found that this zip/unzip utility is fast and
+reliable for differing compression algorithms.  If you need a
+decompression utility, you should visit <a
+ href="http://www.7-Zip.org" target="_nw">7-Zip</a> for the latest
+version.  If you don't need a compression/decompression utility, I
+suggest you visit <a href="http://www.7-Zip.org"
+ target="_nw">7-Zip</a> for one of the best compression algorithms
+available. <b> </b></p>
             <hr>
             <h2>Installing MinGW</h2>
             <p> The recommended method of installation for beginners
@@ -130,11 +145,10 @@ involves downloading the             latest version of the single-file
 distribution, rather than any individual             packages. </p>
             <p> After downloading the archive, create a directory on
 your system that you wish             to serve as the base of the
-installation (i.e. <tt>C:\MINGW</tt>).  Extract the
-distribution archive into this directory.  If your
-compression/extraction application does not by default preserve the
-directory structure of             archive contents, be sure that you
-instruct it to do so manually. </p>
+installation (i.e. <tt>C:\MINGW</tt>).  Extract the distribution
+archive into this directory.  If your compression/extraction
+application does not by default preserve the directory structure of    
+archive contents, be sure that you instruct it to do so manually. </p>
             <p> The last step is to add the <tt>/bin</tt> subdirectory
 of MinGW installation to             your PATH (the procedure for doing
 this varies based on the operating system             version you are
@@ -154,6 +168,6 @@ for more detail). </p>
 </table>
 <!--#include file="ssi/bottombar.html"--><!--#include file="ssi/footer.html"-->
 <address> <br>
-Last revised $Date: 2002-12-26 09:22:34 $ </address>
+Last revised $Date: 2002-12-26 11:56:09 $ </address>
 </body>
 </html>

@@ -1,211 +1,68 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<!-- $Id: index.shtml,v 1.52 2002-12-20 16:42:33 earnie Exp $ -->
-  <title>MinGW -- Minimalist GNU For Windows</title>
-                     
+  <meta http-equiv="content-type"
+ content="text/html; charset=ISO-8859-1">
   <meta name="description"
  content="Home of MinGW -- Minimalist GNU for Windows -- project. Contains information about the MinGW runtime library and GNU/OSS development tools for MinGW.">
-          
   <meta name="keywords"
  content="mingw, mingw32, programming, C++, C, C/C++, libraries, software, development tools, editors, IDEs, GNU">
-          
-  <style type="text/css"><!-- ol.alpha {list-style-type: upper-alpha} --></style>
-          
-  <style type="text/css"><!-- ol.romanum {list-style-type: lower-roman} --></style>
-          
-  <style type="text/css"><!-- ol {margin-top: 1em} --></style>          
-  <style type="text/css"><!-- ul {margin-top: 1em} --></style>          
-  <style type="text/css"><!-- ul {margin-bottom: 1em} --></style>
+  <link href="mingw.css" type="text/css" rel="stylesheet" title="MinGW">
+  <title>MinGW - Reporting bugs</title>
 </head>
-<body bgcolor="white" text="black" link="#0000ee" vlink="#551a8b"
- alink="red">
+<body link="#000099" vlink="#990099" alink="#000099">
 <h1 align="center">MinGW: Minimalist GNU For Windows</h1>
-<!-- two-column format: left sidebar and the body -->
-<table border="0" cellspacing="6" cellpadding="8">
+<table class="prim" cellspacing="6" border="0">
   <tbody>
     <tr>
-      <td bgcolor="#eeeeee" valign="top" width="10%"><!--#include file="ssi/lsidebar.html"-->
-      <br>
-      </td>
-<!-- 2nd column of two-column format: the body --><td valign="top"><!-- ================================================================== -->
-<!--                                                                    -->
-<!--			  Main Body                                     --><!--                                                                    -->
-                    
-      <table border="0" cellspacing="6" cellpadding="0">
+      <td class="side"><!--#include file="ssi/lsidebar.html"-->&nbsp;</td>
+      <td>
+      <table class="sec" cellspacing="6" border="0">
         <tbody>
           <tr>
-            <td valign="top" align="left">                              
-       
-            <p><b>MinGW:</b> A collection of freely available and freely distributable
- Windows specific header files and import libraries combined with GNU  toolsets
-that allow one to produce native Windows programs that do not  rely on any
-3rd-party DLLs.</p>
-                                      
-            <p><b>MSYS:</b> A Minimal SYStem to allow the typical POSIX/Bourne
-configure script to execute to create a Makefile so that you can execute make.</p>
-<!--
-<p>
-The current set of tools include <a href="http://gcc.gnu.org/">
-GNU Compiler Collection (GCC)</a>, 
-<a href="http://sources.redhat.com/binutils/">GNU Binary Utilities 
-(Binutils)</a>, <a href="http://sources.redhat.com/gdb/"> GNU debugger (Gdb)
-</a>, GNU make, and a assorted other utilities. We are currently working on 
-creating a complete set of Mingw-hosted GNU toolchain, and looking for 
-volunteers. </p>
--->
-<!--
-<p>
-At the basic level, MinGW is a set of include files and import libraries 
-that allow a console-mode or a GUI-mode program to use Microsoft's standard C 
-runtime library MSVCRT.DLL (available on all NT systems, and on all stock Win9x
-after the original Windows 95 release (for which it can be installed 
-separately)).
-Using this basic runtime, you can write console-mode or GUI-mode ANSI compliant
-programs using GCC and use some of the extensions offered by MS C runtime, but 
-cannot use the features provided by the Windows32 API. The next critical piece 
-is the <em>w32api</em> package, which is a set of includes and import libraries 
-to enable the use of Windows32 API, and combined with the basic runtime, 
-you (potentially) have full access to both the C Runtime (CRT) and 
-Windows32 API functionality. Please see the
-<a href="licensing.shtml">licensing</a> information on the various pieces.
-</p>
--->
-                                      
-            <p><b>Mailing Lists:</b>We have several <a
- href="lists.shtml">mailing list</a> you are  encouraged to join and participate
-in.  There is a general discussion list <a
- href="mailto:mingw-users@lists.sf.net">mingw-users@lists.sf.net</a> for general
-MinGW questions and a general discussion list <a
- href="mailto:mingw-msys@lists.sf.net">mingw-msys@lists.sf.net</a> for  questions
-more related to MSYS and to using the Minimal SYStem.   Information for signup
-and links to the archives can be found by <a href="lists.shtml"> clicking
-here</a>. You may <em>search</em> the archives  using the <b>"Search the archives"</b>form
-found on the left side of  every <a href="http://www.mingw.org">www.mingw.org</a>page.</p>
-                                      
-            <p><b>Latest Releases:</b><br>
-            <em>NOTE:</em>The Latest Releases may not contain the most recent
-versions of each individual package.  You may find the most recent versions
-of the individual packages by <a
- href="https://sourceforge.net/project/showfiles.php?group_id=2435" target="_nw">clicking
-here</a>. </p>
-                                      
-            <ul>
-              <li><em>MinGW</em>  <a
- href="http://prdownloads.sourceforge.net/mingw/MinGW-2.0.0-3.exe" target="_nw">Version
-2.0.0</a>.  Bundles the executables from these packages:                
-                                
-                <ul>
-                  <li><a
- href="http://prdownloads.sourceforge.net/mingw/gcc-3.2-core-20020817-1.tar.gz" target="_nw">gcc-3.2-core-20020817-1</a></li>
-                  <li><a
- href="http://prdownloads.sourceforge.net/mingw/binutils-2.13-20020903-1.tar.gz">binutils-2.13-20020903-1</a> <a href="#Upgraded_Packages"><em><b>Upgrade Available</b></em></a></li>
-                  <li><a
- href="http://prdownloads.sourceforge.net/mingw/mingw-runtime-2.2.tar.gz" target="_nw">mingw-runtime-2.2</a> <a href="#Upgraded_Packages"><em><b>Upgrade Available</b></em></a></li>
-                  <li><a
- href="http://prdownloads.sourceforge.net/mingw/w32api-2.0.tar.gz" target="_nw">w32api-2.0</a> <a href="#Upgraded_Packages"><em><b>Upgrade Available</b></em></a></li>
-                  <li><a
- href="http://prdownloads.sourceforge.net/mingw/gdb-5.1.1-1.tar.gz" target="_nw">gdb-5.1.1-1</a></li>
-                  <li><a
- href="http://prdownloads.sourceforge.net/mingw/make-3.79.1-20010722.tar.gz" target="_nw">make-3.79.1-20010722</a>
-                    <em>(make.exe renamed as mingw32-make.exe)</em></li>
-                                                  
-                </ul>
-              </li>
-              <li><em>MSYS:</em><a
- href="http://prdownloads.sourceforge.net/mingw/MSYS-1.0.8.exe" target="_nw">Version
-1.0.8</a>.  Bundles select executables from:                             
-                     
-                <ul>
-                  <li>bash</li>
-                  <li>bzip2</li>
-                  <li>diffutils</li>
-                  <li>fileutils</li>
-                  <li>findutils</li>
-                  <li>gawk</li>
-                  <li>gzip</li>
-                  <li>m4</li>
-                  <li>make</li>
-                  <li>rxvt</li>
-                  <li>sed</li>
-                  <li>sh-utils</li>
-                  <li>tar</li>
-                  <li>texinfo</li>
-                  <li>textutils</li>
-                  <li>vim</li>
-                                                  
-                </ul>
-              </li>
-                                      
-            </ul>
-            <em><b>WinZip Caution:</b></em><br>
-Make sure that you first <b>uncheck</b> the "TAR file smart CR/LF conversion"
-checkbox found in the Configuration -&gt; Miscellaneous tab of the Options
-menu. <br>
-            <br>
-            <em><a href="http://www.7-zip.org" target="_nw">7-Zip</a></em><br>
-            
-            <p>We've found that this zip/unzip utility is fast and reliable
-for differing compression algorithms.  If you need a decompression utility,
-you should visit             <a href="http://www.7-Zip.org" target="_nw">7-Zip</a> for
-the latest version.  If you don't need a compression/decompression utility,
-I suggest you visit             <a href="http://www.7-Zip.org" target="_nw">7-Zip</a>for
-one of the best compression algorithms available.                       
-  <b><br>
-            </b></p>
-            
-            <p>            <b>Releases Candidates:</b><br>
-            Please test the following <em>release candidate</em> packages:<br>
-                                      </p>
-            <ul>
-              <li><em>Debugger:</em> <a
- href="http://prdownloads.sf.net/mingw/gdb-5.2.1-20021009.tar.gz" target="_nw">&nbsp;gdb-5.2.1-20021009.tar.gz</a></li>
-	      <li><em>Java:</em> <a href="http://prdownloads.sf.net/mingw/gcj-3.2-20021210-1.tar.gz" target="_nw">gcj-3.2-20021210-1.tar.gz</a></li>
-	      <li><em>GCC:</em> <a href="http://prdownloads.sf.net/mingw/gcc-3.2.1-core-20021201-2.tar.gz" target="_nw">gcc-3.2.1-core-20021201-2.tar.gz</a></li>
-	      <li><em>Binutils:</em> <a href="http://prdownloads.sf.net/mingw/binutils-2.13.90-20021209-1.tar.gz" target="_nw">binutils-2.13.90-20021209-1.tar.gz</a></li>
-	    </ul>
-	    </p>
-	    <p><b>Experimental/Test Packages:</b><br>
-	    Please test the following <em>experimental/test release</em> packages<br>
-	    <ul>
-	      <li><em>Ada:</em> <a href="http://prdownloads.sf.net/mingw/gnatgcc-3.3-exp-20021006.tar.gz" target="_nw">gnatgcc-3.3-exp-20021006.tar.gz</a></li>
-            </ul>
-	    </p>
-	    <a name="Upgraded_Packages"/>
-	    <p><b>Upgraded Packages:</b><br>
-	    Please <em>upgrade</em> your installation.<br>
-	    <ul>
-	      <li><em>Binutils:</em> <a href="http://prdownloads.sf.net/mingw/binutils-2.13.90-20021006-2.tar.gz" target="_nw">binutils-2.13.90-20021006-2.tar.gz</a></li>
-	      <li><em>W32api:</em> <a href="http://prdownloads.sf.net/mingw/w32api-2.1.tar.gz" target="_nw">w32api-2.1.tar.gz</a></li>
-	      <li><em>MinGW Runtime:</em> <a href="http://prdownloads.sf.net/mingw/mingw-runtime-2.3.tar.gz" target="_nw">mingw-runtime-2.3.tar.gz</a></li>
-	    </ul>
-	    </p>
-                                                  
-            <hr noshade="noshade" size="1">                             
-        
-            <p align="center"><b>News</b></p>
-<!--#include virtual="news-short.html"--><!-- <center><a href="news.shtml">more news</a></center> -->
-            </td>
+            <td>
+<!-- ======================================================================= -->
+<!--                                                                         -->
+<!--                               Main Body                                 -->
+<!--                                                                         -->
+            <h4>MinGW:</h4>
+            <p> A collection of freely available and freely
+distributable Windows specific header files and import libraries
+combined with GNU toolsets that allow one to produce native Windows
+programs that do not rely on any 3rd-party DLLs. </p>
+            <h4>MSYS:</h4>
+            <p> A Minimal SYStem to provide POSIX/Bourne configure
+scripts the ability to execute and create a Makefile used by make.<br>
+            </p>
+            <h4>Mailing Lists:</h4>
+            <p>We have several <a href="lists.shtml">mailing lists</a>
+you are encouraged to join and participate in. There is a general
+discussion list&nbsp;<a href="mailto:mingw-users@lists.sf.net">mingw-users@lists.sf.net</a>
+for general MinGW questions and a general discussion list&nbsp;<a
+ href="mailto:mingw-msys@lists.sf.net">mingw-msys@lists.sf.net</a> for
+questions more related to MSYS and to using the Minimal SYStem.
+Information for signup and links to the archives can be found by&nbsp;<a
+ href="lists.shtml">clicking here</a>. You may search the archives
+using the "Search the archives" form found on the left side of
+every&nbsp;<a href="http://www.mingw.org">www.mingw.org</a> page.</p>
+<!--#include file="ssi/release.html"-->
+<h4>News:</h4>
+<!--#include virtual="news-short.html"-->
+
+<!--                     End of Main Body                                   --> 
+						</td>
           </tr>
-                          
-        </tbody>                    
+        </tbody>
       </table>
-<!-- Close page table --></td>
+      </td>
     </tr>
-        
   </tbody>
 </table>
-<!--#include file="ssi/bottombar.html"--><!--#include file="ssi/footer.html"--><!-- Only the main page has SourceForge logo. -->
+<!-- Only the main page has SourceForge logo. -->
 <p><a href="http://sourceforge.net/" target="_nw"><img
  src="http://sourceforge.net/sflogo.php?group_id=2435&amp;type=1" width="88"
- height="31" alt="Powered by SourceForge" border="0"></a><!--
-<a href="http://validator.w3.org/check?uri=http%3A%2F%2Fwww.mingw.org%2Findex.shtml" target="_nw">
-<img border="0" src="vxhtml10.gif" alt="Valid XHTML 1.0!" height="31" 
-width="88" /></a>
--->
-</p>
+ height="31" alt="Powered by SourceForge" border="0"></a>
 <address><br>
-Last revised $Date: 2002-12-20 16:42:33 $</address>
-<br>
+Last revised $Date: 2002-12-26 11:56:09 $ </address>
 </body>
 </html>
