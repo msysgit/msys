@@ -1,3 +1,16 @@
+2003-06-13  Earnie Boyd  <earnie@users.sf.net>
+
+	* environ.cc:  Remove DO_CPP_NEW filters througout.
+	* exceptions.cc (exception): Output version and build date info to the
+	stackdump file.
+	* msys_symlink.cc (msys_symlink): Use msys_p2w() instead of
+	cygwin_conv_to_win32_path().
+	* spawn.cc (spawn_guts): Ditto.
+	* path.cc (msys_p2w): New function (copy previous
+	cygwin_conv_to_win32_path and heavily modify).
+	(cygwin_conv_to_win32_path): Remove contents and use msys_p2w.
+	include/sys/cygwin.h (msys_p2w): Add declaration.
+
 2003-06-11  Earnie Boyd  <earnie@users.sf.net>
 
 	* spawn.cc (spawn_guts): Use malloc instead of cmalloc for envblock.

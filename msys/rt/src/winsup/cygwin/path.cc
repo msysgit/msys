@@ -3156,15 +3156,16 @@ IsAbsWin32Path (const char * path)
    These are exported to the world as cygwin_foo by cygwin.din.  */
 
 extern "C"
-int
-cygwin_conv_to_win32_path (const char *path, char *win32_path)
+char *
+msys_p2w (const char *path)
 {
   TRACE_IN;
 
   if (!path || !*path)
     {
-      *win32_path = '\0';
-      return 0;
+      char *retpath = (char *)malloc (1);
+      *retpath = '\0';
+      return retpath;
     }
 
   static bool path_list_found = false;
@@ -3172,16 +3173,11 @@ cygwin_conv_to_win32_path (const char *path, char *win32_path)
   const char *spath = path;
   char *sptr;
   char * sspath;
-  char *swin32_path = (char *)cmalloc(HEAP_STR, MAX_PATH);
-  memset (swin32_path, 0, MAX_PATH);
-  int swin32_pathlen;
   // retpath will be what sets win32_path before exiting.
-  char *retpath = (char *)cmalloc(HEAP_STR, MAX_PATH);
+  char *retpath = (char *)malloc(MAX_PATH);
   memset (retpath, 0, MAX_PATH);
   int retpath_len = 0;
   int retpath_buflen = MAX_PATH;
-  int sret;
-  int retval = 0;
     
 #define retpathcat(retstr) \
   path_changed = true; \
@@ -3190,7 +3186,7 @@ cygwin_conv_to_win32_path (const char *path, char *win32_path)
     { \
       retpath_buflen = ((retpath_buflen * 2 <= retpath_len) ? \
 	  retpath_len + 1 : retpath_buflen * 2); \
-      retpath = (char *)crealloc (retpath, retpath_buflen); \
+      retpath = (char *)realloc (retpath, retpath_buflen); \
     } \
   strcat (retpath, retstr);
 
@@ -3205,14 +3201,12 @@ cygwin_conv_to_win32_path (const char *path, char *win32_path)
     { \
       retpath_buflen = ((retpath_buflen * 2 <= retpath_len) ? \
 	  retpath_len + 1 : retpath_buflen * 2); \
-      retpath = (char *)crealloc (retpath, retpath_buflen); \
+      retpath = (char *)realloc (retpath, retpath_buflen); \
     } \
   strcpy (retpath, retstr);
 
-  *win32_path = '\0';
-
 #if DEBUGGING
-  debug_printf("cygwin_conv_to_win32_path (%s, ...)", path);
+  debug_printf("msys_p2w (%s)", path);
 #endif
 
   //
@@ -3290,11 +3284,12 @@ cygwin_conv_to_win32_path (const char *path, char *win32_path)
       while (sspath)
 	{
 	  *sspath = '\0';
-	  sret = cygwin_conv_to_win32_path (spath, swin32_path);
+	  char *swin32_path = msys_p2w (spath);
 	  //
 	  // Just ignore sret; swin32_path has the value we need.
 	  //
 	  retpathcat (swin32_path);
+	  free (swin32_path);
 	  spath = sspath + 1;
 	  sspath = strchr (spath, ':');
 	  if (sspath)
@@ -3308,8 +3303,9 @@ cygwin_conv_to_win32_path (const char *path, char *win32_path)
       if (*spath)
 	{
 	  retpathcat (";");
-	  sret = cygwin_conv_to_win32_path (spath, swin32_path);
+	  char *swin32_path = msys_p2w (spath);
 	  retpathcat (swin32_path);
+	  free (swin32_path);
 	}
     }
   else
@@ -3325,24 +3321,23 @@ cygwin_conv_to_win32_path (const char *path, char *win32_path)
 	    if (sspath && *(sspath - 1) == '/' && *(sspath + 1) == '.')
 	      {
 		*(sspath - 1) = '\0';
-		sret = cygwin_conv_to_win32_path (spath, swin32_path);
-		if (sret)
+		char *swin32_path = msys_p2w (spath);
+		if (swin32_path == spath)
 		  {
-		    retpathcpy (path);
-		    retval = -1;
+		    return ((char *)path);
 		    break;
 		  }
 		retpathcpy (swin32_path);
 		retpathcat ("/");
 		retpathcat (sspath);
+		free (swin32_path);
 		break;
 	      }
 	    path_conv p (spath, 0);
 	    if (p.error)
 	      {
 		set_errno(p.error);
-		retpathcpy (path);
-		retval = -1;
+		return ((char *)path);
 		break;
 	      }
 	    retpathcpy (p.get_win32 ());
@@ -3359,16 +3354,16 @@ cygwin_conv_to_win32_path (const char *path, char *win32_path)
 	      // just use recursion if we find a set variable token.
 	      //
 	      *sspath = '\0';
-	      sret = cygwin_conv_to_win32_path (++sspath, swin32_path);
-	      if (sret)
+	      char *swin32_path = msys_p2w(++sspath);
+	      if (swin32_path == sspath)
 		{
-		  retpathcpy (path);
-		  retval = -1;
+		  return ((char *)path);
 		  break;
 		}
 	      retpathcpy (spath);
 	      retpathcat ("=");
 	      retpathcat (swin32_path);
+	      free (swin32_path);
 	      break;
 	    }
 	  else
@@ -3381,11 +3376,10 @@ cygwin_conv_to_win32_path (const char *path, char *win32_path)
 #if DEBUGGING
 		  debug_printf("spath = %s", spath);
 #endif
-		  sret = cygwin_conv_to_win32_path (sspath, swin32_path);
-		  if (sret)
+		  char *swin32_path = msys_p2w (sspath);
+		  if (swin32_path == sspath)
 		    {
-		      retpathcpy (path);
-		      retval = -1;
+		      return ((char *)path);
 		      break;
 		    }
 		  sspath = (char *)spath;
@@ -3395,6 +3389,7 @@ cygwin_conv_to_win32_path (const char *path, char *win32_path)
 		  retpathcpy (spath);
 		  *sspath = '/';
 		  retpathcat (swin32_path);
+		  free (swin32_path);
 		  break;
 		}
 	      else
@@ -3411,14 +3406,14 @@ cygwin_conv_to_win32_path (const char *path, char *win32_path)
 	  if (spath[1] == '/')
 	    {
 	      retpathcpy ("\"");
-	      sret = cygwin_conv_to_win32_path (&spath[1], swin32_path);
-	      if (sret)
+	      char *swin32_path = msys_p2w (&spath[1]);
+	      if (swin32_path == &spath[1])
 		{
-		  retpathcpy (path);
-		  retval = -1;
+		  return ((char *)path);
 		  break;
 		}
 	      retpathcat (swin32_path);
+	      free (swin32_path);
 	      break;
 	    }
 	  retpathcpy (path);
@@ -3430,14 +3425,14 @@ cygwin_conv_to_win32_path (const char *path, char *win32_path)
 	  if (spath[1] == '/')
 	    {
 	      retpathcpy ("'");
-	      sret = cygwin_conv_to_win32_path (&spath[1], swin32_path);
-	      if (sret)
+	      char *swin32_path = msys_p2w (&spath[1]);
+	      if (swin32_path == &spath[1])
 		{
-		  retpathcpy (path);
-		  retval = -1;
+		  return ((char *)path);
 		  break;
 		}
 	      retpathcat (swin32_path);
+	      free (swin32_path);
 	      break;
 	    }
 	  retpathcpy (path);
@@ -3451,14 +3446,14 @@ cygwin_conv_to_win32_path (const char *path, char *win32_path)
 	      sspath[1] = '\0';
 	      retpathcpy (spath);
 	      sspath[1] = '/';
-	      sret = cygwin_conv_to_win32_path (&sspath[1], swin32_path);
-	      if (sret)
+	      char *swin32_path = msys_p2w (&sspath[1]);
+	      if (swin32_path == &sspath[1])
 		{
-		  retpathcpy (path);
-		  retval = -1;
+		  return ((char *)path);
 		  break;
 		}
 	      retpathcat (swin32_path);
+	      free (swin32_path);
 	      break;
 	    }
 	  //
@@ -3487,10 +3482,6 @@ cygwin_conv_to_win32_path (const char *path, char *win32_path)
 	  sspath = strchr (sspath + 1, ';');
 	}
     }
-  //
-  // Copy the return value.
-  //
-  strcpy (win32_path, retpath);
 
   //
   // If we modified the path then convert all / to \ if we have a path list
@@ -3500,7 +3491,7 @@ cygwin_conv_to_win32_path (const char *path, char *win32_path)
     {
       if (path_changed)
 	{
-	  spath = win32_path;
+	  spath = retpath;
 	  while ((sspath = strchr(spath, '/')))
 	    {
 	      *sspath = '\\';
@@ -3512,7 +3503,7 @@ cygwin_conv_to_win32_path (const char *path, char *win32_path)
     {
       if (path_changed)
 	{
-	  spath = win32_path;
+	  spath = retpath;
 	  while ((sspath = strchr(spath, '\\')))
 	    {
 	      *sspath = '/';
@@ -3521,11 +3512,16 @@ cygwin_conv_to_win32_path (const char *path, char *win32_path)
 	}
     }
 
-  if (swin32_path)
-    cfree(swin32_path);
-  if (retpath)
-    cfree(retpath);
-  return retval;
+  return retpath;
+}
+
+extern "C"
+int
+cygwin_conv_to_win32_path (const char *path, char *win32_path)
+{
+  TRACE_IN;
+  win32_path = msys_p2w(path);
+  return ((win32_path == path) ? -1 : 0);
 }
 
 extern "C"
