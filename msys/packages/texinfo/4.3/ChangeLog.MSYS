@@ -1,4 +1,0 @@
-2002.12.05  Earnie Boyd  <earnie@users.sf.net>
-
-	* config.guess: Add patterns for MSYS.
-	* config.sub: Ditto.
