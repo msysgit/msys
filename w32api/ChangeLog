@@ -1,5 +1,13 @@
 2001-08-15  Danny Smith  <dannysmith@users.sourceforge.net>
 
+	* include/winnt.h: Move CHAR, SHORT and LONG typedefs outside
+	of block protected by #ifndef VOID.
+	(This reverts 1998-12-01 Anders Norlander change.)
+	* include/odbcinst.h: End file with newline.
+	* include/raserror.h: Ditto.	
+
+2001-08-15  Danny Smith  <dannysmith@users.sourceforge.net>
+
 	* include/winsock2.h (#include <wtypes.h): Don't.
 	(_BLOB): Define instead, if not already done.
 	(__BLOB_T_DEFINED: New define for guarding _BLOB.
