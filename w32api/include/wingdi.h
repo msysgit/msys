@@ -9,6 +9,8 @@ extern "C" {
 #define BI_RLE8 1
 #define BI_RLE4 2
 #define BI_BITFIELDS 3
+#define BI_JPEG 4
+#define BI_PNG 5
 #define LF_FACESIZE	32
 #define LF_FULLFACESIZE	64
 #define CA_NEGATIVE	1
@@ -734,13 +736,15 @@ extern "C" {
 #define GCP_USEKERNING 8
 #define FLI_GLYPHS 0x40000
 #define FLI_MASK 0x103b
+#define GGO_METRICS 0
 #define GGO_BITMAP 1
 #define GGO_NATIVE 2
-#define GGO_METRICS 0
+#define GGO_BEZIER 3
 #define GGO_GRAY2_BITMAP 4
 #define GGO_GRAY4_BITMAP 5
 #define GGO_GRAY8_BITMAP 6
 #define GGO_GLYPH_INDEX 128
+#define GGO_UNHINTED 256
 #define GM_COMPATIBLE 1
 #define GM_ADVANCED 2
 #define MM_ANISOTROPIC 8
@@ -1147,7 +1151,9 @@ extern "C" {
 #define WGL_SWAP_UNDERLAY13 0x10000000
 #define WGL_SWAP_UNDERLAY14 0x20000000
 #define WGL_SWAP_UNDERLAY15 0x40000000
-#define AC_SRC_OVER 0 
+#define AC_SRC_OVER 0
+#define LAYOUT_RTL 1
+#define LAYOUT_BITMAPORIENTATIONPRESERVED 8
 
 #ifndef RC_INVOKED
 typedef struct _ABC {
