@@ -3115,7 +3115,7 @@ int
 cygwin_conv_to_win32_path (const char *path, char *win32_path)
 {
   TRACE_IN;
-  bool found_path = true;
+  bool path_list_found = false;
   bool path_changed = false;
   const char *spath = path;
   char *sptr;
@@ -3211,6 +3211,7 @@ cygwin_conv_to_win32_path (const char *path, char *win32_path)
       //
       // Yes, convert to Win32 path list.
       //
+      path_list_found = true;
       while (sspath)
 	{
 	  *sspath = '\0';
@@ -3400,14 +3401,14 @@ cygwin_conv_to_win32_path (const char *path, char *win32_path)
   strcpy (win32_path, retpath);
 
   //
-  // If we modified the path then convert all \ to /.
+  // If we modified the path then convert all / to \.
   // 
-  if (path_changed)
+  if ((strchr(spath, '/') && strchr(spath, '\\')) || path_list_found)
     {
       spath = win32_path;
-      while ((sspath = strchr(spath, '\\')))
+      while ((sspath = strchr(spath, '/')))
 	{
-	  *sspath = '/';
+	  *sspath = '\\';
 	  spath = sspath + 1;
 	}
     }

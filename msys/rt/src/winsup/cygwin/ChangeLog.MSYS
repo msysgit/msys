@@ -1,3 +1,8 @@
+2002-12-01  Earnie Boyd  <earnie@users.sf.net>
+
+	* path.cc (cygwin_conv_to_win32_path): Modify the conversion of \ to /
+	to convert / to \ if we have a path list or both found in the string.
+
 2002-11-30  Luke Dunstan  <infidel@users.sf.net>
 
 	* path.cc (cygwin_conv_to_win32_path): Fix for single-quoted strings.
