@@ -591,8 +591,9 @@ rl_yank_last_arg (count, key)
   return retval;
 }
 
-/* A special paste command for users of Cygnus's cygwin32. */
-#if defined (__CYGWIN32__)
+/* A special paste command for users of Cygnus's cygwin. */
+#if defined (__CYGWIN__) || defined (__MSYS__)
+#define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 
 int
@@ -625,4 +626,4 @@ rl_paste_from_clipboard (count, key)
     }
   return (0);
 }
-#endif /* __CYGWIN32__ */
+#endif /* __CYGWIN__ || __MSYS__ */

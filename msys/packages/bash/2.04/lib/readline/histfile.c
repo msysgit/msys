@@ -59,14 +59,14 @@
    on win 95/98/nt), we want to open files with O_BINARY mode so that there
    is no \n -> \r\n conversion performed.  On other systems, we don't want to
    mess around with O_BINARY at all, so we ensure that it's defined to 0. */
-#if defined (__EMX__) || defined (__CYGWIN__)
+#if defined (__EMX__) || defined (__CYGWIN__) || defined (__MSYS__)
 #  ifndef O_BINARY
 #    define O_BINARY 0
 #  endif
-#else /* !__EMX__ && !__CYGWIN__ */
+#else /* !__EMX__ && !__CYGWIN__ && !__MSYS__ */
 #  undef O_BINARY
 #  define O_BINARY 0
-#endif /* !__EMX__ && !__CYGWIN__ */
+#endif /* !__EMX__ && !__CYGWIN__ && !__MSYS__ */
 
 #include <errno.h>
 #if !defined (errno)

@@ -3,7 +3,7 @@
 # Created: 1992-01-15
 # Public domain
 
-# $Id: prompt.bash,v 1.1 2002-04-18 12:39:41 earnie Exp $
+# $Id: prompt.bash,v 1.2 2002-04-18 13:39:54 earnie Exp $
 
 # Commentary:
 # Code:

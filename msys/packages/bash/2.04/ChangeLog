@@ -1,0 +1,5 @@
+2002.04.18  Earnie Boyd  <earnie@users.sf.net>
+
+	* ChangeLog: New File
+	* bash-2.04: In whole, merge any CYGWIN and MSYS changes as
+	subversion 1 (sv1).
