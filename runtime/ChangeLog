@@ -1,3 +1,196 @@
+2004-09-05  Earnie Boyd  <earnie@users.sf.net>
+
+	* include/_mingw.h: Increment minor version for 3.5 release.
+	* Makefile.in: Ditto.
+
+2004-08-24  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/malloc.h (__mingw_aligned_offset_malloc,
+	__mingw_aligned_offset_realloc, __mingw_aligned_malloc,
+	__mingw_aligned_realloc, __mingw_aligned_free): Add
+	prototypes.
+	* mingwex/Makefile.in (DISTFILES): Add mingw-aligned-malloc.c,
+	tst-aligned-malloc.c.
+	(REPLACE_OBJS): Add mingw-aligned-malloc.o.
+
+2004-08-24  Steven G. Johnson  <stevenj@alum.mit.edu>
+
+	* mingwex/mingw-aligned-malloc.c: New file.
+	* mingwex/tst-aligned-malloc.c: New file.	
+
+2004-08-24  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* crt1.c: (__mingw_CRTStartup): Change return to void.  Add
+	noreturn attribute. Align stack to 16 bytes before passing args
+	to main.
+	(mainCRTStartup): Change return to void.
+	(WinMainCRTStartup): Likewise.
+
+
+2004-08-15  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* profile/COPYING: New file.
+	* profile/CYGWIN_LICENSE: New file.
+	* profile/Makefile.in (DISTFILES): Add COPYING, CYGWIN_LICENSE.
+
+2004-08-15  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* mingwex/fopen64.c: Move.
+	* mingwex/fseeko64.c: Move.
+	* mingwex/ftello64.c: Move.
+	* mingwex/lseek64.c: Move.
+	* mingwex/stdio/fopen64.c: To here.
+	* mingwex/stdio/fseeko64.c: To here.
+	* mingwex/stdio/ftello64.c: To here.
+	* mingwex/stdio/lseek64.c: To here.
+
+2004-08-15  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* profile/gmon.c [__MINGW32__]: Include  string.h for
+	memset prototype.
+
+2004-08-08  Christopher Faylor  <cgf@timesys.com>
+
+	* mingwex/stdio/vwscanf.c: Add stdio.h needed after 2004-08-07 change.
+
+2004-08-07  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/complex.h:  Remove __attribute__ ((const)) from
+	transcendantal and trig functions.  Replace __attribute__ ((const))
+	with __MINGW_ATTRIB_CONST on other declarations.
+
+2004-08-07  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/wchar.h: Reorganize, avoid including other headers.
+
+2004-08-07  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/string.h (memchr, memcmp, strchr, strcmp, strcspn)
+	(strlen, strncmp, strpbrk, strrchr, strspn, strstr): Add pure
+	attribute.
+
+2004-07-30  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/dirent.h (struct _wdirent): Remove obsolete comment.
+
+2004-07-30  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/string.h: Revert 2004-07-26 additions of
+	__ATTRIBUTE_PURE.
+
+2004-07-28  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* mingwex/math/powl.c (powl): Revert change of 2004-02-01.
+	(__convert_inf_to_maxnum): New.static inline.
+	(reducl): Use it to protect against Inf - Inf.
+	(__fast_ldexpl): New function.  Use in lieu of ldexpl.
+
+2004-07-27  Danny Smith  <dannysmith@users.sourceforge.net>
+	
+	* mingwex/math/expl.c (expl): Move body of code to new static
+	function __expl, removing tests for +/-Inf. Extern function
+	expl calls __expl after testing for max, min log thresholds.
+
+2004-07-26  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* mingwex/stdio/vsscanf.c: Add "edi" to registers-modified field
+	* mingwex/stdio/vfscanf.c: Likewise.
+	* mingwex/stdio/vswscanf.c: Likewise.
+	* mingwex/stdio/vfwscanf.c: Likewise.
+
+2004-07-26  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/_mingw.h: Use only two underscores to uglify
+	__MINGW_ATTRIB_* macros.
+	* include/stdlib.h: Adjust __MINGW_ATTRIB_* tokens.
+	* include/setjmp.h: Likewise.
+
+	* include/sting.h: Add __MINGW_ATTRIB_PURE to locale-independent
+	string functions.
+	(_strdup, strdup): Add __MINGW_ATTRIB_MALLOC.
+
+2004-07-25  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/string.h: Group wide string functions together,
+	and protect with _WSTRING_DEFINED.
+
+2004-07-25  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/_mingw.h (__MINGW_ATTR_*):  Replace with
+	__MINGW_ATTRIB_*.
+	* include/stdlib.h (_ATTRIB_NORETURN): Replace with
+	__MINGW_ATTRIB_NORETURN, throughout.
+	(malloc): Declare with __MINGW_ATTRIB_MALLOC.
+	(calloc): Likewise.
+	(abs): Declare with __MINGW_ATTRIB_CONST.
+	(labs): Likewise.
+	(div): Likewise.
+	(ldiv): Likewise.
+	(lldiv): Likewise.
+	(_rotl): Likewise.
+	(_rotr): Likewise.
+	(_lrotl): Likewise.
+	(_lrotr): Likewise.
+	* include/setjmp.h (longjmp): Add __MINGW_ATTRIB_NORETURN.
+
+2004-07-21  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/_mingw.h: Undefine __attribute__.
+	(__MINGW_ATTR_NORETURN): New define.
+	(__MINGW_ATTR_CONST): New define.
+	(__MINGW_ATTR_MALLOC): New define.
+	(__MINGW_ATTR_PURE): New define.
+	(_CRTIMP, __cdecl, __stdcall, __UNUSED_PARAM): Ansi-fy
+	expansions.
+
+2004-07-19  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/time.h (__time64_t): Add missing ';'. 
+
+2004-07-17  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/time.h (wcsftime): Move out of !__STRICT_ANSI
+ 	block.
+	(struct tm): Protect with _TM_DEFINED.
+
+2004-07-17  Christopher Faylor  <cgf@timesys.com>
+
+	* Makefile.in (CC): Strip inappropriate include file settings from any
+	passed-in CC.
+
+2004-07-15  "dgun"  <dgun@umpire.com>
+
+	* include/complex.h (conj): Correct typo in prototype.
+
+2004-07-15  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/math.h: Add pragma GCC system_header.
+
+2004-07-15  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* mingwex/complex/cargs.c: New file.
+	* mingwex/Makefile.in: Really add carg.o to libmingwex.a.
+
+2004-07-15  Corinna Vinschen  <corinna@vinschen.de>
+
+	* Makefile.in (INCLUDES): Temporarily revert previous change.
+	* mingwex/Makefile,in (INCLUDES): Ditto.
+	* profile/Makefile,in (INCLUDES): Ditto.
+	* mingwex/Makefile,in: Drop carg.o dependency.
+
+2004-07-14  Christopher Faylor  <cgf@timesys.com>
+
+	* mingwex/fwide.c: Include <stdio.h> to resolve FILE usage.
+
+2004-07-14  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* Makefile.in (INCLUDES): Designate $(srcdir)/../include as a
+	system dir.
+	* mingwex/Makefile,in (INCLUDES): Ditto.
+	* profile/Makefile,in (INCLUDES): Ditto.
+
+	* mingwex/Makefile,in: Add carg.o to libmingwex.a.
+
 2004-07-13  Earnie Boyd  <earnie@users.sourcefourge.net>
 
 	* Makefile.in: Move use of --nostdinc++ as GCC3.4 warns to use it
@@ -36,7 +229,7 @@
 	(__mingw_fwrite): Handle huge files.
 
 2004-06-30  Kees Zeelenberg  <kzlg@users.sourceforge.net>
-            Danny Smith  <dannysmith@users.sourceforge.net>
+	    Danny Smith  <dannysmith@users.sourceforge.net>
 
 	* include/stdio.h (fopen64): Add inline function.
 	(fseeko64): Add prototype.
@@ -44,10 +237,10 @@
 	* include/io.h (lseek64): Add inline function.
 	* include/sys/types (off64_t): Add typedef.
 	(fpos64_t): Add typedef.
-        * mingwex/fopen64.c: New file.
-        * mingwex/fseeko64.c: New file.
-        * mingwex/ftello64.c: New file.
-        * mingwex/lseek64.c: New file.
+	* mingwex/fopen64.c: New file.
+	* mingwex/fseeko64.c: New file.
+	* mingwex/ftello64.c: New file.
+	* mingwex/lseek64.c: New file.
 	* mingwex/Makefile.in (STDIO_DISTFILES): Add fopen64.c,
 	fseeko.64.c, ftello64.c, lseek64.c. 
 	(STDIO_OBJS): Add fopen64.o, fseeko.64.o, ftello64.o, lseek64.o.
@@ -871,8 +1064,8 @@
 
 2002-10-30  Guido Serassio  <serassio@libero.it>
 
-        * include/stdio.h (_getmaxstdio): Add prototype.
-         (_setmaxstdio): Likewise.
+	* include/stdio.h (_getmaxstdio): Add prototype.
+	 (_setmaxstdio): Likewise.
 
 2002-10-19  Kang Li  <rubylith@users.sourceforge.net>
 
@@ -1225,7 +1418,7 @@
 	* include/excpt.h (): Include windef.h not windows.h.
 	* include/fcntl.h (_O_SHORT_LIVED): Add define.
 	(_chmod): Add prototype.
-        (_creat): Correct prototype.
+	(_creat): Correct prototype.
 	(SH_DENY*): Rename defines to _SH_DENY*.
 	(SH_DENY*): Add Non-ANSI names for _SH_DENY*.
 	include/stdio.h (_IOMYBUF, _IOEOF, _IOERR, _IOSTRG,
