@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<!-- $Id: index.shtml,v 1.41 2002-10-31 18:59:30 earnie Exp $ -->
+<!-- $Id: index.shtml,v 1.42 2002-11-26 01:30:18 earnie Exp $ -->
   <title>MinGW -- Minimalist GNU For Windows</title>
                      
   <meta name="description"
@@ -103,7 +103,7 @@ here</a>. </p>
                   <li><a
  href="http://prdownloads.sourceforge.net/mingw/mingw-runtime-2.2.tar.gz">mingw-runtime-2.2</a></li>
                   <li><a
- href="http://prdownloads.sourceforge.net/mingw/w32api-2.0.tar.gz">w32api-2.0</a></li>
+ href="http://prdownloads.sourceforge.net/mingw/w32api-2.0.tar.gz">w32api-2.0</a> <a href="#Upgraded_Packages"><em><b>Upgrade Available</b></em></a></li>
                   <li><a
  href="http://prdownloads.sourceforge.net/mingw/gdb-5.1.1-1.tar.gz">gdb-5.1.1-1</a></li>
                   <li><a
@@ -176,6 +176,7 @@ one of the best compression algorithms available.
 	    Please <em>upgrade</em> your installation.<br>
 	    <ul>
 	      <li><em>Binutils:</em> <a href="http://prdownloads.sf.net/mingw/binutils-2.13.90-20021006-2.tar.gz">binutils-2.13.90-20021006-2.tar.gz</a></li>
+	      <li><em>W32api:</em> <a href="http://prdownloads.sf.net/mingw/w32api-2.1.tar.gz">w32api-2.1.tar.gz</a></li>
 	    </ul>
 	    </p>
                                                   
@@ -203,7 +204,7 @@ width="88" /></a>
 -->
 </p>
 <address><br>
-Last revised $Date: 2002-10-31 18:59:30 $</address>
+Last revised $Date: 2002-11-26 01:30:18 $</address>
 <br>
 </body>
 </html>
