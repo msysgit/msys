@@ -1,3 +1,8 @@
+2003-02-04 01:45  infidel
+
+	* redir/Makefile.am, reimp/Makefile.am, res2coff/Makefile.am:
+	Install documentation in the doc subdirectory.
+
 2002-12-04 12:15  jrfonseca
 
 	* ChangeLog, Makefile.am, configure.ac, dos2unix/Makefile.am,
