@@ -1,3 +1,8 @@
+2003-02-04  Nathan Fisher <natbobc@users.sf.net>
+
+	* links.shtml, mingw-oldfaq.shtml: Merging information from 
+	mingw-oldfaq.shtml
+
 2003-02-03  Earnie Boyd  <earnie@users.sf.net>
 
 	* mingwfaq.shtml (MinGW-2.0.0-3.exe): Correct the href typo.
