@@ -1,10 +1,12 @@
 awk
+bunzip2
 cmd 
 echo 
 egrep 
 ex 
 fgrep 
 ftp 
+gunzip
 ln 
 printf 
 pwd
