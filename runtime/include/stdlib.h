@@ -18,9 +18,9 @@
  *  DISCLAIMED. This includes but is not limited to warranties of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Revision: 1.16 $
+ * $Revision: 1.17 $
  * $Author: earnie $
- * $Date: 2003-02-21 21:19:52 $
+ * $Date: 2003-03-11 15:34:27 $
  *
  */
 
@@ -377,7 +377,7 @@ _CRTIMP char* __cdecl	getenv	(const char*);
 
 _CRTIMP void* __cdecl	bsearch	(const void*, const void*, size_t, size_t, 
 				 int (*)(const void*, const void*));
-_CRTIMP void __cdecl	qsort	(const void*, size_t, size_t,
+_CRTIMP void __cdecl	qsort	(void*, size_t, size_t,
 				 int (*)(const void*, const void*));
 
 _CRTIMP int __cdecl	abs	(int);
