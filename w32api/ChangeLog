@@ -1,3 +1,71 @@
+2002-08-26  Bart Oldeman  <bart.oldeman@btinternet.com>
+
+	* include/winsock2.h (SOCKET_ADDRESS): Define if
+	__CSADDR_T_DEFINED is not defined (copied from nspapi.h)
+	(CSADDR_INFO): Ditto.
+	(nspapi.h) : Don't include. Removed FIXME comment.
+	* include/nspapi.h (SOCKET_ADDRESS) Only define if
+	__CSADDR_T_DEFINED is not defined.
+	(CSADDR_INFO): Ditto.
+	(BLOB): Add structure and typedef if not already defined.
+	(NS_*): Add defines.
+	(SERVICE_*): Ditto.
+	(SERVICE_ADDRESS): Add structure and typedefs.
+ 	(SERVICE_ADDRESSES): Ditto.
+	(SERVICE_INFO[AW]): Ditto, and add UNICODE mappings.
+	(LPSERVICE_ASYNC_INFO): Add typedef.
+	(SetService[AW], GetAddressByName[AW]): Add prototypes and UNICODE
+	mappings.
+	* include/wsipx.h: New file.
+	* include/svcguid.h: New file.
+	* lib/test.c: Include wspix.h and svcguid.h.
+
+2002-08-26  Casper S. Hornstrup  <chorns@users.sourceforge.net>
+
+	* include/wsahelp.h: New file.
+	* lib/test.c: Include wsahelp.h.
+
+2002-08-21  Earnie Boyd  <earnie@users.sf.net>
+
+	* include/commctrl.h (NMCUSTOMDRAW): Fix lItemlParam.
+	Thanks to: "Phil Dempster" <p_dempster@yahoo.co.uk>.
+
+2002-08-20  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/ws2spi.h: Modify comment about being part of
+	mingw32 package.
+	(winsock2.h): Change "" to <>.
+
+2002-08-20  Casper S. Hornstrup  <chorns@users.sourceforge.net>
+
+	* include/ws2spi.h: New file.
+	* lib/test.c: Include ws2spi.h.
+
+2002-08-20  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/winsock2.h (WSAIsBlocking,WSAUnhookBlockingHook,
+	WSASetBlockingHook,WSACancelBlockingCall): Expose deprecated
+	functions.
+
+2002-08-17  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/winuser.h (CURSOR_SHOWING) Add define.
+	Thanks to: Jan Hlavatý  <hlavac@users.sourceforge.net>
+
+2002-08-17  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/winerror.h: Cast OLE error codes to HRESULT.
+	Thanks to: Gunnar Degnbol <gdegnbol@users.sourceforge.net>
+
+2002-08-15  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/wincrypt.h (ALG_*): Add defines.
+	(CALG_*): Ditto.
+	(CRYPT_*): Ditto.
+	(PP_*): Ditto.
+	(PROV_*): Ditto.
+	(PRIVATEKEYBLOB): Add define.
+
 2002-08-14  Earnie Boyd  <earnie@users.sf.net>
 
 	* include/shlobj.h (SHGetFolderPath): Add define.
