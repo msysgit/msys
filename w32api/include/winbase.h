@@ -4,7 +4,9 @@
 #pragma GCC system_header
 #endif
 
+#ifndef WINBASEAPI
 #define WINBASEAPI DECLSPEC_IMPORT
+#endif
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -183,6 +185,9 @@ extern "C" {
 #define FILE_FLAG_POSIX_SEMANTICS	16777216
 #define FILE_FLAG_OPEN_REPARSE_POINT	2097152
 #define FILE_FLAG_OPEN_NO_RECALL	1048576
+#if (_WIN32_WINNT >= 0x0500)
+#define FILE_FLAG_FIRST_PIPE_INSTANCE	524288
+#endif
 #define CLRDTR 6
 #define CLRRTS 4
 #define SETDTR 5
