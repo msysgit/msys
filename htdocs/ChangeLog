@@ -1,3 +1,8 @@
+2003-03-01  Nathan Fisher <natbobc@users.sf.net>
+
+	* links.shtml: Fix bug report #694983.
+	Thanks to Maciej.
+
 2003-02-18  Nathan Fisher <natbobc@users.sf.net>
 
 	* bugs.sh: Add to repository.
