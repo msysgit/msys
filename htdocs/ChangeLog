@@ -1,6 +1,11 @@
 
 2001.06.07  Earnie Boyd  <earnie@users.sourceforge.net>
 
+	* licensing.shtml: Reformat, remove the "contact author" sentence for
+	the w32api section.
+
+2001.06.07  Earnie Boyd  <earnie@users.sourceforge.net>
+
 	* mirrors.shtml: Give a warning about that the information on the page
 	is for old distributions.
 	* index.shtml: Change "Latest Release" to "Older Release".

@@ -34,42 +34,34 @@ license:</p>
 <dl>
 <dt><strong>Basic MinGW runtime</strong></dt>
 <dd>MinGW base runtime package is uncopyrighted and placed in the public
-domain. This basically means that you can do what you want with the code.
+domain. This basically means that you can do what you want with the code.<br>
 </dd>
 <dt><strong>w32api</strong></dt>
 <dd>
+  <p>
   You are free to use, modify and copy this package. No restrictions
   are imposed on programs or object files compiled with this library.
-  
-  <p>
   You may not restrict the the usage of this library.
-  </p>
-
-  <p>
   You may distribute this library as part of another package or as a
   modified package if and only if you do <b>not</b> restrict the usage of
   the portions consisting of this (optionally modified) library.
+  If distributed as a modified package then this file <b>must</b> be included.
   </p>
-
   <p>
-  If distributed as part of another package, please notify the author
-  of what you are going to do.  If distributed as a modified package,
-  this file <b>must</b> be included.
-  </p>
-
   This library is distributed in the hope that it will be useful, but
   WITHOUT ANY WARRANTY; without even the implied warranty of
   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+  </p>
   </dd>
 <dt><strong>MinGW profiling code</strong></dt>
 <dd>MinGW profiling code is distributed under the
-<a href="http://www.gnu.org/copyleft/gpl.html">GNU General License</a>.
+<a href="http://www.gnu.org/copyleft/gpl.html">GNU General Public License</a>.
 </dd>
 </dl>
 
 <p>
 The development tools such as GCC, GDB, GNU Make, etc all covered by
-<a href="http://www.gnu.org/copyleft/gpl.html">GNU General License</a>.</p>
+<a href="http://www.gnu.org/copyleft/gpl.html">GNU General Public License</a>.</p>
 
 </td>
 </tr>
