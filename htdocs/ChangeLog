@@ -1,4 +1,8 @@
 2002-12-27   Nathan Fisher <natbobc@users.sf.net>
+	
+	* MINGW-USERS-MONTHLY.txt: Update to reflect MSYS ablility to run configure scripts
+
+2002-12-27   Nathan Fisher <natbobc@users.sf.net>
 
 	* index.shtml: Change H4 tags to bold type face.
 	Removed Release info.  Add new column for news.
