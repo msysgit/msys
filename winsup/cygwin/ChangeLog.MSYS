@@ -1,3 +1,7 @@
+2002-11-09  Luke Dunstan  <infidel@users.sf.net>
+
+	* ismsys.cc (IsMsys): Detect non-PE executables. Small bug fix.
+
 2002-11-01  Earnie Boyd  <earnie@users.sf.net>
 
 	* spawn.cc (spawn_guts): Ensure PATH is set regardless of msys dll 

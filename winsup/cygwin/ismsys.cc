@@ -100,8 +100,15 @@ IsMsys (const char *File)
       }
     bool retval = false;
     int PE_Offset = GetFileData (fh, 0x3c, 4);
+    char *PE_Signature = GetFileDataStr (fh, PE_Offset, 4);
+    if (memcmp (PE_Signature, "PE\0\0", 4) != 0)
+      {
+	TRACE_IN;
+	delete[] PE_Signature;
+	return false;
+      }
+    delete[] PE_Signature;
     int PE_Option = PE_Offset + 4 + 20;
-    unsigned char *PE_Import;
     int PE_ImportRva = GetFileData (fh, PE_Option + 104, 4);
     int PE_ImportBase = 0;
     int PE_ImportDataSz = 0;
@@ -121,7 +128,7 @@ IsMsys (const char *File)
       }
     if (PE_ImportBase && PE_ImportDataSz)
       {
-	PE_Import = 
+	unsigned char *PE_Import = 
 	  (unsigned char *)GetFileDataStr (fh, PE_ImportBase, PE_ImportDataSz);
 	ID *impdata = (ID *)PE_Import;
 	for (int I=0; impdata[I].name; I++)
@@ -133,9 +140,9 @@ IsMsys (const char *File)
 		break;
 	      }
 	  }
+	delete[] PE_Import;
       }
-    delete PE_Sections;
-    delete PE_Import;
+    delete[] PE_Sections;
     CloseHandle (fh);
     debug_printf("%d", retval);
     return retval;
