@@ -1,3 +1,7 @@
+2001-12-05  Earnie Boyd  <earnie@users.sf.net>
+
+	* include/strings.h: New File.
+
 2001-12-02  Danny Smith  <dannysmith@users.sourceforge.net> 
 
 	Apply patches from:
@@ -17,6 +21,10 @@
 	wctype.h,sys/stat.h,sys/timeb.h,sys/types.h,sys/utime.h:
 	Correct spelling of "disclaimed" in comments.
 	* include/excpt.h: Another spelling correction. 
+
+2001-11-08  Robert Collins  <rbtcollins@hotmail.com>
+
+	* include/errno.h: Fix "errno is not a prototype" warning.
 
 2001-11-07  Danny Smith  <dannysmith@users.sourceforge.net> 
 
@@ -47,6 +55,10 @@
  	(___mingwthr_remove_key_dtor) New.
  	(__mingwthr_run_key_dtors) Complete rewrite.
   	(__mingwthr_remove_key_dtor) New.
+
+2001-11-05  Egor Duda  <deo@logos-m.ru>
+
+	* Makefile.in: Delete unused executable after creating base-files.
 
 2001-11-06  Danny Smith  <dannysmith@users.sourceforge.net>
 
