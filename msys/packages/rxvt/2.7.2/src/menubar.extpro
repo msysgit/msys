@@ -1,0 +1,8 @@
+void             menubar_read            __PROTO((const char *filename));
+void             menubar_dispatch        __PROTO((char *str));
+void             menubar_expose          __PROTO((void));
+int              menubar_mapping         __PROTO((int map));
+void             menubar_control         __PROTO((XButtonEvent *ev));
+void             map_menuBar             __PROTO((int map));
+void             create_menuBar          __PROTO((Cursor cursor));
+void             Resize_menuBar          __PROTO((int x, int y, unsigned int width, unsigned int height));

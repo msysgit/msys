@@ -1,0 +1,201 @@
+.\" @(#)rclock.1	-*- nroff -*-
+.TH RCLOCK 1 @RXVT_DATE@ "X Version 11" "X Tools"
+.UC
+.SH NAME
+rclock (ouR CLOCK)
+\(em clock and appointment reminder for X11
+.SH SYNOPSIS
+.B rclock
+.RI [ options ]
+
+.SH DESCRIPTION
+.B rclock
+\(em version
+.B @RXVT_VERSION@
+\(em is an analog clock for X intended as an
+.IR xclock (1)
+replacement that conserves memory and has extra features:
+.B rclock
+enters reverse video if there is mail waiting; an appointment reminder
+is also builtin.
+
+.SH OPTIONS
+The options supported by
+.BR rclock :
+.TP
+.BI -display " displayname"
+Attempt to open a window on the named X display.
+In the absence of this option, the display specified by the DISPLAY
+environment variable is used.
+.TP
+.BI -geometry " geom"
+Create the window with the specified X window geometry [default 80x80].
+.TP
+.BI -bg " color"
+Window background color [default white].
+.TP
+.BI -fg " color"
+Window foreground color [default black].
+.TP
+.BI -fn " fontname"
+Select font used for reminders [default 7x14].
+.TP
+.B -iconic
+Start iconified, if supported by the window manager.
+.TP
+.BI -adjust " ddhhmm"
+Adjust the clock by +/\-
+.I ddhhmm
+.RI ( dd
+= days,
+.I hh
+= hours,
+.I mm =
+minutes) to fix an incorrect clock without being root or for working in
+another time-zone.
+.TP
+.BI -update " n"
+Update clock face every
+.I n
+seconds [default 30].
+If
+.IR n "=1,"
+a seconds hand is displayed.
+.TP
+.BI -mail " n"
+Check for new mail every
+.I n
+seconds [default 60].
+The actual interval is a multiple of the clock update interval.
+.TP
+.BI "#" geom
+Specify the preferred icon window size [default 65x65].
+
+.SH "X RESOURCES"
+No X resources are used \(em only command-line options.
+
+.SH "TITLES AND ICONS"
+The window and icon titles are set to the day of the week and the date.
+The icon window is "active" and will show the time, if supported by
+the window manager.
+
+.SH "REMINDERS"
+The
+.B "~/.rclock"
+file lists the messages to display and/or the programs to run at
+specified times and dates.
+At the specified time,
+.B rclock
+will pop-up a window in the center of the screen to display the
+message or will simply run the scheduled program.
+.B
+rclock will reads the
+.B "~/.rclock"
+file at startup, and every 10 minutes (to look for changes) and after
+a message window has been dismissed (to find the next appointment).
+
+An entry in
+.B "~/.rclock"
+may be one of two formats (blank and comment lines will be ignored):
+.sp
+.nf
+.B hh:mm  [dd]  MM/DD/YY message[; program]
+or
+.B [hh:mm  [dd]  MM/DD/YY [message]]; program
+.sp
+.BR hh " \- hour (0-23; * = current)"
+.BR mm " \- minute (0-59; * = 0)"
+.BR dd " \- days-of-week (some/all/none of umtwrfs; * = all)"
+.BR MM " \- month (1-12; * = current)"
+.BR DD " \- day of month (1-31; * = current)"
+.BR YY " \- year (0-99 or 1900-????; * = current)"
+.BR message " \- message to display"
+.BR program " \- program to execute"
+.fi
+.sp
+The days-of-the-week use the following abbreviations:
+.BR u =Sunday,
+.BR m =Monday,
+.BR t =Tuesday,
+.BR w =Wednesday,
+.BR r =Thursday,
+.BR f =Friday,
+.BR s =Saturday,
+.BR * =all.
+.sp
+If
+.B message
+is empty and
+.B program
+has been specified, it is executed without a dialog box.
+If time/date are also not specified,
+.B program
+is executed on start-up.
+Note
+.B message
+may contain escape values (\\n: newline, \\;: semicolon).
+
+Here's a silly example file that shows some of the permissible
+constructs:
+.nf
+.sp
+# ~/.rclock - My appointment file
+
+# startup functions
+; xsetroot -solid Black &
+
+# cron functions
+
+10:00; xsetroot -solid Grey25 &
+14:00; xsetroot -solid Grey75 &
+
+# daily/weekly reminders
+
+08:15 mtwrf *      Good Morning!\\nRead News?; rxvt -e News
+12:00 mtwrf *      Lunch Time!
+17:00 mtwrf *      Go Home
+23:00 mtwrf *      Still Here? Go to bed
+08:10 twrf  *      Did you do your time card yesterday?
+15:00 f     *      Friday, do your time card early!
+16:00 mtwr  *      Do your time card
+16:30 mtwrf *      Did you do your time card?
+*:00  us    *      It's the weekend, why are you here?
+8:15  f     */13/* Friday the 13th! Careful!
+8:15  *     4/1/*  fkrkrmfismsmkd...dkdfk
+8:16  *     4/1/*  April Fools!
+
+# birthdays/anniversaries
+
+16:00    05/21/*   Pam's Birthday (next week)
+16:00    05/24/*   Pam's Birthday (in a few days)
+
+# once-of appointments
+
+08:30    03/15/94    Dentist appointment
+08:30    03/15/1999  Dentist appointment
+08:30    03/15/2004  Dentist appointment
+.sp
+.fi
+
+.SH ENVIRONMENT
+.B rclock
+uses the environment variable
+.B MAIL
+to determine the location of the user's mail spool file.
+
+.SH BUGS
+.B rclock
+is not very smart about dealing with errors encountered while reading the
+.B "~/.rclock"
+file.
+Each reminder must be a single line not exceeding 255 characters.
+Reminder windows are sometimes not redrawn (left blank) when raised or
+uncovered.
+
+.SH AUTHOR
+Rob Nation <nation@rocket.sanders.lockheed.com>
+.LP
+Modifications by mj olesen <olesen@me.QueensU.CA>
+
+.SH "CURRENT MAINTAINER"
+Same as the current rxvt maintainer.

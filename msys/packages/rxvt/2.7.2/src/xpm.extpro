@@ -1,0 +1,3 @@
+int              scale_pixmap            __PROTO((const char *geom));
+void             resize_pixmap           __PROTO((void));
+Pixmap           set_bgPixmap            __PROTO((const char *file));

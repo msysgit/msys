@@ -1,0 +1,4 @@
+int              scrollbar_show          __PROTO((int update));
+int              scrollbar_mapping       __PROTO((int map));
+void             map_scrollBar           __PROTO((int map));
+void             Resize_scrollBar        __PROTO((void));

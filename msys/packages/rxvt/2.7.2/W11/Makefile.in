@@ -1,0 +1,18 @@
+
+@MCOMMON@
+
+first_rule: all
+
+all allbin alldoc:
+	cd xpm-3.4k/lib; make -f Makefile.noX all install
+	cd wrap; make $@
+	cd w32; make $@
+
+tags clean:
+	cd xpm-3.4k/lib; make -f Makefile.noX $@
+	cd wrap; make $@
+	cd w32; make $@
+
+install:
+	$(INSTALL_PROGRAM) lib/libW11.dll $(bindir)/libW11.dll
+	$(INSTALL) ../CYGWIN-PATCHES/rxvt-2.7.2.README $(prefix)/doc/Cygwin

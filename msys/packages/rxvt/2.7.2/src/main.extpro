@@ -1,0 +1,5 @@
+void             resize_all_windows      __PROTO((void));
+void             resize_window           __PROTO((unsigned int width, unsigned int height));
+void             set_widthheight         __PROTO((unsigned int width, unsigned int height));
+void             xterm_seq               __PROTO((int op, const char *str));
+void             change_font             __PROTO((int init, const char *fontname));

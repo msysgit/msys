@@ -1,0 +1,9 @@
+char           * r_basename              __PROTO((const char *str));
+void             print_error             __PROTO((const char *fmt,...));
+int              Str_match               __PROTO((const char *s1, const char *s2));
+const char     * Str_skip_space          __PROTO((const char *str));
+char           * Str_trim                __PROTO((char *str));
+int              Str_escaped             __PROTO((char *str));
+char           * File_find               __PROTO((const char *file, const char *ext));
+void             Draw_Shadow             __PROTO((Window win, GC topShadow, GC botShadow, int x, int y, int w, int h));
+void             Draw_Triangle           __PROTO((Window win, GC topShadow, GC botShadow, int x, int y, int w, int type));

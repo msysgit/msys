@@ -1,0 +1,18 @@
+int              strcasecmp              __PROTO((const char *s1, const char *s2));
+int              strncasecmp             __PROTO((const char *s1, const char *s2, size_t n));
+char           * strcpy                  __PROTO((char *d, const char *s));
+char           * strncpy                 __PROTO((char *d, const char *s, size_t len));
+int              strcmp                  __PROTO((const char *s1, const char *s2));
+int              strncmp                 __PROTO((const char *s1, const char *s2, size_t len));
+char           * strcat                  __PROTO((char *s1, const char *s2));
+char           * strncat                 __PROTO((char *s1, const char *s2, size_t len));
+size_t           strlen                  __PROTO((const char *s));
+char           * strdup                  __PROTO((const char *s));
+char           * index                   __PROTO((const char *s, int c));
+char           * strchr                  __PROTO((const char *s, int c));
+char           * rindex                  __PROTO((const char *s, int c));
+char           * strrchr                 __PROTO((const char *s, int c));
+void           * memcpy                  __PROTO((void *s1, const void *s2, size_t len));
+void           * memmove                 __PROTO((void *s1, const void *s2, size_t len));
+void             bzero                   __PROTO((void *b, size_t len));
+void           * memset                  __PROTO((void *p, int c1, size_t len));

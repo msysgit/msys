@@ -1,0 +1,4 @@
+void             Draw_button             __PROTO((int x, int y, int state, int dirn));
+Pixmap           renderPixmap            __PROTO((const char *const *data, int width, int height));
+void             init_scrollbar_stuff    __PROTO((void));
+void             drawBevel               __PROTO((Drawable d, int x, int y, int w, int h));

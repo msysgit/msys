@@ -1,0 +1,10 @@
+void             kstate_setcurr          __PROTO((int stateno));
+void             kstate_init             __PROTO((void));
+void             kstate_end              __PROTO((void));
+void             kstate_init_all         __PROTO((int greek_mode));
+void             kstate_end_all          __PROTO((void));
+void             kstate_reset            __PROTO((void));
+void             kstate_add_xlat         __PROTO((char *str));
+void             kstate_add_switcher     __PROTO((char *str));
+void             kstate_set_life         __PROTO((char *str));
+unsigned int     kstate_cxlat            __PROTO((unsigned int c));
