@@ -1,19 +1,10 @@
-<!-- $Id: index.shtml,v 1.21 2001-08-27 19:41:19 stevedperkins Exp $ -->
+<!-- $Id: index.shtml,v 1.22 2001-08-28 01:05:44 stevedperkins Exp $ -->
 
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<html>
 <head>
  <title>MinGW -- Minimalist GNU For Windows</title>
- <link rev="made" href="mailto:mingw-users@lists.sourceforge.net" />
- <meta name="original_author" content="Mumit Khan" />
- <meta name="maintainers" content="MinGW Developers" />
- <meta name="objecttype" content="Main" />
- <meta name="resource-type" content="document" />
  <meta name="description" content="Home of MinGW -- Minimalist GNU for Windows -- project. Contains information about the MinGW runtime library and GNU/OSS development tools for MinGW." />
  <meta name="keywords" content="mingw, mingw32, programming, C++, C, C/C++, libraries, software, development tools, editors, IDEs, GNU" />
- <meta name="content-language" content="en" />
- <meta http-equiv="Content-type" content='text/html; charset="UTF-8"' />
  <style type="text/css"><!-- ol.alpha {list-style-type: upper-alpha} --></style>
  <style type="text/css"><!-- ol.romanum {list-style-type: lower-roman} --></style>
  <style type="text/css"><!-- ol {margin-top: 1em} --></style>
@@ -130,15 +121,21 @@ We have a participating mailing list.  You may join in the discussions and will 
 <img src="http://sourceforge.net/sflogo.php?group_id=2435&type=1" width="88" height="31" alt="Powered by SourceForge" 
 border="0" /></a>
 
+<!--
 <a href="http://validator.w3.org/check?uri=http%3A%2F%2Fwww.mingw.org%2Findex.shtml">
 <img border="0" src="vxhtml10.gif" alt="Valid XHTML 1.0!" height="31" 
 width="88" /></a>
+-->
 </p>
 <p align="center">
 <a href="http://www.mingw.org/cgi-bin/showstats.cgi?mingw">
 <!--#include virtual="/cgi-bin/stats.cgi?mingw"--> visitors since
 <!--#include virtual="/cgi-bin/showstatsdate.cgi?mingw"--></a>.
 </p>
+<address>
+<br />Last revised $Date: 2001-08-28 01:05:44 $
+</address>
+
 </body>
 </html>
 

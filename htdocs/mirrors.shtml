@@ -1,11 +1,8 @@
-<!-- $Id: mirrors.shtml,v 1.7 2001-08-27 19:41:19 stevedperkins Exp $ -->
+<!-- $Id: mirrors.shtml,v 1.8 2001-08-28 01:05:44 stevedperkins Exp $ -->
 
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<html>
 <head>
  <title>Mirror Sites</title>
- <meta name="Author" content="Mumit Khan" />
 </head>
 <body bgcolor="white" text="black" link="#0000EE" vlink="#551A8B" alink="red">
 
@@ -84,11 +81,9 @@ for providing the mirrors.</p>
 <!--#include file="ssi/bottombar.html"-->
 <!--#include file="ssi/footer.html"-->
 
-<p>
-<a href="http://validator.w3.org/check?uri=http%3A%2F%2Fwww.mingw.org%2Fmirrors.shtml">
-<img border="0" src="vxhtml10.gif" alt="Valid XHTML 1.0!" height="31" 
-width="88" /></a>
-</p>
+<address>
+<br />Last revised $Date: 2001-08-28 01:05:44 $
+</address>
 
 </body>
 </html>
