@@ -1,3 +1,10 @@
+2002.04.27  Earnie Boyd  <earnie@users.sf.net>
+
+	* scripts/msysrls.sh: Add Copyright and modify other header data.
+	Add newly created -c option to sed command.
+	Add removal of msys.iss.
+	* bin/pwd: Add appropriate file header info.
+
 2002.04.26  Earnie Boyd  <earnie@users.sf.net>
 
 	* bin/msys.bat (DISPLAY): Fix filter logic.
