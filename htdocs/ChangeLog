@@ -2,7 +2,8 @@
 
 	* mingwfaq.shtml: Format to 80 columns throughout.
 	(faq-runtime): Remove.
-	(faq-w32api): Move up in order.
+	(faq-w32api): Move up in order. Adjust the README to point to 
+	README.w32api.
 	(faq-cygwin): Remove much unneeded verbiage.
 	(faq-version): Update to show the current version of MinGW and MSYS.
 

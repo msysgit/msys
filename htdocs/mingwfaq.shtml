@@ -1,4 +1,4 @@
-<!-- $Id: mingwfaq.shtml,v 1.41 2002-09-20 16:25:56 earnie Exp $ -->
+<!-- $Id: mingwfaq.shtml,v 1.42 2002-09-20 17:06:07 earnie Exp $ -->
 
 <html>
 <head>
@@ -165,8 +165,8 @@
 	 The MinGW development team are the current maintainers of the w32api 
 	 since without that package Windows Programming would not be possible.  
 	 The package was created by Anders Norlander and it's license is also 
-	 non-restrictive.  For more information see Anders' README file 
-         <a href="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/mingw/w32api/README?rev=1.1.1.1&content-type=text/vnd.viewcvs-markup"> README.w32api</a>.  
+	 non-restrictive.  For more information see the file 
+         <a href="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/mingw/w32api/README.w32api?rev=HEAD&content-type=text/vnd.viewcvs-markup"> README.w32api</a>.  
       </p>
       <p><a href="#index">Back to index</a></p>
 
@@ -559,7 +559,7 @@
 
    <hr />
    <address>
-   <br />Last revised $Date: 2002-09-20 16:25:56 $
+   <br />Last revised $Date: 2002-09-20 17:06:07 $
    </address>
 
 </body>
