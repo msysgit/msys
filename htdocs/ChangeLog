@@ -1,5 +1,11 @@
 2003-02-04  Nathan Fisher <natbobc@users.sf.net>
 
+	* mingwfaq.shtml: Cleaned up formatting.
+	Removed duplicate named anchors.
+	Changed reporting bugs section to link to bugs.shtml.
+	
+2003-02-04  Nathan Fisher <natbobc@users.sf.net>
+
 	* links.shtml, mingw-oldfaq.shtml: Merged all of the IDE
 	and Editors section as well as the other compiler section.
 	
