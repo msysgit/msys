@@ -1,7 +1,7 @@
 2003-02-04  Nathan Fisher <natbobc@users.sf.net>
 
 	* links.shtml, mingw-oldfaq.shtml: Merging information from 
-	mingw-oldfaq.shtml
+	mingw-oldfaq.shtml.
 
 2003-02-03  Earnie Boyd  <earnie@users.sf.net>
 
@@ -41,37 +41,37 @@
 
 2003-01-12  Nathan Fisher <natbobc@users.sf.net>
 
-	* docs.shtml: Moved to new template
-	*	links.shtml: ditto
-	* news.shtml: ditto
-	* mingwfaq.shtml: ditto
-	* history.shtml: HTML 4.01 and CSS1 Compliant
-	* licensing.shtml: ditto
-	* lists.shtml: ditto
-	* msys.shtml: ditto
+	* docs.shtml: Moved to new template.
+	*	links.shtml: ditto.
+	* news.shtml: ditto.
+	* mingwfaq.shtml: ditto.
+	* history.shtml: HTML 4.01 and CSS1 Compliant.
+	* licensing.shtml: ditto.
+	* lists.shtml: ditto.
+	* msys.shtml: ditto.
 	
 2003-01-11  Nathan Fisher <natbobc@users.sf.net>
 
-	* docs.shtml: Updates towards greater site conformance
-	* licensing.shtml: ditto
-	* lists.shtml: ditto
-	* mingwfaq.shtml: ditto
-	* msys.shtml: ditto
+	* docs.shtml: Updates towards greater site conformance.
+	* licensing.shtml: ditto.
+	* lists.shtml: ditto.
+	* mingwfaq.shtml: ditto.
+	* msys.shtml: ditto.
 	
 2003-01-10  Nathan Fisher <natbobc@users.sf.net>
 
-	* bugs.shtml: Validated as HTML 4.01(transitional) and CSS1 compliant
-	* download.shtml: ditto
-	* index.shtml: ditto
-	* ssi/footer.html: Replaced & with &amp; for w3c compliance
+	* bugs.shtml: Validated as HTML 4.01(transitional) and CSS1 compliant.
+	* download.shtml: ditto.
+	* index.shtml: ditto.
+	* ssi/footer.html: Replaced & with &amp; for w3c compliance.
 
 2003-01-10  Nathan Fisher <natbobc@users.sf.net>
 
-	* index.shtml: Updated to be w3c transitional compliant
-	* mingw.css: Added sm and smi class to replace depreciated SMALL tag
-	* ssi/bottombar.html: Used sm class 
-	* ssi/footer.html: Used smi class
-	* ssi/lsidebar.html: Used smi class
+	* index.shtml: Updated to be w3c transitional compliant.
+	* mingw.css: Added sm and smi class to replace depreciated SMALL tag.
+	* ssi/bottombar.html: Used sm class.
+	* ssi/footer.html: Used smi class.
+	* ssi/lsidebar.html: Used smi class.
 
 2003-01-08  Earnie Boyd  <earnie@users.sf.net>
 
