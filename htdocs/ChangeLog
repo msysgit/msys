@@ -1,5 +1,12 @@
 2003-02-04  Nathan Fisher <natbobc@users.sf.net>
 
+	* download.shtml: Added named anchor for the release info.
+	* mingwfaq.shtml: Changed "What is the current version?" 
+	link so it points to download.shtml#download-release.
+	Removed most of the "What is the current..." section.
+
+2003-02-04  Nathan Fisher <natbobc@users.sf.net>
+
 	* links.shtml, mingw-oldfaq.shtml: Merging information from 
 	mingw-oldfaq.shtml.
 

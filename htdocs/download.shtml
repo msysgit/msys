@@ -57,7 +57,7 @@ SourceForge</a>.  This page contains the latest version of the main
 MinGW distribution archive, as well as all available pacakges files to
 download.<br>
             </p>
-<!--#include file="ssi/release.html"-->
+            <a name="download-release"></a><!--#include file="ssi/release.html"-->
             <h3>Mirror Sites</h3>
             <ul>
               <li> 	 <a href="http://prdownloads.sf.net/mingw/"> 	
@@ -263,6 +263,6 @@ Sorry on the todo list<br>
  style="border: 0pt none ; width: 88px; height: 31px;"
  src="http://jigsaw.w3.org/css-validator/images/vcss" alt="Valid CSS!"></a>	</p>
 <address> <br>
-Last revised $Date: 2003-02-03 06:08:57 $ </address>
+Last revised $Date: 2003-02-04 21:44:54 $ </address>
 </body>
 </html>
