@@ -251,13 +251,29 @@
 		      in a separate directory tree and use the MSYS /etc/fstab
 		      file to point the MSYS /mingw directory to it.
 		    </p>
+		    <p>
+		      If you want to download the minimal set of tar.[gz|bz2]
+		      you will need the mingw-runtime, w32api, binutils and gcc
+		      tarball packages.  You can find the current versions of
+		      these in the "Current" section above.  These will allow
+		      you to create your win32 native packages from the command
+		      line or configurable IDE.  Other packages that you might
+		      need to round out your minimal installation are gdb and
+		      mingw32-make.
+		    </p>
 
 		    <hr />
 		    <h2><a name="hdr7" />
 		      Updating MinGW
 		    </h2>
 		    <p>
-		      On the round tuit list.
+		      You should watch the mailing list and news entries for
+		      updates to packages.  In particular you want to update the
+		      mingw-runtime and w32api when new versions of these
+		      packages are announced.  Make sure that you install the
+		      updates in your c:\mingw (or whereever you installed
+		      MinGW).  If your using MSYS you can cd /mingw to unarchive
+		      the updated tarballs.
 		    </p>
 
 		    <hr />
@@ -265,7 +281,21 @@
 		      Installing MSYS
 		    </h2>
 		    <p>
-		      On the round tuit list.
+		      MSYS is a self contained, win32 style installation
+		      package.  To install it, simply download the MSYS .exe
+		      file and then execute the file.  Once you've executed
+		      the installation package accept the License, look at the
+		      changes, choose the install directory, select if you
+		      want icons, etc. and when you are done you should have a
+		      working MSYS environment to execute your configure scripts
+		      in.
+
+		      If you need autoconf, automake, libtool, cvs, etc. you
+		      will want to also install the msysDTK package.  Similar
+		      to MSYS, the download is an installation binary.  It will
+		      default the directory location to your MSYS installation
+		      assuming that you've installed MSYS which you need to do
+		      anyway as the package is dependent on it.
 		    </p>
 
 		    <hr />
@@ -273,7 +303,18 @@
 		      Updating MSYS
 		    </h2>
 		    <p>
-		      On the round tuit list.
+		      Watch for annoucements in the mailing list and news posts
+		      for updates to the MSYS packages.  Make certain that you
+		      have exited all MSYS binaries before updating.  The update
+		      is executed similar to the installation process.  Note,
+		      changes to files in the /etc directory will be
+		      overwritten.  You should refrain from making changes to
+		      files such as /etc/profile and instead add entries to
+		      ~/.profile.  Similarly changes to /msys.bat should also
+		      be avoided as this file will also be overwritten.  If you
+		      wish to change the colors of the rxvt terminal then create
+		      appropriate environment variables as described in the
+		      msys.bat file.
 		    </p>
 <!--                            End of Main Body                             -->
                   </td>
@@ -301,7 +342,7 @@
     </p>
     <address>
       <br>
-      Last revised $Date: 2003-06-20 15:04:41 $
+      Last revised $Date: 2003-06-29 22:52:41 $
     </address>
   </body>
 </html>

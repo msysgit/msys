@@ -1,3 +1,11 @@
+2003-06-28  Earnie Boyd  <earnie@users.sf.net>
+
+	* download.shtml (Installing MinGW): Add content for individual tarball
+	package installation.
+	(Updating MinGW): Update with appropriate information.
+	(Installing MSYS): Ditto.
+	(Updating MSYS): Ditto.
+
 2003-06-20  Earnie Boyd  <earnie@users.sf.net>
 
 	* download.shtml (Understanding MinGW Packages): Add more content.
