@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta http-equiv="content-type"
+ content="text/html; charset=ISO-8859-1">
+  <link href="mingw.css" type="text/css" rel="stylesheet" title="MinGW">
+  <title>MinGW - Reporting bugs</title>
+</head>
+<body link="#000099" vlink="#990099" alink="#000099">
+
+<h1 align="center">MinGW: Minimalist GNU For Windows</h1>
+
+<table class="prim" cellspacing="6" border="0">
+  <tbody>
+    <tr>
+      <td class="side">
+				<!--#include file="ssi/lsidebar.html"--> <br>
+			</td>
+      <td>
+      <table class="sec" cellspacing="6" border="0">
+        <tbody>
+          <tr>
+            <td>
+<!-- ======================================================================= -->
+<!--                               Main Body                                 -->
+
+So you think you have found a bug and want to report the problem? Before
+reporting a bug please ensure you have applied all applicable updates to
+your build environment. When reporting a bug please include the
+following information:<br>
+            <ul>
+              <li>gcc version</li>
+              <li>mingw version<br>
+              </li>
+              <li>build environment (MSYS, Cygwin, Cross-Compiler, etc)</li>
+              <li>small test case demonstrating the bug <span
+ style="font-weight: bold; text-decoration: underline;">OR</span></li>
+              <li>MSDN documentation references for missing w32api or
+mingw-runtime features</li>
+              <li>win32api version (refer to include/_win32.h for
+version information)</li>
+              <li>any other detailed information pertinent to your
+experience with the bug</li>
+            </ul>
+&nbsp;SourceForge gives us nice tools 	 to keep track of your bug
+reports, so please <a
+ href="https://sourceforge.net/tracker/?group_id=2435&amp;atid=102435"
+ target="_nw">follow this link to file your report.</a> You will need a
+SourceForge login account.  If you don't have one then <a
+ href="https://sourceforge.net/account/register.php">follow this link
+to register for one.</a>
+
+<!--                            End of Main Body                             --> </td>
+          </tr>
+        </tbody>
+      </table>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<!--#include file="ssi/bottombar.html"--><!--#include file="ssi/footer.html"-->
+<address> <br>
+Last revised $Date: 2002-12-19 19:53:43 $ </address>
+</body>
+</html>
