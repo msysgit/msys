@@ -6,6 +6,9 @@
 */
 #ifndef _RPCPROXY_H
 #define _RPCPROXY_H
+#if defined  __cplusplus  && !defined CINTERFACE
+#warning "rpcproxy type definitions require CINTERFACE"
+#else
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -188,5 +191,6 @@ NdrCStdStubBuffer2_Release(IRpcStubBuffer*,IPSFactoryBuffer*);
 #ifdef __cplusplus
 }
 #endif
-#endif
+#endif  /* defined  __cplusplus  && !defined CINTERFACE  */
+#endif  /* ndef _RPCPROXY_H  */
 
