@@ -1,0 +1,36 @@
+2001.09.21  Earnie Boyd  <earnie@SF.net>
+
+	* ChangeLog.cygwin: Renamed original ChangeLog.
+	* aclocal.m4: Add filters for host *-*-msys*.
+	* configure.host: Ditto.
+	* libc/aclocal.m4: Ditto.
+	* libc/sys/aclocal.m4: Ditto.
+	* libc/libm/aclocal.m4: Ditto.
+	* libc/ctype/ctype_.c: Add __MSYS__ preprocessor defines
+	* libc/include/_ansi.h: Ditto.
+	* libc/include/malloc.h: Ditto.
+	* libc/include/process.h: Ditto.
+	* libc/include/stdio.h: Ditto.
+	* libc/include/stdlib.h: Ditto.
+	* libc/include/string.h: Ditto.
+	* libc/include/time.h: Ditto.
+	* libc/include/machine/setjmp.h: Ditto.
+	* libc/include/sys/config.h: Ditto.
+	* libc/include/sys/errno.h: Ditto.
+	* libc/include/sys/fcntl.h: Ditto..
+	* libc/include/sys/features.h: Ditto.
+	* libc/include/sys/signal.h: Ditto.
+	* libc/include/sys/stat.h: Ditto.
+	* libc/include/sys/time.h: Ditto.
+	* libc/include/sys/types.h: Ditto.
+	* libc/include/sys/unistd.h: Ditto.
+	* libc/locale/locale.c: Ditto.
+	* libc/posix/execvp.c: Ditto.
+	* libc/posix/popen.c: Ditto.
+	* libc/stdio/flags.c: Ditto.
+	* libc/stdio/fopen.c: Ditto.
+	* libc/stdio/mktemp.c: Ditto.
+	* libc/stdio/stdio.c: Ditto.
+	* libc/stdlib/mallocr.c: Ditto.
+	* libc/stdlib/system.c: Ditto.
+	* libc/sys/cygwin/crt0.c: Call msys_crt0 if __MSYS__ else cygwin_crt0.
