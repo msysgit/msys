@@ -38,7 +38,10 @@
               <tbody>
                 <tr>
                   <td>
-                    <!-- ======================================================================= --><!--                                                                         --><!--                               Main Body                                 --><!--                                                                         -->
+                    <!-- ======================================================================= -->
+										<!--                                                                         -->
+										<!--                               Main Body                                 -->
+										<!--                                                                         -->
                     <h3 class="c1">
                       MinGW
                     </h3>
@@ -152,6 +155,12 @@
                         "http://webclub.kcom.ne.jp/ma/colinp/win32/index.html">
                         http://webclub.kcom.ne.jp/ma/colinp/win32/index.html</a>
                       </li>
+											<li>
+												Libunicows is a Unicode implementation for use
+												across the range of Win32 platforms it can be found
+												at <a href="http://libunicows.sourceforge.net/">
+												http://libunicows.sourceforge.net/</a>
+											</li>
                     </ul>
                     <h3>
                       Assorted Tutorials
@@ -433,7 +442,7 @@
     <!--#include file="ssi/footer.html"-->
     <address>
       <br>
-      Last revised $Date: 2003-03-01 17:55:00 $
+      Last revised $Date: 2004-02-18 18:27:13 $
     </address>
   </body>
 </html>
