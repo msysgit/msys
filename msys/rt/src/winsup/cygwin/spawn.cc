@@ -508,11 +508,9 @@ spawn_guts (HANDLE hToken, const char * prog_arg, const char *const *argv,
       for (int i = 0; i < newargv.argc; i++)
 	{
 	  //convert argv to win32
-	  char tmpbuf[MAX_PATH] = "\0";
-
 	  if (strlen(newargv[i]) < MAX_PATH)
 	    {
-	      cygwin_conv_to_win32_path(newargv[i], tmpbuf);
+	      char *tmpbuf = msys_p2w(newargv[i]);
 	      //debug_printf("%d of %d, %s, %s", i, ac, newargv[i], tmpbuf);
 	      debug_printf("newargv[%d] = %s", i, newargv[i]);
 	      newargv.replace (i, tmpbuf);
@@ -657,31 +655,30 @@ spawn_guts (HANDLE hToken, const char * prog_arg, const char *const *argv,
       envblockcnt = ciresrv.moreinfo->envc;
 #endif
       char **envblockarg = (char **)malloc(sizeof (char *) * (envblockcnt + 1)); 
-      char *tptr, *wpath;
+      char *tptr;
       int envblocknlen = 0, envblockarglen = 0;
       envblockn = envblock;
       for (int loop=0;loop < envblockcnt;loop++)
 	{
 	  envblocknlen = strlen(envblockn);
-	  envblockarg[loop] = (char *) malloc(envblocknlen + MAX_PATH);
-	  memset (envblockarg[loop], 0, envblocknlen + MAX_PATH);
-	  wpath = (char *)malloc (envblocknlen + MAX_PATH);
-	  memset (wpath, 0, envblocknlen + MAX_PATH);
+	  envblockarg[loop] = (char *) malloc(envblocknlen + MAX_PATH + 1);
+	  memset (envblockarg[loop], 0, envblocknlen + MAX_PATH + 1);
 
 	  if ((tptr = strchr(envblockn, '=')))
 	    {
 	      tptr++;
 	      strncpy (envblockarg[loop], envblockn, tptr - envblockn);
-	      cygwin_conv_to_win32_path (tptr, wpath);
+	      char *wpath = msys_p2w(tptr);
+	      debug_printf("wpath=%s", wpath);
 	      strcat(envblockarg[loop], wpath);
+	      free (wpath);
 	    }
 
 	  debug_printf("envblockarg[%d] = %s", loop, envblockarg[loop]);
 	  envblockarglen += strlen(envblockarg[loop]) + 1;
 	  envblockn = envblockn + envblocknlen + 1;
-	  if (wpath)
-	    free (wpath);
 	} // END FOR (int loop=0;loop < envblockcnt;loop++)
+      envblockarg[envblockcnt] = '\0';
 
       if (envblock)
 	free (envblock);
