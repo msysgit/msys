@@ -1,3 +1,14 @@
+2002.11.25  Earnie Boyd  <earnie@users.sf.net>
+
+	* bin/msys.bat: Modify to allow automatic expansion of environment
+	space for Win98 and WinME.
+	Many thanks to Randy Sims, Paul Garceau and Luke Dunstan.
+
+2002.08.10  Earnie Boyd  <earnie@users.sf.net>
+
+	* script/msysrls.sh: Fix bug with msys.iss creation.
+	* script/msysDTKrls.sh: New file.
+
 2002.08.01  Earnie Boyd  <earnie@users.sf.net>
 
 	* pm: New Directory.
