@@ -185,7 +185,7 @@ width="88" /></a>
 <!--#include virtual="/cgi-bin/stats.cgi?mingw"--> visitors since
 <!--#include virtual="/cgi-bin/showstatsdate.cgi?mingw"--></a>.
 </p>
-
+$Id: index.shtml,v 1.2 2000-09-10 20:17:53 pfalcon Exp $
 </body>
 </html>
 
