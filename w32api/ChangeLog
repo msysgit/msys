@@ -1,3 +1,92 @@
+2003-03-26  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/ddk/batclass.h (BATTERY_REPORTING_SCALE)
+	Move structure from here...
+	* include/winnt.h (BATTERY_REPORTING_SCALE): To here.
+
+	* include/ddk/ntapi.h (JOBOBJECT_*):
+	Remove structures and enums definitions.
+  	(JOB_OBJECT*): Move defines from here...
+	* include/winnt.h (JOB_OBJECT* ): To here.
+
+	* include/ddk/ntpoapi.h (LATENCY_TIME, POWER_ACTION_POLICY,
+	SYSTEM_POWER_LEVEL, SYSTEM_POWER_POLICY,
+	PROCESSOR_POWER_POLICY_INFO, PROCESSOR_POWER_POLICY,
+	ADMINISTRATOR_POWER_POLICY, SYSTEM_POWER_INFORMATION,
+	PROCESSOR_POWER_INFORMATION, SYSTEM_BATTERY_STATE,
+	SYSTEM_POWER_CAPABILITIES): Move enums, structures
+	and associated defines from here ...
+	* include/winnt.h: (LATENCY_TIME, POWER_ACTION_POLICY,
+	SYSTEM_POWER_LEVEL, SYSTEM_POWER_POLICY,
+	PROCESSOR_POWER_POLICY_INFO, PROCESSOR_POWER_POLICY,
+	ADMINISTRATOR_POWER_POLICY, SYSTEM_POWER_INFORMATION,
+	PROCESSOR_POWER_INFORMATION, SYSTEM_BATTERY_STATE,
+	SYSTEM_POWER_CAPABILITIES):To here.
+
+	* include/ddk/winddk.h (DEVICE_POWER_STATE,
+	SYSTEM_POWER_STATE, POWER_ACTION): Move enums
+	from here...
+	* include/winnt.h (DEVICE_POWER_STATE,
+	SYSTEM_POWER_STATE, POWER_ACTION): To here.
+
+2003-03-19  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	*lib/ndis.def (NdisAllocateMemory): Correct stdcall suffix.
+	Thanks to: Vladimir Michl <michlv@users.sourceforge.net>
+	(NdisUpdateSharedMemory): Likewise.
+	(NdisMFreeSharedMemory: Likewise. 
+	(NdisMMapIoSpace: Likewise.
+
+2003-03-18  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/lmaccess.h (UF_LOCKOUT): Correct name from UF_LOCK.
+	Thanks to: Fabricio D. Rossi  <gurusoda@users.sourceforge.net>
+ 	(UF_SETTABLE_BITS): Correct UF_LOCKOUT here too. 
+
+2003-03-17  Bang Jun-Young  <junyoung@netbsd.org>
+
+	* include/winbase.h (EnumResourceLanguages[AW]): Correct prototypes.
+	(EnumResourceNames[AW]): Ditto.
+	(EnumResourceTypes[AW]): Ditto.
+	* include/wincon.h (CONSOLE_FONT_INFO): Add struct.
+
+2003-03-16  Toby Malone  <malone@users.sourceforge.net>
+
+	* include/winuser.h (SendInput): Add prototype.
+	* lib/user32.def (SendInput): Add stub.
+
+2003-03-16  Vadim Yegorov  <zg@bmg.lv>
+
+	* winioctl.h (FSCTL_SET_REPARSE_POINT: Correct macro.
+	(FSCTL_DELETE_REPARSE_POINT): Likewise.
+
+2003-03-15  Bang Jun-Young  <junyoung@netbsd.org>
+
+	* winnt.h (JOBOBJECTINFOCLASS): Define enum.
+	(JOBOBJECT_*): Define corresponding structures.
+
+2003-03-13  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/ddk/winddk.h (PCUNICODE_STRING): Remove incorrect
+	typedef.
+
+2003-03-13  Bang Jun-Young  <junyoung@netbsd.org>
+
+	* lib/kernel32.def (Module32{First,Next}{,W}): Add missing exports.
+	(Process32{First,Next}{,W}): Ditto.
+	(Thread32{First,Next}): Ditto.
+	* include/ntdef.h (PCUNICODE_STRING): Add typedef.
+
+2003-03-12  Earnie Boyd  <earnie@users.sf.net>
+
+	* include/mswsock.h: Correct invalid filter for _WINSOCK2_H.
+	Thanks to Jim Barton <jmbarton@users.sf.net>.
+
+2003-03-12  Ranjit Mathew  <rmathew@hotmail.com>
+
+        * include/winnt.h (_IMAGE_SEPARATE_DEBUG_HEADER): Expose
+        member SectionAlignment.
+
 2003-03-11  Earnie Boyd  <earnie@users.sf.net>
 
 	* include/winsvc.h (SERVICE_NO_CHANGE): Use hex constant to avoid
