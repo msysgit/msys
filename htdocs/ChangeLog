@@ -1,5 +1,9 @@
 2003-02-04  Nathan Fisher <natbobc@users.sf.net>
 
+	* mingwfaq.shtml: Add CSS and HTML 4.01 compliant tags.
+
+2003-02-04  Nathan Fisher <natbobc@users.sf.net>
+
 	* mingwfaq.shtml: Converted tabs to '  '.
 	Add missing hr.
 
