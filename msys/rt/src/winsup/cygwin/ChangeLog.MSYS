@@ -1,3 +1,17 @@
+2002-10-09  Earnie Boyd  <earnie@users.sf.net>
+
+	* path.cc (cygwin_conv_to_win32_path): Adjust path sizes down to
+	MAX_PATH.
+	(DO_CPP_NEW): Remove throughout.
+	(pathmatch): Avoid memory overruns.  Add debug_printf.
+	(normalize_posix_path): Ditto.
+	* dll_init.cc: Add TRACE_IN throughout.
+	* shared.cc (shared_name): Remove #if 0 from code added for debugging
+	purposes.
+	* pinfo.cc (set_myself): Output cygwin_version.shared_id.
+	Add debugging info.
+	* cygwin_version.h: Add CYGWIN_VERSION_H guard and __cplusplus filters.
+
 2002-09-07  Earnie Boyd  <earnie@users.sf.net>
 
 	* dcrt0.cc: Add TRACE_IN throughout.

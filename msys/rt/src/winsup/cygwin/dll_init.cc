@@ -29,6 +29,7 @@ static int dll_global_dtors_recorded;
 static void
 dll_global_dtors()
 {
+    TRACE_IN;
   for (dll *d = dlls.istart (DLL_ANY); d; d = dlls.inext ())
     d->p.run_dtors ();
 }
@@ -37,6 +38,7 @@ dll_global_dtors()
 void
 per_module::run_ctors ()
 {
+    TRACE_IN;
   void (**pfunc)() = ctors;
 
   /* Run ctors backwards, so skip the first entry and find how many
@@ -56,6 +58,7 @@ per_module::run_ctors ()
 void
 per_module::run_dtors ()
 {
+    TRACE_IN;
   void (**pfunc)() = dtors;
   for (int i = 1; pfunc[i]; i++)
     (pfunc[i]) ();
@@ -65,6 +68,7 @@ per_module::run_dtors ()
 int
 dll::init ()
 {
+    TRACE_IN;
   int ret = 1;
 
   /* Why didn't we just import this variable? */
@@ -91,6 +95,7 @@ dll::init ()
 dll *
 dll_list::operator[] (const char *name)
 {
+    TRACE_IN;
   dll *d = &start;
   while ((d = d->next) != NULL)
     if (strcasematch (name, d->name))
@@ -105,6 +110,7 @@ dll_list::operator[] (const char *name)
 dll *
 dll_list::alloc (HINSTANCE h, per_process *p, dll_type type)
 {
+    TRACE_IN;
   char name[MAX_PATH + 1];
   DWORD namelen = GetModuleFileName (h, name, sizeof (name));
 
@@ -185,6 +191,7 @@ dll_list::alloc (HINSTANCE h, per_process *p, dll_type type)
 void
 dll_list::detach (dll *d)
 {
+    TRACE_IN;
   if (d->count <= 0)
     system_printf ("WARNING: try to detach an already detached dll ...\n");
   else if (--d->count == 0)
@@ -205,6 +212,7 @@ dll_list::detach (dll *d)
 void
 dll_list::init ()
 {
+    TRACE_IN;
   debug_printf ("here");
   /* Make sure that destructors are called on exit. */
   if (!dll_global_dtors_recorded)
@@ -226,6 +234,7 @@ dll_list::init ()
 static void
 reserve_upto (const char *name, DWORD here)
 {
+    TRACE_IN;
   DWORD size;
   MEMORY_BASIC_INFORMATION mb;
   for (DWORD start = 0x10000; start < here; start += size)
@@ -251,6 +260,7 @@ reserve_upto (const char *name, DWORD here)
 static void
 release_upto (const char *name, DWORD here)
 {
+    TRACE_IN;
   DWORD size;
   MEMORY_BASIC_INFORMATION mb;
   for (DWORD start = 0x10000; start < here; start += size)
@@ -273,6 +283,7 @@ release_upto (const char *name, DWORD here)
 void
 dll_list::load_after_fork (HANDLE parent, dll *first)
 {
+    TRACE_IN;
   in_forkee = 1;
   int try2 = 0;
   dll d;
@@ -335,6 +346,7 @@ dll_list::load_after_fork (HANDLE parent, dll *first)
 extern "C" int
 dll_dllcrt0 (HMODULE h, per_process *p)
 {
+    TRACE_IN;
   if (p == NULL)
     p = &__cygwin_user_data;
   else
@@ -381,18 +393,21 @@ dll_dllcrt0 (HMODULE h, per_process *p)
 extern "C" int
 dll_nonmsys_dllcrt0 (HMODULE h, per_process *p)
 {
+    TRACE_IN;
   return dll_dllcrt0 (h, p);
 }
 
 extern "C" void
 msys_detach_dll (dll *d)
 {
+    TRACE_IN;
   dlls.detach (d);
 }
 
 extern "C" void
 dlfork (int val)
 {
+    TRACE_IN;
   dlls.reload_on_fork = val;
 }
 
@@ -402,6 +417,7 @@ dlfork (int val)
 void __stdcall
 update_envptrs ()
 {
+    TRACE_IN;
   extern char ***main_environ;
   for (dll *d = dlls.istart (DLL_ANY); d; d = dlls.inext ())
     {
