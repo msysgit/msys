@@ -1,4 +1,4 @@
-<!-- $Id: mingwfaq.shtml,v 1.23 2001-08-28 01:05:44 stevedperkins Exp $ -->
+<!-- $Id: mingwfaq.shtml,v 1.24 2001-08-28 17:46:40 stevedperkins Exp $ -->
 
 <html>
 <head>
@@ -307,6 +307,13 @@
          to all the UNIX tools you want, while ensuring that the instance of GCC used 
          is the MinGW version.
       </p>
+      <p>
+         Bear in mind that within the "/etc/profile" file, Cygwin by default places 
+         "/usr/local/bin", "/usr/bin", and "/bin" ahead of your system-level PATH.  Therefore, 
+         it is not enough to have the MinGW's "/bin" ahead of Cygwin in your Windows 
+         path... it must also be set to come first within the Cygwin environment (either 
+         by modifying "/etc/profile" or setting it manually).
+      </p>
       <p><a href="#index">Back to index</a></p>
 
       <hr />
@@ -440,7 +447,7 @@
 
    <hr />
    <address>
-   <br />Last revised $Date: 2001-08-28 01:05:44 $
+   <br />Last revised $Date: 2001-08-28 17:46:40 $
    </address>
 
 </body>
