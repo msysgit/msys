@@ -1,5 +1,10 @@
 2003-02-04  Nathan Fisher <natbobc@users.sf.net>
 
+	* links.shtml, mingw-oldfaq.shtml: Merged all of the IDE
+	and Editors section as well as the other compiler section.
+	
+2003-02-04  Nathan Fisher <natbobc@users.sf.net>
+
 	* download.shtml: Added named anchor for the release info.
 	* mingwfaq.shtml: Changed "What is the current version?" 
 	link so it points to download.shtml#download-release.

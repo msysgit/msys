@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<!--$Id: mingw-oldfaq.shtml,v 1.10 2003-02-04 05:40:11 natbobc Exp $-->
+<!--$Id: mingw-oldfaq.shtml,v 1.11 2003-02-04 22:17:01 natbobc Exp $-->
   <title>"The Old FAQ"</title>
   <meta name="description"
  content="Information about the Mingw Compiler.  
@@ -35,9 +35,9 @@ is scheduled for removal.</span><span style="font-weight: bold;"></span></h1>
  href="http://www.mingw.org/trial/htdocs/links.shtml"
  style="font-weight: normal;">Related Sites</a> page for information you
 expected to find here, but appears to be missing.&nbsp; The following
-are questions and answers from "The Old FAQ", whose content         
-has yet to be assimilated into the consolidated FAQ or given a home    
-elsewhere.  Most of the questions still remaining here don't fit in    
+are questions and answers from "The Old FAQ", whose content has
+yet to be assimilated into the consolidated FAQ or given a home
+elsewhere. Most of the questions still remaining here don't fit in
 with the objectives of any currently-existing portion of the website...
 so they are waiting to be incorporated into the upcoming <i>MinGW
 User's Guide</i>.<br>
@@ -64,26 +64,11 @@ tools</a></li>
             <hr> <a name="othercompilerdistributions"> </a>
             <h3><a name="othercompilerdistributions">Other compiler
 distributions</a></h3>
-            <a name="othercompilerdistributions"> </a>
-            <p> <a name="othercompilerdistributions"> Other compiler
-packages are available for Win32 systems.  These          include: </a></p>
-            <a name="othercompilerdistributions"> </a>
+            <p> </p>
             <ul>
-              <a name="othercompilerdistributions"> <li> rsxnt, rsxntdj
-from </li>
-              </a><a
- href="http://www.mathematik.uni-bielefeld.de/%7Erainer/">
-http://www.mathematik.uni-bielefeld.de/~rainer/</a> is used in
-conjunction with Gnu compilers on various platforms such             as
-djgpp and emx to create Win32 executables. <li> Watcom from <a
- href="http://www.openwatcom.org/"> http://www.openwatcom.org/</a> is a
-collection of multi-platform C/C++ and             Fortran compilers
-with integerated development environments.  Sybase             has
-recently agreed to release the Watcom compiler under an Open Source    
-License under the management of SciTech Software Inc.             Their
-plans are to work with other Open Source development groups            
-once development of the new Open Source version commences.            
-Check their web site for the latest news on Watcom development. </li>
+              <li><span style="font-weight: normal;">Please refer to </span><a
+ href="http://www.mingw.org/trial/htdocs/links.shtml"
+ style="font-weight: normal;">Related Sites</a></li>
             </ul>
             <p><a href="#index">Back to index</a></p>
             <hr> <a name="help"> </a>
@@ -103,8 +88,8 @@ Other useful programs and examples for mingw too. </li>
                   <li> C library documentation in HTML format, <a
  href="http://cs-alb-pc3.massey.ac.nz/software/gcc.exe">
 http://cs-alb-pc3.massey.ac.nz/software/gcc.exe</a> <br>
-Also contains tutorial on C programming and some example C/C++
-programs along with a small gcc distribution. </li>
+Also contains tutorial on C programming and some example C/C++ programs
+along with a small gcc distribution. </li>
                   <li> Windows API Reference, <a
  href="http://www.borland.com/devsupport/borlandcpp/patches/BC52HLP1.ZIP">
 http://www.borland.com/devsupport/borlandcpp/patches/BC52HLP1.ZIP</a> </li>
@@ -146,12 +131,12 @@ line or routine where the program crashed. </p>
                 <p> Certain systems, such as Windows NT and some Windows
 98 machines, have                a program named Dr. Watson available
 which will supply information about                a program when it
-crashes. Some commercial compilers also supply a program
-with this functionality.  If you have one of these programs available on
-your system, you can use the address of the crash supplied by it to    
-help locate the problem.  If anyone knows of any freeware programs that
-duplicate                this functionality or has source code to find
-the address during a crash, please let me know. </p>
+crashes. Some commercial compilers also supply a program with this
+functionality.  If you have one of these programs available on your
+system, you can use the address of the crash supplied by it to help
+locate the problem.  If anyone knows of any freeware programs that
+duplicate this functionality or has source code to find the address
+during a crash, please let me know. </p>
                 <p> Here are three ways to create a map file.  Choose
 the method                you like best.  In these examples, I've used
 sample names                such as file.map and file.exe.  Change the
@@ -161,14 +146,14 @@ your particular project. </p>
                 <p> On systems such as Windows NT, you can specify what
 application is run                when a program crashes.  To do so,
 edit the Debugger value for the
-HKEY_LOCAL_MACHINE\Software\Microsoft\Windows NT\CurrentVersion\AeDebug 
+HKEY_LOCAL_MACHINE\Software\Microsoft\Windows NT\CurrentVersion\AeDebug
 registry key and change it to the program you want run after a crash.
-Windows makes available the ID of the process to debug and
-an event ID to signal when the debugger finishes calling
-DebugActiveProcess. These can be passed via command line to the program 
-listed as Debugger.  Setting the auto value for this registry key      
-to 1 causes the program listed as Debugger to automatically run.       
-Setting it to 0 brings up a crash dialog instead. </p>
+Windows makes available the ID of the process to debug and an event ID
+to signal when the debugger finishes calling DebugActiveProcess. These
+can be passed via command line to the program listed as Debugger. 
+Setting the auto value for this registry key to 1 causes the
+program listed as Debugger to automatically run. Setting it to 0
+brings up a crash dialog instead. </p>
               </li>
               <li>
                 <h4>Dr. MinGW</h4>
@@ -182,9 +167,8 @@ for a copy.                It will automatically install itself as the
 default debugger in                the registry if run with the proper
 options. If you do not                already have some debugger
 installed on your system, you may                have to add
-HKEY_LOCAL_MACHINE\Software\Microsoft\Windows NT\CurrentVersion\AeDebug 
-to your registry by hand before successfully running the install
-option. <li>
+HKEY_LOCAL_MACHINE\Software\Microsoft\Windows NT\CurrentVersion\AeDebug
+to your registry by hand before successfully running the install option. <li>
                 <h4>Debugger</h4>
                 <p> For more in depth debugging, you will most likely
 need the help                of a debugger program.  Mingw includes gdb
@@ -194,9 +178,9 @@ need the help                of a debugger program.  Mingw includes gdb
                 <h4>GUI debugger</h4>
                 <p> Many people prefer a GUI front end to their
 debugger. Mingw                currently does not supply this in its
-distribution. This leaves                two options for GUI debuggers. 
-Use one from another compiler distribution or use a GUI
-front end to gdb.  Here are some links for both options. </p>
+distribution. This leaves                two options for GUI debuggers.
+Use one from another compiler distribution or use a GUI front end to
+gdb.  Here are some links for both options. </p>
                 <p> These are some GUI front ends to gdb: </p>
                 <ul>
                   <li> Insight, <a
@@ -221,47 +205,13 @@ http://www.cs.virginia.edu/~lcc-win32/</a> </li>
             </ol>
             <p><a href="#index">Back to index</a></p>
             <hr> <a name="idesandeditors"> </a>
-            <h3><a name="idesandeditors">IDEs and editors</a></h3>
-            <a name="idesandeditors"> </a>
+            <h3>IDEs and editors</h3>
+            <p style="margin-left: 40px;">Please refer to <a
+ href="http://www.mingw.org/trial/htdocs/links.shtml">Related Sites</a></p>
             <ol>
-              <li>
-                <h4>What IDEs are available?</h4>
-              </li>
-Please refer to <a href="http://www.mingw.org/trial/htdocs/links.shtml">Related
-Sites</a>
             </ol>
             <ol>
-              <a name="idesandeditors"> <li>
-                <h4>What editors are available?</h4>
-                <ul>
-                  <li> PFE (Programmer's File Editor), <a
- href="http://www.lancs.ac.uk/people/cpaap/pfe/">
-http://www.lancs.ac.uk/people/cpaap/pfe/</a> </li>
-                  <li> Vim (Vi Improved), <a href="http://www.vim.org/">http://www.vim.org/</a> </li>
-                  <li> JED, <a href="http://space.mit.edu/%7Edavis/jed/">
-http://space.mit.edu/~davis/jed/</a> </li>
-                  <li> Emacs, several versions are available.  Check the
- Gnu web site or your favorite search engine. </li>
-                  <li> Scintilla and SciTE, <a
- href="http://www.scintilla.org/">http://www.scintilla.org/</a> <br>
-Scintilla is an Open Source editing component and SciTE is a
-text based editor which uses it. </li>
-                </ul>
-              </li>
-              <li>
-                <h4>Other reference sites</h4>
-                <ul>
-                  <li> Free Editors for C/C++ Programming with Windows
-at <a href="http://www.blockdev.net/Community/Editors/">
-http://www.blockdev.net/Community/Editors/</a> lists other editor and
-IDE resources. </li>
-                  <li> For those who prefer DOS editors, there are many
-good options such as edwin and pedit.</li>
-                </ul>
-              </li>
-              </a>
             </ol>
-            <a name="idesandeditors"> </a>
             <p><a href="#index">Back to index</a></p>
             <hr> <a name="morecompilingandbuildingissues"> </a>
             <h3><a name="morecompilingandbuildingissues">More compiling
@@ -276,31 +226,30 @@ However, MinGW is set up so                that you can use either. </p>
               <li>
                 <h4>Why are my executable sizes large?</h4>
                 <p> Some users on the MinGW mailing list have noticed
-ending up with unusually large executable sizes.  This can happen
-if you leave in debugging information.  To make your executables
-smaller, try linking with the -s switch or use the strip program
-on the final executable (not the object or library files).  Compiling
-without the -g option is another alternative. </p>
+ending up with unusually large executable sizes.  This can happen if you
+leave in debugging information.  To make your executables smaller, try
+linking with the -s switch or use the strip program on the final
+executable (not the object or library files).  Compiling without the -g
+option is another alternative. </p>
               </li>
               <li>
                 <h4>Linking to other compilers' libraries</h4>
                 <p> Due to binary compatibility issues between different
 compilers, you cannot                directly link in libraries or
-object code from one compiler to another compiler such as
-MinGW and expect it to work.  The reverse is true as well.  Even dlls
-are not                completely portable across compilers.  To deal
-with this issue, various                standards such as COM and CORBA
-were created. </p>
+object code from one compiler to another compiler such as MinGW and
+expect it to work.  The reverse is true as well.  Even dlls are not    
+completely portable across compilers.  To deal with this issue, various
+standards such as COM and CORBA were created. </p>
                 <p> If you want to use a library or objects from one
 compiler with another,                the easiest way to do it is to
 have the source (.c, .cpp, .rc, .def, etc.) and                to
-compile and build that code with the desired compiler and its tools.
-You can use the same dll with different compilers with varying degrees
-of success.                You'll need either a .def file or to use
-calls such as LoadLibrary/GetProcAddress to do so.  The
-self-hosting version of MinGW provides better support of Visual C++    
-binary compatibility.  You can use certain libraries built with Visual
-C++ with this                version of MinGW without having to rebuild
+compile and build that code with the desired compiler and its tools. You
+can use the same dll with different compilers with varying degrees of
+success.                You'll need either a .def file or to use calls
+such as LoadLibrary/GetProcAddress to do so.  The self-hosting version
+of MinGW provides better support of Visual C++ binary
+compatibility.  You can use certain libraries built with Visual C++
+with this                version of MinGW without having to rebuild
 them using MinGW and vice versa. </p>
               </li>
               <li>
@@ -308,13 +257,12 @@ them using MinGW and vice versa. </p>
                 <p> If you place libraries before the object files that
 reference them,                the linker will be unable to find them.
 The linker works left-to-right,                single pass.  The easiest
-way to avoid the problem is to place all libraries after
-the object files.  It is also recommended that libraries to be linked  
-with should not be repeated on the command line. While listing the
-same library                more than once works with several linkers,
-the MinGW linker currently has problems with this
-situation and may leave needed routines out of the link when this is
-done. </p>
+way to avoid the problem is to place all libraries after the object
+files.  It is also recommended that libraries to be linked with
+should not be repeated on the command line. While listing the same
+library                more than once works with several linkers, the
+MinGW linker currently has problems with this situation and may leave
+needed routines out of the link when this is done. </p>
                 <p> Here's an example of a line that links in multiple
 objects and libraries: </p>
                 <pre>   gcc -o hello hello.o util.o pdcurses.a -ltstdll<br>            </pre>
@@ -325,18 +273,17 @@ libtstdll.a to create                an executable hello.exe. </p>
                 <h4>Linking to dlls</h4>
                 <p> Although dlls are supposed to be fairly portable
 across different Windows                compilers, accessing dlls
-through a library file (.lib or .a) is not.  The library
-file formats are specific to particular compilers and cannot be used   
-portably with different compilers unless the compiler provides support 
-for it. </p>
+through a library file (.lib or .a) is not.  The library file formats
+are specific to particular compilers and cannot be used portably
+with different compilers unless the compiler provides support for it. </p>
                 <p> There are two ways to link to a dll. </p>
                 <ul>
                   <li> Provide a library file to let the program know
 what routines are                   in the dll and where to find them. </li>
                   <li> Use LoadLibrary/FreeLibrary and GetProcAddress. </li>
                 </ul>
-In order to use Microsoft or other compiler dlls, you can use any
-of the following methods:
+In order to use Microsoft or other compiler dlls, you can use any of
+the following methods:
                 <ul>
                   <li> Create def and library files.  If you have the
 object files for the dll                   created using MinGW, you can
@@ -353,27 +300,25 @@ proper format for MinGW using dlltool.  For example:
                   </li>
                   <li> The self-hosting version of MinGW has additional
 Microsoft compatible support                   and should allow you to
-link directly with library files in Microsoft .lib
-format. See the links in the <a href="#otherresources">Other resources</a>
-section. </li>
+link directly with library files in Microsoft .lib format. See the links
+in the <a href="#otherresources">Other resources</a> section. </li>
                   <li> Use LoadLibrary/FreeLibrary and GetProcAddress.
 With this method, no library                   file (.lib or .a) is
-required. You can connect directly to the dll.  LoadLibrary
-must be called before the dll can be accessed.  FreeLibrary should be
-called before exiting the program.  GetProcAddress is used to access
-specific functions                   in the dll by retrieving their
-addresses.  You'll need to call GetProcAddress for each function
-from the dll you want to work with.  Check a Win32 reference such as   
-those found in the <a href="#help">Help</a> links for more information
-on the use                   of these functions. </li>
+required. You can connect directly to the dll.  LoadLibrary must be
+called before the dll can be accessed.  FreeLibrary should be called
+before exiting the program.  GetProcAddress is used to access specific
+functions                   in the dll by retrieving their addresses. 
+You'll need to call GetProcAddress for each function from the dll you
+want to work with.  Check a Win32 reference such as those found in
+the <a href="#help">Help</a> links for more information on the use     
+of these functions. </li>
                 </ul>
                 <p> (Note:  While C functions in dlls are generally
 portable across compilers,                I'm told that this isn't
 necessarily true for C++.  When writing your                own dlls,
-you can mark C++ functions and data in dlls as extern "C" to
-help bridge some of the C++ portability issues between compilers.  See
-the MinGW mailing list archives for more portability concerns regarding
-dlls.) </p>
+you can mark C++ functions and data in dlls as extern "C" to help bridge
+some of the C++ portability issues between compilers.  See the MinGW
+mailing list archives for more portability concerns regarding dlls.) </p>
               </li>
               <li>
                 <h4>What are other useful compiler flags?</h4>
@@ -428,7 +373,7 @@ For example:  gcc --help 2&gt;&amp;1|more </li>
                 <h4>Keeping the dos box open</h4>
                 <p> Some users have had trouble with the dos box closing
 after building a program and haven't been able to see their errors.  The
-MinGW mailing list came up with several suggestions on how to          
+MinGW mailing list came up with several suggestions on how to
 deal with this.  One suggestion from Franco Bez is as follows: </p>
                 <p> By modifying a few Registry Keys - you can add a
 context menu item <code>Run - stay open</code>, so you simply <em>right
@@ -461,21 +406,19 @@ system, change all the occurrences of <code>cmd</code> to <code>command.com</cod
             <a name="patches"> </a>
             <p> <a name="patches"> If you have changes to source code,
 it may be easier to distribute          them as patches than to send the
-entire code to someone or list the changes by hand. Patching
-is an automated process of updating files using tools such as patch
-and diff. </a></p>
+entire code to someone or list the changes by hand. Patching is an
+automated process of updating files using tools such as patch and diff. </a></p>
             <a name="patches"> </a>
             <p> <a name="patches"> Patches can be created by comparing
 two files with the diff program or          from various version control
-systems such as RCS.  Several versions of diff          have been
-ported to Windows and DOS.  See sites such as Virtually Un*x listed    
-in the Other programming tools section.  There are also several
-versions of          patch available for use in applying patches to
-source code.  One site that          includes it is Mumit's site also
-listed in the Other programming tools section. Detailed help
-information on using diff and patch and the various options available  
-for working with them is also available in WinHelp format from the
-Virtually Un*x          site. </a></p>
+systems such as RCS.  Several versions of diff          have been ported
+to Windows and DOS.  See sites such as Virtually Un*x listed in the
+Other programming tools section.  There are also several versions of   
+patch available for use in applying patches to source code.  One site
+that          includes it is Mumit's site also listed in the Other
+programming tools section. Detailed help information on using diff and
+patch and the various options available for working with them is also
+available in WinHelp format from the Virtually Un*x          site. </a></p>
             <a name="patches"> </a>
             <p> <a name="patches"> To create a patch, compare the two
 versions of the file with diff.  Here's an          example: </a></p>
@@ -487,9 +430,9 @@ compares the old version of file.cpp          in directory old with the
 latest version in directory current.  The          output is redirected
 to a file.  Most patches these days also include          the <code>-c</code>
 or <code>-u</code> option which allows programmers          to figure
-out what has changed in a file by viewing the context of the
-lines around it.  Another common option is <code>-r</code> for working
-with entire directories instead of single files.  The option <code>-p</code>
+out what has changed in a file by viewing the context of the lines
+around it.  Another common option is <code>-r</code> for working with
+entire directories instead of single files.  The option <code>-p</code>
 may also be useful.  It adds information on what C functions a change
 appears in. </a></p>
             <a name="patches"> </a>
@@ -502,10 +445,9 @@ patch: </a></p>
             <a name="patches"> </a>
             <p> <a name="patches"> The command patches file.cpp in the
 old directory and outputs the updated          file to file.cpp
-(specified by the <code>-o</code> option).  Another useful
-switch for use with patch is <code>-p</code> which can affect the
-naming/location of files and can be used when working with compared
-directories. </a></p>
+(specified by the <code>-o</code> option).  Another useful switch for
+use with patch is <code>-p</code> which can affect the naming/location
+of files and can be used when working with compared directories. </a></p>
             <a name="patches"> </a>
             <p><a href="#index">Back to index</a></p>
             <hr> <a name="guisapplicationframeworksuserinterfaces"> </a>
@@ -525,8 +467,7 @@ features which                supports various compilers including the
 gcc compiler line.  See </p>
               </li>
               </a><a href="http://www.owlnext.org/">http://www.owlnext.org/</a>
-for details.  Thanks to Greg Chicares for supplying this information.
- <li>
+for details.  Thanks to Greg Chicares for supplying this information. <li>
                 <h4>What GUIs/application frameworks/user interface
 libraries are available?</h4>
                 <p> There are a number of these available.  The
@@ -573,8 +514,8 @@ libraries and programs that          can be built with MinGW. </a></p>
                         <p> You can get access to OpenGL when you
 install a framework like                            fltk or wxWindows.
 You can also install it yourself and                            use it
-directly. See the <a href="#tutorials">Tutorials</a> section
-for more information on working with OpenGL on a Win32 platform. </p>
+directly. See the <a href="#tutorials">Tutorials</a> section for more
+information on working with OpenGL on a Win32 platform. </p>
                         <p> If you wish to install it yourself, OpenGL
 and glut headers                            are available from <a
  href="http://www.cim.pe.u-tokyo.ac.jp/%7Ekawachi/software/cygwin_glut-e.html">
@@ -583,8 +524,7 @@ http://www.cim.pe.u-tokyo.ac.jp/~kawachi/software/cygwin_glut-e.html</a> </p>
 directory (for example: <code>i386-mingw32/include/GL</code>).</p>
                         <p> You will need to move the <code>gl*.h</code>
 files to this directory.  If you                            do not have <code>glut32.dll</code>
-installed on your system, move it to your
-Windows system directory. </p>
+installed on your system, move it to your Windows system directory. </p>
                         <p> To get a copy of the <code>glaux.h</code>
 header, you can download it from <a
  href="http://people.montana.com/%7Ebowman/Software/ming.htm">
@@ -595,8 +535,8 @@ http://people.montana.com/~bowman/Software/ming.htm</a> </p>
 available from <a
  href="http://trant.sgi.com/opengl/examples/win32_tutorial/win32_tutorial.html">
 http://trant.sgi.com/opengl/examples/win32_tutorial/win32_tutorial.html</a> <br>
-While they don't include a make file, you can compile them just
-as you would any other programs.  To link, don't forget the flags: <br>
+While they don't include a make file, you can compile them just as you
+would any other programs.  To link, don't forget the flags: <br>
                         <code>-mwindows -lglut -lglu32 -lopengl32</code> </p>
                         <p> For the examples included at <a
  href="http://www.cim.pe.u-tokyo.ac.jp/%7Ekawachi/software/cygwin_glut-e.html">
@@ -614,12 +554,12 @@ available from <a
 http://mywebpage.netscape.com/PtrPck/directx.htm</a> </p>
                     <p> An alternative version of DirectX is available
 from <a href="http://people.montana.com/%7Ebowman/Software/ming.htm">
-http://people.montana.com/~bowman/Software/ming.htm</a>.
-If you're using MinGW version 2.95 or later, you only need
-to do step 2 and add only the files that are not already in your
-current MinGW distribution.  Many of the OpenGL and DirectX libraries
-and includes have already been added to 2.95 and later distributions and
-overwriting them can cause problems. </p>
+http://people.montana.com/~bowman/Software/ming.htm</a>. If you're
+using MinGW version 2.95 or later, you only need to do step 2 and add
+only the files that are not already in your current MinGW distribution.
+Many of the OpenGL and DirectX libraries and includes have already been
+added to 2.95 and later distributions and overwriting them can cause
+problems. </p>
                     <p> There are some compatibility issues for Windows
 NT 4.  It does                      not provide full DirectX support for
 the latest versions of DirectX.  See                      the MinGW
@@ -661,8 +601,8 @@ cross-compiled versions of Freetype, libpng and zlib. </p>
                     <h5>Xbase</h5>
                     <p> <a href="http://linux.techass.com/projects/xdb/">
 http://linux.techass.com/projects/xdb/</a> <br>
-Dbase/Clipper compatible, cross-platform database library.
-Successfully compiled with file locking off under MinGW. </p>
+Dbase/Clipper compatible, cross-platform database library. Successfully
+compiled with file locking off under MinGW. </p>
                   </li>
                   <li>
                     <h5>MetaKit</h5>
@@ -674,16 +614,16 @@ Cross platform, C++ database library. </p>
                     <h5>libodbc++</h5>
                     <p> <a href="http://www.orcane.net/freeodbc++/">
 http://www.orcane.net/freeodbc++/</a> <br>
-C++ class library, similar to JDBC, for ODBC access.
-Compiled and built successfully with MinGW.  For now, see the
-MinGW mailing list for some of the changes that were needed.
-See also, ODBC access below since ODBC is required to use this library. </p>
+C++ class library, similar to JDBC, for ODBC access. Compiled and built
+successfully with MinGW.  For now, see the MinGW mailing list for some
+of the changes that were needed. See also, ODBC access below since ODBC
+is required to use this library. </p>
                   </li>
                   <li>
                     <h5>Oracle access</h5>
                     <p> Oracle can be accessed using Oracle's pro*c and
-sqllib80.dll (or sqllib18.dll for those with older versions of pro*c).  
-There's an example article on how to access Oracle from unsupported    
+sqllib80.dll (or sqllib18.dll for those with older versions of pro*c).
+There's an example article on how to access Oracle from unsupported
 compilers at <a href="http://technet.oracle.com">http://technet.oracle.com</a>.
 Oracle's OCI interface also works in some cases using oci.dll or
 ociw32.dll. If there's enough interest, I'll add source code for doing
@@ -693,10 +633,9 @@ this to the FAQ as well. </p>
                     <h5>ODBC access</h5>
                     <p> An ODBC manager (such as ODBC Data Sources
 program accessible via the                      Control Panel) is
-necessary to run ODBC programs.  If anyone has any
-URLs for where to get an ODBC manager, please let me know.
-Some possibilities if you don't already have one on your system
-are to check the following: </p>
+necessary to run ODBC programs.  If anyone has any URLs for where to get
+an ODBC manager, please let me know. Some possibilities if you don't
+already have one on your system are to check the following: </p>
                     <ul>
                       <li> <a href="http://www.microsoft.com/data/odbc/">
 http://www.microsoft.com/data/odbc/</a> </li>
@@ -704,8 +643,8 @@ http://www.microsoft.com/data/odbc/</a> </li>
  href="http://users.ids.net/%7Ebjepson/freeODBC/index.html">
 http://users.ids.net/~bjepson/freeODBC/index.html</a> </li>
                       <li> <a href="http://www.bulletproof.com/odbc/">http://www.bulletproof.com/odbc/</a> <br>
-Danny Smith recommended this link for ODBC 3.0 driver manager
-and Access, SQL Server, DBase, Oracle, FoxPro and Paradox drivers. </li>
+Danny Smith recommended this link for ODBC 3.0 driver manager and
+Access, SQL Server, DBase, Oracle, FoxPro and Paradox drivers. </li>
                     </ul>
                     <p> I'd be interested to hear if anyone has any luck
 with these. </p>
@@ -777,14 +716,14 @@ with MinGW. </p>
             <a name="otherprogrammingtools"> </a>
             <p> <a name="otherprogrammingtools"> I have links to various
 tools throughout the FAQ such as          in the Make, IDEs and editors,
-Debugging and Other resources links, but here are some that
-weren't specifically mentioned elsewhere. </a></p>
+Debugging and Other resources links, but here are some that weren't
+specifically mentioned elsewhere. </a></p>
             <a name="otherprogrammingtools"> </a>
             <ol>
               <a name="otherprogrammingtools"> <li> Unix style tools
- <p> Many users have found Win32 or DOS versions of Unix programming    
-tools very helpful.  Here are some places to find ports of well-known  
-Unix tools. </p>
+                <p> Many users have found Win32 or DOS versions of Unix
+programming tools very helpful.  Here are some places to find ports
+of well-known Unix tools. </p>
                 <ul>
                   <li> Less, <a
  href="http://www.greenwoodsoftware.com/less/">http://www.greenwoodsoftware.com/less/</a> <br>
@@ -815,10 +754,9 @@ add, feel free to suggest them. </p>
                   <li> DOS utilities, <a
  href="http://www.freedos.org/freedos/software/">
 http://www.freedos.org/freedos/software/</a> <br>
-If you want utilities similar to standard MS DOS ones, check this
-site. It even includes a deltree version that works on Windows NT. All 
-tools here are compiled for DOS 16 bit systems. Source is included
-with most. </li>
+If you want utilities similar to standard MS DOS ones, check this site.
+It even includes a deltree version that works on Windows NT. All tools
+here are compiled for DOS 16 bit systems. Source is included with most. </li>
                 </ul>
               </li>
               </a>
@@ -888,6 +826,6 @@ they'd welcome any type of programming related submissions. </li>
 <!--#include file="ssi/bottombar.html"--><!--#include file="ssi/footer.html"-->
 <hr>
 <address> <br>
-Last revised $Date: 2003-02-04 05:40:11 $ </address>
+Last revised $Date: 2003-02-04 22:17:01 $ </address>
 </body>
 </html>

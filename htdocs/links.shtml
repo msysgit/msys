@@ -50,9 +50,9 @@ Library</a> is being developed as a replacement to MSVCRT.DLL. Its
 purpose was to completely remove the dependency of MSVCRT.DLL from
 Mingw32. It will also allow developers to have access to the source code
 for the C Runtime Library like Microsoft Visual C++ developers do. It
-will contain some IA-32 (x86) assembly optimizations for some
-functions. It will implement all ANSI/ISO functions, including the ISO
-C99 and Unicode functions.</li>
+will contain some IA-32 (x86) assembly optimizations for some functions.
+It will implement all ANSI/ISO functions, including the ISO C99 and
+Unicode functions.</li>
             </ul>
             <h3 align="left">Sites useful for Windows32 programmers</h3>
             <ul>
@@ -87,16 +87,16 @@ http://webclub.kcom.ne.jp/ma/colinp/win32/index.html</a></li>
             <ul>
               <li>C++ Windows Tutorial, <a
  href="http://www.relisoft.com">http://www.relisoft.com</a> <br>
-Also has a directory for programmers trying to start or looking
-for projects.</li>
+Also has a directory for programmers trying to start or looking for
+projects.</li>
               <li>&nbsp; DevCentral Tutorials, <a
  href="http://devcentral.iftech.com/learning/tutorials/">
 http://devcentral.iftech.com/learning/tutorials/</a> <br>
 C++, Win32 and COM Tutorials.</li>
               <li>The Programming Sharehouse,&nbsp; <a
  href="http://www.progsharehouse.com">http://www.progsharehouse.com</a> <br>
-Tutorials, question and answer boards, links to source code
-and information on programming related topics.</li>
+Tutorials, question and answer boards, links to source code and
+information on programming related topics.</li>
               <li> C++ Annotations, <a
  href="http://www.icce.rug.nl/documents/cpp.shtml">
 http://www.icce.rug.nl/documents/cpp.shtml</a></li>
@@ -120,10 +120,10 @@ Database Tutorials:<br>
               <li> ODBC Oracle Example Program, <a
  href="ftp://ftp.simtel.net/pub/simtelnet/win95/prog/odbcora8.zip">
 ftp://ftp.simtel.net/pub/simtelnet/win95/prog/odbcora8.zip</a> <br>
-An example of how to write ODBC code.  The Visual C++ version
-compiles with the mingw32 C compiler (although main really should be
-declared with a return value of int for mingw to be happy).  When
-creating the executable, be sure to link in <code>-lodbc32</code>.</li>
+An example of how to write ODBC code.  The Visual C++ version compiles
+with the mingw32 C compiler (although main really should be declared
+with a return value of int for mingw to be happy).  When creating the
+executable, be sure to link in <code>-lodbc32</code>.</li>
             </ul>
             <h3 align="left">Other Windows32 projects with compilers</h3>
             <ul>
@@ -139,12 +139,26 @@ reported to work with other compilers such as mingw. </li>
               <li> <a target="_nw" href="http://pw32.sourceforge.net/">PW32</a>
 is <a href="mailto:pfalcon@users.sourceforge.net">Paul Sokolovsky's</a>
 effort to provide another POSIX-compliant C runtime library. Currently
-uses Mingw-hosted gcc/binutils. </li>
+uses Mingw-hosted gcc/binutils.</li>
+              <li> Watcom from <a href="http://www.openwatcom.org/">
+http://www.openwatcom.org/</a> is a collection of multi-platform C/C++
+and             Fortran compilers with integerated development
+environments.  Sybase             has recently agreed to release the
+Watcom compiler under an Open Source License under the management
+of SciTech Software Inc.             Their plans are to work with other
+Open Source development groups once development of the new
+Open Source version commences. Check their web site for the
+latest news on Watcom development.</li>
+              <li> rsxnt, rsxntdj from&nbsp;<a
+ href="http://www.mathematik.uni-bielefeld.de/%7Erainer/">
+http://www.mathematik.uni-bielefeld.de/~rainer/</a> is used in
+conjunction with Gnu compilers on various platforms such             as
+djgpp and emx to create Win32 executables. </li>
             </ul>
             <h3 align="left">IDE - Integrated Development Environments</h3>
             <p>There are several IDEs (Integrated Development
-Environments) for Win32 platforms.  Some are freeware and some are not. 
-Some     are specifically tailored to mingw and others are for more    
+Environments) for Win32 platforms.  Some are freeware and some are not.
+Some are specifically tailored to mingw and others are for more
 general use. </p>
             <ul>
               <li>Visual-MinGW, <a target="_nw"
@@ -159,19 +173,19 @@ with an IDE and other integrated tools. </li>
               <li>RSXIDE, <a target="_nw"
  href="http://www.mathematik.uni-bielefeld.de/%7Erainer/">
 http://www.mathematik.uni-bielefeld.de/~rainer/</a> <br>
-Built in support for djgpp, rsxnt, emx/nt09d and mingw.  Works with
-any editor that supports DDE.  This program in conjunction with an
-editor like PFE makes an easy-to-use but flexible IDE. </li>
+Built in support for djgpp, rsxnt, emx/nt09d and mingw.  Works with any
+editor that supports DDE.  This program in conjunction with an editor
+like PFE makes an easy-to-use but flexible IDE. </li>
               <li>Vide, <a target="_nw"
  href="http://www.objectcentral.com">http://www.objectcentral.com</a> <br>
 Tested with mingw. </li>
               <li>JFE (Jen's File Editor), <a target="_nw"
  href="http://home.t-online.de/home/Jens.Altmann/jfe_eng.htm">
 http://home.t-online.de/home/Jens.Altmann/jfe_eng.htm</a> <br>
-can be used with mingw.  Has some nice features including
-automatically building HTML documentation files for projects and easy
-viewing of and navigation to functions in a project.  (I personally miss
-the key-mapping functionality of PFE though.) </li>
+can be used with mingw.  Has some nice features including automatically
+building HTML documentation files for projects and easy viewing of and
+navigation to functions in a project.  (I personally miss the
+key-mapping functionality of PFE though.) </li>
               <li>Pow! - Programmers Open Workbench, <a target="_nw"
  href="http://www.fim.uni-linz.ac.at/pow/Pow.htm">
 http://www.fim.uni-linz.ac.at/pow/Pow.htm</a> </li>
@@ -181,18 +195,43 @@ Can be configured to work with many languages/compilers.</li>
               <li>Quincy 2000, <a
  href="http://csjava.occ.cccd.edu/%7Egilberts/quincy2k.html">
 http://csjava.occ.cccd.edu/~gilberts/quincy2k.html</a> <br>
-From Al Stevens.  Covered in various Dr. Dobb's articles and Al
-Stevens books on learning C++.  The Quincy 99 version had a bug when
-running on Windows NT.  Don't know if this has been corrected in the
-latest version.</li>
+From Al Stevens.  Covered in various Dr. Dobb's articles and Al Stevens
+books on learning C++.  The Quincy 99 version had a bug when running on
+Windows NT.  Don't know if this has been corrected in the latest
+version.</li>
               <li>Visual Programming Armoury, <a target="_nw"
  href="http://www.polymorph.spb.ru/"> http://www.polymorph.spb.ru/</a> </li>
               <li>Assembler Laboratory, <a target="_nw"
  href="http://tihlde.org/%7Ekurtg/">http://tihlde.org/~kurtg/</a> </li>
               <li>Octopod, <a target="_nw"
  href="http://www.octopod.net">http://www.octopod.net</a> <br>
-Commercial IDE. </li>
+Commercial IDE.</li>
             </ul>
+            <h3>Editors</h3>
+            <ul>
+              <li> PFE (Programmer's File Editor), <a
+ href="http://www.lancs.ac.uk/people/cpaap/pfe/">
+http://www.lancs.ac.uk/people/cpaap/pfe/</a></li>
+              <li> Vim (Vi Improved), <a href="http://www.vim.org/">http://www.vim.org/</a></li>
+              <li> JED, <a href="http://space.mit.edu/%7Edavis/jed/">
+http://space.mit.edu/~davis/jed/</a></li>
+              <li> Emacs, several versions are available.  Check the 
+Gnu web site or your favorite search engine.</li>
+              <li> Scintilla and SciTE, <a
+ href="http://www.scintilla.org/">http://www.scintilla.org/</a> <br>
+Scintilla is an Open Source editing component and SciTE is a text based
+editor which uses it.</li>
+            </ul>
+            <h3>IDE &amp; Editor related sites</h3>
+            <ul>
+              <li> Free Editors for C/C++ Programming with Windows at <a
+ href="http://www.blockdev.net/Community/Editors/">
+http://www.blockdev.net/Community/Editors/</a> lists other editor and
+IDE resources.</li>
+              <li> For those who prefer DOS editors, there are many good
+options such as edwin and pedit.</li>
+            </ul>
+            <br>
 <!--                            End of Main Body                             --> </td>
           </tr>
         </tbody>
@@ -203,6 +242,6 @@ Commercial IDE. </li>
 </table>
 <!--#include file="ssi/bottombar.html"--><!--#include file="ssi/footer.html"-->
 <address> <br>
-Last revised $Date: 2003-02-04 05:40:11 $ </address>
+Last revised $Date: 2003-02-04 22:17:01 $ </address>
 </body>
 </html>
