@@ -73,6 +73,9 @@ dll::init ()
   /* Don't run constructors or the "main" if we've forked. */
   if (!in_forkee)
     {
+      //This mutex is used to identify that the DLL is loaded.
+      CreateMutex(NULL, FALSE, "MSYS-1.0");
+
       /* global contructors */
       p.run_ctors ();
 

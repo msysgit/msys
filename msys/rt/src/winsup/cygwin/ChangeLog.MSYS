@@ -1,3 +1,19 @@
+2001-03-08  Earnie Boyd  <earnie@users.sf.net>
+
+	* environ.cc (parse_thing): Ensure ntea, ntsec and smbntsec are
+	set to FALSE regardless of the user request.
+
+2001-03-04  Earnie Boyd  <earnie@users.sf.net>
+
+	* path.cc (cygwin_conv_to_win32_path): Correct bug for -DFOO=1
+	assignment.
+	* dll_init.cc (dll::init): Add mutex MSYS-1.0.
+	* fhandler.cc (fhandler_base::raw_read): Translate \r\n to \n\0.
+
+2001-02-22  Earnie Boyd  <earnie@users.sf.net>
+
+	* include/cygwin/version.h: Increment to version 1.0.6.
+
 2001-02-20  Earnie Boyd  <earnie@users.sf.net>
 
 	* path.cc (QuotedRelativePath): New function.
