@@ -1,3 +1,11 @@
+2002-12-28  Manu B  <manubee@users.sourceforge.net>
+
+	* lib/getopt-mingw.diff: Renamed to getopt-1.12-mingw.diff.
+	* lib/getopt.prj: Removed.
+	* lib/makefile: Removed.
+	* lib/msys.prj: Removed.
+	* src/makefile: Removed.
+
 2002-12-22  Manu B  <manubee@users.sourceforge.net>
 
 	* setup/explorer.reg: New "Msys Dvlpr" menu.
