@@ -801,7 +801,7 @@ struct mallinfo {
 
 
 #ifndef DEFAULT_TOP_PAD
-#define DEFAULT_TOP_PAD        (0)
+#define DEFAULT_TOP_PAD        (128L * 1024L)
 #endif
 
 /*

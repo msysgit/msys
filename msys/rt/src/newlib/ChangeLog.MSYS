@@ -1,3 +1,7 @@
+2003.07.29  Earnie Boyd  <earnie@users.sf.net>
+
+	* libc/stdlib/mallocr.c (DEFAULT_TOP_PAD): Assign a new value.
+
 2003.06.13  Earnie Boyd  <earnie@users.sf.net>
 
 	* libc/stdlib/mallocr.c: Update with new version from newlib.
