@@ -1,3 +1,12 @@
+2001-12-02  Danny Smith  <dannysmith@users.sourceforge.net> 
+
+	Apply patches from:
+	2001-06-21  Mumit Khan  <khan@nanotech.wisc.edu>
+
+	* include/math.h (_FPCLASS* ): Add defines from float.h.
+	(IEEE recommended functions): Add declarations from float.h.
+	* include/float.h (_FPCLASS* ): Protect against redefinition.
+
 2001-11-29   Wu Yongwei  <adah@netstd.com>
  
 	* include/_mingw.h,assert.h,conio.h,ctype.h,dir.h,direct.h
