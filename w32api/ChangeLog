@@ -1,3 +1,11 @@
+2001-06-25 Danny Smith <dannysmith@users.sourceforge.net>
+
+	* include/winbase.h(InterlockedCompareExchange): Change args
+	and return value from PVOID to LONG.
+	(InterlockedExchange): Change first arg to LPLONG.
+	(InterlockedCompareExchangePointer): New macro.
+	(InterlockedExchangePointer): New macro.
+
 2001-06-19 Danny Smith <dannysmith@users.sourceforge.net>
 
 	* lib/kernel32.def: Add LanguageGroup and UILanguage symbols.
