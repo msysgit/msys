@@ -58,20 +58,20 @@ Index of Concepts
 * ,v (RCS file extension):               Catalogue of Rules.
 * - (in commands):                       Errors.
 * -, and define:                         Sequences.
-* --assume-new <1>:                      Options Summary.
-* --assume-new:                          Instead of Execution.
+* --assume-new <1>:                      Instead of Execution.
+* --assume-new:                          Options Summary.
 * --assume-new, and recursion:           Options/Recursion.
 * --assume-old <1>:                      Avoiding Compilation.
 * --assume-old:                          Options Summary.
 * --assume-old, and recursion:           Options/Recursion.
 * --debug:                               Options Summary.
-* --directory <1>:                       Recursion.
-* --directory:                           Options Summary.
+* --directory <1>:                       Options Summary.
+* --directory:                           Recursion.
 * --directory, and --print-directory:    -w Option.
 * --directory, and recursion:            Options/Recursion.
-* --dry-run <1>:                         Options Summary.
-* --dry-run <2>:                         Instead of Execution.
-* --dry-run:                             Echoing.
+* --dry-run <1>:                         Echoing.
+* --dry-run <2>:                         Options Summary.
+* --dry-run:                             Instead of Execution.
 * --environment-overrides:               Options Summary.
 * --file <1>:                            Options Summary.
 * --file <2>:                            Makefile Arguments.
@@ -82,32 +82,32 @@ Index of Concepts
 * --ignore-errors:                       Options Summary.
 * --include-dir <1>:                     Options Summary.
 * --include-dir:                         Include.
-* --jobs <1>:                            Parallel.
-* --jobs:                                Options Summary.
+* --jobs <1>:                            Options Summary.
+* --jobs:                                Parallel.
 * --jobs, and recursion:                 Options/Recursion.
 * --just-print <1>:                      Options Summary.
-* --just-print <2>:                      Instead of Execution.
-* --just-print:                          Echoing.
-* --keep-going <1>:                      Options Summary.
-* --keep-going <2>:                      Errors.
-* --keep-going:                          Testing.
+* --just-print <2>:                      Echoing.
+* --just-print:                          Instead of Execution.
+* --keep-going <1>:                      Testing.
+* --keep-going <2>:                      Options Summary.
+* --keep-going:                          Errors.
 * --load-average <1>:                    Parallel.
 * --load-average:                        Options Summary.
-* --makefile <1>:                        Options Summary.
+* --makefile <1>:                        Makefile Arguments.
 * --makefile <2>:                        Makefile Names.
-* --makefile:                            Makefile Arguments.
+* --makefile:                            Options Summary.
 * --max-load <1>:                        Options Summary.
 * --max-load:                            Parallel.
-* --new-file <1>:                        Options Summary.
-* --new-file:                            Instead of Execution.
+* --new-file <1>:                        Instead of Execution.
+* --new-file:                            Options Summary.
 * --new-file, and recursion:             Options/Recursion.
 * --no-builtin-rules:                    Options Summary.
 * --no-builtin-variables:                Options Summary.
 * --no-keep-going:                       Options Summary.
-* --no-print-directory <1>:              -w Option.
-* --no-print-directory:                  Options Summary.
-* --old-file <1>:                        Options Summary.
-* --old-file:                            Avoiding Compilation.
+* --no-print-directory <1>:              Options Summary.
+* --no-print-directory:                  -w Option.
+* --old-file <1>:                        Avoiding Compilation.
+* --old-file:                            Options Summary.
 * --old-file, and recursion:             Options/Recursion.
 * --print-data-base:                     Options Summary.
 * --print-directory:                     Options Summary.
@@ -116,54 +116,54 @@ Index of Concepts
 * --print-directory, disabling:          -w Option.
 * --question <1>:                        Instead of Execution.
 * --question:                            Options Summary.
-* --quiet <1>:                           Options Summary.
-* --quiet:                               Echoing.
+* --quiet <1>:                           Echoing.
+* --quiet:                               Options Summary.
 * --recon <1>:                           Echoing.
-* --recon <2>:                           Instead of Execution.
-* --recon:                               Options Summary.
-* --silent <1>:                          Options Summary.
-* --silent:                              Echoing.
+* --recon <2>:                           Options Summary.
+* --recon:                               Instead of Execution.
+* --silent <1>:                          Echoing.
+* --silent:                              Options Summary.
 * --stop:                                Options Summary.
-* --touch <1>:                           Options Summary.
-* --touch:                               Instead of Execution.
+* --touch <1>:                           Instead of Execution.
+* --touch:                               Options Summary.
 * --touch, and recursion:                MAKE Variable.
 * --version:                             Options Summary.
 * --warn-undefined-variables:            Options Summary.
 * --what-if <1>:                         Options Summary.
 * --what-if:                             Instead of Execution.
 * -b:                                    Options Summary.
-* -C <1>:                                Options Summary.
-* -C:                                    Recursion.
+* -C <1>:                                Recursion.
+* -C:                                    Options Summary.
 * -C, and -w:                            -w Option.
 * -C, and recursion:                     Options/Recursion.
 * -d:                                    Options Summary.
 * -e:                                    Options Summary.
 * -e (shell flag):                       Automatic Prerequisites.
-* -f <1>:                                Makefile Names.
-* -f <2>:                                Options Summary.
-* -f:                                    Makefile Arguments.
+* -f <1>:                                Makefile Arguments.
+* -f <2>:                                Makefile Names.
+* -f:                                    Options Summary.
 * -f, and recursion:                     Options/Recursion.
 * -h:                                    Options Summary.
-* -i <1>:                                Options Summary.
+* -I:                                    Options Summary.
 * -i:                                    Errors.
-* -I <1>:                                Options Summary.
 * -I:                                    Include.
-* -j <1>:                                Parallel.
-* -j:                                    Options Summary.
+* -i:                                    Options Summary.
+* -j <1>:                                Options Summary.
+* -j:                                    Parallel.
 * -j, and archive update:                Archive Pitfalls.
 * -j, and recursion:                     Options/Recursion.
 * -k <1>:                                Testing.
-* -k <2>:                                Errors.
-* -k:                                    Options Summary.
+* -k <2>:                                Options Summary.
+* -k:                                    Errors.
 * -l:                                    Options Summary.
 * -l (library search):                   Libraries/Search.
 * -l (load average):                     Parallel.
 * -m:                                    Options Summary.
 * -M (to compiler):                      Automatic Prerequisites.
 * -MM (to GNU compiler):                 Automatic Prerequisites.
-* -n <1>:                                Instead of Execution.
-* -n <2>:                                Echoing.
-* -n:                                    Options Summary.
+* -n <1>:                                Options Summary.
+* -n <2>:                                Instead of Execution.
+* -n:                                    Echoing.
 * -o <1>:                                Avoiding Compilation.
 * -o:                                    Options Summary.
 * -o, and recursion:                     Options/Recursion.
@@ -172,19 +172,19 @@ Index of Concepts
 * -q:                                    Options Summary.
 * -r:                                    Options Summary.
 * -R:                                    Options Summary.
-* -s <1>:                                Options Summary.
-* -s:                                    Echoing.
+* -s:                                    Options Summary.
 * -S:                                    Options Summary.
+* -s:                                    Echoing.
 * -t <1>:                                Options Summary.
 * -t:                                    Instead of Execution.
 * -t, and recursion:                     MAKE Variable.
 * -v:                                    Options Summary.
-* -W:                                    Options Summary.
-* -w:                                    Options Summary.
 * -W:                                    Instead of Execution.
+* -w:                                    Options Summary.
+* -W:                                    Options Summary.
 * -w, and -C:                            -w Option.
-* -w, and recursion:                     -w Option.
 * -W, and recursion:                     Options/Recursion.
+* -w, and recursion:                     -w Option.
 * -w, disabling:                         -w Option.
 * .a (archives):                         Archive Suffix Rules.
 * .c:                                    Catalogue of Rules.
@@ -205,8 +205,8 @@ Index of Concepts
 * .p:                                    Catalogue of Rules.
 * .PRECIOUS intermediate files:          Chained Rules.
 * .r:                                    Catalogue of Rules.
-* .S:                                    Catalogue of Rules.
 * .s:                                    Catalogue of Rules.
+* .S:                                    Catalogue of Rules.
 * .sh:                                   Catalogue of Rules.
 * .sym:                                  Catalogue of Rules.
 * .tex:                                  Catalogue of Rules.
@@ -217,23 +217,23 @@ Index of Concepts
 * .web:                                  Catalogue of Rules.
 * .y:                                    Catalogue of Rules.
 * :: rules (double-colon):               Double-Colon.
-* := <1>:                                Setting.
-* :=:                                    Flavors.
-* = <1>:                                 Setting.
-* =:                                     Flavors.
+* := <1>:                                Flavors.
+* :=:                                    Setting.
+* = <1>:                                 Flavors.
+* =:                                     Setting.
 * =, expansion:                          Reading Makefiles.
 * ? (wildcard character):                Wildcards.
-* ?= <1>:                                Setting.
-* ?=:                                    Flavors.
+* ?= <1>:                                Flavors.
+* ?=:                                    Setting.
 * ?=, expansion:                         Reading Makefiles.
 * @ (in commands):                       Echoing.
 * @, and define:                         Sequences.
 * [...] (wildcard characters):           Wildcards.
 * \ (backslash), for continuation lines: Simple Makefile.
 * \ (backslash), in commands:            Execution.
-* \ (backslash), to quote % <1>:         Text Functions.
-* \ (backslash), to quote % <2>:         Selective Search.
-* \ (backslash), to quote %:             Static Usage.
+* \ (backslash), to quote % <1>:         Selective Search.
+* \ (backslash), to quote % <2>:         Static Usage.
+* \ (backslash), to quote %:             Text Functions.
 * __.SYMDEF:                             Archive Symbols.
 * algorithm for directory search:        Search Algorithm.
 * all (standard target):                 Goals.
@@ -250,8 +250,8 @@ Index of Concepts
 * as <1>:                                Implicit Variables.
 * as:                                    Catalogue of Rules.
 * assembly, rule to compile:             Catalogue of Rules.
-* automatic generation of prerequisites <1>: Automatic Prerequisites.
-* automatic generation of prerequisites: Include.
+* automatic generation of prerequisites <1>: Include.
+* automatic generation of prerequisites: Automatic Prerequisites.
 * automatic variables:                   Automatic.
 * backquotes:                            Shell Function.
 * backslash (\), for continuation lines: Simple Makefile.
@@ -274,8 +274,8 @@ Index of Concepts
 * chains of rules:                       Chained Rules.
 * check (standard target):               Goals.
 * clean (standard target):               Goals.
-* clean target <1>:                      Simple Makefile.
-* clean target:                          Cleanup.
+* clean target <1>:                      Cleanup.
+* clean target:                          Simple Makefile.
 * cleaning up:                           Cleanup.
 * clobber (standard target):             Goals.
 * co <1>:                                Implicit Variables.
@@ -316,8 +316,8 @@ Index of Concepts
 * data base of make rules:               Options Summary.
 * deducing commands (implicit rules):    make Deduces.
 * default directries for included makefiles: Include.
-* default goal <1>:                      How Make Works.
-* default goal:                          Rules.
+* default goal <1>:                      Rules.
+* default goal:                          How Make Works.
 * default makefile name:                 Makefile Names.
 * default rules, last-resort:            Last Resort.
 * define, expansion:                     Reading Makefiles.
@@ -394,11 +394,11 @@ Index of Concepts
 * functions, for text:                   Text Functions.
 * functions, syntax of:                  Syntax of Functions.
 * functions, user defined:               Call Function.
-* g++ <1>:                               Catalogue of Rules.
-* g++:                                   Implicit Variables.
+* g++ <1>:                               Implicit Variables.
+* g++:                                   Catalogue of Rules.
 * gcc:                                   Catalogue of Rules.
-* generating prerequisites automatically <1>: Include.
-* generating prerequisites automatically: Automatic Prerequisites.
+* generating prerequisites automatically <1>: Automatic Prerequisites.
+* generating prerequisites automatically: Include.
 * get <1>:                               Implicit Variables.
 * get:                                   Catalogue of Rules.
 * globbing (wildcards):                  Wildcards.
@@ -438,8 +438,8 @@ Index of Concepts
 * killing (interruption):                Interrupts.
 * last-resort default rules:             Last Resort.
 * ld:                                    Catalogue of Rules.
-* lex <1>:                               Catalogue of Rules.
-* lex:                                   Implicit Variables.
+* lex <1>:                               Implicit Variables.
+* lex:                                   Catalogue of Rules.
 * Lex, rule to run:                      Catalogue of Rules.
 * libraries for linking, directory search: Libraries/Search.
 * library archive, suffix rule for:      Archive Suffix Rules.
@@ -453,8 +453,8 @@ Index of Concepts
 * list of changed prerequisites:         Automatic.
 * load average:                          Parallel.
 * loops in variable expansion:           Flavors.
-* lpr (shell command) <1>:               Empty Targets.
-* lpr (shell command):                   Wildcard Examples.
+* lpr (shell command) <1>:               Wildcard Examples.
+* lpr (shell command):                   Empty Targets.
 * m2c:                                   Catalogue of Rules.
 * macro:                                 Using Variables.
 * make depend:                           Automatic Prerequisites.
@@ -472,8 +472,8 @@ Index of Concepts
 * makefile, parsing:                     Reading Makefiles.
 * makefile, remaking of:                 Remaking Makefiles.
 * makefile, simple:                      Simple Makefile.
-* makeinfo <1>:                          Catalogue of Rules.
-* makeinfo:                              Implicit Variables.
+* makeinfo <1>:                          Implicit Variables.
+* makeinfo:                              Catalogue of Rules.
 * match-anything rule:                   Match-Anything Rules.
 * match-anything rule, used to override: Overriding Makefiles.
 * missing features:                      Missing.
@@ -491,12 +491,12 @@ Index of Concepts
 * newline, quoting, in commands:         Execution.
 * newline, quoting, in makefile:         Simple Makefile.
 * nondirectory part:                     File Name Functions.
-* OBJ:                                   Variables Simplify.
 * obj:                                   Variables Simplify.
+* OBJ:                                   Variables Simplify.
 * OBJECTS:                               Variables Simplify.
 * objects:                               Variables Simplify.
-* OBJS:                                  Variables Simplify.
 * objs:                                  Variables Simplify.
+* OBJS:                                  Variables Simplify.
 * old-fashioned suffix rules:            Suffix Rules.
 * options:                               Options Summary.
 * options, and recursion:                Options/Recursion.
@@ -518,8 +518,8 @@ Index of Concepts
 * pattern rules, static (not implicit):  Static Pattern.
 * pattern rules, static, syntax of:      Static Usage.
 * pattern-specific variables:            Pattern-specific.
-* pc <1>:                                Implicit Variables.
-* pc:                                    Catalogue of Rules.
+* pc <1>:                                Catalogue of Rules.
+* pc:                                    Implicit Variables.
 * phony targets:                         Phony Targets.
 * pitfalls of wildcards:                 Wildcard Pitfall.
 * portability:                           Features.
@@ -535,8 +535,8 @@ Index of Concepts
 * prerequisite pattern, static (not implicit): Static Usage.
 * prerequisite, expansion:               Reading Makefiles.
 * prerequisites:                         Rule Syntax.
-* prerequisites, automatic generation <1>: Automatic Prerequisites.
-* prerequisites, automatic generation:   Include.
+* prerequisites, automatic generation <1>: Include.
+* prerequisites, automatic generation:   Automatic Prerequisites.
 * prerequisites, introduction to:        Rule Introduction.
 * prerequisites, list of all:            Automatic.
 * prerequisites, list of changed:        Automatic.
@@ -546,8 +546,8 @@ Index of Concepts
 * preserving with .PRECIOUS:             Chained Rules.
 * preserving with .SECONDARY:            Special Targets.
 * print (standard target):               Goals.
-* print target <1>:                      Empty Targets.
-* print target:                          Wildcard Examples.
+* print target <1>:                      Wildcard Examples.
+* print target:                          Empty Targets.
 * printing directories:                  -w Option.
 * printing of commands:                  Echoing.
 * printing user warnings:                Make Control Functions.
@@ -574,8 +574,8 @@ Index of Concepts
 * recursion, and -j:                     Options/Recursion.
 * recursion, and -o:                     Options/Recursion.
 * recursion, and -t:                     MAKE Variable.
-* recursion, and -W:                     Options/Recursion.
 * recursion, and -w:                     -w Option.
+* recursion, and -W:                     Options/Recursion.
 * recursion, and command line variable definitions: Options/Recursion.
 * recursion, and environment:            Variables/Recursion.
 * recursion, and MAKE variable:          MAKE Variable.
@@ -591,17 +591,17 @@ Index of Concepts
 * reference to variables:                Advanced.
 * relinking:                             How Make Works.
 * remaking makefiles:                    Remaking Makefiles.
-* removal of target files <1>:           Interrupts.
-* removal of target files:               Errors.
+* removal of target files <1>:           Errors.
+* removal of target files:               Interrupts.
 * removing duplicate words:              Text Functions.
 * removing targets on failure:           Special Targets.
 * removing, to clean up:                 Cleanup.
 * reporting bugs:                        Bugs.
 * rm:                                    Implicit Variables.
-* rm (shell command) <1>:                Phony Targets.
-* rm (shell command) <2>:                Simple Makefile.
-* rm (shell command) <3>:                Errors.
-* rm (shell command):                    Wildcard Examples.
+* rm (shell command) <1>:                Wildcard Examples.
+* rm (shell command) <2>:                Errors.
+* rm (shell command) <3>:                Simple Makefile.
+* rm (shell command):                    Phony Targets.
 * rule commands:                         Commands.
 * rule prerequisites:                    Rule Syntax.
 * rule syntax:                           Rule Syntax.
@@ -741,8 +741,8 @@ Index of Concepts
 * variables, computed names:             Computed Names.
 * variables, conditional assignment:     Flavors.
 * variables, defining verbatim:          Defining.
-* variables, environment <1>:            Environment.
-* variables, environment:                Variables/Recursion.
+* variables, environment <1>:            Variables/Recursion.
+* variables, environment:                Environment.
 * variables, exporting:                  Variables/Recursion.
 * variables, flavors:                    Flavors.
 * variables, how they get their values:  Values.
@@ -791,9 +791,9 @@ Index of Concepts
 * words, selecting lists of:             File Name Functions.
 * writing rule commands:                 Commands.
 * writing rules:                         Rules.
-* yacc <1>:                              Catalogue of Rules.
-* yacc <2>:                              Sequences.
-* yacc:                                  Implicit Variables.
+* yacc <1>:                              Sequences.
+* yacc <2>:                              Implicit Variables.
+* yacc:                                  Catalogue of Rules.
 * Yacc, rule to run:                     Catalogue of Rules.
 * ~ (tilde):                             Wildcards.
 

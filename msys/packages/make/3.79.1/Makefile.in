@@ -59,19 +59,25 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
+build_alias = @build_alias@
+build_triplet = @build@
 host_alias = @host_alias@
 host_triplet = @host@
+target_alias = @target_alias@
+target_triplet = @target@
 ALL_LINGUAS = @ALL_LINGUAS@
 ALL_MOFILES = @ALL_MOFILES@
 ALL_POFILES = @ALL_POFILES@
 AR = @AR@
 CC = @CC@
 CPP = @CPP@
+EXEEXT = @EXEEXT@
 GETCONF = @GETCONF@
 GLOBDIR = @GLOBDIR@
 GLOBINC = @GLOBINC@
 GLOBLIB = @GLOBLIB@
 LIBOBJS = @LIBOBJS@
+MAINT = @MAINT@
 MAKEINFO = @MAKEINFO@
 MOFILES = @MOFILES@
 PACKAGE = @PACKAGE@
@@ -80,20 +86,24 @@ RANLIB = @RANLIB@
 REMOTE = @REMOTE@
 VERSION = @VERSION@
 
-AUTOMAKE_OPTIONS = 1.4
+AUTOMAKE_OPTIONS = 1.4 cygnus
 
 SUBDIRS = $(GLOBDIR) i18n
 
 bin_PROGRAMS = make
 
 # These source files also have gettext references
-SRCS = ar.c arscan.c commands.c dir.c expand.c file.c function.c 		getopt.c implicit.c job.c main.c misc.c read.c remake.c 		rule.c signame.c variable.c vpath.c
+SRCS = ar.c arscan.c commands.c dir.c expand.c file.c function.c \
+		getopt.c implicit.c job.c main.c misc.c read.c remake.c \
+		rule.c signame.c variable.c vpath.c
 
 
-make_SOURCES = $(SRCS) default.c remote-$(REMOTE).c version.c 		getopt1.c
+make_SOURCES = $(SRCS) default.c remote-$(REMOTE).c version.c \
+		getopt1.c
 
 
-noinst_HEADERS = commands.h dep.h filedef.h job.h make.h rule.h variable.h 		debug.h signame.h getopt.h gettext.h
+noinst_HEADERS = commands.h dep.h filedef.h job.h make.h rule.h variable.h \
+		debug.h signame.h getopt.h gettext.h
 
 
 make_LDADD = $(LIBOBJS) @ALLOCA@ $(GLOBLIB)
@@ -105,7 +115,18 @@ DEFS = -DALIASPATH=\"$(aliaspath)\" -DLOCALEDIR=\"$(localedir)\" -DLIBDIR=\"$(li
 
 INCLUDES = -I. -I$(srcdir) $(GLOBINC)
 
-EXTRA_DIST = README build.sh.in $(man_MANS) README.customs remote-cstms.c 		make-stds.texi SCOPTIONS SMakefile 		README.Amiga Makefile.ami config.ami make.lnk amiga.c amiga.h 		README.DOS Makefile.DOS configure.bat dosbuild.bat configh.dos 		README.W32 NMakefile config.h.W32 build_w32.bat subproc.bat 		readme.vms makefile.vms makefile.com config.h-vms vmsdir.h 		vmsfunctions.c vmsify.c 		gettext.c 		glob/COPYING.LIB glob/ChangeLog glob/Makefile.am 		glob/Makefile.ami glob/Makefile.in glob/SCOPTIONS 		glob/SMakefile glob/configure.bat glob/fnmatch.c 		glob/fnmatch.h glob/glob.c glob/glob.h
+EXTRA_DIST = README build.sh.in $(man_MANS) README.customs remote-cstms.c\
+		make-stds.texi SCOPTIONS SMakefile\
+		README.Amiga Makefile.ami config.ami make.lnk amiga.c amiga.h\
+		README.DOS Makefile.DOS configure.bat dosbuild.bat configh.dos\
+		README.W32 NMakefile config.h.W32 build_w32.bat subproc.bat\
+		readme.vms makefile.vms makefile.com config.h-vms vmsdir.h\
+		vmsfunctions.c vmsify.c\
+		gettext.c\
+		glob/COPYING.LIB glob/ChangeLog glob/Makefile.am\
+		glob/Makefile.ami glob/Makefile.in glob/SCOPTIONS\
+		glob/SMakefile glob/configure.bat glob/fnmatch.c\
+		glob/fnmatch.h glob/glob.c glob/glob.h
 
 
 MOSTLYCLEANFILES = loadavg.c
@@ -144,9 +165,10 @@ inst_group = @KMEM_GROUP@
 #
 MAKETESTFLAGS = 
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
-mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
+mkinstalldirs = $(SHELL) $(top_srcdir)/../mkinstalldirs
 CONFIG_HEADER = config.h
 CONFIG_CLEAN_FILES =  build.sh
+bin_PROGRAMS =  make$(EXEEXT)
 PROGRAMS =  $(bin_PROGRAMS)
 
 CPPFLAGS = @CPPFLAGS@
@@ -162,7 +184,8 @@ CFLAGS = @CFLAGS@
 COMPILE = $(CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 CCLD = $(CC)
 LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(LDFLAGS) -o $@
-TEXI2DVI = texi2dvi
+TEXI2DVI = `if test -f $(top_srcdir)/../texinfo/util/texi2dvi; then echo $(top_srcdir)/../texinfo/util/texi2dvi; else echo texi2dvi; fi`
+TEXINFO_TEX = $(top_srcdir)/../texinfo/texinfo.tex
 INFO_DEPS = make.info
 DVIS = make.dvi
 TEXINFOS = make.texinfo
@@ -174,9 +197,8 @@ HEADERS =  $(noinst_HEADERS)
 
 DIST_COMMON =  README ./stamp-h.in ABOUT-NLS AUTHORS COPYING ChangeLog \
 INSTALL Makefile.am Makefile.in NEWS acconfig.h acinclude.m4 aclocal.m4 \
-alloca.c build.sh.in config.guess config.h.in config.sub configure \
-configure.in getloadavg.c gettext.c install-sh missing mkinstalldirs \
-texinfo.tex
+alloca.c build.sh.in config.h.in configure configure.in getloadavg.c \
+gettext.c missing mkinstalldirs
 
 
 DISTFILES = $(DIST_COMMON) $(SOURCES) $(HEADERS) $(TEXINFOS) $(EXTRA_DIST)
@@ -189,8 +211,8 @@ OBJECTS = $(make_OBJECTS)
 all: all-redirect
 .SUFFIXES:
 .SUFFIXES: .S .c .dvi .info .o .ps .s .texi .texinfo .txi
-$(srcdir)/Makefile.in: Makefile.am $(top_srcdir)/configure.in $(ACLOCAL_M4) 
-	cd $(top_srcdir) && $(AUTOMAKE) --gnu --include-deps Makefile
+$(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am $(top_srcdir)/configure.in $(ACLOCAL_M4) 
+	cd $(top_srcdir) && $(AUTOMAKE) --cygnus Makefile
 
 Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status
 	cd $(top_builddir) \
@@ -278,8 +300,8 @@ distclean-compile:
 
 maintainer-clean-compile:
 
-make: $(make_OBJECTS) $(make_DEPENDENCIES)
-	@rm -f make
+make$(EXEEXT): $(make_OBJECTS) $(make_DEPENDENCIES)
+	@rm -f make$(EXEEXT)
 	$(LINK) $(make_LDFLAGS) $(make_OBJECTS) $(make_LDADD) $(LIBS)
 
 make.info: make.texinfo
@@ -289,46 +311,40 @@ make.dvi: make.texinfo
 DVIPS = dvips
 
 .texi.info:
-	@cd $(srcdir) && rm -f $@ $@-[0-9] $@-[0-9][0-9]
-	cd $(srcdir) \
-	  && $(MAKEINFO) `echo $< | sed 's,.*/,,'`
+	@rm -f $@ $@-[0-9] $@-[0-9][0-9]
+	$(MAKEINFO) -I $(srcdir) $<
 
 .texi.dvi:
-	TEXINPUTS=.:$$TEXINPUTS \
+	TEXINPUTS=$(top_srcdir)/../texinfo/texinfo.tex:$$TEXINPUTS \
 	  MAKEINFO='$(MAKEINFO) -I $(srcdir)' $(TEXI2DVI) $<
 
 .texi:
-	@cd $(srcdir) && rm -f $@ $@-[0-9] $@-[0-9][0-9]
-	cd $(srcdir) \
-	  && $(MAKEINFO) `echo $< | sed 's,.*/,,'`
+	@rm -f $@ $@-[0-9] $@-[0-9][0-9]
+	$(MAKEINFO) -I $(srcdir) $<
 
 .texinfo.info:
-	@cd $(srcdir) && rm -f $@ $@-[0-9] $@-[0-9][0-9]
-	cd $(srcdir) \
-	  && $(MAKEINFO) `echo $< | sed 's,.*/,,'`
+	@rm -f $@ $@-[0-9] $@-[0-9][0-9]
+	$(MAKEINFO) -I $(srcdir) $<
 
 .texinfo:
-	@cd $(srcdir) && rm -f $@ $@-[0-9] $@-[0-9][0-9]
-	cd $(srcdir) \
-	  && $(MAKEINFO) `echo $< | sed 's,.*/,,'`
+	@rm -f $@ $@-[0-9] $@-[0-9][0-9]
+	$(MAKEINFO) -I $(srcdir) $<
 
 .texinfo.dvi:
-	TEXINPUTS=.:$$TEXINPUTS \
+	TEXINPUTS=$(top_srcdir)/../texinfo/texinfo.tex:$$TEXINPUTS \
 	  MAKEINFO='$(MAKEINFO) -I $(srcdir)' $(TEXI2DVI) $<
 
 .txi.info:
-	@cd $(srcdir) && rm -f $@ $@-[0-9] $@-[0-9][0-9]
-	cd $(srcdir) \
-	  && $(MAKEINFO) `echo $< | sed 's,.*/,,'`
+	@rm -f $@ $@-[0-9] $@-[0-9][0-9]
+	$(MAKEINFO) -I $(srcdir) $<
 
 .txi.dvi:
-	TEXINPUTS=.:$$TEXINPUTS \
+	TEXINPUTS=$(top_srcdir)/../texinfo/texinfo.tex:$$TEXINPUTS \
 	  MAKEINFO='$(MAKEINFO) -I $(srcdir)' $(TEXI2DVI) $<
 
 .txi:
-	@cd $(srcdir) && rm -f $@ $@-[0-9] $@-[0-9][0-9]
-	cd $(srcdir) \
-	  && $(MAKEINFO) `echo $< | sed 's,.*/,,'`
+	@rm -f $@ $@-[0-9] $@-[0-9][0-9]
+	$(MAKEINFO) -I $(srcdir) $<
 .dvi.ps:
 	$(DVIPS) $< -o $@
 
@@ -337,7 +353,7 @@ install-info-am: $(INFO_DEPS)
 	$(mkinstalldirs) $(DESTDIR)$(infodir)
 	@list='$(INFO_DEPS)'; \
 	for file in $$list; do \
-	  d=$(srcdir); \
+	  if test -f $$file; then d=.; else d=$(srcdir); fi; \
 	  for ifile in `cd $$d && echo $$file $$file-[0-9] $$file-[0-9][0-9]`; do \
 	    if test -f $$d/$$ifile; then \
 	      echo " $(INSTALL_DATA) $$d/$$ifile $(DESTDIR)$(infodir)/$$ifile"; \
@@ -373,7 +389,7 @@ uninstall-info:
 dist-info: $(INFO_DEPS)
 	list='$(INFO_DEPS)'; \
 	for base in $$list; do \
-	  d=$(srcdir); \
+	  if test -f $$base; then d=.; else d=$(srcdir); fi; \
 	  for file in `cd $$d && eval echo $$base*`; do \
 	    test -f $(distdir)/$$file \
 	    || ln $$d/$$file $(distdir)/$$file 2> /dev/null \
@@ -391,12 +407,13 @@ clean-aminfo:
 distclean-aminfo:
 
 maintainer-clean-aminfo:
-	cd $(srcdir) && for i in $(INFO_DEPS); do \
+	for i in $(INFO_DEPS); do \
 	  rm -f $$i; \
 	  if test "`echo $$i-[0-9]*`" != "$$i-[0-9]*"; then \
 	    rm -f $$i-[0-9]*; \
 	  fi; \
 	done
+clean-info: mostlyclean-aminfo
 
 install-man1:
 	$(mkinstalldirs) $(DESTDIR)$(man1dir)
@@ -447,7 +464,7 @@ uninstall-man:
 @SET_MAKE@
 
 all-recursive install-data-recursive install-exec-recursive \
-installdirs-recursive install-recursive uninstall-recursive  \
+installdirs-recursive install-recursive uninstall-recursive install-info-recursive \
 check-recursive installcheck-recursive info-recursive dvi-recursive:
 	@set fnord $(MAKEFLAGS); amf=$$2; \
 	dot_seen=no; \
@@ -566,9 +583,9 @@ distdir: $(DISTFILES)
 	-chmod 777 $(distdir)
 	$(mkinstalldirs) $(distdir)/glob
 	@for file in $(DISTFILES); do \
-	  d=$(srcdir); \
+	  if test -f $$file; then d=.; else d=$(srcdir); fi; \
 	  if test -d $$d/$$file; then \
-	    cp -pr $$/$$file $(distdir)/$$file; \
+	    cp -pr $$d/$$file $(distdir)/$$file; \
 	  else \
 	    test -f $(distdir)/$$file \
 	    || ln $$d/$$file $(distdir)/$$file 2> /dev/null \
@@ -587,77 +604,38 @@ distdir: $(DISTFILES)
 	done
 	$(MAKE) $(AM_MAKEFLAGS) top_distdir="$(top_distdir)" distdir="$(distdir)" dist-info
 	$(MAKE) $(AM_MAKEFLAGS) top_distdir="$(top_distdir)" distdir="$(distdir)" dist-hook
-alloca.o: alloca.c config.h
-ar.o: ar.c make.h config.h gettext.h filedef.h dep.h glob/fnmatch.h
-arscan.o: arscan.c make.h config.h gettext.h
-commands.o: commands.c make.h config.h gettext.h dep.h filedef.h \
-	variable.h job.h commands.h
-default.o: default.c make.h config.h gettext.h rule.h dep.h filedef.h \
-	job.h commands.h variable.h
-dir.o: dir.c make.h config.h gettext.h glob/glob.h
-expand.o: expand.c make.h config.h gettext.h filedef.h job.h commands.h \
-	variable.h rule.h
-file.o: file.c make.h config.h gettext.h dep.h filedef.h job.h \
-	commands.h variable.h
-function.o: function.c make.h config.h gettext.h filedef.h variable.h \
-	dep.h job.h commands.h debug.h
-getloadavg.o: getloadavg.c config.h
-getopt.o: getopt.c config.h gettext.h getopt.h
-getopt1.o: getopt1.c config.h getopt.h
-gettext.o: gettext.c config.h gettext.h
-implicit.o: implicit.c make.h config.h gettext.h rule.h dep.h filedef.h \
-	debug.h
-job.o: job.c make.h config.h gettext.h job.h debug.h filedef.h \
-	commands.h variable.h
-main.o: main.c make.h config.h gettext.h dep.h filedef.h variable.h \
-	job.h commands.h rule.h debug.h getopt.h
-misc.o: misc.c make.h config.h gettext.h dep.h debug.h
-read.o: read.c make.h config.h gettext.h glob/glob.h dep.h filedef.h \
-	job.h commands.h variable.h rule.h debug.h
-remake.o: remake.c make.h config.h gettext.h filedef.h job.h commands.h \
-	dep.h variable.h debug.h
-remote-stub.o: remote-stub.c make.h config.h gettext.h filedef.h job.h \
-	commands.h
-rule.o: rule.c make.h config.h gettext.h dep.h filedef.h job.h \
-	commands.h variable.h rule.h
-signame.o: signame.c make.h config.h gettext.h signame.h
-variable.o: variable.c make.h config.h gettext.h dep.h filedef.h job.h \
-	commands.h variable.h rule.h
-version.o: version.c config.h
-vpath.o: vpath.c make.h config.h gettext.h filedef.h variable.h
-
 info-am: $(INFO_DEPS)
 info: info-recursive
 dvi-am: $(DVIS)
 dvi: dvi-recursive
-check-am: all-am
+check-am:
 	$(MAKE) $(AM_MAKEFLAGS) check-local
 check: check-recursive
 installcheck-am:
 installcheck: installcheck-recursive
+install-info-am: 
+install-info: install-info-recursive
 all-recursive-am: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-recursive
 
 install-exec-am: install-binPROGRAMS install-exec-local
 install-exec: install-exec-recursive
 
-install-data-am: install-info-am install-man
+install-data-am: install-man
 install-data: install-data-recursive
 
 install-am: all-am
 	@$(MAKE) $(AM_MAKEFLAGS) install-exec-am install-data-am
 install: install-recursive
-uninstall-am: uninstall-binPROGRAMS uninstall-info uninstall-man
+uninstall-am: uninstall-binPROGRAMS uninstall-man
 uninstall: uninstall-recursive
-all-am: Makefile $(INFO_DEPS) $(PROGRAMS) $(MANS) $(HEADERS) config.h \
-		all-local
+all-am: Makefile $(PROGRAMS) $(MANS) $(HEADERS) config.h all-local
 all-redirect: all-recursive-am
 install-strip:
 	$(MAKE) $(AM_MAKEFLAGS) AM_INSTALL_PROGRAM_FLAGS=-s install
 installdirs: installdirs-recursive
 installdirs-am:
-	$(mkinstalldirs)  $(DESTDIR)$(bindir) $(DESTDIR)$(infodir) \
-		$(DESTDIR)$(mandir)/man1
+	$(mkinstalldirs)  $(DESTDIR)$(bindir) $(DESTDIR)$(mandir)/man1
 
 
 mostlyclean-generic:
@@ -714,11 +692,12 @@ mostlyclean-recursive distclean-recursive clean-recursive \
 maintainer-clean-recursive tags tags-recursive mostlyclean-tags \
 distclean-tags clean-tags maintainer-clean-tags distdir info-am info \
 dvi-am dvi check-local check check-am installcheck-am installcheck \
-all-recursive-am install-exec-local install-exec-am install-exec \
-install-data-am install-data install-am install uninstall-am uninstall \
-all-local all-redirect all-am all installdirs-am installdirs \
-mostlyclean-generic distclean-generic clean-generic \
-maintainer-clean-generic clean mostlyclean distclean maintainer-clean
+install-info-am install-info all-recursive-am install-exec-local \
+install-exec-am install-exec install-data-am install-data install-am \
+install uninstall-am uninstall all-local all-redirect all-am all \
+installdirs-am installdirs mostlyclean-generic distclean-generic \
+clean-generic maintainer-clean-generic clean mostlyclean distclean \
+maintainer-clean
 
 
 all-local: $(srcdir)/stamp-pot
