@@ -53,7 +53,7 @@
 #  include <time.h>
 # endif
 #endif
-#if HAVE_TZNAME
+#if HAVE_TZNAME && ! defined (__MSYS__)
 extern char *tzname[];
 #endif
 
