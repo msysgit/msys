@@ -1,3 +1,9 @@
+2005-03-29  Earnie Boyd <earnie@users.sf.net>
+
+	* environ.cc (_addenv): Look for variable name prefix and set value
+	to win32 path.
+	(environ_init): Ditto.
+
 2004-09-05  Earnie Boyd <earnie@users.sf.net>
 
 	* fhandler_console.cc: Add TRACE_IN throughout.
