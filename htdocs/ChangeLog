@@ -1,3 +1,17 @@
+
+Thu Dec 14 17:37:26 PST 2000  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	* history.shtml: Modified to use ssi.
+	* index.shtml: ditto.
+	* licensing.shtml: ditto.
+	* links.shtml: ditto.
+	* lists.shtml: ditto.
+	* mirrors.shtml: ditto.
+	* news.shtml: ditto.
+	* ported.shtml: ditto.
+	* who.shtml: ditto.
+	* x86-win32-ports: ditto.
+
 2000-12-13  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	* mingwfaq.shtml: Revert 1.15 to 1.14 because bottom portion of file

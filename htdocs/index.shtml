@@ -26,40 +26,7 @@
 <tr>
 <td bgcolor="#eeeeee" valign="top" width="10%">
 
-<!-- ================================================================== -->
-<!--                                                                    -->
-<!--			     Left Sidebar                               -->
-<!--                                                                    -->
-
-<table border="0">
-
-<tr><td colspan="2"><a href="index.shtml">Mingw Home</a></td></tr>
-
-<tr><td colspan="2"><a href="http://sourceforge.net/project/showfiles.php?group_id=2435&release_id=15084">Download</a></td></tr>
-
-<tr><td colspan="2"><a href="docs.shtml">Documentation</a></td></tr>
-
-<tr><td><tt>&nbsp;</tt></td>
-<td><small><a href="mingwfaq.shtml">Frequently Asked Questions (FAQ)</a></small></td></tr>
-
-<tr><td colspan="2"><a href="mirrors.shtml">Mirror Sites</a></td></tr>
-
-<tr><td colspan="2"><a href="links.shtml">Related Sites</a></td></tr>
-
-<tr><td colspan="2"><a href="ported.shtml">Ported Software</a></td></tr>
-
-<tr><td colspan="2"><a href="lists.shtml">Mailing Lists</a></td></tr>
-
-<tr><td colspan="2"><a href="licensing.shtml">Licensing Terms</a></td></tr>
-
-<tr><td colspan="2"><a href="who.shtml">Who are we?</a></td></tr>
-
-<tr><td colspan="2"><a href="news.shtml">News</a></td></tr>
-
-<tr><td colspan="2"><a href="history.shtml">Project History</a></td></tr>
-
-</table>
-
+<!--#include file="ssi/lsidebar.html"-->
 
 </td>
 <!-- 2nd column of two-column format: the body -->
@@ -132,57 +99,13 @@ We have a participating mailing list.  You may join in the discussions and will 
 
 </td></tr></table>
 
-<!-- =================================================================== -->
-<!--                                                                     -->
-<!--			Tabbed Navigation bar                            -->
-<!--                                                                     -->
-<!-- Only add this on pages that are long, such that the left sidebar is -->
-<!-- is not visible when at the bottom.                                  -->
-
-<p align="center">
-<small>
-<a href="index.shtml">Mingw Home</a>            |
-<a href="http://sourceforge.net/project/showfiles.php?group_id=2435&release_id=15084">Download</a> |
-<a href="docs.shtml">Documentation</a>          |
-<a href="mirrors.shtml">Mirror Sites</a>        |
-<a href="links.shtml">Related Sites</a>         |
-<a href="ported.shtml">Ported Software</a>      |
-<a href="lists.shtml">Mailing Lists</a>         |
-<a href="licensing.shtml">Licensing Terms</a>   |
-<a href="who.shtml">Who are we?</a>             |
-<a href="news.shtml">News</a>                   |
-<a href="history.shtml">Project History</a> 
-</small>
-</p>
-
 
 <!-- Close page table -->
 </td></tr></table>
 
-<!-- ================================================================== -->
-<!--                                                                    -->
-<!--			     Footer                                     -->
-<!--                                                                    -->
+<!--#include file="ssi/bottombar.html"-->
 
-<p><i><small>
-Please submit bugs and web site problems (bad html, broken links) via
-<a href="http://sourceforge.net/bugs/?func=addbug&group_id=2435">
-online bugtracker form</a>
-(if you have SourceForge account,
-please
-<a href="https://sourceforge.net/account/login.php?return_to=/bugs/%3ffunc%3daddbug%26group_id%3d2435">
-login</a> first).
-Submit news, announcements, additions, and links via
-<a href="http://sourceforge.net/patch/?func=addpatch&group_id=2435">
-online patch form</a> (with
-<a href="https://sourceforge.net/account/login.php?return_to=/patch/%3ffunc%3daddpatch%26group_id%3d2435">
-SF login</a>).
-
-
-
-We are in the process of creating these web pages, so do expect some
-incomplete pages and broken links. We appreciate your patience. 
-</small></i></p>
+<!--#include file="ssi/footer.html"-->
 
 <!-- Only the main page has SourceForge logo. -->
 <p><a href="http://sourceforge.net/">
@@ -198,7 +121,7 @@ width="88" /></a>
 <!--#include virtual="/cgi-bin/stats.cgi?mingw"--> visitors since
 <!--#include virtual="/cgi-bin/showstatsdate.cgi?mingw"--></a>.
 </p>
-$Id: index.shtml,v 1.13 2000-11-14 19:38:55 pfalcon Exp $
+$Id: index.shtml,v 1.14 2000-12-15 01:44:36 earnie Exp $
 </body>
 </html>
 

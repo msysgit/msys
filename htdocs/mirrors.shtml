@@ -14,40 +14,7 @@
 <tr>
 <td bgcolor="#eeeeee" valign="top" width="10%">
 
-<!-- ================================================================== -->
-<!--                                                                    -->
-<!--			     Left Sidebar                               -->
-<!--                                                                    -->
-
-<table border="0">
-
-<tr><td colspan="2"><a href="index.shtml">Mingw Home</a></td></tr>
-
-<tr><td colspan="2"><a href="http://sourceforge.net/project/showfiles.php?group_id=2435&release_id=15084">Download</a></td></tr>
-
-<tr><td colspan="2"><a href="docs.shtml">Documentation</a></td></tr>
-
-<tr><td><tt>&nbsp;</tt></td>
-<td><small><a href="mingwfaq.shtml">Frequently Asked Questions (FAQ)</a></small></td></tr>
-
-<tr><td colspan="2"><a href="mirrors.shtml">Mirror Sites</a></td></tr>
-
-<tr><td colspan="2"><a href="links.shtml">Related Sites</a></td></tr>
-
-<tr><td colspan="2"><a href="ported.shtml">Ported Software</a></td></tr>
-
-<tr><td colspan="2"><a href="lists.shtml">Mailing Lists</a></td></tr>
-
-<tr><td colspan="2"><a href="licensing.shtml">Licensing Terms</a></td></tr>
-
-<tr><td colspan="2"><a href="who.shtml">Who are we?</a></td></tr>
-
-<tr><td colspan="2"><a href="news.shtml">News</a></td></tr>
-
-<tr><td colspan="2"><a href="history.shtml">Project History</a></td></tr>
-
-</table>
-
+<!--#include file="ssi/lsidebar.html"-->
 
 </td>
 <!-- 2nd column of two-column format: the body -->
@@ -109,24 +76,8 @@ for providing the mirrors.</p>
 <!-- Close page table -->
 </td></tr></table>
 
-<!-- ================================================================== -->
-<!--                                                                    -->
-<!--			     Footer                                     -->
-<!--                                                                    -->
-
-<p><i><small>
-Please submit bugs and web site problems (bad html, broken links) via
-<a href="http://sourceforge.net/bugs/?func=addbug&group_id=2435">
-online bugtracker form</a>
-(if you have SourceForge account,
-please
-<a href="https://sourceforge.net/account/login.php?return_to=/bugs/%3ffunc%3daddbug%26group_id%3d2435">
-login</a> first).
-Submit news, announcements, additions, and links via
-<a href="http://sourceforge.net/patch/?func=addpatch&group_id=2435">
-online patch form</a> (with
-<a href="https://sourceforge.net/account/login.php?return_to=/patch/%3ffunc%3daddpatch%26group_id%3d2435">
-SF login</a>).
+<!--#include file="ssi/bottombar.html"-->
+<!--#include file="ssi/footer.html"-->
 
 <p>
 <a href="http://validator.w3.org/check?uri=http%3A%2F%2Fwww.mingw.org%2Fmirrors.shtml">
@@ -136,4 +87,3 @@ width="88" /></a>
 
 </body>
 </html>
-
