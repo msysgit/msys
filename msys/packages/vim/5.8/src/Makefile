@@ -288,7 +288,7 @@ CC=
 # (X) How to include config.mk depends on the version of "make" you have, if
 #     the current choice doesn't work, try the other one.
 
-include ../config.mk
+include config.mk
 #.include "config.mk"
 
 # Include the configuration choices first, so we can override everything
@@ -728,12 +728,12 @@ TOOLS = xxd/xxd$(SUFFIX)
 ### prefix	the top directory for the data (default "/usr/local")
 #
 # Uncomment the next line to install Vim in your home directory.
-#prefix = $(HOME)
+prefix = /usr/local
 
 ### exec_prefix	is the top directory for the executable (default $(prefix))
 #
 # Uncomment the next line to install the Vim executable in "/usr/machine/bin"
-#exec_prefix = /usr/machine
+exec_prefix = $(prefix)
 
 ### BINDIR	dir for the executable	 (default "$(exec_prefix)/bin")
 ### MANDIR	dir for the manual pages (default "$(prefix)/man")
@@ -743,11 +743,11 @@ TOOLS = xxd/xxd$(SUFFIX)
 # executable and a common directory for the other files.
 #
 # Uncomment the next line to install Vim in "/usr/bin"
-#BINDIR   = /usr/bin
+BINDIR   = $(exec_prefix)/bin
 # Uncomment the next line to install Vim manuals in "/usr/share/man/man1"
-#MANDIR   = /usr/share/man
+MANDIR   = $(prefix)/share/man
 # Uncomment the next line to install Vim help files in "/usr/share/vim"
-#DATADIR  = /usr/share
+DATADIR  = $(prefix)/share
 
 ### Location of man page
 MANSUBDIR = $(MANDIR)/man1
