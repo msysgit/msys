@@ -1,4 +1,4 @@
-<!-- $Id: index.shtml,v 1.24 2002-08-05 14:00:54 earnie Exp $ -->
+<!-- $Id: index.shtml,v 1.25 2002-08-05 14:16:11 earnie Exp $ -->
 
 <html>
 <head>
@@ -73,11 +73,11 @@ Latest MinGW</a>.  This snapshot bundles:
                                binutils-2.11.90, 
                                mingw-runtime, 
                                w32api, 
-                               make.  
+                               and make.  
 </p>
 
 <p><b>MinGW Users Mailing List</b>
-We have a participating mailing list.  You may join in the discussions and will find a link to the archives at <A HREF="http://lists.sourceforge.net/mailman/listinfo/mingw-users">http://lists.sourceforge.net/mailman/listinfo/mingw-users</a>.
+We have a participating mailing list.  You may join in the discussions and will find a link to the archives by <A HREF="lists.shtml">clicking here</a>.
 
 <hr noshade="noshade" size="1" />
 
@@ -114,7 +114,7 @@ width="88" /></a>
 <!--#include virtual="/cgi-bin/showstatsdate.cgi?mingw"--></a>.
 </p>
 <address>
-<br />Last revised $Date: 2002-08-05 14:00:54 $
+<br />Last revised $Date: 2002-08-05 14:16:11 $
 </address>
 
 </body>
