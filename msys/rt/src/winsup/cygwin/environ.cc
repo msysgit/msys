@@ -500,24 +500,17 @@ static struct parse_thing
       } values[2];
   } known[] NO_COPY =
 {
-  {"binmode", {x: &binmode}, justset, NULL, {{O_TEXT}, {O_BINARY}}},
-  {"check_case", {func: &check_case_init}, isfunc, NULL, {{0}, {0}}},
+  {"binmode", {x: &binmode}, justset, NULL, {{O_BINARY}, {O_BINARY}}},
+  {"check_case", {func: &check_case_init}, isfunc, NULL, {{PCHECK_ADJUST}, {PCHECK_ADJUST}}},
   {"codepage", {func: &codepage_init}, isfunc, NULL, {{0}, {0}}},
   {"envcache", {&envcache}, justset, NULL, {{TRUE}, {FALSE}}},
   {"error_start", {func: &error_start_init}, isfunc, NULL, {{0}, {0}}},
   {"export", {&export_settings}, justset, NULL, {{FALSE}, {TRUE}}},
   {"forkchunk", {x: &chunksize}, justset, NULL, {{8192}, {0}}},
   {"glob", {func: &glob_init}, isfunc, NULL, {{0}, {s: "normal"}}},
-#if ! __MSYS__
-/* For MSys, these aren't feasible so always force to FALSE. */
   {"ntea", {&allow_ntea}, justset, NULL, {{FALSE}, {FALSE}}},
   {"ntsec", {&allow_ntsec}, justset, NULL, {{FALSE}, {FALSE}}},
   {"smbntsec", {&allow_smbntsec}, justset, NULL, {{FALSE}, {FALSE}}},
-#else /* ! __MSYS__ */
-  {"ntea", {&allow_ntea}, justset, NULL, {{FALSE}, {TRUE}}},
-  {"ntsec", {&allow_ntsec}, justset, NULL, {{FALSE}, {TRUE}}},
-  {"smbntsec", {&allow_smbntsec}, justset, NULL, {{FALSE}, {TRUE}}},
-#endif /* ! __MSYS__ */
   {"reset_com", {&reset_com}, justset, NULL, {{FALSE}, {TRUE}}},
   {"strip_title", {&strip_title_path}, justset, NULL, {{FALSE}, {TRUE}}},
   {"subauth_id", {func: &subauth_id_init}, isfunc, NULL, {{0}, {0}}},
