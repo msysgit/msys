@@ -1,3 +1,15 @@
+2002-06-01  Luke Dunstan  <infidel@users.sourceforge.net>
+
+	* docs.shtml: Change or remove many broken and outdated links, add a
+	couple more.
+	* history.shtml: Ditto.
+	* index.shtml: Ditto.
+	* links.shtml: Ditto.
+	* lists.shtml: Ditto.
+	* mingw-oldfaq.shtml: Ditto.
+	* mingwfaq.shtml: Ditto.
+	* x86-win32-ports.shtml: Ditto.
+
 2002-05-06  Earnie Boyd  <earnie@users.sf.net>
 
 	* msys/: New directory.

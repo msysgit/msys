@@ -1,4 +1,4 @@
-<!-- $Id: x86-win32-ports.shtml,v 1.7 2001-08-28 01:05:44 stevedperkins Exp $ -->
+<!-- $Id: x86-win32-ports.shtml,v 1.8 2002-06-02 05:48:10 infidel Exp $ -->
 
 <html>
 <head>
@@ -64,8 +64,8 @@ So, how do they differ?</p>
    not very fond of the math routines in there. 
    <br />
    For general information, see:
-     <a href="http://sourceware.cygnus.com/cygwin/">
-     &lt;URL:http://sourceware.cygnus.com/cygwin/&gt;</a>
+     <a href="http://sources.redhat.com/cygwin/">
+     &lt;URL:http://sources.redhat.com/cygwin/&gt;</a>
    <br />
    For gcc toolchain, see:
      <a href="http://www.xraylith.wisc.edu/~khan/software/gnu-win32/gcc.html">
@@ -167,7 +167,7 @@ else fill those in.</p>
 <!--#include file="ssi/footer.html"-->
 
 <address>
-<br />Last revised $Date: 2001-08-28 01:05:44 $
+<br />Last revised $Date: 2002-06-02 05:48:10 $
 </address>
 
 </body>

@@ -1,4 +1,4 @@
-<!-- $Id: links.shtml,v 1.15 2001-08-28 01:05:44 stevedperkins Exp $ -->
+<!-- $Id: links.shtml,v 1.16 2002-06-02 05:48:10 infidel Exp $ -->
 
 <html>
 <head>
@@ -40,12 +40,6 @@ this is where it all started.</li>
 <a target="_nw" href="http://agnes.dida.physik.uni-essen.de/~janjaap/mingw32/index.html">
 GNU mingw32 tools</a>. Contains some useful tools, and also old versions 
 of GCC (2.8.x).</li>
-<li> Jon Beniston <a href="mailto:jon@sentinelware.freeserve.co.uk">
-&lt;jon@sentinelware.freeserve.co.uk&gt;</a> is working on porting 
-the Java runtime to Cygwin. If you are using the GNU Java front-end, 
-you definitely want to visit 
-<a target="_nw" href="http://www.cs.bris.ac.uk/~jb7216/libgcj/">
-http://www.cs.bris.ac.uk/~jb7216/libgcj/</a>.</li>
 <li> <a href="mailto:kern@caltech.edu">Robert Kern</a>'s instructions
 for <a target="_nw" href="http://starship.python.net/crew/kernr/mingw32/Notes.html">
 Python Extensions with GCC/mingw32</a>.</li>
@@ -84,15 +78,16 @@ Programming in Windows (32-bit)</a>
     general use.
     </p>
     <ul>
+      <li>Visual-MinGW, <a target="_nw" href="http://visual-mingw.sourceforge.net/">
+        http://visual-mingw.sourceforge.net/</a>
+      <br />A "Minimalist" Open Source IDE being developed with and for the MinGW
+      development tools.
+      </li>
       <li>RSXIDE, <a target="_nw" href="http://www.mathematik.uni-bielefeld.de/%7Erainer/">
       http://www.mathematik.uni-bielefeld.de/~rainer/</a>
       <br />Built in support for djgpp, rsxnt, emx/nt09d and mingw.  Works with
       any editor that supports DDE.  This program in conjunction with an editor
       like PFE makes an easy-to-use but flexible IDE.
-      </li>
-      <li>DFE95, <a target="_nw" href="http://www.musc.edu/%7Ebrannanp/dfe95/">
-      http://www.musc.edu/~brannanp/dfe95/</a>
-      <br />Works with mingw.
       </li>
       <li>Vide, <a target="_nw" href="http://www.objectcentral.com">http://www.objectcentral.com</a>
       <br />Tested with mingw.
@@ -106,12 +101,6 @@ Programming in Windows (32-bit)</a>
       viewing of and navigation to functions in a project.  (I personally miss the key-mapping
       functionality of PFE though.)
       </li>
-      <li>Code Magic, <a target="_nw" href="http://www.petes-place.com/codemagic.html">
-      http://www.petes-place.com/codemagic.html</a>
-      </li>
-      <li>Super IDE, <a target="_nw" href="http://protostar.hypermart.net/">
-      http://protostar.hypermart.net/</a>
-      </li>
       <li>Pow! - Programmers Open Workbench, <a target="_nw" href="http://www.fim.uni-linz.ac.at/pow/Pow.htm">
       http://www.fim.uni-linz.ac.at/pow/Pow.htm</a>
       </li>
@@ -120,7 +109,7 @@ Programming in Windows (32-bit)</a>
       <br />Can be configured to work with many languages/compilers.
       </li>
       <li>Visual Programming Armoury,
-      <a target="_nw" href="http://polymorph.i-real.spb.ru/">http://polymorph.i-real.spb.ru/</a>
+      <a target="_nw" href="http://www.polymorph.spb.ru/">http://www.polymorph.spb.ru/</a>
       </li>
       <li>Assembler Laboratory, <a target="_nw" href="http://tihlde.org/%7Ekurtg/">http://tihlde.org/~kurtg/</a>
       </li>
@@ -144,7 +133,7 @@ Programming in Windows (32-bit)</a>
 <!--#include file="ssi/footer.html"-->
 
 <address>
-<br />Last revised $Date: 2001-08-28 01:05:44 $
+<br />Last revised $Date: 2002-06-02 05:48:10 $
 </address>
 
 </body>

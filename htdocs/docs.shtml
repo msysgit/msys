@@ -1,4 +1,4 @@
-<!-- $Id: docs.shtml,v 1.20 2001-08-28 17:00:20 stevedperkins Exp $ -->
+<!-- $Id: docs.shtml,v 1.21 2002-06-02 05:48:10 infidel Exp $ -->
 <html>
 <head>
  <title>Documentation</title>
@@ -216,7 +216,7 @@
                   </li>      
                   <li>
                      Another option is the tool,
-                     <a href="http://www.geocities.com/Tokyo/Towers/6162/impdef.zip">impdef</a>.
+                     impdef.
                      More instructions on how to create def files from dlls, a copy of impdef and
                      more information on how to use it are available at Colin Peters' site.
                      See the <a href="#tutorials">Tutorials</a> section.
@@ -338,16 +338,19 @@
                <a href="http://www.gnu.org/software/gcc/onlinedocs/">GCC Manual</a>
             </li>
             <li>
-               <a href="http://www.gnu.org/manual/ld-2.9.1/ld.html">GNU Linker</a>
+               <a href="http://sources.redhat.com/binutils/docs-2.12/ld.info/index.html">GNU Linker</a>
             </li>
             <li>
-               <a href="http://www.gnu.org/manual/binutils-2.10.1/binutils.html">GNU Binutils</a>
+               <a href="http://sources.redhat.com/binutils/docs-2.12/binutils.info/index.html">GNU Binutils</a>
             </li>
             <li>
-               <a href="http://www.gnu.org/manual/bfd-2.9.1/bfd.html">GNU Binary File Descriptor library (BFD)</a>
+               <a href="http://sources.redhat.com/binutils/docs-2.12/bfd.info/index.html">GNU Binary File Descriptor library (BFD)</a>
             </li>
             <li>
-               <a href="http://www.gnu.org/manual/gas-2.9.1/as.html">GNU Assembler</a>
+               <a href="http://sources.redhat.com/binutils/docs-2.12/as.info/index.html">GNU Assembler</a>
+            </li>
+            <li>
+			<a href="http://mefriss1.swan.ac.uk/~jfonseca/gnu-win32/documentation/chm/index.html">Compiled HTML Help</a> (various documentation for GNU tools in MS HTML Help format, provided by José Fonseca).
             </li>
             <p><a href="#index">Back to index</a></p>
          </ul>

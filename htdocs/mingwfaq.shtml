@@ -1,4 +1,4 @@
-<!-- $Id: mingwfaq.shtml,v 1.33 2002-02-15 20:45:42 stevedperkins Exp $ -->
+<!-- $Id: mingwfaq.shtml,v 1.34 2002-06-02 05:48:10 infidel Exp $ -->
 
 <html>
 <head>
@@ -107,8 +107,8 @@
       </p>
       <p>
          Colin maintains a website about MinGW at 
-         <a href="http://www.geocities.com/Tokyo/Towers/6162/gcc.html" target="_nw">
-         http://www.geocities.com/Tokyo/Towers/6162/gcc.html</a> which lists some interesting 
+         <a href="http://webclub.kcom.ne.jp/ma/colinp/gcc.html" target="_nw">
+         http://webclub.kcom.ne.jp/ma/colinp/gcc.html</a> which lists some interesting 
          details you won't find here.  Other history details can be found on our 
          <a href="history.shtml">history</a> page.  The MinGW project was eventually taken over 
          by Mumit Khan, and is now maintained by a group of developers through the 
@@ -449,8 +449,8 @@
       </p>
       <p>
          A more upto date HOWTO complete with a script to configure it for you can
-         be found at <a href="http://www.devolution.com/~slouken/SDL/Xmingw32/crossgcc/index.html" 
-         target="_nw">http://www.devolution.com/~slouken/SDL/Xmingw32/crossgcc/index.html</a>.
+         be found at <a href="http://www.libsdl.org/extras/win32/cross/README.txt" 
+         target="_nw">http://www.libsdl.org/extras/win32/cross/README.txt</a>.
       </p>
       <p>
          You'll want to visit the <a href="mailto:crossgcc@sources.redhat.com">crossgcc</a> 
@@ -463,8 +463,8 @@
          <ul>
             <li>
                Linux: 
-               <a href="http://www.devolution.com/~slouken/SDL/Xmingw32/mingw32-linux-x86-glibc-2.1.tar.gz">
-               mingw32-linux-x86-glibc-2.1.tar.gz</a>
+               <a href="http://www.libsdl.org/extras/win32/cross/mingw32-linux-x86-glibc-2.2.tar.gz">
+               mingw32-linux-x86-glibc-2.2.tar.gz</a>
             </li>
             <li>If you know of others let us know.</li>
          </ul>
@@ -499,7 +499,7 @@
 
    <hr />
    <address>
-   <br />Last revised $Date: 2002-02-15 20:45:42 $
+   <br />Last revised $Date: 2002-06-02 05:48:10 $
    </address>
 
 </body>

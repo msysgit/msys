@@ -1,4 +1,4 @@
-<!-- $Id: index.shtml,v 1.22 2001-08-28 01:05:44 stevedperkins Exp $ -->
+<!-- $Id: index.shtml,v 1.23 2002-06-02 05:48:10 infidel Exp $ -->
 
 <html>
 <head>
@@ -40,8 +40,8 @@ MinGW is a collection of header files and import libraries that allow one
 to use GCC and produce native Windows32 programs that do not rely on any 
 3rd-party DLLs. The current set of tools include <a href="http://gcc.gnu.org/">
 GNU Compiler Collection (GCC)</a>, 
-<a href="http://sourceware.cygnus.com/binutils/">GNU Binary Utilities 
-(Binutils)</a>, <a href="http://sourceware.cygnus.com/gdb/"> GNU debugger (Gdb)
+<a href="http://sources.redhat.com/binutils/">GNU Binary Utilities 
+(Binutils)</a>, <a href="http://sources.redhat.com/gdb/"> GNU debugger (Gdb)
 </a>, GNU make, and a assorted other utilities. We are currently working on 
 creating a complete set of Mingw-hosted GNU toolchain, and looking for 
 volunteers. </p>
@@ -133,7 +133,7 @@ width="88" /></a>
 <!--#include virtual="/cgi-bin/showstatsdate.cgi?mingw"--></a>.
 </p>
 <address>
-<br />Last revised $Date: 2001-08-28 01:05:44 $
+<br />Last revised $Date: 2002-06-02 05:48:10 $
 </address>
 
 </body>

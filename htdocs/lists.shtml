@@ -1,4 +1,4 @@
-<!-- $Id: lists.shtml,v 1.9 2001-12-20 15:59:48 earnie Exp $ -->
+<!-- $Id: lists.shtml,v 1.10 2002-06-02 05:48:10 infidel Exp $ -->
 
 <html>
 <head>
@@ -93,7 +93,7 @@ out as a Cygwin "sub-target".
 <a href="http://gcc.gnu.org/lists.html"><strong>GCC</strong></a>: There are 
 various lists for GCC that you can use to post compiler-specific bugs.
 </p><p>
-<a href="http://sourceware.cygnus.com/binutils/"><strong>Binutils</strong></a>: 
+<a href="http://sources.redhat.com/binutils/"><strong>Binutils</strong></a>: 
 The GNU binutils groups maintains a few mailing lists.
 </p>
 </td>
@@ -110,7 +110,7 @@ The GNU binutils groups maintains a few mailing lists.
 <!--#include file="ssi/footer.html"-->
 
 <address>
-<br />Last revised $Date: 2001-12-20 15:59:48 $
+<br />Last revised $Date: 2002-06-02 05:48:10 $
 </address>
 
 </body>
