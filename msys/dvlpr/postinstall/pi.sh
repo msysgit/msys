@@ -17,6 +17,7 @@ echo -n "Do you have MinGW installed? [yn ] "; read ans
 if [ $ans == y ]
 then
   echo
+  echo    "Please answer the following in the form of c:/foo/bar."
   echo -n "Where is your MinGW installation? "; read ans
   if [ -f $ans/bin/gcc.exe ]
   then 
