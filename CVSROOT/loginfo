@@ -27,5 +27,4 @@
 
 # E-mail notifications - we use python's syncmain
 CVSROOT /cvsroot/python/CVSROOT/syncmail %{sVv} mingw-dvlpr-admin@lists.sourceforge.net
-htdocs  /cvsroot/python/CVSROOT/syncmail %{sVv} mingw-editor@lists.sourceforge.net
 DEFAULT /cvsroot/python/CVSROOT/syncmail %{sVv} mingw-cvs@lists.sourceforge.net
