@@ -609,6 +609,7 @@ spawn_guts (HANDLE hToken, const char * prog_arg, const char *const *argv,
 
   int flags = CREATE_DEFAULT_ERROR_MODE | GetPriorityClass (hMainProc);
 
+  //FIXME: Is there good reason for this code?
   if (mode == _P_DETACH || !set_console_state_for_spawn ())
     flags |= DETACHED_PROCESS;
   if (mode != _P_OVERLAY)
@@ -624,10 +625,6 @@ spawn_guts (HANDLE hToken, const char * prog_arg, const char *const *argv,
 
   /* Build windows style environment list */
   char *envblock;
-  FIXME;
-  /*
-   * Why do we need to call winenv() for MSYS binary?
-   */
   if (envblockarg)
     free (envblockarg);
   if (real_path.iscygexec ())

@@ -31,7 +31,7 @@ details. */
 #endif
 #if TRACING
 //# define TRACE_IN debug_printf("TRACE_IN: %s, %d", __FILE__, __LINE__)
-# define TRACE_IN char TrcInBuf[256]; __small_sprintf(TrcInBuf, "TRACE_IN: %s, %d, %s", __FILE__, __LINE__, __PRETTY_FUNCTION__); OutputDebugString (TrcInBuf)
+# define TRACE_IN {char TrcInBuf[256]; __small_sprintf(TrcInBuf, "TRACE_IN: %s, %d, %s", __FILE__, __LINE__, __PRETTY_FUNCTION__); OutputDebugString (TrcInBuf);}
 #else
 # define TRACE_IN
 #endif
