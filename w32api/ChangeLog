@@ -1,3 +1,19 @@
+2001-11-16  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/winuser.h (tagALTTABINFO, tagCOMBOBOXINFO, 
+	tagCURSORINFO, tagMENUBARINFO, tagMENUINFO, tagMONITORINFO
+	tagSCROLLBARINFO, tagTITLEBARINFO. tagWINDOWINFO,
+	tagLASTINPUTINFO ): Define new structures. 
+	(EndMenu, GetAltTabInfo[AW],GetComboBoxInfo,GetCursorInfo,
+	GetLastInputInfo, GetListBoxInfo, GetMenuBarInfo,
+	GetMonitorInfo[AW], GetScrollBarInfo, GetTitleBarInfo,
+	GetWindowInfo, GetWindowModuleFileName[AW],GetMenuInfo
+	SetMenuInfo): Add new prototypes.
+	* lib/user32.def: Add import stubs for above functions.
+
+	* include/winuser.h (IDC_STATIC): Protect against prior
+	definition.
+
 2001-11-06  Danny Smith  <dannysmith@users.sourceforge.net>
 
 	* include/winuser.h (IDC_STATIC): Add define.
