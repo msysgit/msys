@@ -47,6 +47,10 @@ details. */
    c: means c:\.  FIXME: Is this still true?
 */
 
+#ifndef NEW_PATH_METHOD
+# define NEW_PATH_METHOD 1
+#endif
+
 #include "winsup.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -152,18 +156,22 @@ path_prefix_p (const char *path1, const char *path2, int len1)
 int
 pathnmatch (const char *path1, const char *path2, int len)
 {
-  return pcheck_case == PCHECK_STRICT ? !strncmp (path1, path2, len)
-				      : strncasematch (path1, path2, len);
+  return (strncasecmp (path1, path2, len) ? 0 : 1);
 }
 
+#if 0 //Suspect unused function.
 /* Return non-zero if paths match. Check is dependent of the case
    sensitivity setting. */
 int
 pathmatch (const char *path1, const char *path2)
 {
-  return pcheck_case == PCHECK_STRICT ? !strcmp (path1, path2)
-				      : strcasematch (path1, path2);
+  int a = strcmp (path1, path2);
+  if (a)
+      return 0;
+  else
+      return 1;
 }
+#endif
 
 /* Normalize a POSIX path.
    \'s are converted to /'s in the process.
@@ -374,27 +382,74 @@ void
 path_conv::check (const char *src, unsigned opt,
 		  const suffix_info *suffixes)
 {
+  /* ******************************************************************
+   * So what do we need to check, or what the &*(# is this doing?
+   * 
+   * Symlinks are out but the coding for all path checking
+   * appears to be embedded with symlink checking so we have
+   * misleading names below.
+   * 
+   * A class suffix_scan is used in symlink_info::check to find the
+   * extension based on the suffix_info passed to this function.
+   * symlink_info is both a class and a struct.
+   *
+   * Now, to answer the question:
+   * First, let's remember that we're a member of the path_conv class.
+   * Second, let's remember that we're passed the path to check, A
+   *   bit mask set of options, and a list of suffixes.
+   * So, let's check what the valid options are to perform on *src.
+   * 1) PC_NULLEMPTY: Appears to cause an error to be set if the src
+   *    is 0 or *src = '\0'
+   * 2) PC_SYM_IGNORE: Doesn't do symlink checking including the path
+   *    extention.
+   * 3) PC_SYM_CONTENTS: Then return the contents of the symlink;
+   *    I.E.: the file pointed to.
+   * ******************************************************************
+   * pcheck_case == PCHECK_RELAXED used with opt & PC_SYM_IGNORE.
+   * pcheck_case == PCHECK_STRICT used with sym.case_clase;
+   * sym.case_clash is set via the previous sym.check call and sym is
+   * an object of the symlink_info class.
+   * pcheck_case == PCHECK_ADJUST allows a path creator to maintain
+   * the current case of a file if the file exists and the case for
+   * the new name differs.
+   * ******************************************************************
+   * FIXME: All we really need path_conv::check to do is:
+   * 1) Does the value of src exists in the file system?
+   *    Y) Does case of file system name differ with the value of src?
+   *       Y) Report File Not Found.
+   *       N) Report File Found
+   *    N) Does the value of src contain a '.'?
+   *       Y) Report File Not Found.
+   *       N) Do 2).
+   * 2) Loop through values of suffix_info appending the suffix
+   *    to the value of src and recursive call path_conv::check.
+   * 3) Successful path_conv::check?
+   *    Y) Report File Found.
+   *    N) Report File Not Found.
+   * 4) FUTURE ENHANCEMENT: Create a hash value for the value of src
+   *    and check for that value first for existing files.
+   * ******************************************************************
+   * Further analysis needs to be done for the use of the symlink_info
+   * struct to see if that needs to have values filled.
+   * *****************************************************************/
+
+// This isn't working.  Giving much to do with symlink_info.  I've modified
+// other methods to remove some symlink checking.  This needs a complete
+// rework including all calls.
+#if 0 // #if NEW_PATH_METHOD
+    FIXME: Please!!!
+    Using the above analysis, rewrite this function.
+#else
   /* This array is used when expanding symlinks.  It is MAX_PATH * 2
      in length so that we can hold the expanded symlink plus a
      trailer.  */
-  char path_copy[MAX_PATH + 3];
   char tmp_buf[2 * MAX_PATH + 3];
+  char path_copy[MAX_PATH + 3];
   symlink_info sym;
   bool need_directory = 0;
   bool saw_symlinks = 0;
   int is_relpath;
   sigframe thisframe (mainthread);
-
-#if 0
-  static path_conv last_path_conv;
-  static char last_src[MAX_PATH + 1];
-
-  if (*last_src && strcmp (last_src, src) == 0)
-    {
-      *this = last_path_conv;
-      return;
-    }
-#endif
 
   int loop = 0;
   path_flags = 0;
@@ -409,6 +464,13 @@ path_conv::check (const char *src, unsigned opt,
   drive_type = 0;
   is_remote_drive = 0;
 
+  //MSYS - See if this works
+  //FIXME: If it does work then what can we remove from this function
+  //
+  //opt |= PC_SYM_IGNORE;
+  //OK, it doesn't work and the reason is that foo is treated as a symlink for
+  //foo.exe.  So, now maybe we can go clean this up.
+
   if (!(opt & PC_NULLEMPTY))
     error = 0;
   else if ((error = check_null_empty_str (src)))
@@ -417,6 +479,7 @@ path_conv::check (const char *src, unsigned opt,
   /* This loop handles symlink expansion.  */
   for (;;)
     {
+      //What's this macro do?
       MALLOC_CHECK;
       assert (src);
 
@@ -439,7 +502,7 @@ path_conv::check (const char *src, unsigned opt,
 
       char *tail = strchr (path_copy, '\0');   // Point to end of copy
       char *path_end = tail;
-      tail[1] = '\0';
+      tail[1] = '\0';  //FIXME: Ain't this dangerous?!?!?
 
       /* Scan path_copy from right to left looking either for a symlink
 	 or an actual existing file.  If an existing file is found, just
@@ -490,9 +553,12 @@ path_conv::check (const char *src, unsigned opt,
 	  /* Eat trailing slashes */
 	  char *dostail = strchr (full_path, '\0');
 
-	  /* If path is only a drivename, Windows interprets it as the current working
-	     directory on this drive instead of the root dir which is what we want. So
-	     we need the trailing backslash in this case. */
+	  /* 
+	   * If path is only a drivename, 
+	   * Windows interprets it as the current working directory on 
+	   * this drive instead of the root dir which is not what we want. 
+	   * So we need the trailing backslash in this case. 
+	   */
 	  while (dostail > full_path + 3 && (*--dostail == '\\'))
 	    *tail = '\0';
 
@@ -526,6 +592,8 @@ path_conv::check (const char *src, unsigned opt,
 		case_clash = TRUE;
 	    }
 
+	  // since I don't care about symlinks I can get rid of this, right?
+	  // No!! We can't find any thing on PATH if we don't do this.?!?!
 	  if (!(opt & PC_SYM_IGNORE))
 	    {
 	      if (!component)
@@ -732,6 +800,7 @@ out:
       last_path_conv = *this;
       strcpy (last_src, src);
     }
+#endif
 #endif
 }
 
@@ -2363,29 +2432,6 @@ check_sysfile (const char *path, DWORD fileattr, HANDLE h,
   return res;
 }
 
-enum
-{
-  SCAN_BEG,
-  SCAN_LNK,
-  SCAN_HASLNK,
-  SCAN_JUSTCHECK,
-  SCAN_APPENDLNK,
-  SCAN_EXTRALNK,
-  SCAN_DONE,
-};
-
-class suffix_scan
-{
-  const suffix_info *suffixes, *suffixes_start;
-  int nextstate;
-  char *eopath;
-public:
-  const char *path;
-  char *has (const char *, const suffix_info *);
-  int next ();
-  int lnk_match () {return nextstate >= SCAN_EXTRALNK;}
-};
-
 char *
 suffix_scan::has (const char *in_path, const suffix_info *in_suffixes)
 {
@@ -2411,12 +2457,14 @@ suffix_scan::has (const char *in_path, const suffix_info *in_suffixes)
 	  }
     }
 
+#ifndef NEW_PATH_METHOD
   /* Didn't match.  Use last resort -- .lnk. */
   if (strcasematch (ext_here, ".lnk"))
     {
       nextstate = SCAN_HASLNK;
       suffixes = NULL;
     }
+#endif /* ! NEW_PATH_METHOD */
 
  noext:
   ext_here = eopath;
@@ -2436,8 +2484,10 @@ suffix_scan::next ()
 	else
 	  {
 	    strcpy (eopath, suffixes->name);
+#ifndef NEW_PATH_METHOD
 	    if (nextstate == SCAN_EXTRALNK)
 	      strcat (eopath, ".lnk");
+#endif
 	    suffixes++;
 	    return 1;
 	  }
@@ -2448,6 +2498,7 @@ suffix_scan::next ()
     {
     case SCAN_BEG:
       suffixes = suffixes_start;
+#ifndef NEW_PATH_METHOD
       if (!suffixes)
 	nextstate = SCAN_LNK;
       else
@@ -2465,13 +2516,16 @@ suffix_scan::next ()
       strcpy (eopath, ".lnk");
       nextstate = SCAN_DONE;
       return 1;
+#endif
     case SCAN_JUSTCHECK:
       nextstate = SCAN_APPENDLNK;
       return 1;
+#ifndef NEW_PATH_METHOD
     case SCAN_APPENDLNK:
       strcat (eopath, ".lnk");
       nextstate = SCAN_DONE;
       return 1;
+#endif
     default:
       *eopath = '\0';
       return 0;
@@ -2769,7 +2823,7 @@ getcwd (char *buf, size_t ulen)
   //   Flag to indicate chroot honor (0 == false, 1 == true)
   //   Length of the buffer for the return data.
   // The return value is the value set into buf.
-  return cygheap->cwd.get (buf, 0, 1, ulen);
+  return cygheap->cwd.get (buf, 1, 1, ulen);
 }
 
 /* getwd: standards? */
