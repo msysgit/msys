@@ -37,16 +37,6 @@ if "%1" == "MSYS" set MSYSTEM=MSYS
 
 if NOT "x%DISPLAY%" == "x" set DISPLAY=
 
-rem Setup the default colors for rxvt.
-if "x%MSYSBGCOLOR%" == "x" set MSYSBGCOLOR=White
-if "x%MSYSFGCOLOR%" == "x" set MSYSFGCOLOR=Black
-if "x%MINGW32BGCOLOR%" == "x" set MINGW32BGCOLOR=LightYellow
-if "x%MINGW32FGCOLOR%" == "x" set MINGW32FGCOLOR=Navy
-if "%MSYSTEM%" == "MSYS" set BGCOLOR=%MSYSBGCOLOR%
-if "%MSYSTEM%" == "MSYS" set FGCOLOR=%MSYSFGCOLOR%
-if "%MSYSTEM%" == "MINGW32" set BGCOLOR=%MINGW32BGCOLOR%
-if "%MSYSTEM%" == "MINGW32" set FGCOLOR=%MINGW32FGCOLOR%
-
 if EXIST bin\nul cd bin
 if EXIST rxvt.exe goto startrxvt
 if EXIST sh.exe goto startsh
@@ -58,7 +48,18 @@ exit 1
 rem If you don't want to use rxvt then rename the file rxvt.exe to something
 rem else.  Then sh.exe will be used instead.
 :startrxvt
-start rxvt -sl 2500 -fg %FGCOLOR% -bg %BGCOLOR% -sr -fn Courier-12 -tn msys -e /bin/sh --login -i
+
+rem Setup the default colors for rxvt.
+if "x%MSYSBGCOLOR%" == "x" set MSYSBGCOLOR=White
+if "x%MSYSFGCOLOR%" == "x" set MSYSFGCOLOR=Black
+if "x%MINGW32BGCOLOR%" == "x" set MINGW32BGCOLOR=LightYellow
+if "x%MINGW32FGCOLOR%" == "x" set MINGW32FGCOLOR=Navy
+if "%MSYSTEM%" == "MSYS" set BGCOLOR=%MSYSBGCOLOR%
+if "%MSYSTEM%" == "MSYS" set FGCOLOR=%MSYSFGCOLOR%
+if "%MSYSTEM%" == "MINGW32" set BGCOLOR=%MINGW32BGCOLOR%
+if "%MSYSTEM%" == "MINGW32" set FGCOLOR=%MINGW32FGCOLOR%
+
+start rxvt -backspacekey  -sl 2500 -fg %FGCOLOR% -bg %BGCOLOR% -sr -fn Courier-12 -tn msys -e /bin/sh --login -i
 exit
 
 :startsh
@@ -123,3 +124,6 @@ rem 2003.02.03  Earnie Boyd  mailto:earnie@users.sf.net
 rem	* Win9x doesn't like ``EXISTS dir'' so change it to ``EXISTS dir\nul''.
 rem	Thanks to Nicolas Weber <nicolasweber@gmx.de>.
 rem
+rem 2003.03.06  Earnie Boyd  mailto:earnie@users.sf.net
+rem	* Add -backspacekey swtich to rxvt startup.
+rem	* Move RXVT color setup to startrxvt label
