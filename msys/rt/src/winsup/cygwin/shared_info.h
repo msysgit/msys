@@ -48,8 +48,6 @@ class mount_info
  public:
   DWORD version;
   DWORD sys_mount_table_counter;
-  int nmounts;
-  mount_item mount[MAX_MOUNTS];
 
   /* cygdrive_prefix is used as the root of the path automatically
      prepended to a path when the path has no associated mount.
@@ -57,8 +55,10 @@ class mount_info
   char cygdrive[MAX_PATH];
   size_t cygdrive_len;
   unsigned cygdrive_flags;
-  HANDLE eventH;
+  CRITICAL_SECTION lock;
  private:
+  int nmounts;
+  mount_item mount[MAX_MOUNTS];
   int posix_sorted[MAX_MOUNTS];
   int native_sorted[MAX_MOUNTS];
   LPDWORD threadID;
@@ -92,6 +92,7 @@ class mount_info
 			 char* system_flags);
 
   void import_v1_mounts ();
+  int conv_path_list_buf_size (char const * path_list, int to_posix_p);
 
  private:
 
