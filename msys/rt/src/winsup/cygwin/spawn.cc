@@ -9,6 +9,7 @@ Cygwin license.  Please consult the file "CYGWIN_LICENSE" for
 details. */
 
 #include "winsup.h"
+#include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
 #include <unistd.h>
@@ -36,8 +37,6 @@ details. */
 #include "perthread.h"
 #include "registry.h"
 #include "environ.h"
-
-#define LINE_BUF_CHUNK (MAX_PATH * 2)
 
 static suffix_info std_suffixes[] =
 {
@@ -175,48 +174,50 @@ iscmd (const char *argv0, const char *what)
 
 class linebuf
 {
- public:
-  size_t ix;
-  char *buf;
+ private:
+  size_t bufidx;
   size_t alloced;
-  linebuf () : ix (0), buf (NULL), alloced (0) {}
+ public:
+  char *buf;
+  linebuf () : bufidx (0), alloced (0), buf (NULL) {}
   ~linebuf () {/* if (buf) free (buf);*/}
   void add (const char *what, int len);
   void add (const char *what) {add (what, strlen (what));}
   void prepend (const char *what, int len);
+  size_t idx() {return bufidx;}
 };
 
 void
 linebuf::add (const char *what, int len)
 {
-  size_t newix;
-  if ((newix = ix + len) >= alloced || !buf)
+  size_t nbufidx;
+  if ((nbufidx = bufidx + len) >= alloced || !buf)
     {
-      alloced += LINE_BUF_CHUNK + newix;
+      alloced += (MAX_PATH * 2) + nbufidx;
       buf = (char *) realloc (buf, alloced + 1);
     }
-  memcpy (buf + ix, what, len);
-  ix = newix;
-  buf[ix] = '\0';
+  memcpy (buf + bufidx, what, len);
+  bufidx = nbufidx;
+  buf[bufidx] = '\0';
 }
 
 void
 linebuf::prepend (const char *what, int len)
 {
   int buflen;
-  size_t newix;
-  if ((newix = ix + len) >= alloced)
+  size_t nbufidx;
+  if ((nbufidx = bufidx + len) >= alloced)
     {
-      alloced += LINE_BUF_CHUNK + newix;
+      alloced += (MAX_PATH * 2) + nbufidx;
       buf = (char *) realloc (buf, alloced + 1);
-      buf[ix] = '\0';
+      buf[bufidx] = '\0';
     }
   if ((buflen = strlen (buf)))
       memmove (buf + len, buf, buflen + 1);
   else
-      buf[newix] = '\0';
+      buf[nbufidx] = '\0';
   memcpy (buf, what, len);
-  ix = newix;
+  bufidx = nbufidx;
 }
 
 class av
@@ -248,10 +249,18 @@ class av
 	calloced = 1;
       }
   }
+  void replace (int i, const char *arg)
+    {
+      argv[i] = cstrdup1 (arg);
+    }
   void dup_maybe (int i)
   {
+    HMMM(i);
+    HMMM(calloced);
+    HMMM(argv[i]);
     if (i >= calloced)
       argv[i] = cstrdup1 (argv[i]);
+    HMMM(argv[i]);
   }
   void dup_all ()
   {
@@ -313,7 +322,7 @@ spawn_guts (HANDLE hToken, const char * prog_arg, const char *const *argv,
 
   path_conv real_path;
 
-  linebuf one_line;
+  class linebuf one_line;
 
   STARTUPINFO si = {0, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL};
 
@@ -354,7 +363,7 @@ spawn_guts (HANDLE hToken, const char * prog_arg, const char *const *argv,
   for (ac = 0; argv[ac]; ac++)
     /* nothing */;
 
-  av newargv (ac, argv);
+  class av newargv (ac, argv);
 
   int null_app_name = 0;
   if (ac == 3 && argv[1][0] == '/' && argv[1][1] == 'c' &&
@@ -373,6 +382,7 @@ spawn_guts (HANDLE hToken, const char * prog_arg, const char *const *argv,
       one_line.add (argv[2]);
       strcpy (real_path, argv[0]);
       null_app_name = 1;
+      HMMM("skip_arg_parsing");
       goto skip_arg_parsing;
     }
 
@@ -387,6 +397,7 @@ spawn_guts (HANDLE hToken, const char * prog_arg, const char *const *argv,
 
   /* If the file name ends in either .exe, .com, .bat, or .cmd we assume
      that it is NOT a script file */
+  HMMM(ext);
   while (*ext == '\0')
     {
       HANDLE hnd = CreateFileA (real_path,
@@ -467,44 +478,23 @@ spawn_guts (HANDLE hToken, const char * prog_arg, const char *const *argv,
 
       find_exec (pgm, real_path, "PATH=", 0, &ext);
       newargv.unshift (real_path, 1);
+      HMMM(ext);
     }
 
+  FIXME(1.0);
+  // iscygexec needs adjusted so that it truely identifies an MSYS executable.
   if (real_path.iscygexec ())
     newargv.dup_all ();
   else
     {
-      // FIXME-1.0:
-      //	When iscygexec is fixed to truely identify an msys executable
-      //	the filter coding for an occurance of .*/bin.* needs to be 
-      //	removed.
       for (int i = 0; i < newargv.argc; i++)
 	{
 	  //convert argv to win32
 	  char tmpbuf[MAX_PATH];
-	  // FIXME-0.1:
-	  //	    Need to add a filter so that if newargv[0] contains
-	  //	    .*/bin.* it doesn't convert to a win32 path.
-	  //	    NOTE: This is a temporary work around until the FIXME-1.0
-	  //		  can be developed.
-	  //
-	  // FIXME-0.2
-	  //	    Need to filter win32 one character switches of the type /x
-	  //	    where / switch indicator and x is the switch operator.  The
-	  //	    condition for this is that the string length is exactly 2.
-	  if (strchr(newargv[i], '/'))
-	    {
-	      if (strstr (newargv[i], "/bin") == 0 &&
-		  strstr (newargv[i], "/sbin") == 0 &&
-		  strlen (newargv[i]) != 2
-		  )
-		{
-		  cygwin_conv_to_win32_path(newargv[i], tmpbuf);
-		  debug_printf("%d of %d, %s, %s", i, ac, newargv[i], tmpbuf);
-		  {
-		    strcpy(newargv[i], tmpbuf);
-		  }
-		}
-	    }
+
+	  cygwin_conv_to_win32_path(newargv[i], tmpbuf);
+	  debug_printf("%d of %d, %s, %s", i, ac, newargv[i], tmpbuf);
+	  newargv.replace (i, tmpbuf);
 	}
       for (int i = 0; i < newargv.argc; i++)
 	{
@@ -513,6 +503,7 @@ spawn_guts (HANDLE hToken, const char * prog_arg, const char *const *argv,
 
 	  newargv.dup_maybe (i);
 	  a = i ? newargv[i] : (char *) real_path;
+	  HMMM(a);
 	  int len = strlen (a);
 	  if (len != 0 && !strpbrk (a, " \t\n\r\""))
 	    one_line.add (a, len);
@@ -532,9 +523,10 @@ spawn_guts (HANDLE hToken, const char * prog_arg, const char *const *argv,
 		  one_line.add (a, p - a);
 		  /* Find length of string of backslashes */
 		  int n = strspn (p, "\\");
+		   /* No backslashes, so it must be a ".
+		      The " has to be protected with a backslash. */
 		  if (!n)
-		    one_line.add ("\\\"", 2);	/* No backslashes, so it must be a ".
-						   The " has to be protected with a backslash. */
+		    one_line.add ("\\\"", 2);	
 		  else
 		    {
 		      one_line.add (p, n);	/* Add the run of backslashes */
@@ -554,12 +546,19 @@ spawn_guts (HANDLE hToken, const char * prog_arg, const char *const *argv,
 	  MALLOC_CHECK;
 	}
 
+#if 0
+      FIXME(1.1);
+      //    I renamed ix to bufidx and made it private.
+      //    This is the only public place it's used.
+      //    Null endings are handled by the linbuf class so I don't see this
+      //      need.  If argv is funky in children then this is the culprit.
       MALLOC_CHECK;
-      if (one_line.ix)
-	one_line.buf[one_line.ix - 1] = '\0';
+      if (one_line.idx())
+	one_line.buf[one_line.idx() - 1] = '\0';
       else
 	one_line.add ("", 1);
       MALLOC_CHECK;
+#endif
     }
 
   newargv.all_calloced ();
