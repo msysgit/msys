@@ -1,4 +1,4 @@
-<!-- $Id: docs.shtml,v 1.19 2001-08-28 15:43:29 stevedperkins Exp $ -->
+<!-- $Id: docs.shtml,v 1.20 2001-08-28 17:00:20 stevedperkins Exp $ -->
 <html>
 <head>
  <title>Documentation</title>
@@ -330,15 +330,24 @@
          <a name="gnutools" />
          <h2 align="left">GNU Development Tools Documentation</h2>
          <ul>
-            <li><a href="/info/bfd/">GNU Binary File Descriptor library (BFD)</a></li>
-            <li><a href="/info/as/">GNU Assembler</a></li>
-            <li><a href="/info/gasp/">GNU Assembler Preprocessor</a></li>
-            <li><a href="/info/ld/">GNU Linker</a></li>
-            <li><a href="/info/binutils/">GNU Binutils</a></li>
-            <li><a href="http://gcc.gnu.org/onlinedocs/">GCC Manual</a>.</li>
             <li>
-               <a href="http://www.delorie.com/gnu/docs/">GNU Documentation</a> for
-               documentation on all GNU tools.
+               <a href="http://www.gnu.org/manual/manual.html">GNU Documentation</a> 
+               (documentation on all GNU tools)
+            </li>
+            <li>  
+               <a href="http://www.gnu.org/software/gcc/onlinedocs/">GCC Manual</a>
+            </li>
+            <li>
+               <a href="http://www.gnu.org/manual/ld-2.9.1/ld.html">GNU Linker</a>
+            </li>
+            <li>
+               <a href="http://www.gnu.org/manual/binutils-2.10.1/binutils.html">GNU Binutils</a>
+            </li>
+            <li>
+               <a href="http://www.gnu.org/manual/bfd-2.9.1/bfd.html">GNU Binary File Descriptor library (BFD)</a>
+            </li>
+            <li>
+               <a href="http://www.gnu.org/manual/gas-2.9.1/as.html">GNU Assembler</a>
             </li>
             <p><a href="#index">Back to index</a></p>
          </ul>
