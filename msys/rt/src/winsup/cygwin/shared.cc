@@ -52,7 +52,7 @@ shared_name (const char *str, int num)
 
   AbsDllPath("msys-1.0.dll", buf2, sizeof (buf2));
   do {
-      ulModuleHash = ulModuleHash + *tptr++;
+       ulModuleHash = ulModuleHash + *tptr++;
   } while (*tptr);
 
   debug_printf("%d.%s.%s.%d", ulModuleHash, cygwin_version.shared_id, str, num);

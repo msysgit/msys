@@ -1,5 +1,30 @@
 2003-04-18  Earnie Boyd  <earnie@users.sf.net>
 
+	* Makefile.in (cygrun.exe): Correct link step by including -lgcc
+	appropriately.
+	* debug.h (being_debugged()): Define.
+	* errno.cc (_sys_errlist[]): Remove extern modifier so that dllexport
+	happens correctly.
+	(_sys_nerr): Add const modifier.
+	* exceptions.cc (status_info[]): Move NO_COPY modifier to struct tag.
+	* fhandler.cc (CHUNK_SIZE): Remove const modifier.
+	(fhandler_base::puts_readahead): Remove argument 2 default value.
+	(fhandler_base::set_readahead): Ditto.
+	* fhandler_dsp.cc (Audio::open): Ditto.
+	(fhandler_dev_dsp::open): Ditto.
+	* fhandler_console.cc (keytable[]): Remove const modfier.
+	* localtime.cc (gmt[]): Ditto.
+	* net.cc (host_errmap[]): Ditto.
+	* strace.cc (tab): Ditto.
+	* window.cc (classname): Ditto.
+	* winsup.h (strlen): Remove define.
+	(strcmp): Ditto.
+	(strcpy): Ditto.
+	(memcpy): Ditto.
+	(memcmp): Ditto.
+	
+2003-04-18  Earnie Boyd  <earnie@users.sf.net>
+
 	* path.cc (cygwin_conv_to_win32_path): Properly handle /foo/../bar path.
 
 2003-04-18  Earnie Boyd  <earnie@users.sf.net>

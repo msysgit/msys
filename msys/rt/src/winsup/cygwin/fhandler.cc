@@ -26,7 +26,7 @@ details. */
 #include "shared_info.h"
 #include "host_dependent.h"
 
-static NO_COPY const int CHUNK_SIZE = 1024; /* Used for crlf conversions */
+static NO_COPY int CHUNK_SIZE = 1024; /* Used for crlf conversions */
 
 static NO_COPY char fhandler_disk_dummy_name[] = "some disk file";
 
@@ -50,7 +50,7 @@ fhandler_base::operator =(fhandler_base &x)
 }
 
 int
-fhandler_base::puts_readahead (const char *s, size_t len = (size_t) -1)
+fhandler_base::puts_readahead (const char *s, size_t len)
 {
   TRACE_IN;
   int success = 1;
@@ -103,7 +103,7 @@ fhandler_base::peek_readahead (int queryput)
 }
 
 void
-fhandler_base::set_readahead_valid (int val, int ch = -1)
+fhandler_base::set_readahead_valid (int val, int ch)
 {
   TRACE_IN;
   if (!val)

@@ -93,8 +93,11 @@ endif
 
 libgcc:=${subst \,/,${shell $(CC_FOR_TARGET) -print-libgcc-file-name}}
 GCC_INCLUDE:=${word 1,${dir $(libgcc)}}/include
+CPP_INCLUDE:=/usr/include/c++/3.2.2
+CPP_TARGET_INCLUDE:=/usr/include/c++/3.2.2/i686-pc-msys
 
 COMPILE_CXX:=$(CXX) $c -nostdinc++ $(ALL_CXXFLAGS) -I$(GCC_INCLUDE) \
+	     -I$(CPP_INCLUDE) -I$(CPP_TARGET_INCLUDE) \
 	     -fno-rtti -fno-exceptions
 COMPILE_CC:=$(CC) $c -nostdinc $(ALL_CFLAGS) -I$(GCC_INCLUDE)
 
