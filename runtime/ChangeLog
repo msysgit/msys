@@ -1,3 +1,17 @@
+2001-11-07  Danny Smith  <dannysmith@users.sourceforge.net> 
+
+	* include/ctype.h (tolower, toupper,_tolower,_toupper): Comment 
+	differences between ANSI and non-ANSI versions. 
+	(_ctype[],_pctype): Declare vars. 
+	(__ISCTYPE): New helper macro using _pctype. 
+	(is* ctype functions): Use __ISCTYPE to define inline versions. 
+	(_toupper, _tolower, __isascii, __toascii, __iscsym, __iscsymf):
+	Inline definitions. 
+	(isw* ctype functions): Inline definitions. 
+	* include/wctype.h (_ctype[],_pctype): Declare vars. 
+	(isw* ctype functions): Inline definitions. 
+
+
 2001-11-06  Danny Smith  <dannysmith@users.sourceforge.net>
 
 	* include/float.h (_clearfp, _statusfp, _fpreset, fpreset,
