@@ -1,3 +1,9 @@
+2002.06.16  Earnie Boyd  <earnie@users.sf.net>
+
+	* src/copy.c (copy_reg): Make buf_size 256 * bigger to speed up disk
+	I/O.
+	* src/ln.c: Modify to make it work with symlink == copy.
+
 2002.05.21  Earnie Boyd  <earnie@users.sf.net>
 
 	* src/copy.c (copy_internal): Add CPP filter for 

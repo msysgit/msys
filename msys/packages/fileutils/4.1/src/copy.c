@@ -282,10 +282,7 @@ copy_reg (const char *src_path, const char *dst_path,
    * speed up the operation.  The affect I'm looking for is one where the
    * destination file is created with a known file size.
    * ************************************************************************/
-  if (buf_size < 1024)
-      buf_size *= 128;
-  else
-      buf_size *= 64;
+      buf_size *= 256;
 #endif
 
 #if HAVE_STRUCT_STAT_ST_BLOCKS
