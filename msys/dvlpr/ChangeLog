@@ -2,6 +2,7 @@
 
 	* var/DTK/share.dat: Add missing autoconf, automake and libtool
 	directories.
+	* script/msysDTKrls.sh: Increment patch version.
 
 2002.12.18  Earnie Boyd  <earnie@users.sf.net>
 
