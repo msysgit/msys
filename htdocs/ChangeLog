@@ -1,5 +1,9 @@
 2002-12-02  Earnie Boyd  <earnie@users.sf.net>
 
+	* index.shtml: Add missing > .
+
+2002-12-02  Earnie Boyd  <earnie@users.sf.net>
+
 	* index.shtml: Update for MSYS-1.0.8-rc-6.exe.
 	Update for GCC-3.2.1-core-20021201-1.tar.gz release candidate.
 
