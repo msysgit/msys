@@ -18,9 +18,9 @@
  *  DISCLAIMED. This includes but is not limited to warranties of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Revision: 1.14 $
+ * $Revision: 1.15 $
  * $Author: earnie $
- * $Date: 2003-01-06 22:14:22 $
+ * $Date: 2003-02-08 14:31:38 $
  *
  */
 
@@ -236,7 +236,7 @@ __MINGW_IMPORT unsigned int _osver;
 __MINGW_IMPORT unsigned int _winver;
 __MINGW_IMPORT unsigned int _winmajor;
 __MINGW_IMPORT unsigned int _winminor;
-#endif __DECLSPEC_SUPPORTED
+#endif /* __DECLSPEC_SUPPORTED */
 
 #else
 /* Not msvcrtxx.dll, thus crtdll.dll */
