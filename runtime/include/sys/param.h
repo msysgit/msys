@@ -16,9 +16,9 @@
  *  DISCLAIMED. This includes but is not limited to warranties of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Revision: 1.1 $
+ * $Revision: 1.2 $
  * $Author: earnie $
- * $Date: 2002-08-27 11:20:27 $
+ * $Date: 2002-08-30 14:47:59 $
  *
  */
 
@@ -27,5 +27,12 @@
 
 #include <sys/types.h>
 #include <limits.h>
+
+#ifndef __STRICT_ANSI__
+/* These are useful for cross-compiling */ 
+#define BIG_ENDIAN	4321
+#define LITTLE_ENDIAN	1234
+#define BYTE_ORDER	LITTLE_ENDIAN
+#endif
 
 #endif

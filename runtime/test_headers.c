@@ -36,19 +36,18 @@
 #include <time.h>
 #include <unistd.h>
 #include <values.h>
-#include <varargs.h>
 #include <wchar.h>
 #include <wctype.h>
 #include <sys/fcntl.h>
 #include <sys/file.h>
 #include <sys/locking.h>
+#include <sys/param.h>
 #include <sys/stat.h>
 #include <sys/time.h>
 #include <sys/timeb.h>
 #include <sys/types.h>
 #include <sys/unistd.h>
 #include <sys/utime.h>
-
 
 int main()
 {return 0;}
