@@ -1,10 +1,10 @@
 #! /bin/sh
 #############################################################################
-# msysrls.sh - fill the depot directories with the needed binaries.	    #
-# Modifications:							    #
-# 2002.01.25 - Add diff, diff3 and head.				    #
-#	       Remove bash since sh is really bash anyhoo.		    #
-# 2002.03.11 - Add processing for i586.					    #
+# msysrls.sh - Create an MSYS release                             .	    #
+# Copyright (C) 2002  Earnie Boyd  <earnie@users.sf.net>                    #
+#                                                                           #
+# This file is part of msysDVLPR                                            #
+#   http://www.mingw.org/msysDVLPR.shtml                                    #
 #                                                                           #
 #############################################################################
 
@@ -20,7 +20,10 @@ STOREROOT=/prjz/msys/nstl
 RLSROOT=/prjz/rls
 ARC=$1
 SNAPDATE=\-`date +%Y.%m.%d`
-SUBVERSION=\-3
+#SNAPDATE=\-prerelease
+#SNAPDATE=
+SUBVERSION=\-1
+#SUBVERSION=
 #END User changeable values section.
 
 VERSION=${MAJORVER}.${MINORVER}.${PATCHVER}
@@ -110,7 +113,8 @@ then
 fi
 
 cat msys.iss.in | \
-  sed -e "s/@VERSION@/$VERSION/g" \
+  sed -c \
+      -e "s/@VERSION@/$VERSION/g" \
       -e "s/@ARC@/$ARC/g" \
       -e "s/@SNAPDATE@/$SNAPDATE/g" \
       -e "s/@SUBVERSION@/$SUBVERSION/g" \
@@ -122,3 +126,4 @@ cat msys.iss.in | \
   > msys.iss
 
 /c/InnoSetup2/iscc "msys.iss"
+rm msys.iss
