@@ -3,6 +3,7 @@ dnl Process this file with autoconf to produce a configure script.
 AC_INIT(Makefile.am)
 AM_INIT_AUTOMAKE(mingw-utils, 0.1)
 
+AC_PROG_AWK
 AC_PROG_CC
 AM_PROG_CC_STDC
 
