@@ -22,7 +22,7 @@
 <br />Original document by Laura Michaels
 <br />Current maintainer ?
 <br />Copyright © 1999 All Rights Reserved
-<br />Last revised: $Id: mingwfaq.shtml,v 1.8 2000-11-04 13:48:13 pfalcon Exp $
+<br />Last revised: $Id: mingwfaq.shtml,v 1.9 2000-11-04 13:57:14 pfalcon Exp $
 </address>
 <p>If you have any further questions, please refer them to the
 mingw32 mailing list.  I will update this page as I have time to do so.
@@ -220,8 +220,8 @@ for his source code examples and other suggestions.
   <p>To install mingw, choose the distribution you want, either
   mingw using crtdll.dll or mingw using mscvrt.dll.  Download
   the distribution.  Unzip it.  (Zip/unzip utilities are available
-  from <a href="http://www.cdrom.com/pub/infozip">
-  http://www.cdrom.com/pub/infozip</a>.)
+  from <a href="ftp://ftp.freesoftware.com/pub/infozip/index.html">
+  ftp://ftp.freesoftware.com/pub/infozip/index.html</a>.)
   If the bin directory that holds mingw executables isn't already
   in your path, add it.  That's it.
   </p>
@@ -232,9 +232,9 @@ for his source code examples and other suggestions.
   mingw bin directory to your list or you can add the
   following after the line that sets your path in autoexec.bat:
   <br />
-SET PATH=C:\mingw32\bin;%PATH%
+SET PATH=C:\mingw\bin;%PATH%
   <br />Substitute the directory your mingw binaries (such as gcc.exe)
-  are located in for C:\mingw32\bin.  If your autoexec.bat file runs any
+  are located in for C:\mingw\bin.  If your autoexec.bat file runs any
   other batch files at the end of it, be sure to place the lines to
   change your path before calling another batch file.  For example,
   my autoexec.bat file has a line that runs a batch file to change the
