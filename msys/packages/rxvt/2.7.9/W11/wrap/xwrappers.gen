@@ -370,6 +370,13 @@ int XFillRectangle( Display *display, Drawable window, GC gc, int x, int y, unsi
 	return (func_XFillRectangle)( display, window, gc, x, y, w, h);
 }
 
+typedef void (proto_XFillRectangles)( Display *display, Drawable window, GC gc, XRectangle *rectangles, int nrectangles);
+static proto_XFillRectangles *func_XFillRectangles = NULL;
+void XFillRectangles( Display *display, Drawable window, GC gc, XRectangle *rectangles, int nrectangles) {
+	if (!func_XFillRectangles) func_XFillRectangles=(proto_XFillRectangles *)_loadfunc("XFillRectangles");
+	(func_XFillRectangles)( display, window, gc, rectangles, nrectangles);
+}
+
 typedef BoolDef (proto_XFilterEvent)(XEvent* event,Window window);
 static proto_XFilterEvent *func_XFilterEvent = NULL;
 BoolDef XFilterEvent(XEvent* event,Window window) {

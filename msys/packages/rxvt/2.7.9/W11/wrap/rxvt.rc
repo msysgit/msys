@@ -1,7 +1,6 @@
 #include "wrap.h"
 
-IDI_RXVT ICON    DISCARDABLE PRELOAD     "rxvt.ico"
-
+IDI_RXVT ICON    DISCARDABLE PRELOAD     "M.ico"
 
 1 VERSIONINFO 
 FILEVERSION 2, 7, 9, 3

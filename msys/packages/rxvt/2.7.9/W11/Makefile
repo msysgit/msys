@@ -54,7 +54,7 @@ INSTALL_DATA = /usr/bin/install -c -m 644
 # Flags & libs
 # add -DBINDIR=\""$(bindir)/"\" to CPPFLAGS, if we need to spawn a program
 
-CFLAGS = -g -O2 
+CFLAGS = -s -Os 
 CPPFLAGS =  -DHAVE_LIBXPM
 LDFLAGS = 
 DEFS = -DHAVE_CONFIG_H
