@@ -1,3 +1,10 @@
+2002.05.04  Earnie Boyd  <earnie@users.sf.net>
+
+	* bin/msys.bat:  Remove SET of USERNAME and HOME.
+	* etc/profile: Add settings for HISTNAME if not already set.
+	* postinstall/: New directory.
+	* postinstall/pi.sh: New file.
+
 2002.04.27  Earnie Boyd  <earnie@users.sf.net>
 
 	* scripts/msysrls.sh: Add Copyright and modify other header data.
