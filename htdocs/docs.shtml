@@ -1,4 +1,4 @@
-<!-- $Id: docs.shtml,v 1.18 2001-08-28 15:02:24 stevedperkins Exp $ -->
+<!-- $Id: docs.shtml,v 1.19 2001-08-28 15:43:29 stevedperkins Exp $ -->
 <html>
 <head>
  <title>Documentation</title>
@@ -396,13 +396,11 @@
                   an emphasis on graphics/game development).  Covers some popular 
                   and useful external libraries and IDE's that work with MinGW.
                </li>
-<!--
                <li> 
                   Colin Peters' tutorial on 
                   <a href="http://webclub.kcom.ne.jp/ma/colinp/win32/index.html">
-                  Win32 Programming with GNU Tools Tutorial</a>.
+                  Programming Win32 with GNU C and C++</a>
                </li>
--->
                <li> 
                   <a href="http://www.nanotech.wisc.edu/~khan/software/gnu-win32/dllhelpers.html">
                   How to make DLLs using GCC</a><br /> A set of helper programs and examples to
