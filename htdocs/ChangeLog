@@ -1,3 +1,11 @@
+2000-09-25  Paul Sokolovsky  <Paul.Sokolovsky@technologist.com>
+
+	* ported.shtml, links.shtml: reorganized links to be more
+        structured, added link to Mingwrep.
+
+        * index.shtml, history.shtml: replace some abbreviations
+        'Win' with full 'Windows', per GNU recommendation.
+
 2000-09-19  Paul Sokolovsky  <Paul.Sokolovsky@technologist.com>
 
 	* *.shtml: Replace footer links consistenly.

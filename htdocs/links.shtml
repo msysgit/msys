@@ -63,6 +63,8 @@
 
 <h3 align="left">MinGW</h3>
 <ul>
+<li> <a href="http://www.nanotech.wisc.edu/~khan/software/gnu-win32/">
+Mumit Khan's MinGW site</a></li>
 <li> <a href="http://gcc.gnu.org/">GNU Compiler Collection (GCC)</a></li>
 <li> Laura Michaels' <a href="mingwfaq.shtml">
 Mingw FAQ</a>. Also see 
@@ -91,17 +93,18 @@ some interesting items Mingw on his
 <a href="http://www.geocities.com/SiliconValley/Station/1177/index.html">
 site</a>. Mostly LCC-Win32 related, but a lot of that applies to Mingw as 
 well.</li>
-<li> <a href="http://pw32.sourceforge.net/">PW32</a> is 
-<a href="mailto:Paul.Sokolovsky@technologist.com">Paul Sokolovsky's</a>
-effort to provide a POSIX-compliant C runtime library for Mingw.
-</li>
 </ul>
 
-<h3 align="left">Cygwin</h3>
+<h3 align="left">Other GNU-Windows32 projects</h3>
 <ul>
 <li> <a href="http://sources.redhat.com/cygwin/">Cygwin project</a>.
      The mailing list archives are on-line, as is the Users Guide and so
      on. Please do look through these if you have a problem.</li>
+<li> <a href="http://pw32.sourceforge.net/">PW32</a> is
+<a href="mailto:pfalcon@users.sourceforge.net">Paul Sokolovsky's</a>
+effort to provide another POSIX-compliant C runtime library. Currently
+uses Mingw-hosted gcc/binutils.
+</li>
 </ul>
 
 <p>The <a href="mingwfaq.shtml">MinGW FAQ</a>
