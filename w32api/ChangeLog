@@ -1,3 +1,7 @@
+2002-07-04  Luke Dunstan  <infidel@users.sourceforge.net>
+
+	* include/wtypes.h (HMETAFILEPICT): Add typedef.
+
 2002-06-19  Casper S. Hornstrup  <chorns@users.sourceforge.net>
 
 	* include/winuser.h (FLASHW_*,INPUT_MOUSE,INPUT_KEYBOARD,
