@@ -1,6 +1,6 @@
 #ifndef _WINCRYPT_H
 #define _WINCRYPT_H
-#if __GNUC__ >=3
+#if __GNUC__ >= 3
 #pragma GCC system_header
 #endif
 
@@ -9,6 +9,24 @@ extern "C" {
 #endif
 #define MS_DEF_PROV_A	"Microsoft Base Cryptographic Provider v1.0"
 #define MS_DEF_PROV_W	L"Microsoft Base Cryptographic Provider v1.0"
+#define MS_ENHANCED_PROV_A	"Microsoft Enhanced Cryptographic Provider v1.0"
+#define MS_ENHANCED_PROV_W	L"Microsoft Enhanced Cryptographic Provider v1.0"
+#define MS_STRONG_PROV_A	"Microsoft Strong Cryptographic Provider"
+#define MS_STRONG_PROV_W	L"Microsoft Strong Cryptographic Provider"
+#define MS_DEF_RSA_SIG_PROV_A	"Microsoft RSA Signature Cryptographic Provider"
+#define MS_DEF_RSA_SIG_PROV_W	L"Microsoft RSA Signature Cryptographic Provider"
+#define MS_DEF_RSA_SCHANNEL_PROV_A	"Microsoft RSA SChannel Cryptographic Provider"
+#define MS_DEF_RSA_SCHANNEL_PROV_W	L"Microsoft RSA SChannel Cryptographic Provider"
+#define MS_DEF_DSS_PROV_A	"Microsoft Base DSS Cryptographic Provider"
+#define MS_DEF_DSS_PROV_W	L"Microsoft Base DSS Cryptographic Provider"
+#define MS_DEF_DSS_DH_PROV_A	"Microsoft Base DSS and Diffie-Hellman Cryptographic Provider"
+#define MS_DEF_DSS_DH_PROV_W	L"Microsoft Base DSS and Diffie-Hellman Cryptographic Provider"
+#define MS_ENH_DSS_DH_PROV_A	"Microsoft Enhanced DSS and Diffie-Hellman Cryptographic Provider"
+#define MS_ENH_DSS_DH_PROV_W	L"Microsoft Enhanced DSS and Diffie-Hellman Cryptographic Provider"
+#define MS_DEF_DH_SCHANNEL_PROV_A	"Microsoft DH SChannel Cryptographic Provider"
+#define MS_DEF_DH_SCHANNEL_PROV_W	L"Microsoft DH SChannel Cryptographic Provider"
+#define MS_SCARD_PROV_A	"Microsoft Base Smart Card Crypto Provider"
+#define MS_SCARD_PROV_W	L"Microsoft Base Smart Card Crypto Provider"
 #define GET_ALG_CLASS(x) (x&57344)
 #define GET_ALG_TYPE(x) (x&7680)
 #define GET_ALG_SID(x) (x&511)
@@ -94,6 +112,10 @@ extern "C" {
 #define SIMPLEBLOB 1
 #define PUBLICKEYBLOB 6
 #define PRIVATEKEYBLOB 7
+#define PLAINTEXTKEYBLOB 8
+#define OPAQUEKEYBLOB 9
+#define PUBLICKEYBLOBEX 10
+#define SYMMETRICWRAPKEYBLOB 11
 #define AT_KEYEXCHANGE 1
 #define AT_SIGNATURE 2
 #define CRYPT_USERDATA 1
@@ -135,6 +157,17 @@ extern "C" {
 #define PP_NAME 4
 #define PP_VERSION 5
 #define PP_CONTAINER 6
+#define PP_CHANGE_PASSWORD	7
+#define PP_KEYSET_SEC_DESCR	8
+#define PP_CERTCHAIN	9
+#define PP_KEY_TYPE_SUBTYPE	10
+#define PP_PROVTYPE	16
+#define PP_KEYSTORAGE	17
+#define PP_APPLI_CERT	18
+#define PP_SYM_KEYSIZE	19
+#define PP_SESSION_KEYSIZE	20
+#define PP_UI_PROMPT	21
+#define PP_ENUMALGS_EX	22
 #define PP_ENUMMANDROOTS 25
 #define PP_ENUMELECTROOTS 26
 #define PP_KEYSET_TYPE 27
@@ -563,6 +596,7 @@ PCCERT_CONTEXT WINAPI CertGetIssuerCertificateFromStore(HCERTSTORE,PCCERT_CONTEX
 PCCERT_CHAIN_CONTEXT WINAPI CertFindChainInStore(HCERTSTORE,DWORD,DWORD,DWORD,const void*,PCCERT_CHAIN_CONTEXT);
 BOOL WINAPI CryptAcquireContextA(HCRYPTPROV*,LPCSTR,LPCSTR,DWORD,DWORD);
 BOOL WINAPI CryptAcquireContextW(HCRYPTPROV*,LPCWSTR,LPCWSTR,DWORD,DWORD);
+BOOL WINAPI CryptContextAddRef(HCRYPTPROV,DWORD*,DWORD);
 BOOL WINAPI CryptReleaseContext(HCRYPTPROV,DWORD);
 BOOL WINAPI CryptGenKey(HCRYPTPROV,ALG_ID,DWORD,HCRYPTKEY*);
 BOOL WINAPI CryptDeriveKey(HCRYPTPROV,ALG_ID,HCRYPTHASH,DWORD,HCRYPTKEY*);
@@ -605,6 +639,15 @@ BOOL WINAPI CryptSetProviderW(LPCWSTR,DWORD);
 #define CERT_FIND_SUBJECT_STR CERT_FIND_SUBJECT_STR_W
 #define CERT_FIND_ISSUER_STR CERT_FIND_ISSUER_STR_W
 #define MS_DEF_PROV MS_DEF_PROV_W
+#define MS_ENHANCED_PROV MS_ENHANCED_PROV_W
+#define MS_STRONG_PROV MS_STRONG_PROV_W
+#define MS_DEF_RSA_SIG_PROV MS_DEF_RSA_SIG_PROV_W
+#define MS_DEF_RSA_SCHANNEL_PROV MS_DEF_RSA_SCHANNEL_PROV_W
+#define MS_DEF_DSS_PROV MS_DEF_DSS_PROV_W
+#define MS_DEF_DSS_DH_PROV MS_DEF_DSS_DH_PROV_W
+#define MS_ENH_DSS_DH_PROV MS_ENH_DSS_DH_PROV_W
+#define MS_DEF_DH_SCHANNEL_PROV MS_DEF_DH_SCHANNEL_PROV_W
+#define MS_SCARD_PROV MS_SCARD_PROV_W
 #else
 #define CertNameToStr CertNameToStrA
 #define CryptAcquireContext CryptAcquireContextA
@@ -615,6 +658,15 @@ BOOL WINAPI CryptSetProviderW(LPCWSTR,DWORD);
 #define CERT_FIND_SUBJECT_STR CERT_FIND_SUBJECT_STR_A
 #define CERT_FIND_ISSUER_STR CERT_FIND_ISSUER_STR_A
 #define MS_DEF_PROV MS_DEF_PROV_A
+#define MS_ENHANCED_PROV MS_ENHANCED_PROV_A
+#define MS_STRONG_PROV MS_STRONG_PROV_A
+#define MS_DEF_RSA_SIG_PROV MS_DEF_RSA_SIG_PROV_A
+#define MS_DEF_RSA_SCHANNEL_PROV MS_DEF_RSA_SCHANNEL_PROV_A
+#define MS_DEF_DSS_PROV MS_DEF_DSS_PROV_A
+#define MS_DEF_DSS_DH_PROV MS_DEF_DSS_DH_PROV_A
+#define MS_ENH_DSS_DH_PROV MS_ENH_DSS_DH_PROV_A
+#define MS_DEF_DH_SCHANNEL_PROV MS_DEF_DH_SCHANNEL_PROV_A
+#define MS_SCARD_PROV MS_SCARD_PROV_A
 #endif
 #ifdef __cplusplus
 }

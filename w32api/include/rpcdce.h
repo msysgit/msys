@@ -380,6 +380,11 @@ RPC_STATUS RPC_ENTRY RpcMgmtInqParameter(unsigned int,unsigned long*);
 RPC_STATUS RPC_ENTRY RpcMgmtSetParameter(unsigned int,unsigned long);
 RPC_STATUS RPC_ENTRY RpcMgmtBindingInqParameter(RPC_BINDING_HANDLE,unsigned int,unsigned long*);
 RPC_STATUS RPC_ENTRY RpcMgmtBindingSetParameter(RPC_BINDING_HANDLE,unsigned int,unsigned long);
+
+#if _WIN32_WINNT >= 0x0500
+RPC_STATUS RPC_ENTRY UuidCreateSequential(UUID*);
+#endif
+
 #include <rpcdcep.h>
 #ifdef __cplusplus
 }

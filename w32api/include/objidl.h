@@ -1,6 +1,6 @@
 #ifndef _OBJIDL_H
 #define _OBJIDL_H
-#if __GNUC__ >=3
+#if __GNUC__ >= 3
 #pragma GCC system_header
 #endif
 
@@ -159,7 +159,7 @@ typedef struct tagSTGMEDIUM {
 		PVOID hMetaFilePict;
 		HENHMETAFILE hEnhMetaFile;
 		HGLOBAL hGlobal;
-		LPCSTR lpszFileName;
+		LPWSTR lpszFileName;
 		LPSTREAM pstm;
 		LPSTORAGE pstg;
 	} DUMMYUNIONNAME;
@@ -301,6 +301,7 @@ typedef struct tagPROPVARIANT {
 	WORD wReserved2;
 	WORD wReserved3;
 	_ANONYMOUS_UNION union {
+		CHAR cVal;
 		UCHAR bVal;
 		short iVal;
 		USHORT uiVal;
@@ -408,6 +409,11 @@ typedef struct tagSOLE_AUTHENTICATION_LIST {
     DWORD cAuthInfo;
     SOLE_AUTHENTICATION_INFO* aAuthInfo;
 } SOLE_AUTHENTICATION_LIST;
+
+EXTERN_C const FMTID FMTID_SummaryInformation;
+EXTERN_C const FMTID FMTID_DocSummaryInformation;
+EXTERN_C const FMTID FMTID_UserDefinedProperties;
+
 DECLARE_ENUMERATOR(FORMATETC);
 DECLARE_ENUMERATOR(HLITEM);
 DECLARE_ENUMERATOR(STATDATA);
@@ -487,7 +493,7 @@ DECLARE_INTERFACE_(IMalloc,IUnknown)
 	STDMETHOD_(ULONG,AddRef)(THIS) PURE;
 	STDMETHOD_(ULONG,Release)(THIS) PURE;
 	STDMETHOD_(void*,Alloc)(THIS_ ULONG) PURE;
-	STDMETHOD_(void*,ReAlloc)(THIS_ void*,ULONG) PURE;
+	STDMETHOD_(void*,Realloc)(THIS_ void*,ULONG) PURE;
 	STDMETHOD_(void,Free)(THIS_ void*) PURE;
 	STDMETHOD_(ULONG,GetSize)(THIS_ void*) PURE;
 	STDMETHOD_(int,DidAlloc)(THIS_ void*) PURE;
@@ -1404,7 +1410,9 @@ HRESULT STDMETHODCALLTYPE ILockBytes_ReadAt_Proxy(ILockBytes*,ULARGE_INTEGER,voi
 HRESULT STDMETHODCALLTYPE ILockBytes_ReadAt_Stub(ILockBytes*,ULARGE_INTEGER,BYTE*,ULONG,ULONG*);
 HRESULT STDMETHODCALLTYPE ILockBytes_WriteAt_Proxy(ILockBytes*,ULARGE_INTEGER,const void*,ULONG,ULONG*);
 HRESULT STDMETHODCALLTYPE ILockBytes_WriteAt_Stub(ILockBytes*,ULARGE_INTEGER,BYTE*,ULONG,ULONG*);
-#ifdef COBJMACROS
+
+#if (!defined (__cplusplus) || defined (CINTERFACE)) \
+    && defined (COBJMACROS)
 #define IMarshal_QueryInterface(T,r,p) (T)->lpVtbl->QueryInterface(T,r,p)
 #define IMarshal_AddRef(This) (This)->lpVtbl->AddRef(This)
 #define IMarshal_Release(This) (This)->lpVtbl->Release(This)

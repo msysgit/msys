@@ -1,6 +1,6 @@
 #ifndef _WINGDI_H
 #define _WINGDI_H
-#if __GNUC__ >=3
+#if __GNUC__ >= 3
 #pragma GCC system_header
 #endif
 
@@ -796,6 +796,10 @@ extern "C" {
 #define SYSTEM_FONT 13
 #define SYSTEM_FIXED_FONT 16
 #define DEFAULT_PALETTE 15
+#if (_WIN32_WINNT >= 0x0500)
+#define DC_BRUSH	18
+#define DC_PEN	19
+#endif
 #define SYSPAL_NOSTATIC 2
 #define SYSPAL_STATIC 1
 #define SYSPAL_ERROR 0
@@ -1042,6 +1046,7 @@ extern "C" {
 #define DMTT_DOWNLOAD_OUTLINE	4
 #define DMCOLLATE_FALSE	0
 #define DMCOLLATE_TRUE	1
+#define DM_SPECVERSION	800
 #define DM_GRAYSCALE	1
 #define DM_INTERLACED	2
 #define DM_UPDATE	1
@@ -1162,6 +1167,12 @@ extern "C" {
 #define AC_SRC_OVER 0
 #define LAYOUT_RTL 1
 #define LAYOUT_BITMAPORIENTATIONPRESERVED 8
+#if (WINVER > 0x500)
+#define GRADIENT_FILL_RECT_H 0x00
+#define GRADIENT_FILL_RECT_V 0x01
+#define GRADIENT_FILL_TRIANGLE 0x02
+#define GRADIENT_FILL_OP_FLAG 0xff
+#endif
 
 #ifndef RC_INVOKED
 typedef struct _ABC {
@@ -1195,7 +1206,7 @@ typedef struct tagRGBTRIPLE {
 	BYTE rgbtBlue;
 	BYTE rgbtGreen;
 	BYTE rgbtRed;
-} RGBTRIPLE;
+} RGBTRIPLE,*LPRGBTRIPLE;
 #pragma pack(pop)
 #pragma pack(push,2)
 typedef struct tagBITMAPFILEHEADER {
@@ -1228,7 +1239,7 @@ typedef struct tagRGBQUAD {
 	BYTE	rgbGreen;
 	BYTE	rgbRed;
 	BYTE	rgbReserved;
-} RGBQUAD;
+} RGBQUAD,*LPRGBQUAD;
 typedef struct tagBITMAPINFO {
 	BITMAPINFOHEADER bmiHeader;
 	RGBQUAD bmiColors[1];
@@ -1290,73 +1301,107 @@ typedef struct  tagCOLORADJUSTMENT {
 	SHORT	caColorfulness;
 	SHORT	caRedGreenTint;
 } COLORADJUSTMENT,*LPCOLORADJUSTMENT;
-typedef struct _devicemodeA {
-	BYTE dmDeviceName[CCHDEVICENAME];
-	WORD dmSpecVersion;
-	WORD dmDriverVersion;
-	WORD dmSize;
-	WORD dmDriverExtra;
-	DWORD dmFields;
-	short dmOrientation;
-	short dmPaperSize;
-	short dmPaperLength;
-	short dmPaperWidth;
-	short dmScale;
-	short dmCopies;
-	short dmDefaultSource;
-	short dmPrintQuality;
-	short dmColor;
-	short dmDuplex;
-	short dmYResolution;
-	short dmTTOption;
-	short dmCollate;
-	BYTE dmFormName[CCHFORMNAME];
-	WORD dmLogPixels;
-	DWORD dmBitsPerPel;
-	DWORD dmPelsWidth;
-	DWORD dmPelsHeight;
-	DWORD dmDisplayFlags;
-	DWORD dmDisplayFrequency;
-	DWORD dmICMMethod;
-	DWORD dmICMIntent;
-	DWORD dmMediaType;
-	DWORD dmDitherType;
-	DWORD dmICCManufacturer;
-	DWORD dmICCModel;
+typedef struct _devicemodeA { 
+  BYTE   dmDeviceName[CCHDEVICENAME]; 
+  WORD   dmSpecVersion; 
+  WORD   dmDriverVersion; 
+  WORD   dmSize; 
+  WORD   dmDriverExtra; 
+  DWORD  dmFields; 
+  _ANONYMOUS_UNION union {
+    _ANONYMOUS_STRUCT struct {
+      short dmOrientation;
+      short dmPaperSize;
+      short dmPaperLength;
+      short dmPaperWidth;
+      short dmScale; 
+      short dmCopies; 
+      short dmDefaultSource; 
+      short dmPrintQuality; 
+    } DUMMYSTRUCTNAME;
+    POINTL dmPosition;
+    DWORD  dmDisplayOrientation;
+    DWORD  dmDisplayFixedOutput;
+  } DUMMYUNIONNAME;
+
+  short  dmColor; 
+  short  dmDuplex; 
+  short  dmYResolution; 
+  short  dmTTOption; 
+  short  dmCollate; 
+  BYTE   dmFormName[CCHFORMNAME]; 
+  WORD   dmLogPixels; 
+  DWORD  dmBitsPerPel; 
+  DWORD  dmPelsWidth; 
+  DWORD  dmPelsHeight; 
+  _ANONYMOUS_UNION union {
+    DWORD  dmDisplayFlags; 
+    DWORD  dmNup;
+  } DUMMYUNIONNAME2;
+  DWORD  dmDisplayFrequency; 
+#if(WINVER >= 0x0400) 
+  DWORD  dmICMMethod;
+  DWORD  dmICMIntent;
+  DWORD  dmMediaType;
+  DWORD  dmDitherType;
+  DWORD  dmReserved1;
+  DWORD  dmReserved2;
+#if (WINVER >= 0x0500) || (_WIN32_WINNT >= 0x0400)
+  DWORD  dmPanningWidth;
+  DWORD  dmPanningHeight;
+#endif
+#endif /* WINVER >= 0x0400 */
 } DEVMODEA,*LPDEVMODEA,*PDEVMODEA;
-typedef struct _devicemodeW {
-	WCHAR dmDeviceName[CCHDEVICENAME];
-	WORD dmSpecVersion;
-	WORD dmDriverVersion;
-	WORD dmSize;
-	WORD dmDriverExtra;
-	DWORD dmFields;
-	short dmOrientation;
-	short dmPaperSize;
-	short dmPaperLength;
-	short dmPaperWidth;
-	short dmScale;
-	short dmCopies;
-	short dmDefaultSource;
-	short dmPrintQuality;
-	short dmColor;
-	short dmDuplex;
-	short dmYResolution;
-	short dmTTOption;
-	short dmCollate;
-	WCHAR dmFormName[CCHFORMNAME];
-	WORD dmLogPixels;
-	DWORD dmBitsPerPel;
-	DWORD dmPelsWidth;
-	DWORD dmPelsHeight;
-	DWORD dmDisplayFlags;
-	DWORD dmDisplayFrequency;
-	DWORD dmICMMethod;
-	DWORD dmICMIntent;
-	DWORD dmMediaType;
-	DWORD dmDitherType;
-	DWORD dmICCManufacturer;
-	DWORD dmICCModel;
+typedef struct _devicemodeW { 
+  WCHAR   dmDeviceName[CCHDEVICENAME]; 
+  WORD   dmSpecVersion; 
+  WORD   dmDriverVersion; 
+  WORD   dmSize; 
+  WORD   dmDriverExtra; 
+  DWORD  dmFields; 
+  _ANONYMOUS_UNION union {
+    _ANONYMOUS_STRUCT struct {
+      short dmOrientation;
+      short dmPaperSize;
+      short dmPaperLength;
+      short dmPaperWidth;
+      short dmScale; 
+      short dmCopies; 
+      short dmDefaultSource; 
+      short dmPrintQuality; 
+    } DUMMYSTRUCTNAME;
+    POINTL dmPosition;
+    DWORD  dmDisplayOrientation;
+    DWORD  dmDisplayFixedOutput;
+  } DUMMYUNIONNAME;
+
+  short  dmColor; 
+  short  dmDuplex; 
+  short  dmYResolution; 
+  short  dmTTOption; 
+  short  dmCollate; 
+  WCHAR  dmFormName[CCHFORMNAME]; 
+  WORD   dmLogPixels; 
+  DWORD  dmBitsPerPel; 
+  DWORD  dmPelsWidth; 
+  DWORD  dmPelsHeight; 
+  _ANONYMOUS_UNION union {
+    DWORD  dmDisplayFlags; 
+    DWORD  dmNup;
+  } DUMMYUNIONNAME2;
+  DWORD  dmDisplayFrequency; 
+#if(WINVER >= 0x0400) 
+  DWORD  dmICMMethod;
+  DWORD  dmICMIntent;
+  DWORD  dmMediaType;
+  DWORD  dmDitherType;
+  DWORD  dmReserved1;
+  DWORD  dmReserved2;
+#if (WINVER >= 0x0500) || (_WIN32_WINNT >= 0x0400)
+  DWORD  dmPanningWidth;
+  DWORD  dmPanningHeight;
+#endif
+#endif /* WINVER >= 0x0400 */
 } DEVMODEW,*LPDEVMODEW,*PDEVMODEW;
 typedef struct tagDIBSECTION {
 	BITMAP dsBm;
@@ -2032,7 +2077,7 @@ typedef struct tagGCP_RESULTSA {
 	INT *lpDx;
 	INT *lpCaretPos;
 	LPSTR lpClass;
-	UINT *lpGlyphs;
+	LPWSTR lpGlyphs;
 	UINT nGlyphs;
 	UINT nMaxFit;
 } GCP_RESULTSA,*LPGCP_RESULTSA;
@@ -2043,7 +2088,7 @@ typedef struct tagGCP_RESULTSW {
 	INT *lpDx;
 	INT *lpCaretPos;
 	LPWSTR lpClass;
-	UINT *lpGlyphs;
+	LPWSTR lpGlyphs;
 	UINT nGlyphs;
 	UINT nMaxFit;
 } GCP_RESULTSW,*LPGCP_RESULTSW;
@@ -2372,14 +2417,22 @@ typedef struct _GRADIENT_RECT {
 	ULONG UpperLeft;
 	ULONG LowerRight;
 }GRADIENT_RECT,*PGRADIENT_RECT,*LPGRADIENT_RECT;
-typedef struct _DISPLAY_DEVICE {
+typedef struct _DISPLAY_DEVICEA {
+  DWORD cb;
+  CHAR DeviceName[32];
+  CHAR DeviceString[128];
+  DWORD StateFlags;
+  CHAR DeviceID[128];
+  CHAR DeviceKey[128];
+} DISPLAY_DEVICEA, *PDISPLAY_DEVICEA, *LPDISPLAY_DEVICEA;
+typedef struct _DISPLAY_DEVICEW {
   DWORD cb;
   WCHAR DeviceName[32];
   WCHAR DeviceString[128];
   DWORD StateFlags;
   WCHAR DeviceID[128];
   WCHAR DeviceKey[128];
-} DISPLAY_DEVICE, *PDISPLAY_DEVICE;
+} DISPLAY_DEVICEW, *PDISPLAY_DEVICEW, *LPDISPLAY_DEVICEW;
 
 typedef BOOL (CALLBACK *ABORTPROC)(HDC,int);
 typedef int (CALLBACK *MFENUMPROC)(HDC,HANDLETABLE*,METARECORD*,int,LPARAM);
@@ -2689,6 +2742,10 @@ UINT WINAPI SetBoundsRect(HDC,LPCRECT,UINT);
 BOOL WINAPI SetBrushOrgEx(HDC,int,int,LPPOINT);
 BOOL WINAPI SetColorAdjustment(HDC,const COLORADJUSTMENT*);
 BOOL WINAPI SetColorSpace(HDC,HCOLORSPACE);
+#if (_WIN32_WINNT >= 0x0500)
+COLORREF WINAPI SetDCBrushColor(HDC,COLORREF);
+COLORREF WINAPI SetDCPenColor(HDC,COLORREF);
+#endif
 BOOL WINAPI SetDeviceGammaRamp(HDC,PVOID);
 UINT WINAPI SetDIBColorTable(HDC,UINT,UINT,const RGBQUAD*);
 int WINAPI SetDIBits(HDC,HBITMAP,UINT,UINT,PCVOID,const BITMAPINFO*,UINT);
@@ -2780,6 +2837,7 @@ typedef NEWTEXTMETRICW NEWTEXTMETRIC,*PNEWTEXTMETRIC,*LPNEWTEXTMETRIC;
 typedef NEWTEXTMETRICEXW NEWTEXTMETRICEX;
 typedef ENUMLOGFONTW ENUMLOGFONT,*LPENUMLOGFONT;
 typedef ENUMLOGFONTEXW ENUMLOGFONTEX,*LPENUMLOGFONTEX;
+typedef DISPLAY_DEVICEW DISPLAY_DEVICE, *PDISPLAY_DEVICE, *LPDISPLAY_DEVICE;
 #define AddFontResource AddFontResourceW
 #if (_WIN32_WINNT >= 0x0500)
 #define AddFontResourceEx AddFontResourceExW
@@ -2848,6 +2906,7 @@ typedef NEWTEXTMETRICA NEWTEXTMETRIC,*PNEWTEXTMETRIC,*LPNEWTEXTMETRIC;
 typedef NEWTEXTMETRICEXA NEWTEXTMETRICEX;
 typedef ENUMLOGFONTA ENUMLOGFONT,*LPENUMLOGFONT;
 typedef ENUMLOGFONTEXA ENUMLOGFONTEX,*LPENUMLOGFONTEX;
+typedef DISPLAY_DEVICEA DISPLAY_DEVICE, *PDISPLAY_DEVICE, *LPDISPLAY_DEVICE;
 #define AddFontResource AddFontResourceA
 #if (_WIN32_WINNT >= 0x0500)
 #define AddFontResourceEx AddFontResourceExA

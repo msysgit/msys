@@ -92,6 +92,7 @@ extern "C" {
 #define OFN_ALLOWMULTISELECT 512
 #define OFN_CREATEPROMPT 0x2000
 #define OFN_ENABLEHOOK 32
+#define OFN_ENABLESIZING 0x800000
 #define OFN_ENABLETEMPLATE 64
 #define OFN_ENABLETEMPLATEHANDLE 128
 #define OFN_EXPLORER 0x80000
@@ -124,7 +125,10 @@ extern "C" {
 #define FR_HIDEUPDOWN 0x4000
 #define FR_HIDEMATCHCASE 0x8000
 #define FR_HIDEWHOLEWORD 0x10000
+#define FR_MATCHALEFHAMZA	0x80000000
 #define FR_MATCHCASE 4
+#define FR_MATCHDIAC	0x20000000
+#define FR_MATCHKASHIDA	0x40000000
 #define FR_NOMATCHCASE 0x800
 #define FR_NOUPDOWN 0x400
 #define FR_NOWHOLEWORD 4096
@@ -195,19 +199,19 @@ extern "C" {
 #endif
 #endif /* ifndef SNDMSG */
 
-#define CommDlg_OpenSave_GetSpec(d,s,m) (int)SNDMSG(d,CDM_GETSPEC,m,(LPARAM)s)
+#define CommDlg_OpenSave_GetSpec(d,s,m) ((int)SNDMSG((d),CDM_GETSPEC,(m),(LPARAM)(s)))
 #define CommDlg_OpenSave_GetSpecA CommDlg_OpenSave_GetSpec
 #define CommDlg_OpenSave_GetSpecW CommDlg_OpenSave_GetSpec
-#define CommDlg_OpenSave_GetFilePath(d,s,m) (int)SNDMSG(d,CDM_GETFILEPATH,m,(LPARAM)s)
+#define CommDlg_OpenSave_GetFilePath(d,s,m) ((int)SNDMSG((d),CDM_GETFILEPATH,(m),(LPARAM)(s)))
 #define CommDlg_OpenSave_GetFilePathA CommDlg_OpenSave_GetFilePath
 #define CommDlg_OpenSave_GetFilePathW CommDlg_OpenSave_GetFilePath
-#define CommDlg_OpenSave_GetFolderPath(d,s,m) (int)SNDMSG(d,CDM_GETFOLDERPATH,m,(LPARAM)(LPSTR)s)
+#define CommDlg_OpenSave_GetFolderPath(d,s,m) ((int)SNDMSG((d),CDM_GETFOLDERPATH,(m),(LPARAM)(LPSTR)(s)))
 #define CommDlg_OpenSave_GetFolderPathA CommDlg_OpenSave_GetFolderPath
 #define CommDlg_OpenSave_GetFolderPathW CommDlg_OpenSave_GetFolderPath
-#define CommDlg_OpenSave_GetFolderIDList(d,i,m) (int)SNDMSG(d,CDM_GETFOLDERIDLIST,m,(LPARAM)i)
-#define CommDlg_OpenSave_SetControlText(d,i,t) (void)SNDMSG(d,CDM_SETCONTROLTEXT,i,(LPARAM)t)
-#define CommDlg_OpenSave_HideControl(d,i) (void)SNDMSG(d,CDM_HIDECONTROL,i,0)
-#define CommDlg_OpenSave_SetDefExt(d,e) (void)SNDMSG(d,CDM_SETDEFEXT,0,(LPARAM)e)
+#define CommDlg_OpenSave_GetFolderIDList(d,i,m) ((int)SNDMSG((d),CDM_GETFOLDERIDLIST,(m),(LPARAM)(i)))
+#define CommDlg_OpenSave_SetControlText(d,i,t) ((void)SNDMSG((d),CDM_SETCONTROLTEXT,(i),(LPARAM)(t)))
+#define CommDlg_OpenSave_HideControl(d,i) ((void)SNDMSG((d),CDM_HIDECONTROL,(i),0))
+#define CommDlg_OpenSave_SetDefExt(d,e) ((void)SNDMSG((d),CDM_SETDEFEXT,0,(LPARAM)(e)))
 
 typedef UINT (APIENTRY *__CDHOOKPROC)(HWND,UINT,WPARAM,LPARAM);
 typedef __CDHOOKPROC LPCCHOOKPROC;

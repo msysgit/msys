@@ -1,6 +1,6 @@
 #ifndef _SHLOBJ_H
 #define _SHLOBJ_H
-#if __GNUC__ >=3
+#if __GNUC__ >= 3
 #pragma GCC system_header
 #endif
 
@@ -82,23 +82,25 @@ extern "C" {
 #define SFGAO_CANCOPY	DROPEFFECT_COPY
 #define SFGAO_CANMOVE	DROPEFFECT_MOVE
 #define SFGAO_CANLINK	DROPEFFECT_LINK
-#define SFGAO_CANRENAME	0x00000010L
-#define SFGAO_CANDELETE	0x00000020L
+#define SFGAO_CANRENAME		0x00000010L
+#define SFGAO_CANDELETE		0x00000020L
 #define SFGAO_HASPROPSHEET	0x00000040L
 #define SFGAO_DROPTARGET	0x00000100L
 #define SFGAO_CAPABILITYMASK	0x00000177L
-#define SFGAO_LINK	0x00010000L
-#define SFGAO_SHARE	0x00020000L
-#define SFGAO_READONLY	0x00040000L
-#define SFGAO_GHOSTED	0x00080000L
+#define SFGAO_GHOSTED		0x00008000L
+#define SFGAO_LINK		0x00010000L
+#define SFGAO_SHARE		0x00020000L
+#define SFGAO_READONLY		0x00040000L
+#define SFGAO_HIDDEN		0x00080000L
 #define SFGAO_DISPLAYATTRMASK	0x000F0000L
 #define SFGAO_FILESYSANCESTOR	0x10000000L
-#define SFGAO_FOLDER	0x20000000L
+#define SFGAO_FOLDER		0x20000000L
 #define SFGAO_FILESYSTEM	0x40000000L
 #define SFGAO_HASSUBFOLDER	0x80000000L
 #define SFGAO_CONTENTSMASK	0x80000000L
-#define SFGAO_VALIDATE	0x01000000L
-#define SFGAO_REMOVABLE	0x02000000L
+#define SFGAO_VALIDATE		0x01000000L
+#define SFGAO_REMOVABLE		0x02000000L
+#define SFGAO_COMPRESSED	0x04000000L
 #define STRRET_WSTR	0
 #define STRRET_OFFSET	1
 #define STRRET_CSTR	2
@@ -197,6 +199,10 @@ extern "C" {
 #define CMF_DEFAULTONLY	1
 #define CMF_VERBSONLY	2
 #define CMF_EXPLORE	4
+#define CMF_NOVERBS	8
+#define CMF_CANRENAME	16
+#define CMF_NODEFAULT	32
+#define CMF_INCLUDESTATIC	64
 #define CMF_RESERVED	0xffff0000
 #define GCS_VERBA        0
 #define GCS_HELPTEXTA    1
@@ -285,6 +291,9 @@ extern "C" {
 #define SV2GV_CURRENTVIEW ((UINT)-1)
 #define SV2GV_DEFAULTVIEW ((UINT)-2)
 
+typedef ULONG SFGAOF;
+typedef DWORD SHGDNF;
+
 typedef struct _IDA {
 	UINT cidl;
 	UINT aoffset[1];
@@ -342,9 +351,13 @@ typedef enum tagSHGDN {
 	SHGDN_FORPARSING=0x8000
 } SHGNO;
 typedef enum tagSHCONTF {
-	SHCONTF_FOLDERS=32,
-	SHCONTF_NONFOLDERS=64,
-	SHCONTF_INCLUDEHIDDEN=128
+	SHCONTF_FOLDERS = 32,
+	SHCONTF_NONFOLDERS = 64,
+	SHCONTF_INCLUDEHIDDEN = 128,
+	SHCONTF_INIT_ON_FIRST_NEXT = 256,
+	SHCONTF_NETPRINTERSRCH = 512,
+	SHCONTF_SHAREABLE = 1024,
+	SHCONTF_STORAGE = 2048
 } SHCONTF;
 typedef struct _STRRET {
 	UINT uType;
@@ -478,22 +491,42 @@ DECLARE_INTERFACE_(IShellPropSheetExt, IUnknown)
 	STDMETHOD(QueryInterface)(THIS_ REFIID,PVOID*) PURE;
 	STDMETHOD_(ULONG,AddRef)(THIS) PURE;
 	STDMETHOD_(ULONG,Release)(THIS) PURE;
-    STDMETHOD(AddPages)(THIS_ LPFNADDPROPSHEETPAGE,LPARAM) PURE;
-    STDMETHOD(ReplacePage)(THIS_ UINT,LPFNADDPROPSHEETPAGE,LPARAM) PURE;
+	STDMETHOD(AddPages)(THIS_ LPFNADDPROPSHEETPAGE,LPARAM) PURE;
+	STDMETHOD(ReplacePage)(THIS_ UINT,LPFNADDPROPSHEETPAGE,LPARAM) PURE;
 };
 typedef IShellPropSheetExt *LPSHELLPROPSHEETEXT;
 
 #undef INTERFACE
-#define INTERFACE IExtractIcon
-DECLARE_INTERFACE_(IExtractIcon, IUnknown)  /* exic */
+#define INTERFACE IExtractIconA
+DECLARE_INTERFACE_(IExtractIconA, IUnknown)
 {
 	STDMETHOD(QueryInterface)(THIS_ REFIID,PVOID*) PURE;
 	STDMETHOD_(ULONG,AddRef)(THIS) PURE;
 	STDMETHOD_(ULONG,Release)(THIS) PURE;
-    STDMETHOD(GetIconLocation)(THIS_ UINT,LPSTR,UINT,int*,PUINT) PURE;
+	STDMETHOD(GetIconLocation)(THIS_ UINT,LPSTR,UINT,int*,PUINT) PURE;
 	STDMETHOD(Extract)(THIS_ LPCSTR,UINT,HICON*,HICON*,UINT) PURE;
 };
-typedef IExtractIcon *LPEXTRACTICON;
+typedef IExtractIconA *LPEXTRACTICONA;
+
+#undef INTERFACE
+#define INTERFACE IExtractIconW
+DECLARE_INTERFACE_(IExtractIconW, IUnknown)
+{
+	STDMETHOD(QueryInterface)(THIS_ REFIID,PVOID*) PURE;
+	STDMETHOD_(ULONG,AddRef)(THIS) PURE;
+	STDMETHOD_(ULONG,Release)(THIS) PURE;
+	STDMETHOD(GetIconLocation)(THIS_ UINT,LPWSTR,UINT,int*,PUINT) PURE;
+	STDMETHOD(Extract)(THIS_ LPCWSTR,UINT,HICON*,HICON*,UINT) PURE;
+};
+typedef IExtractIconW *LPEXTRACTICONW;
+
+#ifdef UNICODE
+#define IExtractIcon IExtractIconW
+#define LPEXTRACTICON LPEXTRACTICONW
+#else
+#define IExtractIcon IExtractIconA
+#define LPEXTRACTICON LPEXTRACTICONA
+#endif
 
 #undef INTERFACE
 #define INTERFACE IShellLinkA
@@ -605,26 +638,13 @@ DECLARE_INTERFACE(IFileViewer)
 typedef IFileViewer *LPFILEVIEWER;
 
 #undef INTERFACE
-#define INTERFACE ICommDlgBrowser
-DECLARE_INTERFACE_(ICommDlgBrowser,IUnknown)
-{
-	STDMETHOD(QueryInterface)(THIS_ REFIID,PVOID*) PURE;
-	STDMETHOD_(ULONG,AddRef)(THIS) PURE;
-	STDMETHOD_(ULONG,Release)(THIS) PURE;
-	STDMETHOD(OnDefaultCommand)(THIS) PURE;
-	STDMETHOD(OnStateChange)(THIS_ ULONG) PURE;
-	STDMETHOD(IncludeObject)(THIS_ LPCITEMIDLIST) PURE;
-};
-typedef ICommDlgBrowser *LPCOMMDLGBROWSER;
-
-#undef INTERFACE
 #define INTERFACE IPersistFolder
 DECLARE_INTERFACE_(IPersistFolder,IPersist)
 {
 	STDMETHOD(QueryInterface)(THIS_ REFIID,PVOID*) PURE;
 	STDMETHOD_(ULONG,AddRef)(THIS) PURE;
 	STDMETHOD_(ULONG,Release)(THIS) PURE;
-	STDMETHOD(GetClassID)(THIS_ CLSID) PURE;
+	STDMETHOD(GetClassID)(THIS_ CLSID*) PURE;
 	STDMETHOD(Initialize)(THIS_ LPCITEMIDLIST) PURE;
 };
 typedef IPersistFolder *LPPERSISTFOLDER;
@@ -682,6 +702,20 @@ DECLARE_INTERFACE_(IShellView,IOleWindow)
 	STDMETHOD(SelectItem)(THIS_ LPCITEMIDLIST,UINT) PURE;
 	STDMETHOD(GetItemObject)(THIS_ UINT,REFIID,PVOID*) PURE;
 };
+
+#undef INTERFACE
+#define INTERFACE ICommDlgBrowser
+DECLARE_INTERFACE_(ICommDlgBrowser,IUnknown)
+{
+	STDMETHOD(QueryInterface)(THIS_ REFIID,PVOID*) PURE;
+	STDMETHOD_(ULONG,AddRef)(THIS) PURE;
+	STDMETHOD_(ULONG,Release)(THIS) PURE;
+	STDMETHOD(OnDefaultCommand)(THIS_ IShellView*) PURE;
+	STDMETHOD(OnStateChange)(THIS_ IShellView*,ULONG) PURE;
+	STDMETHOD(IncludeObject)(THIS_ IShellView*,LPCITEMIDLIST) PURE;
+};
+typedef ICommDlgBrowser *LPCOMMDLGBROWSER;
+
 typedef GUID SHELLVIEWID;
 typedef struct _SV2CVW2_PARAMS {
 	DWORD cbSize;
@@ -751,6 +785,92 @@ DECLARE_INTERFACE_(IShellIcon,IUnknown)
 };
 typedef IShellIcon *LPSHELLICON;
 
+typedef struct {
+	BOOL fShowAllObjects : 1;
+	BOOL fShowExtensions : 1;
+	BOOL fNoConfirmRecycle : 1;
+	BOOL fShowSysFiles : 1;
+	BOOL fShowCompColor : 1;
+	BOOL fDoubleClickInWebView : 1;
+	BOOL fDesktopHTML : 1;
+	BOOL fWin95Classic : 1;
+	BOOL fDontPrettyPath : 1;
+	BOOL fShowAttribCol : 1;
+	BOOL fMapNetDrvBtn : 1;
+	BOOL fShowInfoTip : 1;
+	BOOL fHideIcons : 1;
+	UINT fRestFlags : 3;
+} SHELLFLAGSTATE, * LPSHELLFLAGSTATE;
+
+#if (_WIN32_WINNT >= 0x0500) /* W2K */
+typedef struct {
+	BOOL fShowAllObjects : 1;
+	BOOL fShowExtensions : 1;
+	BOOL fNoConfirmRecycle : 1;
+	BOOL fShowSysFiles : 1;
+	BOOL fShowCompColor : 1;
+	BOOL fDoubleClickInWebView : 1;
+	BOOL fDesktopHTML : 1;
+	BOOL fWin95Classic : 1;
+	BOOL fDontPrettyPath : 1;
+	BOOL fShowAttribCol : 1;
+	BOOL fMapNetDrvBtn : 1;
+	BOOL fShowInfoTip : 1;
+	BOOL fHideIcons : 1;
+	BOOL fWebView : 1;
+	BOOL fFilter : 1;
+	BOOL fShowSuperHidden : 1;
+	BOOL fNoNetCrawling : 1;
+	DWORD dwWin95Unused;
+	UINT uWin95Unused;
+	LONG lParamSort;
+	int iSortDirection;
+	UINT version;
+	UINT uNotUsed;
+	BOOL fSepProcess : 1;
+	BOOL fStartPanelOn : 1;
+	BOOL fShowStartPage : 1;
+	UINT fSpareFlags : 13;
+} SHELLSTATE, *LPSHELLSTATE;
+#endif /* _WIN32_WINNT >= 0x0500 */
+
+#if (_WIN32_IE >= 0x0500)
+#pragma pack(push,8)
+typedef struct
+{
+	SIZE sizeDragImage;
+	POINT ptOffset;
+	HBITMAP hbmpDragImage;
+	COLORREF crColorKey;
+} SHDRAGIMAGE, *LPSHDRAGIMAGE;
+#pragma pack(pop)
+
+#undef INTERFACE
+#define INTERFACE IDragSourceHelper
+DECLARE_INTERFACE_(IDragSourceHelper, IUnknown)
+{
+	STDMETHOD (QueryInterface)(THIS_ REFIID riid, void **ppv) PURE;
+	STDMETHOD_(ULONG, AddRef) (THIS) PURE;
+	STDMETHOD_(ULONG, Release) (THIS) PURE;
+	STDMETHOD (InitializeFromBitmap)(THIS_ LPSHDRAGIMAGE pshdi, IDataObject* pDataObject) PURE;
+	STDMETHOD (InitializeFromWindow)(THIS_ HWND hwnd, POINT* ppt, IDataObject* pDataObject) PURE;
+};
+
+#undef INTERFACE
+#define INTERFACE IDropTargetHelper
+DECLARE_INTERFACE_(IDropTargetHelper, IUnknown)
+{
+	STDMETHOD (QueryInterface)(THIS_ REFIID riid, void** ppv) PURE;
+	STDMETHOD_(ULONG, AddRef) (THIS) PURE;
+	STDMETHOD_(ULONG, Release) (THIS) PURE;
+	STDMETHOD (DragEnter)(THIS_ HWND hwndTarget, IDataObject* pDataObject, POINT* ppt, DWORD dwEffect) PURE;
+	STDMETHOD (DragLeave)(THIS) PURE;
+	STDMETHOD (DragOver)(THIS_ POINT* ppt, DWORD dwEffect) PURE;
+	STDMETHOD (Drop)(THIS_ IDataObject* pDataObject, POINT* ppt, DWORD dwEffect) PURE;
+	STDMETHOD (Show)(THIS_ BOOL fShow) PURE;
+};
+#endif /* _WIN32_IE >= 0x0500 */
+
 void WINAPI SHAddToRecentDocs(UINT,PCVOID);
 LPITEMIDLIST WINAPI SHBrowseForFolderA(PBROWSEINFOA);
 LPITEMIDLIST WINAPI SHBrowseForFolderW(PBROWSEINFOW);
@@ -758,7 +878,7 @@ void WINAPI SHChangeNotify(LONG,UINT,PCVOID,PCVOID);
 HRESULT WINAPI SHGetDataFromIDListA(LPSHELLFOLDER,LPCITEMIDLIST,int,PVOID,int);
 HRESULT WINAPI SHGetDataFromIDListW(LPSHELLFOLDER,LPCITEMIDLIST,int,PVOID,int);
 HRESULT WINAPI SHGetDesktopFolder(LPSHELLFOLDER*);
-HRESULT WINAPI SHGetInstanceExplorer(LPUNKNOWN);
+HRESULT WINAPI SHGetInstanceExplorer(IUnknown **);
 HRESULT WINAPI SHGetMalloc(LPMALLOC*);
 BOOL WINAPI SHGetPathFromIDListA(LPCITEMIDLIST,LPSTR);
 BOOL WINAPI SHGetPathFromIDListW(LPCITEMIDLIST,LPWSTR);
@@ -769,14 +889,18 @@ BOOL WINAPI SHGetSpecialFolderPathA(HWND,LPSTR,int,BOOL);
 BOOL WINAPI SHGetSpecialFolderPathW(HWND,LPWSTR,int,BOOL);
 #endif 
 /* SHGetFolderPath in shfolder.dll on W9x, NT4, also in shell32.dll on W2K */
-BOOL WINAPI SHGetFolderPathA(HWND,int,HANDLE,DWORD,LPSTR);
-BOOL WINAPI SHGetFolderPathW(HWND,int,HANDLE,DWORD,LPWSTR);
+HRESULT WINAPI SHGetFolderPathA(HWND,int,HANDLE,DWORD,LPSTR);
+HRESULT WINAPI SHGetFolderPathW(HWND,int,HANDLE,DWORD,LPWSTR);
 #if (_WIN32_WINDOWS >= 0x0490) || (_WIN32_WINNT >= 0x0500) /* ME or W2K */
 HRESULT WINAPI SHGetFolderLocation(HWND,int,HANDLE,DWORD,LPITEMIDLIST*);
 #endif
 #if (_WIN32_WINNT >= 0x0501) /* XP */
 HRESULT WINAPI SHGetFolderPathAndSubDirA(HWND,int,HANDLE,DWORD,LPCSTR,LPSTR);
 HRESULT WINAPI SHGetFolderPathAndSubDirW(HWND,int,HANDLE,DWORD,LPCWSTR,LPWSTR);
+#endif
+void WINAPI SHGetSettings(LPSHELLFLAGSTATE,DWORD);
+#if (_WIN32_WINNT >= 0x0500) /* W2K */
+void WINAPI SHGetSetSettings(LPSHELLSTATE,DWORD,BOOL);
 #endif
 
 #ifdef UNICODE
@@ -809,6 +933,7 @@ typedef BROWSEINFOA BROWSEINFO,*PBROWSEINFO,*LPBROWSEINFO;
 #define SHGetFolderPathAndSubDir SHGetFolderPathAndSubDirA
 #endif
 #endif /* UNICODE */
+
 
 #pragma pack(pop)
 #ifdef __cplusplus

@@ -1,6 +1,6 @@
 #ifndef _WINUSER_H
 #define _WINUSER_H
-#if __GNUC__ >=3
+#if __GNUC__ >= 3
 #pragma GCC system_header
 #endif
 
@@ -381,8 +381,16 @@ extern "C" {
 #define DC_ICON	4
 #define DC_TEXT	8
 #define DC_INBUTTON	16
+#if (_WIN32_WINDOWS >= 0x0410 || _WIN32_WINNT >= 0x0500)
+#define DC_GRADIENT	32
+#endif
+#if ( _WIN32_WINNT >= 0x0501)
+#define DC_BUTTONS	0x1000
+#endif
+/* Where are these documented?   */
 #define DC_CAPTION	(DC_ICON|DC_TEXT|DC_BUTTONS)
 #define DC_NC	(DC_CAPTION|DC_FRAME)
+
 #define BDR_RAISEDOUTER	1
 #define BDR_SUNKENOUTER	2
 #define BDR_RAISEDINNER	4
@@ -443,6 +451,10 @@ extern "C" {
 #define DFCS_INACTIVE	256
 #define DFCS_PUSHED	512
 #define DFCS_CHECKED	1024
+#if (WINVER >= _W2K)
+#define DFCS_TRANSPARENT	0x800
+#define DFCS_HOT	0x1000
+#endif /* WINVER >= _W2K */
 #define DFCS_ADJUSTRECT	0x2000
 #define DFCS_FLAT	0x4000
 #define DFCS_MONO	0x8000
@@ -732,18 +744,34 @@ extern "C" {
 #define DWLP_MSGRESULT 0
 #define DWL_USER 8
 #define DWLP_USER 8
+#if (_WIN32_WINNT >= 0x0501)
+#define QS_ALLEVENTS 1215
+#define QS_ALLINPUT 1279
+#else
 #define QS_ALLEVENTS 191
 #define QS_ALLINPUT 255
+#endif
+#define QS_ALLPOSTMESSAGE 256
 #define QS_HOTKEY 128
+#if (_WIN32_WINNT >= 0x0501)
+#define QS_INPUT 1031
+#else
 #define QS_INPUT 7
+#endif
 #define QS_KEY 1
 #define QS_MOUSE 6
 #define QS_MOUSEBUTTON 4
 #define QS_MOUSEMOVE 2
 #define QS_PAINT 32
 #define QS_POSTMESSAGE 8
+#if (_WIN32_WINNT >= 0x0501)
+#define QS_RAWINPUT 1024
+#endif
 #define QS_SENDMESSAGE 64
 #define QS_TIMER 16
+#define MWMO_WAITALL 1
+#define MWMO_ALERTABLE 2
+#define MWMO_INPUTAVAILABLE 4
 #define COLOR_3DDKSHADOW 21
 #define COLOR_3DFACE 15
 #define COLOR_3DHILIGHT 20
@@ -979,6 +1007,12 @@ extern "C" {
 #define PM_NOREMOVE 0
 #define PM_REMOVE 1
 #define PM_NOYIELD 2
+#if (WINVER >= 0x0500)
+# define PM_QS_INPUT (QS_INPUT << 16)
+# define PM_QS_POSTMESSAGE ((QS_POSTMESSAGE|QS_HOTKEY|QS_TIMER) << 16)
+# define PM_QS_PAINT (QS_PAINT << 16)
+# define PM_QS_SENDMESSAGE (QS_SENDMESSAGE << 16)
+#endif
 #define HWND_BROADCAST  ((HWND)0xffff)
 #define HWND_BOTTOM ((HWND)1)
 #define HWND_NOTOPMOST ((HWND)(-2))
@@ -1584,17 +1618,31 @@ extern "C" {
 #define VK_RBUTTON	2
 #define VK_CANCEL	3
 #define VK_MBUTTON	4
+#if (_WIN32_WINNT >= 0x0500)
+#define VK_XBUTTON1	5
+#define VK_XBUTTON2	6
+#endif
 #define VK_BACK	8
 #define VK_TAB	9
 #define VK_CLEAR	12
 #define VK_RETURN	13
-#define VK_KANA		15
 #define VK_SHIFT	16
 #define VK_CONTROL	17
 #define VK_MENU	18
 #define VK_PAUSE	19
 #define VK_CAPITAL	20
+#define VK_KANA	0x15
+#define VK_HANGEUL	0x15
+#define VK_HANGUL	0x15
+#define VK_JUNJA	0x17
+#define VK_FINAL	0x18
+#define VK_HANJA	0x19
+#define VK_KANJI	0x19
 #define VK_ESCAPE	0x1B
+#define VK_CONVERT	0x1C
+#define VK_NONCONVERT	0x1D
+#define VK_ACCEPT	0x1E
+#define VK_MODECHANGE	0x1F
 #define VK_SPACE	32
 #define VK_PRIOR	33
 #define VK_NEXT	34
@@ -1614,6 +1662,7 @@ extern "C" {
 #define VK_LWIN	0x5B
 #define VK_RWIN	0x5C
 #define VK_APPS	0x5D
+#define VK_SLEEP	0x5F
 #define VK_NUMPAD0	0x60
 #define VK_NUMPAD1	0x61
 #define VK_NUMPAD2	0x62
@@ -1662,7 +1711,47 @@ extern "C" {
 #define VK_RCONTROL	0xA3
 #define VK_LMENU	0xA4
 #define VK_RMENU	0xA5
+#if (_WIN32_WINNT >= 0x0500)
+#define VK_BROWSER_BACK	0xA6
+#define VK_BROWSER_FORWARD	0xA7
+#define VK_BROWSER_REFRESH	0xA8
+#define VK_BROWSER_STOP	0xA9
+#define VK_BROWSER_SEARCH	0xAA
+#define VK_BROWSER_FAVORITES	0xAB
+#define VK_BROWSER_HOME	0xAC
+#define VK_VOLUME_MUTE	0xAD
+#define VK_VOLUME_DOWN	0xAE
+#define VK_VOLUME_UP	0xAF
+#define VK_MEDIA_NEXT_TRACK	0xB0
+#define VK_MEDIA_PREV_TRACK	0xB1
+#define VK_MEDIA_STOP	0xB2
+#define VK_MEDIA_PLAY_PAUSE	0xB3
+#define VK_LAUNCH_MAIL	0xB4
+#define VK_LAUNCH_MEDIA_SELECT	0xB5
+#define VK_LAUNCH_APP1	0xB6
+#define VK_LAUNCH_APP2	0xB7
+#endif
+#define VK_OEM_1	0xBA
+#if (_WIN32_WINNT >= 0x0500)
+#define VK_OEM_PLUS	0xBB
+#define VK_OEM_COMMA	0xBC
+#define VK_OEM_MINUS	0xBD
+#define VK_OEM_PERIOD	0xBE
+#endif
+#define VK_OEM_2	0xBF
+#define VK_OEM_3	0xC0
+#define VK_OEM_4	0xDB
+#define VK_OEM_5	0xDC
+#define VK_OEM_6	0xDD
+#define VK_OEM_7	0xDE
+#define VK_OEM_8	0xDF
+#if (_WIN32_WINNT >= 0x0500)
+#define VK_OEM_102	0xE2
+#endif
 #define VK_PROCESSKEY	0xE5
+#if (_WIN32_WINNT >= 0x0500)
+#define VK_PACKET	0xE7
+#endif
 #define VK_ATTN	0xF6
 #define VK_CRSEL	0xF7
 #define VK_EXSEL	0xF8
@@ -1694,6 +1783,9 @@ extern "C" {
 #define TPM_BOTTOMALIGN 32
 #define TPM_NONOTIFY 128
 #define TPM_RETURNCMD 256
+#if (_WIN32_WINNT >= _NT5 || _WIN32_WINDOWS >= _W98)
+#define TPM_RECURSE 1
+#endif
 #define HELP_COMMAND 0x102
 #define HELP_CONTENTS 3
 #define HELP_CONTEXT 1
@@ -1900,6 +1992,9 @@ extern "C" {
 #define WA_CLICKACTIVE 2
 #define ICON_SMALL 0
 #define ICON_BIG 1
+#if _WIN32_WINNT >= 0x0501
+#define ICON_SMALL2 2
+#endif
 #define HBMMENU_CALLBACK ((HBITMAP) -1)
 #define HBMMENU_SYSTEM ((HBITMAP)1)
 #define HBMMENU_MBAR_RESTORE ((HBITMAP)2)
@@ -1935,26 +2030,24 @@ extern "C" {
 #if(WINVER >= 0x0400)
 #define ENDSESSION_LOGOFF    0x80000000
 #endif /* WINVER >= 0x0400 */
-#define OBJID_WINDOW 0x00000000
-#define OBJID_SYSMENU 0xFFFFFFFF
-#define OBJID_TITLEBAR 0xFFFFFFFE
-#define OBJID_MENU 0xFFFFFFFD
-#define OBJID_CLIENT 0xFFFFFFFC
-#define OBJID_VSCROLL 0xFFFFFFFB
-#define OBJID_HSCROLL 0xFFFFFFFA
-#define OBJID_SIZEGRIP 0xFFFFFFF9
-#define OBJID_CARET 0xFFFFFFF8
-#define OBJID_CURSOR 0xFFFFFFF7
-#define OBJID_ALERT 0xFFFFFFF6
-#define OBJID_SOUND 0xFFFFFFF5
-#if(WINVER >= 0x0500)
+#if (_WIN32_WINNT >= _NT5 || _WIN32_WINDOWS >= _WME)
 #define ASFW_ANY ((DWORD)-1)
 #define LSFW_LOCK 1
 #define LSFW_UNLOCK 2
 #endif
+#if(_WIN32_WINNT >= _NT5)
+#define LWA_COLORKEY 1
+#define LWA_ALPHA 2
+#endif
 #define GA_PARENT 1
 #define GA_ROOT 2
 #define GA_ROOTOWNER 3
+#if (_WIN32_WINNT >= _NT5 || _WIN32_WINDOWS >= _W98)
+#define MONITOR_DEFAULTTONULL 0 
+#define MONITOR_DEFAULTTOPRIMARY 1 
+#define MONITOR_DEFAULTTONEAREST 2 
+#define MONITORINFOF_PRIMARY 1 
+#endif
 
 #ifndef RC_INVOKED
 typedef BOOL(CALLBACK *DLGPROC)(HWND,UINT,WPARAM,LPARAM);
@@ -2109,7 +2202,7 @@ typedef struct {
 	short y;
 	short cx;
 	short cy;
-} DLGTEMPLATE,*LPDLGTEMPLATE;
+} DLGTEMPLATE,*LPDLGTEMPLATE,*LPDLGTEMPLATEA,*LPDLGTEMPLATEW;
 typedef const DLGTEMPLATE *LPCDLGTEMPLATE;
 #pragma pack(pop)
 typedef struct tagDRAWITEMSTRUCT {
@@ -2163,7 +2256,7 @@ typedef struct _WNDCLASSA {
 	WNDPROC lpfnWndProc;
 	int cbClsExtra;
 	int cbWndExtra;
-	HANDLE hInstance;
+	HINSTANCE hInstance;
 	HICON hIcon;
 	HCURSOR hCursor;
 	HBRUSH hbrBackground;
@@ -2175,7 +2268,7 @@ typedef struct _WNDCLASSW {
 	WNDPROC lpfnWndProc;
 	int cbClsExtra;
 	int cbWndExtra;
-	HANDLE hInstance;
+	HINSTANCE hInstance;
 	HICON hIcon;
 	HCURSOR hCursor;
 	HBRUSH hbrBackground;
@@ -2188,7 +2281,7 @@ typedef struct _WNDCLASSEXA {
 	WNDPROC lpfnWndProc;
 	int cbClsExtra;
 	int cbWndExtra;
-	HANDLE hInstance;
+	HINSTANCE hInstance;
 	HICON hIcon;
 	HCURSOR hCursor;
 	HBRUSH hbrBackground;
@@ -2202,7 +2295,7 @@ typedef struct _WNDCLASSEXW {
 	WNDPROC lpfnWndProc;
 	int cbClsExtra;
 	int cbWndExtra;
-	HANDLE hInstance;
+	HINSTANCE hInstance;
 	HICON hIcon;
 	HCURSOR hCursor;
 	HBRUSH hbrBackground;
@@ -2904,6 +2997,8 @@ BOOL WINAPI EnumDisplayMonitors(HDC,LPCRECT,MONITORENUMPROC,LPARAM);
 #ifndef NOGDI
 BOOL WINAPI EnumDisplaySettingsA(LPCSTR,DWORD,PDEVMODEA);
 BOOL WINAPI EnumDisplaySettingsW(LPCWSTR,DWORD,PDEVMODEW);
+BOOL WINAPI EnumDisplayDevicesA(LPCSTR,DWORD,PDISPLAY_DEVICEA,DWORD);
+BOOL WINAPI EnumDisplayDevicesW(LPCWSTR,DWORD,PDISPLAY_DEVICEW,DWORD);
 #endif
 int WINAPI EnumPropsA(HWND,PROPENUMPROCA);
 int WINAPI EnumPropsW(HWND,PROPENUMPROCW);
@@ -3002,6 +3097,9 @@ DWORD WINAPI GetQueueStatus(UINT);
 BOOL WINAPI GetScrollInfo(HWND,int,LPSCROLLINFO);
 int WINAPI GetScrollPos(HWND,int);
 BOOL WINAPI GetScrollRange(HWND,int,LPINT,LPINT);
+#if (_WIN32_WINNT >= _NT5)
+HWND WINAPI GetShellWindow(VOID);
+#endif
 HMENU WINAPI GetSubMenu(HMENU,int);
 DWORD WINAPI GetSysColor(int);
 HBRUSH WINAPI GetSysColorBrush(int);
@@ -3130,10 +3228,11 @@ int WINAPI MessageBoxIndirectA(CONST MSGBOXPARAMSA*);
 int WINAPI MessageBoxIndirectW(CONST MSGBOXPARAMSW*);
 BOOL WINAPI ModifyMenuA(HMENU,UINT,UINT,UINT,LPCSTR);
 BOOL WINAPI ModifyMenuW(HMENU,UINT,UINT,UINT,LPCWSTR);
-void WINAPI mouse_event(DWORD,DWORD,DWORD,DWORD,DWORD);
+void WINAPI mouse_event(DWORD,DWORD,DWORD,DWORD,ULONG_PTR);
 BOOL WINAPI MoveWindow(HWND,int,int,int,int,BOOL);
 DWORD WINAPI MsgWaitForMultipleObjects(DWORD,CONST HANDLE*,BOOL,DWORD,DWORD);
 DWORD WINAPI MsgWaitForMultipleObjectsEx(DWORD,CONST HANDLE*,DWORD,DWORD,DWORD);
+void WINAPI NotifyWinEvent(DWORD,HWND,LONG,LONG);
 DWORD WINAPI OemKeyScan(WORD);
 BOOL WINAPI OemToCharA(LPCSTR,LPSTR);
 BOOL WINAPI OemToCharBuffA(LPCSTR,LPSTR,DWORD);
@@ -3303,11 +3402,17 @@ int WINAPIV wsprintfA(LPSTR,LPCSTR,...);
 int WINAPIV wsprintfW(LPWSTR,LPCWSTR,...);
 int WINAPI wvsprintfA(LPSTR,LPCSTR,va_list arglist);
 int WINAPI wvsprintfW(LPWSTR,LPCWSTR,va_list arglist);
-#if(WINVER >= 0x0500)
+#if(_WIN32_WINNT >= _NT5  || _WIN32_WINDOWS >= _WME)
 BOOL WINAPI AllowSetForegroundWindow(DWORD);
 BOOL WINAPI LockSetForegroundWindow(UINT);
 #endif
-
+#if(_WIN32_WINNT >= _NT5)
+BOOL WINAPI SetLayeredWindowAttributes(HWND,COLORREF,BYTE,DWORD);
+BOOL WINAPI UpdateLayeredWindow(HWND,HDC,POINT*,SIZE*,HDC,POINT*,COLORREF,BLENDFUNCTION*,DWORD);
+#endif
+#if(_WIN32_WINNT >= _WXP)
+BOOL WINAPI GetLayeredWindowAttributes(HWND,COLORREF*,BYTE*,DWORD*);
+#endif
 #ifdef UNICODE
 #define EDITWORDBREAKPROC EDITWORDBREAKPROCW
 #define PROPENUMPROC PROPENUMPROCW
@@ -3463,6 +3568,7 @@ typedef NONCLIENTMETRICSW NONCLIENTMETRICS,*LPNONCLIENTMETRICS;
 #define ChangeDisplaySettings ChangeDisplaySettingsW
 #define CreateDesktop CreateDesktopW
 #define EnumDisplaySettings EnumDisplaySettingsW
+#define EnumDisplayDevices  EnumDisplayDevicesW
 #endif /* NOGDI */
 #else /* UNICODE */
 #define EDITWORDBREAKPROC EDITWORDBREAKPROCA
@@ -3619,6 +3725,7 @@ typedef NONCLIENTMETRICSA NONCLIENTMETRICS,*LPNONCLIENTMETRICS;
 #define ChangeDisplaySettings ChangeDisplaySettingsA
 #define CreateDesktop CreateDesktopA
 #define EnumDisplaySettings EnumDisplaySettingsA
+#define EnumDisplayDevices  EnumDisplayDevicesA
 #endif /* NOGDI */
 #endif /* UNICODE */
 #endif /* RC_INVOKED */

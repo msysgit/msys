@@ -23,7 +23,7 @@
 #ifndef __WINDDK_H
 #define __WINDDK_H
 
-#if __GNUC__ >=3
+#if __GNUC__ >= 3
 #pragma GCC system_header
 #endif
 
@@ -88,10 +88,10 @@ struct _IO_STATUS_BLOCK;
 struct _DEVICE_DESCRIPTION;
 struct _SCATTER_GATHER_LIST;
 
-DECLARE_INTERNAL_OBJECT(ADAPTER_OBJECT);
-DECLARE_INTERNAL_OBJECT(DMA_ADAPTER);
-DECLARE_INTERNAL_OBJECT(IO_STATUS_BLOCK);
-DECLARE_INTERNAL_OBJECT(SECTION_OBJECT);
+DECLARE_INTERNAL_OBJECT(ADAPTER_OBJECT)
+DECLARE_INTERNAL_OBJECT(DMA_ADAPTER)
+DECLARE_INTERNAL_OBJECT(IO_STATUS_BLOCK)
+DECLARE_INTERNAL_OBJECT(SECTION_OBJECT)
 
 #if 1
 /* FIXME: Unknown definitions */
@@ -110,7 +110,7 @@ typedef ULONG LOGICAL;
 #define TAG(_a, _b, _c, _d) (ULONG) \
 	(((_a) << 0) + ((_b) << 8) + ((_c) << 16) + ((_d) << 24))
 
-static inline struct _KPCR * KeGetCurrentKPCR(
+static __inline struct _KPCR * KeGetCurrentKPCR(
   VOID)
 {
   ULONG Value;
@@ -127,7 +127,7 @@ static inline struct _KPCR * KeGetCurrentKPCR(
 */
 
 typedef LONG KPRIORITY;
-typedef ULONG KIRQL, *PKIRQL;
+typedef UCHAR KIRQL, *PKIRQL;
 typedef ULONG_PTR KSPIN_LOCK, *PKSPIN_LOCK;
 typedef ULONG KAFFINITY, *PKAFFINITY;
 typedef CCHAR KPROCESSOR_MODE;
@@ -137,22 +137,6 @@ typedef enum _MODE {
   UserMode,
   MaximumMode
 } MODE;
-
-typedef struct _SINGLE_LIST_ENTRY {
-  struct _SINGLE_LIST_ENTRY  *Next;
-} SINGLE_LIST_ENTRY, *PSINGLE_LIST_ENTRY;
-
-#define SLIST_ENTRY SINGLE_LIST_ENTRY
-#define PSLIST_ENTRY PSINGLE_LIST_ENTRY
-
-typedef union _SLIST_HEADER {
-  ULONGLONG  Alignment;
-  struct {
-    SLIST_ENTRY  Next;
-    USHORT  Depth;
-    USHORT  Sequence;
-  };
-} SLIST_HEADER, *PSLIST_HEADER;
 
 
 /* Structures not exposed to drivers */
@@ -749,9 +733,11 @@ typedef VOID DDKAPI
 #define SYMBOLIC_LINK_QUERY               0x0001
 #define SYMBOLIC_LINK_ALL_ACCESS          (STANDARD_RIGHTS_REQUIRED | 0x1)
 
+/* also in winnt,h */
 #define DUPLICATE_CLOSE_SOURCE            0x00000001
 #define DUPLICATE_SAME_ACCESS             0x00000002
 #define DUPLICATE_SAME_ATTRIBUTES         0x00000004
+/* end winnt.h */
 
 typedef struct _OBJECT_NAME_INFORMATION {               
   UNICODE_STRING  Name;                                
@@ -764,10 +750,10 @@ typedef VOID DDKAPI
   IN ULONG Reserved);
 
 typedef struct _IO_STATUS_BLOCK {
-  union {
+  _ANONYMOUS_UNION union {
     NTSTATUS  Status;
     PVOID  Pointer;
-  };
+  } DUMMYUNIONNAME;
   ULONG_PTR  Information;
 } IO_STATUS_BLOCK;
 
@@ -974,21 +960,21 @@ typedef struct _IRP {
   PVOID  UserBuffer;
   union {
     struct {
-      union {
+      _ANONYMOUS_UNION union {
         KDEVICE_QUEUE_ENTRY  DeviceQueueEntry;
-        struct {
+        _ANONYMOUS_STRUCT struct {
           PVOID  DriverContext[4];
-        };
-      };
+        } DUMMYSTRUCTNAME;
+      } DUMMYUNIONNAME;
       PETHREAD  Thread;
       PCHAR  AuxiliaryBuffer;
-      struct {
+      _ANONYMOUS_STRUCT struct {
         LIST_ENTRY  ListEntry;
-        union {
+        _ANONYMOUS_UNION union {
           struct _IO_STACK_LOCATION  *CurrentStackLocation;
           ULONG  PacketType;
-        };
-      };
+        } DUMMYUNIONNAME;
+      } DUMMYSTRUCTNAME;
       struct _FILE_OBJECT  *OriginalFileObject;
     } Overlay;
     KAPC  Apc;
@@ -1024,6 +1010,27 @@ typedef struct _IRP *PIRP;
   ((DeviceType) << 16) | ((Access) << 14) | ((Function) << 2) | (Method))
 
 #define DEVICE_TYPE_FROM_CTL_CODE(ctl) (((ULONG) (ctl & 0xffff0000)) >> 16)
+
+enum
+{
+   IRP_NOCACHE = 0x1,
+   IRP_PAGING_IO = 0x2,
+   IRP_MOUNT_COMPLETION = 0x2,
+   IRP_SYNCHRONOUS_API = 0x4,
+   IRP_ASSOCIATED_IRP = 0x8,
+   IRP_BUFFERED_IO = 0x10,
+   IRP_DEALLOCATE_BUFFER = 0x20,
+   IRP_INPUT_OPERATION = 0x40,
+   IRP_SYNCHRONOUS_PAGING_IO = 0x40,
+   IRP_CREATE_OPERATION = 0x80,
+   IRP_READ_OPERATION = 0x100,
+   IRP_WRITE_OPERATION = 0x200,
+   IRP_CLOSE_OPERATION = 0x400,
+   IRP_DEFER_IO_COMPLETION = 0x800,
+   IRP_OB_QUERY_NAME = 0x1000,
+   IRP_HOLD_DEVICE_QUEUE = 0x2000,
+   IRP_RETRY_IO_COMPLETION = 0x4000
+};
 
 
 typedef struct _DRIVE_LAYOUT_INFORMATION_MBR {
@@ -1152,8 +1159,8 @@ typedef struct _CM_EISA_FUNCTION_INFORMATION {
 #define EISA_HAS_MEMORY_ENTRY           0x02
 #define EISA_HAS_TYPE_ENTRY             0x01
 #define EISA_HAS_INFORMATION \
-  EISA_HAS_PORT_RANGE + EISA_HAS_DMA_ENTRY + EISA_HAS_IRQ_ENTRY \
-  + EISA_HAS_MEMORY_ENTRY + EISA_HAS_TYPE_ENTRY
+  (EISA_HAS_PORT_RANGE + EISA_HAS_DMA_ENTRY + EISA_HAS_IRQ_ENTRY \
+  + EISA_HAS_MEMORY_ENTRY + EISA_HAS_TYPE_ENTRY)
 
 typedef struct _CM_EISA_SLOT_INFORMATION {
   UCHAR  ReturnCode;
@@ -2019,10 +2026,10 @@ typedef ERESOURCE_THREAD *PERESOURCE_THREAD;
 
 typedef struct _OWNER_ENTRY {
   ERESOURCE_THREAD  OwnerThread;
-  union {
+  _ANONYMOUS_UNION union {
       LONG  OwnerCount;
       ULONG  TableSize;
-  };
+  } DUMMYUNIONNAME;
 } OWNER_ENTRY, *POWNER_ENTRY;
 
 /* ERESOURCE.Flag */
@@ -2044,10 +2051,10 @@ typedef struct _ERESOURCE {
   ULONG  ContentionCount;
   USHORT  NumberOfSharedWaiters;
   USHORT  NumberOfExclusiveWaiters;
-  union {
+  _ANONYMOUS_UNION union {
     PVOID  Address;
     ULONG_PTR  CreatorBackTraceIndex;
-  };
+  } DUMMYUNIONNAME;
   KSPIN_LOCK  SpinLock;
 } ERESOURCE, *PERESOURCE;
 
@@ -2533,14 +2540,14 @@ typedef struct _IO_STACK_LOCATION {
       ULONG  Length;
       FILE_INFORMATION_CLASS POINTER_ALIGNMENT  FileInformationClass;
       PFILE_OBJECT  FileObject;
-      union {
-        struct {
+      _ANONYMOUS_UNION union {
+        _ANONYMOUS_STRUCT struct {
           BOOLEAN  ReplaceIfExists;
           BOOLEAN  AdvanceOnly;
-        };
+        } DUMMYSTRUCTNAME;
         ULONG  ClusterCount;
         HANDLE  DeleteHandle;
-      };
+      } DUMMYUNIONNAME;
     } SetFile;
     struct {
       ULONG  Length;
@@ -2990,6 +2997,13 @@ typedef NTSTATUS DDKAPI
   IN PVOID  Context,
   IN PVOID  EntryContext);
 
+#define RTL_REGISTRY_ABSOLUTE             0
+#define RTL_REGISTRY_SERVICES             1
+#define RTL_REGISTRY_CONTROL              2
+#define RTL_REGISTRY_WINDOWS_NT           3
+#define RTL_REGISTRY_DEVICEMAP            4
+#define RTL_REGISTRY_USER                 5
+
 /* RTL_QUERY_REGISTRY_TABLE.Flags */
 #define RTL_QUERY_REGISTRY_SUBKEY         0x00000001
 #define RTL_QUERY_REGISTRY_TOPKEY         0x00000002
@@ -3035,15 +3049,15 @@ typedef VOID DDKAPI
   USHORT  Depth; \
   USHORT  MaximumDepth; \
   ULONG  TotalAllocates; \
-  union { \
+  _ANONYMOUS_UNION union { \
     ULONG  AllocateMisses; \
     ULONG  AllocateHits; \
-  }; \
+  } DUMMYUNIONNAME; \
   ULONG  TotalFrees; \
-  union { \
+  _ANONYMOUS_UNION union { \
     ULONG  FreeMisses; \
     ULONG  FreeHits; \
-  }; \
+  } DUMMYUNIONNAME2; \
   POOL_TYPE  Type; \
   ULONG  Tag; \
   ULONG  Size; \
@@ -3051,23 +3065,23 @@ typedef VOID DDKAPI
   PFREE_FUNCTION  Free; \
   LIST_ENTRY  ListEntry; \
   ULONG  LastTotalAllocates; \
-  union { \
+  _ANONYMOUS_UNION union { \
     ULONG  LastAllocateMisses; \
     ULONG  LastAllocateHits; \
-  }; \
+  } DUMMYUNIONNAME3; \
   ULONG Future[2];
 
 typedef struct _GENERAL_LOOKASIDE {
-  GENERAL_LOOKASIDE_S;
+  GENERAL_LOOKASIDE_S
 } GENERAL_LOOKASIDE, *PGENERAL_LOOKASIDE;
 
 typedef struct _NPAGED_LOOKASIDE_LIST {
-  GENERAL_LOOKASIDE_S;
+  GENERAL_LOOKASIDE_S
   KSPIN_LOCK  Obsoleted;
 } NPAGED_LOOKASIDE_LIST, *PNPAGED_LOOKASIDE_LIST;
 
 typedef struct _PAGED_LOOKASIDE_LIST {
-  GENERAL_LOOKASIDE_S;
+  GENERAL_LOOKASIDE_S
   FAST_MUTEX  Obsoleted;
 } PAGED_LOOKASIDE_LIST, *PPAGED_LOOKASIDE_LIST;
 
@@ -3080,7 +3094,7 @@ typedef VOID DDKAPI (*PCALLBACK_FUNCTION)(
 
 typedef enum _EVENT_TYPE {
   NotificationEvent,
-  SynchronizationEvent,
+  SynchronizationEvent
 } EVENT_TYPE;
 
 typedef enum _KWAIT_REASON {
@@ -3396,15 +3410,15 @@ typedef VOID DDKAPI
   IN BOOLEAN  Create);
 
 typedef struct _IMAGE_INFO {
-  union {
+  _ANONYMOUS_UNION union {
     ULONG  Properties;
-    struct {
+    _ANONYMOUS_STRUCT struct {
       ULONG  ImageAddressingMode  : 8;
       ULONG  SystemModeImage      : 1;
       ULONG  ImageMappedToAllPids : 1;
       ULONG  Reserved             : 22;
-    };
-  };
+    } DUMMYSTRUCTNAME;
+  } DUMMYUNIONNAME;
   PVOID  ImageBase;
   ULONG  ImageSelector;
   SIZE_T  ImageSize;
@@ -3532,15 +3546,15 @@ typedef struct _CREATE_DISK_GPT {
 
 typedef struct _CREATE_DISK {
   PARTITION_STYLE  PartitionStyle;
-  union {
+  _ANONYMOUS_UNION union {
     CREATE_DISK_MBR  Mbr;
     CREATE_DISK_GPT  Gpt;
-  };
+  } DUMMYUNIONNAME;
 } CREATE_DISK, *PCREATE_DISK;
 
 typedef struct _DISK_SIGNATURE {
   ULONG  PartitionStyle;
-  union {
+  _ANONYMOUS_UNION union {
     struct {
       ULONG  Signature;
       ULONG  CheckSum;
@@ -3548,7 +3562,7 @@ typedef struct _DISK_SIGNATURE {
     struct {
       GUID  DiskId;
     } Gpt;
-  };
+  } DUMMYUNIONNAME;
 } DISK_SIGNATURE, *PDISK_SIGNATURE;
 
 typedef VOID DDKFASTAPI
@@ -3687,10 +3701,10 @@ typedef struct _KPCR_TIB {
   PVOID  StackBase;             /* 04 */
   PVOID  StackLimit;            /* 08 */
   PVOID  SubSystemTib;          /* 0C */
-  union {
+  _ANONYMOUS_UNION union {
     PVOID  FiberData;           /* 10 */
     DWORD  Version;             /* 10 */
-  };
+  } DUMMYUNIONNAME;
   PVOID  ArbitraryUserPointer;  /* 14 */
 } KPCR_TIB, *PKPCR_TIB;         /* 18 */
 
@@ -3705,7 +3719,8 @@ typedef struct _KPCR {
   ULONG  IRR;                   /* 24 */
   ULONG  IrrActive;             /* 28 */
   ULONG  IDR;                   /* 2C */
-  PVOID  KdVersionBlock;        /* 30 */  PUSHORT  IDT;                 /* 34 */
+  PVOID  KdVersionBlock;        /* 30 */
+  PUSHORT  IDT;                 /* 34 */
   PUSHORT  GDT;                 /* 38 */
   struct _KTSS  *TSS;           /* 3C */
   USHORT  MajorVersion;         /* 40 */
@@ -3816,7 +3831,7 @@ InterlockedExchangeAdd(
  *   IN PVOID  Value)
  */
 #define InterlockedExchangePointer(Target, Value) \
-  (PVOID) InterlockedExchange((PLONG) Target, (LONG) Value);
+  ((PVOID) InterlockedExchange((PLONG) Target, (LONG) Value))
 
 /*
  * PVOID
@@ -3826,7 +3841,7 @@ InterlockedExchangeAdd(
  *   IN PVOID  Comparand)
  */
 #define InterlockedCompareExchangePointer(Destination, Exchange, Comparand) \
-  (PVOID) InterlockedCompareExchange((PLONG) Destination, (LONG) Exchange, (LONG) Comparand);
+  ((PVOID) InterlockedCompareExchange((PLONG) Destination, (LONG) Exchange, (LONG) Comparand))
 
 #endif /* !__INTERLOCKED_DECLARED */
 
@@ -3858,7 +3873,7 @@ KefReleaseSpinLockFromDpcLevel(
 */
 
 #define ARGUMENT_PRESENT(ArgumentPointer) \
-  (BOOLEAN) ((PVOID)ArgumentPointer != (PVOID)NULL);
+  ((BOOLEAN) ((PVOID)ArgumentPointer != (PVOID)NULL))
 
 /*
  * ULONG
@@ -3866,7 +3881,7 @@ KefReleaseSpinLockFromDpcLevel(
  *   IN PVOID  Va)
  */
 #define BYTE_OFFSET(Va) \
-  (ULONG) ((ULONG_PTR) (Va) & (PAGE_SIZE - 1));
+  ((ULONG) ((ULONG_PTR) (Va) & (PAGE_SIZE - 1)))
 
 /*
  * ULONG
@@ -3874,7 +3889,7 @@ KefReleaseSpinLockFromDpcLevel(
  *   IN ULONG  Size)
  */
 #define BYTES_TO_PAGES(Size) \
-  (ULONG) ((ULONG_PTR) (Size) >> PAGE_SHIFT) + (((ULONG) (Size) & (PAGE_SIZE - 1)) != 0);
+  ((ULONG) ((ULONG_PTR) (Size) >> PAGE_SHIFT) + (((ULONG) (Size) & (PAGE_SIZE - 1)) != 0))
 
 /*
  * PCHAR
@@ -3904,7 +3919,7 @@ KefReleaseSpinLockFromDpcLevel(
  *   IN PVOID  Va)
  */
 #define PAGE_ALIGN(Va) \
-  (PVOID) ((ULONG_PTR)(Va) & ~(PAGE_SIZE - 1));
+  ((PVOID) ((ULONG_PTR)(Va) & ~(PAGE_SIZE - 1)))
 
 /*
  * ULONG_PTR
@@ -3912,7 +3927,7 @@ KefReleaseSpinLockFromDpcLevel(
  *   IN ULONG_PTR  Size)
  */
 #define ROUND_TO_PAGES(Size) \
-  (ULONG_PTR) (((ULONG_PTR) Size + PAGE_SIZE - 1) & ~(PAGE_SIZE - 1));
+  ((ULONG_PTR) (((ULONG_PTR) Size + PAGE_SIZE - 1) & ~(PAGE_SIZE - 1)))
 
 NTOSAPI
 VOID
@@ -4025,7 +4040,7 @@ RtlAssert(
 #define IsListEmpty(_ListHead) \
   ((_ListHead)->Flink == (_ListHead))
 
-static inline PSINGLE_LIST_ENTRY 
+static __inline PSINGLE_LIST_ENTRY 
 PopEntryList(
   IN PSINGLE_LIST_ENTRY  ListHead)
 {
@@ -4069,7 +4084,7 @@ PopEntryList(
   (_Entry)->Blink = NULL; \
 }
 
-static inline PLIST_ENTRY 
+static __inline PLIST_ENTRY 
 RemoveHeadList(
   IN PLIST_ENTRY  ListHead)
 {
@@ -4092,7 +4107,7 @@ RemoveHeadList(
 	return Entry;
 }
 
-static inline PLIST_ENTRY
+static __inline PLIST_ENTRY
 RemoveTailList(
   IN PLIST_ENTRY  ListHead)
 {
@@ -4412,7 +4427,7 @@ RtlEqualUnicodeString(
  */
 #ifndef RtlFillMemory
 #define RtlFillMemory(Destination, Length, Fill) \
-  memset(Destination, Fill, Length);
+  memset(Destination, Fill, Length)
 #endif
 
 #ifndef RtlFillBytes
@@ -4974,7 +4989,7 @@ RtlxUnicodeStringToAnsiSize(
  */
 #ifndef RtlZeroMemory
 #define RtlZeroMemory(Destination, Length) \
-  memset(Destination, 0, Length);
+  memset(Destination, 0, Length)
 #endif
 
 #ifndef RtlZeroBytes
@@ -5024,7 +5039,7 @@ ExAcquireSharedWaitForExclusive(
   IN PERESOURCE  Resource,
   IN BOOLEAN  Wait);
 
-static inline PVOID
+static __inline PVOID
 ExAllocateFromNPagedLookasideList(
   IN PNPAGED_LOOKASIDE_LIST  Lookaside)
 {
@@ -5039,7 +5054,7 @@ ExAllocateFromNPagedLookasideList(
   return Entry;
 }
 
-static inline PVOID
+static __inline PVOID
 ExAllocateFromPagedLookasideList(
   IN PPAGED_LOOKASIDE_LIST  Lookaside)
 {
@@ -5157,7 +5172,7 @@ ExFreePoolWithTag(
 
 #define ExQueryDepthSList(ListHead) QueryDepthSList(ListHead)
 
-static inline VOID
+static __inline VOID
 ExFreeToNPagedLookasideList(
   IN PNPAGED_LOOKASIDE_LIST  Lookaside,
   IN PVOID  Entry)
@@ -5172,7 +5187,7 @@ ExFreeToNPagedLookasideList(
 	}
 }
 
-static inline VOID
+static __inline VOID
 ExFreeToPagedLookasideList(
   IN PPAGED_LOOKASIDE_LIST  Lookaside,
   IN PVOID  Entry)
@@ -5268,7 +5283,7 @@ ExInitializeResourceLite(
  *   IN PSLIST_HEADER  SListHead)
  */
 #define InitializeSListHead(_SListHead) \
-	(_SListHead)->Alignment = 0;
+	(_SListHead)->Alignment = 0
 
 #define ExInitializeSListHead InitializeSListHead
 
@@ -5791,7 +5806,7 @@ IoAcquireRemoveLockEx(
  */
 #define IoAcquireRemoveLock(_RemoveLock, \
                             _Tag) \
-  IoAcquireRemoveLockEx(_RemoveLock, _Tag, __FILE__, __LINE__, sizeof(IO_REMOVE_LOCK));
+  IoAcquireRemoveLockEx(_RemoveLock, _Tag, __FILE__, __LINE__, sizeof(IO_REMOVE_LOCK))
 
 /*
  * VOID
@@ -6328,7 +6343,7 @@ IoGetFileObjectGenericMapping(
  *   IN ULONG  ControlCode)
  */
 #define IoGetFunctionCodeFromCtlCode(_ControlCode) \
-  (((_ControlCode) >> 2) & 0x00000FFF);
+  (((_ControlCode) >> 2) & 0x00000FFF)
 
 NTOSAPI
 PVOID
@@ -6373,7 +6388,7 @@ KeInitializeDpc(
                                _DpcRoutine) \
   KeInitializeDpc(&(_DeviceObject)->Dpc, \
     (PKDEFERRED_ROUTINE) (_DpcRoutine), \
-    _DeviceObject);
+    _DeviceObject)
 
 NTOSAPI
 VOID
@@ -6403,7 +6418,7 @@ IoInitializeRemoveLockEx(
 #define IoInitializeRemoveLock( \
   Lock, AllocateTag, MaxLockedMinutes, HighWatermark) \
   IoInitializeRemoveLockEx(Lock, AllocateTag, MaxLockedMinutes, \
-    HighWatermark, sizeof(IO_REMOVE_LOCK));
+    HighWatermark, sizeof(IO_REMOVE_LOCK))
 
 NTOSAPI
 NTSTATUS
@@ -6619,7 +6634,7 @@ IoReleaseRemoveLockEx(
  */
 #define IoReleaseRemoveLockAndWait(_RemoveLock, \
                                    _Tag) \
-  IoReleaseRemoveLockEx(_RemoveLock, _Tag, sizeof(IO_REMOVE_LOCK));
+  IoReleaseRemoveLockEx(_RemoveLock, _Tag, sizeof(IO_REMOVE_LOCK))
 
 NTOSAPI
 VOID
@@ -6714,8 +6729,8 @@ IoReuseIrp(
  */
 #define IoSetCancelRoutine(_Irp, \
                            _CancelRoutine) \
-  (PDRIVER_CANCEL) InterlockedExchangePointer( \
-    (PVOID *) &(_Irp)->CancelRoutine, (PVOID) (_CancelRoutine));
+  ((PDRIVER_CANCEL) InterlockedExchangePointer( \
+    (PVOID *) &(_Irp)->CancelRoutine, (PVOID) (_CancelRoutine)))
 
 /*
  * VOID
@@ -6738,7 +6753,7 @@ IoReuseIrp(
   assert(_InvokeOnSuccess || _InvokeOnError || _InvokeOnCancel ? \
     _CompletionRoutine != NULL : TRUE); \
   _IrpSp = IoGetNextIrpStackLocation(_Irp); \
-  _IrpSp->CompletionRoutine = (_CompletionRoutine); \
+  _IrpSp->CompletionRoutine = (PIO_COMPLETION_ROUTINE)(_CompletionRoutine); \
 	_IrpSp->Context = (_Context); \
   _IrpSp->Control = 0; \
   if (_InvokeOnSuccess) _IrpSp->Control = SL_INVOKE_ON_SUCCESS; \
@@ -7821,7 +7836,7 @@ MmMarkPhysicalMemoryAsGood(
     | MDL_SOURCE_IS_NONPAGED_POOL)) ? \
     (_Mdl)->MappedSystemVa : \
     (PVOID) MmMapLockedPagesSpecifyCache((_Mdl), \
-      KernelMode, MmCached, NULL, FALSE, _Priority);
+      KernelMode, MmCached, NULL, FALSE, _Priority)
 
 NTOSAPI
 PVOID
@@ -7837,8 +7852,8 @@ MmGetSystemRoutineAddress(
  */
 #define ADDRESS_AND_SIZE_TO_SPAN_PAGES(_Va, \
                                        _Size) \
-  (ULONG) ((((ULONG_PTR) (_Va) & (PAGE_SIZE - 1)) \
-    + (_Size) + (PAGE_SIZE - 1)) >> PAGE_SHIFT)
+  ((ULONG) ((((ULONG_PTR) (_Va) & (PAGE_SIZE - 1)) \
+    + (_Size) + (PAGE_SIZE - 1)) >> PAGE_SHIFT))
 
 /*
  * VOID

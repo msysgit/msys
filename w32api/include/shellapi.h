@@ -1,6 +1,6 @@
 #ifndef _SHELLAPI_H
 #define _SHELLAPI_H
-#if __GNUC__ >=3
+#if __GNUC__ >= 3
 #pragma GCC system_header
 #endif
 
@@ -90,9 +90,13 @@ extern "C" {
 #define SHGFI_SHELLICONSIZE	4
 #define SHGFI_PIDL	8
 #define SHGFI_USEFILEATTRIBUTES	16
+#define SHERB_NOCONFIRMATION 1
+#define SHERB_NOPROGRESSUI 2
+#define SHERB_NOSOUND 4
 
 typedef WORD FILEOP_FLAGS;
 typedef WORD PRINTEROP_FLAGS;
+#include <pshpack2.h>
 typedef struct _AppBarData {
 	DWORD	cbSize;
 	HWND	hWnd;
@@ -154,7 +158,6 @@ typedef struct _SHELLEXECUTEINFOW {
 	HANDLE hIcon;
 	HANDLE hProcess;
 } SHELLEXECUTEINFOW,*LPSHELLEXECUTEINFOW;
-#include <pshpack2.h>
 typedef struct _SHFILEOPSTRUCTA {
 	HWND hwnd;
 	UINT wFunc;
@@ -175,7 +178,6 @@ typedef struct _SHFILEOPSTRUCTW {
 	PVOID hNameMappings;
 	LPCWSTR lpszProgressTitle;
 } SHFILEOPSTRUCTW,*LPSHFILEOPSTRUCTW;
-#include <poppack.h>
 typedef struct _SHFILEINFOA {
 	HICON hIcon;
 	int iIcon;
@@ -190,6 +192,12 @@ typedef struct _SHFILEINFOW {
 	WCHAR szDisplayName[MAX_PATH];
 	WCHAR szTypeName[80];
 } SHFILEINFOW;
+typedef struct _SHQUERYRBINFO {
+	DWORD   cbSize;
+	__int64 i64Size;
+	__int64 i64NumItems;
+} SHQUERYRBINFO, *LPSHQUERYRBINFO;
+#include <poppack.h>
 
 LPWSTR * WINAPI CommandLineToArgvW(LPCWSTR,int*);
 void WINAPI DragAcceptFiles(HWND,BOOL);
@@ -219,6 +227,10 @@ int WINAPI SHFileOperationW(LPSHFILEOPSTRUCTW);
 void WINAPI SHFreeNameMappings(HANDLE);
 DWORD WINAPI SHGetFileInfoA(LPCSTR,DWORD,SHFILEINFOA*,UINT,UINT);
 DWORD WINAPI SHGetFileInfoW(LPCWSTR,DWORD,SHFILEINFOW*,UINT,UINT);
+HRESULT WINAPI SHQueryRecycleBinA(LPCSTR, LPSHQUERYRBINFO);
+HRESULT WINAPI SHQueryRecycleBinW(LPCWSTR, LPSHQUERYRBINFO);
+HRESULT WINAPI SHEmptyRecycleBinA(HWND,LPCSTR,DWORD);
+HRESULT WINAPI SHEmptyRecycleBinW(HWND,LPCWSTR,DWORD);
 
 #ifdef UNICODE
 typedef NOTIFYICONDATAW NOTIFYICONDATA,*PNOTIFYICONDATA;
@@ -236,6 +248,9 @@ typedef SHFILEINFOW SHFILEINFO;
 #define ShellExecuteEx ShellExecuteExW
 #define SHFileOperation SHFileOperationW
 #define SHGetFileInfo SHGetFileInfoW
+#define SHQueryRecycleBin SHQueryRecycleBinW
+#define SHEmptyRecycleBin SHEmptyRecycleBinW
+
 #else
 typedef NOTIFYICONDATAA NOTIFYICONDATA,*PNOTIFYICONDATA;
 typedef SHELLEXECUTEINFOA SHELLEXECUTEINFO,*LPSHELLEXECUTEINFO;
@@ -252,6 +267,8 @@ typedef SHFILEINFOA SHFILEINFO;
 #define ShellExecuteEx ShellExecuteExA
 #define SHFileOperation SHFileOperationA
 #define SHGetFileInfo SHGetFileInfoA
+#define SHQueryRecycleBin SHQueryRecycleBinA
+#define SHEmptyRecycleBin SHEmptyRecycleBinA
 #endif
 #ifdef __cplusplus
 }

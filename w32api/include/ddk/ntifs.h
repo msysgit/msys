@@ -24,7 +24,7 @@
 #define _NTIFS_
 #define _GNU_NTIFS_
 
-#if __GNUC__ >=3
+#if __GNUC__ >= 3
 #pragma GCC system_header
 #endif
 
@@ -54,11 +54,6 @@ extern PSE_EXPORTS                  SeExports;
 extern PACL                         SePublicDefaultDacl;
 extern PACL                         SeSystemDefaultDacl;
 
-#define ACCESS_ALLOWED_ACE_TYPE         (0x0)
-#define ACCESS_DENIED_ACE_TYPE          (0x1)
-#define SYSTEM_AUDIT_ACE_TYPE           (0x2)
-#define SYSTEM_ALARM_ACE_TYPE           (0x3)
-
 #define ANSI_DOS_STAR                   ('<')
 #define ANSI_DOS_QM                     ('>')
 #define ANSI_DOS_DOT                    ('"')
@@ -67,6 +62,12 @@ extern PACL                         SeSystemDefaultDacl;
 #define DOS_QM                          (L'>')
 #define DOS_DOT                         (L'"')
 
+/* also in winnt.h */
+#define ACCESS_ALLOWED_ACE_TYPE         (0x0)
+#define ACCESS_DENIED_ACE_TYPE          (0x1)
+#define SYSTEM_AUDIT_ACE_TYPE           (0x2)
+#define SYSTEM_ALARM_ACE_TYPE           (0x3)
+ 
 #define COMPRESSION_FORMAT_NONE         (0x0000)
 #define COMPRESSION_FORMAT_DEFAULT      (0x0001)
 #define COMPRESSION_FORMAT_LZNT1        (0x0002)
@@ -85,6 +86,7 @@ extern PACL                         SeSystemDefaultDacl;
 #define FILE_ACTION_REMOVED_BY_DELETE       0x00000009
 #define FILE_ACTION_ID_NOT_TUNNELLED        0x0000000A
 #define FILE_ACTION_TUNNELLED_ID_COLLISION  0x0000000B
+/* end  winnt.h */
 
 #define FILE_EA_TYPE_BINARY             0xfffe
 #define FILE_EA_TYPE_ASCII              0xfffd
@@ -99,6 +101,7 @@ extern PACL                         SeSystemDefaultDacl;
 
 #define FILE_NEED_EA                    0x00000080
 
+/* also in winnt.h */
 #define FILE_NOTIFY_CHANGE_FILE_NAME    0x00000001
 #define FILE_NOTIFY_CHANGE_DIR_NAME     0x00000002
 #define FILE_NOTIFY_CHANGE_NAME         0x00000003
@@ -113,6 +116,7 @@ extern PACL                         SeSystemDefaultDacl;
 #define FILE_NOTIFY_CHANGE_STREAM_SIZE  0x00000400
 #define FILE_NOTIFY_CHANGE_STREAM_WRITE 0x00000800
 #define FILE_NOTIFY_VALID_MASK          0x00000fff
+/* end winnt.h */
 
 #define FILE_OPLOCK_BROKEN_TO_LEVEL_2   0x00000007
 #define FILE_OPLOCK_BROKEN_TO_NONE      0x00000008
@@ -158,7 +162,7 @@ extern PACL                         SeSystemDefaultDacl;
 #define FILE_PIPE_READ_DATA             0x00000000
 #define FILE_PIPE_WRITE_SPACE           0x00000001
 
-#define FILE_STORAGE_TYPE_SPECIFIED             0x00000041  // FILE_DIRECTORY_FILE | FILE_NON_DIRECTORY_FILE
+#define FILE_STORAGE_TYPE_SPECIFIED             0x00000041  /* FILE_DIRECTORY_FILE | FILE_NON_DIRECTORY_FILE */
 #define FILE_STORAGE_TYPE_DEFAULT               (StorageTypeDefault << FILE_STORAGE_TYPE_SHIFT)
 #define FILE_STORAGE_TYPE_DIRECTORY             (StorageTypeDirectory << FILE_STORAGE_TYPE_SHIFT)
 #define FILE_STORAGE_TYPE_FILE                  (StorageTypeFile << FILE_STORAGE_TYPE_SHIFT)
@@ -228,11 +232,11 @@ extern PACL                         SeSystemDefaultDacl;
 #define IO_ATTACH_DEVICE                0x0400
 
 #define IO_ATTACH_DEVICE_API            0x80000000
-
+/* also in winnt.h */
 #define IO_COMPLETION_QUERY_STATE       0x0001
 #define IO_COMPLETION_MODIFY_STATE      0x0002
 #define IO_COMPLETION_ALL_ACCESS        (STANDARD_RIGHTS_REQUIRED|SYNCHRONIZE|0x3)
-
+/* end winnt.h */
 #define IO_FILE_OBJECT_NON_PAGED_POOL_CHARGE    64
 #define IO_FILE_OBJECT_PAGED_POOL_CHARGE        1024
 
@@ -252,10 +256,10 @@ extern PACL                         SeSystemDefaultDacl;
 
 #define MAP_PROCESS                     1L
 #define MAP_SYSTEM                      2L
-
 #define MEM_DOS_LIM                     0x40000000
+/* also in winnt.h */
 #define MEM_IMAGE                       SEC_IMAGE
-
+/* end winnt.h */ 
 #define OB_TYPE_TYPE                    1
 #define OB_TYPE_DIRECTORY               2
 #define OB_TYPE_SYMBOLIC_LINK           3
@@ -288,13 +292,15 @@ extern PACL                         SeSystemDefaultDacl;
 #define PORT_CONNECT                    0x0001
 #define PORT_ALL_ACCESS                 (STANDARD_RIGHTS_ALL |\
                                          PORT_CONNECT)
-
-#define SEC_BASED                       0x00200000
-#define SEC_NO_CHANGE                   0x00400000
-#define SEC_FILE                        0x00800000
-#define SEC_IMAGE                       0x01000000
-#define SEC_COMMIT                      0x08000000
-#define SEC_NOCACHE                     0x10000000
+/* also in winnt.h */
+#define SEC_BASED	0x00200000
+#define SEC_NO_CHANGE	0x00400000
+#define SEC_FILE	0x00800000
+#define SEC_IMAGE	0x01000000
+#define SEC_VLM		0x02000000
+#define SEC_RESERVE	0x04000000
+#define SEC_COMMIT	0x08000000
+#define SEC_NOCACHE	0x10000000
 
 #define SECURITY_WORLD_SID_AUTHORITY    {0,0,0,0,0,1}
 #define SECURITY_WORLD_RID              (0x00000000L)
@@ -331,6 +337,7 @@ extern PACL                         SeSystemDefaultDacl;
 #define TOKEN_EXECUTE    (STANDARD_RIGHTS_EXECUTE)
 
 #define TOKEN_SOURCE_LENGTH 8
+/* end winnt.h */
 
 #define TOKEN_HAS_TRAVERSE_PRIVILEGE    0x01
 #define TOKEN_HAS_BACKUP_PRIVILEGE      0x02
@@ -378,7 +385,7 @@ extern PACL                         SeSystemDefaultDacl;
 #define FSCTL_GET_HFS_INFORMATION       CTL_CODE(FILE_DEVICE_FILE_SYSTEM, 31, METHOD_BUFFERED, FILE_ANY_ACCESS)
 #define FSCTL_ALLOW_EXTENDED_DASD_IO    CTL_CODE(FILE_DEVICE_FILE_SYSTEM, 32, METHOD_NEITHER,  FILE_ANY_ACCESS)
 
-#endif // (VER_PRODUCTBUILD >= 1381)
+#endif /* (VER_PRODUCTBUILD >= 1381) */
 
 #if (VER_PRODUCTBUILD >= 2195)
 
@@ -423,7 +430,7 @@ extern PACL                         SeSystemDefaultDacl;
 #define FSCTL_READ_FROM_PLEX            CTL_CODE(FILE_DEVICE_FILE_SYSTEM, 71, METHOD_OUT_DIRECT, FILE_READ_DATA)
 #define FSCTL_FILE_PREFETCH             CTL_CODE(FILE_DEVICE_FILE_SYSTEM, 72, METHOD_BUFFERED, FILE_SPECIAL_ACCESS)
 
-#endif // (VER_PRODUCTBUILD >= 2195)
+#endif /* (VER_PRODUCTBUILD >= 2195) */
 
 #define FSCTL_MAILSLOT_PEEK             CTL_CODE(FILE_DEVICE_MAILSLOT, 0, METHOD_NEITHER, FILE_READ_DATA)
 
@@ -651,7 +658,7 @@ typedef struct _MMSUPPORT {
     ULONG           NextAgingSlot;
     ULONG           EstimatedAvailable;
     ULONG           GrowthSinceLastEstimate;
-#endif // (VER_PRODUCTBUILD >= 2195)
+#endif /* (VER_PRODUCTBUILD >= 2195) */
 } MMSUPPORT, *PMMSUPPORT;
 
 #endif
@@ -701,30 +708,30 @@ typedef struct _DEVICE_MAP {
 #if (VER_PRODUCTBUILD >= 2600)
 
 typedef struct _EX_FAST_REF {
-    union {
+    _ANONYMOUS_UNION union {
         PVOID Object;
         ULONG RefCnt : 3;
         ULONG Value;
-    };
+    } DUMMYUNIONNAME;
 } EX_FAST_REF, *PEX_FAST_REF;
 
 typedef struct _EX_PUSH_LOCK {
-    union {
-        struct {
+    _ANONYMOUS_UNION union {
+        _ANONYMOUS_STRUCT struct {
             ULONG   Waiting     : 1;
             ULONG   Exclusive   : 1;
             ULONG   Shared      : 30;
-        };
+        } DUMMYSTRUCTNAME;
         ULONG   Value;
         PVOID   Ptr;
-    };
+    } DUMMYUNIONNAME;
 } EX_PUSH_LOCK, *PEX_PUSH_LOCK;
 
 typedef struct _EX_RUNDOWN_REF {
-    union {
+    _ANONYMOUS_UNION union {
         ULONG Count;
         PVOID Ptr;
-    };
+    } DUMMYUNIONNAME;
 } EX_RUNDOWN_REF, *PEX_RUNDOWN_REF;
 
 #endif
@@ -971,7 +978,7 @@ typedef struct _FILE_FS_OBJECT_ID_INFORMATION {
     UCHAR ExtendedInfo[48];
 } FILE_FS_OBJECT_ID_INFORMATION, *PFILE_FS_OBJECT_ID_INFORMATION;
 
-#endif // (VER_PRODUCTBUILD >= 2195)
+#endif /* (VER_PRODUCTBUILD >= 2195) */
 
 typedef struct _FILE_FS_SIZE_INFORMATION {
     LARGE_INTEGER   TotalAllocationUnits;
@@ -1036,14 +1043,14 @@ typedef struct _FILE_LOCK_INFO {
     LARGE_INTEGER   EndingByte;
 } FILE_LOCK_INFO, *PFILE_LOCK_INFO;
 
-// raw internal file lock struct returned from FsRtlGetNextFileLock
+/* raw internal file lock struct returned from FsRtlGetNextFileLock */
 typedef struct _FILE_SHARED_LOCK_ENTRY {
     PVOID           Unknown1;
     PVOID           Unknown2;
     FILE_LOCK_INFO  FileLock;
 } FILE_SHARED_LOCK_ENTRY, *PFILE_SHARED_LOCK_ENTRY;
 
-// raw internal file lock struct returned from FsRtlGetNextFileLock
+/* raw internal file lock struct returned from FsRtlGetNextFileLock */
 typedef struct _FILE_EXCLUSIVE_LOCK_ENTRY {
     LIST_ENTRY      ListEntry;
     PVOID           Unknown1;
@@ -1115,14 +1122,14 @@ typedef struct _FILE_NAMES_INFORMATION {
 typedef struct _FILE_OBJECTID_INFORMATION {
     LONGLONG        FileReference;
     UCHAR           ObjectId[16];
-    union {
+    _ANONYMOUS_UNION union {
         struct {
             UCHAR   BirthVolumeId[16];
             UCHAR   BirthObjectId[16];
             UCHAR   DomainId[16];
         } ;
         UCHAR       ExtendedInfo[48];
-    };
+    } DUMMYUNIONNAME;
 } FILE_OBJECTID_INFORMATION, *PFILE_OBJECTID_INFORMATION;
 
 typedef struct _FILE_OLE_CLASSID_INFORMATION {
@@ -1275,7 +1282,7 @@ typedef struct _FSRTL_COMMON_FCB_HEADER {
 #if (VER_PRODUCTBUILD >= 1381)
     UCHAR           Flags2;
     UCHAR           Reserved;
-#endif // (VER_PRODUCTBUILD >= 1381)
+#endif /* (VER_PRODUCTBUILD >= 1381) */
     PERESOURCE      Resource;
     PERESOURCE      PagingIoResource;
     LARGE_INTEGER   AllocationSize;
@@ -1440,11 +1447,11 @@ typedef struct _PRIVATE_CACHE_MAP_FLAGS {
 } PRIVATE_CACHE_MAP_FLAGS, *PPRIVATE_CACHE_MAP_FLAGS;
 
 typedef struct _PRIVATE_CACHE_MAP {
-    union {
+    _ANONYMOUS_UNION union {
         CSHORT                  NodeTypeCode;
         PRIVATE_CACHE_MAP_FLAGS Flags;
         ULONG                   UlongFlags;
-    };
+    } DUMMYUNIONNAME;
     ULONG                       ReadAheadMask;
     PFILE_OBJECT                FileObject;
     LARGE_INTEGER               FileOffset1;
@@ -1676,7 +1683,7 @@ typedef struct _VAD_HEADER {
     PVAD_HEADER ParentLink;
     PVAD_HEADER LeftLink;
     PVAD_HEADER RightLink;
-    ULONG       Flags;          // LSB = CommitCharge
+    ULONG       Flags;          /* LSB = CommitCharge */
     PVOID       ControlArea;
     PVOID       FirstProtoPte;
     PVOID       LastPTE;
@@ -1816,7 +1823,7 @@ CcGetFlushedValidData (
     IN BOOLEAN                  BcbListHeld
 );
 
-#endif // (VER_PRODUCTBUILD >= 2195)
+#endif /* (VER_PRODUCTBUILD >= 2195) */
 
 NTKERNELAPI
 LARGE_INTEGER
@@ -1997,7 +2004,7 @@ CcRemapBcb (
     IN PVOID Bcb
 );
 
-#endif // (VER_PRODUCTBUILD >= 2195)
+#endif /* (VER_PRODUCTBUILD >= 2195) */
 
 NTKERNELAPI
 VOID
@@ -2075,8 +2082,8 @@ VOID
 NTAPI
 CcSetReadAheadGranularity (
     IN PFILE_OBJECT FileObject,
-    IN ULONG        Granularity     // default: PAGE_SIZE
-                                    // allowed: 2^n * PAGE_SIZE
+    IN ULONG        Granularity     /* default: PAGE_SIZE */
+                                    /* allowed: 2^n * PAGE_SIZE */
 );
 
 NTKERNELAPI
@@ -2121,7 +2128,7 @@ CcWaitForCurrentLazyWriterActivity (
     VOID
 );
 
-#endif // (VER_PRODUCTBUILD >= 2195)
+#endif /* (VER_PRODUCTBUILD >= 2195) */
 
 NTKERNELAPI
 BOOLEAN
@@ -2172,7 +2179,7 @@ FsRtlAllocateFileLock (
     IN PUNLOCK_ROUTINE              UnlockRoutine OPTIONAL
 );
 
-#endif // (VER_PRODUCTBUILD >= 2195)
+#endif /* (VER_PRODUCTBUILD >= 2195) */
 
 NTKERNELAPI
 PVOID
@@ -2382,7 +2389,7 @@ FsRtlFastUnlockAll (
     IN PEPROCESS            Process,
     IN PVOID                Context OPTIONAL
 );
-//ret: STATUS_RANGE_NOT_LOCKED
+/* ret: STATUS_RANGE_NOT_LOCKED */
 
 NTKERNELAPI
 NTSTATUS
@@ -2394,7 +2401,7 @@ FsRtlFastUnlockAllByKey (
     IN ULONG                Key,
     IN PVOID                Context OPTIONAL
 );  
-//ret: STATUS_RANGE_NOT_LOCKED
+/* ret: STATUS_RANGE_NOT_LOCKED */
 
 NTKERNELAPI
 NTSTATUS
@@ -2409,7 +2416,7 @@ FsRtlFastUnlockSingle (
     IN PVOID                Context OPTIONAL,
     IN BOOLEAN              AlreadySynchronized
 );                      
-//ret:  STATUS_RANGE_NOT_LOCKED
+/* ret:  STATUS_RANGE_NOT_LOCKED */
 
 NTKERNELAPI
 BOOLEAN
@@ -2433,7 +2440,7 @@ FsRtlFreeFileLock (
     IN PFILE_LOCK FileLock
 );
 
-#endif // (VER_PRODUCTBUILD >= 2195)
+#endif /* (VER_PRODUCTBUILD >= 2195) */
 
 NTKERNELAPI
 NTSTATUS
@@ -2647,7 +2654,7 @@ FsRtlNotifyVolumeEvent (
     IN ULONG        EventCode
 );
 
-#endif // (VER_PRODUCTBUILD >= 2195)
+#endif /* (VER_PRODUCTBUILD >= 2195) */
 
 NTKERNELAPI
 NTSTATUS
@@ -2820,7 +2827,7 @@ IoCheckQuotaBufferValidity (
     OUT PULONG                  ErrorOffset
 );
 
-#endif // (VER_PRODUCTBUILD >= 2195)
+#endif /* (VER_PRODUCTBUILD >= 2195) */
 
 NTKERNELAPI
 PFILE_OBJECT
@@ -2840,7 +2847,7 @@ IoCreateStreamFileObjectLite (
     IN PDEVICE_OBJECT   DeviceObject OPTIONAL
 );
 
-#endif // (VER_PRODUCTBUILD >= 2195)
+#endif /* (VER_PRODUCTBUILD >= 2195) */
 
 NTKERNELAPI
 BOOLEAN
@@ -2883,7 +2890,7 @@ IoGetRequestorProcessId (
     IN PIRP Irp
 );
 
-#endif // (VER_PRODUCTBUILD >= 2195)
+#endif /* (VER_PRODUCTBUILD >= 2195) */
 
 NTKERNELAPI
 PIRP
@@ -2924,7 +2931,7 @@ IoIsValidNameGraftingBuffer (
     IN PREPARSE_DATA_BUFFER ReparseBuffer
 );
 
-#endif // (VER_PRODUCTBUILD >= 2195)
+#endif /* (VER_PRODUCTBUILD >= 2195) */
 
 NTKERNELAPI
 NTSTATUS
@@ -2981,7 +2988,7 @@ IoRegisterFsRegistrationChange (
     IN PDRIVER_FS_NOTIFICATION  DriverNotificationRoutine
 );
 
-#endif // (VER_PRODUCTBUILD >= 1381)
+#endif /* (VER_PRODUCTBUILD >= 1381) */
 
 NTKERNELAPI
 VOID
@@ -3050,7 +3057,7 @@ IoUnregisterFsRegistrationChange (
     IN PDRIVER_FS_NOTIFICATION  DriverNotificationRoutine
 );
 
-#endif // (VER_PRODUCTBUILD >= 1381)
+#endif /* (VER_PRODUCTBUILD >= 1381) */
 
 NTKERNELAPI
 NTSTATUS
@@ -3099,13 +3106,13 @@ KeInsertQueue (
 );
 
 NTKERNELAPI
-VOID
+BOOLEAN
 NTAPI
 KeInsertQueueApc (
-    IN PKAPC    Apc,
-    IN PVOID    SystemArgument1,
-    IN PVOID    SystemArgument2,
-    UCHAR       Unknown
+    IN PKAPC      Apc,
+    IN PVOID      SystemArgument1,
+    IN PVOID      SystemArgument2,
+    IN KPRIORITY  PriorityBoost
 );
 
 NTKERNELAPI
@@ -3148,7 +3155,7 @@ KeUnstackDetachProcess (
     IN PKAPC_STATE ApcState
 );
 
-#endif // (VER_PRODUCTBUILD >= 2195)
+#endif /* (VER_PRODUCTBUILD >= 2195) */
 
 NTKERNELAPI
 BOOLEAN
@@ -3656,7 +3663,7 @@ RtlSelfRelativeToAbsoluteSD (
     IN PULONG                   PrimaryGroupSize
 );
 
-#endif // (VER_PRODUCTBUILD >= 2195)
+#endif /* (VER_PRODUCTBUILD >= 2195) */
 
 NTSYSAPI
 NTSTATUS
@@ -3772,7 +3779,7 @@ SeCreateClientSecurityFromSubjectContext (
     OUT PSECURITY_CLIENT_CONTEXT    ClientContext
 );
 
-#endif // (VER_PRODUCTBUILD >= 2195)
+#endif /* (VER_PRODUCTBUILD >= 2195) */
 
 #define SeDeleteClientSecurity(C)  {                                           \
             if (SeTokenType((C)->ClientToken) == TokenPrimary) {               \
@@ -3817,7 +3824,7 @@ SeImpersonateClientEx (
     IN PETHREAD                 ServerThread OPTIONAL
 );
 
-#endif // (VER_PRODUCTBUILD >= 2195)
+#endif /* (VER_PRODUCTBUILD >= 2195) */
 
 NTKERNELAPI
 VOID
@@ -3891,7 +3898,7 @@ SeQueryInformationToken (
     OUT PVOID                  *TokenInformation
 );
 
-#endif // (VER_PRODUCTBUILD >= 2195)
+#endif /* (VER_PRODUCTBUILD >= 2195) */
 
 NTKERNELAPI
 NTSTATUS
@@ -3913,7 +3920,7 @@ SeQuerySessionIdToken (
     IN PULONG           SessionId
 );
 
-#endif // (VER_PRODUCTBUILD >= 2195)
+#endif /* (VER_PRODUCTBUILD >= 2195) */
 
 #define SeQuerySubjectContextToken( SubjectContext )                \
     ( ARGUMENT_PRESENT(                                             \
@@ -3989,7 +3996,7 @@ SeTokenIsRestricted (
     IN PACCESS_TOKEN Token
 );
 
-#endif // (VER_PRODUCTBUILD >= 2195)
+#endif /* (VER_PRODUCTBUILD >= 2195) */
 
 NTKERNELAPI
 TOKEN_TYPE
@@ -4025,7 +4032,7 @@ ZwAdjustPrivilegesToken (
     OUT PULONG              ReturnLength
 );
 
-#endif // (VER_PRODUCTBUILD >= 2195)
+#endif /* (VER_PRODUCTBUILD >= 2195) */
 
 NTSYSAPI
 NTSTATUS
@@ -4073,7 +4080,7 @@ ZwCancelIoFile (
     OUT PIO_STATUS_BLOCK    IoStatusBlock
 );
 
-#endif // (VER_PRODUCTBUILD >= 2195)
+#endif /* (VER_PRODUCTBUILD >= 2195) */
 
 NTSYSAPI
 NTSTATUS
@@ -4198,7 +4205,7 @@ ZwFlushVirtualMemory (
     OUT PIO_STATUS_BLOCK    IoStatusBlock
 );
 
-#endif // (VER_PRODUCTBUILD >= 2195)
+#endif /* (VER_PRODUCTBUILD >= 2195) */
 
 NTSYSAPI
 NTSTATUS
@@ -4238,13 +4245,13 @@ ZwInitiatePowerAction (
     IN BOOLEAN              Asynchronous
 );
 
-#endif // (VER_PRODUCTBUILD >= 2195)
+#endif /* (VER_PRODUCTBUILD >= 2195) */
 
 NTSYSAPI
 NTSTATUS
 NTAPI
 ZwLoadDriver (
-    // "\\Registry\\Machine\\System\\CurrentControlSet\\Services\\<DriverName>"
+    /* "\\Registry\\Machine\\System\\CurrentControlSet\\Services\\<DriverName>" */
     IN PUNICODE_STRING RegistryPath
 );
 
@@ -4342,7 +4349,7 @@ ZwPowerInformation (
     IN ULONG                    OutputBufferLength
 );
 
-#endif // (VER_PRODUCTBUILD >= 2195)
+#endif /* (VER_PRODUCTBUILD >= 2195) */
 
 NTSYSAPI
 NTSTATUS
@@ -4407,7 +4414,7 @@ ZwQueryEaFile (
     IN BOOLEAN              RestartScan
 );
 
-#endif // (VER_PRODUCTBUILD >= 2195)
+#endif /* (VER_PRODUCTBUILD >= 2195) */
 
 NTSYSAPI
 NTSTATUS
@@ -4435,11 +4442,11 @@ NTSYSAPI
 NTSTATUS
 NTAPI
 ZwQueryObject (
-    IN HANDLE               ObjectHandle,
-    IN OBJECT_INFO_CLASS    ObjectInformationClass,
-    OUT PVOID               ObjectInformation,
-    IN ULONG                Length,
-    OUT PULONG              ResultLength
+    IN HANDLE                      ObjectHandle,
+    IN OBJECT_INFORMATION_CLASS    ObjectInformationClass,
+    OUT PVOID                      ObjectInformation,
+    IN ULONG                       Length,
+    OUT PULONG                     ResultLength
 );
 
 NTSYSAPI
@@ -4513,7 +4520,7 @@ ZwRestoreKey (
     IN ULONG    Flags
 );
 
-#endif // (VER_PRODUCTBUILD >= 2195)
+#endif /* (VER_PRODUCTBUILD >= 2195) */
 
 NTSYSAPI
 NTSTATUS
@@ -4550,7 +4557,7 @@ ZwSetEaFile (
     IN ULONG                Length
 );
 
-#endif // (VER_PRODUCTBUILD >= 2195)
+#endif /* (VER_PRODUCTBUILD >= 2195) */
 
 NTSYSAPI
 NTSTATUS
@@ -4564,10 +4571,10 @@ NTSYSAPI
 NTSTATUS
 NTAPI
 ZwSetInformationObject (
-    IN HANDLE               ObjectHandle,
-    IN OBJECT_INFO_CLASS    ObjectInformationClass,
-    IN PVOID                ObjectInformation,
-    IN ULONG                ObjectInformationLength
+    IN HANDLE                       ObjectHandle,
+    IN OBJECT_INFORMATION_CLASS    ObjectInformationClass,
+    IN PVOID                        ObjectInformation,
+    IN ULONG                        ObjectInformationLength
 );
 
 NTSYSAPI
@@ -4591,7 +4598,7 @@ ZwSetSecurityObject (
     IN PSECURITY_DESCRIPTOR SecurityDescriptor
 );
 
-#endif // (VER_PRODUCTBUILD >= 2195)
+#endif /* (VER_PRODUCTBUILD >= 2195) */
 
 NTSYSAPI
 NTSTATUS
@@ -4623,7 +4630,7 @@ ZwSetVolumeInformationFile (
     IN FS_INFORMATION_CLASS FsInformationClass
 );
 
-#endif // (VER_PRODUCTBUILD >= 2195)
+#endif /* (VER_PRODUCTBUILD >= 2195) */
 
 NTSYSAPI
 NTSTATUS
@@ -4637,7 +4644,7 @@ NTSYSAPI
 NTSTATUS
 NTAPI
 ZwUnloadDriver (
-    // "\\Registry\\Machine\\System\\CurrentControlSet\\Services\\<DriverName>"
+    /* "\\Registry\\Machine\\System\\CurrentControlSet\\Services\\<DriverName>" */
     IN PUNICODE_STRING RegistryPath
 );
 
@@ -4681,4 +4688,4 @@ ZwYieldExecution (
 }
 #endif
 
-#endif // _NTIFS_
+#endif /* _NTIFS_ */

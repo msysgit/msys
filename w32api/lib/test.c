@@ -43,6 +43,7 @@
 #include <ntdef.h>
 #include <ntsecapi.h>
 #include <odbcinst.h>
+#include <powrprof.h>
 #include <psapi.h>
 #include <ras.h>
 #include <rasdlg.h>
@@ -67,8 +68,16 @@
 #include <setupapi.h>
 #include <aclapi.h>
 #include <security.h>
+#include <secext.h>
 #include <schnlsp.h>
+#include <ntldap.h>
+#include <winber.h>
+#include <winldap.h>
 #include <shlwapi.h>
+#include <snmp.h>
+#include <winsnmp.h>
+#include <mgmtapi.h>
+#include <vfw.h>
 
 #ifndef __OBJC__  /* problems with BOOL */
 #include <ole2.h>
@@ -78,6 +87,7 @@
 #include <ocidl.h>
 #include <ole2ver.h>
 #include <oleacc.h>
+#include <winable.h>
 #include <olectl.h>
 #include <oledlg.h>
 #include <docobj.h>
@@ -87,6 +97,7 @@
 #include <rpcproxy.h>
 #include <exdisp.h>
 #include <mshtml.h>
+#include <servprov.h>
 
 #else
 #undef BOOL
