@@ -6,7 +6,7 @@
  * Most structures in this file is obtained from Windows NT/2000 Native API
  * Reference by Gary Nebbett, ISBN 1578701996.
  *
- * This file is part of the MinGW package.
+ * This file is part of the w32api package.
  *
  * Contributors:
  *   Created by Casper S. Hornstrup <chorns@users.sourceforge.net>
@@ -18,7 +18,7 @@
  *
  * This code is distributed in the hope that it will be useful but
  * WITHOUT ANY WARRANTY. ALL WARRANTIES, EXPRESS OR IMPLIED ARE HEREBY
- * DISCLAMED. This includes but is not limited to warranties of
+ * DISCLAIMED. This includes but is not limited to warranties of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
  */
