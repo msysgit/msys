@@ -1,33 +1,27 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-  <meta http-equiv="content-type"
- content="text/html; charset=ISO-8859-1">
   <meta name="description"
  content="Home of MinGW -- Minimalist GNU for Windows -- project. Contains information about the MinGW runtime library and GNU/OSS development tools for MinGW.">
   <meta name="keywords"
  content="mingw, mingw32, programming, C++, C, C/C++, libraries, software, development tools, editors, IDEs, GNU">
-  <link href="mingw.css" type="text/css" rel="stylesheet" title="MinGW">
-  <title>MinGW</title>
+	<link rel="stylesheet" type="text/css" href="mingw.css">
+	<link rel="stylesheet" type="text/css" href="mingw_news.css">
+	<title>MinGW - Home</title>
 </head>
-<body link="#000099" vlink="#990099" alink="#000099">
-<h1>Minimalist GNU For Windows</h1>
-<table class="prim" cellspacing="6" border="0">
-  <tbody>
-    <tr>
-      <td class="side">
-				<!--#include file="ssi/lsidebar.html"--><br>
-      </td>
-      <td>
-      <table class="sec" cellspacing="6" border="0">
-        <tbody>
-          <tr>
-            <td>
-<!-- ======================================================================= -->
-<!--                                                                         -->
-<!--                               Main Body                                 -->
-<!--                                                                         -->
-            <p><span class="bold">MinGW:</span> A
+
+<body>
+<span style="visibility: hidden;">.</span>
+
+<!--#include virtual="ssi/header.html" -->
+
+<!--#include virtual="ssi/lside.html" -->
+
+<!--#include virtual="ssi/rside.html" -->
+
+<div id="Content">
+<h1>MinGW - Home</h1>
+<p>
+                        <p><span class="bold">MinGW:</span> A
 collection of freely available and freely distributable Windows
 specific header files and import libraries combined with GNU toolsets
 that allow one to produce native Windows programs that do not rely on
@@ -50,37 +44,11 @@ every&nbsp;<a href="http://www.mingw.org">www.mingw.org</a> page.
 	    </p>
 	    <p><span class="bold">Packages, Release Candidates, etc.</span>
 We've moved this information to the <a href="download.shtml">Download</a> web
-page.  We hope that you find our new look helpful.  A big thank-you to Nathan 
-Fisher for this work.
-	    </p>
-
-<!--                     End of Main Body                                   -->
-						</td>
-						<td class="news">
-							<p class="centre"><span class="bold">Latest News:</span></p>
-							<!--#include virtual="news-short.html"-->
-							<br>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      </td>
-    </tr>
-  </tbody>
-</table>
-<!--#include file="ssi/bottombar.html"-->
-<!--#include file="ssi/footer.html"-->
-<p>
- <a href="http://validator.w3.org/check/referer"><img border="0"
- src="http://www.w3.org/Icons/valid-html401"
- alt="Valid HTML 4.01!" height="31" width="88"></a>
- <a href="http://jigsaw.w3.org/css-validator/">
-  <img style="border:0;width:88px;height:31px"
-       src="http://jigsaw.w3.org/css-validator/images/vcss" 
-       alt="Valid CSS!">
- </a>
+page.  We hope that you find our new look helpful.</p>
 </p>
-<address><br>
-Last revised $Date: 2003-10-14 17:54:20 $ </address>
+</div>
+
+<!--#include virtual="ssi/footer.html" -->
+
 </body>
 </html>

@@ -1,36 +1,24 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-  <meta http-equiv="content-type"
- content="text/html; charset=ISO-8859-1">
   <meta name="description"
  content="Home of MinGW -- Minimalist GNU for Windows -- project. Contains information about the MinGW runtime library and GNU/OSS development tools for MinGW.">
-          
   <meta name="keywords"
  content="mingw, mingw32, programming, C++, C, C/C++, libraries, software, development tools, editors, IDEs, GNU">
-
-   <link href="mingw.css" type="text/css" rel="stylesheet" title="MinGW">
-  <title>Project History</title>
+	<link rel="stylesheet" type="text/css" href="mingw.css">
+	<title>MinGW - History</title>
 </head>
-<body link="#000099" vlink="#990099" alink="#000099">
 
-<h1>Project History</h1>
+<body>
+<span style="visibility: hidden;">.</span>
 
-<table class="prim" cellspacing="6" border="0">
-  <tbody>
-    <tr>
-      <td class="side"><!--#include file="ssi/lsidebar.html"--> <br>
-&nbsp;</td>
-      <td>
-      <table class="sec" cellspacing="6" border="0">
-        <tbody>
-          <tr>
-            <td>
-<!-- ======================================================================= -->
-<!--                                                                         -->
-<!--                               Main Body                                 -->
-<!--                                                                         -->
+<!--#include virtual="ssi/header.html" -->
 
+<!--#include virtual="ssi/lside.html" -->
+
+
+<div id="Content">
+<h1>MinGW - History</h1>
+<p>
 <p>
 Mingw32 was created by
 <a href="http://www12.canvas.ne.jp/peters/colin/gcc.html">Colin Peters</a>.
@@ -73,28 +61,10 @@ with OpenSource development, such as
 to set up such a project for Mingw32 and call for maintainers and
 developers.
 </p>
-
-<!--                            End of Main Body                             -->
-           </td>
-          </tr>
-        </tbody>
-      </table>
-      </td>
-    </tr>
-  </tbody>
-</table>
-<!--#include file="ssi/bottombar.html"--><!--#include file="ssi/footer.html"-->
-<p>
- <a href="http://validator.w3.org/check/referer"><img border="0"
-    src="http://www.w3.org/Icons/valid-html401"
-    alt="Valid HTML 4.01!" height="31" width="88"></a>
- <a href="http://jigsaw.w3.org/css-validator/">
-  <img style="border:0;width:88px;height:31px"
-       src="http://jigsaw.w3.org/css-validator/images/vcss" 
-       alt="Valid CSS!"></a>
 </p>
+</div>
 
-<address> <br>
-Last revised $Date: 2004-03-28 07:01:25 $ </address>
+<!--#include virtual="ssi/footer.html" -->
+
 </body>
 </html>

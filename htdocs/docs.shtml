@@ -1,37 +1,27 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-  <meta http-equiv="content-type"
- content="text/html; charset=ISO-8859-1">
   <meta name="description"
  content="Home of MinGW -- Minimalist GNU for Windows -- project. Contains information about the MinGW runtime library and GNU/OSS development tools for MinGW.">
-          
   <meta name="keywords"
  content="mingw, mingw32, programming, C++, C, C/C++, libraries, software, development tools, editors, IDEs, GNU">
-
-   <link href="mingw.css" type="text/css" rel="stylesheet" title="MinGW">
-  <title>Documentation</title>
+	<link rel="stylesheet" type="text/css" href="mingw.css">
+	<title>MinGW - Documentation</title>
 </head>
-<body link="#000099" vlink="#990099" alink="#000099">
 
-<h1>Documentation</h1>
+<body>
+<span style="visibility: hidden;">.</span>
 
-<table class="prim" cellspacing="6" border="0">
-  <tbody>
-    <tr>
-      <td class="side"><!--#include file="ssi/lsidebar.html"--> <br>
-&nbsp;</td>
-      <td>
-      <table class="sec" cellspacing="6" border="0">
-        <tbody>
-          <tr>
-            <td>
-<!-- ======================================================================= -->
-<!--                                                                         -->
-<!--                               Main Body                                 -->
-<!--                                                                         -->
-         <a name="index" />
+<!--#include virtual="ssi/header.html" -->
+
+<!--#include virtual="ssi/lside.html" -->
+
+
+<div id="Content">
+<h1>MinGW - Documentation</h1>
+<p>
+         <a name="index"></a>
          <h2 align="left">Table of Contents</h2>
+	
          <ul>
             <li><a href="#installation">Installing MinGW</a></li>
             <li><a href="#compilingandbuilding">Compiling and Building with MinGW</a></li>
@@ -334,7 +324,7 @@
             <p><a href="#index">Back to index</a></p>
          </ul>
          <hr />
-         <a name="gnutools" />
+         <a name="gnutools"></a>
          <h2 align="left">GNU Development Tools Documentation</h2>
          <ul>
             <li>
@@ -362,7 +352,7 @@
             <p><a href="#index">Back to index</a></p>
          </ul>
          <hr />
-         <a name="win32api" />
+         <a name="win32api"></a>
          <h2 align="left">Win32 API Documentation</h2>
          <p>
             MinGW uses the runtime libraries distributed with the OS, but 
@@ -393,7 +383,7 @@
             <p><a href="#index">Back to index</a></p>
          </ul>
          <hr />
-         <a name="etc" />
+         <a name="etc"></a>
          <h2 align="left">Tips, Howtos, Contributed Documentation, etc.</h2>
          <p>
             <font size="+1"><b>** NOTE ** </b></font><i>
@@ -488,17 +478,11 @@
          </ul>
          <hr />
 
-<!--                            End of Main Body                             -->
-           </td>
-          </tr>
-        </tbody>
-      </table>
-      </td>
-    </tr>
-  </tbody>
-</table>
-<!--#include file="ssi/bottombar.html"--><!--#include file="ssi/footer.html"-->
-<address> <br>
-Last revised $Date: 2004-03-28 07:01:24 $ </address>
+
+</p>
+</div>
+
+<!--#include virtual="ssi/footer.html" -->
+
 </body>
 </html>

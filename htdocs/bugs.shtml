@@ -1,34 +1,24 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html><head>
-    <meta content="HTML Tidy for Linux/x86 (vers 1st February 2003), see www.w3.org" name="generator">
-    <meta http-equiv="content-type" content="text/html; charset=us-ascii">
-    <link href="mingw.css" type="text/css" rel="stylesheet" title="MinGW"><title>MinGW - Reporting bugs</title>
-    
-    <style type="text/css">
-    :link { color: #000099 }
-    :visited { color: #990099 }
-    :active { color: #000099 }
-    img.c3 {border:0;width:88px;height:31px}
-    </style></head>
+<html>
+<head>
+  <meta name="description"
+ content="Home of MinGW -- Minimalist GNU for Windows -- project. Contains information about the MinGW runtime library and GNU/OSS development tools for MinGW.">
+  <meta name="keywords"
+ content="mingw, mingw32, programming, C++, C, C/C++, libraries, software, development tools, editors, IDEs, GNU">
+	<link rel="stylesheet" type="text/css" href="mingw.css">
+	<title>MinGW - Reporting Bugs</title>
+</head>
 
-  <body>
-    <h1>
-      Reporting bugs
-    </h1>
-    <table class="prim" cellspacing="6" border="0">
-      <tbody>
-        <tr>
-          <td class="side">
-            <!--#include file="ssi/lsidebar.html"--><br>
-          </td>
-          <td>
-            <table class="sec" cellspacing="6" border="0">
-              <tbody>
-                <tr>
-                  <td>
-<!-- ======================================================================= -->
-<!--                                                                         -->
-<!--                               Main Body                                 -->
-<!--                                                                         -->
+<body>
+<span style="visibility: hidden;">.</span>
+
+<!--#include virtual="ssi/header.html" -->
+
+<!--#include virtual="ssi/lside.html" -->
+
+
+<div id="Content">
+<h1>MinGW - Reporting Bugs</h1>
+<p>
                     So you think you have found a bug and want to
                     report the problem? Before reporting a bug
                     please ensure you have applied all applicable
@@ -135,21 +125,11 @@
                          <a href="http://sources.redhat.com/lists.html">http://sources.redhat.com/lists.html</a><br>
                         </li>
                     </ul>
-<!--                            End of Main Body                             -->
-                    </td>
-                </tr>
-              </tbody>
-            </table>
-          </td>
-        </tr>
-      </tbody>
-    </table><!--#include file="ssi/bottombar.html"-->
-    <!--#include file="ssi/footer.html"-->
-    <p>
-      <a href="http://validator.w3.org/check/referer"><img border="0" src="http://www.w3.org/Icons/valid-html401" alt="Valid HTML 4.01!" height="31" width="88"></a> <a href="http://jigsaw.w3.org/css-validator/"><img class="c3" src="http://jigsaw.w3.org/css-validator/images/vcss" alt="Valid CSS!"></a>
-    </p>
-    <address>
-      <br>
-       Last revised $Date: 2004-03-24 11:20:50 $
-    </address>
-  </body></html>
+
+</p>
+</div>
+
+<!--#include virtual="ssi/footer.html" -->
+
+</body>
+</html>
