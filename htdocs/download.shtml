@@ -60,7 +60,7 @@ updates immediately. </p>
 SourceForge</a>.  This page contains the latest version of the main
 MinGW distribution archive, as well as all available pacakges files to
 download.<br>
-            </p>
+            </p><!--#include file="ssi/release.html"-->
             <h3>Mirror Sites</h3>
             <ul>
               <li> 	 <a href="http://prdownloads.sf.net/mingw/"> 	
@@ -172,6 +172,6 @@ for more detail). </p>
 </table>
 <!--#include file="ssi/bottombar.html"--><!--#include file="ssi/footer.html"-->
 <address> <br>
-Last revised $Date: 2003-01-05 21:20:08 $ </address>
+Last revised $Date: 2003-01-05 21:39:25 $ </address>
 </body>
 </html>
