@@ -235,7 +235,7 @@ alloc_def_file (char *dll)
     error (1, p);
 
   /* print header */
-  fprintf (df->f, "LIBRARY %s\nEXPORTS\n", dll);
+  fprintf (df->f, "LIBRARY \"%s\"\nEXPORTS\n", dll);
 
   /* set dllname */
   df->dllname = p;

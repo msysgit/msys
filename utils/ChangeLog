@@ -1,3 +1,17 @@
+2003-11-25 18:18  jrfonseca
+
+	* drmingw/: bucomm.h, budbg.h, debug.c, debug.h, debugx.c,
+	exchndl.c, ieee.c, ieee.h, prdbg.c, rdcoff.c, rddbg.c, stabs.c,
+	symbols.c, include/dis-asm.h, include/filenames.h,
+	include/getopt.h, include/libcoff.h, include/libiberty.h,
+	include/safe-ctype.h: Merge with latest binutils source.
+
+2003-11-25 16:53  jrfonseca
+
+	* ChangeLog, configure.ac, scripts/dsw2mak.in: Version bump.
+	Removed some redundant funciton checks in autoconf. Update
+	changelog.
+
 2003-11-25 16:51  jrfonseca
 
 	* pexports/hlex.l: input()/unput() must be called within the
