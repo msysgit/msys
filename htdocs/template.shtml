@@ -10,11 +10,11 @@
  content="mingw, mingw32, programming, C++, C, C/C++, libraries, software, development tools, editors, IDEs, GNU">
 
    <link href="mingw.css" type="text/css" rel="stylesheet" title="MinGW">
-  <title>MinGW - Reporting bugs</title>
+  <title>CHANGE ME</title>
 </head>
 <body link="#000099" vlink="#990099" alink="#000099">
 
-<h1 align="center">MinGW: Minimalist GNU For Windows</h1>
+<h1>CHANGE ME</h1>
 
 <table class="prim" cellspacing="6" border="0">
   <tbody>
@@ -27,7 +27,9 @@
           <tr>
             <td>
 <!-- ======================================================================= -->
+<!--                                                                         -->
 <!--                               Main Body                                 -->
+<!--                                                                         -->
 
 <!--                            End of Main Body                             -->
            </td>
@@ -40,6 +42,6 @@
 </table>
 <!--#include file="ssi/bottombar.html"--><!--#include file="ssi/footer.html"-->
 <address> <br>
-Last revised $Date: 2002-12-19 19:53:43 $ </address>
+Last revised $Date: 2002-12-27 23:06:00 $ </address>
 </body>
 </html>
