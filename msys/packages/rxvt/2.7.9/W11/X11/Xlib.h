@@ -674,8 +674,7 @@ typedef struct _XDisplay
 	int private19;
 	char *xdefaults;	/* contents of defaults from server */
 	/* there is more to this structure, but it is private to Xlib */
-}
-Display, *_XPrivDisplay;
+} Display, *_XPrivDisplay;
 
 typedef int StatusDef;
 
@@ -1492,6 +1491,12 @@ int XFillRectangle(
 	       GC gc,
 	       int x, int y,
 	       unsigned int w, unsigned int h);
+void XFillRectangles(
+	       Display *display,
+	       Drawable window,
+	       GC gc,
+	       XRectangle *rectangles,
+	       int nrectangles);
 int XClearArea(
 	   Display *display,
 	   Window w,

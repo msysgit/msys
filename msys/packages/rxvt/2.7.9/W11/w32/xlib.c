@@ -939,6 +939,20 @@ unsigned int w,h;
 	return (ret);
 }
 
+void
+XFillRectangles (Display *display, Drawable d, GC gc, XRectangle *rectangles, int nrectangles) {
+  int nrect = 0;
+  int x, y;
+  unsigned int w, h;
+  while (nrect < nrectangles) {
+    x = rectangles[nrect].x;
+    y = rectangles[nrect].y;
+    w = rectangles[nrect].width;
+    h = rectangles[nrect].height;
+    XFillRectangle (display, d, gc, x, y, w, h);
+    nrect++;
+  }
+}
 
 /*****************************************************************\
 
