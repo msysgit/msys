@@ -1,3 +1,8 @@
+2003.01.24  Earnie Boyd  <earnie@users.sf.net>
+
+	* doc/msys/MSYS-1.0.9-changes.rtf: New file.
+	* script/msysrls.sh: MSYS version change.
+
 2003.01.02  Earnie Boyd  <earnie@users.sf.net>
 
 	* var/DTK/share.dat: Add missing autoconf, automake and libtool
