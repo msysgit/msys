@@ -1,3 +1,7 @@
+2002-03-20  Earnie Boyd  <earnie@users.sf.net>
+
+	* dir.cc (rmdir)  Fix a bug in the NASTY HACK for Circular Path error.
+
 2002-03-17  Earnie Boyd  <earnie@users.sf.net>
 
 	* dir.cc (rmdir): NASTY HACK to work around a "permissions denied"
