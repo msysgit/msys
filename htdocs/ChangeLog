@@ -1,3 +1,19 @@
+2002-12-26   Nathan Fisher <natbobc@users.sf.net>
+	* fixed missing Download Sites link
+	* fixed incorrect title for index.shtml and download.shtml
+
+2002-12-26   Nathan Fisher <natbobc@users.sf.net>
+	* moved WinZip caution from index.shtml to download.shtml
+	* changed the order of ssi/lsidebar.html to alphabetic. Except for the home being first.
+	* cut some fat from the index.shtml
+	* created ssi/release.html to contain brief info on current release/updates/etc
+
+2002-12-26   Nathan Fisher <natbobc@users.sf.net>
+
+	* merged mirrors.shtml with download.shtml
+	* removed mirror link from ssi/lsidebar.html
+	* removed mirror link from ssi/bottombar.html
+
 2002-12-20  Earnie Boyd  <earnie@users.sf.net>
 
 	* bugs.shtml: Corrected the page header.
