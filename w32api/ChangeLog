@@ -1,3 +1,14 @@
+2001-08-21  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/shlobj.h (CMIC_*): Remove duplicate defines.
+	(CMDSTR_*): Remove duplicates; UNICODE string constants.
+	(GCS_*): Make UNICODE.
+	(CSIDL_*): Add more defines.
+	* include/winioctl.h (_MEDIA_TYPE): Add pointer typedef.
+	(_DISK_GEOMETRY): Ditto.
+	(_DISK_PERFORMANCE): Ditto.
+	* include/winbase.h (HasOverlappedIoCompleted): Add macro.
+
 2001-08-15  Danny Smith  <dannysmith@users.sourceforge.net>
 
 	* include/winnt.h: Move CHAR, SHORT and LONG typedefs outside
