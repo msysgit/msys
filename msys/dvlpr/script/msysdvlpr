@@ -1,6 +1,0 @@
-#!/bin/sh
-# This file will start another MSYS session as an MSYS system instead of a
-# MINGW32 system.
-# 
-cd /
-cmd //c start /msys.bat MSYS
