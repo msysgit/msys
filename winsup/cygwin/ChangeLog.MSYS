@@ -1,3 +1,18 @@
+2002-04-24  Earnie Boyd  <earnie@users.sf.net>
+
+	* environ.cc (parse_thing): Force MSYS values for parameters.
+	* msys.cc: Correct spelling.
+	* path.cc (NEW_PATH_METHOD): New macro.
+	(pathnmatch): Force RELAXED case checking.
+	(pathmatch): Remove unused function.
+	(path_conv::check): Document analysis for removing symlink coding.
+	And remove unused code.
+	(suffix_scan): Move the point of class declaration to path.h.
+	(suffix_scan::has): Remove symlink ".lnk" checking.
+	(suffix_scan::next): Ditto.
+	* path.h: Move suffix_scan class definition from path.cc.
+	* spawn.cc: Remove .com, .cmd, .bat and .dll from std_suffixes.
+
 2002-04-17  Earnie Boyd  <earnie@users.sf.net>
 
 	* environ.cc (putenv): Update Win32 environment strings.
