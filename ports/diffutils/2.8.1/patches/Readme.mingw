@@ -1,0 +1,41 @@
+/**************************************************************************
+*	Diffutils 2.8.1 for MinGW.
+*
+*	sources:	http://ftp.gnu.org/pub/gnu/diffutils/diffutils-2.8.1.tar.gz
+*			(780 086 bytes)
+*
+*	patch:	diffutils-2.8.1-mingw.patch
+*
+**************************************************************************/
+
+
+0. How to build GNU packages with MSYS/MinGW
+
+	You'll need to download the GNU package containing the source code
+	and the configuration files.
+	Then patch the sources and build your binaries.
+
+	URL http://ftp.gnu.org/pub/gnu/diffutils/diffutils-2.8.1.tar.gz
+					(780 086 bytes)
+
+	A list of GNU mirrors:	http://www.gnu.org/prep/ftp.html
+	GNU's home page:	http://www.gnu.org/
+	MinGW's home page:	http://www.mingw.org/
+
+1. Content
+
+	- build-i386
+	- ChangeLog.mingw
+	- diffutils-2.8.1.tar.gz (Internet Shortcut)
+	- diffutils-2.8.1-mingw.patch
+	- Readme.mingw
+
+2. Fixme
+	* src/sdiff.c: use mkstemp from src/mkstemp.c
+
+3. Disclaimer
+
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+

@@ -1,0 +1,124 @@
+diff -c -r diffutils-2.8.1-orig/lib/c-stack.c diffutils-2.8.1/lib/c-stack.c
+*** diffutils-2.8.1-orig/lib/c-stack.c	Sun Mar 24 01:36:37 2002
+--- diffutils-2.8.1/lib/c-stack.c	Tue Sep 17 15:51:13 2002
+***************
+*** 156,162 ****
+--- 156,164 ----
+        *addr = 0;
+      }
+  #endif
++ #if HAVE_WORKING_FORK || HAVE_WORKING_VFORK
+    kill (getpid (), signo);
++ #endif
+  }
+  
+  
+diff -c -r diffutils-2.8.1-orig/lib/tempname.c diffutils-2.8.1/lib/tempname.c
+*** diffutils-2.8.1-orig/lib/tempname.c	Tue Feb  5 23:36:12 2002
+--- diffutils-2.8.1/lib/tempname.c	Tue Sep 17 15:51:13 2002
+***************
+*** 96,102 ****
+  # define struct_stat64 struct stat
+  # define __getpid getpid
+  # define __gettimeofday gettimeofday
+! # define __mkdir mkdir
+  # define __open open
+  # define __open64 open
+  # define __lxstat64(version, path, buf) lstat (path, buf)
+--- 96,102 ----
+  # define struct_stat64 struct stat
+  # define __getpid getpid
+  # define __gettimeofday gettimeofday
+! # define __mkdir(path, perm) mkdir(path)
+  # define __open open
+  # define __open64 open
+  # define __lxstat64(version, path, buf) lstat (path, buf)
+diff -c -r diffutils-2.8.1-orig/lib/waitpid.c diffutils-2.8.1/lib/waitpid.c
+*** diffutils-2.8.1-orig/lib/waitpid.c	Fri Mar  1 01:46:31 2002
+--- diffutils-2.8.1/lib/waitpid.c	Tue Sep 17 15:51:13 2002
+***************
+*** 25,30 ****
+--- 25,32 ----
+  extern int errno;
+  #endif
+  
++ #include <sys/types.h>
++ 
+  #define WAITPID_CHILDREN 8
+  static pid_t waited_pid[WAITPID_CHILDREN];
+  static int waited_status[WAITPID_CHILDREN];
+diff -c -r diffutils-2.8.1-orig/src/sdiff.c diffutils-2.8.1/src/sdiff.c
+*** diffutils-2.8.1-orig/src/sdiff.c	Mon Mar 11 02:00:47 2002
+--- diffutils-2.8.1/src/sdiff.c	Tue Sep 17 15:51:13 2002
+***************
+*** 83,90 ****
+  #ifdef SIGXFSZ
+         SIGXFSZ,
+  #endif
+!        SIGINT,
+!        SIGPIPE
+  };
+  #define handler_index_of_SIGINT (NUM_SIGS - 2)
+  #define handler_index_of_SIGPIPE (NUM_SIGS - 1)
+--- 83,92 ----
+  #ifdef SIGXFSZ
+         SIGXFSZ,
+  #endif
+!        SIGINT
+! #ifdef SIGPIPE
+!        ,SIGPIPE
+! #endif
+  };
+  #define handler_index_of_SIGINT (NUM_SIGS - 2)
+  #define handler_index_of_SIGPIPE (NUM_SIGS - 1)
+***************
+*** 838,845 ****
+--- 840,849 ----
+        cleanup ();
+  
+        /* Yield an exit status indicating that a signal was received.  */
++ #if HAVE_WORKING_FORK || HAVE_WORKING_VFORK
+        untrapsig (s);
+        kill (getpid (), s);
++ #endif
+  
+        /* That didn't work, so exit with error status.  */
+        exit (EXIT_TROUBLE);
+***************
+*** 1207,1220 ****
+    sigset_t procmask;
+    sigset_t blocked;
+    sprintf (buf, "%s/sdiffXXXXXX", dir);
+    sigemptyset (&blocked);
+    sigaddset (&blocked, SIGINT);
+    sigprocmask (SIG_BLOCK, &blocked, &procmask);
+!   fd = mkstemp (buf);
+    e = errno;
+    if (0 <= fd)
+      tmpname = buf;
+    sigprocmask (SIG_SETMASK, &procmask, 0);
+    errno = e;
+    return fd;
+  }
+--- 1211,1229 ----
+    sigset_t procmask;
+    sigset_t blocked;
+    sprintf (buf, "%s/sdiffXXXXXX", dir);
++ # if HAVE_WORKING_VFORK
+    sigemptyset (&blocked);
+    sigaddset (&blocked, SIGINT);
+    sigprocmask (SIG_BLOCK, &blocked, &procmask);
+! #endif
+!   //  fd = mkstemp (buf);
+!   fd = -1;
+    e = errno;
+    if (0 <= fd)
+      tmpname = buf;
++ # if HAVE_WORKING_VFORK
+    sigprocmask (SIG_SETMASK, &procmask, 0);
++ #endif
+    errno = e;
+    return fd;
+  }
+
+
