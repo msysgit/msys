@@ -727,7 +727,7 @@ enum hlf_value
 #define IOSIZE	   (1024+1)	/* file i/o and sprintf buffer size */
 #define MSG_BUF_LEN 80		/* length of buffer for small messages */
 
-#if defined(AMIGA) || defined(__linux__) || defined(__QNX__) || defined(__CYGWIN32__) || defined(_AIX)
+#if defined(AMIGA) || defined(__linux__) || defined(__QNX__) || defined(__CYGWIN__) || defined (__MSYS__) || defined(_AIX)
 # define TBUFSZ 2048		/* buffer size for termcap entry */
 #else
 # define TBUFSZ 1024		/* buffer size for termcap entry */
@@ -753,7 +753,7 @@ enum hlf_value
  * EMX doesn't have a global way of making open() use binary I/O.
  * Use O_BINARY for all open() calls.
  */
-#if defined(__EMX__) || defined(__CYGWIN32__)
+#if defined(__EMX__) || defined(__CYGWIN__) || defined(__MSYS__)
 # define O_EXTRA    O_BINARY
 #else
 # define O_EXTRA    0

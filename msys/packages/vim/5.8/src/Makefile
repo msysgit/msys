@@ -288,7 +288,7 @@ CC=
 # (X) How to include config.mk depends on the version of "make" you have, if
 #     the current choice doesn't work, try the other one.
 
-include config.mk
+include ../config.mk
 #.include "config.mk"
 
 # Include the configuration choices first, so we can override everything
@@ -679,7 +679,7 @@ LINT_OPTIONS = -beprxzF
 #CONF_TERM_LIB = --with-tlib=ncurses
 
 ### For GCC on MSDOS, the ".exe" suffix will be added.
-#SUFFIX = .exe
+SUFFIX = .exe
 
 ### (O)  For LynxOS 2.5.0, tested on PC.
 #EXTRA_LIBS = -lXext -lSM -lICE -lbsd
@@ -699,22 +699,26 @@ LINT_OPTIONS = -beprxzF
 ### Names of the programs and targets
 VIMNAME		= vim
 VIMTARGET	= $(VIMNAME)$(SUFFIX)
+VINAME		= vi
+VITARGET	= $(VINAME)
+RVINAME		= r$(VINAME)
+RVITARGET	= $(RVINAME)
 EXNAME		= ex
-EXTARGET	= $(EXNAME)$(SUFFIX)
+EXTARGET	= $(EXNAME)
 VIEWNAME	= view
-VIEWTARGET	= $(VIEWNAME)$(SUFFIX)
+VIEWTARGET	= $(VIEWNAME)
 GVIMNAME	= g$(VIMNAME)
-GVIMTARGET	= $(GVIMNAME)$(SUFFIX)
+GVIMTARGET	= $(GVIMNAME)
 GVIEWNAME	= g$(VIEWNAME)
-GVIEWTARGET	= $(GVIEWNAME)$(SUFFIX)
+GVIEWTARGET	= $(GVIEWNAME)
 RVIMNAME	= r$(VIMNAME)
-RVIMTARGET	= $(RVIMNAME)$(SUFFIX)
+RVIMTARGET	= $(RVIMNAME)
 RVIEWNAME	= r$(VIEWNAME)
-RVIEWTARGET	= $(RVIEWNAME)$(SUFFIX)
+RVIEWTARGET	= $(RVIEWNAME)
 RGVIMNAME	= r$(GVIMNAME)
-RGVIMTARGET	= $(RGVIMNAME)$(SUFFIX)
+RGVIMTARGET	= $(RGVIMNAME)
 RGVIEWNAME	= r$(GVIEWNAME)
-RGVIEWTARGET	= $(RGVIEWNAME)$(SUFFIX)
+RGVIEWTARGET	= $(RGVIEWNAME)
 
 ### Names of the tools that are also made
 TOOLS = xxd/xxd$(SUFFIX)
@@ -770,9 +774,9 @@ TUTORSUBDIR = /tutor
 ### SCRIPTLOC	location for script files (menu.vim, bugreport.vim, ..)
 ### You can override these if you want to install them somewhere else.
 ### Edit feature.h for compile-time settings.
-VIMLOC		= $(DATADIR)$(VIMDIR)
-VIMRTLOC	= $(DATADIR)$(VIMDIR)$(VIMRTDIR)
-VIMRCLOC	= $(VIMLOC)
+VIMLOC		= $(DATADIR)$(VIMDIR)$(VIMRTDIR)
+VIMRTLOC	= $(VIMLOC)
+VIMRCLOC	= $(DATADIR)$(VIMDIR)
 HELPSUBLOC	= $(VIMRTLOC)$(HELPSUBDIR)
 SYNSUBLOC	= $(VIMRTLOC)$(SYNSUBDIR)
 MACROSUBLOC	= $(VIMRTLOC)$(MACROSUBDIR)
@@ -1374,8 +1378,8 @@ installvimhelp: $(HELPSOURCE)/vim.1 $(MANSUBDIR) $(VIMLOC) $(VIMRTLOC) $(HELPSUB
 		-e s+$(VIMLOC)/tutor+$(TUTORENDLOC)+ \
 		$(HELPSOURCE)/vimtutor.1 > $(MANSUBDIR)/$(VIMNAME)tutor.1
 	chmod $(MANMOD) $(MANSUBDIR)/$(VIMNAME)tutor.1
-	cd $(HELPSOURCE); $(INSTALL_DATA) *.txt tags $(HELPSUBLOC)
-	cd $(HELPSUBLOC); chmod $(HELPMOD) *.txt tags
+	cd $(HELPSOURCE); $(INSTALL_DATA) *.txt $(HELPSUBLOC)
+	cd $(HELPSUBLOC); chmod $(HELPMOD) *.txt 
 	$(INSTALL_DATA)  $(HELPSOURCE)/*.pl $(HELPSUBLOC)
 	chmod $(SCRIPTMOD) $(HELPSUBLOC)/*.pl
 # install the menu file
@@ -1443,7 +1447,13 @@ $(exec_prefix) $(BINDIR) $(MANSUBDIR) $(VIMLOC) $(VIMRTLOC) $(HELPSUBLOC) \
 
 # create links from various names to vim.  This is only done when the links
 # (or executables with the same name) don't exist yet.
-installlinks: $(GUI_TARGETS) $(BINDIR)/$(EXTARGET) $(BINDIR)/$(VIEWTARGET) $(BINDIR)/$(RVIMTARGET) $(BINDIR)/$(RVIEWTARGET)
+installlinks: $(GUI_TARGETS) $(BINDIR)/$(VITARGET) $(BINDIR)/$(RVITARGET) $(BINDIR)/$(EXTARGET) $(BINDIR)/$(VIEWTARGET) $(BINDIR)/$(RVIMTARGET) $(BINDIR)/$(RVIEWTARGET)
+
+$(BINDIR)/$(VITARGET):
+	cd $(BINDIR); ln -s $(VIMTARGET) $(VITARGET)
+
+$(BINDIR)/$(RVITARGET):
+	cd $(BINDIR); ln -s $(VIMTARGET) $(RVITARGET)
 
 $(BINDIR)/$(EXTARGET):
 	cd $(BINDIR); ln -s $(VIMTARGET) $(EXTARGET)
@@ -1471,7 +1481,13 @@ $(BINDIR)/$(RGVIEWTARGET):
 
 # create links for the manual pages with various names to vim.	This is only
 # done when the links (or manpages with the same name) don't exist yet.
-installhelplinks: $(GUI_MAN_TARGETS) $(MANSUBDIR)/$(EXNAME).1 $(MANSUBDIR)/$(VIEWNAME).1 $(MANSUBDIR)/$(RVIMNAME).1 $(MANSUBDIR)/$(RVIEWNAME).1
+installhelplinks: $(GUI_MAN_TARGETS) $(MANSUBDIR)/$(VINAME).1 $(MANSUBDIR)/$(RVINAME).1 $(MANSUBDIR)/$(EXNAME).1 $(MANSUBDIR)/$(VIEWNAME).1 $(MANSUBDIR)/$(RVIMNAME).1 $(MANSUBDIR)/$(RVIEWNAME).1
+
+$(MANSUBDIR)/$(VINAME).1:
+	cd $(MANSUBDIR); ln -s $(VIMNAME).1 $(VINAME).1
+
+$(MANSUBDIR)/$(RVINAME).1:
+	cd $(MANSUBDIR); ln -s $(VIMNAME).1 $(RVINAME).1
 
 $(MANSUBDIR)/$(EXNAME).1:
 	cd $(MANSUBDIR); ln -s $(VIMNAME).1 $(EXNAME).1
@@ -1502,10 +1518,12 @@ uninstall: uninstall_runtime
 	-rm -f $(MANSUBDIR)/$(VIMNAME).1 $(MANSUBDIR)/$(VIMNAME)tutor.1
 	-rm -f $(BINDIR)/vimtutor
 	-rm -f $(BINDIR)/xxd$(SUFFIX) $(MANSUBDIR)/xxd.1
+	-rm -f $(BINDIR)/$(VITARGET) $(BINDIR)/$(RVITARGET)
 	-rm -f $(BINDIR)/$(EXTARGET) $(BINDIR)/$(VIEWTARGET)
 	-rm -f $(BINDIR)/$(GVIMTARGET) $(BINDIR)/$(GVIEWTARGET)
 	-rm -f $(BINDIR)/$(RVIMTARGET) $(BINDIR)/$(RVIEWTARGET)
 	-rm -f $(BINDIR)/$(RGVIMTARGET) $(BINDIR)/$(RGVIEWTARGET)
+	-rm -f $(MANSUBDIR)/$(VINAME).1 $(MANSUBDIR)/$(RVINAME).1
 	-rm -f $(MANSUBDIR)/$(EXNAME).1 $(MANSUBDIR)/$(VIEWNAME).1
 	-rm -f $(MANSUBDIR)/$(GVIMNAME).1 $(MANSUBDIR)/$(GVIEWNAME).1
 	-rm -f $(MANSUBDIR)/$(RVIMNAME).1 $(MANSUBDIR)/$(RVIEWNAME).1
