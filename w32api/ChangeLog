@@ -1,3 +1,7 @@
+2001-08-30  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/winnt.h: Allow anonymous struct in [U]LARGE_INTEGER
+	if __cplusplus as well as if _ANONYMOUS_STRUCT.
 
 2001-08-29  Earnie Boyd  <earnie@SF.Net>
 
@@ -8,7 +12,7 @@
 
 2001-08-29  Eric Kohl  <ekohl@users.sourceforge.net>
 
-	* include\winnt.h: Allow anonymous (Xxx.LowPart) or
+	* include/winnt.h: Allow anonymous (Xxx.LowPart) or
 	non-anonymous (Xxx.u.LowPart) access to HighPart and
 	LowPart of a LARGE_INTEGER or ULARGE_INTEGER.
 
