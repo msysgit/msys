@@ -66,10 +66,11 @@ for his source code examples and other suggestions.
   the same compiler system.  The project's name change from mingw32 to mingw is
   to prevent the implication that mingw will only works on 32 bit systems.
   As 64 and higher bit machines become more common, mingw will evolve
-  to work with them.  The project was originally started by 
-  Colin Peters and is now supervised by Mumit Khan.  Mingw uses 
-  the Microsoft runtime libraries, distributed with the Windows 
-  operating system.  Unlike other ports of gcc to Windows, the 
+  to work with them.  The project was originally started by
+  Colin Peters, was taken over by Mumit Khan and is now maintained by
+  a group of developers through the Sourceforge web
+  site.  Mingw uses the Microsoft runtime libraries, distributed with the Windows
+  operating system.  Unlike other ports of gcc to Windows, the
   runtime libraries are not distributed using Gnu's
   General Public License.  You, therefore, do not have to distribute
   your source code with your programs.
@@ -186,7 +187,8 @@ for his source code examples and other suggestions.
   guaranteed to be on every Windows operating system, but it is more
   up-to-date and may offer more features.  It handles threading better
   than crtdll and supplies functions such as _i64toa and _atoi64
-  that crtdll doesn't.
+  that crtdll doesn't.  There is a possibility that crtdll may not
+  be supported in future releases of mingw.
   </p>
 <pre>
 
@@ -220,8 +222,8 @@ for his source code examples and other suggestions.
   <p>To install mingw, choose the distribution you want, either
   mingw using crtdll.dll or mingw using mscvrt.dll.  Download
   the distribution.  Unzip it.  (Zip/unzip utilities are available
-  from <a href="http://www.cdrom.com/pub/infozip">
-  http://www.cdrom.com/pub/infozip</a>.)
+  from <a href="ftp://ftp.freesoftware.com/pub/infozip/">
+  ftp://ftp.freesoftware.com/pub/infozip/</a>.)
   If the bin directory that holds mingw executables isn't already
   in your path, add it.  That's it.
   </p>
@@ -304,17 +306,26 @@ SET PATH=C:\mingw32\bin&#59;&#37;PATH&#37;
     <li>lcc-win from <a href="http://www.cs.virginia.edu/%7Elcc-win32/">
     http://www.cs.virginia.edu/&#126;lcc-win32/</a> is a Win32 C
     compiler complete with integrated environment.  I believe the
-    distribution includes a working GUI resource editor that may work
-    with other compilers such as mingw as well.
+    distribution includes a working GUI resource editor that has been
+    reported to work with other compilers such as mingw.
     </li>
-    <li>bloodshed Dev-C++ from <a href="http://www.bloodshed.nu/devc.html">
-    http://www.bloodshed.nu/devc.html</a> is a distribution of mingw32 with
+    <li>bloodshed Dev-C++ from <a href="http://www.bloodshed.net/devcpp.html">
+    http://www.bloodshed.net/devcpp.html</a> is a distribution of mingw32 with
     an IDE and other integrated tools.
     </li>
     <li>rsxnt, rsxntdj from <a href="http://www.mathematik.uni-bielefeld.de/%7Erainer/">
     http://www.mathematik.uni-bielefeld.de/&#126;rainer/</a>
     is used in conjunction with Gnu compilers on various platforms such
     as djgpp and emx to create Win32 executables.
+    </li>
+    <li>Watcom from <a href="http://www.openwatcom.org/">
+    http://www.openwatcom.org/</a> is a collection of multi-platform C/C++ and
+    Fortran compilers with integerated development environments.  Sybase
+    has recently agreed to release the Watcom compiler under an Open Source
+    License under the management of SciTech Software Inc.
+    Their plans are to work with other Open Source development groups
+    once development of the new Open Source version commences.
+    Check their web site for the latest news on Watcom development.
     </li>
   </ul>
 <pre>
@@ -340,8 +351,8 @@ SET PATH=C:\mingw32\bin&#59;&#37;PATH&#37;
       programs along with a small gcc distribution.
       </li>
       <li>WinHelp documentation for GNU tools,
-      <a href="http://www.itribe.net/virtunix/winhelp-man-pages/">
-      http://www.itribe.net/virtunix/winhelp-man-pages/</a>
+      <a href="http://virtunix.itribe.net/winhelp-man-pages/">
+      http://virtunix.itribe.net/winhelp-man-pages/</a>
       </li>
       <li>Windows API Reference,
       <a href="http://www.borland.com/devsupport/borlandcpp/patches/BC52HLP1.ZIP">
@@ -354,6 +365,7 @@ SET PATH=C:\mingw32\bin&#59;&#37;PATH&#37;
       <li>Windows API HTMLHelp from MS platform software development
       kit, <a href="ftp://ftp.microsoft.com/developr/platformsdk/april2000/common/help/">
       ftp://ftp.microsoft.com/developr/platformsdk/april2000/common/help/</a>
+      </li>
     </ul>
     <p>If you know of any other documentation, please mention it 
     so it can be added to the list.
@@ -370,11 +382,6 @@ SET PATH=C:\mingw32\bin&#59;&#37;PATH&#37;
       <br />Also has a directory for programmers trying to start or looking
       for projects.
       </li>
-      <li>theForger's Windows API Programming Tutorial,
-      <a href="http://bcgrizzly.com/%7Eforger/winprog/tutorial">
-      http://bcgrizzly.com/&#126;forger/winprog/tutorial</a>
-      <br />Good Windows programming tutorial for beginners.
-      </li>
       <li>DevCentral Tutorials,
       <a href="http://devcentral.iftech.com/learning/tutorials/">
       http://devcentral.iftech.com/learning/tutorials/</a>
@@ -387,7 +394,7 @@ SET PATH=C:\mingw32\bin&#59;&#37;PATH&#37;
       <li>The Programming Sharehouse, <a href="http://www.progsharehouse.com">
       http://www.progsharehouse.com</a>
       <br />Tutorials, question and answer boards, links to source code
-      and information on programming related topics
+      and information on programming related topics.
       </li>
     </ul>
     OpenGL Tutorials:
@@ -536,9 +543,6 @@ g++ -Wl,-Map,file.map -o file file.o otherfile.o
       <li>Insight, <a href="http://sourceware.cygnus.com/insight/">
       http://sourceware.cygnus.com/insight/</a>
       <br />Requires cygwin.
-      <br />See <a href="ftp://ftp.xraylith.wisc.edu/pub/khan/gnu-win32/mingw32/ports/">
-      ftp://ftp.xraylith.wisc.edu/pub/khan/gnu-win32/mingw32/ports/</a> for a ported
-      version of Insight.
       </li>
       <li>Jessie, <a href="http://oss.sgi.com/projects/jessie/">
       http://oss.sgi.com/projects/jessie/</a>
@@ -584,10 +588,10 @@ g++ -Wl,-Map,file.map -o file file.o otherfile.o
       <li>Vide, <a href="http://www.objectcentral.com">http://www.objectcentral.com</a>
       <br />Tested with mingw.
       </li>
-      <li>Quincy 99, <a href="ftp://ftp.midifitz.com/quincy99">ftp://ftp.midifitz.com/quincy99</a>
+      <li>Quincy 2000, <a href="http://www.midifitz.com/alstevens/quincy2000">http://www.midifitz.com/alstevens/quincy2000</a>
       <br />From Al Stevens.  Covered in various Dr. Dobb's articles and Al 
-      Stevens books on learning C++.  The latest version appears to have 
-      a bug when running on Windows NT.
+      Stevens books on learning C++.  The Quincy 99 version had a bug when running 
+      on Windows NT.  Don't know if this has been corrected in the latest version.
       </li>
       <li>JFE (Jen's File Editor), <a href="http://cs-alb-pc3.massey.ac.nz/software/">
       http://cs-alb-pc3.massey.ac.nz/software/</a>
@@ -598,8 +602,8 @@ g++ -Wl,-Map,file.map -o file file.o otherfile.o
       viewing of and navigation to functions in a project.  (I personally miss the key-mapping
       functionality of PFE though.)
       </li>
-      <li>Code Magic, <a href="http://www.petes-place.com/codemagic.html">
-      http://www.petes-place.com/codemagic.html</a>
+      <li>Code Magic, <a href="http://www.codemagiccd.com/">
+      http://www.codemagiccd.com/</a>
       </li>
       <li>Super IDE, <a href="http://protostar.hypermart.net/">
       http://protostar.hypermart.net/</a>
@@ -612,7 +616,7 @@ g++ -Wl,-Map,file.map -o file file.o otherfile.o
       <br />Can be configured to work with many languages/compilers.
       </li>
       <li>Visual Programming Armoury,
-      <a href="http://polymorph.i-real.spb.ru/">http://polymorph.i-real.spb.ru/</a>
+      <a href="http://www.zdnet.co.uk/software/free/dev/java/sw49.html">http://www.zdnet.co.uk/software/free/dev/java/sw49.html</a>
       </li>
       <li>Assembler Laboratory, <a href="http://tihlde.org/%7Ekurtg/">http://tihlde.org/&#126;kurtg/</a>
       </li>
@@ -623,8 +627,8 @@ g++ -Wl,-Map,file.map -o file file.o otherfile.o
     </li>
     <li><a id="whateditorsareavailable" name="whateditorsareavailable">What editors are available?</a>
     <ul>
-      <li>PFE (Programmer's File Editor), <a href="ftp://ftp.n-shropshire.ac.uk/Utility/TextEdit/pfe101i.zip">
-      ftp://ftp.n-shropshire.ac.uk/Utility/TextEdit/pfe101i.zip</a>
+      <li>PFE (Programmer's File Editor), <a href="http://www.winsite.com/info/pc/win95/misc/pfe101i.zip/">
+      http://www.winsite.com/info/pc/win95/misc/pfe101i.zip/</a>
       </li>
       <li>Vim (Vi Improved), <a href="http://www.vim.org/">http://www.vim.org/</a>
       </li>
@@ -1121,17 +1125,12 @@ gcc -v
       ftp://ftp.xraylith.wisc.edu/pub/khan/gnu-win32/mingw32/ports/redir.zip</a>
       </li>
       <li>errfix,
-      <a href="http://www.strangecreations.com/library/snippets/index.htm">
-      http://www.strangecreations.com/library/snippets/index.htm</a>
+      <a href="http://www.brokersys.com/snippets/">
+      http://www.brokersys.com/snippets/</a>
       <br />See the Errfix.C file
       </li>
       <li>On Windows NT systems stderr can be redirected.
       <br />For example:  gcc --help 2&gt;&amp;1|more
-      </li>
-      <li>On Windows 95/98 systems, another shell can be used.
-      The following was recommended by Mikey on the mingw32 mailing list:
-      <br /><a href="http://mssjus.www.conxion.com/msdownload/platformsdk/i386/iTOOLS.EXE">
-      http://mssjus.www.conxion.com/msdownload/platformsdk/i386/iTOOLS.EXE</a>
       </li>
     </ul>
     </li>
@@ -1220,7 +1219,7 @@ REGEDIT4
   <p>Mingw has some support for COM programs.  Programmers have had
   much better luck writing COM applications in C than C++.  Work is in
   progress to improve support.  Check the mingw32 mailing list archives
-  for more details on COM and links to example files.
+  for more details on COM and more links to example files.
   </p>
 <pre>
 
@@ -1382,10 +1381,6 @@ patch -o file.cpp ..\old\file.cpp patch.fil
         from <a href="http://people.montana.com/%7Ebowman/Software/ming.htm">
         http://people.montana.com/&#126;bowman/Software/ming.htm</a>
         </p>
-        <p>There's also a distribution of the glaux libraries for mingw
-        at <a href="ftp://ftp.franken.de/pub/win32/develop/gnuwin32/incoming/">
-        ftp://ftp.franken.de/pub/win32/develop/gnuwin32/incoming/</a>
-        </p>
         </li>
         <li><a id="howtocompileopenglapplications" name="howtocompileopenglapplications">How to compile OpenGL applications</a>
         <p>There are some sample OpenGL programs available from 
@@ -1452,8 +1447,8 @@ patch -o file.cpp ..\old\file.cpp patch.fil
     <li><a id="databaselibraries" name="databaselibraries">Database libraries</a>
     <ul>
       <li><a id="xbase" name="xbase">Xbase</a>
-      <p><a href="http://www.startech.keller.tx.us/xbase/xbase.html">
-      http://www.startech.keller.tx.us/xbase/xbase.html</a>
+      <p><a href="http://linux.techass.com/projects/xdb/">
+      http://linux.techass.com/projects/xdb/</a>
       <br />Dbase/Clipper compatible, cross-platform database library.
       Successfully compiled with file locking off under mingw.
       </p>
@@ -1522,8 +1517,8 @@ patch -o file.cpp ..\old\file.cpp patch.fil
       </p>
       </li>
       <li>zlib
-      <p><a href="http://www.cdrom.com/pub/infozip/zlib/">
-      http://www.cdrom.com/pub/infozip/zlib/</a>
+      <p><a href="ftp://ftp.freesoftware.com/pub/infozip/zlib/">
+      ftp://ftp.freesoftware.com/pub/infozip/zlib/</a>
       <br />Compression library.  Includes makefile for mingw32.
       </p>
       </li>
@@ -1531,59 +1526,9 @@ patch -o file.cpp ..\old\file.cpp patch.fil
     </li>
     <li><a id="otherprograms" name="otherprograms">Other programs</a>
     <ul>
-      <li>Telnet
-      <p><a href="http://www.musc.edu/%7Ebrannanp/telnet">
-      http://www.musc.edu/&#126;brannanp/telnet</a>
-      <br />Required changes to compile.  The following changes
-were produced by diff and can be added to the original source by
-editing it in a word processor or automated using a tool such as the patch
-utility.  For more information, see the <a href="#patches">Patches</a> section.
-      </p>
-      <br />stl_bids.h:
-<pre>
-129c129
-&lt; 		finish = start;
----
-&gt; 		_M_finish = _M_start;
-</pre>
-      <br />telnet.h:
-<pre>
-5c5
-&lt; #ifndef __MINGW32__
----
-&gt; //#ifndef __MINGW32__
-7,9c7,9
-&lt; #else
-&lt; #include &lt;Windows32/sockets.h&gt;
-&lt; #endif
----
-&gt; //#else
-&gt; //#include &lt;Windows32/sockets.h&gt;
-&gt; //#endif
-198c198
-&lt; "LNEXT", "XON", "XOFF", "FORW1", "FORW2", 0,
----
-&gt; "LNEXT", "XON", "XOFF", "FORW1", "FORW2", 0
-</pre>
-      <br />tnetwork.h
-<pre>
-8c8
-&lt; #ifndef __MINGW32__
----
-&gt; //#ifndef __MINGW32__
-10,12c10,12
-&lt; #else
-&lt; #include &lt;Windows32/sockets.h&gt;
-&lt; #endif
----
-&gt; //#else
-&gt; //#include &lt;Windows32/sockets.h&gt;
-&gt; //#endif
-</pre>
-      </li>
       <li>Jam
-      <p><a href="http://www.geocities.com/Tokyo/Towers/6162/gcc-extra.html">
-      http://www.geocities.com/Tokyo/Towers/6162/gcc-extra.html</a>
+      <p><a href="http://www.geocities.com/Tokyo/Towers/6162/gcc.html">
+      http://www.geocities.com/Tokyo/Towers/6162/gcc.html</a>
       <br />Used to build executables.
       </p>
       </li>
@@ -1622,7 +1567,7 @@ utility.  For more information, see the <a href="#patches">Patches</a> section.
     Unix tools.
     </p>
     <ul>
-      <li>Virtually UN*X, <a href="http://www.itribe.net/virtunix/">http://www.itribe.net/virtunix/</a>
+      <li>Virtually UN*X, <a href="http://virtunix.itribe.net/">http://virtunix.itribe.net/</a>
       <br />Win32 versions of many Unix tools.
       </li>
       <li>Gnuish MS-DOS, <a href="ftp://ftp.simtel.net/pub/simtelnet/gnu/gnuish/">
@@ -1632,14 +1577,8 @@ utility.  For more information, see the <a href="#patches">Patches</a> section.
       <li>Less, <a href="http://www.flash.net/%7Emarknu/less/">http://www.flash.net/&#126;marknu/less/</a>
       <br />File filter for viewing files quickly.  Similar to DOS more program.
       </li>
-      <li>zsh, <a href="ftp://ftp.blarg.net/users/amol/zsh/">ftp://ftp.blarg.net/users/amol/zsh/</a>
-      <br />Unix style replacement for DOS shell.  Similar to Korn shell.
-      </li>
       <li>New Technology Shell (NTsh),
       <a href="http://wwwcip.informatik.uni-erlangen.de/user/mnwaitz/zips/ntsh-src.zip">http://wwwcip.informatik.uni-erlangen.de/user/mnwaitz/zips/ntsh-src.zip</a>
-      </li>
-      <li>Windows RCS, <a href="http://www.sladen.com/C++/WinRCS/winrcs.html">http://www.sladen.com/C++/WinRCS/winrcs.html</a>
-      <br />A Win32 interface to RCS.  Source is for Borland.  Requires RCS.
       </li>
       <li>ISpell, <a href="http://fmg-www.cs.ucla.edu/geoff/ispell.html">http://fmg-www.cs.ucla.edu/geoff/ispell.html</a>
       <br />Spell checker.
@@ -1663,8 +1602,8 @@ utility.  For more information, see the <a href="#patches">Patches</a> section.
     programming tools to add, feel free to suggest them.
     </p>
     <ul>
-      <li>DOS utilities, <a href="http://www.freedos.org/software/">
-      http://www.freedos.org/software/</a>
+      <li>DOS utilities, <a href="http://www.freedos.org/freedos/software/">
+      http://www.freedos.org/freedos/software/</a>
       <br />If you want utilities similar to standard MS DOS ones, check this
       site.  It even includes a deltree version that works on Windows NT.  All
       tools here are compiled for DOS 16 bit systems.  Source is included with
@@ -1685,8 +1624,8 @@ utility.  For more information, see the <a href="#patches">Patches</a> section.
   http://www.nanotech.wisc.edu/&#126;khan/software/gnu-win32/gcc.html</a>
   before reporting a problem.  
   </p>
-  <p>You can report bugs to cygwin.  
-  See <a href="http://gcc.gnu.org/faq.html#bugreport">
+  <p>You can now report bugs through the mingw site hosted at Sourceforge.
+  You can also report bugs to cygwin.  See <a href="http://gcc.gnu.org/faq.html#bugreport">
   http://gcc.gnu.org/faq.html#bugreport</a> for more information.
   You can also bring problems up on the mingw32 mailing list.
   </p>
@@ -1724,7 +1663,7 @@ utility.  For more information, see the <a href="#patches">Patches</a> section.
     <br />Various ports of libraries, alternative binutils and some tutorials on
     dlls.</li>
     <li>Fredos Homepage, <a href="http://penguin.at0.net/%7Efredo/">
-    http://penguin.at0.net/&#126fredo/</a>
+    http://penguin.at0.net/&#126;fredo/</a>
     <br />More mingw32 related ports.
     </li>
     <li>The Code Foundry, <a href="http://www.geocities.com/SiliconValley/Station/1177/foundry.html">
@@ -1760,15 +1699,25 @@ utility.  For more information, see the <a href="#patches">Patches</a> section.
 
 
 </pre>
-<p><a href="http://www.mingw.org/cgi-bin/showstats.cgi?faq">
-<!--#include virtual="/cgi-bin/stats.cgi?faq"--> visitors since
-<!--#include virtual="/cgi-bin/showstatsdate.cgi?faq"--></a></p>
+<p><a href="http://validator.w3.org/check?uri=http%3A%2F%2Fwww.crosswinds.net%2F%7Elmemsm%2Fmingwfaq.htm">Validate XHTML</a>
+</p>
 <hr />
 <address>
 <br />Original document by Laura Michaels
 <br />Copyright &#169; 1999 All Rights Reserved
-<br />Last revised 20000907
+<br />Last revised 20001123
 </address>
 </body>
 </html>
 
+
+
+<script language="JavaScript">
+<!--
+ 
+if (window.parent == window) {
+  var popup = window.open("http://209.208.163.49/popup.php", "CWPopup", 'width=575,height=150,toolbar=0,location=0,directories=0,status=1,menubar=0,scrollbar=1,resizeable=1');
+}
+// -->
+
+</script>
