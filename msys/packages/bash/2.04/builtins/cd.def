@@ -1,0 +1,599 @@
+This file is cd.def, from which is created cd.c.  It implements the
+builtins "cd" and "pwd" in Bash.
+
+Copyright (C) 1987, 1989, 1991 Free Software Foundation, Inc.
+
+This file is part of GNU Bash, the Bourne Again SHell.
+
+Bash is free software; you can redistribute it and/or modify it under
+the terms of the GNU General Public License as published by the Free
+Software Foundation; either version 2, or (at your option) any later
+version.
+
+Bash is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or
+FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+for more details.
+
+You should have received a copy of the GNU General Public License along
+with Bash; see the file COPYING.  If not, write to the Free Software
+Foundation, 59 Temple Place, Suite 330, Boston, MA 02111 USA.
+
+$PRODUCES cd.c
+#include <config.h>
+
+#if defined (HAVE_UNISTD_H)
+#  ifdef _MINIX
+#    include <sys/types.h>
+#  endif
+#  include <unistd.h>
+#endif
+
+#include "../bashtypes.h"
+#include "posixdir.h"
+#include "posixstat.h"
+#ifndef _MINIX
+#include <sys/param.h>
+#endif
+
+#include <stdio.h>
+
+#include "../bashansi.h"
+
+#include <errno.h>
+#include <tilde/tilde.h>
+
+#include "../shell.h"
+#include "../flags.h"
+#include "maxpath.h"
+#include "common.h"
+#include "bashgetopt.h"
+
+#if !defined (errno)
+extern int errno;
+#endif /* !errno */
+
+extern int posixly_correct, interactive;
+extern int array_needs_making;
+extern char *bash_getcwd_errstr;
+
+static int change_to_directory ();
+
+static char *cdspell ();
+static int spname (), mindist (), spdist ();
+
+/* Change this to 1 to get cd spelling correction by default. */
+int cdspelling = 0;
+
+int cdable_vars;
+
+$BUILTIN cd
+$FUNCTION cd_builtin
+$SHORT_DOC cd [-PL] [dir]
+Change the current directory to DIR.  The variable $HOME is the
+default DIR.  The variable CDPATH defines the search path for
+the directory containing DIR.  Alternative directory names in CDPATH
+are separated by a colon (:).  A null directory name is the same as
+the current directory, i.e. `.'.  If DIR begins with a slash (/),
+then CDPATH is not used.  If the directory is not found, and the
+shell option `cdable_vars' is set, then try the word as a variable
+name.  If that variable has a value, then cd to the value of that
+variable.  The -P option says to use the physical directory structure
+instead of following symbolic links; the -L option forces symbolic links
+to be followed.
+$END
+
+static int
+bindpwd (no_symlinks)
+     int no_symlinks;
+{
+  char *dirname, *pwdvar;
+  int old_symlinks, old_anm;
+  SHELL_VAR *tvar;
+
+  if (no_symlinks)
+    {
+      old_symlinks = no_symbolic_links;
+      no_symbolic_links = 1;
+      dirname = get_working_directory ("cd");
+      no_symbolic_links = old_symlinks;
+    }
+  else
+    dirname = get_working_directory ("cd");
+
+  old_anm = array_needs_making;
+  pwdvar = get_string_value ("PWD");
+
+  tvar = bind_variable ("OLDPWD", pwdvar);
+  if (old_anm == 0 && array_needs_making && exported_p (tvar))
+    {
+      update_export_env_inplace ("OLDPWD=", 7, pwdvar);
+      array_needs_making = 0;
+    }
+
+  tvar = bind_variable ("PWD", dirname);
+  if (old_anm == 0 && array_needs_making && exported_p (tvar))
+    {
+      update_export_env_inplace ("PWD=", 4, dirname);
+      array_needs_making = 0;
+    }
+
+  FREE (dirname);
+  return (EXECUTION_SUCCESS);
+}
+
+/* This builtin is ultimately the way that all user-visible commands should
+   change the current working directory.  It is called by cd_to_string (),
+   so the programming interface is simple, and it handles errors and
+   restrictions properly. */
+int
+cd_builtin (list)
+     WORD_LIST *list;
+{
+  char *dirname, *cdpath, *path, *temp;
+  int path_index, no_symlinks, opt;
+  struct stat sb;
+
+#if defined (RESTRICTED_SHELL)
+  if (restricted)
+    {
+      builtin_error ("restricted");
+      return (EXECUTION_FAILURE);
+    }
+#endif /* RESTRICTED_SHELL */
+
+  no_symlinks = no_symbolic_links;
+  reset_internal_getopt ();
+  while ((opt = internal_getopt (list, "LP")) != -1)
+    {
+      switch (opt)
+	{
+	case 'P':
+	  no_symlinks = 1;
+	  break;
+	case 'L':
+	  no_symlinks = 0;
+	  break;
+	default:
+	  builtin_usage ();
+	  return (EXECUTION_FAILURE);
+	}
+    }
+  list = loptend;
+
+  if (list == 0)
+    {
+      /* `cd' without arguments is equivalent to `cd $HOME' */
+      dirname = get_string_value ("HOME");
+
+      if (dirname == 0)
+	{
+	  builtin_error ("HOME not set");
+	  return (EXECUTION_FAILURE);
+	}
+
+      if (change_to_directory (dirname, no_symlinks) == 0)
+	{
+	  builtin_error ("%s: %s", dirname, strerror (errno));
+	  return (EXECUTION_FAILURE);
+	}
+    }
+  else if (list->word->word[0] == '-' && list->word->word[1] == '\0')
+    {
+      /* This is `cd -', equivalent to `cd $OLDPWD' */
+      dirname = get_string_value ("OLDPWD");
+
+      if (dirname == 0 || change_to_directory (dirname, no_symlinks) == 0)
+	{
+	  if (dirname == 0)
+	    builtin_error ("OLDPWD not set");
+	  else
+	    builtin_error ("%s: %s", dirname, strerror (errno));
+	  return (EXECUTION_FAILURE);
+	}
+      if (interactive)
+	printf ("%s\n", dirname);
+    }
+  else
+    {
+      dirname = list->word->word;
+
+      if (absolute_pathname (dirname) == 0 && (cdpath = get_string_value ("CDPATH")))
+	{
+	  /* Find directory in $CDPATH. */
+	  path_index = 0;
+	  while (path = extract_colon_unit (cdpath, &path_index))
+	    {
+	      /* OPT is 1 if the path element is non-empty */
+	      opt = path[0] != '\0';
+	      temp = sh_makepath (path, dirname, MP_DOTILDE);
+	      free (path);
+
+	      if (stat (temp, &sb) < 0 || S_ISDIR (sb.st_mode) == 0)
+		{
+		  free (temp);
+		  continue;
+		}
+
+	      if (change_to_directory (temp, no_symlinks))
+		{
+		  /* POSIX.2 says that if a nonempty directory from CDPATH
+		     is used to find the directory to change to, the new
+		     directory name is echoed to stdout, whether or not
+		     the shell is interactive. */
+		  if (opt)
+		    printf ("%s\n", no_symlinks ? temp : the_current_working_directory);
+
+		  free (temp);
+		  /* Posix.2 says that after using CDPATH, the resultant
+		     value of $PWD will not contain symlinks. */
+		  return (bindpwd (posixly_correct || no_symlinks));
+		}
+	      else
+		free (temp);
+	    }
+
+	  /* POSIX.2 says that if `.' does not appear in $CDPATH, we don't
+	     try the current directory, so we just punt now with an error
+	     message if POSIXLY_CORRECT is non-zero.  The check for cdpath[0]
+	     is so we don't mistakenly treat a CDPATH value of "" as not
+	     specifying the current directory. */
+	  if (posixly_correct && cdpath[0])
+	    {
+	      builtin_error ("%s: %s", dirname, strerror (ENOENT));
+	      return (EXECUTION_FAILURE);
+	    }
+	}
+
+      if (change_to_directory (dirname, no_symlinks))
+	return (bindpwd (no_symlinks));
+
+      /* If the user requests it, then perhaps this is the name of
+	 a shell variable, whose value contains the directory to
+	 change to.  If that is the case, then change to that
+	 directory. */
+      if (cdable_vars)
+	{
+	  temp = get_string_value (dirname);
+	  if (temp && change_to_directory (temp, no_symlinks))
+	    {
+	      printf ("%s\n", temp);
+	      return (bindpwd (no_symlinks));
+	    }
+	}
+
+      /* If the user requests it, try to find a directory name similar in
+	 spelling to the one requested, in case the user made a simple
+	 typo.  This is similar to the UNIX 8th and 9th Edition shells. */
+      if (interactive && cdspelling)
+	{
+	  temp = cdspell (dirname);
+	  if (temp && change_to_directory (temp, no_symlinks))
+            {
+              printf ("%s\n", temp);
+              free (temp);
+              return (bindpwd (no_symlinks));
+            }
+          else
+	    FREE (temp);
+	}
+
+      builtin_error ("%s: %s", dirname, strerror (errno));
+      return (EXECUTION_FAILURE);
+    }
+
+  return (bindpwd (no_symlinks));
+}
+
+$BUILTIN pwd
+$FUNCTION pwd_builtin
+$SHORT_DOC pwd [-PL]
+Print the current working directory.  With the -P option, pwd prints
+the physical directory, without any symbolic links; the -L option
+makes pwd follow symbolic links.
+$END
+
+/* Non-zero means that pwd always prints the physical directory, without
+   symbolic links. */
+static int verbatim_pwd;
+
+/* Print the name of the current working directory. */
+int
+pwd_builtin (list)
+     WORD_LIST *list;
+{
+  char *directory, *buffer;
+  int opt;
+
+  verbatim_pwd = no_symbolic_links;
+  reset_internal_getopt ();
+  while ((opt = internal_getopt (list, "LP")) != -1)
+    {
+      switch (opt)
+	{
+	case 'P':
+	  verbatim_pwd = 1;
+	  break;
+	case 'L':
+	  verbatim_pwd = 0;
+	  break;
+	default:
+	  builtin_usage ();
+	  return (EXECUTION_FAILURE);
+	}
+    }
+  list = loptend;
+
+  if (verbatim_pwd)
+    {
+      buffer = xmalloc (PATH_MAX);
+      directory = getcwd (buffer, PATH_MAX);
+
+      if (directory == 0)
+	{
+	  builtin_error ("%s: %s", bash_getcwd_errstr, strerror (errno));
+	  free (buffer);
+	}
+    }
+  else
+    directory = get_working_directory ("pwd");
+
+  if (directory)
+    {
+      printf ("%s\n", directory);
+      fflush (stdout);
+      free (directory);
+      return (EXECUTION_SUCCESS);
+    }
+  else
+    return (EXECUTION_FAILURE);
+}
+
+/* Do the work of changing to the directory NEWDIR.  Handle symbolic
+   link following, etc. */
+
+static int
+change_to_directory (newdir, nolinks)
+     char *newdir;
+     int nolinks;
+{
+  char *t;
+
+  if (nolinks == 0)
+    {
+      int chdir_return = 0;
+      char *tdir = (char *)NULL;
+
+      if (the_current_working_directory == 0)
+	{
+	  t = get_working_directory ("cd_links");
+	  FREE (t);
+	}
+
+      if (the_current_working_directory)
+	t = make_absolute (newdir, the_current_working_directory);
+      else
+	t = savestring (newdir);
+
+      /* TDIR is the canonicalized absolute pathname of the NEWDIR. */
+      tdir = canonicalize_pathname (t);
+
+      /* Use the canonicalized version of NEWDIR, or, if canonicalization
+	 failed, use the non-canonical form. */
+      if (tdir && *tdir)
+	free (t);
+      else
+	{
+	  FREE (tdir);
+	  tdir = t;
+	}
+
+      if (chdir (tdir) < 0)
+	{
+	  int err;
+
+	  chdir_return = 0;
+	  free (tdir);
+
+	  err = errno;
+
+	  /* We failed changing to the canonicalized directory name.  Try
+	     what the user passed verbatim.  If we succeed, reinitialize
+	     the_current_working_directory. */
+	  if (chdir (newdir) == 0)
+	    {
+	      chdir_return = 1;
+	      if (the_current_working_directory)
+		{
+		  free (the_current_working_directory);
+		  the_current_working_directory = (char *)NULL;
+		}
+
+	      tdir = get_working_directory ("cd");
+	      FREE (tdir);
+	    }
+	  else
+	    errno = err;
+	}
+      else
+	{
+	  chdir_return = 1;
+
+	  FREE (the_current_working_directory);
+	  the_current_working_directory = tdir;
+	}
+
+      return (chdir_return);
+    }
+  else
+    return (chdir (newdir) == 0);
+}
+
+/* Code for cd spelling correction.  Original patch submitted by
+   Neil Russel (caret@c-side.com). */
+
+static char *
+cdspell (dirname)
+     char *dirname;
+{
+  int n;
+  char *guess;
+
+  n = (strlen (dirname) * 3 + 1) / 2 + 1;
+  guess = xmalloc (n);
+
+  switch (spname (dirname, guess))
+    {
+    case -1:
+    default:
+      free (guess);
+      return (char *)NULL;
+    case 0:
+    case 1:
+      return guess;
+    }
+}
+
+/*
+ * `spname' and its helpers are inspired by the code in "The UNIX
+ * Programming Environment, Kernighan & Pike, Prentice-Hall 1984",
+ * pages 209 - 213.
+ */
+
+/*
+ *	`spname' -- return a correctly spelled filename
+ *
+ *	int spname(char * oldname, char * newname)
+ *	Returns:  -1 if no reasonable match found
+ *		   0 if exact match found
+ *		   1 if corrected
+ *	Stores corrected name in `newname'.
+ */
+static int
+spname(oldname, newname)
+     char *oldname;
+     char *newname;
+{
+  char *op, *np, *p;
+  char guess[PATH_MAX + 1], best[PATH_MAX + 1];
+
+  op = oldname;
+  np = newname;
+  for (;;)
+    {
+      while (*op == '/')    /* Skip slashes */
+	*np++ = *op++;
+      *np = '\0';
+
+      if (*op == '\0')    /* Exact or corrected */
+        {
+	  /* `.' is rarely the right thing. */
+	  if (oldname[1] == '\0' && newname[1] == '\0' &&
+		oldname[0] != '.' && newname[0] == '.')
+	    return -1;
+	  return strcmp(oldname, newname) != 0;
+        }
+
+      /* Copy next component into guess */
+      for (p = guess; *op != '/' && *op != '\0'; op++)
+	if (p < guess + PATH_MAX)
+	  *p++ = *op;
+      *p = '\0';
+
+      if (mindist(newname, guess, best) >= 3)
+	return -1;  /* Hopeless */
+
+      /*
+       *  Add to end of newname
+       */
+      for (p = best; *np = *p++; np++)
+	;
+    }
+}
+
+/*
+ *  Search directory for a guess
+ */
+static int
+mindist(dir, guess, best)
+     char *dir;
+     char *guess;
+     char *best;
+{
+  DIR *fd;
+  struct dirent *dp;
+  int dist, x;
+
+  dist = 3;    /* Worst distance */
+  if (*dir == '\0')
+    dir = ".";
+
+  if ((fd = opendir(dir)) == NULL)
+    return dist;
+
+  while ((dp = readdir(fd)) != NULL)
+    {
+      /*
+       *  Look for a better guess.  If the new guess is as
+       *  good as the current one, we take it.  This way,
+       *  any single character match will be a better match
+       *  than ".".
+       */
+      x = spdist(dp->d_name, guess);
+      if (x <= dist && x != 3)
+	{
+	  strcpy(best, dp->d_name);
+	  dist = x;
+	  if (dist == 0)    /* Exact match */
+	    break;
+	}
+    }
+  (void)closedir(fd);
+
+  /* Don't return `.' */
+  if (best[0] == '.' && best[1] == '\0')
+    dist = 3;
+  return dist;
+}
+
+/*
+ *  `spdist' -- return the "distance" between two names.
+ *
+ *  int spname(char * oldname, char * newname)
+ *  Returns:  0 if strings are identical
+ *      1 if two characters are transposed
+ *      2 if one character is wrong, added or deleted
+ *      3 otherwise
+ */
+static int
+spdist(cur, new)
+     char *cur, *new;
+{
+  while (*cur == *new)
+    {
+      if (*cur == '\0')
+	return 0;    /* Exact match */
+      cur++;
+      new++;
+    }
+
+  if (*cur)
+    {
+      if (*new)
+	{
+	  if (cur[1] && new[1] && cur[0] == new[1] && cur[1] == new[0] && strcmp (cur + 2, new + 2) == 0)
+	    return 1;  /* Transposition */
+
+	  if (strcmp (cur + 1, new + 1) == 0)
+	    return 2;  /* One character mismatch */
+	}
+
+      if (strcmp(&cur[1], &new[0]) == 0)
+	return 2;    /* Extra character */
+    }
+
+  if (*new && strcmp(cur, new + 1) == 0)
+    return 2;      /* Missing character */
+
+  return 3;
+}
