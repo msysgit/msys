@@ -1,3 +1,7 @@
+2003-06-06  Earnie Boyd  <earnie@users.sf.net>
+
+	* download.shtml: Change titles and add wording for MSYS.
+
 2003-05-30  Earnie Boyd  <earnie@users.sf.net>
 
 	* ssi/release.html: Remove the CVS version as this file is now

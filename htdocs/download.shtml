@@ -13,7 +13,7 @@
     <link href="mingw.css" type="text/css" rel="stylesheet"
           title="MinGW">
     <title>
-      Download
+      Mingw: Download
     </title>
     <style type="text/css">
     :link { color: #000099 }
@@ -25,7 +25,7 @@
   </head>
   <body>
     <h1>
-      MinGW: Download
+      MinGW: File Download
     </h1>
     <table class="prim" cellspacing="6" border="0">
       <tbody>
@@ -41,7 +41,7 @@
                   <td>
 <!-- ======================================================================= --><!--                                                                         --><!--                               Main Body                                 --><!--                                                                         -->
                     <h2>
-                      Downloading MinGW
+                      MinGW and MSYS Distributions
                     </h2>
                     <p>
                       Development of MinGW is done within a
@@ -63,7 +63,7 @@
                       However, in mid-2001 the team began
                       publishing a single-archive "MinGW
                       distribution"... bundling the latest versions
-                      of all individual packages available at the
+                      of key individual packages available at the
                       time of release. This was done partially to
                       streamline the installation process for
                       newbies, and partially to help application
@@ -74,6 +74,17 @@
                       to verify things as being "MinGW 1.0
                       compatible").
                     </p>
+		    <p>
+		      Early in 2002 the MinGW team delivered a package
+		      they had dubbed MSYS.  This is a Minimal SYStem
+		      providing a self hosted mingw32 target POSIX style
+		      environment.  The updates to this package and it's
+		      utilities are more controlled as the entire package
+		      (which uses subsets of many smaller packages) is 
+		      considered to be one package.  This package is also
+		      delivered in a Win32 style setup installation binary
+		      for better control of the installation.
+		    </p>
                     <p>
                       The individual packages making up the MinGW
                       distribution are still produced and made
@@ -89,13 +100,28 @@
                       Download location
                     </h3>
                     <p>
-                      The standard MinGW download page is hosted by
-                      <a target="_nw" href=
-                      "http://sourceforge.net/project/showfiles.php?group_id=2435">
-                      SourceForge</a>. This page contains the
-                      latest version of the main MinGW distribution
-                      archive, as well as all available pacakges
-                      files to download.
+                      MinGW packages available for download are hosted by
+		      <a target="_nw" href="http://www.sf.net/">SourceForge</a>. 
+		      SourceForge provides each project with a 
+		      <a target="_nw" href=
+		      "http://sf.net/project/showfiles.php?group_id=2435">
+		      File Release System</a> 
+		      for us to upload our releases to.  This system
+		      is adequate for describing the singular package
+		      distribution but provides challenges for the project that
+		      provides an all-in-one type of package with updates
+		      distributed individually.  We have therefore provided
+		      for a dynamically updated release page of our own.  We
+		      use the FRS provided by SourceForge to load the files
+		      to one of five categories, Candidate, Current, Previous,
+		      Proposed and Snapshot.  These categories are given at
+		      the FRS package level.  The FRS release name is used to
+		      give the package name and the files themselves are what
+		      identify the release.  The script that creates the data
+		      below is currently being perfected.  You may see the
+		      below layout change as we perfect it.  However, we
+		      suggest that you visit this page often for the status
+		      of updates.
                     </p><a name="download-release"></a>
                     <!--#include file="ssi/release.html"-->
                      
@@ -103,10 +129,10 @@
                       Mirror Sites
                     </h3>
                     <ul>
-                      <li>
+                      <!--<li>
                         <a href=
                         "http://prdownloads.sf.net/mingw/">http://prdownloads.sf.net/mingw/</a>
-                      </li>
+                      </li>-->
                       <li>
                         <a href=
                         "ftp://gd.tuwien.ac.at/gnu/mingw/">ftp://gd.tuwien.ac.at/gnu/mingw/</a>
@@ -130,8 +156,8 @@
                       distribution file is:
                     </p>
                     <blockquote>
-                      <tt>Mingw-&lt;version&gt;[-&lt;stamp&gt;].&lt;tar.gz
-                      or zip&gt;</tt>
+                      <tt>Mingw-&lt;version&gt;[-&lt;stamp&gt;].&lt;
+		      tar.[gz|bz2], zip or exe&gt;</tt>
                     </blockquote>Where: 
                     <dl>
                       <dt>
@@ -496,7 +522,7 @@
     </p>
     <address>
       <br>
-      Last revised $Date: 2003-02-18 23:41:03 $
+      Last revised $Date: 2003-06-06 15:25:05 $
     </address>
   </body>
 </html>
