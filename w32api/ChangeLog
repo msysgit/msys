@@ -1,6 +1,16 @@
+2001-10-30  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/commdlg.h (PRINTPAGERANGE): Add structure
+	definition.
+	(PRINTDLGEX[AW]): Likewise.
+	(PrintDlgEx[AW]): Add function declaration.
+	* lib/comdlg32.def (PrintDlgEx[AW]): Add function stubs.
+	* ChangeLog: Fix typo in last entry.
+	
+
 2001-11-01  TAMURA Kent  <tkent@users.sourceforge.net>
 
-	* include/objbase (CoGetClassObject): Change third parameter
+	* include/objbase.h (CoGetClassObject): Change third parameter
 	to COSERVERINFO*.
 
 2001-10-30  Danny Smith  <dannysmith@users.sourceforge.net>
