@@ -1,4 +1,9 @@
 
+2001-07-10  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	* mingw-oldfaq.shtml: Comment out reference to www.vwcl.org per
+	Bug item #439906.
+
 2001.06.10  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	* index.shtml: Add information for latest MinGW-1.0 Snapshot release.

@@ -1481,10 +1481,12 @@ patch -o file.cpp ..\old\file.cpp patch.fil
     </li>
     <li><a id="otherlibraries" name="otherlibraries"><h4>Other libraries</h4></a>
     <ul>
+      <!-->
       <li><h5>Virtual Windows Class Library</h5>
       <p><a href="http://www.vwcl.org/">http://www.vwcl.org/</a>
       </p>
       </li>
+      <--!>
       <li><h5>GNU gettext</h5>
       <p><a href="http://home.a-city.de/franco.bez/gettext/gettext_win32_en.html">
       http://home.a-city.de/franco.bez/gettext/gettext_win32_en.html</a>
@@ -1689,8 +1691,8 @@ width="88" /></a>
 <address>
 <br />Original document by Laura Michaels
 <br />Copyright &#169; 1999-2000 All Rights Reserved
-<br />Last revised $Date: 2001-01-19 00:42:08 $
+<br />Last revised $Date: 2001-07-10 20:13:45 $
 </address>
 </body>
 </html>
-<!--$Id: mingw-oldfaq.shtml,v 1.1 2001-01-19 00:42:08 earnie Exp $-->
+<!--$Id: mingw-oldfaq.shtml,v 1.2 2001-07-10 20:13:45 earnie Exp $-->
