@@ -1,3 +1,13 @@
+2003.07.03  Earnie Boyd  <earnie@users.sf.net>
+
+	* doc/msys/MSYS-1.0.9-changes.rtf (Changes): Add note about the
+	streamlining in attempt to debug.
+	Add note about cls and clsb.
+	(1.1.0): Add note about Heap allocation methods.
+	* bin/cls: New file.
+	* bin/clsb: Ditto.
+	* var/msys/script.dat (cls, clsb): Add.
+
 2003.06.16  Earnie Boyd  <earnie@users.sf.net>
 
 	* bin/msysinfo: Updates from John Kane.

@@ -1,5 +1,7 @@
 awk
 bunzip2
+cls
+clsb
 cmd 
 echo 
 egrep 
