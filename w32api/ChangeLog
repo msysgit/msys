@@ -1,4 +1,8 @@
 2001-07-30  Danny Smith <dannysmith@users.sourceforge.net>
+
+	* include/commctrl.h (TreeView_SetIndent): Correct typo.
+
+2001-07-30  Danny Smith <dannysmith@users.sourceforge.net>
  
 	* include/commctrl.h (TBSTYPE_FLAT): Remove define.
 	Thanks to: Jason Craig  <jacraig@softhome.net>

@@ -2006,7 +2006,7 @@ BOOL WINAPI _TrackMouseEvent(LPTRACKMOUSEEVENT);
 #define TreeView_GetItemRect(w,i,p,c) (*(HTREEITEM*)p=(i),(BOOL)SendMessage((w),TVM_GETITEMRECT,c,(LPARAM)(LPRECT)(p)))
 #define TreeView_GetCount(w) (UINT)SendMessage((w),TVM_GETCOUNT,0,0)
 #define TreeView_GetIndent(w) (UINT)SendMessage((w),TVM_GETINDENT,0,0)
-#define TreeView_SetIndent(w,i) (BOOL)SendMessage((w),TVM_SETINDENT,indent,0)
+#define TreeView_SetIndent(w,i) (BOOL)SendMessage((w),TVM_SETINDENT,i,0)
 #define TreeView_GetImageList(w,i) (HIMAGELIST)SendMessage((w),TVM_GETIMAGELIST,i,0)
 #define TreeView_SetImageList(w,h,i) (HIMAGELIST)SendMessage((w),TVM_SETIMAGELIST,i,(LPARAM)(HIMAGELIST)(h))
 #define TreeView_GetNextItem(w,i,c) (HTREEITEM)SendMessage((w),TVM_GETNEXTITEM,c,(LPARAM)(HTREEITEM)(i))
