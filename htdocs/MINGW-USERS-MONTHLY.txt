@@ -52,6 +52,18 @@ dure may be required.  Tools for automated conversion of MSVC
 projects exist.
 
 
+What is MSYS and why should I use it?
+=====================================
+MSYS stands for Minimal SYStem and is a shell environment created
+for use with the MinGW package.  MSYS provides the ability to 
+execute configure scripts.  It also includes some *nix utilities
+such as the vi editor.
+
+For further details on MSYS please visit:
+
+http://www.mingw.org/msys.shtml
+
+
 Support
 =======
 The main source of user information can be found at MinGW's website
