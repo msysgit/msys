@@ -43,8 +43,8 @@ build_dumper:=${shell test -r $(libbfd) -a -r $(libintl) -a -d $(updir1)/include
 
 DUMPER_INCLUDES:=-I$(bupdir2)/bfd -I$(updir1)/include
 
-MINGW_CXXFLAGS:=$(CXXFLAGS) -mno-cygwin $(MINGW_INCLUDES)
-MINGW_CFLAGS:=-mno-cygwin $(MINGW_INCLUDES)
+MINGW_CXXFLAGS:=$(CXXFLAGS) -mmingw $(MINGW_INCLUDES)
+MINGW_CFLAGS:=-mmingw $(MINGW_INCLUDES)
 
 libcygwin:=$(cygwin_build)/libmsys-1.0.dll.a
 libuser32:=

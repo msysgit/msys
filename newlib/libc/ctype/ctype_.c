@@ -37,7 +37,7 @@ static char sccsid[] = "@(#)ctype_.c	5.6 (Berkeley) 6/1/90";
 
 #include <ctype.h>
 
-#if defined(__CYGWIN__) || defined(__CYGWIN32__)
+#if defined(__CYGWIN__) || defined(__MSYS__)
 _CONST char __declspec(dllexport) _ctype_[1 + 256] = {
 #else
 _CONST char _ctype_[1 + 256] = {

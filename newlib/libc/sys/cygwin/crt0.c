@@ -52,5 +52,9 @@ mainCRTStartup ()
   }
 #endif
 
+#if defined (__MSYS__)
+  msys_crt0 (main);
+#else
   cygwin_crt0 (main);
+#endif
 }

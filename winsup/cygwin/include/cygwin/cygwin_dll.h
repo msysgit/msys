@@ -26,8 +26,8 @@ details. */
 CDECL_BEGIN								      \
   int WINAPI Entry (HINSTANCE h, DWORD reason, void *ptr);	              \
   typedef int (*mainfunc) (int, char **, char **);			      \
-  extern int cygwin_attach_dll (HMODULE, mainfunc);			      \
-  extern void cygwin_detach_dll (DWORD);				      \
+  extern int msys_attach_dll (HMODULE, mainfunc);			      \
+  extern void msys_detach_dll (DWORD);				      \
 CDECL_END								      \
 									      \
 static HINSTANCE storedHandle;						      \
@@ -41,7 +41,7 @@ static int __dllMain (int a, char **b, char **c)			      \
 									      \
 static DWORD dll_index;							      \
 									      \
-int WINAPI _cygwin_dll_entry (HINSTANCE h, DWORD reason, void *ptr)	      \
+int WINAPI _msys_dll_entry (HINSTANCE h, DWORD reason, void *ptr)	      \
 {									      \
   int ret;								      \
   ret = 1;								      \
@@ -53,7 +53,7 @@ int WINAPI _cygwin_dll_entry (HINSTANCE h, DWORD reason, void *ptr)	      \
       storedHandle = h;							      \
       storedReason = reason;						      \
       storedPtr = ptr;							      \
-      dll_index = cygwin_attach_dll (h, &__dllMain);			      \
+      dll_index = msys_attach_dll (h, &__dllMain);			      \
       if (dll_index == (DWORD) -1)					      \
 	ret = 0;							      \
     }									      \
@@ -64,7 +64,7 @@ int WINAPI _cygwin_dll_entry (HINSTANCE h, DWORD reason, void *ptr)	      \
       ret = Entry (h, reason, ptr);					      \
       if (ret)								      \
       {									      \
-	cygwin_detach_dll (dll_index);					      \
+	msys_detach_dll (dll_index);					      \
 	dll_index = (DWORD) -1;						      \
       }									      \
     }									      \
@@ -86,9 +86,9 @@ int WINAPI _cygwin_dll_entry (HINSTANCE h, DWORD reason, void *ptr)	      \
 }									      \
 									      \
 /* OBSOLETE: This is only provided for source level compatibility. */         \
-int WINAPI _cygwin_noncygwin_dll_entry (HINSTANCE h, DWORD reason, void *ptr) \
+int WINAPI _msys_nonmsys_dll_entry (HINSTANCE h, DWORD reason, void *ptr) \
 {									      \
-  return _cygwin_dll_entry (h, reason, ptr);				      \
+  return _msys_dll_entry (h, reason, ptr);				      \
 }									      \
 
 #endif /* __CYGWIN_CYGWIN_DLL_H__ */

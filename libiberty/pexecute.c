@@ -242,7 +242,7 @@ pwait (pid, status, flags)
 
 #include <process.h>
 
-#ifdef __CYGWIN__
+#if defined (__CYGWIN__) || defined (__MSYS__)
 
 #define fix_argv(argvec) (argvec)
 
@@ -443,7 +443,7 @@ pwait (pid, status, flags)
      int *status;
      int flags;
 {
-#ifdef __CYGWIN__
+#if defined (__CYGWIN__) || defined (__MSYS__)
   return wait (status);
 #else
   int termstat;

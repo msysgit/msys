@@ -61,7 +61,7 @@ char	  *_EXFUN(ctime_r,	(const time_t *, char *));
 struct tm *_EXFUN(gmtime_r,	(const time_t *, struct tm *));
 struct tm *_EXFUN(localtime_r,	(const time_t *, struct tm *));
 
-#ifdef __CYGWIN__
+#if defined(__CYGWIN__) || defined(__MSYS__)
 #ifndef __STRICT_ANSI__
 extern __IMPORT time_t _timezone;
 extern __IMPORT int _daylight;
@@ -82,7 +82,7 @@ char *_EXFUN(timezone, (void));
 #endif
 void _EXFUN(tzset, (void));
 #endif
-#endif /* __CYGWIN__ */
+#endif /* __CYGWIN__ or __MSYS__ */
 
 #include <sys/features.h>
 

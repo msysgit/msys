@@ -1,3 +1,9 @@
+2001.09.22  Earnie Boyd  <Earnie@SF.net>
+
+	* Makefile.in (MINGW_CXXFLAGS): Use -mmingw switch instead of 
+	-mno-cygwin.
+	(MINGW_CFLAGS): Ditto.
+	* strace.cc: Substitute -mno-cygwin for -mmingw.
 
 2001.07.27  Earnie Boyd  <Earnie@SourceForge.Net>
 

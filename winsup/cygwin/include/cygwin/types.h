@@ -17,7 +17,7 @@ extern "C"
 #ifndef _CYGWIN_TYPES_H
 #define _CYGWIN_TYPES_H
 
-#if !defined(__INSIDE_CYGWIN__) || !defined(__cplusplus)
+#if !(defined(__INSIDE_CYGWIN__) || defined (__INSIDE_MSYS__)) || !defined(__cplusplus)
 
 typedef void *pthread_t;
 typedef void *pthread_mutex_t;

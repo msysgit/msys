@@ -60,7 +60,7 @@ Supporting OS subroutines required: <<_exit>>, <<_execve>>, <<_fork_r>>,
 #include <_syslist.h>
 #include <reent.h>
 
-#if defined (unix) || defined (__CYGWIN__)
+#if defined (unix) || defined (__CYGWIN__) || defined (__MSYS__)
 static int do_system ();
 #endif
 
@@ -81,7 +81,7 @@ _system_r (ptr, s)
      For now we always return 0 and leave it to each target to explicitly
      handle otherwise (this can always be relaxed in the future).  */
 
-#if defined (unix) || defined (__CYGWIN32__)
+#if defined (unix) || defined (__CYGWIN__) || defined (__MSYS__)
   if (s == NULL)
     return 1;
   return do_system (ptr, s);
@@ -106,7 +106,7 @@ system (s)
 
 #endif
 
-#if defined (unix) && !defined (__CYGWIN__) && !defined(__rtems__)
+#if defined (unix) && !defined (__CYGWIN__) && !defined(__rtems__) && !defined (__MSYS__)
 extern char **environ;
 
 /* Only deal with a pointer to environ, to work around subtle bugs with shared
@@ -145,7 +145,7 @@ do_system (ptr, s)
 }
 #endif
 
-#if defined (__CYGWIN__)
+#if defined (__CYGWIN__) || defined (__MSYS__)
 static int
 do_system (ptr, s)
      struct _reent *ptr;

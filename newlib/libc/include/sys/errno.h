@@ -140,7 +140,7 @@ extern __IMPORT int _sys_nerr;
 #define ENOSHARE 136    /* No such host or network path */
 #define ECASECLASH 137  /* Filename exists with different case */
 
-/* From cygwin32.  */
+/* From cygwin32 and MSYS.  */
 #define EWOULDBLOCK EAGAIN	/* Operation would block */
 
 #define __ELASTERROR 2000	/* Users can add values starting here */

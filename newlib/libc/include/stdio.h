@@ -66,7 +66,7 @@ typedef struct __sFILE FILE;
 #define	__SNPT	0x0800		/* do not do fseek() optimisation */
 #define	__SOFF	0x1000		/* set iff _offset is in fact correct */
 #define	__SMOD	0x2000		/* true => fgetline modified _p text */
-#if defined(__CYGWIN__) || defined(__CYGWIN__)
+#if defined(__CYGWIN__) || defined(__MSYS__)
 #define __SCLE        0x4000          /* convert line endings CR/LF <-> NL */
 #endif
 
@@ -341,12 +341,12 @@ static __inline int __sputc(int _c, FILE *_p) {
 #define	fileno(p)	__sfileno(p)
 #endif
 
-#ifndef __CYGWIN__
+#if !defined (__CYGWIN__) && !defined (__MSYS__)
 #ifndef lint
 #define	getc(fp)	__sgetc(fp)
 #define putc(x, fp)	__sputc(x, fp)
-#endif /* lint */
-#endif /* __CYGWIN__ */
+#endif /* not lint */
+#endif /* not __CYGWIN__ and not __MSYS__*/
 
 #define	getchar()	getc(stdin)
 #define	putchar(x)	putc(x, stdout)
@@ -357,7 +357,7 @@ static __inline int __sputc(int _c, FILE *_p) {
 	__swbuf((int)(x), p) == EOF : (*(p)->_p = (x), (p)->_p++, 0))
 
 #define	L_cuserid	9		/* posix says it goes in stdio.h :( */
-#ifdef __CYGWIN__
+#if defined (__CYGWIN__) || defined (__MSYS__)
 #define L_ctermid       16
 #endif
 #endif

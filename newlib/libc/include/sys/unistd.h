@@ -20,7 +20,7 @@ unsigned  _EXFUN(alarm, (unsigned __secs ));
 int     _EXFUN(chdir, (const char *__path ));
 int     _EXFUN(chmod, (const char *__path, mode_t __mode ));
 int     _EXFUN(chown, (const char *__path, uid_t __owner, gid_t __group ));
-#ifdef __CYGWIN__
+#if defined (__CYGWIN__) || defined (__MSYS__)
 int     _EXFUN(chroot, (const char *__path ));
 #endif
 int     _EXFUN(close, (int __fildes ));
@@ -55,7 +55,7 @@ pid_t   _EXFUN(getpgrp, (void ));
 pid_t   _EXFUN(getpid, (void ));
 pid_t   _EXFUN(getppid, (void ));
 uid_t   _EXFUN(getuid, (void ));
-#ifdef __CYGWIN__
+#if defined (__CYGWIN__) || defined (__MSYS__)
 char    _EXFUN(*getwd, (char *__buf ));
 #endif
 int     _EXFUN(isatty, (int __fildes ));
@@ -65,7 +65,7 @@ int	_EXFUN(nice, (int __nice_value ));
 off_t   _EXFUN(lseek, (int __fildes, off_t __offset, int __whence ));
 long    _EXFUN(pathconf, (const char *__path, int __name ));
 int     _EXFUN(pause, (void ));
-#ifdef __CYGWIN__
+#if defined (__CYGWIN__) || defined (__MSYS__)
 int	_EXFUN(pthread_atfork, (void (*)(void), void (*)(void), void (*)(void)));
 #endif
 int     _EXFUN(pipe, (int __fildes[2] ));
@@ -76,7 +76,7 @@ void *  _EXFUN(sbrk,  (ptrdiff_t __incr));
 #else
 void *  _EXFUN(sbrk,  (size_t __incr));
 #endif
-#if defined(__CYGWIN__)
+#if defined(__CYGWIN__) || defined(__MSYS__)
 int     _EXFUN(setegid, (gid_t __gid ));
 int     _EXFUN(seteuid, (uid_t __uid ));
 #endif
@@ -112,7 +112,7 @@ int     _EXFUN(_unlink, (const char *__path ));
 _READ_WRITE_RETURN_TYPE _EXFUN(_write, (int __fd, const void *__buf, size_t __nbyte ));
 int     _EXFUN(_execve, (const char *__path, char * const __argv[], char * const __envp[] ));
 
-#if defined(__CYGWIN__) || defined(__rtems__)
+#if defined(__CYGWIN__) || defined(__rtems__) || defined(__MSYS__)
 int	_EXFUN(getdtablesize, (void));
 int	_EXFUN(setdtablesize, (int));
 unsigned _EXFUN(usleep, (unsigned int __useconds));
@@ -159,12 +159,12 @@ int     _EXFUN(symlink, (const char *__name1, const char *__name2));
 #define _SC_SAVED_IDS               6
 #define _SC_VERSION                 7
 #define _SC_PAGESIZE                8
-/* CYGWIN-specific values .. do not touch */
+/* CYGWIN and MSYS-specific values .. do not touch */
 #define _SC_NPROCESSORS_CONF        9
 #define _SC_NPROCESSORS_ONLN       10
 #define _SC_PHYS_PAGES             11
 #define _SC_AVPHYS_PAGES           12
-/* end of CYGWIN-specific values */
+/* end of CYGWIN and MSYS-specific values */
 #define _SC_MQ_OPEN_MAX            13
 #define _SC_MQ_PRIO_MAX            14
 #define _SC_RTSIG_MAX              15
@@ -228,7 +228,7 @@ int     _EXFUN(symlink, (const char *__name1, const char *__name2));
 # define	_PC_ASYNC_IO            9
 # define	_PC_PRIO_IO            10
 # define	_PC_SYNC_IO            11
-#ifdef __CYGWIN__
+#if defined(__CYGWIN__) || defined(__MSYS__)
 /* Ask for POSIX permission bits support. */
 # define	_PC_POSIX_PERMISSIONS   90
 /* Ask for full POSIX permission support including uid/gid settings. */
@@ -236,7 +236,7 @@ int     _EXFUN(symlink, (const char *__name1, const char *__name2));
 #endif
 
 /* FIXME: This is temporary until winsup gets sorted out.  */
-#ifdef __CYGWIN__
+#if defined(__CYGWIN__) || defined(__MSYS__)
 #define MAXPATHLEN (260 - 1 /* NUL */)
 #else
 # define	MAXPATHLEN	1024

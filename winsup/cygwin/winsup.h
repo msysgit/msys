@@ -12,9 +12,13 @@ details. */
 # include "config.h"
 #endif
 
-#define __INSIDE_CYGWIN__ 1
-#define __MSYS__ 1
-#define __INSIDE_MSYS__ 1
+#if defined (__CYGWIN__)
+  #define __INSIDE_CYGWIN__ 1
+#endif
+
+#if defined (__MSYS__)
+  #define __INSIDE_MSYS__ 1
+#endif
 
 #define alloca __builtin_alloca
 #define strlen __builtin_strlen
