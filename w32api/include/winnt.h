@@ -699,6 +699,8 @@ typedef DWORD FLONG;
 #define IMAGE_FILE_EXECUTABLE_IMAGE	2
 #define IMAGE_FILE_LINE_NUMS_STRIPPED	4
 #define IMAGE_FILE_LOCAL_SYMS_STRIPPED	8
+#define IMAGE_FILE_AGGRESIVE_WS_TRIM 	16
+#define IMAGE_FILE_LARGE_ADDRESS_AWARE	32
 #define IMAGE_FILE_BYTES_REVERSED_LO	128
 #define IMAGE_FILE_32BIT_MACHINE	256
 #define IMAGE_FILE_DEBUG_STRIPPED	512
@@ -1150,8 +1152,13 @@ typedef DWORD FLONG;
 #define IO_REPARSE_TAG_MOUNT_POINT 0xA0000003
 #ifndef RC_INVOKED
 typedef DWORD ACCESS_MASK, *PACCESS_MASK;
-#ifndef _GUID_DEFINED /* also defined in basetyps.h */
-#define _GUID_DEFINED
+
+#ifdef _GUID_DEFINED
+# warning _GUID_DEFINED is deprecated, use GUID_DEFINED instead
+#endif
+
+#if ! (defined _GUID_DEFINED || defined GUID_DEFINED) /* also defined in basetyps.h */
+#define GUID_DEFINED
 typedef struct _GUID {
 	unsigned long  Data1;
 	unsigned short Data2;
@@ -1159,7 +1166,7 @@ typedef struct _GUID {
 	unsigned char  Data4[8];
 } GUID, *REFGUID, *LPGUID;
 #define SYSTEM_LUID { QuadPart:999 }
-#endif /* _GUID_DEFINED */
+#endif /* GUID_DEFINED */
 typedef struct _GENERIC_MAPPING {
 	ACCESS_MASK GenericRead;
 	ACCESS_MASK GenericWrite;

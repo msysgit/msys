@@ -1,3 +1,130 @@
+2003-02-05  Earnie Boyd  <earnie@users.sf.net>
+
+	* include/basetypes.h (_GUID_DEFINED): Add deprecation warning, start
+	using GUID_DEFINED instead.
+	* include/sqltypes.h: Ditto.
+	* include/winnt.h: Ditto.
+	* include/ddk/scsiwmi.h: Ditto.
+
+2003-02-04  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/shlwapi.h (PathRelativePathTo[AW]): Correct
+	prototypes.
+	Thanks to: John Dallaway  <jld@ecoscentric.com>.
+
+2003-02-01  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/commctrl.h (TCM_*): Add missing defines.
+
+2003-02-01  Jesus Alvarez  <jesus_alvarez@users.sourceforge.net>
+	    Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/prsht.h (PSP_*, PSH_*): Add missing defines.
+	(PROPSHEETPAGE[AW]): Add pszHeaderTitle, pszHeaderSubTitle
+	for (_WIN32_IE >= 0x0400).
+	(PROPSHEETHEADER[AW]): Add hplWatermark and anonymous union
+	fields for (_WIN32_IE >= 0x0400).
+
+2003-01-31  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/winbase.h (CreateFiber): Change first parameter
+	to SIZE_T.
+	(CreateJobObject[AW], CreateHardLink[AW]):Guard with
+	if (_WIN32_WINNT >= 0x0500). 
+
+2003-01-31  Bang Jun-Young  <junyoung@netbsd.org>
+
+	* include/winbase.h (PWIN32_FIND_DATAA, PWIN32_FIND_DATAW):
+	Add missing typedefs.
+	(CreateFiberEx, CreateJobObjectA,CreateJobObjectW): Add missing
+	prototypes.
+	(CreateHardLinkA, CreateHardLinkW): Return BOOL, not HANDLE.
+
+2003-01-27  Krzysztof Nikiel  <kni@poczta.onet.pl>
+
+	* include/mmsystem.h (MIXERCONTROL_CONTROLF_MULTIPLE): Correct
+	define.
+	* lib/largeint.c (LargeIntegerAdd): Add, don't multiply.
+
+2003-01-27  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/rpcnterr.h (RPC_X_INVALID_PIPE_OPERATION): Add
+	define.
+	* include/winbase.h (WAIT_TIMEOUT): Guard against prior
+	definition.
+	(WAIT_FAILED): Cast to DWORD.
+	* include/winerror.h (WAIT_TIMEOUT): Guard against prior
+	definition.
+
+2003-01-27  Bang Jun-Young  <junyoung@netbsd.org>
+
+	* include/winerror.h: Protect against multiple
+	definition of WSA* error codes.
+	* include/winsock.h: Likewise.
+	* include/winsock2.h: Likewise.
+
+2003-01-27  Bang Dong-Heui
+	    Bang Jun-Young  <junyoung@netbsd.org>
+
+	* include/winerror.h (ERROR_*, SEC_E_*,RPC_S_*, FRS_ERR_*,
+	DNS_*, WSA*, WAIT_TIMEOUT): Add missing error codes.
+	(RPC_X_INVALID_PIPE_OPERATION): Remove define.
+
+
+2003-01-24  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/ras.h (RASCONN[AW]): Add dwSessionId for
+	(WINVER >= 0x501).
+
+2003-01-24  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/ras.h (RASCONN[AW]): Guard szDeviceType,
+	szDeviceName fields with (WINVER >= 0x400). Add dwFlags, luid
+	fields for (WINVER >= 0x501).
+
+2003-01-23  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* lib/ws2_32.def (getaddrinfo, freeaddrinfo and getnameinfo):
+	Add stubs.
+	* include/ws2tcpip.h (IPV6_*) Add IPPROTO_IPV6 level socket
+	options.
+
+2003-01-11  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/winnt.h (IMAGE_FILE_AGGRESIVE_WS_TRIM
+	IMAGE_FILE_LARGE_ADDRESS_AWARE): Add defines.
+
+2003-01-11  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/accctrl.h (enum _SE_OBJECT_TYPE): Add
+	SE_REGISTRY_WOW64_32KEY.
+	Reported by: Dimitri Papadopoulos  <dimitri_at@sourceforge.users.net>
+
+2003-01-11  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/commctrl.h (HDN_GETDISPINFO[AW]: Add defines.
+	(tagNMHDDISPINFO[AW}: Add structures and typedefs.
+	Reported by: Mat Nieuwenhoven  <matnieuw@users.sourceforge.net>
+
+2003-01-10  Christopher Faylor  <cgf@redhat.com>
+
+	* include/winsock2.h: Remove gethostname from INSIDE_CYGWIN protection.
+
+2003-01-08  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* lib/dxguid.c: Don't #include <objbase.h>.
+	* include/unknwn.h: Partially revert change of 2002-12-26.
+	Don't include <ole2.h>.
+
+2003-01-08  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* lib/dinput.c: Don't #include <objbase.h>.
+
+2003-01-08  Bart Oldeman  <bartoldeman@users.sourceforge.net>
+
+	* include/windows.h (ole2.h):Do #include for
+	__WATCOMC__.
+
 2003-01-05  Danny Smith  <dannysmith@users.sourceforge.net>
 
 	* include/winuser.h (SPI_SETWHEELSCROLLLINES) Add define.
