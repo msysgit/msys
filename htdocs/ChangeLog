@@ -1,3 +1,10 @@
+2000-12-08  Earnie Boyd  <earnie@users.sourceforge.net>
+
+	* ssi: Add subdirectory
+	* ssi/bottombar.html: Pasted bottom of page links from index.shtml
+	* ssi/footer.html: Pasted pasted page footer from index.shmtl
+	* ssi/lsidebar.html: Pasted sidebar links from index.shmtl
+
 2000-12-03  Paul Sokolovsky  <Paul.Sokolovsky@technologist.com>
 
 	* docs.shtml: Added link to uploaded BFD docs for current
