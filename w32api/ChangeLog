@@ -1,3 +1,8 @@
+2001-11-06  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/winuser.h (IDC_STATIC): Add define.
+	Thanks to: Benoit Laniel.
+
 2001-11-05  Danny Smith  <dannysmith@users.sourceforge.net>
 
 	* include/commdlg.h: Include <unknwn.h> rather than local
