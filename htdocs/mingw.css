@@ -2,7 +2,7 @@ BODY { color: black; background-color: white; }
 
 H1 { text-align: center; }
 
-OL { margin-top: 1em; margin-bottom: 1em;  }
+OL { margin-top: 1cm; margin-bottom: 1cm;  }
 OL.alpha { list-style-type: upper-alpha; }
 OL.romanum { list-style-type: lower-roman; }
 
@@ -11,11 +11,11 @@ P.centre { text-align: center; }
 SPAN.bold { font-weight: bold; }
 
 TABLE { width: 100%; text-align: left; }
-TABLE.prim { padding: 8px; }
-TABLE.sec { padding: 6px; }
+TABLE.prim { padding: 1cm; }
+TABLE.sec { padding: 1cm; }
 
 TD { vertical-align: top; }
 TD.side { background-color: rgb( 238, 238, 238 ); width: 10%; }
 TD.news { background-color: rgb( 238, 238, 238 ); width: 25%; }
 
-UL { margin-bottom: 1em; }
+UL { margin-bottom: 1cm; }
