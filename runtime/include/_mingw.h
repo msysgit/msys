@@ -91,7 +91,7 @@
 #  define __int32 long
 # endif
 # ifndef __int16
-#  define __int16 int
+#  define __int16 short
 # endif
 # ifndef __int8
 #  define __int8 char
@@ -141,8 +141,8 @@
 # define __MSVCRT_VERSION__ 0x0600
 #endif
 
-#define __MINGW32_VERSION 3.6
+#define __MINGW32_VERSION 3.7
 #define __MINGW32_MAJOR_VERSION 3
-#define __MINGW32_MINOR_VERSION 6
+#define __MINGW32_MINOR_VERSION 7
 
 #endif /* __MINGW_H */

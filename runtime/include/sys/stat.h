@@ -26,7 +26,8 @@
 /*
  * Constants for the stat st_mode member.
  */
-#define _S_IFLNK	0xF000  /* Pretend */
+#ifndef __STRICT_ANSI__
+#endif
 #define	_S_IFIFO	0x1000	/* FIFO */
 #define	_S_IFCHR	0x2000	/* Character */
 #define	_S_IFBLK	0x3000	/* Block: Is this ever set under w32? */
@@ -49,11 +50,9 @@
 #define	_S_ISCHR(m)	(((m) & _S_IFMT) == _S_IFCHR)
 #define	_S_ISBLK(m)	(((m) & _S_IFMT) == _S_IFBLK)
 #define	_S_ISREG(m)	(((m) & _S_IFMT) == _S_IFREG)
-#define _S_ISLNK(m)	(((m) & _S_IFMT) == _S_IFLNK) /* Should always be zero.*/
 
 #ifndef _NO_OLDNAMES
 
-#define S_IFLNK		_S_IFLNK
 #define	S_IFIFO		_S_IFIFO
 #define	S_IFCHR		_S_IFCHR
 #define	S_IFBLK		_S_IFBLK
@@ -73,7 +72,6 @@
 #define	S_ISCHR(m)	(((m) & S_IFMT) == S_IFCHR)
 #define	S_ISBLK(m)	(((m) & S_IFMT) == S_IFBLK)
 #define	S_ISREG(m)	(((m) & S_IFMT) == S_IFREG)
-#define S_ISLNK(m)	(((m) & S_IFMT) == S_IFLNK) /* Should always be zero.*/
 
 #endif	/* Not _NO_OLDNAMES */
 
@@ -159,7 +157,6 @@ extern "C" {
 _CRTIMP int __cdecl	_fstat (int, struct _stat*);
 _CRTIMP int __cdecl	_chmod (const char*, int);
 _CRTIMP int __cdecl	_stat (const char*, struct _stat*);
-#define _lstat _stat
 
 #ifndef	_NO_OLDNAMES
 
@@ -167,7 +164,6 @@ _CRTIMP int __cdecl	_stat (const char*, struct _stat*);
 _CRTIMP int __cdecl	fstat (int, struct stat*);
 _CRTIMP int __cdecl	chmod (const char*, int);
 _CRTIMP int __cdecl	stat (const char*, struct stat*);
-#define lstat stat
 
 #endif	/* Not _NO_OLDNAMES */
 
