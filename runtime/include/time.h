@@ -18,9 +18,9 @@
  *  DISCLAIMED. This includes but is not limited to warranties of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Revision: 1.4 $
+ * $Revision: 1.5 $
  * $Author: earnie $
- * $Date: 2002-06-14 15:12:54 $
+ * $Date: 2002-11-12 15:29:40 $
  *
  */
 
@@ -32,6 +32,7 @@
 
 #define __need_wchar_t
 #define __need_size_t
+#define __need_NULL
 #ifndef RC_INVOKED
 #include <stddef.h>
 #endif	/* Not RC_INVOKED */

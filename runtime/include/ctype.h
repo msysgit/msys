@@ -18,9 +18,9 @@
  *  DISCLAIMED. This includes but is not limited to warranties of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Revision: 1.5 $
+ * $Revision: 1.6 $
  * $Author: earnie $
- * $Date: 2002-06-14 15:12:54 $
+ * $Date: 2002-11-12 15:29:38 $
  *
  */
 
@@ -106,10 +106,10 @@ int	_toupper(int);
 
 #else		/* ! __DECLSPEC_SUPPORTED */
 # ifdef __MSVCRT__
-   extern int* _imp____mbcur_max
+   extern int* _imp____mbcur_max;
 #  define MB_CUR_MAX (*_imp____mb_cur_max)
 # else		/* not __MSVCRT */
-   extern int*  _imp____mbcur_max_dll
+   extern int*  _imp____mbcur_max_dll;
 #  define MB_CUR_MAX (*_imp____mb_cur_max_dll)
 # endif 	/* not __MSVCRT */
 #endif  	/*  __DECLSPEC_SUPPORTED */

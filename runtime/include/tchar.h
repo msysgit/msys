@@ -29,9 +29,9 @@
  *  DISCLAIMED. This includes but is not limited to warranties of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Revision: 1.9 $
+ * $Revision: 1.10 $
  * $Author: earnie $
- * $Date: 2002-08-27 11:20:27 $
+ * $Date: 2002-11-12 15:29:40 $
  *
  */
 
@@ -206,6 +206,12 @@ typedef wchar_t _TCHAR;
 #define _tfindfirsti64  _wfindfirsti64
 #define _tfindnexti64   _wfindnexti64
 #define _tfinddatai64_t _wfinddatai64_t
+#define _tchdir		_wchdir
+#define _tgetcwd	_wgetcwd
+#define _tgetdcwd	_wgetdcwd
+#define _tmkdir		_wmkdir
+#define _trmdir		_wrmdir
+#define _tstat		_wstat
 #endif  /* __MSVCRT__ */
 
 /* dirent structures and functions */
@@ -359,6 +365,12 @@ typedef char	_TCHAR;
 #define _tsetlocale setlocale
 #define _tunlink    _unlink
 #define _tfinddata_t    _finddata_t
+#define _tchdir	    _chdir
+#define _tgetcwd    _getcwd
+#define _tgetdcwd   _getdcwd
+#define _tmkdir	    _mkdir
+#define _trmdir	    _rmdir
+#define _tstat      _stat
 
 #if 1  /* defined __MSVCRT__ */
 /* Not in crtdll.dll. Define macros anyway? */

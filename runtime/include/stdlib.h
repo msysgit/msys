@@ -18,9 +18,9 @@
  *  DISCLAIMED. This includes but is not limited to warranties of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Revision: 1.11 $
+ * $Revision: 1.12 $
  * $Author: earnie $
- * $Date: 2002-08-12 13:06:35 $
+ * $Date: 2002-11-12 15:29:39 $
  *
  */
 
@@ -120,8 +120,6 @@ __MINGW_IMPORT char**  __argv_dll;
 /*
  * Also defined in ctype.h.
  */
-
-/* Also defined in stdlib.h */
 #ifndef MB_CUR_MAX
 #ifdef __DECLSPEC_SUPPORTED
 # ifdef __MSVCRT__
@@ -134,14 +132,15 @@ __MINGW_IMPORT char**  __argv_dll;
 
 #else		/* ! __DECLSPEC_SUPPORTED */
 # ifdef __MSVCRT__
-   extern int* _imp____mbcur_max
+   extern int* _imp____mbcur_max;
 #  define MB_CUR_MAX (*_imp____mb_cur_max)
 # else		/* not __MSVCRT */
-   extern int*  _imp____mbcur_max_dll
+   extern int*  _imp____mbcur_max_dll;
 #  define MB_CUR_MAX (*_imp____mb_cur_max_dll)
 # endif 	/* not __MSVCRT */
 #endif  	/*  __DECLSPEC_SUPPORTED */
 #endif  /* MB_CUR_MAX */
+
 /* 
  * MS likes to declare errno in stdlib.h as well. 
  */
@@ -281,6 +280,32 @@ wchar_t**  __p__wpgmptr(void);
 /* no wide version in CRTDLL */
 #endif /* __MSVCRT__ */
 
+/*
+ * This variable determines the default file mode.
+ * TODO: Which flags work?
+ */
+#if !defined (__DECLSPEC_SUPPORTED) || defined (__IN_MINGW_RUNTIME)
+
+#ifdef __MSVCRT__
+extern int* _imp___fmode;
+#define	_fmode	(*_imp___fmode)
+#else
+/* CRTDLL */
+extern int* _imp___fmode_dll;
+#define	_fmode	(*_imp___fmode_dll)
+#endif
+
+#else /* __DECLSPEC_SUPPORTED */
+
+#ifdef __MSVCRT__
+__MINGW_IMPORT  int _fmode;
+#else /* ! __MSVCRT__ */
+__MINGW_IMPORT  int _fmode_dll;
+#define	_fmode	_fmode_dll
+#endif /* ! __MSVCRT__ */
+
+#endif /* __DECLSPEC_SUPPORTED */
+
 #endif /* Not __STRICT_ANSI__ */
 
 #ifdef	__GNUC__
@@ -379,7 +404,7 @@ extern __inline__ void _Exit(int status)
 	{  _exit(status); }
 #endif
 /* _onexit is MS extension. Use atexit for portability.  */
-typedef  int (* _onexit_t)(void); 
+typedef  int (* _onexit_t)(void);
 _onexit_t _onexit( _onexit_t );
 
 int	_putenv	(const char*);

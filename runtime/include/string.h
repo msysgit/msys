@@ -18,9 +18,9 @@
  *  DISCLAIMED. This includes but is not limited to warranties of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Revision: 1.4 $
+ * $Revision: 1.5 $
  * $Author: earnie $
- * $Date: 2002-08-12 13:06:35 $
+ * $Date: 2002-11-12 15:29:39 $
  *
  */
 
@@ -61,7 +61,7 @@ int	strcoll (const char*, const char*);	/* Compare using locale */
 char*	strcpy (char*, const char*);
 size_t	strcspn (const char*, const char*);
 char*	strerror (int); /* NOTE: NOT an old name wrapper. */
-char*	_strerror (const char *);
+
 size_t	strlen (const char*);
 char*	strncat (char*, const char*, size_t);
 int	strncmp (const char*, const char*, size_t);
@@ -77,6 +77,7 @@ size_t	strxfrm (char*, const char*, size_t);
 /*
  * Extra non-ANSI functions provided by the CRTDLL library
  */
+char*	_strerror (const char *);
 void*	_memccpy (void*, const void*, int, size_t);
 int 	_memicmp (const void*, const void*, size_t);
 char* 	_strdup (const char*);
@@ -160,11 +161,15 @@ int	memicmp (const void*, const void*, size_t);
 char*	strdup (const char*);
 int	strcmpi (const char*, const char*);
 int	stricmp (const char*, const char*);
-int	strcasecmp (const char*, const char*);
+extern __inline__ int
+strcasecmp (const char * __sz1, const char * __sz2)
+  {return _stricmp (__sz1, __sz2);}
 int	stricoll (const char*, const char*);
 char*	strlwr (char*);
 int	strnicmp (const char*, const char*, size_t);
-int	strncasecmp (const char*, const char*, size_t);
+extern __inline__ int
+strncasecmp (const char * __sz1, const char * __sz2, size_t __sizeMaxCompare)
+  {return _strnicmp (__sz1, __sz2, __sizeMaxCompare);}
 char*	strnset (char*, int, size_t);
 char*	strrev (char*);
 char*	strset (char*, int);
@@ -174,7 +179,9 @@ void	swab (const char*, char*, size_t);
 #endif /* _UWIN */
 
 /* NOTE: There is no _wcscmpi, but this is for compatibility. */
-int	wcscmpi	(const wchar_t*, const wchar_t*);
+extern __inline__ int
+wcscmpi (const wchar_t * __ws1, const wchar_t * __ws2)
+  {return _wcsicmp (__ws1, __ws2);}
 wchar_t* wcsdup (wchar_t*);
 int	wcsicmp (const wchar_t*, const wchar_t*);
 int	wcsicoll (const wchar_t*, const wchar_t*);

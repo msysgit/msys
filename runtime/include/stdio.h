@@ -5,7 +5,7 @@
  * output.
  *
  * NOTE: The file manipulation functions provided by Microsoft seem to
- * work with either slash (/) or backslash (\) as the path separator.
+ * work with either slash (/) or backslash (\) as the directory separator.
  *
  * This file is part of the Mingw32 package.
  *
@@ -22,9 +22,9 @@
  *  DISCLAIMED. This includes but is not limited to warranties of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Revision: 1.9 $
+ * $Revision: 1.10 $
  * $Author: earnie $
- * $Date: 2002-08-12 13:06:35 $
+ * $Date: 2002-11-12 15:29:39 $
  *
  */
 
@@ -323,7 +323,11 @@ int	_fgetchar (void);
 int	_fputchar (int);
 FILE*	_fdopen (int, const char*);
 int	_fileno (FILE*);
-int 	_fcloseall(void);
+int	_fcloseall(void);
+#ifdef __MSVCRT__
+int	_getmaxstdio(void);
+int	_setmaxstdio(int);
+#endif
 
 #ifndef _NO_OLDNAMES
 int	fgetchar (void);

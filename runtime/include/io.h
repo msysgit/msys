@@ -18,9 +18,9 @@
  *  DISCLAIMED. This includes but is not limited to warranties of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Revision: 1.5 $
+ * $Revision: 1.6 $
  * $Author: earnie $
- * $Date: 2002-08-12 13:06:35 $
+ * $Date: 2002-11-12 15:29:38 $
  *
  */
 
@@ -212,6 +212,7 @@ int		_open (const char*, int, ...);
 int		_open_osfhandle (long, int);
 int		_pipe (int *, unsigned int, int);
 int		_read (int, void*, unsigned int);
+int		_setmode (int, int);
 
 /* SH_... flags for nShFlags defined in share.h
  * Optional fourth argument is unsigned unPermissions */
@@ -262,6 +263,7 @@ int		isatty (int);
 long		lseek (int, long, int);
 int		open (const char*, int, ...);
 int		read (int, void*, unsigned int);
+int		setmode (int, int);
 int		sopen (const char*, int, int, ...);
 long		tell (int);
 int		umask (int);

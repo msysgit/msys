@@ -18,9 +18,9 @@
  *  DISCLAIMED. This includes but is not limited to warranties of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Revision: 1.10 $
+ * $Revision: 1.11 $
  * $Author: earnie $
- * $Date: 2002-08-27 11:20:27 $
+ * $Date: 2002-11-12 15:29:38 $
  *
  */
 
@@ -144,12 +144,6 @@ double	log (double);
 double	log10 (double);
 double	pow (double, double);
 double	sqrt (double);
-extern __inline__  double sqrt (double x)
-{
-  double res;
-  __asm__ ("fsqrt;" : "=t" (res) : "0" (x));
-  return res;
-}
 double	ceil (double);
 double	floor (double);
 double	fabs (double);
@@ -504,19 +498,8 @@ extern __inline__ float powf (float x, float y)
 extern long double powl (long double, long double);
 
 /* 7.12.7.5 The sqrt functions. Double in C89. */
-extern __inline__ float sqrtf (float x)
-{
-  float res;
-  __asm__ ("fsqrt" : "=t" (res) : "0" (x));
-  return res;
-}
-
-extern __inline__ long double sqrtl (long double x)
-{
-  long double res;
-  __asm__ ("fsqrt" : "=t" (res) : "0" (x));
-  return res;
-}
+extern float sqrtf (float);
+extern long double sqrtl (long double);
 
 /* 7.12.8 Error and gamma functions: TODO */
 

@@ -1,3 +1,121 @@
+2002-10-30  Guido Serassio  <serassio@libero.it>
+
+         * include/stdio.h (_getnaxstdio): Add prototype.
+         (_setmaxstdio): Likewise.
+
+2002-10-19  Kang Li  <rubylith@users.sourceforge.net>
+
+	* include/fcntl.h (O_SEQUENTIAL): Correct typo.
+
+2002-10-19  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* crt1.c: Define new macro __IN_MINGW_RUNTIME before including
+	stdlib.h.
+	Define WIN32_MEAN_AND_LEAN before including windows.h
+	* include/stdlib.h (_fmode): Protect declaration as dllimported
+	variable with __IN_MINGW_RUNTIME.
+
+2002-10-19  Igor Pechtchanski  <pechtcha@cs.nyu.edu>
+
+	* crt1.c: Include stdlib.h.
+
+2002-10-19  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* Makefile.in (CRT0S): Add txtmode.o binmode.o.
+	(MINGW_OBJS): Add txtmode.o.
+	(SRCDIST_FILES): Add txtmode.c binmode.c.
+	crt1.c: Don't include fcntrl.h, stdlib.h.
+	(_fmode): Declare, without dllimport attribute.
+	(__p__fmode): Declare access function for dll's _fmode.
+	(_mingw32_init_fmode): Sync dll _fmode with staticly linked
+	_fmode for app.
+	* txtmode.c: New file.
+	* binmode.c: New file.
+	* samples/fmode/test2.c: New file.
+	* samples/fmode/jamfile: Add test2.exe target.
+
+2002-10-11  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/stdint.h (INT64_C, UINT64_C ): Append suffix to let
+	macros work with C89.
+	(INTMAX_C, UINTMAX_C): Likewise.
+
+2002-10-11  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/string.h (strcasecmp): Make extern __inline__.
+	(strncasecmp): Likewise.
+	(wcscmpi): Likewise.
+
+2002-10-08  Heiko Gerdau  <hg@technosis.de>
+
+	* include/tchar.h (_tchdir. _tgetcwd, _tgetdcwd.
+	_tmkdir, _trmdir, _tstat): Add ASCII and UNICODE
+	mappings.
+
+2002-10-07  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* mingwex/math/powil.c: Rename powil to __powil.
+	* mingwex/math/powl.c: Adjust declaration and call
+	to __powil. Remove comment on powil.
+	* mingwex/math/powi.c: New file.
+	* mingwex/math/powif.c: New file.
+	* mingwex/math/pow.c: New file.
+	* mingwex/math/cephes_mconf.h. Add double and float
+	versions of constants.
+	(polevl): Add double precision function.
+	(p1evl): Likewise.
+	* mingwex/Makefile.in (MATH_DISTFILES): Add pow.c,
+	powi.c, powif.c.
+	(MATH_OBJS): Add pow.o,	powi.o, powif.o.
+
+2002-10-03  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/cytpe.h (_imp____mbcur_max): Add missing ';'.
+	(_imp____mbcur_max_dll): Likewise.
+
+2002-10-03  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/fcntl.h (_fmode): Remove declarations and
+	compatibility defines.
+	(_setmode, setmode): Remove prototypes.
+	* include/stdlib (_fmode): Add declarations and
+	compatibility defines.  Change type to int.
+	* include/io.h (_setmode, setmode): Add prototypes.
+	* samples/fmode/all.c: Adjust includes.
+	* samples/fmode/test.c: Likewise.
+	* crt1.c (_CRT_fmode): Declare as int.
+	* CRTfmode.c (_CRT_fmode): Likewise.
+
+	* include/stdlib: Remove comment about MB_CUR_MAX.
+
+2002-10-02  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/stdlib.h (_imp____mbcur_max): Add missing ';'.
+	(_imp____mbcur_max_dll): Likewise.
+
+2002-09-18  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* mingwex/math/files.txt: Remove inadvertantly added file.
+
+2002-09-18  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/string.h (_strerror): Move into #ifndef
+	__STRICT_ANSI__ block.
+
+2002-09-17  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/time.h (__need_NULL): Define before including
+	stddef.h.  Thanks to: Rüdiger Dehmel  <de@lmnet.de>.
+
+2002-09-16  Ranjit Matthew  <rmathew@hotmail.com>
+
+	* include/stdio.h: Correct comment about directory separator.
+
+2002-09-12  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/sys/time.h (timeval): Add struct definition and
+	associated macros (copied from w32api/include/winsock.h).
+
 2002-09-05  Earnie Boyd  <earnie@users.sf.net>
 
 	* include/_mingw.h: Increment version to 2.3.

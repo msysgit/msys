@@ -19,9 +19,9 @@
  *  DISCLAIMED. This includes but is not limited to warranties of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Revision: 1.5 $
+ * $Revision: 1.6 $
  * $Author: earnie $
- * $Date: 2002-08-12 13:06:35 $
+ * $Date: 2002-11-12 15:29:38 $
  *
  */
 
@@ -80,56 +80,10 @@
 #define	O_BINARY	_O_BINARY
 #define	O_TEMPORARY	_O_TEMPORARY
 #define O_NOINHERIT	_O_NOINHERIT
-#define O_SEQENTIAL	_O_SEQUENTIAL
+#define O_SEQUENTIAL	_O_SEQUENTIAL
 #define	O_RANDOM	_O_RANDOM
 
 #endif	/* Not _NO_OLDNAMES */
-
-
-#ifndef RC_INVOKED
-
-/*
- * This variable determines the default file mode.
- * TODO: Which flags work?
- */
-#ifndef __DECLSPEC_SUPPORTED
-
-#ifdef __MSVCRT__
-extern unsigned int* _imp___fmode;
-#define	_fmode	(*_imp___fmode)
-#else
-/* CRTDLL */
-extern unsigned int* _imp___fmode_dll;
-#define	_fmode	(*_imp___fmode_dll)
-#endif
-
-#else /* __DECLSPEC_SUPPORTED */
-
-#ifdef __MSVCRT__
-__MINGW_IMPORT unsigned int _fmode;
-#else /* ! __MSVCRT__ */
-__MINGW_IMPORT unsigned int _fmode_dll;
-#define	_fmode	_fmode_dll
-#endif /* ! __MSVCRT__ */
-
-#endif /* __DECLSPEC_SUPPORTED */
-
-
-#ifdef	__cplusplus
-extern "C" {
-#endif
-
-int	_setmode (int, int);
-
-#ifndef	_NO_OLDNAMES
-int	setmode (int, int);
-#endif	/* Not _NO_OLDNAMES */
-
-#ifdef	__cplusplus
-}
-#endif
-
-#endif	/* Not RC_INVOKED */
 
 #endif	/* Not _FCNTL_H_ */
 

@@ -11,10 +11,10 @@
  * Contributers:
  *   Created by Colin Peters <colin@fu.is.saga-u.ac.jp>
  *
- * $Revision: 1.2 $
+ * $Revision: 1.3 $
  * $Author: earnie $
- * $Date: 2001-06-05 00:26:30 $
+ * $Date: 2002-11-12 15:29:34 $
  *
  */
 
-unsigned int _CRT_fmode = 0;
+int _CRT_fmode = 0;
