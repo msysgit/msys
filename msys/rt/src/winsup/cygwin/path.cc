@@ -212,6 +212,8 @@ normalize_posix_path (const char *src, char *dst)
 
   syscall_printf ("src %s", src);
   syscall_printf ("dst %s", dst);
+  if (!strcmp (src, "//"))
+      src_start = ++src;
   if (isdrive (src) || strpbrk (src, "\\:") || 
       (isslash (src[0]) && isslash(src[1])))
     {
@@ -463,6 +465,9 @@ path_conv::check (const char *src, unsigned opt,
 // This isn't working.  Giving much to do with symlink_info.  I've modified
 // other methods to remove some symlink checking.  This needs a complete
 // rework including all calls.
+
+// This is also used in the path_conv constructor for initialization!!!!
+
 #if 0 // #if NEW_PATH_METHOD
     FIXME: Please!!!
     Using the above analysis, rewrite this function.
@@ -1231,6 +1236,21 @@ mount_info::conv_to_win32_path (const char *src_path, char *dst,
 				DWORD &devn, int &unit, unsigned *flags,
 				bool no_normalize)
 {
+  static char last_src_path[MAX_PATH];
+  static char last_dst[MAX_PATH];
+  static int last_rc;
+  static DWORD last_devn;
+  static int last_unit;
+  static unsigned last_flags;
+  if (!strcmp (src_path, last_src_path))
+    {
+      strcpy (dst, last_dst);
+      devn = last_devn;
+      unit = last_unit;
+      *flags = last_flags;
+      return 0;
+    }
+  strcpy (last_src_path, src_path);
   while (sys_mount_table_counter < cygwin_shared->sys_mount_table_counter)
     {
       init ();
@@ -1250,9 +1270,15 @@ mount_info::conv_to_win32_path (const char *src_path, char *dst,
   *flags = 0;
   debug_printf ("conv_to_win32_path (%s)", src_path);
 
+
   if (src_path_len >= MAX_PATH)
     {
       debug_printf ("ENAMETOOLONG = conv_to_win32_path (%s)", src_path);
+      last_src_path[0] = '\0';
+      last_rc = ENAMETOOLONG;
+      last_devn = devn;
+      last_unit = unit;
+      last_flags = *flags;
       return ENAMETOOLONG;
     }
 
@@ -1272,6 +1298,11 @@ mount_info::conv_to_win32_path (const char *src_path, char *dst,
       if (rc)
 	{
 	  debug_printf ("normalize_win32_path failed, rc %d", rc);
+	  last_dst[0] = '\0';
+	  last_rc = rc;
+	  last_devn = devn;
+	  last_unit = unit;
+	  last_flags = *flags;
 	  return rc;
 	}
 
@@ -1305,6 +1336,11 @@ mount_info::conv_to_win32_path (const char *src_path, char *dst,
 	{
 	  debug_printf ("%d = conv_to_win32_path (%s)", rc, src_path);
 	  *flags = 0;
+	  last_dst[0] = '\0';
+	  last_rc = rc;
+	  last_devn = devn;
+	  last_unit = unit;
+	  last_flags = *flags;
 	  return rc;
 	}
     }
@@ -1320,6 +1356,7 @@ mount_info::conv_to_win32_path (const char *src_path, char *dst,
   /* Check if the cygdrive prefix was specified.  If so, just strip
      off the prefix and transform it into an MS-DOS path. */
   MALLOC_CHECK;
+#if ! NEW_PATH_METHOD
   if (iscygdrive_device (pathbuf))
     {
       if (!cygdrive_win32_path (pathbuf, dst, 0))
@@ -1327,6 +1364,7 @@ mount_info::conv_to_win32_path (const char *src_path, char *dst,
       *flags = cygdrive_flags;
       goto out;
     }
+#endif
 
   int chrooted_path_len;
   chrooted_path_len = 0;
@@ -1407,6 +1445,11 @@ mount_info::conv_to_win32_path (const char *src_path, char *dst,
 
  out_no_chroot_check:
   debug_printf ("src_path %s, dst %s, flags %p, rc %d", src_path, dst, *flags, rc);
+  strcpy(last_dst, dst);
+  last_rc = rc;
+  last_devn = devn;
+  last_unit = unit;
+  last_flags = *flags;
   return rc;
 }
 
@@ -1699,9 +1742,6 @@ mount_info::read_mounts (reg_key& r)
   //		  containing MSYS programs.  It can be removed once fixed.
   res = mount_table->add_item (DllPath, "/bin", MOUNT_CYGWIN_EXEC | mount_flags, FALSE);
   res = mount_table->add_item (DllPath, "/usr/bin", MOUNT_CYGWIN_EXEC | mount_flags, FALSE);
-
-  strcat(RootPath, "\\home");
-  res = mount_table->add_item (RootPath, "/home", mount_flags, FALSE);
 
   {
     char buf[MAX_PATH];
@@ -3013,7 +3053,10 @@ cygwin_conv_to_win32_path (const char *path, char *win32_path)
       // Handle the //win32_switch case.
       if (spath[0] == '/')
 	{
-	  sspath = strchr (&spath[2], '/');
+	  int tidx = 2;
+	  while (spath[tidx] && spath[tidx] == '/')
+	      tidx++;
+	  sspath = strchr (&spath[tidx], '/');
 	  if (sspath)
 	    {
 	      retpathcat (spath);
