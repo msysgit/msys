@@ -1,4 +1,10 @@
 2001-08-21  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/setupapi.h : New file.
+	* lib/setupapi.def:New file.
+	* lib/test.c: Include setupapi.h.
+
+2001-08-21  Danny Smith  <dannysmith@users.sourceforge.net>
 	* include/winioctl.h (_DISK_PERFORMANCE): Correct typo.
 
 2001-08-21  Mattia Barbon  <mbarbon@dsi.unive.it>
