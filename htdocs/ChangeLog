@@ -1,5 +1,9 @@
 2002-12-20  Earnie Boyd  <earnie@users.sf.net>
 
+	* bugs.shtml: Corrected the page header.
+
+2002-12-20  Earnie Boyd  <earnie@users.sf.net>
+
 	* index.shtml: Add info for mingw-runtime-2.3 release.
 	* bugs_css.shtml: Rename to bugs.shtml
 	* bugs.shtml: Replaced.

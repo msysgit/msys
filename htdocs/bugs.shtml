@@ -8,7 +8,7 @@
 </head>
 <body link="#000099" vlink="#990099" alink="#000099">
 
-<h1 align="center">MinGW: Minimalist GNU For Windows</h1>
+<h1 align="center">Reporting bugs</h1>
 
 <table class="prim" cellspacing="6" border="0">
   <tbody>
@@ -60,6 +60,6 @@ to register for one.</a>
 </table>
 <!--#include file="ssi/bottombar.html"--><!--#include file="ssi/footer.html"-->
 <address> <br>
-Last revised $Date: 2002-12-20 16:42:33 $ </address>
+Last revised $Date: 2002-12-20 16:48:48 $ </address>
 </body>
 </html>
