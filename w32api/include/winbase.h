@@ -947,6 +947,10 @@ BOOL WINAPI AccessCheckAndAuditAlarmA(LPCSTR,LPVOID,LPSTR,LPSTR,PSECURITY_DESCRI
 BOOL WINAPI AccessCheckAndAuditAlarmW(LPCWSTR,LPVOID,LPWSTR,LPWSTR,PSECURITY_DESCRIPTOR,DWORD,PGENERIC_MAPPING,BOOL,PDWORD,PBOOL,PBOOL);
 BOOL WINAPI AddAccessAllowedAce(PACL,DWORD,DWORD,PSID);
 BOOL WINAPI AddAccessDeniedAce(PACL,DWORD,DWORD,PSID);
+#if (_WIN32_WINNT >= 0x0500)
+BOOL WINAPI AddAccessAllowedAceEx(PACL,DWORD,DWORD,DWORD,PSID);
+BOOL WINAPI AddAccessDeniedAceEx(PACL,DWORD,DWORD,DWORD,PSID);
+#endif
 BOOL WINAPI AddAce(PACL,DWORD,DWORD,PVOID,DWORD);
 ATOM WINAPI AddAtomA(LPCSTR);
 ATOM WINAPI AddAtomW(LPCWSTR);
@@ -1052,6 +1056,8 @@ BOOL WINAPI DosDateTimeToFileTime(WORD,WORD,LPFILETIME);
 BOOL WINAPI DuplicateHandle(HANDLE,HANDLE,HANDLE,PHANDLE,DWORD,BOOL,DWORD);
 BOOL WINAPI DuplicateToken(HANDLE,SECURITY_IMPERSONATION_LEVEL,PHANDLE);
 BOOL WINAPI DuplicateTokenEx(HANDLE,DWORD,LPSECURITY_ATTRIBUTES,SECURITY_IMPERSONATION_LEVEL,TOKEN_TYPE,PHANDLE);
+BOOL WINAPI EncryptFileA(LPCSTR);
+BOOL WINAPI EncryptFileW(LPCWSTR);
 BOOL WINAPI EndUpdateResourceA(HANDLE,BOOL);
 BOOL WINAPI EndUpdateResourceW(HANDLE,BOOL);
 void WINAPI EnterCriticalSection(LPCRITICAL_SECTION);
@@ -1072,6 +1078,8 @@ DWORD WINAPI ExpandEnvironmentStringsW(LPCWSTR,LPWSTR,DWORD);
 void WINAPI FatalAppExitA(UINT,LPCSTR);
 void WINAPI FatalAppExitW(UINT,LPCWSTR);
 void WINAPI FatalExit(int);
+BOOL WINAPI FileEncryptionStatusA(LPCSTR,LPDWORD);
+BOOL WINAPI FileEncryptionStatusW(LPCWSTR,LPDWORD);
 BOOL WINAPI FileTimeToDosDateTime(CONST FILETIME *,LPWORD,LPWORD);
 BOOL WINAPI FileTimeToLocalFileTime(CONST FILETIME *,LPFILETIME);
 BOOL WINAPI FileTimeToSystemTime(CONST FILETIME *,LPSYSTEMTIME);
@@ -1158,6 +1166,7 @@ BOOL WINAPI GetFileInformationByHandle(HANDLE,LPBY_HANDLE_FILE_INFORMATION);
 BOOL WINAPI GetFileSecurityA(LPCSTR,SECURITY_INFORMATION,PSECURITY_DESCRIPTOR,DWORD,PDWORD);
 BOOL WINAPI GetFileSecurityW(LPCWSTR,SECURITY_INFORMATION,PSECURITY_DESCRIPTOR,DWORD,PDWORD);
 DWORD WINAPI GetFileSize(HANDLE,PDWORD);
+BOOL WINAPI GetFileSizeEx(HANDLE,PLARGE_INTEGER);
 BOOL WINAPI GetFileTime(HANDLE,LPFILETIME,LPFILETIME,LPFILETIME);
 DWORD WINAPI GetFileType(HANDLE);
 #define GetFreeSpace(w) (0x100000L)
@@ -1305,6 +1314,8 @@ DWORD WINAPI SetCriticalSectionSpinCount(LPCRITICAL_SECTION,DWORD);
 #endif
 BOOL WINAPI InitializeSecurityDescriptor(PSECURITY_DESCRIPTOR,DWORD);
 BOOL WINAPI InitializeSid (PSID,PSID_IDENTIFIER_AUTHORITY,BYTE);
+#ifndef __INTERLOCKED_DECLARED
+#define __INTERLOCKED_DECLARED
 LONG WINAPI InterlockedCompareExchange(LPLONG,LONG,LONG);
 /* PVOID WINAPI InterlockedCompareExchangePointer(PVOID*,PVOID,PVOID); */
 #define InterlockedCompareExchangePointer(d,e,c) \
@@ -1316,6 +1327,7 @@ LONG WINAPI InterlockedExchange(LPLONG,LONG);
     (PVOID)InterlockedExchange((LPLONG)(t),(LONG)(v))
 LONG WINAPI InterlockedExchangeAdd(LPLONG,LONG);
 LONG WINAPI InterlockedIncrement(LPLONG);
+#endif /* __INTERLOCKED_DECLARED */
 BOOL WINAPI IsBadCodePtr(FARPROC);
 BOOL WINAPI IsBadHugeReadPtr(PCVOID,UINT);
 BOOL WINAPI IsBadHugeWritePtr(PVOID,UINT);
@@ -1439,6 +1451,7 @@ BOOL WINAPI ReadEventLogA(HANDLE,DWORD,DWORD,PVOID,DWORD,DWORD *,DWORD *);
 BOOL WINAPI ReadEventLogW(HANDLE,DWORD,DWORD,PVOID,DWORD,DWORD *,DWORD *);
 BOOL WINAPI ReadFile(HANDLE,PVOID,DWORD,PDWORD,LPOVERLAPPED);
 BOOL WINAPI ReadFileEx(HANDLE,PVOID,DWORD,LPOVERLAPPED,LPOVERLAPPED_COMPLETION_ROUTINE);
+BOOL WINAPI ReadFileScatter(HANDLE,FILE_SEGMENT_ELEMENT*,DWORD,LPDWORD,LPOVERLAPPED);
 BOOL WINAPI ReadProcessMemory(HANDLE,PCVOID,PVOID,DWORD,PDWORD);
 HANDLE WINAPI RegisterEventSourceA (LPCSTR,LPCSTR);
 HANDLE WINAPI RegisterEventSourceW(LPCWSTR,LPCWSTR);
@@ -1475,6 +1488,7 @@ VOID WINAPI SetFileApisToOEM(void);
 BOOL WINAPI SetFileAttributesA(LPCSTR,DWORD);
 BOOL WINAPI SetFileAttributesW(LPCWSTR,DWORD);
 DWORD WINAPI SetFilePointer(HANDLE,LONG,PLONG,DWORD);
+BOOL WINAPI SetFilePointerEx(HANDLE,LARGE_INTEGER,PLARGE_INTEGER,DWORD);
 BOOL WINAPI SetFileSecurityA(LPCSTR,SECURITY_INFORMATION,PSECURITY_DESCRIPTOR);
 BOOL WINAPI SetFileSecurityW(LPCWSTR,SECURITY_INFORMATION,PSECURITY_DESCRIPTOR);
 BOOL WINAPI SetFileTime(HANDLE,const FILETIME*,const FILETIME*,const FILETIME*);
@@ -1566,6 +1580,7 @@ BOOL WINAPI WaitNamedPipeW(LPCWSTR,DWORD);
 BOOL WINAPI WinLoadTrustProvider(GUID*);
 BOOL WINAPI WriteFile(HANDLE,PCVOID,DWORD,PDWORD,LPOVERLAPPED);
 BOOL WINAPI WriteFileEx(HANDLE,PCVOID,DWORD,LPOVERLAPPED,LPOVERLAPPED_COMPLETION_ROUTINE);
+BOOL WINAPI WriteFileGather(HANDLE,FILE_SEGMENT_ELEMENT*,DWORD,LPDWORD,LPOVERLAPPED);
 BOOL WINAPI WritePrivateProfileSectionA(LPCSTR,LPCSTR,LPCSTR);
 BOOL WINAPI WritePrivateProfileSectionW(LPCWSTR,LPCWSTR,LPCWSTR);
 BOOL WINAPI WritePrivateProfileStringA(LPCSTR,LPCSTR,LPCSTR,LPCSTR);
@@ -1610,12 +1625,14 @@ typedef HW_PROFILE_INFOW HW_PROFILE_INFO,*LPHW_PROFILE_INFO;
 #define CreateWaitableTimer CreateWaitableTimerW
 #define DefineDosDevice DefineDosDeviceW
 #define DeleteFile DeleteFileW
+#define EncryptFile EncryptFileW
 #define EndUpdateResource EndUpdateResourceW
 #define EnumResourceLanguages EnumResourceLanguagesW
 #define EnumResourceNames EnumResourceNamesW
 #define EnumResourceTypes EnumResourceTypesW
 #define ExpandEnvironmentStrings ExpandEnvironmentStringsW
 #define FatalAppExit FatalAppExitW
+#define FileEncryptionStatus FileEncryptionStatusW
 #define FindAtom FindAtomW
 #define FindFirstChangeNotification FindFirstChangeNotificationW
 #define FindFirstFile FindFirstFileW
@@ -1746,12 +1763,14 @@ typedef HW_PROFILE_INFOA HW_PROFILE_INFO,*LPHW_PROFILE_INFO;
 #define CreateWaitableTimer CreateWaitableTimerA
 #define DefineDosDevice DefineDosDeviceA
 #define DeleteFile DeleteFileA
+#define EncryptFile EncryptFileA
 #define EndUpdateResource EndUpdateResourceA
 #define EnumResourceLanguages EnumResourceLanguagesA
 #define EnumResourceNames EnumResourceNamesA
 #define EnumResourceTypes EnumResourceTypesA
 #define ExpandEnvironmentStrings ExpandEnvironmentStringsA
 #define FatalAppExit FatalAppExitA
+#define FileEncryptionStatus FileEncryptionStatusA
 #define FindAtom FindAtomA
 #define FindFirstChangeNotification FindFirstChangeNotificationA
 #define FindFirstFile FindFirstFileA
@@ -1771,7 +1790,6 @@ typedef HW_PROFILE_INFOA HW_PROFILE_INFO,*LPHW_PROFILE_INFO;
 #define GetDiskFreeSpace GetDiskFreeSpaceA
 #define GetDiskFreeSpaceEx GetDiskFreeSpaceExA
 #define GetDriveType GetDriveTypeA
-#define GetEnvironmentStringsA GetEnvironmentStrings
 #define GetEnvironmentVariable GetEnvironmentVariableA
 #define GetFileAttributes GetFileAttributesA
 #define GetFileSecurity GetFileSecurityA

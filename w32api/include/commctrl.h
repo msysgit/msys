@@ -156,32 +156,34 @@ extern "C" {
 #define HDS_BUTTONS	2
 #define HDS_HIDDEN	8
 #define NM_FIRST	0
-#define NM_LAST	(-99)
-#define LVN_FIRST	(-100)
-#define LVN_LAST	(-199)
-#define HDN_FIRST	(-300)
-#define HDN_LAST	(-399)
-#define TVN_FIRST	(-400)
-#define TVN_LAST	(-499)
-#define TTN_FIRST	(-520)
-#define TTN_LAST	(-549)
-#define TCN_FIRST	(-550)
-#define TCN_LAST	(-580)
-#define CDN_FIRST	(-601)
-#define CDN_LAST	(-699)
-#define TBN_FIRST	(-700)
-#define TBN_LAST	(-720)
-#define UDN_FIRST	(-721)
-#define UDN_LAST	(-740)
+#define NM_LAST	((UINT)-99)
+#define LVN_FIRST	((UINT)-100)
+#define LVN_LAST	((UINT)-199)
+#define HDN_FIRST	((UINT)-300)
+#define HDN_LAST	((UINT)-399)
+#define TVN_FIRST	((UINT)-400)
+#define TVN_LAST	((UINT)-499)
+#define TTN_FIRST	((UINT)-520)
+#define TTN_LAST	((UINT)-549)
+#define TCN_FIRST	((UINT)-550)
+#define TCN_LAST	((UINT)-580)
+#ifndef CDN_FIRST
+#define CDN_FIRST	((UINT)-601) /* also in commdlg.h */
+#define CDN_LAST	((UINT)-699)
+#endif
+#define TBN_FIRST	((UINT)-700)
+#define TBN_LAST	((UINT)-720)
+#define UDN_FIRST	((UINT)-721)
+#define UDN_LAST	((UINT)-740)
 #if (_WIN32_IE >= 0x0300)
-#define RBN_FIRST	(-831)
-#define RBN_LAST	(-859)
-#define MCN_FIRST	(-750)
-#define MCN_LAST	(-759)
-#define DTN_FIRST	(-760)
-#define DTN_LAST	(-799)
-#define CBEN_FIRST	(-800)
-#define CBEN_LAST	(-830)
+#define RBN_FIRST	((UINT)-831)
+#define RBN_LAST	((UINT)-859)
+#define MCN_FIRST	((UINT)-750)
+#define MCN_LAST	((UINT)-759)
+#define DTN_FIRST	((UINT)-760)
+#define DTN_LAST	((UINT)-799)
+#define CBEN_FIRST	((UINT)-800)
+#define CBEN_LAST	((UINT)-830)
 #endif /* _WIN32_IE */
 #if (_WIN32_IE >= 0x0400)
 #define IPN_FIRST	(-860)
@@ -1119,17 +1121,17 @@ extern "C" {
 #define DTM_GETMONTHCAL 0x1008
 #define DTM_SETMCFONT	0x1009
 #define DTM_GETMCFONT	0x100a
-#define DTN_USERSTRINGA  (-758)
-#define DTN_USERSTRINGW  (-745)
-#define DTN_WMKEYDOWNA  (-757)
-#define DTN_WMKEYDOWNW  (-744)
-#define DTN_FORMATA  (-756) 
-#define DTN_FORMATW  (-743)
-#define DTN_FORMATQUERYA  (-755) 
-#define DTN_FORMATQUERYW (-742)
-#define DTN_DROPDOWN    (-754) 
-#define DTN_CLOSEUP	(-753) 
-#define DTN_DATETIMECHANGE (-759) 
+#define DTN_USERSTRINGA  ((UINT)-758)
+#define DTN_USERSTRINGW  ((UINT)-745)
+#define DTN_WMKEYDOWNA  ((UINT)-757)
+#define DTN_WMKEYDOWNW  ((UINT)-744)
+#define DTN_FORMATA  ((UINT)-756) 
+#define DTN_FORMATW  ((UINT)-743)
+#define DTN_FORMATQUERYA  ((UINT)-755) 
+#define DTN_FORMATQUERYW ((UINT)-742)
+#define DTN_DROPDOWN    ((UINT)-754) 
+#define DTN_CLOSEUP	((UINT)-753) 
+#define DTN_DATETIMECHANGE ((UINT)-759) 
 #define MCM_GETCURSEL	0x1001
 #define MCM_SETCURSEL	0x1002
 #define MCM_GETMAXSELCOUNT 0x1003
@@ -1150,9 +1152,9 @@ extern "C" {
 #define MCM_SETRANGE 0x1012
 #define MCM_GETMONTHDELTA 0x1013
 #define MCM_SETMONTHDELTA 0x1014
-#define MCN_SELCHANGE	  (-749)
-#define MCN_GETDAYSTATE	(-747)
-#define MCN_SELECT		(-746)
+#define MCN_SELCHANGE	  ((UINT)-749)
+#define MCN_GETDAYSTATE	((UINT)-747)
+#define MCN_SELECT		((UINT)-746)
 #define ODT_HEADER 100
 #define ODT_TAB 101
 #define ODT_LISTVIEW
@@ -1850,11 +1852,14 @@ typedef struct tagTVINSERTSTRUCTW {
 #define _TV_INSERTSTRUCTW tagTVINSERTSTRUCTW
 #define TV_INSERTSTRUCTW TVINSERTSTRUCTW
 #define LPTV_INSERTSTRUCTW LPTVINSERTSTRUCTW
-typedef struct _TV_HITTESTINFO {
+typedef struct tagTVHITTESTINFO {
 	POINT pt;
-	UINT flags;
+ 	UINT flags;
 	HTREEITEM hItem;
-} TV_HITTESTINFO,*LPTV_HITTESTINFO;
+} TVHITTESTINFO, *LPTVHITTESTINFO;
+#define _TV_HITTESTINFO tagTVHITTESTINFO
+#define TV_HITTESTINFO TVHITTESTINFO
+#define LPTV_HITTESTINFO LPTVHITTESTINFO
 typedef int(CALLBACK *PFNTVCOMPARE)(LPARAM,LPARAM,LPARAM);
 typedef struct _TV_SORTCB {
 	HTREEITEM hParent;
@@ -2362,6 +2367,7 @@ WINBOOL WINAPI ImageList_DrawIndirect(IMAGELISTDRAWPARAMS*);
 #define TreeView_SetToolTips(w,wt) (HWND)SNDMSG((w),TVM_SETTOOLTIPS,(WPARAM)(wt),0)
 #endif
 #if (_WIN32_IE >= 0x0400)
+#define ListView_SetExtendedListViewStyleEx(w,m,s) (DWORD)SNDMSG((w),LVM_SETEXTENDEDLISTVIEWSTYLE,(m),(s))
 #define TabCtrl_HighlightItem(hwnd, i, fHighlight) SNDMSG((hwnd), TCM_HIGHLIGHTITEM, (WPARAM)i, (LPARAM)MAKELONG (fHighlight, 0))
 #define TabCtrl_SetExtendedStyle(hwnd, dw) SNDMSG((hwnd), TCM_SETEXTENDEDSTYLE, 0, dw)
 #define TabCtrl_GetExtendedStyle(hwnd) SNDMSG((hwnd), TCM_GETEXTENDEDSTYLE, 0, 0)

@@ -1,3 +1,171 @@
+2002-08-12  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/objidl.h (IEnumMoniker): Put 'interface' back.
+
+2002-08-11  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/objidl.h (IEnumMoniker): Correct declaration.
+
+2002-08-09  Mark Schreiber  <mark7@users.sourceforge.net>
+
+	* include/wincrypt.h (CRYPT_NOHASHOID): Add define.
+
+2002-08-09  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/commctrl.h: Whitespace change.
+
+2002-08-09  Lars Munch  <lars@segv.dk>
+
+	* include/commctrl.h (tagTVHITTESTINFO): Replace obsolete
+	struct name _TVHITTESTINFO and typedefs and add defines for
+	backward compatability.
+	(ListView_SetExtendedListViewStyleEx): Add macro.
+
+2002-08-05  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/wingdi.h (AlphaBlend,GradientFill,TransparentBlt):
+	Add prototypes.
+	* lib/msimg32.def: New file, with stubs for above.
+
+2002-08-03  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/winbase.h (AddAccessAllowedAceEx,AddAccessDeniedAceEx,
+	GetFileSizeEx, SetFilePointerEx): Add prototypes.
+	(EncryptFile[AW], FileEncryptionStatus[AW]): Add prototypes
+	and UNICODE mappings.
+
+2002-08-02  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/winbase.h (ReadFileScatter, WriteFileGather):
+	Change second parameter to pointer.
+
+2002-07-31  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/wininet.h (InternetReadFileEx[AW]). Add prototypes and
+	UNICODE mappings.
+	* lib/wininet.def: Regenerate.
+
+2002-07-30  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/windef.h (PVOID): Move typedef to...
+	* include/winnt: ...here.
+	(PVOID64): New typedef.
+
+	* include/winnt,h (FILE_SEGMENT_ELEMENT): Define union.
+	* include/winbase.h (ReadFileScatter, WriteFileGather):
+	Add prototypes.
+
+	* include/winnt,h (PROCESSOR_ARCHITECTURE_*): Add defines.
+	(PROCESSOR_INTEL_IA64): Add define.
+
+2002-07-25  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/oleidl.h (MK_ALT): Define.
+
+2002-07-26  Mattia Barbon  <mbarbon@dsi.unive.it>
+
+	* include/exdisp.h: New file.
+	* include/exdispid.h: New file.
+	* include/mshtml.h: New file.
+	* lib/test.c: #include exdisp.h and mshtml.h
+	* lib/uuid.c (CLSID_WebBrowser, DIID_DWebBrowserEvents,
+	DIID_DWebBrowserEvents2, IID_IHTMLDocument, IID_IHTMLDocument2,
+	IID_IHTMLElement, IID_IHTMLSelectionObject, IID_IHTMLTxtRange,
+	IID_IWebBrowser, IID_IWebBrowser2, IID_IWebBrowserApp):
+	New GUIDs.
+
+2002-07-26  Mattia Barbon  <mbarbon@dsi.unive.it>
+
+	* include/docobj.h: New file.
+	* include/idispids.h: New file.
+	* include/objidl.h (IID_IMoniker): Declare.
+	* include/ocidl.h (READYSTATE): New enum.
+	(IOleInPlaceSiteEx): New interface.
+	* include/olectlid.h (IID_IEnumSTATSTG): New interface
+	identifier.
+	* include/oleidl.h (IOleItemContainer, IOleInPlaceObject,
+	IOleInPlaceSite): New interfaces.
+	* lib/test.c: #include docobj.h,idispids.h,
+
+2002-07-25  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/shlobj.h (BFFM_VALIDATEFAILED[AW]): Add defines.
+	(BFFM_SETSTATUSTEXT, BFFM_SETSELECTION): UNICODE them.
+
+2002-07-25  Mattia Barbon  <mbarbon@dsi.unive.it>
+
+	* include/commctrl.h: Avoid redefinition of CDN_FIRST/LAST.
+	* include/commdlg.h: Likewise.
+
+2002-07-24  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/oleauto.h (V_UNION): Correct definition for case of
+	NONAMELESSUNION:
+	(V_VT): Likewise.
+
+2002-07-23  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/oleauto.h (V_BOOL): Define in terms of boolVal,
+	not bool, for C as well as C++.
+
+2002-07-22  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/shlwapi.h: New file.
+	Thanks to: Mattia Barbon  <mbarbon@dsi.unive.it> and
+	Victor Porton  <porton@narod.ru> for contributions.
+	* lib/shlwapi.def: New file.
+	* lib/test.c: #include shlwapi.h.
+
+2002-07-21  Bart Oldeman  <bart.oldeman@btinternet.com>
+
+	* include/shlobj.h (FCIDM_MENU_FAVORITES): Remove bogus
+	character.
+	* include/winsock2.h (struct sockaddr): Use __int64 instead of
+	long long.
+	* lib/kernel32.c (GetCurrentFiber, GetFiberData): Watcom
+	does not need external *Fiber library functions.
+
+2002-07-20  Casper S. Hornstrup  <chorns@users.sourceforge.net>
+
+	* include/winbase.h (GetEnvironmentStringsA): Remove duplicate
+	definition.
+	(Interlocked*): Wrap in #ifndef __INTERLOCKED_DECLARED to
+	avoid compile error when already defined.
+
+2002-07-20  Steven Edwards  <Steven_Ed4153@yahoo.com>
+
+	* include/winuser.h (WM_MENURBUTTONUP): Add define.
+
+2002-07-17  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/commdlg.h: Define CDN_* notification message constants
+	as UINT.
+
+2002-07-17  Mattia Barbon  <mbarbon@users.sourceforge.net>
+
+	* include/commctrl.h: Define notification message constants for
+	NMHDR.code as UINT.
+
+2002-07-17   Bart Oldeman  <bart.oldeman@btinternet.com>
+
+	* include/ddeml.h (MH_*) Add defines.
+	(MONHSZSTRUCT): Add structure and typedefs.
+	(MONLINKSTRUCT): Ditto.
+	(MONCONVSTRUCT): Ditto.
+	(MONCBSTRUCT): Ditto.
+	(MONERRSTRUCT): Ditto.
+	(MONMSGSTRUCT): Ditto.
+	* include/windef.h: Don't define __cdecl or _cdecl for
+	__WATCOM__.
+	Don't define _export or __export for __WATCOM__.
+	* include/windows.h (imm.h): #include.
+	* include/winnt.h (LPEXCEPTION_RECORD): Add typedef.
+
+2002-07-17  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/wtypes.h: Remove duplicate #includes of rpc.h and
+	rpcndr.h.
+
 2002-07-05  Luke Dunstan  <infidel@users.sourceforge.net>
 
 	* include/winbase.h (OpenThread): Add prototype.
@@ -14,8 +182,7 @@
 	* include/wtypes.h: Include <rpc.h> and <rpcndr.h> before
 	header guard.
 
-
-2002-07-02  Danny Smith <dannysmith@users.sourceforge.net>
+2002-07-02  Danny Smith  <dannysmith@users.sourceforge.net>
 
 	* include/commctrl.h (WC_*): Remove some duplicate defines.
 

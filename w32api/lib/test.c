@@ -63,6 +63,7 @@
 #include <aclapi.h>
 #include <security.h>
 #include <schnlsp.h>
+#include <shlwapi.h>
 
 #ifndef __OBJC__  /* problems with BOOL */
 #include <ole2.h>
@@ -73,9 +74,13 @@
 #include <ole2ver.h>
 #include <olectl.h>
 #include <oledlg.h>
+#include <docobj.h>
+#include <idispids.h>
 #include <rapi.h>
 #include <richole.h>
 #include <rpcproxy.h>
+#include <exdisp.h>
+#include <mshtml.h>
 
 #else
 #undef BOOL
