@@ -1,4 +1,4 @@
-<!-- $Id: index.shtml,v 1.29 2002-08-06 14:45:52 earnie Exp $ -->
+<!-- $Id: index.shtml,v 1.30 2002-09-05 16:58:32 earnie Exp $ -->
 
 <html>
 <head>
@@ -68,13 +68,14 @@ here</a> for information on how Mingw differs from Red Hat/Cygnus Cygwin
 and AT&amp;T UWIN.</p>
 
 <p><b>Latest MinGW Release:</b>
-  <a href="http://prdownloads.sourceforge.net/mingw/MinGW-1.1.tar.gz">
-Version 1.1</a>.  This release bundles:
-                               gcc-2.95.3, 
-                               binutils-2.11.90, 
-                               mingw-runtime, 
-                               w32api, 
-                               and make.  
+  <a href="http://prdownloads.sourceforge.net/mingw/MinGW-2.0.0-1.exe">
+Version 2.0.0</a>.  This release bundles:
+                        GCC-3.2-core-20020817-1,
+			binutils-2.13-20020903-1,
+			mingw-runtime-2.2,
+			w32api-2.0,
+			gdb-5.1.1-1, and
+			make-3.79.1-20010722 (binary renamed as mingw32-make)
 <br><br><em>NOTE:</em><br>
 The Latest MinGW Release may not contain the most recent versions of each
 individual package.  You may find the most recent versions of the individual 
@@ -85,6 +86,14 @@ clicking here</a>.
 <br><br><em>WinZip Cautions:</em><br>
 Make sure that you first <b>uncheck</b> the "TAR file smart CR/LF conversion"
 checkbox found in the Configuration -&gt; Miscellaneous tab of the Options menu.
+
+<br><br><em><a href="http://sevenzip.sf.net">7 Zip</a></em><br>
+We've found that this zip/unzip utility is fast and reliable for differing 
+compression algorithims.  If you need a decompression utility, you should
+visit <a href=http://sevenzip.sf.net>7 Zip</a> for the latest version.  If
+you don't need a compression/decompression utiltiy, I suggest you visit
+<a href="http://sevenzip.sf.net">7 Zip</a> for one of the best compression
+algorithims available.
 
 </p>
 
@@ -126,7 +135,7 @@ width="88" /></a>
 <!--#include virtual="/cgi-bin/showstatsdate.cgi?mingw"--></a>.
 </p>
 <address>
-<br />Last revised $Date: 2002-08-06 14:45:52 $
+<br />Last revised $Date: 2002-09-05 16:58:32 $
 </address>
 
 </body>
