@@ -198,16 +198,15 @@ exception (EXCEPTION_RECORD *e,  CONTEXT *in)
 
 #ifdef __i386__
 #define HAVE_STATUS
-  if (exception_name)
-    small_printf ("MSYS-%d.%d.%d Build:%s\nException: %s at eip=%08x\r\n", 
+  small_printf ("MSYS-%d.%d.%d Build:%s\r\n",
 	cygwin_version.dll_major / 1000, 
 	cygwin_version.dll_major % 1000, 
 	cygwin_version.dll_minor, 
-	cygwin_version.dll_build_date, 
-	exception_name, 
-	in->Eip);
+	cygwin_version.dll_build_date);
+  if (exception_name)
+    small_printf ("Exception: %s at eip=%08x\r\n", exception_name, in->Eip);
   else
-    small_printf ("Exception %d at eip=%08x\r\n", e->ExceptionCode, in->Eip);
+    small_printf ("Exception: %d at eip=%08x\r\n", e->ExceptionCode, in->Eip);
   small_printf ("eax=%08x ebx=%08x ecx=%08x edx=%08x esi=%08x edi=%08x\r\n",
 	      in->Eax, in->Ebx, in->Ecx, in->Edx, in->Esi, in->Edi);
   small_printf ("ebp=%08x esp=%08x program=%s\r\n",
