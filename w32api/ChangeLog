@@ -1,3 +1,9 @@
+2002-01-04  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/winbase.h (InitializeCriticalSectionAndSpinCount):
+	Add prototype.
+	(SetCriticalSectionSpinCount): Likewise.
+
 2001-12-15  Andrew Begel  <abegel@eecs.berkeley.edu>
 
 	*include/winbase.h (CreateHardLink): Correct typo in UNICODE
