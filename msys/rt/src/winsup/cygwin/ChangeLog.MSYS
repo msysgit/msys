@@ -1,3 +1,14 @@
+2002-05-13  Earnie Boyd  <earnie@users.sf.net>
+
+	* path.cc (normalize_posix_path): Workaround a path bug where the src
+	is equal to "//".
+	(path_conv::check): Add comment.
+	(mount_info::conv_to_win32_path): Remember last_src_path and last
+	results returning last results if src_path == last_src_path.
+	Remove unused coding.
+	(mount_info::read_mounts): Remove the /home mount point.
+	(cygwin_conv_to_win32_path): Allow ///foo to become //foo.
+
 2002-05-09  Earnie Boyd  <earnie@users.sf.net>
 
 	* include/cygwin/version.h: Increment version to 1.0.8
