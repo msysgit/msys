@@ -1,3 +1,7 @@
+2003-12-24	Nathan Fisher <nfisher@users.sf.net>
+
+	* download.shtml: Change server-side include from release.html to files.html.
+
 2003-12-15  Earnie Boyd  <earnie@users.sf.net>
 
 	* docs.shtml: Reword the pexports documentation to remove invalid links.
