@@ -1,4 +1,4 @@
-<!-- $Id: docs.shtml,v 1.17 2001-08-28 14:04:38 stevedperkins Exp $ -->
+<!-- $Id: docs.shtml,v 1.18 2001-08-28 15:02:24 stevedperkins Exp $ -->
 <html>
 <head>
  <title>Documentation</title>
@@ -387,11 +387,22 @@
          <ul>
             <li><h3>Introductions and Tutorials</h3></li>
             <ul>
+               <li>
+                  <a href="http://www.spacejack.org/games/mingw/">
+                  Mike Linkovich's MinGW Startup Guide
+                  </a>
+                  <br />
+                  An excellant primer for getting up and running with MinGW (with 
+                  an emphasis on graphics/game development).  Covers some popular 
+                  and useful external libraries and IDE's that work with MinGW.
+               </li>
+<!--
                <li> 
                   Colin Peters' tutorial on 
                   <a href="http://webclub.kcom.ne.jp/ma/colinp/win32/index.html">
                   Win32 Programming with GNU Tools Tutorial</a>.
                </li>
+-->
                <li> 
                   <a href="http://www.nanotech.wisc.edu/~khan/software/gnu-win32/dllhelpers.html">
                   How to make DLLs using GCC</a><br /> A set of helper programs and examples to
@@ -401,11 +412,13 @@
                   beta, will create DLLs using a much more straight forward way.
                </li>
             </ul>
+            <br />
             <li><h3>Developing Modules for Specific Software Packages</h3></li>
             <ul>
                <li> 
-                  <b>Want to build Java JNI's with GNU compilers</b>? Might want to look 
-                  at the 
+                  <b>Want to build Java JNI's with GNU compilers</b>? 
+                  <br />
+                  Might want to look at the 
                   <a href="http://www.xraylith.wisc.edu/~khan/software/gnu-win32/README.jni.txt">
                   README.jni</a> file first, and download
                   <a href="ftp://ftp.xraylith.wisc.edu/pub/khan/gnu-win32/mingw32/misc/java-jni-examples.zip">
@@ -413,6 +426,7 @@
                </li>
                <li> 
                   <b>Want to build Excel-callable DLLs with GNU compilers</b>? 
+                  <br />
                   Might want to look at the 
                   <a href="http://www.xraylith.wisc.edu/~khan/software/gnu-win32/README.excel-dlls.txt">
                   README.excel-dlls</a> file first, and then download
@@ -421,6 +435,7 @@
                </li>
                <li> 
                   <b>Want to build Netscape Client Plug-ins with GNU compilers</b>? 
+                  <br />
                   Might want to look at the 
                   <a href="http://www.xraylith.wisc.edu/~khan/software/gnu-win32/README.nsplugin.txt">
                   README.nsplugin</a> file first, and then download
@@ -428,6 +443,7 @@
                   nsplugin-examples.zip</a>. April 8, 1999.
                </li>
             </ul>
+            <br />
             <li><h3>Cross-compilation and Using with Other Tools</h3></li>
             <ul>
                <li> 
