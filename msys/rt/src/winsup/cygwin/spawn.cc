@@ -255,12 +255,8 @@ class av
     }
   void dup_maybe (int i)
   {
-    HMMM(i);
-    HMMM(calloced);
-    HMMM(argv[i]);
     if (i >= calloced)
       argv[i] = cstrdup1 (argv[i]);
-    HMMM(argv[i]);
   }
   void dup_all ()
   {

@@ -1,3 +1,11 @@
+2001-02-20  Earnie Boyd  <earnie@users.sf.net>
+
+	* path.cc (QuotedRelativePath): New function.
+	(cygwin_conv_to_win32_path): Use QuotedRelativePath to filter out
+	conversion.
+	(cygwin_conv_to_win32_path): Modify all \\ to / in the win32_path.
+	* spawn.cc (dup_maybe): Remove extraneous debug strings.
+
 2001-02-06  Earnie Boyd  <earnie@users.sf.net>
 
 	* strace.cc (spawn_guts):  Filter against MAX_PATH overrun.
