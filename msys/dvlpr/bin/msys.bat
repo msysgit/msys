@@ -19,8 +19,6 @@ rem to represent.
 if "x%MSYSTEM%" == "x" set MSYSTEM=MINGW32
 if "%1" == "MSYS" set MSYSTEM=MSYS
 
-if "x%USERNAME%" == "x" set USERNAME=Win32User
-if "x%HOME%" == "x" set HOME=/home/%USERNAME%
 if NOT "x%DISPLAY%" == "x" set DISPLAY=
 
 rem Setup the default colors for rxvt.
@@ -86,4 +84,7 @@ rem	* Add foreground and background color defaults based on MSYSTEM value.
 rem
 rem 2002.04.22  Earnie Boyd  mailto:earnie@users.sf.net
 rem	* More Win 9x changes.
+rem
+rem 2002.05.04  Earnie Boyd  mailto:earnie@users.sf.net
+rem	* Remove the SET of USERNAME and HOME.
 rem

@@ -4,7 +4,7 @@
 # 
 #         File:	profile
 #  Description:	Shell environment initialization script
-# Last Revised:	2002.04.11
+# Last Revised:	2002.05.04
 
 if [ -z "$MSYSTEM" ]; then
   MSYSTEM=MINGW32
@@ -36,7 +36,11 @@ if [ ! -d "$HOME" ]; then
   mkdir -p "$HOME"
 fi
 
-export HOME LOGNAME MSYSTEM
+if [ -z "$HISTFILE" ]; then
+  HISTFILE=$HOME/.bash_history
+fi
+
+export HOME LOGNAME MSYSTEM HISTFILE
 
 for i in /etc/profile.d/*.sh ; do
   if [ -f $i ]; then
