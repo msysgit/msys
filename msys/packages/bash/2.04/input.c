@@ -271,11 +271,11 @@ duplicate_buffered_stream (fd1, fd2)
 }
 
 /* Return 1 if a seek on FD will succeed. */
-#ifndef __CYGWIN32__
+#if ! defined (__CYGWIN__) && ! defined (__MSYS__)
 #  define fd_is_seekable(fd) (lseek ((fd), 0L, SEEK_CUR) >= 0)
 #else
 #  define fd_is_seekable(fd) 0
-#endif /* __CYGWIN32__ */
+#endif /* __CYGWIN__ */
 
 /* Take FD, a file descriptor, and create and return a buffered stream
    corresponding to it.  If something is wrong and the file descriptor

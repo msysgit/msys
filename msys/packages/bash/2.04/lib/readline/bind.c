@@ -733,7 +733,7 @@ _rl_read_init_file (filename, include_level)
       /* Find the end of this line. */
       for (i = 0; line + i != end && line[i] != '\n'; i++);
 
-#if defined (__CYGWIN32__)
+#if defined (__CYGWIN__) || defined (__MSYS__)
       /* ``Be liberal in what you accept.'' */
       if (line[i] == '\n' && line[i-1] == '\r')
 	line[i - 1] = '\0';

@@ -258,7 +258,7 @@ static void shell_reinitialize ();
 
 static void show_shell_usage ();
 
-#ifdef __CYGWIN32__
+#if defined (__CYGWIN__) || defined (__MSYS__)
 static void
 _cygwin32_check_tmp ()
 {
@@ -272,7 +272,7 @@ _cygwin32_check_tmp ()
 	internal_warning ("/tmp must be a valid directory name");
     }
 }
-#endif /* __CYGWIN32__ */
+#endif /* __CYGWIN32__ || __MSYS__ */
 
 #if defined (NO_MAIN_ENV_ARG)
 /* systems without third argument to main() */
@@ -304,7 +304,7 @@ main (argc, argv, env)
 
   check_dev_tty ();
 
-#ifdef __CYGWIN32__
+#if defined (__CYGWIN__) || defined (__MSYS__)
   _cygwin32_check_tmp ();
 #endif
 
@@ -1275,7 +1275,11 @@ open_shell_script (script_name)
 #  endif
   SET_CLOSE_ON_EXEC (default_buffered_input);
 #else /* !BUFFERED_INPUT */
+#ifdef __MSYS__
+  default_input = fdopen (fd, "rt");
+#else
   default_input = fdopen (fd, "r");
+#endif
 
   if (default_input == 0)
     {

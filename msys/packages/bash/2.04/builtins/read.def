@@ -219,7 +219,7 @@ read_builtin (list)
 
   input_is_tty = isatty (0);
   if (input_is_tty == 0)
-#ifndef __CYGWIN32__
+#if !defined (__CYGWIN__) && !defined (__MSYS__)
     input_is_pipe = (lseek (0, 0L, SEEK_CUR) < 0) && (errno == ESPIPE);
 #else
     input_is_pipe = 1;

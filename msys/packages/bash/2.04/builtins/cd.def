@@ -49,6 +49,10 @@ $PRODUCES cd.c
 #include "common.h"
 #include "bashgetopt.h"
 
+#ifdef __MSYS__
+#include <sys/cygwin.h>
+#endif
+
 #if !defined (errno)
 extern int errno;
 #endif /* !errno */
@@ -304,6 +308,9 @@ pwd_builtin (list)
 {
   char *directory, *buffer;
   int opt;
+#ifdef __MSYS__
+  char *wdirectory = (char *) malloc(PATH_MAX);
+#endif
 
   verbatim_pwd = no_symbolic_links;
   reset_internal_getopt ();
@@ -336,7 +343,21 @@ pwd_builtin (list)
 	}
     }
   else
-    directory = get_working_directory ("pwd");
+    {
+      directory = get_working_directory ("pwd");
+#ifdef __MSYS__
+      cygwin_conv_to_win32_path (directory, wdirectory);
+      {
+        char * tptr = strchr (wdirectory, '\\');
+	while (tptr)
+	  {
+	    *tptr = '/';
+	    tptr = strchr (tptr, '\\');
+          }
+      }
+      directory = wdirectory;
+#endif
+    }
 
   if (directory)
     {
