@@ -4,6 +4,7 @@
  * ***************************************************************************/
 
 #include "msys_symlink.h"
+#include "winsup.h"
 #if !DO_CPP_NEW
 #include <stdlib.h>
 #endif
@@ -95,6 +96,7 @@ msys_symlink (const char * topath, const char * frompath)
 	*tptr = '\0';
   }
 
+  FIXME; // w_frompath and w_topath are resource leaks.
   w_frompath = msys_p2w(frompath);
   debug_printf("w_frompath: %s", w_frompath);
   w_topath = msys_p2w(topath);
