@@ -22,9 +22,9 @@
  *  DISCLAIMED. This includes but is not limited to warranties of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Revision: 1.3 $
- * $Author: dannysmith $
- * $Date: 2001-11-29 04:26:33 $
+ * $Revision: 1.4 $
+ * $Author: earnie $
+ * $Date: 2002-08-12 13:06:35 $
  *
  */
 
@@ -36,7 +36,7 @@
 
 #ifndef	__STRICT_ANSI__
 
-#include <windows.h>
+#include <windef.h>
 
 /*
  * NOTE: The constants structs and typedefs below should be defined in the

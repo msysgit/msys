@@ -29,9 +29,9 @@
  *  DISCLAIMED. This includes but is not limited to warranties of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Revision: 1.7 $
+ * $Revision: 1.8 $
  * $Author: earnie $
- * $Date: 2002-06-14 15:12:54 $
+ * $Date: 2002-08-12 13:06:35 $
  *
  */
 
@@ -98,9 +98,9 @@ typedef wchar_t _TCHAR;
 #define	_fputtchar	_fputwchar
 #define	_fputts		fputws
 #define	_gettc		getwc
-#define	_getts		getws
+#define	_getts		_getws
 #define	_puttc		putwc
-#define	_putts		putws
+#define	_putts		_putws
 #define	_ungettc	ungetwc
 #define	_tcstod		wcstod
 #define	_tcstol		wcstol
@@ -187,6 +187,7 @@ typedef wchar_t _TCHAR;
 #define _tcreat     _wcreat
 #define _tfindfirst _wfindfirst
 #define _tfindnext  _wfindnext
+#define _tfdopen    _wfdopen
 #define _tfopen     _wfopen
 #define _tgetenv    _wgetenv
 #define _tputenv    _wputenv
@@ -264,6 +265,7 @@ typedef char	_TCHAR;
 #define	_fputtc		fputc
 #define	_fputtchar	_fputchar
 #define	_fputts		fputs
+#define _tfdopen	_fdopen
 #define	_tfopen		fopen
 #define	_tgetenv	getenv
 #define	_tputenv	_putenv

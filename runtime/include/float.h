@@ -26,19 +26,19 @@
  *  DISCLAIMED. This includes but is not limited to warranties of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Revision: 1.8 $
+ * $Revision: 1.9 $
  * $Author: earnie $
- * $Date: 2002-06-14 15:12:54 $
+ * $Date: 2002-08-12 13:06:35 $
  *
  */
+
+#include_next<float.h>
 
 #ifndef _MINGW_FLOAT_H_
 #define _MINGW_FLOAT_H_
 
 /* All the headers include this file. */
 #include <_mingw.h>
-
-#include_next<float.h>
 
 /*
  * Functions and definitions for controlling the FPU.

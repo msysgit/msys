@@ -18,9 +18,9 @@
  *  DISCLAIMED. This includes but is not limited to warranties of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Revision: 1.3 $
- * $Author: dannysmith $
- * $Date: 2001-11-29 04:26:33 $
+ * $Revision: 1.4 $
+ * $Author: earnie $
+ * $Date: 2002-08-12 13:06:35 $
  *
  */
 
@@ -91,13 +91,6 @@ char*	_strset (char*, int);
 char*	_strupr (char*);
 void	_swab (const char*, char*, size_t);
 
-/*
- * Multi-byte character functions
- */
-unsigned char*	_mbschr (unsigned char*, unsigned char*);
-unsigned char*	_mbsncat (unsigned char*, const unsigned char*, size_t);
-unsigned char*	_mbstok (unsigned char*, unsigned char*);
-
 #ifdef __MSVCRT__
 int  _strncoll(const char*, const char*, size_t);
 int  _strnicoll(const char*, const char*, size_t);
@@ -134,7 +127,7 @@ size_t	wcsxfrm(wchar_t*, const wchar_t*, size_t);
 /* NOTE: _wcscmpi not provided by CRTDLL, this define is for portability */
 #define		_wcscmpi	_wcsicmp
 
-wchar_t* _wcsdup (wchar_t*);
+wchar_t* _wcsdup (const wchar_t*);
 int	_wcsicmp (const wchar_t*, const wchar_t*);
 int	_wcsicoll (const wchar_t*, const wchar_t*);
 wchar_t* _wcslwr (wchar_t*);

@@ -18,9 +18,9 @@
  *  DISCLAIMED. This includes but is not limited to warranties of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Revision: 1.6 $
+ * $Revision: 1.7 $
  * $Author: earnie $
- * $Date: 2002-06-14 15:12:54 $
+ * $Date: 2002-08-12 13:06:35 $
  *
  */
 
@@ -88,7 +88,7 @@ struct _wfinddatai64_t {
 int	 _waccess (const wchar_t*, int);
 int	_wchmod (const wchar_t*, int);
 int	_wcreat (const wchar_t*, int);
-long	_wfindfirst (wchar_t*, struct _wfinddata_t *);
+long	_wfindfirst (const wchar_t*, struct _wfinddata_t *);
 int	_wfindnext (long, struct _wfinddata_t *);
 int	_wunlink (const wchar_t*);
 int	_wopen (const wchar_t*, int, ...);
@@ -133,7 +133,7 @@ wchar_t* _getws (wchar_t*);
 wint_t	putwc (wint_t, FILE*);
 int	_putws (const wchar_t*);
 wint_t	putwchar (wint_t);
-
+FILE*	_wfdopen(int, wchar_t *);
 FILE*	_wfopen (const wchar_t*, const wchar_t*);
 FILE*	_wfreopen (const wchar_t*, const wchar_t*, FILE*);
 FILE*   _wfsopen (const wchar_t*, const wchar_t*, int);

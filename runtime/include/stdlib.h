@@ -18,9 +18,9 @@
  *  DISCLAIMED. This includes but is not limited to warranties of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Revision: 1.10 $
+ * $Revision: 1.11 $
  * $Author: earnie $
- * $Date: 2002-06-14 15:12:54 $
+ * $Date: 2002-08-12 13:06:35 $
  *
  */
 
@@ -416,6 +416,11 @@ void	_wsearchenv(const wchar_t*, const wchar_t*, wchar_t*);
 void    _wmakepath(wchar_t*, const wchar_t*, const wchar_t*, const wchar_t*, const wchar_t*);
 void	_wsplitpath (const wchar_t*, wchar_t*, wchar_t*, wchar_t*, wchar_t*);
 wchar_t*    _wfullpath (wchar_t*, const wchar_t*, size_t);
+
+unsigned int _rotl(unsigned int, int);
+unsigned int _rotr(unsigned int, int);
+unsigned long _lrotl(unsigned long, int);
+unsigned long _lrotr(unsigned long, int);
 #endif
 
 #ifndef	_NO_OLDNAMES

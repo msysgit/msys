@@ -19,9 +19,9 @@
  *  DISCLAIMED. This includes but is not limited to warranties of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Revision: 1.4 $
+ * $Revision: 1.5 $
  * $Author: earnie $
- * $Date: 2002-06-14 15:12:54 $
+ * $Date: 2002-08-12 13:06:35 $
  *
  */
 
@@ -57,6 +57,8 @@
 #define	_O_CREAT	0x0100	/* Create the file if it does not exist. */
 #define	_O_TRUNC	0x0200	/* Truncate the file if it does exist. */
 #define	_O_EXCL		0x0400	/* Open only if the file does not exist. */
+
+#define _O_SHORT_LIVED  0x1000
 
 /* NOTE: Text is the default even if the given _O_TEXT bit is not on. */
 #define	_O_TEXT		0x4000	/* CR-LF in file becomes LF in memory. */
