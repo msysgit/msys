@@ -1,4 +1,4 @@
-<!-- $Id: index.shtml,v 1.27 2002-08-05 15:11:02 earnie Exp $ -->
+<!-- $Id: index.shtml,v 1.28 2002-08-06 14:36:56 earnie Exp $ -->
 
 <html>
 <head>
@@ -75,6 +75,17 @@ Version 1.1</a>.  This release bundles:
                                mingw-runtime, 
                                w32api, 
                                and make.  
+<br><br><em>NOTE:</em><br>
+The Latest MinGW Release may not contain the most recent versions of each
+individual package.  You may find the most recent versions of the individual 
+packages by 
+<a href:="https://sourceforge.net/project/showfiles.php?group_id=2435">
+clicking here"</a>.
+
+<br><br><em>WinZip Cautions:</em><br>
+Make sure that you first <b>uncheck</b> the "TAR file smart CR/LF conversion"
+checkbox found in the Configuration -&gt; Miscellaneous tab of the Options menu.
+
 </p>
 
 <p><b>MinGW Users Mailing List</b>
@@ -115,7 +126,7 @@ width="88" /></a>
 <!--#include virtual="/cgi-bin/showstatsdate.cgi?mingw"--></a>.
 </p>
 <address>
-<br />Last revised $Date: 2002-08-05 15:11:02 $
+<br />Last revised $Date: 2002-08-06 14:36:56 $
 </address>
 
 </body>
