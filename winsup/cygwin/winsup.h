@@ -22,6 +22,11 @@ details. */
 
 #define FIXME(FIXNO) debug_printf("%s-%s", "FIXME", (FIXNO))
 #define HMMM(HUM) debug_printf("%s-%d: %s", "HMMM", __LINE__, (HUM))
+#if DEBUGGING
+# define TRACE_IN debug_printf("TRACE_IN: %s, %d", __FILE__, __LINE__)
+#else
+# define TRACE_IN
+#endif
 
 #define alloca __builtin_alloca
 #define strlen __builtin_strlen
@@ -267,5 +272,7 @@ extern BOOL display_title;
 
 extern HANDLE hMainThread;
 extern HANDLE hMainProc;
+
+extern bool IsMsys (const char *);
 
 #endif /* defined __cplusplus */

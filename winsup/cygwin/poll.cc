@@ -23,6 +23,7 @@ extern "C"
 int
 poll (struct pollfd *fds, unsigned int nfds, int timeout)
 {
+  TRACE_IN;
   int max_fd = 0;
   fd_set *open_fds, *read_fds, *write_fds, *except_fds;
   struct timeval tv = { timeout / 1000, (timeout % 1000) * 1000 };
@@ -34,10 +35,17 @@ poll (struct pollfd *fds, unsigned int nfds, int timeout)
 
   size_t fds_size = howmany(max_fd + 1, NFDBITS) * sizeof (fd_mask);
 
+#if DO_CPP_NEW
   open_fds = new fd_set [fds_size];
   read_fds = new fd_set [fds_size];
   write_fds = new fd_set [fds_size];
   except_fds = new fd_set [fds_size];
+#else
+  open_fds = (fd_set *) alloca (fds_size);
+  read_fds = (fd_set *) alloca (fds_size);
+  write_fds = (fd_set *) alloca (fds_size);
+  except_fds = (fd_set *) alloca (fds_size);
+#endif
 
   if (!open_fds || !read_fds || !write_fds || !except_fds)
     {

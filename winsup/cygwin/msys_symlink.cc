@@ -4,6 +4,9 @@
  * ***************************************************************************/
 
 #include "msys_symlink.h"
+#if !DO_CPP_NEW
+#include <stdlib.h>
+#endif
 
 extern "C"
 int
@@ -14,13 +17,19 @@ msys_symlink (const char * topath, const char * frompath)
   char wfrompath[MAX_PATH] = "\0";
   char *w_topath = wtopath;
   char *w_frompath = wfrompath;
+#if DO_CPP_NEW
   struct stat *sb_frompath = new struct stat;
   struct stat *sb_topath = new struct stat;
+  struct _WIN32_FIND_DATAA *dHfile = new struct _WIN32_FIND_DATAA;
+#else
+  struct stat *sb_frompath = (struct stat *) malloc (sizeof (struct stat));
+  struct stat *sb_topath = (struct stat *) malloc (sizeof (struct stat));
+  struct _WIN32_FIND_DATAA *dHfile = (struct _WIN32_FIND_DATAA *) malloc (sizeof (struct _WIN32_FIND_DATAA));
+#endif
   int existing_destination;
   int destination_isdir;
   int src_isdir;
   HANDLE dH;
-  struct _WIN32_FIND_DATAA *dHfile = new struct _WIN32_FIND_DATAA;
   BOOL findfiles;
   BOOL frompath_needs_slash;
   BOOL topath_needs_slash;

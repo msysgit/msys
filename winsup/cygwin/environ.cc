@@ -77,6 +77,7 @@ static unsigned char conv_start_chars[256] = {0};
 void
 win_env::add_cache (const char *in_posix, const char *in_native)
 {
+  TRACE_IN;
   posix = (char *) realloc (posix, strlen (in_posix) + 1);
   strcpy (posix, in_posix);
   if (in_native)
@@ -104,6 +105,7 @@ win_env::add_cache (const char *in_posix, const char *in_native)
 win_env * __stdcall
 getwinenv (const char *env, const char *in_posix)
 {
+  TRACE_IN;
   if (!conv_start_chars[(unsigned char)*env])
     return NULL;
 
@@ -127,6 +129,7 @@ getwinenv (const char *env, const char *in_posix)
 static void __stdcall
 posify (char **here, const char *value)
 {
+  TRACE_IN;
   char *src = *here;
   win_env *conv;
 
@@ -159,6 +162,7 @@ posify (char **here, const char *value)
 static char * __stdcall
 my_findenv (const char *name, int *offset)
 {
+  TRACE_IN;
   register int len;
   register char **p;
   const char *c;
@@ -189,6 +193,7 @@ my_findenv (const char *name, int *offset)
 extern "C" char *
 getenv (const char *name)
 {
+  TRACE_IN;
   int offset;
 
   return my_findenv (name, &offset);
@@ -197,6 +202,7 @@ getenv (const char *name)
 extern int __stdcall
 envsize (const char * const *in_envp, int debug_print)
 {
+  TRACE_IN;
   const char * const *envp;
   for (envp = in_envp; *envp; envp++)
     if (debug_print)
@@ -210,6 +216,7 @@ envsize (const char * const *in_envp, int debug_print)
 static int __stdcall
 _addenv (const char *name, const char *value, int overwrite)
 {
+  TRACE_IN;
   int issetenv = overwrite >= 0;
   int offset;
   char *p;
@@ -292,6 +299,7 @@ _addenv (const char *name, const char *value, int overwrite)
 extern "C" int
 putenv (const char *str)
 {
+  TRACE_IN;
   int res;
   if ((res = check_null_empty_str (str)))
     {
@@ -315,6 +323,7 @@ putenv (const char *str)
 extern "C" int
 setenv (const char *name, const char *value, int overwrite)
 {
+  TRACE_IN;
   int res;
   if ((res = check_null_empty_str (value)) == EFAULT)
     {
@@ -337,6 +346,7 @@ setenv (const char *name, const char *value, int overwrite)
 extern "C" void
 unsetenv (const char *name)
 {
+  TRACE_IN;
   register char **e;
   int offset;
 
@@ -351,6 +361,7 @@ unsetenv (const char *name)
 static __inline__ void
 ucenv (char *p, char *eq)
 {
+  TRACE_IN;
   /* Amazingly, NT has a case sensitive environment name list,
      but only sometimes.
      It's normal to have NT set your "Path" to something.
@@ -383,6 +394,7 @@ enum settings
 static void
 glob_init (const char *buf)
 {
+  TRACE_IN;
   if (!buf || !*buf)
     {
       allow_glob = FALSE;
@@ -403,6 +415,7 @@ glob_init (const char *buf)
 static void
 check_case_init (const char *buf)
 {
+  TRACE_IN;
   if (!buf || !*buf)
     return;
 
@@ -430,6 +443,7 @@ check_case_init (const char *buf)
 void
 set_file_api_mode (codepage_type cp)
 {
+  TRACE_IN;
   if (cp == oem_cp)
     {
       SetFileApisToOEM ();
@@ -445,6 +459,7 @@ set_file_api_mode (codepage_type cp)
 static void
 codepage_init (const char *buf)
 {
+  TRACE_IN;
   if (!buf || !*buf)
     return;
 
@@ -467,6 +482,7 @@ codepage_init (const char *buf)
 static void
 subauth_id_init (const char *buf)
 {
+  TRACE_IN;
   if (!buf || !*buf)
     return;
 
@@ -525,6 +541,7 @@ static struct parse_thing
 static void __stdcall
 parse_options (char *buf)
 {
+  TRACE_IN;
   int istrue;
   char *p, *lasts;
   parse_thing *k;
@@ -610,6 +627,7 @@ parse_options (char *buf)
 static void __stdcall
 regopt (const char *name)
 {
+  TRACE_IN;
   MALLOC_CHECK;
   /* FIXME: should not be under mount */
   reg_key r (KEY_READ, CYGWIN_INFO_PROGRAM_OPTIONS_NAME, NULL);
@@ -636,6 +654,7 @@ regopt (const char *name)
 void
 environ_init (char **envp, int envc)
 {
+  TRACE_IN;
   char *rawenv;
   int i;
   char *p;
@@ -743,6 +762,7 @@ out:
 static int
 env_sort (const void *a, const void *b)
 {
+  TRACE_IN;
   const char **p = (const char **) a;
   const char **q = (const char **) b;
 
@@ -769,6 +789,7 @@ static const NO_COPY char* forced_winenv_vars [] =
 char * __stdcall
 winenv (const char * const *envp, int keep_posix)
 {
+  TRACE_IN;
   int srcplen, envc, envblocklen;
   const char * const *srcp;
   const char **dstp;
@@ -793,14 +814,22 @@ winenv (const char * const *envp, int keep_posix)
 	*dstp = *srcp;
       else
 	{
+#if DO_CPP_NEW
 	  tptr = new char  [strlen (conv->native) + 1];
+#else
+	  tptr = (char *) alloca (strlen (conv->native) + 1);
+#endif
 	  strcpy (tptr, conv->native);
 	  *dstp = tptr;
 	}
       envblocklen += strlen (*dstp) + 1;
       if ((*dstp)[0] == '!' && isdrive ((*dstp) + 1) && (*dstp)[3] == '=')
 	{
+#if DO_CPP_NEW
 	  tptr = new char [strlen (*dstp) + 1];
+#else
+	  tptr = (char *) alloca (strlen (*dstp) + 1);
+#endif
 	  strcpy (tptr, *dstp);
 	  *tptr = '=';
 	  *dstp = tptr;
@@ -815,7 +844,11 @@ winenv (const char * const *envp, int keep_posix)
     if (!saw_forced_winenv[i])
       {
 	srcplen = strlen (forced_winenv_vars[i]);
+#if DO_CPP_NEW
 	tptr = new char [srcplen + MAX_PATH + 1];
+#else
+	tptr = (char *) alloca (srcplen + MAX_PATH + 1);
+#endif
 	strcpy (tptr, forced_winenv_vars[i]);
 	strcat (tptr, "=");
 	if (!GetEnvironmentVariable (forced_winenv_vars[i], tptr + srcplen + 1, MAX_PATH))
@@ -837,7 +870,12 @@ winenv (const char * const *envp, int keep_posix)
 
   /* Create an environment block suitable for passing to CreateProcess.  */
   char *ptr, *envblock;
+#if DO_CPP_NEW
   envblock = new char [envblocklen + 2 + (MAX_PATH * 256)];
+#else
+  //envblock = (char *) malloc (envblocklen + 2 + (MAX_PATH * 256));
+  envblock = (char *) malloc (envblocklen + 2);
+#endif
   for (srcp = newenvp, ptr = envblock; *srcp; srcp++)
     {
       srcplen = strlen(*srcp);
@@ -856,6 +894,7 @@ winenv (const char * const *envp, int keep_posix)
 extern "C" char ** __stdcall
 cur_environ ()
 {
+  TRACE_IN;
   if (*main_environ != __cygwin_environ)
     {
       __cygwin_environ = *main_environ;
