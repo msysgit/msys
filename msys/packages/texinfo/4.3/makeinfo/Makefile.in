@@ -14,7 +14,7 @@
 
 @SET_MAKE@
 
-# $Id: Makefile.in,v 1.1 2002/12/05 21:07:17 earnie Exp $
+# $Id: Makefile.in,v 1.2 2004/03/16 14:32:20 earnie Exp $
 # Makefile.am for texinfo/makeinfo.
 # Run automake in .. to produce Makefile.in from this.
 #
@@ -88,6 +88,7 @@ INTL_LIBTOOL_SUFFIX_PREFIX = @INTL_LIBTOOL_SUFFIX_PREFIX@
 LDFLAGS = @LDFLAGS@
 LIBICONV = @LIBICONV@
 LIBINTL = @LIBINTL@
+LIBOBJS = @LIBOBJS@
 LIBS = @LIBS@
 LTLIBICONV = @LTLIBICONV@
 LTLIBINTL = @LTLIBINTL@
