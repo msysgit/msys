@@ -1,4 +1,4 @@
-<!-- $Id: index.shtml,v 1.33 2002-09-06 16:52:20 infidel Exp $ -->
+<!-- $Id: index.shtml,v 1.34 2002-09-08 01:26:40 earnie Exp $ -->
 
 <html>
 <head>
@@ -68,7 +68,7 @@ here</a> for information on how Mingw differs from Red Hat/Cygnus Cygwin
 and AT&amp;T UWIN.</p>
 
 <p><b>Latest MinGW Release:</b>
-  <a href="http://prdownloads.sourceforge.net/mingw/MinGW-2.0.0-2.exe">
+  <a href="http://prdownloads.sourceforge.net/mingw/MinGW-2.0.0-3.exe">
 Version 2.0.0</a>.  This release bundles:
                         GCC-3.2-core-20020817-1,
 			binutils-2.13-20020903-1,
@@ -135,7 +135,7 @@ width="88" /></a>
 <!--#include virtual="/cgi-bin/showstatsdate.cgi?mingw"--></a>.
 </p>
 <address>
-<br />Last revised $Date: 2002-09-06 16:52:20 $
+<br />Last revised $Date: 2002-09-08 01:26:40 $
 </address>
 
 </body>

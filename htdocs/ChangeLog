@@ -1,3 +1,7 @@
+2002-09-07  Earnie Boyd  <earnie@users.sf.net>
+
+	* index.shtml: Change the href to point to MinGW-2.0.0-3.exe.
+
 2002-09-06  Luke Dunstan  <infidel@users.sourceforge.net>
 
 	* index.shtml: Correct a few typos in the 7-Zip section.
