@@ -1,3 +1,9 @@
+2003-10-11  Earnie Boyd  <earnie@users.sf.net>
+
+	* environ.cc (winenv): Use msys_p2w() for win32 path translation.
+	* heap.cc: Remove unused declaration of getpagesize().
+	* spawn.cc (spawn_guts): Remove win32 path translation (now in winenv).
+
 2003-07-29  Earnie Boyd  <earnie@users.sf.net>
 
 	* include/cygwin/version.h: Bump MINOR version to 10.
