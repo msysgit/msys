@@ -605,7 +605,13 @@ function parse_dsp(infile, outfile, i) {
 			print "%.o: %.c" > outfile
 			print "\t$(CC) $(CFLAGS) $(CPPFLAGS) -o $@ -c $<" > outfile
 			print "" > outfile
+			print "%.o: %.cc" > outfile
+			print "\t$(CXX) $(CXXFLAGS) $(CPPFLAGS) -o $@ -c $<" > outfile
+			print "" > outfile
 			print "%.o: %.cpp" > outfile
+			print "\t$(CXX) $(CXXFLAGS) $(CPPFLAGS) -o $@ -c $<" > outfile
+			print "" > outfile
+			print "%.o: %.cxx" > outfile
 			print "\t$(CXX) $(CXXFLAGS) $(CPPFLAGS) -o $@ -c $<" > outfile
 			print "" > outfile
 			print "%.res: %.rc" > outfile
@@ -641,7 +647,7 @@ function parse_dsp(infile, outfile, i) {
 			print "" > outfile
 		
 			# define the objects automatically from the sources in the Makefile
-			print "OBJS=$(patsubst %.rc,%.res,$(patsubst %.cpp,%.o,$(patsubst %.c,%.o,$(filter %.c %.cpp %.rc,$(SRCS)))))" > outfile
+			print "OBJS=$(patsubst %.rc,%.res,$(patsubst %.cxx,%.o,$(patsubst %.cpp,%.o,$(patsubst %.cc,%.o,$(patsubst %.c,%.o,$(filter %.c %.cc %.cpp %.cxx %.rc,$(SRCS)))))))" > outfile
 			print "" > outfile
 		
 			# print the target rule, according with the type of target
@@ -815,7 +821,7 @@ function parse_dsp(infile, outfile, i) {
 	# print the 'depends' target rule for automatic dependencies generation
 	print ".PHONY: depends" > outfile
 	print "depends:" > outfile
-	print "\t-$(CXX) $(CXXFLAGS) $(CPPFLAGS) -MM $(filter %.c %.cpp,$(SRCS)) > " dependencies> outfile
+	print "\t-$(CXX) $(CXXFLAGS) $(CPPFLAGS) -MM $(filter %.c %.cc %.cpp %.cxx,$(SRCS)) > " dependencies> outfile
 	print "" > outfile
 	print "-include " dependencies > outfile
 	print "" > outfile
