@@ -1,5 +1,9 @@
 2003.06.13  Earnie Boyd  <earnie@users.sf.net>
 
+	* libc/stdlib/mallocr.c: Update with new version from newlib.
+
+2003.06.13  Earnie Boyd  <earnie@users.sf.net>
+
 	* libc/stdlib/mallocr.c: Remove needless filter check for ! __MSYS__.
 	Make sure _WIN32 and WIN32 are undefined for __MSYS__.
 
