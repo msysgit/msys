@@ -1,3 +1,10 @@
+2003.06.16  Earnie Boyd  <earnie@users.sf.net>
+
+	* bin/msysinfo: Updates from John Kane.
+	* doc/msys/MSYS-1.0.9-changes.rtf: Add msysinfo addition.
+	Add 1.1.1 section to future plans.  Move new pathing classes and methods
+	to section 1.1.1.
+
 2003.06.05  Earnie Boyd  <earnie@users.sf.net>
 
 	* bin/msysinfo: New file.  Thanks to John Kane.
