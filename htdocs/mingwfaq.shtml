@@ -804,7 +804,7 @@
            </code></blockquote>
 
            <p>For further information on Makefiles please refer to the
-              <a href="http://www.gnu.org/manual/make/html_chapter/make_toc.html">GNU make tutorial</a>.
+              <a href="http://www.gnu.org/software/make/manual/make.html">GNU make documentation</a>.
               </p>
             
            <p><a href="#index">Back to index</a>
@@ -879,7 +879,7 @@
  
 <address>
   <br>
-  Last revised $Date: 2003-09-16 18:30:47 $
+  Last revised $Date: 2004-03-08 06:26:25 $
  </address>
 
 </body></html>
