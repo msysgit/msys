@@ -473,6 +473,39 @@ spawn_guts (HANDLE hToken, const char * prog_arg, const char *const *argv,
     newargv.dup_all ();
   else
     {
+      // FIXME-1.0:
+      //	When iscygexec is fixed to truely identify an msys executable
+      //	the filter coding for an occurance of .*/bin.* needs to be 
+      //	removed.
+      for (int i = 0; i < newargv.argc; i++)
+	{
+	  //convert argv to win32
+	  char tmpbuf[MAX_PATH];
+	  // FIXME-0.1:
+	  //	    Need to add a filter so that if newargv[0] contains
+	  //	    .*/bin.* it doesn't convert to a win32 path.
+	  //	    NOTE: This is a temporary work around until the FIXME-1.0
+	  //		  can be developed.
+	  //
+	  // FIXME-0.2
+	  //	    Need to filter win32 one character switches of the type /x
+	  //	    where / switch indicator and x is the switch operator.  The
+	  //	    condition for this is that the string length is exactly 2.
+	  if (strchr(newargv[i], '/'))
+	    {
+	      if (strstr (newargv[i], "/bin") == 0 &&
+		  strstr (newargv[i], "/sbin") == 0 &&
+		  strlen (newargv[i]) != 2
+		  )
+		{
+		  cygwin_conv_to_win32_path(newargv[i], tmpbuf);
+		  debug_printf("%d of %d, %s, %s", i, ac, newargv[i], tmpbuf);
+		  {
+		    strcpy(newargv[i], tmpbuf);
+		  }
+		}
+	    }
+	}
       for (int i = 0; i < newargv.argc; i++)
 	{
 	  char *p = NULL;
