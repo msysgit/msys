@@ -1,4 +1,4 @@
-<!-- $Id: mingwfaq.shtml,v 1.42 2002-09-20 17:06:07 earnie Exp $ -->
+<!-- $Id: mingwfaq.shtml,v 1.43 2002-09-27 11:49:30 earnie Exp $ -->
 
 <html>
 <head>
@@ -314,7 +314,7 @@
          Please be sure that you have downloaded and are working with the
          latest version, especially if you are having any difficulties with
          installation or use.  If you are not sure of your version, you can
-         type <code>gcc -dumpversion</code> to find out what you are
+         type <code>gcc --version</code> to find out what you are
          using.  
       </p>
       <p><a href="#index">Back to index</a></p>
@@ -559,7 +559,7 @@
 
    <hr />
    <address>
-   <br />Last revised $Date: 2002-09-20 17:06:07 $
+   <br />Last revised $Date: 2002-09-27 11:49:30 $
    </address>
 
 </body>

@@ -1,3 +1,10 @@
+2002-09-27  Earnie Boyd  <earnie@users.sf.net>
+
+	* mingwfaq.shtml (faq-usingolderversions): Small correction.
+	* index.shtml: Add verbiage for the left panel "Search the archives"
+	in the "MinGW Users Mailing List section.
+	(x86-win32-ports.shtml): Remove link.
+
 2002-09-20  Earnie Boyd  <earnei@users.sf.net>
 
 	* mingwfaq.shtml: Format to 80 columns throughout.
