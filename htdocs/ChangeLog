@@ -4,6 +4,7 @@
 	* links.shtml, mingwfaq.shtml, mingw-oldfaq.shtml: Merging information
 	from mingw-oldfaq.shtml.  Remove the mingw-oldfaq reference from FAQ
 	page.
+	* mingwfaq.shtml (faq-ridconsole): Add FAQ.
 
 2003-01-13  Nathan Fisher <natbobc@users.sf.net>
 

@@ -56,6 +56,7 @@
       <li><a href="#faq-cross">How can I build a cross compiler?</a></li>
       <li><a href="#faq-mingw32-gcc.exe">What's the difference between gcc.exe and mingw32-gcc.exe?"</a></li>
       <li><a href="#faq-mingw32-make.exe">Why is make named mingw32-make.exe?</a></li>
+      <li><a href="#faq-ridconsole">How to remove DOS command windows?</a></li>
       <li><a href="#faq-bugreports">How can I report bugs?</a></li>
    </ul>
 
@@ -552,6 +553,13 @@
       </p>
       <p><a href="#index">Back to index</a></p>
 
+      <a name="faq-ridconsole" />
+      <h3>How to remove DOS command windows?</h3>
+      <p>
+	 In the link step add a -mwindows switch to the command line.
+      </p>
+      <p><a href="#index">Back to index</a></p>
+
 
 
       <a name="faq-bugreports" />
@@ -579,6 +587,6 @@
 </table>
 <!--#include file="ssi/bottombar.html"--><!--#include file="ssi/footer.html"-->
 <address> <br>
-Last revised $Date: 2003-01-26 14:53:11 $ </address>
+Last revised $Date: 2003-01-26 17:38:33 $ </address>
 </body>
 </html>
