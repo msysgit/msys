@@ -40,9 +40,9 @@
                 <tr>
                   <td>
 <!-- ======================================================================= --><!--                                                                         --><!--                               Main Body                                 --><!--                                                                         -->
-		    <h2><a name="Contents" />
+		    <h2><a name="Contents">
 		      Contents
-		    </h2>
+		    </a></h2>
 		    <ul>
 		      <li><a href="#hdr1">MinGW and MSYS Distributions</a></li>
 		      <li><a href="#hdr2">File List</a></li>
@@ -55,10 +55,10 @@
 		      <li><a href="#hdr9">Updating MSYS</a></li>
 		    </ul>
 
-                    <hr />
-                    <h2><a name="hdr1" />
+                    <a href="#Contents"><hr></a>
+                    <h2><a name="hdr1">
                       MinGW and MSYS Distributions
-                    </h2>
+                    </a></h2>
                     <p>
                       Development of MinGW is done within a
                       framework of inter-related <i>packages</i>.
@@ -137,18 +137,18 @@
 		      of updates.
                     </p>
 
-		    <hr />
-		    <h2><a name="hdr2" />
+                    <a href="#Contents"><hr></a>
+		    <h2><a name="hdr2">
 		      File List
-		    </h2>
+		    </a></h2>
 		    <p>
                     <!--#include file="ssi/release.html"-->
 		    </p>
                      
-                    <hr />
-                    <h2><a name="hdr3" />
+                    <a href="#Contents"><hr></a>
+                    <h2><a name="hdr3">
                       Mirror Sites
-                    </h2>
+                    </a></h2>
 		    <p>
                     <ul>
                       <li>
@@ -168,10 +168,10 @@
                       mingw-users-admin@lists.sourceforge.net</a>.
                     </p>
 
-                    <hr />
-                    <h2><a name="hdr4" />
+                    <a href="#Contents"><hr></a>
+                    <h2><a name="hdr4">
                       Understanding MinGW Packaging
-                    </h2>
+                    </a></h2>
 		    <p>
 		      Each package is the responsibility of the individual
 		      developer.  It is the developer to decide what archive,
@@ -206,10 +206,10 @@
 		      entire package when there's an update.
 		    </p>
 
-                    <hr />
-		    <h2><a name="hdr5" />
+                    <a href="#Contents"><hr></a>
+		    <h2><a name="hdr5">
 		      Decompression and Unarchiving Utilities</h2>
-                    <p>
+                    </a><p>
                      <em><b>WinZip Caution:</b></em><br>
                       Make sure that you first <b>uncheck</b> the
                       "TAR file smart CR/LF conversion" checkbox
@@ -224,10 +224,10 @@
 		      and decompress in several formats.
 		    </p>
 
-                    <hr />
-                    <h2><a name="hdr6" />
+                    <a href="#Contents"><hr></a>
+                    <h2><a name="hdr6">
                       Installing MinGW
-                    </h2>
+                    </a></h2>
 		    <p>
 		      How are you going to use MinGW?  That is a question you
 		      need to ask yourself.  If you are a Bourne command line
@@ -262,10 +262,10 @@
 		      mingw32-make.
 		    </p>
 
-		    <hr />
-		    <h2><a name="hdr7" />
+                    <a href="#Contents"><hr></a>
+		    <h2><a name="hdr7">
 		      Updating MinGW
-		    </h2>
+		    </a></h2>
 		    <p>
 		      You should watch the mailing list and news entries for
 		      updates to packages.  In particular you want to update the
@@ -276,10 +276,10 @@
 		      the updated tarballs.
 		    </p>
 
-		    <hr />
-		    <h2><a name="hdr8" />
+                    <a href="#Contents"><hr></a>
+		    <h2><a name="hdr8">
 		      Installing MSYS
-		    </h2>
+		    </a></h2>
 		    <p>
 		      MSYS is a self contained, win32 style installation
 		      package.  To install it, simply download the MSYS .exe
@@ -298,10 +298,10 @@
 		      anyway as the package is dependent on it.
 		    </p>
 
-		    <hr />
-		    <h2><a name="hdr9" />
+                    <a href="#Contents"><hr></a>
+		    <h2><a name="hdr9">
 		      Updating MSYS
-		    </h2>
+		    </a></h2>
 		    <p>
 		      Watch for annoucements in the mailing list and news posts
 		      for updates to the MSYS packages.  Make certain that you
@@ -342,7 +342,7 @@
     </p>
     <address>
       <br>
-      Last revised $Date: 2003-06-29 22:52:41 $
+      Last revised $Date: 2003-06-30 16:37:52 $
     </address>
   </body>
 </html>
