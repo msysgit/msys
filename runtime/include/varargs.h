@@ -29,9 +29,9 @@
  *  DISCLAMED. This includes but is not limited to warranties of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Revision: 1.2 $
- * $Author: earnie $
- * $Date: 2001-06-05 00:26:30 $
+ * $Revision: 1.3 $
+ * $Author: dannysmith $
+ * $Date: 2001-08-28 21:49:38 $
  *
  */
 
@@ -52,9 +52,13 @@
 
 #ifndef RC_INVOKED
 
-#ifndef _VA_LIST
-#define	_VA_LIST
+#ifndef	_VA_LIST
+#define _VA_LIST
+#if defined __GNUC__ && __GNUC__ >= 3
+typedef __builtin_va_list va_list;
+#else
 typedef char* va_list;
+#endif
 #endif
 
 /*
