@@ -1,3 +1,9 @@
+2002-09-07  Earnie Boyd  <earnie@users.sf.net>
+
+	* dcrt0.cc: Add TRACE_IN throughout.
+	* path.cc (cygwin_conv_to_win32_path): Add comments.  Add logic to
+	default case to handle argument of var_foo=/path/bar.
+
 2002-08-30  Earnie Boyd  <earnie@users.sf.net>
 
 	* msys.cc (AbsDllPath): Add debugging.

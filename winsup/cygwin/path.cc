@@ -3308,6 +3308,7 @@ cygwin_conv_to_win32_path (const char *path, char *win32_path)
 	    }
 	  break;
 	case '"':
+	  // Handle a double quote case.
 	  if (spath[1] == '/')
 	    {
 	      retpathcpy ("\"");
@@ -3325,6 +3326,7 @@ cygwin_conv_to_win32_path (const char *path, char *win32_path)
 	      retpathcpy (path);
 	  break;
 	case '\'':
+	  // Handle a single quote case.
 	  if (spath[1] == '/')
 	    {
 	      retpathcpy ("'");
@@ -3342,6 +3344,23 @@ cygwin_conv_to_win32_path (const char *path, char *win32_path)
 	      retpathcpy (path);
 	  break;
 	default:
+	  // This takes care of variable_foo=/bar/baz
+	  if ((sspath = strchr(spath, '=')) && (sspath[1] == '/'))
+	    {
+	      sspath[1] = '\0';
+	      retpathcpy (spath);
+	      sspath[1] = '/';
+	      sret = cygwin_conv_to_win32_path (&sspath[1], swin32_path);
+	      if (sret)
+		{
+		  retpathcpy (path);
+		  retval = -1;
+		  break;
+		}
+	      retpathcat (swin32_path);
+	      break;
+	    }
+	  // Oh well, nothing special found, set win32_path same as path.
 	  retpathcpy (path);
 	  break;
 	}
