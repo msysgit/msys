@@ -21,7 +21,7 @@
 #include "less.h"
 #include "option.h"
 
-static struct option *pendopt;
+static struct lessoption *pendopt;
 public int plusoption = FALSE;
 
 static char *propt();
@@ -39,7 +39,7 @@ extern char *every_first_cmd;
 scan_option(s)
 	char *s;
 {
-	register struct option *o;
+	register struct lessoption *o;
 	register int optc;
 	char *optname;
 	char *printopt;
@@ -259,7 +259,7 @@ toggle_option(c, s, how_toggle)
 	char *s;
 	int how_toggle;
 {
-	register struct option *o;
+	register struct lessoption *o;
 	register int num;
 	int no_prompt;
 	int err;
@@ -479,7 +479,7 @@ propt(c)
 single_char_option(c)
 	int c;
 {
-	register struct option *o;
+	register struct lessoption *o;
 
 	o = findopt(c);
 	if (o == NULL)
@@ -495,7 +495,7 @@ single_char_option(c)
 opt_prompt(c)
 	int c;
 {
-	register struct option *o;
+	register struct lessoption *o;
 
 	o = findopt(c);
 	if (o == NULL || (o->otype & (STRING|NUMBER)) == 0)

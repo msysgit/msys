@@ -1,0 +1,15 @@
+2002.12.06  Earnie Boyd  <earnie@users.sf.net>
+
+	* ChangeLog.MYS: New file.
+	* command.c (mca_char): Resolve namespace conflict with option.
+	* funcs.h: Ditto.
+	* option.c: Ditto.
+	(every_first_cmd): Ditto.
+	(toggle_option): Ditto.
+	(propt): Ditto.
+	(single_char_option): Ditto.
+	* option.h: Ditto.
+	* opttbl.c: Ditto.
+	(init_option): Ditto.
+	(findopt): Ditto.
+	(findopt_name): Ditto.
