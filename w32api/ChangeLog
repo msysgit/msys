@@ -1,3 +1,15 @@
+2001-11-30  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/ipexport.h (IP_UNIDIRECTIONAL_ADAPTER_ADDRESS):
+	Add structure definition.
+	* include/iptypes.h (IP_PER_ADAPTER_INFO): Ditto.
+	* include/iphlpapi.h (AddIPAddress,CreateProxyArpEntry,
+	DeleteIPAddress,DeleteProxyArpEntry,EnableRouter,
+	FlushIpNetTable,GetAdapterIndex,GetPerAdapterInfo,
+	GetUniDirectionalAdapterInfo,SendARP,SetAdapterIpAddress,
+	UnenableRouter) Declare functions.
+	* lib/iphlpapi.def: Add function names to import lib.
+
 2001-11-24  Danny Smith  <dannysmith@users.sourceforge.net>
 
 	* include/winnt.h (PACCESS_MASK): Add typedef.
