@@ -1,4 +1,4 @@
-<!-- $Id: mingwfaq.shtml,v 1.35 2002-07-22 04:08:22 adah Exp $ -->
+<!-- $Id: mingwfaq.shtml,v 1.36 2002-07-22 05:38:00 adah Exp $ -->
 
 <html>
 <head>
@@ -40,7 +40,7 @@
       If you have any further questions, please refer them to the
       <a href="mailto:mingw-users@lists.sourceforge.net"> MinGW mailing list</a>.
       This page is updated by the MinGW Developers as time permits.  The
-      Q&A provided here were obtained from the MinGW mailing list,
+      Q&amp;A provided here were obtained from the MinGW mailing list,
       its members, various MinGW related web sites and experience.  We would like to
       thank all who have contributed to this FAQ.
    </p>
@@ -449,15 +449,14 @@
         </blockquote>
       </p>
       <p>
-        Once you have testdll.lib, it is trivial to produce the executable with
-MSVC:
+        Once you have testdll.lib, it is trivial to produce the executable with MSVC:
         <blockquote>
           <code>cl testmain.c testdll.lib</code>
         </blockquote>
       </p>
       <p>
         Now for MinGW programs calling an MSVC DLL.  We have two methods.  One way
-        is to specify the LIB files directly on the command line <em>after</em> the
+        is to specify the LIB files directly on the command line <i>after</i> the
         main program.  For example, after
         <blockquote>
           <code>cl /LD testdll.c</code>
@@ -574,7 +573,7 @@ MSVC:
 
    <hr />
    <address>
-   <br />Last revised $Date: 2002-07-22 04:08:22 $
+   <br />Last revised $Date: 2002-07-22 05:38:00 $
    </address>
 
 </body>
