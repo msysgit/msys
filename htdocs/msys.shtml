@@ -1,4 +1,4 @@
-<!-- $Id: msys.shtml,v 1.4 2002-01-20 03:01:20 stevedperkins Exp $ -->
+<!-- $Id: msys.shtml,v 1.5 2002-01-26 18:13:43 stevedperkins Exp $ -->
 
 <html>
 <head>
@@ -31,7 +31,7 @@
             MSYS was created out of a long-lived desire to provide the MinGW community a
             Minimal SYStem, with which a configure script could be executed.  This is finally 
             available from the 
-            <a href="http://sourceforge.net/project/showfiles.php?group_id=2435">MinGW download area on SourceForge</a>.
+            <a href="http://sourceforge.net/project/showfiles.php?group_id=2435">MinGW download area</a> on SourceForge.
          </p>
          <p>
             There are three tarballs available for download, although most users will need only one.
@@ -43,8 +43,9 @@
          </p>
          <p>
             To install the MSYS binaries, choose a location in your filesystem and unpack the 
-            binary distribution there.  It is recommended that you add the &quot;bin&quot; subdirectory
-            of the MSYS distribution to your system PATH.  More information about using MinGW with 
+            binary distribution there.  It is recommended that you create a shortcut pointing to 
+            &quot;msys\1.0\msys.bat&quot;, and set the &quot;Start In:&quot; field of the shortcut 
+            to &quot;msys\1.0\bin&quot;.  More information about using MinGW with 
             MSYS can be found in the <a href="http://localhost/mingw/mingwfaq.shtml#faq-usingwithmsys">FAQ</a>, 
             and the current MSYS documentation can be found in the &quot;\msys\1.0\doc\msys&quot; 
             subdirectory within the binary distribution.
@@ -67,7 +68,7 @@
 <!--#include file="ssi/footer.html"-->
 
 <address>
-<br />Last revised $Date: 2002-01-20 03:01:20 $
+<br />Last revised $Date: 2002-01-26 18:13:43 $
 </address>
 
 </body>

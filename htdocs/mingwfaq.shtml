@@ -1,4 +1,4 @@
-<!-- $Id: mingwfaq.shtml,v 1.29 2002-01-26 17:46:39 stevedperkins Exp $ -->
+<!-- $Id: mingwfaq.shtml,v 1.30 2002-01-26 18:13:43 stevedperkins Exp $ -->
 
 <html>
 <head>
@@ -298,8 +298,9 @@
          It's easy to configure an MSYS environment for MinGW useage, since there is no
          overlap in functionality to contend with (as there is with Cygwin).  Simply 
          decompress the contents of each archive into directories of your choosing, and 
-         add both the MinGW &quot;/bin&quot; and the MSYS &quot;/bin&quot; subdirectories
-         to your PATH.
+         add the MinGW &quot;/bin&quot; subdirectory to your PATH (either within 
+         MSYS's &quot;/etc/profile&quot; or in your overall system PATH).  There 
+         is no need to add MSYS's &quot;/bin&quot; to your PATH.
       </p>
       <p>
          You may install the MinGW and MSYS packages anywhere on your filesystem, even nesting 
@@ -503,7 +504,7 @@
 
    <hr />
    <address>
-   <br />Last revised $Date: 2002-01-26 17:46:39 $
+   <br />Last revised $Date: 2002-01-26 18:13:43 $
    </address>
 
 </body>
