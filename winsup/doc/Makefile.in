@@ -72,7 +72,7 @@ cygwin-api-int.sgml : cygwin-api.in.sgml ./doctool Makefile
 	-./doctool -i -m $(SGMLDIRS) -s $(srcdir) -b cygwin-api-int -o $@ $<
 
 ./doctool : doctool.c
-	gcc -g $< -o $@
+	$(CC) $< -o $@
 
 %.dvi: %.sgml
 	-db2dvi $<
