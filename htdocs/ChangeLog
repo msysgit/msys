@@ -2,6 +2,8 @@
 
 	* index.shtml: Change the current version links and remove the
 	"Old Version" links.
+	Modify verbiage to relieve confusion as to what MinGW GCC is capable of
+	w.r.t. console and GUI mode programs.
 
 2002-06-01  Luke Dunstan  <infidel@users.sourceforge.net>
 
