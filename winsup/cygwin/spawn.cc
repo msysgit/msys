@@ -654,15 +654,16 @@ spawn_guts (HANDLE hToken, const char * prog_arg, const char *const *argv,
       // Is there a count of used?
       envblockcnt = ciresrv.moreinfo->envc;
 #endif
-      char **envblockarg = new char *[envblockcnt + 1], *tptr, *wpath;
+      char **envblockarg = (char *)cmalloc(HEAP_STR, envblockcnt + 1); 
+      char *tptr, *wpath;
       int envblocknlen = 0, envblockarglen = 0;
       envblockn = envblock;
       for (int loop=0;loop < envblockcnt;loop++)
 	{
 	  envblocknlen = strlen(envblockn);
-	  envblockarg[loop] = new char [envblocknlen + MAX_PATH];
+	  envblockarg[loop] = (char *) cmalloc(HEAP_STR, envblocknlen + MAX_PATH);
 	  memset (envblockarg[loop], 0, envblocknlen + MAX_PATH);
-	  wpath = new char [envblocknlen + MAX_PATH];
+	  wpath = (char *)cmalloc (HEAP_STR, envblocknlen + MAX_PATH);
 	  memset (wpath, 0, envblocknlen + MAX_PATH);
 
 	  if ((tptr = strchr(envblockn, '=')))
@@ -676,11 +677,11 @@ spawn_guts (HANDLE hToken, const char * prog_arg, const char *const *argv,
 	  debug_printf("envblockarg[%d] = %s", loop, envblockarg[loop]);
 	  envblockarglen += strlen(envblockarg[loop]) + 1;
 	  envblockn = envblockn + envblocknlen + 1;
-	  delete[] wpath;
+	  cfree (wpath);
 	} // END FOR (int loop=0;loop < envblockcnt;loop++)
 
-      delete[] envblock;
-      envblock = new char [envblockarglen + 1];
+      cfree (envblock);
+      envblock = (char *)cmalloc (HEAP_STR, envblockarglen + 1);
 
       tptr = envblock;
       for (int i=0;i < envblockcnt;i++)
@@ -688,10 +689,10 @@ spawn_guts (HANDLE hToken, const char * prog_arg, const char *const *argv,
 	  envblocknlen = strlen (envblockarg[i]) + 1;
 	  memcpy (tptr, envblockarg[i], envblocknlen);
 	  tptr += envblocknlen;
-	  delete[] envblockarg[i];
+	  cfree (envblockarg[i]);
 	}
       *++tptr = '\0';
-      delete[] envblockarg;
+      cfree (envblockarg);
     }
 
   /* Preallocated buffer for `sec_user' call */
@@ -796,7 +797,7 @@ spawn_guts (HANDLE hToken, const char * prog_arg, const char *const *argv,
     }
 
   MALLOC_CHECK;
-  delete[] envblock;
+  cfree (envblock);
 
   cygheap_setup_for_child_cleanup (&ciresrv);
   MALLOC_CHECK;
@@ -856,9 +857,7 @@ spawn_guts (HANDLE hToken, const char * prog_arg, const char *const *argv,
 	}
       child->dwProcessId = pi.dwProcessId;
       child->hProcess = pi.hProcess;
-      FIXME; // PROPOSED
       child->copysigs (myself);
-      //END PROPOSED
       child.remember ();
       strcpy (child->progname, real_path);
       /* Start the child running */
