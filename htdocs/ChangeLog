@@ -1,6 +1,8 @@
 2003-06-30  Earnie Boyd  <earnie@users.sf.net>
 
 	* download.shtml: Correct ending tags throughout.
+	* lists.shtml: Correct the archives link for mingw-dvlpr, mingw-editor
+	and mingw-cvs.
 
 2003-06-28  Earnie Boyd  <earnie@users.sf.net>
 

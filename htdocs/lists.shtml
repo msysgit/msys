@@ -52,7 +52,7 @@ This is the general mailing list for MSYS users.  Please search the
 <strong>MinGW-dvlpr</strong></a>: 
 This is a private mailing list for MinGW developers.  You can check what
 the developers are discussing at the
-<a href="http://www.geocrawler.com/redir-sf.php3?list=mingw-dvlpr">
+<a href="http://sourceforge.net/mailarchive/forum.php?forum=mingw-dvlpr">
 <strong>archives</strong></a>.
 </p><p>
 <a href="http://lists.sourceforge.net/mailman/listinfo/mingw-patches">
@@ -66,15 +66,13 @@ patches in the
 <strong>MinGW-editor</strong></a>: 
 This list is a private list used to discuss changes to the MinGW site and 
 documentation.  You can check out proposed changes in the 
-<a href="http://www.geocrawler.com/redir-sf.php3?list=mingw-editor">
+<a href="http://sourceforge.net/mailarchive/forum.php?forum=mingw-editor">
 <strong>archives</strong></a>.
 </p><p>
 <a href="http://lists.sourceforge.net/mailman/listinfo/mingw-cvs">
 <strong>MinGW-cvs</strong></a>: 
-This is a notification list for cvs changes.
-There are 
-<a href="http://www.geocrawler.com/redir-sf.php3?list=mingw-cvs">
-<strong>archives</strong></a> but I doubt it'll be interesting.
+This is a notification list for cvs changes.  There are no archives for this
+list.
 </p><p>
 <a href="http://lists.sourceforge.net/mailman/listinfo/mingw-notify">
 <strong>MinGW-notify</strong></a>: 
@@ -118,6 +116,6 @@ The GNU binutils groups maintains a few mailing lists.
        alt="Valid CSS!"></a>
 </p>
 <address> <br>
-Last revised $Date: 2003-01-12 18:33:32 $ </address>
+Last revised $Date: 2003-06-30 19:19:16 $ </address>
 </body>
 </html>
