@@ -1,31 +1,35 @@
-<!-- $Id: docs.shtml,v 1.22 2002-10-01 01:38:18 infidel Exp $ -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
- <title>Documentation</title>
+  <meta http-equiv="content-type"
+ content="text/html; charset=ISO-8859-1">
+  <meta name="description"
+ content="Home of MinGW -- Minimalist GNU for Windows -- project. Contains information about the MinGW runtime library and GNU/OSS development tools for MinGW.">
+          
+  <meta name="keywords"
+ content="mingw, mingw32, programming, C++, C, C/C++, libraries, software, development tools, editors, IDEs, GNU">
+
+   <link href="mingw.css" type="text/css" rel="stylesheet" title="MinGW">
+  <title>Documentation</title>
 </head>
-<body bgcolor="white" text="black" link="#0000EE" vlink="#551A8B" alink="red">
+<body link="#000099" vlink="#990099" alink="#000099">
 
-<h1 align="center">Documentation</h1>
+<h1>Documentation</h1>
 
-<!-- two-column format: left sidebar and the body -->
-<table border="0" cellspacing="6" cellpadding="8">
-<tr>
-<td bgcolor="#eeeeee" valign="top" width="10%">
-
-<!--#include file="ssi/lsidebar.html"-->
-
-</td>
-<!-- 2nd column of two-column format: the body -->
-<td valign="top">
-
-<!-- ================================================================== -->
-<!--                                                                    -->
-<!--			  Main Body                                     -->
-<!--                                                                    -->
-
-<table border="0" cellspacing="6" cellpadding="0">
-   <tr>
-      <td valign="top" align="left">
+<table class="prim" cellspacing="6" border="0">
+  <tbody>
+    <tr>
+      <td class="side"><!--#include file="ssi/lsidebar.html"--> <br>
+&nbsp;</td>
+      <td>
+      <table class="sec" cellspacing="6" border="0">
+        <tbody>
+          <tr>
+            <td>
+<!-- ======================================================================= -->
+<!--                                                                         -->
+<!--                               Main Body                                 -->
+<!--                                                                         -->
          <a name="index" />
          <h2 align="left">Table of Contents</h2>
          <ul>
@@ -472,15 +476,18 @@
             <p><a href="#index">Back to index</a></p>
          </ul>
          <hr />
+
+<!--                            End of Main Body                             -->
+           </td>
+          </tr>
+        </tbody>
+      </table>
       </td>
-   </tr>
+    </tr>
+  </tbody>
 </table>
-
-</td></tr></table>
-
-<!--#include file="ssi/bottombar.html"-->
-<!--#include file="ssi/footer.html"-->
-
+<!--#include file="ssi/bottombar.html"--><!--#include file="ssi/footer.html"-->
+<address> <br>
+Last revised $Date: 2003-01-11 09:08:04 $ </address>
 </body>
 </html>
-
