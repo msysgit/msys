@@ -1,3 +1,7 @@
+2003-10-14  Earnie Boyd  <earnie@users.sf.net>
+
+	* index.shtml: Clarify ``3rd-party DLLs''.
+
 2003-09-16  Nathan Fisher <natbobc@users.sf.net>
 
 	* mingwfaq.shtml: Add info on C++ file sizes.

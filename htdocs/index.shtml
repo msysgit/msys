@@ -31,7 +31,7 @@
 collection of freely available and freely distributable Windows
 specific header files and import libraries combined with GNU toolsets
 that allow one to produce native Windows programs that do not rely on
-any 3rd-party DLLs.</p>
+any 3rd-party C runtime DLLs.</p>
             <p><span class="bold">MSYS:</span> A Minimal
 SYStem to provide POSIX/Bourne configure scripts the ability to execute
 and create a Makefile used by make.<br>
@@ -81,6 +81,6 @@ Fisher for this work.
  </a>
 </p>
 <address><br>
-Last revised $Date: 2003-06-06 19:05:19 $ </address>
+Last revised $Date: 2003-10-14 17:54:20 $ </address>
 </body>
 </html>
