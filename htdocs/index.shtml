@@ -1,4 +1,4 @@
-<!-- $Id: index.shtml,v 1.37 2002-09-30 19:46:45 earnie Exp $ -->
+<!-- $Id: index.shtml,v 1.38 2002-09-30 20:17:32 earnie Exp $ -->
 
 <html>
 <head>
@@ -77,19 +77,21 @@ Windows32 API functionality. Please see the
 -->
 
 <p><b>Latest Releases:</b>
+<ul>
 <li><em>MinGW</em>
   <a href="http://prdownloads.sourceforge.net/mingw/MinGW-2.0.0-3.exe">
 Version 2.0.0</a>.  Bundles the executables from these packages:
+<ul>
 <li><a href="http://prdownloads.sourceforge.net/mingw/GCC-3.2-core-20020817-1.tar.gz">GCC-3.2-core-20020817-1</a></li>
 <li><a href="http://prdownloads.sourceforge.net/mingw/binutils-2.13-20020903-1.tar.gz">binutils-2.13-20020903-1</a></li>
 <li><a href="prdownloads.sourceforge.net/mingw/mingw-runtime-2.2.tar.gz">mingw-runtime-2.2</a></li>
 <li><a href="http://prdownloads.sourceforge.net/mingw/w32api-2.0.tar.gz">w32api-2.0</a></li>
 <li><a href="http://prdownloads.sourceforge.net/mingw/gdb-5.1.1-1.tar.gz">gdb-5.1.1-1</a></li>
 <li><a href="http://prdownloads.sourceforge.net/mingw/make-3.79.1-20010722.tar.gz">make-3.79.1-20010722</a> <em>(make.exe renamed as mingw32-make.exe)</em></li>
-</li>
-<li>
-<em>MSYS:</em><a href="http://prdownloads.sourceforge.net/mingw/MSYS-1.0.7-i386-2.exe">
+</ul></li>
+<li><em>MSYS:</em><a href="http://prdownloads.sourceforge.net/mingw/MSYS-1.0.7-i386-2.exe">
 Version 1.0.7</a>.  Bundles select executables from:
+<ul>
 <li>bash</li>
 <li>bzip2</li>
 <li>diffutils</li>
@@ -106,7 +108,8 @@ Version 1.0.7</a>.  Bundles select executables from:
 <li>textutils</li>
 <li>textutils</li>
 <li>vim</li>
-</li>
+</ul></li>
+</ul>
 
 <br><br><em>NOTE:</em><br>
 The Latest Releases may not contain the most recent versions of each
@@ -172,7 +175,7 @@ width="88" /></a>
 <!--#include virtual="/cgi-bin/showstatsdate.cgi?mingw"--></a>.
 </p>
 <address>
-<br />Last revised $Date: 2002-09-30 19:46:45 $
+<br />Last revised $Date: 2002-09-30 20:17:32 $
 </address>
 
 </body>
