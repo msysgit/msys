@@ -1,6 +1,47 @@
-2003-03-25  Luke Dunstan  <infidel@users.sourceforge.net>
+2003-04-11  Earnie Boyd  <earnie@users.sf.net>
 
-	* include/stdio.h (_wfdopen): Add const to second param.
+	* configure.in (LIBM_A): Define for cygwin target.
+	* configure (LIBM_A): Ditto.
+
+2003-04-07  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/time.h (strftime): Remove duplicate declaration.
+
+2003-04-01  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/_mingw.h (_CRTIMP): Make conditional on __USE_CRTIMP.
+
+2003-03-16  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* mingwex/dirent.c (_topendir): Eliminate signed/unsigned warning.
+	* mingwex/strtoimax.c (strtoimax): Likewise.
+	* mingwex/wcstoimax.c (wcstoimax): Likewise.
+	* mingwex/wtoll.c (wtoll): Remove unnecessary ';'
+	* mingwex/fesentenv.c: Include float.h.
+	* mingwex/math/powl.c: Eliminate type punning/strict aliasing 
+	warning.
+	* mingwex/math/tanhl.c: Eliminate signed/unsigned warning in
+	constants.
+	* mingwex/math/tgammal.c: Likewise.
+
+2003-03-16  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/utime.h: New file, forwarding to sys/utime.h.
+
+2003-03-16  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/sys/param.h (MAXPATHLEN): Define.
+
+2003-03-16  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/tchar.h: Ansi-fy a comment.
+
+2003-03-16  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* profile/profile.h (mcount): Use __builtin_return_address
+	rather than inline __asm statements.
+	* profile/Makefile.in: Remove special rule for mcount.o
+	Specify dependencies for mcount.o profil.o gmon.o.
 
 2003-03-10  Danny Smith  <dannysmith@users.sourceforge.net>
 

@@ -9,9 +9,9 @@
  * Significantly revised and rewinddir, seekdir and telldir added by Colin
  * Peters <colin@fu.is.saga-u.ac.jp>
  *	
- * $Revision: 1.1 $
+ * $Revision: 1.2 $
  * $Author: earnie $
- * $Date: 2002-06-14 15:12:54 $
+ * $Date: 2003-05-03 13:48:47 $
  *
  */
 
@@ -58,7 +58,7 @@ _topendir (const _TCHAR *szPath)
 
   /* Attempt to determine if the given path really is a directory. */
   rc = GetFileAttributes (szPath);
-  if (rc == -1)
+  if (rc == (unsigned int)-1)
     {
       /* call GetLastError for more error info */
       errno = ENOENT;

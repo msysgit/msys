@@ -29,9 +29,9 @@
  *  DISCLAIMED. This includes but is not limited to warranties of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Revision: 1.10 $
+ * $Revision: 1.11 $
  * $Author: earnie $
- * $Date: 2002-11-12 15:29:40 $
+ * $Date: 2003-05-03 13:48:46 $
  *
  */
 
@@ -70,7 +70,7 @@ typedef wchar_t _TCHAR;
 #define	__TEXT(q)	L##q
 
 /*  for porting from other Windows compilers */
-#if 0  // no  wide startup module
+#if 0  /* no  wide startup module */
 #define _tmain      wmain
 #define _tWinMain   wWinMain
 #define _tenviron   _wenviron

@@ -18,9 +18,9 @@
  *  DISCLAIMED. This includes but is not limited to warranties of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Revision: 1.6 $
+ * $Revision: 1.7 $
  * $Author: earnie $
- * $Date: 2003-02-21 21:19:52 $
+ * $Date: 2003-05-03 13:48:46 $
  *
  */
 
@@ -125,7 +125,6 @@ extern _CRTIMP void __cdecl	_tzset (void);
 extern _CRTIMP void __cdecl	tzset (void);
 #endif
 
-_CRTIMP size_t __cdecl	strftime(char*, size_t, const char*, const struct tm*);
 _CRTIMP char* __cdecl	_strdate(char*);
 _CRTIMP char* __cdecl	_strtime(char*);
 
