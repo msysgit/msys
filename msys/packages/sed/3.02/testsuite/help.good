@@ -6,6 +6,7 @@ Usage: sed [OPTION]... {script-only-if-no-other-script} [input-file]...
                  add the script to the commands to be executed
   -f script-file, --file=script-file
                  add the contents of script-file to the commands to be executed
+  -c  --nocr     turn off \r$ translation; must be first switch on command line
       --help     display this help and exit
   -V, --version  output version information and exit
 
