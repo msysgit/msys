@@ -2598,6 +2598,10 @@ symlink (const char *topath, const char *frompath)
     }
 
 done:
+#if __MSYS__
+  if (h != INVALID_HANDLE_VALUE)
+      CloseHandle (h);
+#endif
   syscall_printf ("%d = symlink (%s, %s)", res, topath, frompath);
   return res;
 }
@@ -2897,6 +2901,10 @@ symlink_info::check (char *path, const suffix_info *suffixes, unsigned opt)
       break;
     }
 
+#ifdef __MSYS__
+  if (h != INVALID_HANDLE_VALUE)
+      CloseHandle(h);
+#endif
   syscall_printf ("%d = symlink.check (%s, %p) (%p)",
 		  res, suffix.path, contents, pflags);
   return res;
@@ -3228,9 +3236,16 @@ cygwin_conv_to_win32_path (const char *path, char *win32_path)
   bool found_path = true;
   const char *spath = path;
   char *sptr;
-  debug_printf("path: %s", path);
+  debug_printf("cygwin_conv_to_win32_path (%s, ...)", path);
 
-  if (spath[0] == '/' && strlen(spath) == 2)
+  if (spath[0] == '/' && spath[1] == '/' && (! strchr (&spath[2], '/')))
+    {
+      found_path = false;
+      spath++;
+      strcpy (win32_path, spath);
+      return 0;
+    }
+  else if (spath[0] == '/' && strlen(spath) == 2)
       found_path = false;
   else if (spath[0] == '-' &&
 	   spath[1] &&
@@ -3242,8 +3257,8 @@ cygwin_conv_to_win32_path (const char *path, char *win32_path)
 	{
 	  spath = strchr(spath, '=');
 	  spath++;
-	  if (QuotedRelativePath (spath))
-	      found_path = false;
+	  //if (QuotedRelativePath (spath))
+	  //    found_path = false;
 	  if (! (strchr (spath, '/') || strchr (spath, '\\')))
 	      found_path = false;
 	  else
@@ -3260,9 +3275,9 @@ cygwin_conv_to_win32_path (const char *path, char *win32_path)
       spath++;
       if (spath[0])
 	{
-	  if (QuotedRelativePath (spath))
-	      found_path = false;
-	  else
+	  //if (QuotedRelativePath (spath))
+	  //    found_path = false;
+	  //else
 	    {
 	      spath++;
 	      found_path = true;
@@ -3285,6 +3300,7 @@ cygwin_conv_to_win32_path (const char *path, char *win32_path)
 	{
 	  set_errno (p.error);
 	  debug_printf("path_conv ERROR: %d", p.error);
+	  strcpy(win32_path, path);
 	  return -1;
 	}
       strcpy(win32_path, p.get_win32());
@@ -3301,7 +3317,7 @@ cygwin_conv_to_win32_path (const char *path, char *win32_path)
 	  *(win32_path + (spath - path)) = '\0';
 	}
       strcat (win32_path, p.get_win32 ());
-      while (sptr = strchr(win32_path, '\\'))
+      while ((sptr = strchr(win32_path, '\\')))
 	  sptr[0] = '/';
       return 0;
     }

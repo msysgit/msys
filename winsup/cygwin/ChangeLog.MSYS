@@ -1,20 +1,37 @@
-2001-03-08  Earnie Boyd  <earnie@users.sf.net>
+2002-03-17  Earnie Boyd  <earnie@users.sf.net>
+
+	* dir.cc (rmdir): NASTY HACK to work around a "permissions denied"
+	problem caused by some method chdir to the specified directory.
+	* path.cc (symlink): Add a CloseHandle before return.
+	* path.cc (symlink_info): Ditto.
+	* path.cc (cygwin_conv_to_win32_path): Remove QuotedRelativePath filter.
+	Add a copy to win32_path of path on error.  Add parens to stop warning.
+	* pinfo.cc (set_myself): Set _STRACE_ON when DEBUGGING.
+	* syscalls.cc (stat_worker): Reformat debug_printf statement.
+	* ChangeLog.MSYS: Correct the year portion on some dates.
+
+2002-03-12  Earnie Boyd  <earnie@users.sf.net>
+
+	* path.cc (cygwin_conv_to_win32_path): Set win32 value to passed value
+	upon error converting to a win32 path.
+
+2002-03-08  Earnie Boyd  <earnie@users.sf.net>
 
 	* environ.cc (parse_thing): Ensure ntea, ntsec and smbntsec are
 	set to FALSE regardless of the user request.
 
-2001-03-04  Earnie Boyd  <earnie@users.sf.net>
+2002-03-04  Earnie Boyd  <earnie@users.sf.net>
 
 	* path.cc (cygwin_conv_to_win32_path): Correct bug for -DFOO=1
 	assignment.
 	* dll_init.cc (dll::init): Add mutex MSYS-1.0.
 	* fhandler.cc (fhandler_base::raw_read): Translate \r\n to \n\0.
 
-2001-02-22  Earnie Boyd  <earnie@users.sf.net>
+2002-02-22  Earnie Boyd  <earnie@users.sf.net>
 
 	* include/cygwin/version.h: Increment to version 1.0.6.
 
-2001-02-20  Earnie Boyd  <earnie@users.sf.net>
+2002-02-20  Earnie Boyd  <earnie@users.sf.net>
 
 	* path.cc (QuotedRelativePath): New function.
 	(cygwin_conv_to_win32_path): Use QuotedRelativePath to filter out
@@ -22,12 +39,12 @@
 	(cygwin_conv_to_win32_path): Modify all \\ to / in the win32_path.
 	* spawn.cc (dup_maybe): Remove extraneous debug strings.
 
-2001-02-06  Earnie Boyd  <earnie@users.sf.net>
+2002-02-06  Earnie Boyd  <earnie@users.sf.net>
 
 	* strace.cc (spawn_guts):  Filter against MAX_PATH overrun.
 	* include/cygwin/version.h: Increment to version 1.0.5
 
-2001-01-25  Earnie Boyd  <earnie@users.sf.net>
+2002-01-25  Earnie Boyd  <earnie@users.sf.net>
 
 	* spawn.cc (spawn_guts): Move path/switch filter code to
 	cygwin_conv_to_win32_path.  Call cygwin_conv_to_win32_path for all
