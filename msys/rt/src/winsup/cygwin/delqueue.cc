@@ -1,6 +1,6 @@
 /* delqueue.cc
 
-   Copyright 1996, 1998 Cygnus Solutions.
+   Copyright 1996, 1998, 1999, 2000, 2001 Red Hat, Inc.
 
 This file is part of Cygwin.
 
@@ -87,7 +87,7 @@ delqueue_list::process_queue ()
 	    int res = GetLastError ();
 	    empty = 0;
 	    if (res == ERROR_SHARING_VIOLATION ||
-		(os_being_run != winNT && res == ERROR_ACCESS_DENIED))
+		(!iswinnt && res == ERROR_ACCESS_DENIED))
 	      {
 		/* File still inuse, that's ok */
 		syscall_printf ("Still using %s", name[i]);

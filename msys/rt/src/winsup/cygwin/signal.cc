@@ -160,7 +160,11 @@ kill_worker (pid_t pid, int sig)
     dest = myself_nowait_nonmain;
 #endif
   if (sig == 0)
-    res = proc_exists (dest) ? 0 : -1;
+    {
+      res = proc_exists (dest) ? 0 : -1;
+      if (res < 0)
+	set_errno (ESRCH);
+    }
   else if ((res = sig_send (dest, sig)))
     {
       sigproc_printf ("%d = sig_send, %E ", res);
@@ -220,8 +224,8 @@ kill_pgrp (pid_t pid, int sig)
 
       /* Is it a process we want to kill?  */
       if ((pid == 0 && (p->pgid != myself->pgid || p->ctty != myself->ctty)) ||
-          (pid > 1 && p->pgid != pid) ||
-          (sig < 0 && NOTSTATE(p, PID_STOPPED)))
+	  (pid > 1 && p->pgid != pid) ||
+	  (sig < 0 && NOTSTATE(p, PID_STOPPED)))
 	continue;
       sigproc_printf ("killing pid %d, pgrp %d, p->ctty %d, myself->ctty %d",
 		      p->pid, p->pgid, p->ctty, myself->ctty);

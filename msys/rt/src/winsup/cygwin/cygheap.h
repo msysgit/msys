@@ -1,6 +1,6 @@
 /* cygheap.h: Cygwin heap manager.
 
-   Copyright 2000 Cygnus Solutions.
+   Copyright 2000, 2001 Red Hat, Inc.
 
 This file is part of Cygwin.
 
@@ -67,8 +67,7 @@ public:
     if (!m)
       return 1;
     return strncasematch (m->native_path, path, m->native_pathlen)
-            && (path[m->native_pathlen] == '\\' || !path[m->native_pathlen]);
- 
+	    && (path[m->native_pathlen] == '\\' || !path[m->native_pathlen]);
   }
   const char *unchroot (const char *path)
   {
@@ -153,13 +152,23 @@ struct cwdstuff
 struct init_cygheap
 {
   _cmalloc_entry *chain;
+  char *buckets[32];
+  struct /* User heap stuff. */
+    {
+      void *heapbase;
+      void *heapptr;
+      void *heaptop;
+    };
   cygheap_root root;
   cygheap_user user;
   mode_t umask;
   HANDLE shared_h;
   HANDLE console_h;
+  HANDLE etc_changed_h;
   cwdstuff cwd;
   dtable fdtab;
+
+  bool etc_changed ();
 };
 
 #define CYGHEAPSIZE (sizeof (init_cygheap) + (4000 * sizeof (fhandler_union)) + (2 * 65536))
@@ -167,9 +176,12 @@ struct init_cygheap
 extern init_cygheap *cygheap;
 extern void *cygheap_max;
 
+class child_info;
+void __stdcall cygheap_setup_for_child (child_info *ci) __attribute__ ((regparm(1)));
+void __stdcall cygheap_setup_for_child_cleanup (child_info *ci) __attribute__ ((regparm(1)));
+void __stdcall cygheap_fixup_in_child (child_info *, bool);
 extern "C" {
 void __stdcall cfree (void *) __attribute__ ((regparm(1)));
-void __stdcall cygheap_fixup_in_child (HANDLE, bool);
 void *__stdcall cmalloc (cygheap_types, DWORD) __attribute__ ((regparm(2)));
 void *__stdcall crealloc (void *, DWORD) __attribute__ ((regparm(2)));
 void *__stdcall ccalloc (cygheap_types, DWORD, DWORD) __attribute__ ((regparm(3)));

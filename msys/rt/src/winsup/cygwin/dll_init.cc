@@ -1,6 +1,6 @@
 /* dll_init.cc
 
-   Copyright 1998, 1999, 2000 Cygnus Solutions.
+   Copyright 1998, 1999, 2000, 2001 Red Hat, Inc.
 
 This software is a copyrighted work licensed under the terms of the
 Cygwin license.  Please consult the file "CYGWIN_LICENSE" for
@@ -13,13 +13,17 @@ details. */
 #include "perprocess.h"
 #include "dll_init.h"
 #include "environ.h"
+#include "security.h"
+#include "fhandler.h"
+#include "dtable.h"
+#include "cygheap.h"
 
 extern void __stdcall check_sanity_and_sync (per_process *);
 
 dll_list NO_COPY dlls;
 
 static NO_COPY int in_forkee = 0;
-static int dll_global_dtors_recorded = 0;
+static int dll_global_dtors_recorded;
 
 /* Run destructors for all DLLs on exit. */
 static void
@@ -253,7 +257,7 @@ release_upto (const char *name, DWORD here)
       {
 	size = mb.RegionSize;
 	if (!(mb.State == MEM_RESERVE && mb.AllocationProtect == PAGE_NOACCESS &&
-	    ((void *) start < user_data->heapbase || (void *) start > user_data->heaptop)))
+	    ((void *) start < cygheap->heapbase || (void *) start > cygheap->heaptop)))
 	  continue;
 	if (!VirtualFree ((void *) start, 0, MEM_RELEASE))
 	  api_fatal ("couldn't release memory %p(%d) for '%s' alignment, %E\n",

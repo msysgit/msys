@@ -1,6 +1,6 @@
 /* ioctl.cc: ioctl routines.
 
-   Copyright 1996, 1998 Cygnus Solutions.
+   Copyright 1996, 1998, 1999, 2000, 2001 Red Hat, Inc.
 
    Written by Doug Evans of Cygnus Support
    dje@cygnus.com
@@ -15,6 +15,7 @@ details. */
 #include <sys/ioctl.h>
 #include <errno.h>
 #include "cygerrno.h"
+#include "security.h"
 #include "fhandler.h"
 #include "dtable.h"
 #include "cygheap.h"

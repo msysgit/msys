@@ -16,6 +16,7 @@ details. */
 #include <winuser.h>
 #include <sys/cygwin.h>
 #include "cygerrno.h"
+#include "security.h"
 #include "fhandler.h"
 #include "dtable.h"
 #include "cygheap.h"
@@ -23,7 +24,6 @@ details. */
 #include "sigproc.h"
 #include "pinfo.h"
 #include "shared_info.h"
-#include "security.h"
 
 extern fhandler_tty_master *tty_master;
 
@@ -295,19 +295,19 @@ tty::alive (const char *fmt)
   char buf[sizeof (TTY_MASTER_ALIVE) + 16];
 
   __small_sprintf (buf, fmt, ntty);
-  if ((ev = OpenEvent (EVENT_ALL_ACCESS, TRUE, buf)))
+  if ((ev = OpenEvent (EVENT_ALL_ACCESS, FALSE, buf)))
     CloseHandle (ev);
   return ev != NULL;
 }
 
 HANDLE
-tty::create_inuse (const char *fmt, BOOL inherit)
+tty::create_inuse (const char *fmt)
 {
   HANDLE h;
   char buf[sizeof (TTY_MASTER_ALIVE) + 16];
 
   __small_sprintf (buf, fmt, ntty);
-  h = CreateEvent ((inherit ? &sec_all : &sec_all_nih), TRUE, FALSE, buf);
+  h = CreateEvent (&sec_all, TRUE, FALSE, buf);
   termios_printf ("%s = %p", buf, h);
   if (!h)
     termios_printf ("couldn't open inuse event, %E", buf);
@@ -327,13 +327,13 @@ tty::init (void)
 }
 
 HANDLE
-tty::get_event (const char *fmt, BOOL inherit, BOOL manual_reset)
+tty::get_event (const char *fmt, BOOL manual_reset)
 {
   HANDLE hev;
   char buf[40];
 
   __small_sprintf (buf, fmt, ntty);
-  if (!(hev = CreateEvent (inherit ? &sec_all : &sec_all_nih, manual_reset, FALSE, buf)))
+  if (!(hev = CreateEvent (&sec_all, manual_reset, FALSE, buf)))
     {
       termios_printf ("couldn't create %s", buf);
       set_errno (ENOENT);	/* FIXME this can't be the right errno */
@@ -392,7 +392,7 @@ tty::common_init (fhandler_pty_master *ptym)
 
   /* Allow the others to open us (for handle duplication) */
 
-  if ((os_being_run == winNT) &&
+  if ((iswinnt) &&
       (SetKernelObjectSecurity (hMainProc, DACL_SECURITY_INFORMATION,
 			       get_null_sd ()) == FALSE))
     small_printf ("Can't set process security, %E");
@@ -406,15 +406,15 @@ tty::common_init (fhandler_pty_master *ptym)
     }
   else
     {
-      if (!(ptym->output_done_event = get_event (OUTPUT_DONE_EVENT, FALSE)))
+      if (!(ptym->output_done_event = get_event (OUTPUT_DONE_EVENT)))
 	return FALSE;
-      if (!(ptym->ioctl_done_event = get_event (IOCTL_DONE_EVENT, FALSE)))
+      if (!(ptym->ioctl_done_event = get_event (IOCTL_DONE_EVENT)))
 	return FALSE;
-      if (!(ptym->ioctl_request_event = get_event (IOCTL_REQUEST_EVENT, FALSE)))
+      if (!(ptym->ioctl_request_event = get_event (IOCTL_REQUEST_EVENT)))
 	return FALSE;
     }
 
-  if (!(ptym->input_available_event = get_event (INPUT_AVAILABLE_EVENT, FALSE, TRUE)))
+  if (!(ptym->input_available_event = get_event (INPUT_AVAILABLE_EVENT, TRUE)))
     return FALSE;
 
   char buf[40];

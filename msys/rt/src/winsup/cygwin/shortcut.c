@@ -1,5 +1,5 @@
 /* shortcut.c: Read shortcuts. This part of the code must be in C because
-               the C++ interface to COM doesn't work without -fvtable-thunk
+	       the C++ interface to COM doesn't work without -fvtable-thunk
 	       which is too dangerous to use.
 
    Copyright 2001 Red Hat, Inc.
@@ -39,7 +39,7 @@ has_exec_chars (const char *buf, int len)
 }
 
 char shortcut_header[SHORTCUT_HDR_SIZE];
-BOOL shortcut_initalized = FALSE;
+BOOL shortcut_initalized;
 
 void
 create_shortcut_header (void)
@@ -107,7 +107,7 @@ check_shortcut (const char *path, DWORD fileattr, HANDLE h,
     {
       /* Check header if the shortcut is really created by Cygwin or U/WIN. */
       if (got == SHORTCUT_HDR_SIZE && !cmp_shortcut_header (file_header))
-        {
+	{
 	  hres = psl->lpVtbl->GetDescription (psl, contents, MAX_PATH);
 	  if (FAILED (hres))
 	    goto file_not_symlink;

@@ -11,6 +11,7 @@ Cygwin license.  Please consult the file "CYGWIN_LICENSE" for
 details. */
 
 #include "winsup.h"
+#include "security.h"
 #include "fhandler.h"
 #include "sync.h"
 #include "sigproc.h"
@@ -34,7 +35,7 @@ fillout_pinfo (pid_t pid, int winpid)
   if (!pids.npids || !nextpid)
     pids.init (winpid);
 
-  static unsigned int i = 0;
+  static unsigned int i;
   if (!pid)
     i = 0;
 
@@ -90,7 +91,7 @@ fillout_pinfo (pid_t pid, int winpid)
 
 static DWORD
 get_cygdrive_info (char *user, char *system, char *user_flags,
-	           char *system_flags)
+		   char *system_flags)
 {
   int res = mount_table->get_cygdrive_info (user, system, user_flags,
 					    system_flags);

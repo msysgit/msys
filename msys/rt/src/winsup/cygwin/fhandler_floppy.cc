@@ -14,9 +14,10 @@ details. */
 #include <fcntl.h>
 #include <errno.h>
 #include <unistd.h>
+#include <winioctl.h>
+#include "security.h"
 #include "fhandler.h"
 #include "cygerrno.h"
-#include <winioctl.h>
 
 /**********************************************************************/
 /* fhandler_dev_floppy */
@@ -90,44 +91,41 @@ fhandler_dev_floppy::lseek (off_t offset, int whence)
   DWORD low;
   LONG high = 0;
 
-  if (os_being_run == winNT)
-    {
-      DISK_GEOMETRY di;
-      PARTITION_INFORMATION pi;
-      DWORD bytes_read;
+  DISK_GEOMETRY di;
+  PARTITION_INFORMATION pi;
+  DWORD bytes_read;
 
-      if (!DeviceIoControl (get_handle(),
-                              IOCTL_DISK_GET_DRIVE_GEOMETRY,
-                              NULL, 0,
-                              &di, sizeof (di),
-                              &bytes_read, NULL))
-        {
-          __seterrno ();
-          return -1;
-        }
-      debug_printf ("disk geometry: (%ld cyl)*(%ld trk)*(%ld sec)*(%ld bps)",
-                     di.Cylinders.LowPart,
-                     di.TracksPerCylinder,
-                     di.SectorsPerTrack,
-                     di.BytesPerSector);
-      if (DeviceIoControl (get_handle (),
-                             IOCTL_DISK_GET_PARTITION_INFO,
-                             NULL, 0,
-                             &pi, sizeof (pi),
-                             &bytes_read, NULL))
-        {
-          debug_printf ("partition info: %ld (%ld)",
-                          pi.StartingOffset.LowPart,
-                          pi.PartitionLength.LowPart);
-          drive_size = (long long) pi.PartitionLength.QuadPart;
-        }
-      else
-        {
-          drive_size = (long long) di.Cylinders.QuadPart * di.TracksPerCylinder *
-                       di.SectorsPerTrack * di.BytesPerSector;
-        }
-      debug_printf ("drive size: %ld", drive_size);
+  if (!DeviceIoControl (get_handle(),
+			  IOCTL_DISK_GET_DRIVE_GEOMETRY,
+			  NULL, 0,
+			  &di, sizeof (di),
+			  &bytes_read, NULL))
+    {
+      __seterrno ();
+      return -1;
     }
+  debug_printf ("disk geometry: (%ld cyl)*(%ld trk)*(%ld sec)*(%ld bps)",
+		 di.Cylinders.LowPart,
+		 di.TracksPerCylinder,
+		 di.SectorsPerTrack,
+		 di.BytesPerSector);
+  if (DeviceIoControl (get_handle (),
+			 IOCTL_DISK_GET_PARTITION_INFO,
+			 NULL, 0,
+			 &pi, sizeof (pi),
+			 &bytes_read, NULL))
+    {
+      debug_printf ("partition info: %ld (%ld)",
+		      pi.StartingOffset.LowPart,
+		      pi.PartitionLength.LowPart);
+      drive_size = (long long) pi.PartitionLength.QuadPart;
+    }
+  else
+    {
+      drive_size = (long long) di.Cylinders.QuadPart * di.TracksPerCylinder *
+		   di.SectorsPerTrack * di.BytesPerSector;
+    }
+  debug_printf ("drive size: %ld", drive_size);
 
   if (whence == SEEK_END && drive_size > 0)
     {
@@ -181,8 +179,8 @@ fhandler_dev_floppy::lseek (off_t offset, int whence)
       devbufstart = devbufend = 0;
 
       if (SetFilePointer (get_handle (), sector_aligned_offset, NULL, FILE_BEGIN)
-          == INVALID_SET_FILE_POINTER)
-        {
+	  == INVALID_SET_FILE_POINTER)
+	{
 	  __seterrno ();
 	  return -1;
 	}

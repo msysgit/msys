@@ -1,6 +1,6 @@
 /* secacl.cc: Sun compatible ACL functions.
 
-   Copyright 2000, 2001 Cygnus Solutions.
+   Copyright 2000, 2001 Red Hat, Inc.
 
    Written by Corinna Vinschen <corinna@vinschen.de>
 
@@ -25,6 +25,7 @@ details. */
 #include <winuser.h>
 #include "cygerrno.h"
 #include "perprocess.h"
+#include "security.h"
 #include "fhandler.h"
 #include "path.h"
 #include "dtable.h"
@@ -32,7 +33,6 @@ details. */
 #include "sigproc.h"
 #include "pinfo.h"
 #include "cygheap.h"
-#include "security.h"
 
 static int
 searchace (aclent_t *aclp, int nentries, int type, int id = -1)
@@ -121,10 +121,11 @@ setacl (const char *file, int nentries, aclent_t *aclbufp)
       if (aclbufp[i].a_perm & S_IROTH)
 	allow |= FILE_GENERIC_READ;
       if (aclbufp[i].a_perm & S_IWOTH)
-	allow |= STANDARD_RIGHTS_ALL | FILE_GENERIC_WRITE
-		 | DELETE | FILE_DELETE_CHILD;
+	allow |= STANDARD_RIGHTS_ALL | FILE_GENERIC_WRITE;
       if (aclbufp[i].a_perm & S_IXOTH)
 	allow |= FILE_GENERIC_EXECUTE;
+      if ((aclbufp[i].a_perm & (S_IWOTH | S_IXOTH)) == (S_IWOTH | S_IXOTH))
+	allow |= FILE_DELETE_CHILD;
       /* Set inherit property. */
       DWORD inheritance = (aclbufp[i].a_type & ACL_DEFAULT)
 			  ? INHERIT_ONLY : DONT_INHERIT;
@@ -432,7 +433,7 @@ acl_access (const char *path, int flags)
 			&& owner == group
 			&& is_grp_member (myself->uid, gr->gr_gid))
 		      break;
-	        }
+		}
 	      if (!gr)
 		continue;
 	    }

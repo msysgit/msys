@@ -50,17 +50,17 @@ class sigframe
 {
 private:
   sigthread *st;
-  void unregister ()
+  bool unregister ()
   {
-    if (st)
-      {
-	EnterCriticalSection (&st->lock);
-	st->frame = 0;
-	st->exception = 0;
-	st->release_winapi_lock ();
-	LeaveCriticalSection (&st->lock);
-	st = NULL;
-      }
+    if (!st)
+      return 0;
+    EnterCriticalSection (&st->lock);
+    st->frame = 0;
+    st->exception = 0;
+    st->release_winapi_lock ();
+    LeaveCriticalSection (&st->lock);
+    st = NULL;
+    return 1;
   }
 
 public:
@@ -96,6 +96,7 @@ extern HANDLE signal_arrived;
 BOOL __stdcall my_parent_is_alive ();
 extern "C" int __stdcall sig_dispatch_pending (int force = FALSE);
 extern "C" void __stdcall set_process_mask (sigset_t newmask);
+extern "C" void __stdcall reset_signal_arrived ();
 int __stdcall sig_handle (int);
 void __stdcall sig_clear (int);
 void __stdcall sig_set_pending (int);

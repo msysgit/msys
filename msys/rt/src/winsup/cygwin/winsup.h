@@ -30,6 +30,8 @@ details. */
 # define memset __builtin_memset
 #endif
 
+#define NO_COPY __attribute__((section(".data_cygwin_nocopy")))
+
 #ifdef __cplusplus
 
 #if !defined(__STDC_VERSION__) || __STDC_VERSION__ >= 199900L
@@ -39,9 +41,9 @@ details. */
 #include <sys/types.h>
 #include <sys/strace.h>
 
-extern char case_folded_lower[];
+extern const char case_folded_lower[];
 #define cyg_tolower(c) (case_folded_lower[(unsigned char)(c)])
-extern char case_folded_upper[];
+extern const char case_folded_upper[];
 #define cyg_toupper(c) (case_folded_upper[(unsigned char)(c)])
 
 #ifndef MALLOC_DEBUG
@@ -71,6 +73,7 @@ extern "C" DWORD WINAPI GetLastError (void);
 /* Used for runtime OS check/decisions. */
 enum os_type {winNT = 1, win95, win98, winME, win32s, unknown};
 extern os_type os_being_run;
+extern bool iswinnt;
 
 enum codepage_type {ansi_cp, oem_cp};
 extern codepage_type current_codepage;
@@ -101,8 +104,6 @@ extern int dynamically_loaded;
 extern HANDLE title_mutex;
 
 /**************************** Convenience ******************************/
-
-#define NO_COPY __attribute__((section(".data_cygwin_nocopy")))
 
 /* Used when treating / and \ as equivalent. */
 #define SLASH_P(ch) \
@@ -196,13 +197,31 @@ long __stdcall to_time_t (FILETIME * ptr);
 void __stdcall set_console_title (char *);
 void set_console_handler ();
 
+int __stdcall check_null_empty_str (const char *name) __attribute__ ((regparm(1)));
+int __stdcall check_null_empty_str_errno (const char *name) __attribute__ ((regparm(1)));
+int __stdcall __check_null_invalid_struct (const void *s, unsigned sz) __attribute__ ((regparm(1)));
+int __stdcall __check_null_invalid_struct_errno (const void *s, unsigned sz) __attribute__ ((regparm(1)));
+
+#define check_null_invalid_struct(s) \
+  __check_null_invalid ((s), sizeof (*(s)))
+#define check_null_invalid_struct_errno(s) \
+  __check_null_invalid_struct_errno ((s), sizeof (*(s)))
+
 #define set_winsock_errno() __set_winsock_errno (__FUNCTION__, __LINE__)
 void __set_winsock_errno (const char *fn, int ln) __attribute__ ((regparm(2)));
+
+extern bool wsock_started;
 
 /* Printf type functions */
 extern "C" void __api_fatal (const char *, ...) __attribute__ ((noreturn));
 extern "C" int __small_sprintf (char *dst, const char *fmt, ...) /*__attribute__ ((regparm (2)))*/;
 extern "C" int __small_vsprintf (char *dst, const char *fmt, va_list ap) /*__attribute__ ((regparm (3)))*/;
+
+extern "C" void __malloc_lock (struct _reent *);
+extern "C" void __malloc_unlock (struct _reent *);
+
+extern "C" void __malloc_lock (struct _reent *);
+extern "C" void __malloc_unlock (struct _reent *);
 
 /**************************** Exports ******************************/
 
@@ -238,14 +257,6 @@ extern SYSTEM_INFO system_info;
 #define STD_RBITS (S_IRUSR | S_IRGRP | S_IROTH)
 #define STD_WBITS (S_IWUSR)
 #define STD_XBITS (S_IXUSR | S_IXGRP | S_IXOTH)
-
-#define O_NOSYMLINK 0x080000
-#define O_DIROPEN   0x100000
-
-/* newlib used to define O_NDELAY differently from O_NONBLOCK.  Now it
-   properly defines both to be the same.  Unfortunately, we have to
-   behave properly the old version, too, to accomodate older executables. */
-#define OLD_O_NDELAY	4
 
 /* The title on program start. */
 extern char *old_title;

@@ -128,7 +128,7 @@ typedef unsigned int __uint32_t;
 
 #if defined(__CYGWIN__) || defined(__MSYS__)
 #define __FILENAME_MAX__ (260 - 1 /* NUL */)
-#define _READ_WRITE_RETURN_TYPE ssize_t
+#define _READ_WRITE_RETURN_TYPE _ssize_t
 #if defined(__INSIDE_CYGWIN__) || defined(__INSIDE_MSYS__) || defined(_COMPILING_NEWLIB)
 #define __IMPORT
 #else
@@ -138,7 +138,7 @@ typedef unsigned int __uint32_t;
 
 #if defined(__rtems__)
 #define __FILENAME_MAX__ 255
-#define _READ_WRITE_RETURN_TYPE ssize_t
+#define _READ_WRITE_RETURN_TYPE _ssize_t
 #endif
 
 #ifndef __IMPORT

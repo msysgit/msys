@@ -37,9 +37,9 @@ include $(srcdir)/../Makefile.common
 
 MINGW_INCLUDES:=-I/usr/include/mingw -I$(cygwin_source)/include -I$(w32api_include)
 
-libbfd:=$(bupdir2)/bfd/libbfd.a
-libintl:=$(bupdir2)/intl/libintl.a
-build_dumper:=${shell test -r $(libbfd) -a -r $(libintl) -a -d $(updir1)/include && echo 1}
+libbfd:=${shell $(CC) -L$(bupdir2)/bfd --print-file-name=libbfd.a}
+libintl:=${shell $(CC) -L$(bupdir2)/intl --print-file-name=libintl.a}
+build_dumper:=${shell test -r $(libbfd) && test -r ${libintl} &&  echo 1}
 
 DUMPER_INCLUDES:=-I$(bupdir2)/bfd -I$(updir1)/include
 

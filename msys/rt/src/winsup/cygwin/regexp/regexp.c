@@ -44,6 +44,8 @@
 #include <stdlib.h>
 #include "regmagic.h"
 
+#define debug_printf printf
+
 /*
  * The "internal use only" fields in regexp.h are present to pass info from
  * compile to execute that permits the execute phase to run lots faster on
@@ -214,6 +216,8 @@ const char *exp;
 	register int len;
 	int flags;
 
+	debug_printf("regcomp(%s)\n", exp);
+
 	if (exp == NULL)
 		FAIL("NULL argument");
 
@@ -305,6 +309,8 @@ int *flagp;
 	register int parno = 0;
 	int flags;
 
+	debug_printf("reg(%i,%i)\n", paren, *flagp);
+
 	*flagp = HASWIDTH;	/* Tentatively. */
 
 	/* Make an OPEN node, if parenthesized. */
@@ -375,6 +381,8 @@ int *flagp;
 	register char *latest;
 	int flags;
 
+	debug_printf("regbranch(%i)\n", *flagp);
+
 	*flagp = WORST;		/* Tentatively. */
 
 	ret = regnode(BRANCH);
@@ -414,6 +422,8 @@ int *flagp;
 	register char op;
 	register char *next;
 	int flags;
+
+	debug_printf("regpiece(%i)\n", *flagp);
 
 	ret = regatom(&flags);
 	if (ret == NULL)
@@ -476,6 +486,8 @@ int *flagp;
 {
 	register char *ret;
 	int flags;
+
+	debug_printf("regatam(%i)\n", *flagp);
 
 	*flagp = WORST;		/* Tentatively. */
 
@@ -655,6 +667,8 @@ char op;
 	register char *ret;
 	register char *ptr;
 
+	debug_printf("regnode(%i)\n", op);
+
 	ret = regcode;
 	if (ret == &regdummy) {
 		regsize += 3;
@@ -677,6 +691,8 @@ static void
 regc(b)
 char b;
 {
+	debug_printf("regc(%i)\n", b);
+
 	if (regcode != &regdummy)
 		*regcode++ = b;
 	else
@@ -696,6 +712,8 @@ char *opnd;
 	register char *src;
 	register char *dst;
 	register char *place;
+
+	debug_printf("reginsert(%i, %s)\n", op, opnd);
 
 	if (regcode == &regdummy) {
 		regsize += 3;
@@ -726,6 +744,8 @@ char *val;
 	register char *temp;
 	register int offset;
 
+	debug_printf("regtail(%s, %s)\n", p, val);
+
 	if (p == &regdummy)
 		return;
 
@@ -754,6 +774,8 @@ regoptail(p, val)
 char *p;
 char *val;
 {
+	debug_printf("regtail(%s, %s)\n", p, val);
+
 	/* "Operandless" and "op != BRANCH" are synonymous in practice. */
 	if (p == NULL || p == &regdummy || OP(p) != BRANCH)
 		return;
@@ -794,6 +816,8 @@ register const regexp *prog;
 register const char *string;
 {
 	register char *s;
+
+	debug_printf("regexec(%i,%s)\n", prog, string);
 
 	/* Be paranoid... */
 	if (prog == NULL || string == NULL) {
@@ -858,6 +882,8 @@ const char *string;
 	register char **sp;
 	register char **ep;
 
+	debug_printf("regtry(%i, %s)\n", prog, string);
+
 	reginput = (char *)string;				/* XXX */
 	regstartp = (char **)prog->startp;			/* XXX */
 	regendp = (char **)prog->endp;				/* XXX */
@@ -892,6 +918,8 @@ char *prog;
 {
 	register char *scan;	/* Current node. */
 	char *next;		/* Next node. */
+
+	debug_printf("regmatch(%s)\n", prog);
 
 	scan = prog;
 #ifdef DEBUG
@@ -1096,6 +1124,8 @@ char *p;
 	register char *scan;
 	register char *opnd;
 
+	debug_printf("regrepeat(%s)\n", p);
+
 	scan = reginput;
 	opnd = OPERAND(p);
 	switch (OP(p)) {
@@ -1139,6 +1169,8 @@ regnext(p)
 register char *p;
 {
 	register int offset;
+
+	debug_printf("regnext(%s)\n", p);
 
 	if (p == &regdummy)
 		return(NULL);

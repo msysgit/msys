@@ -1,6 +1,6 @@
 /* exec.cc: exec system call support.
 
-   Copyright 1996, 1997, 1998, 2000 Cygnus Solutions.
+   Copyright 1996, 1997, 1998, 2000, 2001 Red Hat, Inc.
 
 This file is part of Cygwin.
 
@@ -14,6 +14,7 @@ details. */
 #include <errno.h>
 #include <process.h>
 #include "perprocess.h"
+#include "security.h"
 #include "fhandler.h"
 #include "path.h"
 #include "sync.h"

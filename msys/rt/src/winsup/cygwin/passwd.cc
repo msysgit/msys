@@ -1,6 +1,6 @@
 /* passwd.cc: getpwnam () and friends
 
-   Copyright 1996, 1997, 1998 Cygnus Solutions.
+   Copyright 1996, 1997, 1998, 2001 Red Hat, Inc.
 
 This file is part of Cygwin.
 
@@ -14,33 +14,26 @@ details. */
 #include <stdio.h>
 #include <errno.h>
 #include "cygerrno.h"
+#include "security.h"
 #include "fhandler.h"
 #include "dtable.h"
+#include "path.h"
 #include "sync.h"
 #include "sigproc.h"
 #include "pinfo.h"
 #include "cygheap.h"
-#include "security.h"
 #include <sys/termios.h>
+#include "pwdgrp.h"
 
 /* Read /etc/passwd only once for better performance.  This is done
    on the first call that needs information from it. */
 
-static struct passwd *passwd_buf = NULL;	/* passwd contents in memory */
-static int curr_lines = 0;
-static int max_lines = 0;
+static struct passwd *passwd_buf;	/* passwd contents in memory */
+static int curr_lines;
+static int max_lines;
 
-/* Set to loaded when /etc/passwd has been read in by read_etc_passwd ().
-   Set to emulated if passwd is emulated. */
-/* Functions in this file need to check the value of passwd_state
-   and read in the password file if it isn't set. */
-enum pwd_state {
-  uninitialized = 0,
-  initializing,
-  emulated,
-  loaded
-};
-static pwd_state passwd_state = uninitialized;
+static pwdgrp_check passwd_state;
+
 
 /* Position in the passwd cache */
 #ifdef _MT_SAFE
@@ -133,13 +126,20 @@ read_etc_passwd ()
     /* if we got blocked by the mutex, then etc_passwd may have been processed */
     if (passwd_state != uninitialized)
       {
-        pthread_mutex_unlock(&etc_passwd_mutex);
-        return;
+	pthread_mutex_unlock(&etc_passwd_mutex);
+	return;
       }
 
     if (passwd_state != initializing)
       {
 	passwd_state = initializing;
+	if (max_lines) /* When rereading, free allocated memory first. */
+	  {
+	    for (int i = 0; i < curr_lines; ++i)
+	      free (passwd_buf[i].pw_name);
+	    free (passwd_buf);
+	    curr_lines = max_lines = 0;
+	  }
 
 #if ! __MSYS__
 	FILE *f = fopen ("/etc/passwd", "rt");
@@ -152,6 +152,7 @@ read_etc_passwd ()
 		  add_pwd_line (linebuf);
 	      }
 
+	    passwd_state.set_last_modified (f);
 	    fclose (f);
 	    passwd_state = loaded;
 	  }
@@ -210,13 +211,13 @@ getpwuid (uid_t uid)
 {
   if (passwd_state  <= initializing)
     read_etc_passwd ();
-  
+
   pthread_testcancel();
 
   return search_for (uid, 0);
 }
 
-extern "C" int 
+extern "C" int
 getpwuid_r (uid_t uid, struct passwd *pwd, char *buffer, size_t bufsize, struct passwd **result)
 {
   *result = NULL;
@@ -236,7 +237,7 @@ getpwuid_r (uid_t uid, struct passwd *pwd, char *buffer, size_t bufsize, struct 
 
   /* check needed buffer size. */
   size_t needsize = strlen (temppw->pw_name) + strlen (temppw->pw_dir) +
-  		    strlen (temppw->pw_shell) + strlen (temppw->pw_gecos) +
+		    strlen (temppw->pw_shell) + strlen (temppw->pw_gecos) +
 		    strlen (temppw->pw_passwd) + 5;
   if (needsize > bufsize)
     return ERANGE;
@@ -263,14 +264,14 @@ getpwnam (const char *name)
 {
   if (passwd_state  <= initializing)
     read_etc_passwd ();
-  
+
   pthread_testcancel();
 
   return search_for (0, name);
 }
 
 
-/* the max size buffer we can expect to 
+/* the max size buffer we can expect to
  * use is returned via sysconf with _SC_GETPW_R_SIZE_MAX.
  * This may need updating! - Rob Collins April 2001.
  */
@@ -294,11 +295,11 @@ getpwnam_r (const char *nam, struct passwd *pwd, char *buffer, size_t bufsize, s
 
   /* check needed buffer size. */
   size_t needsize = strlen (temppw->pw_name) + strlen (temppw->pw_dir) +
-  		    strlen (temppw->pw_shell) + strlen (temppw->pw_gecos) +
+		    strlen (temppw->pw_shell) + strlen (temppw->pw_gecos) +
 		    strlen (temppw->pw_passwd) + 5;
   if (needsize > bufsize)
     return ERANGE;
-    
+
   /* make a copy of temppw */
   *result = pwd;
   pwd->pw_uid = temppw->pw_uid;
@@ -331,36 +332,24 @@ getpwent (void)
 extern "C" struct passwd *
 getpwduid (uid_t)
 {
-  if (passwd_state  <= initializing)
-    read_etc_passwd ();
-
   return NULL;
 }
 
 extern "C" void
 setpwent (void)
 {
-  if (passwd_state  <= initializing)
-    read_etc_passwd ();
-
   pw_pos = 0;
 }
 
 extern "C" void
 endpwent (void)
 {
-  if (passwd_state  <= initializing)
-    read_etc_passwd ();
-
   pw_pos = 0;
 }
 
 extern "C" int
 setpassent ()
 {
-  if (passwd_state  <= initializing)
-    read_etc_passwd ();
-
   return 0;
 }
 

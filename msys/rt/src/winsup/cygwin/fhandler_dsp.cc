@@ -1,11 +1,11 @@
 /* fhandler_dev_dsp: code to emulate OSS sound model /dev/dsp
- 
+
    Copyright 2001 Red Hat, Inc
- 
+
    Written by Andy Younger (andy@snoogie.demon.co.uk)
- 
+
 This file is part of Cygwin.
- 
+
 This software is a copyrighted work licensed under the terms of the
 Cygwin license.  Please consult the file "CYGWIN_LICENSE" for
 details. */
@@ -13,12 +13,13 @@ details. */
 #include "winsup.h"
 #include <stdio.h>
 #include <errno.h>
-#include "cygerrno.h"
-#include "fhandler.h"
 #include <windows.h>
 #include <sys/soundcard.h>
 #include <sys/fcntl.h>
 #include <mmsystem.h>
+#include "cygerrno.h"
+#include "security.h"
+#include "fhandler.h"
 
 //------------------------------------------------------------------------
 // Simple encapsulation of the win32 audio device.
@@ -524,7 +525,7 @@ fhandler_dev_dsp::ioctl (unsigned int cmd, void *ptr)
 	audiofreq_ = 8000;
 	audiobits_ = 8;
 	audiochannels_ = 1;
-	return 1;
+	return 0;
 
       CASE (SNDCTL_DSP_GETBLKSIZE)
 	*intptr = Audio::BLOCK_SIZE;
@@ -546,7 +547,7 @@ fhandler_dev_dsp::ioctl (unsigned int cmd, void *ptr)
 	    if (s_audio->open (audiofreq_, nBits, audiochannels_) == true)
 	      {
 		audiobits_ = nBits;
-		return 1;
+		return 0;
 	      }
 	    else
 	      {
@@ -562,7 +563,7 @@ fhandler_dev_dsp::ioctl (unsigned int cmd, void *ptr)
 	if (s_audio->open (*intptr, audiobits_, audiochannels_) == true)
 	  {
 	    audiofreq_ = *intptr;
-	    return 1;
+	    return 0;
 	  }
 	else
 	  {
@@ -579,7 +580,7 @@ fhandler_dev_dsp::ioctl (unsigned int cmd, void *ptr)
 	if (s_audio->open (audiofreq_, audiobits_, nChannels) == true)
 	  {
 	    audiochannels_ = nChannels;
-	    return 1;
+	    return 0;
 	  }
 	else
 	  {
@@ -609,7 +610,7 @@ fhandler_dev_dsp::ioctl (unsigned int cmd, void *ptr)
 	debug_printf ("ptr %p nblocks %d leftblocks %d left bytes %d ",
 		      ptr, nBlocks, leftblocks, left);
 
-	return 1;
+	return 0;
       }
       break;
 
@@ -617,7 +618,7 @@ fhandler_dev_dsp::ioctl (unsigned int cmd, void *ptr)
       {
 	// Fake!! esound & mikmod require this on non PowerPC platforms.
 	//
-	return 1;
+	return 0;
       }
       break;
 

@@ -1,6 +1,6 @@
 /* limits.h
 
-   Copyright 1999, 2000 Cygnus Solutions.
+   Copyright 1999, 2000, 2001 Red Hat, Inc.
 
 This file is part of Cygwin.
 
@@ -121,6 +121,18 @@ details. */
 /* WaitForMultipleObjects can't handle waiting for more than 64 objects.
    This limits how many children we can fork/spawn off. */
 #define CHILD_MAX 63
+
+/* # of open files per process. Actually it can be more since Cygwin
+   grows the dtable as necessary. We define a reasonable limit here
+   which is returned by getdtablesize(), sysconf(_SC_OPEN_MAX) and
+   getrlimit(RLIMIT_NOFILE). */
+#undef OPEN_MAX
+#define OPEN_MAX 256
+
+/* # of bytes in a pipe buf. This is the max # of bytes which can be
+   written to a pipe in one atomic operation. */
+#undef PIPE_BUF
+#define PIPE_BUF 4096
 
 /* POSIX values */
 /* These should never vary from one system type to another */

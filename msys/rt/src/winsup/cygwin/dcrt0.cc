@@ -24,6 +24,7 @@ details. */
 #include "cygerrno.h"
 #define NEED_VFORK
 #include "perprocess.h"
+#include "security.h"
 #include "fhandler.h"
 #include "dtable.h"
 #include "path.h"
@@ -34,7 +35,6 @@ details. */
 #include "cygwin_version.h"
 #include "dll_init.h"
 #include "host_dependent.h"
-#include "security.h"
 
 #define MAX_AT_FILE_LEVEL 10
 
@@ -54,12 +54,12 @@ per_thread NO_COPY *threadstuff[] = {&waitq_storage,
 				     &signal_dispatch_storage,
 				     NULL};
 
-BOOL display_title = FALSE;
-BOOL strip_title_path = FALSE;
+BOOL display_title;
+BOOL strip_title_path;
 BOOL allow_glob = TRUE;
 codepage_type current_codepage = ansi_cp;
 
-int cygwin_finished_initializing = 0;
+int cygwin_finished_initializing;
 
 /* Used in SIGTOMASK for generating a bit for insertion into a sigset_t.
    This is subtracted from the signal number prior to shifting the bit.
@@ -67,10 +67,12 @@ int cygwin_finished_initializing = 0;
    bit for masking.  So, we'll temporarily detect this and set it to zero
    for programs that are linked using older cygwins.  This is just a stopgap
    measure to allow an orderly transfer to the new, correct sigmask method. */
-unsigned int signal_shift_subtract = 1;
+unsigned NO_COPY int signal_shift_subtract = 1;
 
 ResourceLocks _reslock NO_COPY;
-MTinterface _mtinterf NO_COPY;
+MTinterface _mtinterf;
+
+bool NO_COPY _cygwin_testing;
 
 extern "C"
 {
@@ -84,7 +86,7 @@ extern "C"
   char **__cygwin_environ;
   char ***main_environ;
   /* __progname used in getopt error message */
-  char *__progname = NULL;
+  char *__progname;
   struct _reent reent_data = _REENT_INIT(reent_data);
   struct per_process __cygwin_user_data =
   {/* initial_sp */ 0, /* magic_biscuit */ 0,
@@ -99,23 +101,23 @@ extern "C"
    /* calloc */ export_calloc,
    /* premain */ {NULL, NULL, NULL, NULL},
    /* run_ctors_p */ 0,
-    /* unused */ { 0, 0, 0},
-   /* heapbase */ NULL, /* heapptr */ NULL, /* heaptop */ NULL,
-   /* unused1 */ 0, /* forkee */ 0, /* hmodule */ NULL,
+   /* unused */ {0, 0, 0, 0, 0, 0, 0},
+   /* forkee */ 0,
+   /* hmodule */ NULL,
    /* api_major */ CYGWIN_VERSION_API_MAJOR,
    /* api_minor */ CYGWIN_VERSION_API_MINOR,
    /* unused2 */ {0, 0, 0, 0, 0},
    /* resourcelocks */ &_reslock, /* threadinterface */ &_mtinterf,
    /* impure_ptr */ &reent_data,
   };
-  bool ignore_case_with_glob = FALSE;
+  bool ignore_case_with_glob;
   int __declspec (dllexport) _check_for_executable = TRUE;
 #ifdef DEBUGGING
-  int pinger = 0;
+  int pinger;
 #endif
 };
 
-char *old_title = NULL;
+char *old_title;
 char title_buf[TITLESIZE + 1];
 
 static void
@@ -156,6 +158,7 @@ do_global_ctors (void (**in_pfunc)(), int force)
 /* remember the type of Win32 OS being run for future use. */
 os_type NO_COPY os_being_run;
 char NO_COPY osname[40];
+bool iswinnt;
 
 /* set_os_type: Set global variable os_being_run with type of Win32
    operating system being run.  This information is used internally
@@ -171,11 +174,13 @@ set_os_type ()
   os_version_info.dwOSVersionInfoSize = sizeof (OSVERSIONINFO);
   GetVersionEx (&os_version_info);
 
+  iswinnt = 0;
   switch (os_version_info.dwPlatformId)
     {
       case VER_PLATFORM_WIN32_NT:
 	os_being_run = winNT;
 	os = "NT";
+	iswinnt = 1;
 	break;
       case VER_PLATFORM_WIN32_WINDOWS:
 	if (os_version_info.dwMinorVersion == 0)
@@ -539,6 +544,8 @@ static NO_COPY STARTUPINFO si;
 child_info_fork NO_COPY *child_proc_info = NULL;
 static MEMORY_BASIC_INFORMATION sm;
 
+#define CYGWIN_GUARD ((iswinnt) ? PAGE_GUARD : PAGE_NOACCESS)
+
 // __inline__ void
 extern void
 alloc_stack_hard_way (child_info_fork *ci, volatile char *b)
@@ -578,7 +585,7 @@ alloc_stack_hard_way (child_info_fork *ci, volatile char *b)
     {
       m.BaseAddress = (LPVOID)((DWORD)m.BaseAddress - 1);
       if (!VirtualAlloc ((LPVOID) m.BaseAddress, 1, MEM_COMMIT,
-			 PAGE_EXECUTE_READWRITE|PAGE_GUARD))
+			 PAGE_EXECUTE_READWRITE|CYGWIN_GUARD))
 	api_fatal ("fork: couldn't allocate new stack guard page %p, %E",
 		   m.BaseAddress);
     }
@@ -614,8 +621,8 @@ alloc_stack (child_info_fork *ci)
 }
 
 static NO_COPY int mypid = 0;
-int _declspec(dllexport) __argc = 0;
-char _declspec(dllexport) **__argv = NULL;
+int _declspec(dllexport) __argc;
+char _declspec(dllexport) **__argv;
 
 void
 sigthread::init (const char *s)
@@ -669,18 +676,13 @@ dll_crt0_1 ()
 
   if (child_proc_info)
     {
-      cygheap = child_proc_info->cygheap;
-      cygheap_max = child_proc_info->cygheap_max;
       switch (child_proc_info->type)
 	{
 	  case PROC_FORK:
 	  case PROC_FORK1:
-	    cygheap_fixup_in_child (child_proc_info->parent, 0);
+	    cygheap_fixup_in_child (child_proc_info, 0);
 	    alloc_stack (fork_info);
 	    set_myself (mypid);
-	    user_data->heaptop = child_proc_info->heaptop;
-	    user_data->heapbase = child_proc_info->heapbase;
-	    user_data->heapptr = child_proc_info->heapptr;
 	    ProtectHandle (child_proc_info->forker_finished);
 	    break;
 	  case PROC_SPAWN:
@@ -690,13 +692,14 @@ dll_crt0_1 ()
 	    hexec_proc = spawn_info->hexec_proc;
 	  around:
 	    HANDLE h;
-	    cygheap_fixup_in_child (spawn_info->parent, 1);
+	    cygheap_fixup_in_child (spawn_info, 1);
 	    if (!spawn_info->moreinfo->myself_pinfo ||
 		!DuplicateHandle (hMainProc, spawn_info->moreinfo->myself_pinfo,
 				  hMainProc, &h, 0, 0,
 				  DUPLICATE_SAME_ACCESS | DUPLICATE_CLOSE_SOURCE))
 	      h = NULL;
 	    set_myself (mypid, h);
+	    myself->uid = spawn_info->moreinfo->uid;
 	    __argc = spawn_info->moreinfo->argc;
 	    __argv = spawn_info->moreinfo->argv;
 	    envp = spawn_info->moreinfo->envp;
@@ -709,8 +712,8 @@ dll_crt0_1 ()
 		old_title = strcpy (title_buf, spawn_info->moreinfo->old_title);
 		cfree (spawn_info->moreinfo->old_title);
 	      }
-	    ProtectHandle (child_proc_info->subproc_ready);
-	    myself->uid = spawn_info->moreinfo->uid;
+	    if (child_proc_info->subproc_ready)
+	      ProtectHandle (child_proc_info->subproc_ready);
 	    if (myself->uid == USHRT_MAX)
 	      cygheap->user.set_sid (NULL);
 	    break;
@@ -868,14 +871,17 @@ dll_crt0_1 ()
 extern "C" void __stdcall
 _dll_crt0 ()
 {
+  char envbuf[8];
 #ifdef DEBUGGING
-  char buf[80];
-  if (GetEnvironmentVariable ("CYGWIN_SLEEP", buf, sizeof (buf)))
+  if (GetEnvironmentVariable ("CYGWIN_SLEEP", envbuf, sizeof (envbuf) - 1))
     {
-      small_printf ("Sleeping %d, pid %u\n", atoi (buf), GetCurrentProcessId ());
-      Sleep (atoi (buf));
+      console_printf ("Sleeping %d, pid %u\n", atoi (envbuf), GetCurrentProcessId ());
+      Sleep (atoi (envbuf));
     }
 #endif
+
+  if (GetEnvironmentVariable ("CYGWIN_TESTING", envbuf, sizeof (envbuf) - 1))
+    _cygwin_testing = 1;
 
   char zeros[sizeof (fork_info->zero)] = {0};
 #ifdef DEBUGGING
@@ -887,7 +893,6 @@ _dll_crt0 ()
 
   main_environ = user_data->envptr;
   *main_environ = NULL;
-  user_data->heapbase = user_data->heapptr = user_data->heaptop = NULL;
 
   set_console_handler ();
   if (!DuplicateHandle (GetCurrentProcess (), GetCurrentProcess (),
@@ -917,10 +922,14 @@ _dll_crt0 ()
 	      break;
 	    }
 	  default:
-/*
-	    if ((fork_info->type & PROC_MAGIC_MASK) == PROC_MAGIC_GENERIC)
-	      api_fatal ("conflicting versions of msys-1.0.dll detected.  Use only the most recent version.\n");
-*/
+#if defined (__MSYS__)
+	    fork_info = NULL;
+#else /* !__MSYS__ */
+	    if (_cygwin_testing)
+	      fork_info = NULL;
+	    else if ((fork_info->type & PROC_MAGIC_MASK) == PROC_MAGIC_GENERIC)
+	      api_fatal ("conflicting versions of cygwin1.dll detected.  Use only the most recent version.\n");
+#endif /* !__MSYS__ */
 	    break;
 	}
     }
@@ -945,7 +954,6 @@ msys_dll_init ()
 {
   static char **envp;
   static int _fmode;
-  user_data->heapbase = user_data->heapptr = user_data->heaptop = NULL;
 
   if (!DuplicateHandle (GetCurrentProcess (), GetCurrentProcess (),
 		       GetCurrentProcess (), &hMainProc, 0, FALSE,

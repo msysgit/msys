@@ -1,6 +1,6 @@
 /* ntea.cc: code for manipulating NTEA information
 
-   Copyright 1997, 1998, 2000 Cygnus Solutions.
+   Copyright 1997, 1998, 2000, 2001 Red Hat, Inc.
 
    Written by Sergey S. Okhapkin (sos@prospect.com.ru)
 
@@ -16,7 +16,7 @@ details. */
 #include "security.h"
 
 /* Default to not using NTEA information */
-BOOL allow_ntea = FALSE;
+BOOL allow_ntea;
 
 /*
 From Windows NT DDK:

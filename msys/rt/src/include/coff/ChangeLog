@@ -1,3 +1,15 @@
+2001-09-05  Tom Rix <trix@redhat.com>
+
+	* xcoff.h : Add XCOFF_SYSCALL32 and XCOFF_SYSCALL64 hash table flags.
+	
+2001-08-27  Andreas Jaeger  <aj@suse.de>
+
+	* xcoff.h (struct __rtinit): Make proper prototype for rtl.
+
+Fri Aug 24 01:18:51 2001  J"orn Rennecke <amylaar@redhat.com>
+
+	* internal.h (R_JMP2, R_JMPL2, R_MOVL2): Comment spelling fix.
+
 2001-04-05  Tom Rix <trix@redhat.com>
 
 	* rs6000.h : move xcoff32 external structures from xcofflink. 

@@ -1,6 +1,6 @@
 /* dir.cc: Posix directory-related routines
 
-   Copyright 1996, 1997, 1998, 1999, 2000, 2001 Cygnus Solutions.
+   Copyright 1996, 1997, 1998, 1999, 2000, 2001 Red Hat, Inc.
 
 This file is part of Cygwin.
 
@@ -9,6 +9,7 @@ Cygwin license.  Please consult the file "CYGWIN_LICENSE" for
 details. */
 
 #include "winsup.h"
+#include <sys/fcntl.h>
 #include <unistd.h>
 #include <stdlib.h>
 #include <sys/stat.h>
@@ -21,10 +22,10 @@ details. */
 #include "sigproc.h"
 #include "pinfo.h"
 #include "cygerrno.h"
+#include "security.h"
 #include "fhandler.h"
 #include "perprocess.h"
 #include "path.h"
-#include "security.h"
 #include "dtable.h"
 #include "cygheap.h"
 
@@ -59,6 +60,18 @@ writable_directory (const char *file)
 #else
   return 1;
 #endif
+}
+
+extern "C" int
+dirfd (DIR *dir)
+{
+  if (dir->__d_cookie != __DIRENT_COOKIE)
+    {
+      set_errno (EBADF);
+      syscall_printf ("-1 = dirfd (%p)", dir);
+      return -1;
+    }
+  return dir->__d_dirent->d_fd;
 }
 
 /* opendir: POSIX 5.1.2.1 */
@@ -114,6 +127,8 @@ opendir (const char *dirname)
       goto failed;
     }
   strcpy (dir->__d_dirname, real_dirname.get_win32 ());
+  dir->__d_dirent->d_version = __DIRENT_VERSION;
+  dir->__d_dirent->d_fd = open (dir->__d_dirname, O_RDONLY | O_DIROPEN);
   /* FindFirstFile doesn't seem to like duplicate /'s. */
   len = strlen (dir->__d_dirname);
   if (len == 0 || SLASH_P (dir->__d_dirname[len - 1]))
@@ -159,6 +174,10 @@ readdir (DIR * dir)
 	  return res;
 	}
     }
+  else if (dir->__d_u.__d_data.__handle == INVALID_HANDLE_VALUE)
+    {
+      return res;
+    }
   else if (!FindNextFileA (dir->__d_u.__d_data.__handle, &buf))
     {
       DWORD lasterr = GetLastError ();
@@ -182,14 +201,14 @@ readdir (DIR * dir)
       char *c = dir->__d_dirent->d_name;
       int len = strlen (c);
       if (strcasematch (c + len - 4, ".lnk"))
-        {
+	{
 	  char fbuf[MAX_PATH + 1];
 	  strcpy (fbuf, dir->__d_dirname);
 	  strcpy (fbuf + strlen (fbuf) - 1, dir->__d_dirent->d_name);
 	  path_conv fpath (fbuf, PC_SYM_NOFOLLOW);
 	  if (fpath.issymlink ())
-            c[len - 4] = '\0';
-        }
+	    c[len - 4] = '\0';
+	}
     }
 
   /* Compute d_ino by combining filename hash with the directory hash
@@ -286,6 +305,9 @@ closedir (DIR * dir)
       return -1;
     }
 
+  if (dir->__d_dirent->d_fd >= 0)
+    close (dir->__d_dirent->d_fd);
+
   /* Reset the marker in case the caller tries to use `dir' again.  */
   dir->__d_cookie = 0;
 
@@ -301,6 +323,7 @@ extern "C" int
 mkdir (const char *dir, mode_t mode)
 {
   int res = -1;
+  SECURITY_ATTRIBUTES sa = sec_none_nih;
 
   path_conv real_dir (dir, PC_SYM_NOFOLLOW);
 
@@ -314,10 +337,15 @@ mkdir (const char *dir, mode_t mode)
   if (! writable_directory (real_dir.get_win32 ()))
     goto done;
 
-  if (CreateDirectoryA (real_dir.get_win32 (), 0))
+  if (allow_ntsec && real_dir.has_acls ())
+    set_security_attribute (S_IFDIR | ((mode & 07777) & ~cygheap->umask),
+			    &sa, alloca (4096), 4096);
+
+  if (CreateDirectoryA (real_dir.get_win32 (), &sa))
     {
-      set_file_attribute (real_dir.has_acls (), real_dir.get_win32 (),
-			  S_IFDIR | ((mode & 0777) & ~cygheap->umask));
+      if (!allow_ntsec && allow_ntea)
+	set_file_attribute (real_dir.has_acls (), real_dir.get_win32 (),
+			    S_IFDIR | ((mode & 07777) & ~cygheap->umask));
       res = 0;
     }
   else
@@ -342,9 +370,15 @@ rmdir (const char *dir)
       goto done;
     }
 
+  /* Does the file exist? */
+  if (real_dir.file_attributes () == (DWORD) -1)
+    {
+      set_errno (ENOENT);
+      goto done;
+    }
+
   /* Is `dir' a directory? */
-  if (real_dir.file_attributes () == (DWORD) -1 ||
-      !(real_dir.file_attributes () & FILE_ATTRIBUTE_DIRECTORY))
+  if  (!(real_dir.file_attributes () & FILE_ATTRIBUTE_DIRECTORY))
     {
       set_errno (ENOTDIR);
       goto done;
@@ -353,8 +387,9 @@ rmdir (const char *dir)
   /* Even own directories can't be removed if R/O attribute is set. */
   if (real_dir.file_attributes () & FILE_ATTRIBUTE_READONLY)
     SetFileAttributes (real_dir.get_win32 (), real_dir.file_attributes () &
-    					      ~FILE_ATTRIBUTE_READONLY);
+					      ~FILE_ATTRIBUTE_READONLY);
 
+  debug_printf("RemoveDirectoryA (%s)", real_dir.get_win32 ());
   if (RemoveDirectoryA (real_dir.get_win32 ()))
     {
       /* RemoveDirectory on a samba drive doesn't return an error if the
@@ -368,10 +403,10 @@ rmdir (const char *dir)
   else
     {
       if (GetLastError() == ERROR_ACCESS_DENIED)
-        {
+	{
 	  /* On 9X ERROR_ACCESS_DENIED is returned if you try to remove
 	     a non-empty directory. */
-	  if (os_being_run != winNT)
+	  if (!iswinnt)
 	    set_errno (ENOTEMPTY);
 	  else
 	    __seterrno ();

@@ -21,6 +21,7 @@ details. */
 #include "sync.h"
 #include "sigproc.h"
 #include "pinfo.h"
+#include "security.h"
 #include "fhandler.h"
 #include "dtable.h"
 #include "cygheap.h"
@@ -28,7 +29,6 @@ details. */
 #include "perthread.h"
 #include <assert.h>
 #include "shared_info.h"
-#include "security.h"
 
 /*
  * Convenience defines
@@ -46,7 +46,7 @@ details. */
 
 #define no_signals_available() (!hwait_sig || !sig_loop_wait)
 
-#define ZOMBIEMAX	((int) (sizeof (zombies) / sizeof (zombies[0])) - 1)
+#define NZOMBIES	256
 
 /*
  * Global variables
@@ -99,11 +99,11 @@ Static HANDLE wait_sig_inited = NULL;	// Control synchronization of
 
 /* Used by WaitForMultipleObjects.  These are handles to child processes.
  */
-Static HANDLE events[PSIZE + 1] = {0};	// All my children's handles++
+Static HANDLE events[PSIZE + 1] = {0};  // All my children's handles++
 #define hchildren (events + 1)		// Where the children handles begin
 Static pinfo pchildren[PSIZE];		// All my children info
-Static pinfo zombies[16384];		// All my deceased children info
 Static int nchildren = 0;		// Number of active children
+Static pinfo zombies[NZOMBIES];		// All my deceased children info
 Static int nzombies = 0;		// Number of deceased children
 
 Static waitq waitq_head = {0, 0, 0, 0, 0, 0, 0};// Start of queue for wait'ing threads
@@ -306,7 +306,7 @@ proc_subproc (DWORD what, DWORD val)
       zombies[nzombies] = pchildren[val];	// Add to zombie array
       zombies[nzombies++]->process_state = PID_ZOMBIE;// Walking dead
 
-      sigproc_printf ("removing [%d], pid %d, handle %p, nchildren %d",
+      sigproc_printf ("zombifying [%d], pid %d, handle %p, nchildren %d",
 		      val, pchildren[val]->pid, hchildren[val], nchildren);
       if ((int) val < --nchildren)
 	{
@@ -318,7 +318,7 @@ proc_subproc (DWORD what, DWORD val)
 	 filled up our table or if we're ignoring SIGCHLD, then we immediately
 	 remove the process and move on. Otherwise, this process becomes a zombie
 	 which must be reaped by a wait() call. */
-      if (nzombies >= ZOMBIEMAX
+      if (nzombies >= NZOMBIES
 	  || myself->getsig (SIGCHLD).sa_handler == (void *) SIG_IGN)
 	{
 	  sigproc_printf ("automatically removing zombie %d", thiszombie);
@@ -1103,8 +1103,7 @@ wait_sig (VOID *)
    * windows process waiting to see if it's started a cygwin process or not.
    * Signalling subproc_ready indicates that we are a cygwin process.
    */
-  if (child_proc_info &&
-      (child_proc_info->type == PROC_EXEC || child_proc_info->type == PROC_SPAWN))
+  if (child_proc_info && child_proc_info->type == PROC_EXEC)
     {
       debug_printf ("subproc_ready %p", child_proc_info->subproc_ready);
       if (!SetEvent (child_proc_info->subproc_ready))

@@ -15,6 +15,7 @@ details. */
 #include <fcntl.h>
 #include <stdarg.h>
 #include <errno.h>
+#include "security.h"
 #include "fhandler.h"
 #include "dtable.h"
 #include "cygerrno.h"
@@ -27,12 +28,11 @@ details. */
 #include "perthread.h"
 #include "perprocess.h"
 #include "dll_init.h"
-#include "security.h"
 
 #ifdef DEBUGGING
-static int npid = 0;
-static int npid_max = 0;
-static pid_t fork_pids[100] = {0};
+static int npid;
+static int npid_max;
+static pid_t fork_pids[100];
 #endif
 
 DWORD NO_COPY chunksize = 0;
@@ -104,8 +104,8 @@ fork_copy (PROCESS_INFORMATION &pi, const char *what, ...)
 		__seterrno ();
 	      /* If this happens then there is a bug in our fork
 		 implementation somewhere. */
-	      system_printf ("%s pass %d failed, %p..%p, done %d, %E",
-			    what, pass, low, high, done);
+	      system_printf ("%s pass %d failed, %p..%p, done %d, windows pid %u, %E",
+			    what, pass, low, high, done, pi.dwProcessId);
 	      goto err;
 	    }
 	}
@@ -116,7 +116,7 @@ fork_copy (PROCESS_INFORMATION &pi, const char *what, ...)
   debug_printf ("done");
   return 1;
 
-err:
+ err:
   TerminateProcess (pi.hProcess, 1);
   set_errno (EAGAIN);
   return 0;
@@ -245,7 +245,8 @@ fork_child (HANDLE& hParent, dll *&first_dll, bool& load_dlls)
 
   sync_with_parent ("after longjmp.", TRUE);
   ProtectHandle (hParent);
-  sigproc_printf ("hParent %p, child 1 first_dll %p, load_dlls %d\n", hParent, first_dll, load_dlls);
+  sigproc_printf ("hParent %p, child 1 first_dll %p, load_dlls %d\n", hParent,
+		  first_dll, load_dlls);
 
 #ifdef DEBUGGING
   char c;
@@ -275,6 +276,7 @@ fork_child (HANDLE& hParent, dll *&first_dll, bool& load_dlls)
 
   MALLOC_CHECK;
 
+  debug_fixup_after_fork ();
   pinfo_fixup_after_fork ();
   cygheap->fdtab.fixup_after_fork (hParent);
   signal_fixup_after_fork ();
@@ -306,6 +308,8 @@ fork_child (HANDLE& hParent, dll *&first_dll, bool& load_dlls)
   for (per_thread **t = threadstuff; *t; t++)
     if ((*t)->clear_on_fork ())
       (*t)->set ();
+
+  user_data->threadinterface->fixup_after_fork ();
 
   /* Initialize signal/process handling */
   sigproc_init ();
@@ -340,8 +344,8 @@ slow_pid_reuse (HANDLE h)
 }
 
 static int __stdcall
-fork_parent (void *stack_here, HANDLE& hParent, dll *&first_dll,
-	     bool& load_dlls, child_info_fork &ch)
+fork_parent (HANDLE& hParent, dll *&first_dll,
+	     bool& load_dlls, void *stack_here, child_info_fork &ch)
 {
   HANDLE subproc_ready, forker_finished;
   DWORD rc;
@@ -427,9 +431,6 @@ fork_parent (void *stack_here, HANDLE& hParent, dll *&first_dll,
   init_child_info (PROC_FORK1, &ch, 1, subproc_ready);
 
   ch.forker_finished = forker_finished;
-  ch.heaptop = user_data->heaptop;
-  ch.heapbase = user_data->heapbase;
-  ch.heapptr = user_data->heapptr;
 
   stack_base (ch);
 
@@ -442,8 +443,6 @@ fork_parent (void *stack_here, HANDLE& hParent, dll *&first_dll,
     RevertToSelf ();
 
   ch.parent = hParent;
-  ch.cygheap = cygheap;
-  ch.cygheap_max = cygheap_max;
 #ifdef DEBUGGING
   if (npid_max)
     {
@@ -459,12 +458,14 @@ fork_parent (void *stack_here, HANDLE& hParent, dll *&first_dll,
 	  npid = 0;
 	}
     }
-out:
+ out:
 #endif
 
   char sa_buf[1024];
   syscall_printf ("CreateProcess (%s, %s, 0, 0, 1, %x, 0, 0, %p, %p)",
 		  myself->progname, myself->progname, c_flags, &si, &pi);
+  __malloc_lock (_reent_clib ());
+  cygheap_setup_for_child (&ch);
   rc = CreateProcess (myself->progname, /* image to run */
 		      myself->progname, /* what we send in arg0 */
 		      allow_ntsec ? sec_user (sa_buf) : &sec_none_nih,
@@ -477,6 +478,7 @@ out:
 		      &pi);
 
   CloseHandle (hParent);
+  cygheap_setup_for_child_cleanup (&ch);
 
   if (!rc)
     {
@@ -486,7 +488,7 @@ out:
       ForceCloseHandle(forker_finished);
       /* Restore impersonation */
       if (cygheap->user.impersonated
-          && cygheap->user.token != INVALID_HANDLE_VALUE)
+	  && cygheap->user.token != INVALID_HANDLE_VALUE)
 	ImpersonateLoggedOnUser (cygheap->user.token);
       return -1;
     }
@@ -553,11 +555,12 @@ out:
   rc = fork_copy (pi, "user/cygwin data",
 		  user_data->data_start, user_data->data_end,
 		  user_data->bss_start, user_data->bss_end,
-		  ch.heapbase, ch.heapptr,
+		  cygheap->heapbase, cygheap->heapptr,
 		  stack_here, ch.stackbottom,
 		  dll_data_start, dll_data_end,
 		  dll_bss_start, dll_bss_end, NULL);
 
+  __malloc_unlock (_reent_clib ());
   MALLOC_CHECK;
   if (!rc)
     goto cleanup;
@@ -606,7 +609,7 @@ out:
   return forked->pid;
 
 /* Common cleanup code for failure cases */
-cleanup:
+ cleanup:
   /* Remember to de-allocate the fd table. */
   if (pi.hProcess)
     ForceCloseHandle1 (pi.hProcess, childhProc);
@@ -646,7 +649,7 @@ fork ()
     }
 
   void *esp;
-  __asm ("movl %%esp,%0": "=r" (esp));
+  __asm__ volatile ("movl %%esp,%0": "=r" (esp));
 
   myself->set_has_pgid_children ();
 
@@ -657,7 +660,7 @@ fork ()
   if (res)
     res = fork_child (grouped.hParent, grouped.first_dll, grouped.load_dlls);
   else
-    res = fork_parent (esp, grouped.hParent, grouped.first_dll, grouped.load_dlls, ch);
+    res = fork_parent (grouped.hParent, grouped.first_dll, grouped.load_dlls, esp, ch);
 
   MALLOC_CHECK;
   syscall_printf ("%d = fork()", res);
@@ -708,7 +711,9 @@ vfork ()
       for (pp = (char **)vf->frame, esp = vf->vfork_esp;
 	   esp <= vf->vfork_ebp + 1; pp++, esp++)
 	*pp = *esp;
-      return cygheap->fdtab.vfork_child_dup () ? 0 : -1;
+      int res = cygheap->fdtab.vfork_child_dup () ? 0 : -1;
+      debug_printf ("%d = vfork()", res);
+      return res;
     }
 
   cygheap->fdtab.vfork_parent_restore ();

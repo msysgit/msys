@@ -1,6 +1,6 @@
 /* sysconf.cc
 
-   Copyright 1996, 1997, 1998 Cygnus Solutions.
+   Copyright 1996, 1997, 1998, 1999, 2000, 2001 Red Hat, Inc.
 
 This file is part of Cygwin.
 
@@ -14,6 +14,7 @@ details. */
 #include <time.h>
 #include <limits.h>
 #include <ntdef.h>
+#include "security.h"
 #include "fhandler.h"
 #include "dtable.h"
 #include "cygheap.h"
@@ -32,10 +33,7 @@ sysconf (int in)
 	/* FIXME: what's the right value?  _POSIX_ARG_MAX is only 4K */
 	return 1048576;
       case _SC_OPEN_MAX:
-	/* FIXME: this returns the current limit which can increase
-	   if and when dtable::find_unused_handle is called.  Perhaps
-	   we should return NOFILE or OPEN_MAX instead? */
-	return cygheap->fdtab.size;
+	return getdtablesize ();
       case _SC_PAGESIZE:
 	return getpagesize ();
       case _SC_CLK_TCK:
@@ -58,25 +56,25 @@ sysconf (int in)
 #endif
       case _SC_NPROCESSORS_CONF:
       case _SC_NPROCESSORS_ONLN:
-	if (os_being_run != winNT)
+	if (!iswinnt)
 	  return 1;
 	/*FALLTHRU*/
       case _SC_PHYS_PAGES:
       case _SC_AVPHYS_PAGES:
-        {
+	{
 	  NTSTATUS ret;
 	  SYSTEM_BASIC_INFORMATION sbi;
-          if ((ret = NtQuerySystemInformation (SystemBasicInformation,
+	  if ((ret = NtQuerySystemInformation (SystemBasicInformation,
 						 (PVOID) &sbi,
 					       sizeof sbi, NULL))
 		!= STATUS_SUCCESS)
-            {
-              __seterrno_from_win_error (RtlNtStatusToDosError (ret));
-              debug_printf("NtQuerySystemInformation: ret = %d, "
-		           "Dos(ret) = %d",
-                           ret, RtlNtStatusToDosError (ret));
+	    {
+	      __seterrno_from_win_error (RtlNtStatusToDosError (ret));
+	      debug_printf("NtQuerySystemInformation: ret = %d, "
+			   "Dos(ret) = %d",
+			   ret, RtlNtStatusToDosError (ret));
 	      return -1;
-            }
+	    }
 	  switch (in)
 	    {
 	    case _SC_NPROCESSORS_CONF:
