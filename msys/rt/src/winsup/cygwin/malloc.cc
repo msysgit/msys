@@ -99,7 +99,7 @@ strdup (const char *s)
 {
   return strdup_dbg (s, __FILE__, __LINE__);
 }
-#else
+#else /* ! MALLOC_DEBUG */
 /* Call though the application pointer,
    which either points to export_malloc, or the application's
    own version. */

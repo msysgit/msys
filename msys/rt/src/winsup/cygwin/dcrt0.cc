@@ -35,6 +35,7 @@ details. */
 #include "cygwin_version.h"
 #include "dll_init.h"
 #include "host_dependent.h"
+#include "sys/strace.h"
 
 #define MAX_AT_FILE_LEVEL 10
 
@@ -318,12 +319,13 @@ quoted (char *cmd, int winshell)
   char *p;
   char quote = *cmd;
 
+  debug_printf("(%s, %d)", cmd, winshell);
   if (!winshell)
     {
       char *p;
-      strcpy (cmd, cmd + 1);
+      cmd++;
       if ((p = strchr (cmd, quote)) != NULL)
-	strcpy (p, p + 1);
+	  p++;
       else
 	p = strchr (cmd, '\0');
       return p;

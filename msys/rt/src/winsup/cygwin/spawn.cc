@@ -299,6 +299,10 @@ spawn_guts (HANDLE hToken, const char * prog_arg, const char *const *argv,
   BOOL rc;
   pid_t cygpid;
   sigframe thisframe (mainthread);
+#if DEBUGGING
+  for (int i=0;argv[i];i++)
+      debug_printf("argv[%d] = %s", i, argv[i]);
+#endif
 
   MALLOC_CHECK;
 
@@ -610,7 +614,60 @@ spawn_guts (HANDLE hToken, const char * prog_arg, const char *const *argv,
   if (real_path.iscygexec ())
     envblock = NULL;
   else
-    envblock = winenv (envp, 0);
+    {
+      envblock = winenv (envp, 0);
+      char *envblockn = envblock;
+      int envblockcnt;
+      envblockcnt = 0;
+      debug_printf("envblockn");
+      while (*envblockn)
+	{
+	  envblockcnt++;
+	  debug_printf("%s", envblockn);
+	  envblockn = strchr(envblockn, '\0') + 1;
+	}
+      char **envblockarg = new char *[envblockcnt + 1], *tptr, *wpath;
+      int envblocknlen, envblockarglen = 0;
+      envblockn = envblock;
+      for (int i=0;i < envblockcnt;i++)
+	{
+	  envblocknlen = strlen(envblockn);
+	  envblockarg[i] = new char [envblocknlen + MAX_PATH];
+	  memset (envblockarg[i], 0, envblocknlen + MAX_PATH);
+	  wpath = new char [envblocknlen + MAX_PATH];
+	  memset (wpath, 0, envblocknlen + MAX_PATH);
+	  if ((tptr = strchr(envblockn, '=')))
+	    {
+	      tptr++;
+	      strncpy (envblockarg[i], envblockn, tptr - envblockn);
+	      if (*tptr == '/')
+		{
+		  cygwin_conv_to_win32_path (tptr, wpath);
+		  strcat(envblockarg[i], wpath);
+		}
+	      else
+		{
+		  strcat(envblockarg[i], tptr);
+		}
+	    }
+	  debug_printf("%s", envblockarg[i]);
+	  envblockarglen += strlen(envblockarg[i]) + 1;
+	  envblockn = strchr (envblockn, '\0') + 1;
+	  delete[] wpath;
+	}
+      delete[] envblock;
+      envblock = new char [envblockarglen + 1];
+      tptr = envblock;
+      for (int i=0;i < envblockcnt;i++)
+	{
+	  envblocknlen = strlen (envblockarg[i]) + 1;
+	  memcpy (tptr, envblockarg[i], envblocknlen);
+	  tptr += envblocknlen;
+	  delete[] envblockarg[i];
+	}
+      *++tptr = '\0';
+      delete[] envblockarg;
+    }
 
   /* Preallocated buffer for `sec_user' call */
   char sa_buf[1024];
@@ -713,8 +770,7 @@ spawn_guts (HANDLE hToken, const char * prog_arg, const char *const *argv,
     }
 
   MALLOC_CHECK;
-  if (envblock)
-    free (envblock);
+  delete[] envblock;
   cygheap_setup_for_child_cleanup (&ciresrv);
   MALLOC_CHECK;
 
@@ -911,6 +967,10 @@ _spawnve (HANDLE hToken, int mode, const char *path, const char *const *argv,
 {
   int ret;
   vfork_save *vf = vfork_storage.val ();
+#if DEBUGGING
+  for (int i=0;argv[i];i++)
+      debug_printf("argv[%d] = %s", i, argv[i]);
+#endif
 
   if (vf != NULL && (vf->pid < 0) && mode == _P_OVERLAY)
     mode = _P_NOWAIT;
@@ -967,7 +1027,12 @@ spawnl (int mode, const char *path, const char *arg0, ...)
   i = 1;
 
   do
+    {
       argv[i] = va_arg (args, const char *);
+#if DEBUGGING
+      debug_printf("argv[%d] = %s", i, argv[i]);
+#endif
+    }
   while (argv[i++] != NULL);
 
   va_end (args);
@@ -988,7 +1053,12 @@ spawnle (int mode, const char *path, const char *arg0, ...)
   i = 1;
 
   do
-    argv[i] = va_arg (args, const char *);
+    {
+      argv[i] = va_arg (args, const char *);
+#if DEBUGGING
+      debug_printf("argv[%d] = %s", i, argv[i]);
+#endif
+    }
   while (argv[i++] != NULL);
 
   envp = va_arg (args, const char * const *);
@@ -1010,7 +1080,12 @@ spawnlp (int mode, const char *path, const char *arg0, ...)
   i = 1;
 
   do
+    {
       argv[i] = va_arg (args, const char *);
+#if DEBUGGING
+      debug_printf("argv[%d] = %s", i, argv[i]);
+#endif
+    }
   while (argv[i++] != NULL);
 
   va_end (args);
@@ -1031,7 +1106,12 @@ spawnlpe (int mode, const char *path, const char *arg0, ...)
   i = 1;
 
   do
-    argv[i] = va_arg (args, const char *);
+    {
+      argv[i] = va_arg (args, const char *);
+#if DEBUGGING
+      debug_printf("argv[%d] = %s", i, argv[i]);
+#endif
+    }
   while (argv[i++] != NULL);
 
   envp = va_arg (args, const char * const *);
@@ -1043,6 +1123,10 @@ spawnlpe (int mode, const char *path, const char *arg0, ...)
 extern "C" int
 spawnv (int mode, const char *path, const char * const *argv)
 {
+#if DEBUGGING
+  for (int i=0;argv[i];i++)
+      debug_printf("argv[%d] = %s", i, argv[i]);
+#endif
   return _spawnve (NULL, mode, path, argv, cur_environ ());
 }
 
@@ -1050,12 +1134,20 @@ extern "C" int
 spawnve (int mode, const char *path, char * const *argv,
 					     const char * const *envp)
 {
+#if DEBUGGING
+  for (int i=0;argv[i];i++)
+      debug_printf("argv[%d] = %s", i, argv[i]);
+#endif
   return _spawnve (NULL, mode, path, argv, envp);
 }
 
 extern "C" int
 spawnvp (int mode, const char *path, const char * const *argv)
 {
+#if DEBUGGING
+  for (int i=0;argv[i];i++)
+      debug_printf("argv[%d] = %s", i, argv[i]);
+#endif
   return spawnvpe (mode, path, argv, cur_environ ());
 }
 
@@ -1064,5 +1156,9 @@ spawnvpe (int mode, const char *file, const char * const *argv,
 					     const char * const *envp)
 {
   path_conv buf;
+#if DEBUGGING
+  for (int i=0;argv[i];i++)
+      debug_printf("argv[%d] = %s", i, argv[i]);
+#endif
   return _spawnve (NULL, mode, find_exec (file, buf), argv, envp);
 }

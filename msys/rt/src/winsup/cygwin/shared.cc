@@ -25,6 +25,7 @@ details. */
 #include "shared_info.h"
 #include "registry.h"
 #include "cygwin_version.h"
+#include "msys.h"
 
 #define SHAREDVER (unsigned)(cygwin_version.api_major << 16 | \
 		   cygwin_version.api_minor)
@@ -43,9 +44,15 @@ char * __stdcall
 shared_name (const char *str, int num)
 {
   static NO_COPY char buf[MAX_PATH] = {0};
+  static NO_COPY char buf2[MAX_PATH] = {0};
   extern bool _cygwin_testing;
 
-  __small_sprintf (buf, "%s.%s.%d", cygwin_version.shared_id, str, num);
+  //FIXME: This should be based on where the DLL actually is located.
+  AbsDllPath("msys-1.0.dll", buf2, MAX_PATH);
+  strcpy(buf2, &buf2[3]);
+  *(strchr(buf2, '\\')) = '\0';
+  debug_printf("buf2 = %s", buf2);
+  __small_sprintf (buf, "%s.%s.%s.%d", buf2, cygwin_version.shared_id, str, num);
   if (!_cygwin_testing)
     strcat (buf, cygwin_version.dll_build_date);
   return buf;
@@ -191,9 +198,9 @@ shared_info::heap_chunk_size ()
       what the fixed size is. */
 
       heap_chunk_in_mb = reg.get_int ("heap_chunk_in_mb", 256);
-      if (heap_chunk_in_mb < 4)
+      if (heap_chunk_in_mb < 6)
 	{
-	  heap_chunk_in_mb = 4;
+	  heap_chunk_in_mb = 6;
 	  reg.set_int ("heap_chunk_in_mb", heap_chunk_in_mb);
 	}
     }

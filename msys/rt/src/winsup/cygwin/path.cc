@@ -51,6 +51,10 @@ details. */
 # define NEW_PATH_METHOD 1
 #endif
 
+#ifndef NO_SYMLINK
+# define NO_SYMLINK 1
+#endif
+
 #include "winsup.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -2291,6 +2295,12 @@ extern "C"
 int
 symlink (const char *topath, const char *frompath)
 {
+#if NO_SYMLINK
+    int res;
+    debug_printf("symlink (%s, %s)", topath, frompath);
+    res = msys_symlink (frompath, topath);
+    return res;
+#else
   HANDLE h;
   int res = -1;
   path_conv win32_path, win32_topath;
@@ -2363,8 +2373,10 @@ symlink (const char *topath, const char *frompath)
     }
 
   if (allow_ntsec && win32_path.has_acls ())
-    set_security_attribute (S_IFLNK | S_IRWXU | S_IRWXG | S_IRWXO,
-			    &sa, alloca (4096), 4096);
+    {
+      set_security_attribute (S_IFLNK | S_IRWXU | S_IRWXG | S_IRWXO,
+			    &sa, (new void [4096]), 4096);
+    }
 
   h = CreateFileA(win32_path, GENERIC_WRITE, 0, &sa,
 		  CREATE_NEW, FILE_ATTRIBUTE_NORMAL, 0);
@@ -2433,6 +2445,7 @@ done:
       CloseHandle (h);
   syscall_printf ("%d = symlink (%s, %s)", res, topath, frompath);
   return res;
+#endif //NO_SYMLINK
 }
 
 static int
@@ -2785,7 +2798,7 @@ hash_path_name (unsigned long hash, const char *name)
 	 the environment to track current directory on various drives. */
       if (name[1] == ':')
 	{
-	  char *nn, *newname = (char *) alloca (strlen (name) + 2);
+	  char *nn, *newname = new char [(strlen (name) + 2)];
 	  nn = newname;
 	  *nn = isupper (*name) ? cyg_tolower (*name) : *name;
 	  *++nn = ':';
@@ -2794,6 +2807,7 @@ hash_path_name (unsigned long hash, const char *name)
 	    *++nn = '\\';
 	  strcpy (++nn, name);
 	  name = newname;
+	  delete[] newname;
 	  goto hashit;
 	}
 
@@ -2975,6 +2989,7 @@ fchdir (int fd)
   return ret;
 }
 
+#if 0
 static bool
 QuotedRelativePath (const char *Path)
 {
@@ -2994,6 +3009,7 @@ QuotedRelativePath (const char *Path)
 	return false;
       }
 }
+#endif
 
 /******************** Exported Path Routines *********************/
 
@@ -3008,40 +3024,46 @@ cygwin_conv_to_win32_path (const char *path, char *win32_path)
   const char *spath = path;
   char *sptr;
   char * sspath;
-  char *swin32_path = (char *)malloc (MAX_PATH);
+  char *swin32_path = new char [MAX_PATH*4];
   int swin32_pathlen;
   // retpath will be what sets win32_path before exiting.
-  char *retpath = (char *)malloc (MAX_PATH);
+  char *retpath = new char [MAX_PATH*4];
   int retpath_len = 0;
-  int retpath_buflen = MAX_PATH;
+  int retpath_buflen = MAX_PATH*4;
   int sret;
   int retval = 0;
     
 #define retpathcat(retstr) \
-  swin32_pathlen = strlen (swin32_path); \
-  if (retpath_buflen < retpath_len + swin32_pathlen) \
+  if (retpath_buflen <= retpath_len) \
     { \
       retpath_buflen += MAX_PATH; \
       retpath = (char *)realloc (retpath, retpath_buflen); \
     } \
   strcat (retpath, retstr); \
-  retpath_len += strlen(retstr); \
-  debug_printf("retpath = %s", retpath);
+  retpath_len += strlen(retstr);
 
 #define retpathcpy(retstr) \
-  swin32_pathlen = strlen (swin32_path); \
   retpath_len = 0; \
   *retpath = '\0'; \
-  if (retpath_buflen < retpath_len + swin32_pathlen) \
+  if (retpath_buflen <= retpath_len ) \
     { \
       retpath_buflen += MAX_PATH; \
       retpath = (char *)realloc (retpath, retpath_buflen); \
     } \
   strcpy (retpath, retstr); \
-  retpath_len += strlen(retstr); \
-  debug_printf("retpath = %s", retpath);
+  retpath_len += strlen(retstr);
 
+  if (!path || !*path)
+    {
+      *win32_path = '\0';
+      return -1;
+    }
+
+  *win32_path = '\0';
+
+#if DEBUGGING
   debug_printf("cygwin_conv_to_win32_path (%s, ...)", path);
+#endif
 
   switch (spath[1])
     {
@@ -3166,7 +3188,9 @@ cygwin_conv_to_win32_path (const char *path, char *win32_path)
 	      sspath++;
 	      if (*sspath == '/')
 		{
+#if DEBUGGING
 		  debug_printf("spath = %s", spath);
+#endif
 		  sret = cygwin_conv_to_win32_path (sspath, swin32_path);
 		  if (sret)
 		    {
@@ -3230,6 +3254,7 @@ cygwin_conv_to_win32_path (const char *path, char *win32_path)
 	}
     }
   strcpy (win32_path, retpath);
+  delete[] swin32_path;
   *retpath = '\0';
   retpath_len = 0;
   return retval;
@@ -3513,7 +3538,9 @@ cwdstuff::get_initial ()
     {
       __seterrno ();
       lock->release ();
+#if DEBUGGING
       debug_printf ("get_initial_cwd failed, %E");
+#endif
       lock->release ();
       return 0;
     }
@@ -3595,7 +3622,7 @@ cwdstuff::get (char *buf, int need_posix, int with_chroot, unsigned ulen)
   else
     {
       if (!buf)
-	buf = (char *) malloc (strlen (tocopy) + 1);
+	buf = new char [(strlen (tocopy) + 1)];
       strcpy (buf, tocopy);
       if (!buf[0])	/* Should only happen when chroot */
 	strcpy (buf, "/");
