@@ -1,0 +1,308 @@
+Changes in release 2.0
+[1.22q]
+* HPUX portability fix: md5sum would dump core due to use of libc's getline
+[1.22p]
+* portability fixes from Paul Eggert based largely on tar-1.13 reports
+* `tail --pid=PID' now works even when PID belongs to some other user
+[1.22o]
+* tail accepts new option: --pid=PID
+[1.22n]
+* tail accepts the following new options (some of which were added in 1.22g):
+  --retry
+  --follow[={name|descriptor}]
+  --max-unchanged-stats=N
+  --max-consecutive-size-changes=N
+  --sleep-interval=S
+* wc uses the POSIX-mandated output format when POSIXLY_CORRECT is set
+* To maintain compatibility with sort, comm and join now obey the LC_COLLATE
+  locale, and comm now considers newlines to be part of the lines.
+* use lib/memchr.c only if it's not provided by the system -- this means
+  that on systems with a fast library memchr function you may notice an
+  improvement.  If you use a system with a buggy or signifcantly slower
+  memchr, please report it.
+[1.22m]
+* sort now considers newlines to be part of the line, as required by POSIX.2.
+  E.g. a line starting with a tab now sorts before an empty line,
+  since tab precedes newline in the ASCII collating sequence.
+* sort handles NUL bytes correctly when configured/compiled with --enable-nls
+* fix typos in my version of AC_SEARCH_LIBS.
+* fix dates on config files so builders don't need autoconf/automake
+[1.22l]
+* sort no longer autodetects the locale of numbers and months,
+   as that conflicts with POSIX.2
+* `join -tC' now works when input contains trailing spaces
+* portability tweaks for Irix's cc
+[1.22k]
+* `sort -n' works with negative numbers when configured/compiled
+   with --enable-nls
+* head accepts byte and line counts of type uintmax_t (so up to 2^64 - 1)
+[1.22j]
+* tail: fix bug introduced in 1.22i
+[1.22i]
+* tail now terminates in `yes > k & sleep 1; tail -2c k'
+* `tail -f' now ensures that stdout is unbuffered
+* fix a bug in cut to allow use of 8-bit delimiters
+* pr accepts POSIX compliant options -s and -w,
+  the new capital letter options -J, -S and _W turn off the
+  unexpected interferences of the small letter options -s and -w
+  if used together with the column options.
+* pr output has been adapted to other UNIXes in some cases.
+[1.22h]
+* portability tweaks
+* Window/NT/DOS support
+[1.22g]
+* uniq accepts new option: --all-repeated (-D).
+* Windows/DOS portability fixes
+* new program: tsort
+* tail has several new options
+* md5sum can handle file names with embedded backslash characters
+* pr accepts long option names (see `pr --help')
+* new program: ptx (moved to this package from being its own distribution)
+[1.22f]
+* cut accepts new --output-delimiter=STR option
+* `sort -o no-such-file no-such-file' now fails, as it should
+* fix pr bug: pr -td didn't double space
+* fix tac bug when using -b, -r, and -s SEPARATOR
+* fix sort bug whereby using key-local `d' option would cause following
+  key specs to be ignored when any two keys (in the `d'-modified test)
+  compared equal.
+[1.22e]
+* remove maintainer mode
+[1.22d]
+* wc accepts new option: --max-line-length (-L)
+* sort can sort according to your locale if your C library supports that
+[1.22c]
+[1.22b]
+* od supports a new trailing `z' character in a type specification:
+    $ od -tx1z .
+    0000000 be ef c6 0f fd f9 d7 e0 ec cb f3 c6 00 db e8 00  >................<
+    0000020 00 00 d2 00 00 00 00 00 00 00 00 00 00 00 00 00  >................<
+    0000040 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  >................<
+    *
+    0000600 00 00 00 00 00 00 00 00 00 00 00 00 00 00 35 cc  >..............5.<
+    0000620 05 63 76 74 2e 6f 00 00 29 ac 08 70 72 6f 6a 65  >.cvt.o..)..proje<
+    0000640 63 74 73 00 00 00 18 9a 05 63 76 74 2e 63 00 00  >cts......cvt.c..<
+    0000660 18 d9 03 52 43 53 00 00 18 c0 05 78 2e 64 61 74  >...RCS.....x.dat<
+
+[1.22a]
+* sort -c reports both the number and the contents of the first out-of-order
+  line, in addition to the file name.
+* `head -c 4096m' is no longer treated just like `head -c 0'
+  now it gets a diagnostic about 4096m being too large.
+* pr: For compatibility (also more POSIX compliant): Include default
+  separator `TAB' when merging lines of full length.
+* When POSIXLY_CORRECT is not set, tail -N now accepts more than one file
+  argument, to be consistent with the way head -N works.  If POSIXLY_CORRECT
+  is set, using two or more file arguments with the obsolescent form (-N)
+  evokes an error.  To avoid the warning or failure, use the POSIX -n N option
+  or the GNU --lines=N option.
+
+Changes in release 1.22
+[1.21a]
+* Fix a bug in tail when invoked with an argument like `+NUMBERc'
+* Add test suite for tail
+
+Changes in release 1.21
+* Using --program-prefix no longer applies the prefix twice
+
+Changes in release 1.20
+* fix pr: -l now uses total number of lines per page also with -f
+* fix pr: use left-hand-side truncation of header string to avoid line
+  overflow
+* fix pr: it now accepts `form feeds set in input files', also with -m
+  and multiple form feeds at different pages in each file
+* pr now accepts: -h "", print a blank line header
+* pr: when skipping pages (+FIRST_PAGE option) line counting (-n option)
+  starts with 1st line of input file (not of 1st page printed) by default
+* pr accepts new option: -N, start printing with an optional line number
+* pr -t retains `form feeds set in input files' (`don't destroy page layout')
+* pr accepts new option: -T, equivalent to -t, but eliminate also form feeds
+  (`clear file')
+* pr accepts the extension: +FIRST_PAGE[:LAST_PAGE]
+* pr -w and -s option disentangled (`use a separator' no longer destroys
+  column alignment)
+* pr accepts new option: -j, merge lines of full length
+* pr accepts the extension: -s[STRING], use separator string instead of
+  character only
+* pr -b is no longer an independent option, balancing is always used
+  with -COLUMN (a requirement of unrestricted use of form feeds)
+* pr accepts new option: --test, to run the pr tests with a constant
+  header string
+* join passes all of its tests on Alpha OSF 4.0.
+* sort no longer improperly ignores blanks in determining starting and ending
+  positions for keys with explicit character offsets
+* fix bug in csplit with regexp and negative offset that led to infinite loop
+ Changes in test release 1.19q
+* fix bug in sort -c that sometimes resulted in a segfault
+ Changes in test release 1.19p
+* md5sum's --string option is being deprecated and is no longer documented.
+  It is still accepted, but will be removed altogether in 1.22.
+* tr '[:lower:]' '[:upper:]' no longer fails when LC_CTYPE is set to
+  iso_8859_1 on Solaris -- or any other character set with differing
+  numbers of uppercase and lowercase characters
+* split and tail diagnose unrecognized multiplier suffixes, in e.g.,
+  `split --bytes=1M' (should be `-b 1m' or `--bytes=1m')
+* fix bug in md5sum's handling of partial reads
+* fix bug in treatment by sort -f of bytes with high-bit set
+* update configuration system to use automake's aclocal program
+* configure performs sanity check on CC and CFLAGS to avoid a misleading
+  failure that suggested cross-compiling was the cause
+* distribute test suites for cut, join, sort, and tr
+* unexpand no longer gets in endless loop
+* when verifying checksums, md5sum uses the binary mode flag from the
+  input stream rather than the one from the command line
+
+Changes in release 1.19
+* md5sum can verify digests of files with names containing newline characters
+* update from gettext-0.10.20.
+
+Changes in release 1.18
+* when building sort, link with -lm on systems that use the replacement strtod
+* update from gettext-0.10.17.
+
+Changes in release 1.17
+* include texinfo.tex in the distribution
+
+Changes in release 1.16
+* sort is compatible with Unix sort when a key-end spec refers to the N'th
+  character in a field that has fewer than N characters
+* tail with old-style options like -20k and +31m operates on units of bytes,
+  as the --help usage message says.  Before, it used units of lines.
+
+Changes in release 1.15
+* od gives better diagnostics for invalid format specs
+* uses automake-generated Makefile templates
+* configure takes a new option: --enable-maintainer-mode
+* fix a bug in fmt when prefix has trailing white space
+* internationalized diagnostic messages
+* fix a couple bugs in tr involving use of -c and/or -d flags -- see ChangeLog
+* diagnose some improper or questionable invocations of csplit
+* properly handle `echo |csplit - 1 1', rather than aborting
+* fix join: without -t it now ignores leading blanks
+* sort accepts new option: -z for NUL terminated records
+* join accepts new option: --ignore-case, -i
+* uniq accepts new option: --ignore-case, -i
+
+User-visible changes in release 1.14
+* sort -i and sort -d properly order strings containing ignored characters
+* nl: rename misleading --first-page=N option to --starting-line-number=N.
+* sort diagnoses invalid arguments to -k, then fails
+* sort -n properly orders invalid integers with respect to valid integers
+* sorting works with character offsets larger than corresponding field width
+* sort's -b option and `b' modifier work
+* sort -k2,2 works.
+* csplit detects integer overflow when converting command line arguments
+* sort accepts new option/flag, -g, for sorting numbers in scientific notation
+* join accepts POSIX `-o 0' field specifier.
+* tr 'a[b*512]' '[a*]' < /dev/null terminates
+* tr '[:*3][:digit:]' 'a-m' and tr 'a[=*2][=c=]' 'xyyz' no longer fail
+* special characters in tr's string1 and string2 may be escaped with backslash
+
+User-visible changes in release 1.13
+* md5sum: with --check, distinguish between open/read failure and bad checksum
+* md5sum: remove -h, -s, -v short options
+* md5sum: rename --verbose to --warn, --quiet to --status
+* md5sum --check fails if it finds no properly formatted checksum lines
+* sort -c prints `disorder on...' message on standard error, not stdout
+* sort -k works as described in the texinfo documentation
+* tail works on NetBSD
+* md5sum reads and writes (de facto) standard Plumb/Lankester format
+* sort accepts -.1 +.2 options for compatibility
+* od works properly when dump limit is specified and is a multiple of
+  bytes_per_block (set by --width, 16 by default).
+
+User-visible changes in release 1.12
+* sort no longer reports spurious errors on Ultrix systems
+* new program: md5sum
+* all --help messages have been improved
+* join's -a1 and -a2 options work
+* tr '[:upper:]' '[:lower:]' no longer reads uninitialized memory
+* sort properly handles command line arguments like `+7.2n'
+* fmt properly formats paragraphs not terminated by a newline
+* tail -f flushes stdout before sleeping so that it will output partial
+  lines sooner
+* sort properly orders fields where one field is a proper prefix of the other
+* sort properly interprets field offsets specified via the -k option
+* dd, od, and tail work on systems for which off_t is long long (e.g. BSD4.4)
+* wc is faster when not counting words
+* wc now works even when file pointer isn't at beginning of file
+* expand no longer seg faults with very long tab lists
+
+User-visible changes in release 1.11
+* fmt is built
+
+User-visible changes in release 1.10
+* skeletal texinfo documentation (mainly just the `invoking' nodes)
+* new program: fmt
+* tail -f on multiple files reports file truncation
+* tail -q has been fixed so it never prints headers
+* wc -c is much faster when operating on non-regular files
+* unexpand gives a diagnostic (rather than a segfault) when given a name of
+  a nonexistent file.
+* cat, csplit, head, split, sum, tac, tail, tr, and wc no longer fail
+  gratuitously when continued after a suspended read or write system call.
+* cut interprets -d '' to mean `use the NUL byte as the delimiter' rather
+  than reporting that no delimiter was specified and failing.
+* `echo a:b:c: | cut -d: -f3,4' prints `c:'.  Before it printed just `c'.
+* cut has been rewritten, is markedly faster for large inputs, and passes a
+  fairly large test suite.
+* sort properly handles the argument to the -T option.
+
+Major changes in release 1.9.1:
+* cut no longer ignores the last line of input when that line lacks a
+  trailing newline character
+
+Major changes in release 1.9:
+* `echo a:b:c: | cut -d: -f3-' prints `c:' and
+  `echo a:b | cut -d: -f1' prints `a'.
+* the command `printf '\t\n' |fold -w n' now terminates.
+  Before, it wouldn't stop for n less than 8.
+* sort accepts and ignores -y[string] options for compatibilty with Solaris.
+* cat -v /dev/null works on more systems
+* od's --compatible (-C) flag renamed to --traditional (no short option)
+* --help and --version exit successfully
+* --help gives a one-line description of each option and shows the
+  correspondence between short and long-named options.
+* fix bug in cut.  Now `echo 'a:b:c:' | cut -d: -f3-' works.
+  Before it printed `c' instead of `c:'
+* csplit allows repeat counts to be specified via `{*}'.
+* csplit accepts a new option, --suffix=format that supercedes the
+  --digits option.  The --digits option will continue to work.
+* csplit accepts a new option, --elide-empty-files.
+* configure uses config.h, so DEFS won't exceed preprocessor limits of
+  some compilers on the number of symbols defined via -D.
+* work around problem where $(srcdir)/config.h was used instead of
+  ../config.h -- this happened only when building in a subdirectory
+  and when config.h remained in $(srcdir) from a previous ./configure.
+
+Major changes in release 1.8:
+* added non-ANSIfied version of memchr.c from GNU libc.
+
+Major changes in release 1.7:
+* none
+Major changes in release 1.6:
+* with the --version option programs print the version and exit immediately
+* pr -2a really terminates
+* pr -n produces multi-column output
+
+Major changes in release 1.5:
+* sort is 8-bit clean
+* sort's -n and -M options no longer imply -b
+* several bugs in sort have been fixed
+* all programs accept --help and --version options
+* od --compatible accepts pre-POSIX arguments
+* pr -2a terminates
+
+Major changes in release 1.4:
+* add od and cksum programs
+* move cmp to GNU diff distribution
+* tail -f works for multiple files
+* pr prints the file name in error messages
+* fix some off by 1 errors in pr and fold
+* optimize wc -c on regular files
+* sort handles `-' argument correctly
+* sort supports -T option
+* tr ranges like a-a work
+* tr x '' fails gracefully
+* default sum output format is BSD compatible
+* paste -d '' works

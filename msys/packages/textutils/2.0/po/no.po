@@ -1,0 +1,2373 @@
+# Norwegian messages for GNU textutils (bokmål dialect)
+# Copyright (C) 1996 Free Software Foundation, Inc.
+# Eivind Tagseth <eivindt@multinet.no>, 1996, 1997, 1999.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: GNU textutils 1.22i\n"
+"POT-Creation-Date: 1999-08-06 02:10+0200\n"
+"PO-Revision-Date: 1999-04-16 12:02 +02:00\n"
+"Last-Translator: Eivind Tagseth <eivindt@multinet.no>\n"
+"Language-Team: Norwegian <no@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+#: src/cat.c:84 src/cksum.c:265 src/comm.c:70 src/csplit.c:1502 src/cut.c:193
+#: src/expand.c:104 src/fmt.c:268 src/fold.c:61 src/head.c:79 src/join.c:141
+#: src/md5sum.c:100 src/nl.c:171 src/od.c:262 src/paste.c:405 src/pr.c:2772
+#: src/ptx.c:1854 src/sort.c:251 src/split.c:83 src/sum.c:57 src/tac.c:124
+#: src/tail.c:208 src/tr.c:321 src/tsort.c:89 src/unexpand.c:357 src/uniq.c:96
+#: src/wc.c:81
+#, c-format
+msgid "Try `%s --help' for more information.\n"
+msgstr "Prøv med «%s --help» for mer informasjon.\n"
+
+#: src/cat.c:88
+#, c-format
+msgid "Usage: %s [OPTION] [FILE]...\n"
+msgstr "Bruk: %s [FLAGG] [FIL]...\n"
+
+#: src/cat.c:92
+msgid ""
+"Concatenate FILE(s), or standard input, to standard output.\n"
+"\n"
+"  -A, --show-all           equivalent to -vET\n"
+"  -b, --number-nonblank    number nonblank output lines\n"
+"  -e                       equivalent to -vE\n"
+"  -E, --show-ends          display $ at end of each line\n"
+"  -n, --number             number all output lines\n"
+"  -s, --squeeze-blank      never more than one single blank line\n"
+"  -t                       equivalent to -vT\n"
+"  -T, --show-tabs          display TAB characters as ^I\n"
+"  -u                       (ignored)\n"
+"  -v, --show-nonprinting   use ^ and M- notation, except for LFD and TAB\n"
+"      --help               display this help and exit\n"
+"      --version            output version information and exit\n"
+"\n"
+"With no FILE, or when FILE is -, read standard input.\n"
+msgstr ""
+"Føy sammen FIL(er) eller standard inn til standard ut.\n"
+"\n"
+"  -A, --show-all           samme som -vET\n"
+"  -b, --number-nonblank    nummerer ikke-blanke ut-linjer\n"
+"  -e                       samme som -vE\n"
+"  -E, --show-ends          skriv $ på slutten av hver linje\n"
+"  -n, --number             nummerer alle ut-linjer\n"
+"  -s, --squeeze-blank      aldri mer enn én blank linje\n"
+"  -t                       samme som -vT\n"
+"  -T, --show-tabs          vis tabulatorer som ^I\n"
+"  -u                       (ignorert)\n"
+"  -v, --show-nonprinting   bruk ^ og M- notasjon, unntatt for LFD og TAB\n"
+"      --help               vis denne hjelpteksten, og avslutt\n"
+"      --version            vis programversjon, og avslutt\n"
+"\n"
+"Dersom ingen FIL er spesifisert, eller FIL er -, leses det fra standard "
+"inn.\n"
+
+#: src/cat.c:111
+msgid ""
+"\n"
+"  -B, --binary             use binary writes to the console device.\n"
+"\n"
+msgstr ""
+"\n"
+"  -B, --binary             skriv binært til konsollenheten.\n"
+"\n"
+
+#: src/cat.c:116 src/cksum.c:279 src/comm.c:87 src/csplit.c:1533 src/cut.c:225
+#: src/expand.c:124 src/fmt.c:289 src/fold.c:79 src/head.c:103 src/join.c:175
+#: src/md5sum.c:126 src/nl.c:213 src/od.c:327 src/paste.c:424 src/pr.c:2859
+#: src/sort.c:298 src/split.c:106 src/sum.c:75 src/tac.c:142 src/tail.c:261
+#: src/tr.c:383 src/unexpand.c:377 src/uniq.c:124 src/wc.c:100
+msgid ""
+"\n"
+"Report bugs to <bug-textutils@gnu.org>."
+msgstr ""
+"\n"
+"Rapportér feil til <bug-textutils@gnu.org>."
+
+#: src/cat.c:176 src/cat.c:257 src/cat.c:310 src/cat.c:820 src/comm.c:220
+#: src/csplit.c:1493 src/cut.c:799 src/expand.c:392 src/fmt.c:416
+#: src/fold.c:225 src/fold.c:306 src/head.c:139 src/head.c:169 src/head.c:387
+#: src/join.c:871 src/md5sum.c:629 src/nl.c:608 src/od.c:1940 src/paste.c:485
+#: src/pr.c:1158 src/tac.c:715 src/tail.c:285 src/tail.c:1518 src/tr.c:1670
+#: src/tr.c:1916 src/tr.c:2024 src/tr.c:2031 src/tsort.c:490
+#: src/unexpand.c:454
+msgid "write error"
+msgstr "feil ved skriving"
+
+#: src/cat.c:298
+#, c-format
+msgid "cannot do ioctl on `%s'"
+msgstr "kan ikke utføre ioctl på «%s»"
+
+#: src/cat.c:630 src/od.c:1152
+msgid "standard output"
+msgstr "standard ut"
+
+#: src/cat.c:761
+#, c-format
+msgid "%s: input file is output file"
+msgstr "%s: innfil er utfil"
+
+#: src/cksum.c:269 src/cut.c:197 src/expand.c:108 src/fold.c:65 src/head.c:83
+#: src/nl.c:175 src/paste.c:409 src/pr.c:2776 src/sort.c:255 src/sum.c:61
+#: src/tac.c:128 src/tail.c:212 src/unexpand.c:361 src/wc.c:85
+#, c-format
+msgid "Usage: %s [OPTION]... [FILE]...\n"
+msgstr "Bruk: %s [FLAGG]... [FIL]...\n"
+
+#: src/cksum.c:273
+msgid ""
+"Print CRC checksum and byte counts of each FILE.\n"
+"\n"
+"  --help      display this help and exit\n"
+"  --version   output version information and exit\n"
+msgstr ""
+"Vis CRC-sjekksummer og byteantall for hver FIL.\n"
+"\n"
+"  --help      vis denne hjelpteksten og avslutt\n"
+"  --version   vis programversjon og avslutt\n"
+
+#: src/comm.c:74
+#, c-format
+msgid "Usage: %s [OPTION]... LEFT_FILE RIGHT_FILE\n"
+msgstr "Bruk: %s [FLAGG]... VENSTRE_FIL HØYRE_FIL\n"
+
+#: src/comm.c:78
+msgid ""
+"Compare sorted files LEFT_FILE and RIGHT_FILE line by line.\n"
+"\n"
+"  -1              suppress lines unique to left file\n"
+"  -2              suppress lines unique to right file\n"
+"  -3              suppress lines unique to both files\n"
+"      --help      display this help and exit\n"
+"      --version   output version information and exit\n"
+msgstr ""
+"Sammenlign de sorterte filene VENSTRE_FIL og HØYRE_FIL linje for linje.\n"
+"\n"
+"  -1              se bort fra linjer som bare finnes i den venstre filen\n"
+"  -2              se bort fra linjer som bare finnes i den høyre filen\n"
+"  -3              se bort fra linjer som finnes i begge filer\n"
+"      --help      vis denne hjelpteksten og avslutt\n"
+"      --version   vis programversjon og avslutt\n"
+
+#: src/csplit.c:295 src/csplit.c:1488 src/sort.c:561 src/tac-pipe.c:57
+#: src/tr.c:1619 src/tr.c:1716 src/tr.c:1760
+msgid "read error"
+msgstr "lesefeil"
+
+#: src/csplit.c:589
+msgid "input disappeared"
+msgstr "input forsvant"
+
+#: src/csplit.c:711 src/csplit.c:722
+#, c-format
+msgid "%s: line number out of range"
+msgstr "%s: linjenummer utenfor tillatte verdier"
+
+#: src/csplit.c:749
+#, fuzzy, c-format
+msgid "%s: `%s': line number out of range"
+msgstr "%s: «%d»: linjenummer utenfor tillatte verdier"
+
+#: src/csplit.c:752 src/csplit.c:804
+#, c-format
+msgid " on repetition %d\n"
+msgstr " ved %d. repetisjon\n"
+
+#: src/csplit.c:800
+#, c-format
+msgid "%s: `%s': match not found"
+msgstr "%s: «%s»: ingen treff funnet"
+
+#: src/csplit.c:861 src/csplit.c:901 src/tac.c:258
+msgid "error in regular expression search"
+msgstr "feil i søk med regulært uttrykk"
+
+#: src/csplit.c:1004
+#, c-format
+msgid "write error for `%s'"
+msgstr "skrivefeil for «%s»"
+
+#: src/csplit.c:1076
+#, c-format
+msgid "%s: `+' or `-' expected after delimeter"
+msgstr "%s: «+» eller «-» ventet etter skilletegn"
+
+#: src/csplit.c:1080
+#, c-format
+msgid "%s: integer expected after `%c'"
+msgstr "%s: heltall forventet etter «%c»"
+
+#: src/csplit.c:1100
+#, c-format
+msgid "%s: `}' is required in repeat count"
+msgstr "%s: «}» er nødvendig i gjentagelsesantall"
+
+#: src/csplit.c:1110
+#, c-format
+msgid "%s}: integer required between `{' and `}'"
+msgstr "%s}: heltall kreves mellom «{» og «}»"
+
+#: src/csplit.c:1137
+#, c-format
+msgid "%s: closing delimeter `%c' missing"
+msgstr "%s: avsluttende skilletegn «%c» mangler"
+
+#: src/csplit.c:1153
+#, c-format
+msgid "%s: invalid regular expression: %s"
+msgstr "%s: ugyldig regulært uttrykk: %s"
+
+#: src/csplit.c:1186
+#, c-format
+msgid "%s: invalid pattern"
+msgstr "%s: ugyldig mønster"
+
+#: src/csplit.c:1189
+#, c-format
+msgid "%s: line number must be greater than zero"
+msgstr "%s: linjenummeret må være større enn null"
+
+#: src/csplit.c:1195
+#, fuzzy, c-format
+msgid "line number `%s' is smaller than preceding line number, %s"
+msgstr "linjenummer «%s» er mindre enn foregående linjenummer, %lu"
+
+#: src/csplit.c:1201
+#, c-format
+msgid "warning: line number `%s' is the same as preceding line number"
+msgstr "advarsel: linjenummer «%s» er det samme som foregående"
+
+#: src/csplit.c:1323
+msgid "missing conversion specifier in suffix"
+msgstr "manglende konverteringsspesifikator i suffiks"
+
+#: src/csplit.c:1329
+#, c-format
+msgid "invalid conversion specifier in suffix: %c"
+msgstr "ugyldig konvertingsspesifikator i suffiks: %c"
+
+#: src/csplit.c:1332
+#, c-format
+msgid "invalid conversion specifier in suffix: \\%.3o"
+msgstr "ugyldig konverteringsspesifikator i suffiks: \\%.3o"
+
+#: src/csplit.c:1364
+msgid "missing %% conversion specification in suffix"
+msgstr "manglende %%-konverteringsspesifikasjon i suffiks"
+
+#: src/csplit.c:1367
+msgid "too many %% conversion specifications in suffix"
+msgstr "for mange %%-konverteringsspesifikasjoner i suffiks"
+
+#: src/csplit.c:1448
+#, c-format
+msgid "%s: invalid number"
+msgstr "%s: ugyldig nummer"
+
+#: src/csplit.c:1471
+msgid "too few arguments"
+msgstr "for få argumenter"
+
+#: src/csplit.c:1506
+#, c-format
+msgid "Usage: %s [OPTION]... FILE PATTERN...\n"
+msgstr "Bruk: %s [FLAGG]... FIL MØNSTER...\n"
+
+#: src/csplit.c:1510
+msgid ""
+"Output pieces of FILE separated by PATTERN(s) to files `xx01', `xx02', ...,\n"
+"and output byte counts of each piece to standard output.\n"
+"\n"
+"  -b, --suffix-format=FORMAT use sprintf FORMAT instead of %%d\n"
+"  -f, --prefix=PREFIX        use PREFIX instead of `xx'\n"
+"  -k, --keep-files           do not remove output files on errors\n"
+"  -n, --digits=DIGITS        use specified number of digits instead of 2\n"
+"  -s, --quiet, --silent      do not print counts of output file sizes\n"
+"  -z, --elide-empty-files    remove empty output files\n"
+"      --help                 display this help and exit\n"
+"      --version              output version information and exit\n"
+"\n"
+"Read standard input if FILE is -.  Each PATTERN may be:\n"
+"\n"
+"  INTEGER            copy up to but not including specified line number\n"
+"  /REGEXP/[OFFSET]   copy up to but not including a matching line\n"
+"  %%REGEXP%%[OFFSET]   skip to, but not including a matching line\n"
+"  {INTEGER}          repeat the previous pattern specified number of times\n"
+"  {*}                repeat the previous pattern as many times as possible\n"
+"\n"
+"A line OFFSET is a required `+' or `-' followed by a positive integer.\n"
+msgstr ""
+"Skriv ut deler av FIL separert av MØNSTER til filene «xx01», «xx02»,...,\n"
+"og vis antall bytes for hver del på standard ut.\n"
+"\n"
+"  -b, --suffix-format=FORMAT bruk sprintf-FORMAT istedet for %%d\n"
+"  -f, --prefix=PREFIKS       bruk PREFIKS istedet for «xx»\n"
+"  -k, --keep-files           ikke fjern utfiler ved feil\n"
+"  -n, --digits=SIFFER        bruk angitt antall siffer istedet for 2\n"
+"  -s, --quiet, --silent      ikke vis størrelsen på utfilene\n"
+"  -z, --elide-empty-files    fjern tomme utfiler\n"
+"      --help                 vis denne hjelpteksten og avslutt\n"
+"      --version              vis programversjon og avslutt\n"
+"\n"
+"Les standard inn når FIL er «-». Hvert MØNSTER kan være:\n"
+"\n"
+"  HELTALL            kopier fram til, men ikke med, spesifisert linjenummer\n"
+"  /REGEXP/[POSISJON] kopier fram til, men ikke med, en «passende» linje\n"
+"  %%REGEXP%%[POSISJON] hopp fram til, men ikke med, en «passende» linje\n"
+"  {HELTALL}          gjenta forrige mønster så mange ganger som spesifisert\n"
+"  {*}                gjenta forrige mønster så mange ganger som mulig\n"
+"\n"
+"En linje-POSISJON må være «+» eller «-» fulgt av et positivt heltall\n"
+
+#: src/cut.c:201
+msgid ""
+"Print selected parts of lines from each FILE to standard output.\n"
+"\n"
+"  -b, --bytes=LIST        output only these bytes\n"
+"  -c, --characters=LIST   output only these characters\n"
+"  -d, --delimiter=DELIM   use DELIM instead of TAB for field delimiter\n"
+"  -f, --fields=LIST       output only these fields\n"
+"  -n                      (ignored)\n"
+"  -s, --only-delimited    do not print lines not containing delimiters\n"
+"      --output-delimiter=STRING  use STRING as the output delimiter\n"
+"                            the default is to use the input delimiter\n"
+"      --help              display this help and exit\n"
+"      --version           output version information and exit\n"
+"\n"
+"Use one, and only one of -b, -c or -f.  Each LIST is made up of one\n"
+"range, or many ranges separated by commas.  Each range is one of:\n"
+"\n"
+"  N     N'th byte, character or field, counted from 1\n"
+"  N-    from N'th byte, character or field, to end of line\n"
+"  N-M   from N'th to M'th (included) byte, character or field\n"
+"  -M    from first to M'th (included) byte, character or field\n"
+"\n"
+"With no FILE, or when FILE is -, read standard input.\n"
+msgstr ""
+"Skriv ut valgte deler av linjene fra hver FIL til standard ut.\n"
+"\n"
+"  -b, --bytes=LISTE       skriv bare ut disse byte'ene\n"
+"  -c, --characters=LISTE  skriv bare ut disse tegnene\n"
+"  -d, --delimiter=SKILLE  bruk SKILLE istedet for TAB som skilletegn\n"
+"  -f, --fields=LISTE      skriv bare ut disse feltene\n"
+"  -n                      (ignorert)\n"
+"  -s, --only-delimited    ikke skriv ut linjer som ikke inneholder "
+"skilletegn\n"
+"      --output-delimiter=STRENG  bruk STRENG som forvalgt ut-skilletegn.\n"
+"                            forvalgt er å bruke inn-skilletegnet\n"
+"      --help              vis denne hjelpteksten og avslutt\n"
+"      --version           vis programversjon og avslutt\n"
+"\n"
+"Bruk én, og bare én av -b, -c og -f.  Hver LISTE er laget av en\n"
+"«serie», eller mange serier separert av komma.  Hver serie er en av:\n"
+"\n"
+"  N     N'te byte, tegn eller felt, telt fra 1\n"
+"  N-    fra N'te byte, tegn eller felt, til slutten av linjen\n"
+"  N-M   fra N'te til M'te (til og med) byte, tegn eller felt\n"
+"  -M    fra første til M'te (til og med) byte, tegn eller felt\n"
+"\n"
+"Dersom ingen FIL er spesifisert, eller FIL er -, leses det fra standard "
+"inn.\n"
+
+#: src/cut.c:363 src/cut.c:394 src/cut.c:454
+msgid "invalid byte or field list"
+msgstr "ugyldig byte- eller felt-liste"
+
+#: src/cut.c:717 src/cut.c:726
+msgid "only one type of list may be specified"
+msgstr "bare en liste-type kan spesifiseres"
+
+#: src/cut.c:720
+msgid "missing list of positions"
+msgstr "posisjonsliste mangler"
+
+#: src/cut.c:729
+msgid "missing list of fields"
+msgstr "feltliste mangler"
+
+#: src/cut.c:736
+msgid "the delimiter must be a single character"
+msgstr "skilletegnet må være ett enkelt tegn"
+
+#: src/cut.c:766
+msgid "you must specify a list of bytes, characters, or fields"
+msgstr "du må spesifisere en liste av bytes, tegn eller felt"
+
+#: src/cut.c:769
+msgid "a delimiter may be specified only when operating on fields"
+msgstr "et skilletegn kan bare spesifiseres når en opererer med felt"
+
+#: src/cut.c:772
+msgid ""
+"suppressing non-delimited lines makes sense\n"
+"\tonly when operating on fields"
+msgstr ""
+"fjerning av linjer uten skilletegn er meningsløst dersom en ikke opererer\n"
+"\tmed felt"
+
+#: src/expand.c:112
+msgid ""
+"Convert tabs in each FILE to spaces, writing to standard output.\n"
+"With no FILE, or when FILE is -, read standard input.\n"
+"\n"
+"  -i, --initial       do not convert TABs after non whitespace\n"
+"  -t, --tabs=NUMBER   have tabs NUMBER characters apart, not 8\n"
+"  -t, --tabs=LIST     use comma separated list of explicit tab positions\n"
+"      --help          display this help and exit\n"
+"      --version       output version information and exit\n"
+"\n"
+"Instead of -t NUMBER or -t LIST, -NUMBER or -LIST may be used.\n"
+msgstr ""
+"Konverter tabulatorer i hver FIL til mellomrom, skriv til standard ut.\n"
+"Dersom ingen FIL er spesifisert, eller FIL er -, leses det fra standard "
+"inn.\n"
+"\n"
+"  -i, --initial       ikke konverter tabulatorer etter ikke-blanke tegn\n"
+"  -t, --tabs=TALL     ha tabulatorer TALL tegn fra hverandre, ikke 8\n"
+"  -t, --tabs=LISTE    bruk komma-separert LISTE med tab-posisjoner\n"
+"      --help          vis denne hjelpteksten og avslutt\n"
+"      --version       vis programversjon og avslutt\n"
+"\n"
+"Istedet for -t TALL eller -t LISTE kan -TALL eller -LISTE brukes.\n"
+
+#: src/expand.c:166 src/unexpand.c:139
+msgid "tab size contains an invalid character"
+msgstr "tabulatorstørrelse inneholder et ugyldig tegn"
+
+#: src/expand.c:184 src/unexpand.c:157
+msgid "tab size cannot be 0"
+msgstr "tabulatorstørrelse kan ikke være 0"
+
+#: src/expand.c:186 src/unexpand.c:159
+msgid "tab sizes must be ascending"
+msgstr "tabulatorstørrelser må være stigende"
+
+#: src/fmt.c:272
+#, c-format
+msgid "Usage: %s [-DIGITS] [OPTION]... [FILE]...\n"
+msgstr "Bruk: %s [-SIFFER] [FLAGG]... [FIL]...\n"
+
+#: src/fmt.c:273
+msgid ""
+"Reformat each paragraph in the FILE(s), writing to standard output.\n"
+"If no FILE or if FILE is `-', read standard input.\n"
+"\n"
+"Mandatory arguments to long options are mandatory for short options too.\n"
+"  -c, --crown-margin        preserve indentation of first two lines\n"
+"  -p, --prefix=STRING       combine only lines having STRING as prefix\n"
+"  -s, --split-only          split long lines, but do not refill\n"
+"  -t, --tagged-paragraph    indentation of first line different from second\n"
+"  -u, --uniform-spacing     one space between words, two after sentences\n"
+"  -w, --width=NUMBER        maximum line width (default of 75 columns)\n"
+"      --help                display this help and exit\n"
+"      --version             output version information and exit\n"
+"\n"
+"In -wNUMBER, the letter `w' may be omitted.\n"
+msgstr ""
+"Omformattér hvert avsnitt i FILEN(e), skriv til standard ut.\n"
+"Dersom ingen FIL er spesifisert, eller FIL er -, leses det fra standard "
+"inn.\n"
+"\n"
+"Obligatoriske argumenter til lange flagg er også obligatoriske for de "
+"korte.\n"
+"  -c, --crown-margin        behold innrykket til de første to linjene\n"
+"  -p, --prefix=STRENG       sett kun sammen linjer som har STRENG som\n"
+"                            forstavelse\n"
+"  -s, --split-only          del opp lange linjer, men ikke fyll opp\n"
+"  -t, --tagged-paragraph    innrykket til første linje er forskjellig fra "
+"neste\n"
+"  -u, --uniform-spacing     ett mellomrom mellom ord, to etter setninger\n"
+"  -w, --width=TALL          maksimal linjelengde (ellers 75 kolonner)\n"
+"      --help                vis denne hjelpteksten og avslutt\n"
+"      --version             vis programversjon og avslutt\n"
+"\n"
+"Ved -wTALL kan «w» utelates.\n"
+
+#: src/fmt.c:372 src/nl.c:494
+#, c-format
+msgid "invalid line number increment: `%s'"
+msgstr "ugyldig linjenummer-økning: «%s»"
+
+#: src/fold.c:69
+msgid ""
+"Wrap input lines in each FILE (standard input by default), writing to\n"
+"standard output.\n"
+"\n"
+"  -b, --bytes         count bytes rather than columns\n"
+"  -s, --spaces        break at spaces\n"
+"  -w, --width=WIDTH   use WIDTH columns instead of 80\n"
+"      --help          display this help and exit\n"
+"      --version       output version information and exit\n"
+msgstr ""
+"Brekk om linjene i hver FIL (standard inn), skriv til standard ut\n"
+"\n"
+"  -b, --bytes         tell bytes istedet for kolonner\n"
+"  -s, --spaces        brekk om ved mellomrom\n"
+"  -w, --width=BREDDE  bruk BREDDE kolonner istedet for 80\n"
+"      --help          vis denne hjelpeteksten og avslutt\n"
+"      --version       vis versjonsinformasjon og avslutt\n"
+
+#: src/fold.c:283
+#, c-format
+msgid "invalid number of columns: `%s'"
+msgstr "ugyldig antall kolonner: «%s»"
+
+#: src/head.c:87
+msgid ""
+"Print first 10 lines of each FILE to standard output.\n"
+"With more than one FILE, precede each with a header giving the file name.\n"
+"With no FILE, or when FILE is -, read standard input.\n"
+"\n"
+"  -c, --bytes=SIZE         print first SIZE bytes\n"
+"  -n, --lines=NUMBER       print first NUMBER lines instead of first 10\n"
+"  -q, --quiet, --silent    never print headers giving file names\n"
+"  -v, --verbose            always print headers giving file names\n"
+"      --help               display this help and exit\n"
+"      --version            output version information and exit\n"
+"\n"
+"SIZE may have a multiplier suffix: b for 512, k for 1K, m for 1 Meg.\n"
+"If -VALUE is used as first OPTION, read -c VALUE when one of\n"
+"multipliers bkm follows concatenated, else read -n VALUE.\n"
+msgstr ""
+"Skriv de første 10 linjene av hver FIL til standard ut.\n"
+"Med mer enn en FIL er angitt, skriv ut filnavnet før hver FIL.\n"
+"Dersom ingen FIL er spesifisert, eller FIL er -, leses det fra standard "
+"inn.\n"
+"\n"
+"  -c, --bytes=STØRRELSE    skriv ut første STØRRELSE bytes\n"
+"  -n, --lines=ANTALL       skriv ut første ANTALL tegn istedet for 10\n"
+"  -q, --quiet, --silent    ikke skriv ut filnavnene først\n"
+"  -v, --verbose            skriv alltid filnavnene først\n"
+"      --help               vis denne hjelpteksten, og avslutt\n"
+"      --version            vis programversjon og avslutt\n"
+"\n"
+"STØRRELSE kan ha en multiplikator-endelse: b for 512, k for 1K, m for 1Meg.\n"
+"Hvis -VERDI brukes som første FLAGG, leses det som -c VERDI hvis en av\n"
+"multiplikatorene bkm er bakerst, ellers leses -n VERDI.\n"
+
+#: src/head.c:191 src/md5sum.c:302 src/md5sum.c:632 src/od.c:941 src/od.c:1200
+#: src/od.c:1273 src/od.c:1937 src/pr.c:1156 src/pr.c:1365 src/pr.c:1487
+#: src/tac.c:485 src/tac.c:491 src/tr.c:2034 src/tsort.c:493
+msgid "standard input"
+msgstr "standard inn"
+
+#: src/head.c:232 src/tail.c:1338
+msgid "invalid number of lines"
+msgstr "ugyldig antall linjer"
+
+#: src/head.c:233 src/tail.c:1339
+msgid "invalid number of bytes"
+msgstr "ugyldig antall bytes"
+
+#: src/head.c:239 src/tail.c:1261 src/tail.c:1344
+#, c-format
+msgid "%s: %s is so large that it is not representable"
+msgstr "%s: %s er så stor at den ikke kan representeres"
+
+#: src/head.c:240 src/tail.c:1263 src/tail.c:1346
+msgid "number of lines"
+msgstr "antall linjer"
+
+#: src/head.c:240 src/tail.c:1264 src/tail.c:1346
+msgid "number of bytes"
+msgstr "antall bytes"
+
+#: src/head.c:317
+#, c-format
+msgid "unrecognized option `-%c'"
+msgstr "ukjent flagg «-%c»"
+
+#: src/join.c:145
+#, c-format
+msgid "Usage: %s [OPTION]... FILE1 FILE2\n"
+msgstr "Bruk: %s [FLAGG]... FIL1 FIL2\n"
+
+#: src/join.c:149
+msgid ""
+"For each pair of input lines with identical join fields, write a line to\n"
+"standard output.  The default join field is the first, delimited\n"
+"by whitespace.  When FILE1 or FILE2 (not both) is -, read standard input.\n"
+"\n"
+"  -a SIDE           print unpairable lines coming from file SIDE\n"
+"  -e EMPTY          replace missing input fields with EMPTY\n"
+"  -i, --ignore-case ignore differences in case when comparing fields\n"
+"  -j FIELD          (obsolescent) equivalent to `-1 FIELD -2 FIELD'\n"
+"  -j1 FIELD         (obsolescent) equivalent to `-1 FIELD'\n"
+"  -j2 FIELD         (obsolescent) equivalent to `-2 FIELD'\n"
+"  -o FORMAT         obey FORMAT while constructing output line\n"
+"  -t CHAR           use CHAR as input and output field separator\n"
+"  -v SIDE           like -a SIDE, but suppress joined output lines\n"
+"  -1 FIELD          join on this FIELD of file 1\n"
+"  -2 FIELD          join on this FIELD of file 2\n"
+"      --help        display this help and exit\n"
+"      --version     output version information and exit\n"
+"\n"
+"Unless -t CHAR is given, leading blanks separate fields and are ignored,\n"
+"else fields are separated by CHAR.  Any FIELD is a field number counted\n"
+"from 1.  FORMAT is one or more comma or blank separated specifications,\n"
+"each being `SIDE.FIELD' or `0'.  Default FORMAT outputs the join field,\n"
+"the remaining fields from FILE1, the remaining fields from FILE2, all\n"
+"separated by CHAR.\n"
+msgstr ""
+"For hvert par av inn-linjer med like sammenføyningsfelt, skriv en linje til\n"
+"standard ut. Det forvalgte sammenføyningsfeltet er det første\n"
+"feltet, begrenset av «blanke» tegn. Dersom FIL1 eller FIL2 (ikke begge)\n"
+"er -, leses det fra standard inn.\n"
+"\n"
+"  -a SIDE           skriv ut linjer som ikke kan parres som fra fil SIDE\n"
+"  -e TOM            erstatt manglende inn-felt med TOM\n"
+"  -i, --ignore-case ignorer forskjeller i store/små bokstaver ved\n"
+"                    sammenligning av felt\n"
+"  -j FELT           (avleggs) samme som «-1 FELT -2 FELT»\n"
+"  -j1 FELT          (avleggs) samme som «-1 FELT»\n"
+"  -j2 FELT          (avleggs) samme som «-2 FELT»\n"
+"  -o FORMAT         følg FORMAT når utlinjen lages\n"
+"  -t TEGN           bruk TEGN som feltseparator for inn og ut\n"
+"  -v SIDE           som -a SIDE, men dropp sammenføyde ut-linjer\n"
+"  -1 FELT           sammenføy ved dette FELTet fra fil 1\n"
+"  -2 FELT           sammenføy ved dette FELTet fra fil 2\n"
+"  --help            vis denne hjelpteksten og avslutt\n"
+"  --version         vis programversjon og avslutt\n"
+"\n"
+"Dersom -t TEGN ikke er angitt, er «ledende blanke» feltseparator, og "
+"ignoreres,\n"
+"ellers er felt skilt av TEGN. Hvert FELT er et feltnummer telt fra 1.\n"
+"FORMAT er en eller flere komma- eller blank-separerte spesifikasjoner, der\n"
+"hver er «SIDE.FELT» eller «0». Det forvalgte FORMATet skriver ut\n"
+"sammenføyningsfeltet, resten av feltene fra FIL1 og resten av feltene fra\n"
+"FIL2, alle skilt med TEGN.\n"
+
+#. `0' must be all alone -- no `.FIELD'.
+#: src/join.c:640
+#, c-format
+msgid "invalid field specifier: `%s'"
+msgstr "ugyldig felt-spesifikator: «%s»"
+
+#: src/join.c:654 src/join.c:767 src/join.c:803
+#, c-format
+msgid "invalid field number: `%s'"
+msgstr "ugyldig felt-nummer: «%s»"
+
+#: src/join.c:667
+#, c-format
+msgid "invalid file number in field spec: `%s'"
+msgstr "ugyldig filnummer i felt-spesifikator: «%s»"
+
+#: src/join.c:787
+#, c-format
+msgid "invalid field number for file 1: `%s'"
+msgstr "ugyldig feltnummer for fil 1: «%s»"
+
+#: src/join.c:796
+#, c-format
+msgid "invalid field number for file 2: `%s'"
+msgstr "ugyldig feltnummer for fil 2: «%s»"
+
+#: src/join.c:828
+msgid "too many non-option arguments"
+msgstr "for mange ikke-flagg-argumenter"
+
+#: src/join.c:850
+msgid "too few non-option arguments"
+msgstr "for få ikke-flagg-argumenter"
+
+#: src/join.c:861
+msgid "both files cannot be standard input"
+msgstr "begge filene kan ikke være standard inn"
+
+#: src/md5sum.c:104
+#, c-format
+msgid ""
+"Usage: %s [OPTION] [FILE]...\n"
+"  or:  %s [OPTION] --check [FILE]\n"
+"Print or check MD5 checksums.\n"
+"With no FILE, or when FILE is -, read standard input.\n"
+"\n"
+"  -b, --binary            read files in binary mode (default on "
+"DOS/Windows)\n"
+"  -c, --check             check MD5 sums against given list\n"
+"  -t, --text              read files in text mode (default)\n"
+"\n"
+"The following two options are useful only when verifying checksums:\n"
+"      --status            don't output anything, status code shows success\n"
+"  -w, --warn              warn about improperly formated MD5 checksum lines\n"
+"\n"
+"      --help              display this help and exit\n"
+"      --version           output version information and exit\n"
+"\n"
+"The sums are computed as described in RFC 1321.  When checking, the input\n"
+"should be a former output of this program.  The default mode is to print\n"
+"a line with checksum, a character indicating type (`*' for binary, ` ' for\n"
+"text), and name for each FILE.\n"
+msgstr ""
+"Bruk:      %s [FLAGG] [FIL]...\n"
+"  eller:   %s [FLAGG] --check [FIL]\n"
+"Skriv eller sjekk MD5-sjekksummer.\n"
+"Dersom ingen FIL er spesifisert eller FIL er -, leses det fra standard inn.\n"
+"\n"
+"  -b, --binary          les filene i binærmodus (forvalg i DOS/Windows)\n"
+"  -c, --check           sjekk MD5-summene mot angitt liste\n"
+"  -t, --text            les filene i tekstmodus (forvalgt)\n"
+"\n"
+"De følgende to flaggene brukes kun ved sjekking av sjekksummer:\n"
+"      --status          ikke skriv ut noe, statuskode angir resultat\n"
+"  -w, --warn            advar mot feilformatterte MD5-sjekksum-linjer\n"
+"\n"
+"      --help            vis denne hjelpteksten og avslutt\n"
+"      --version         vis programversjon og avslutt\n"
+"\n"
+"Summene blir beregnet som beskrevet i RFC 1321. Ved sjekking skal\n"
+"inndata være tidligere utdata fra dette programmet.  Forvalgt \n"
+"modus er å skrive ut en linje med sjekksum, et tegn som indikerer\n"
+"type («*» for binær, « » for tekst), og navnet til hver FIL\n"
+
+#: src/md5sum.c:346
+#, c-format
+msgid "%s: %lu: improperly formatted MD5 checksum line"
+msgstr "%s: %lu: ukorrekt formattert MD5 sjekksumlinje"
+
+#: src/md5sum.c:367
+#, c-format
+msgid "%s: FAILED open or read\n"
+msgstr "%s: FEIL ved åpning eller lesing\n"
+
+#: src/md5sum.c:389
+msgid "FAILED"
+msgstr "FEIL"
+
+#: src/md5sum.c:389
+msgid "OK"
+msgstr "OK"
+
+#: src/md5sum.c:402
+#, c-format
+msgid "%s: read error"
+msgstr "%s: lesefeil"
+
+#. Warn if no tests are found.
+#: src/md5sum.c:415
+#, c-format
+msgid "%s: no properly formatted MD5 checksum lines found"
+msgstr "%s: ingen riktig formatterte MD5-sjekksumlinjer funnet"
+
+#: src/md5sum.c:428
+#, c-format
+msgid "WARNING: %d of %d listed %s could not be read\n"
+msgstr "ADVARSEL: %d av %d oppførte %s kunne ikke leses\n"
+
+#: src/md5sum.c:431
+msgid "file"
+msgstr "fil"
+
+#: src/md5sum.c:431
+msgid "files"
+msgstr "filer"
+
+#: src/md5sum.c:437
+#, c-format
+msgid "WARNING: %d of %d computed %s did NOT match"
+msgstr "ADVARSEL: %d av %d beregnede %s stemte IKKE overens"
+
+#: src/md5sum.c:440
+msgid "checksum"
+msgstr "sjekksum"
+
+#: src/md5sum.c:440
+msgid "checksums"
+msgstr "sjekksummer"
+
+#: src/md5sum.c:517
+msgid ""
+"the --binary and --text options are meaningless when verifying checksums"
+msgstr ""
+"flaggene --binary og --text er meningsløse ved verifisering av sjekksummer"
+
+#: src/md5sum.c:525
+msgid "the --string and --check options are mutually exclusive"
+msgstr "flaggene --string og --check kan ikke brukes samtidig"
+
+#: src/md5sum.c:532
+msgid "the --status option is meaningful only when verifying checksums"
+msgstr "flagget --status har bare betydning ved sjekking av sjekksummer"
+
+#: src/md5sum.c:539
+msgid "the --warn option is meaningful only when verifying checksums"
+msgstr "flagget --warn har bare betydning ved sjekking av sjekksummer"
+
+#: src/md5sum.c:549
+msgid "no files may be specified when using --string"
+msgstr "ingen filer kan spesifiseres når flagget --string brukes"
+
+#: src/md5sum.c:568
+msgid "only one argument may be specified when using --check"
+msgstr "kun ett argument kan spesifiseres ved bruk av --check"
+
+#: src/nl.c:179
+msgid ""
+"Write each FILE to standard output, with line numbers added.\n"
+"With no FILE, or when FILE is -, read standard input.\n"
+"\n"
+"  -b, --body-numbering=STYLE      use STYLE for numbering body lines\n"
+"  -d, --section-delimiter=CC      use CC for separating logical pages\n"
+"  -f, --footer-numbering=STYLE    use STYLE for numbering footer lines\n"
+"  -h, --header-numbering=STYLE    use STYLE for numbering header lines\n"
+"  -i, --page-increment=NUMBER     line number increment at each line\n"
+"  -l, --join-blank-lines=NUMBER   group of NUMBER empty lines counted as "
+"one\n"
+"  -n, --number-format=FORMAT      insert line numbers according to FORMAT\n"
+"  -p, --no-renumber               do not reset line numbers at logical "
+"pages\n"
+"  -s, --number-separator=STRING   add STRING after (possible) line number\n"
+"  -v, --first-page=NUMBER         first line number on each logical page\n"
+"  -w, --number-width=NUMBER       use NUMBER columns for line numbers\n"
+"      --help                      display this help and exit\n"
+"      --version                   output version information and exit\n"
+"\n"
+"By default, selects -v1 -i1 -l1 -sTAB -w6 -nrn -hn -bt -fn.  CC are\n"
+"two delimiter characters for separating logical pages, a missing\n"
+"second character implies :.  Type \\\\ for \\.  STYLE is one of:\n"
+"\n"
+"  a         number all lines\n"
+"  t         number only nonempty lines\n"
+"  n         number no lines\n"
+"  pREGEXP   number only lines that contain a match for REGEXP\n"
+"\n"
+"FORMAT is one of:\n"
+"\n"
+"  ln   left justified, no leading zeros\n"
+"  rn   right justified, no leading zeros\n"
+"  rz   right justified, leading zeros\n"
+"\n"
+msgstr ""
+"Skriv hver fil til standard ut, med linjenummer lagt til.\n"
+"Dersom ingen FIL er spesifisert, eller FIL er -, leses det fra standard "
+"inn.\n"
+"\n"
+"  -b, --body-numbering=STIL       bruk STIL for nummerering\n"
+"  -d, --section-delimiter=CC      bruk CC for å skille logiske sider\n"
+"  -f, --footer-numbering=STIL     bruk STIL for å nummerere bunntekst\n"
+"  -h, --header-numbering=STIL     bruk STIL for å nummerere topptekst\n"
+"  -i, --page-increment=ANTALL     linjenummerøkning for hver linje\n"
+"  -l, --join-blank-lines=ANTALL   ANTALL tomme linjer som teller som en\n"
+"  -n, --number-format=FORMAT      sett inn linjenummer etter FORMAT\n"
+"  -p, --no-renumber               ikke begynn linjenumre på nytt ved "
+"logiske\n"
+"                                  sider\n"
+"  -s, --number-separator=STRENG   legg til STRENG etter (mulig) linjenummer\n"
+"  -v, --first-page=ANTALL         første linjenummer på hver logiske side\n"
+"  -w, --number-width=ANTALL       bruk ANTALL kolonner for linjenummerering\n"
+"      --help                      vis denne hjelpteksten og avslutt\n"
+"      --version                   vis programversjon og avslutt\n"
+"\n"
+"Forvalgt er -v1 -i1 -l1 -sTAB -w6 -nrn -hn -bt -fn.  CC er\n"
+"to skilletegn for å skille logiske sider, et manglende andretegn\n"
+"impliserer «:». Bruk \\\\ for \\. STIL er en av:\n"
+"\n"
+"  a         nummerer alle linjer\n"
+"  t         nummerer bare ikke-tomme linjer\n"
+"  n         nummerer ingen linjer\n"
+"  pREGEXP   nummerer bare linjer som passer REGEXP\n"
+"\n"
+"FORMAT er et av følgende:\n"
+"\n"
+"  ln   venstrejustert, ingen ledende nuller\n"
+"  rn   høyrejustert, ingen ledende nuller\n"
+"  rz   høyrejustert, ledende nuller\n"
+"\n"
+
+#: src/nl.c:484
+#, c-format
+msgid "invalid starting line number: `%s'"
+msgstr "ugyldig startlinjenummer: «%s»"
+
+#: src/nl.c:507
+#, c-format
+msgid "invalid number of blank lines: `%s'"
+msgstr "ugyldig antall blanke linjer: «%s»"
+
+#: src/nl.c:521
+#, c-format
+msgid "invalid line number field width: `%s'"
+msgstr "ugyldig linjenummer-feltbredde: «%s»"
+
+#: src/od.c:266
+#, c-format
+msgid ""
+"Usage: %s [OPTION]... [FILE]...\n"
+"  or:  %s --traditional [FILE] [[+]OFFSET [[+]LABEL]]\n"
+msgstr ""
+"Bruk:      %s [FLAGG]... [FIL]...\n"
+"  eller:   %s --traditional [FIL] [[+]POSISJON [[+]MERKE]]\n"
+
+#: src/od.c:271
+msgid ""
+"Write an unambiguous representation, octal bytes by default, of FILE\n"
+"to standard output.  With no FILE, or when FILE is -, read standard input.\n"
+"\n"
+"  -A, --address-radix=RADIX   decide how file offsets are printed\n"
+"  -j, --skip-bytes=BYTES      skip BYTES input bytes first on each file\n"
+"  -N, --read-bytes=BYTES      limit dump to BYTES input bytes per file\n"
+"  -s, --strings[=BYTES]       output strings of at least BYTES graphic "
+"chars\n"
+"  -t, --format=TYPE           select output format or formats\n"
+"  -v, --output-duplicates     do not use * to mark line suppression\n"
+"  -w, --width[=BYTES]         output BYTES bytes per output line\n"
+"      --traditional           accept arguments in pre-POSIX form\n"
+"      --help                  display this help and exit\n"
+"      --version               output version information and exit\n"
+"\n"
+"Pre-POSIX format specifications may be intermixed, they accumulate:\n"
+"  -a   same as -t a,  select named characters\n"
+"  -b   same as -t oC, select octal bytes\n"
+"  -c   same as -t c,  select ASCII characters or backslash escapes\n"
+"  -d   same as -t u2, select unsigned decimal shorts\n"
+"  -f   same as -t fF, select floats\n"
+"  -h   same as -t x2, select hexadecimal shorts\n"
+"  -i   same as -t d2, select decimal shorts\n"
+"  -l   same as -t d4, select decimal longs\n"
+"  -o   same as -t o2, select octal shorts\n"
+"  -x   same as -t x2, select hexadecimal shorts\n"
+msgstr ""
+"Skriv en entydig representasjon, oktale bytes forvalgt, av FIL\n"
+"til standard ut. Dersom ingen FIL er spesifisert, eller FIL er -,\n"
+"leses det fra standard inn.\n"
+"\n"
+"  -A, --address-radix=RADIX   bestem hvordan filoffset'er skrives\n"
+"  -j, --skip-bytes=BYTES      hopp over første BYTES fra hver fil\n"
+"  -N, --read-bytes=BYTES      begrens oppgaven til første BYTES fra hver "
+"fil\n"
+"  -s, --strings[=BYTES]       skriv ut strenger med minst BYTES grafiske "
+"tegn\n"
+"  -t, --format=TYPE           velg utformat(er)\n"
+"  -v, --output-duplicates     ikke bruk * for å markere linjefjerning\n"
+"  -w, --width[=BYTES]         skriv BYTES bytes per utlinje\n"
+"      --traditional           aksepter argumenter i pre-POSIX form\n"
+"      --help                  vis denne hjelpteksten og avslutt\n"
+"      --version               vis programversjon og avslutt\n"
+"\n"
+"Pre-POSIX-argumenter kan blandes, de er:\n"
+"  -a   samme som -t a,  velg navngitte tegn\n"
+"  -b   samme som -t oC, velg oktalbytes\n"
+"  -c   samme som -t c,  velg ASCII-tegn eller backslash-notasjon\n"
+"  -d   samme som -t u2, velg korte desimaler uten fortegn\n"
+"  -f   samme som -t fF, velg flyttall\n"
+"  -h   samme som -t x2, velg korte hexadesimale\n"
+"  -i   samme som -t d2, velg korte desimaler\n"
+"  -l   samme som -t d4, velg lange desimaler\n"
+"  -o   samme som -t o2, velg korte oktaler\n"
+"  -x   samme som -t x2, velg korte hexadesimaler\n"
+
+#: src/od.c:298
+msgid ""
+"\n"
+"For older syntax (second call format), OFFSET means -j OFFSET.  LABEL\n"
+"is the pseudo-address at first byte printed, incremented when dump is\n"
+"progressing.  For OFFSET and LABEL, a 0x or 0X prefix indicates\n"
+"hexadecimal, suffixes maybe . for octal and b multiply by 512.\n"
+"\n"
+"TYPE is made up of one or more of these specifications:\n"
+"\n"
+"  a          named character\n"
+"  c          ASCII character or backslash escape\n"
+"  d[SIZE]    signed decimal, SIZE bytes per integer\n"
+"  f[SIZE]    floating point, SIZE bytes per integer\n"
+"  o[SIZE]    octal, SIZE bytes per integer\n"
+"  u[SIZE]    unsigned decimal, SIZE bytes per integer\n"
+"  x[SIZE]    hexadecimal, SIZE bytes per integer\n"
+"\n"
+"SIZE is a number.  For TYPE in doux, SIZE may also be C for\n"
+"sizeof(char), S for sizeof(short), I for sizeof(int) or L for\n"
+"sizeof(long).  If TYPE is f, SIZE may also be F for sizeof(float), D\n"
+"for sizeof(double) or L for sizeof(long double).\n"
+"\n"
+"RADIX is d for decimal, o for octal, x for hexadecimal or n for none.\n"
+"BYTES is hexadecimal with 0x or 0X prefix, it is multiplied by 512\n"
+"with b suffix, by 1024 with k and by 1048576 with m.  Adding a z suffix to\n"
+"any type adds a display of printable characters to the end of each line\n"
+"of output.  -s without a number implies 3.  -w without a number implies 32.\n"
+"By default, od uses -A o -t d2 -w 16.\n"
+msgstr ""
+"\n"
+"For eldre syntaks («second call format»), betyr POSISJON -j POSISJON. \n"
+"MERKE er pseudoadressen til den første uskrevne byten, som økes mens\n"
+"utskriften pågår. For POSISJON og MERKE, indikerer en 0x- eller \n"
+"0X-forstavelse hexadesimalt tallformat.  Endelser kan være . for oktal,\n"
+"og b for blokker på 512 bytes.\n"
+"\n"
+"TYPE er laget av en eller flere av følgende:\n"
+"\n"
+"  a            et navngitt tegn\n"
+"  c            ASCII-tegn eller backslash-notasjon\n"
+"  d[STØRRELSE] desimal med fortegn, STØRRELSE bytes per tall\n"
+"  f[STØRRELSE] flyttall, STØRRELSE bytes per tall\n"
+"  o[STØRRELSE] oktal, STØRRELSE bytes per tall\n"
+"  u[STØRRELSE] desimal uten fortegn, STØRRELSE bytes per tall\n"
+"  x[STØRRELSE] hexadesimal, STØRRELSE bytes per tall\n"
+"\n"
+"STØRRELSE er et tall. For TYPE lik d, o, u eller x, kan STØRRELSE også være\n"
+"C for sizeof(char), S for sizeof(short), I for sizeof(int) eller L for \n"
+"sizeof(long).  Når TYPE er f, kan STØRRELSE være F for sizeof(float), \n"
+"D for sizeof(double) eller L for sizeof(long double).\n"
+"\n"
+"RADIX er d for desimal, o for oktal, x for hexadesimal eller n for ingen.\n"
+"BYTES er hexadesimal med 0x- eller 0X-prefix, multipliseres med 512\n"
+"med endelse b, med 1024 med endelse k og med 1048576 med endelse m. \n"
+"En z-endelse for en hvilken som helst type viser skrivbare tegn til slutten\n"
+"av hver linje av utskriften.  -s uten et tall impliserer 3. -w uten et tall\n"
+"impliserer 32. Forvalgt er at od bruker -A o -t d2 -w 16.\n"
+
+#. The integer at P in S would overflow an unsigned long.
+#. A digit string that long is sufficiently odd looking
+#. that the following diagnostic is sufficient.
+#: src/od.c:676 src/od.c:789
+#, c-format
+msgid "invalid type string `%s'"
+msgstr "ugyldig type-streng «%s»"
+
+#: src/od.c:686
+#, c-format
+msgid ""
+"invalid type string `%s';\n"
+"this system doesn't provide a %lu-byte integral type"
+msgstr ""
+"ugyldig type-streng «%s»;\n"
+"dette systemet støtter ikke en %lu-byte heltallstype"
+
+#: src/od.c:799
+#, c-format
+msgid ""
+"invalid type string `%s';\n"
+"this system doesn't provide a %lu-byte floating point type"
+msgstr ""
+"ugyldig type-streng «%s»;\n"
+"dette systemet støtter ikke en %lu-byte flyttallstype"
+
+#: src/od.c:862
+#, c-format
+msgid "invalid character `%c' in type string `%s'"
+msgstr "ugyldig tegn «%c» i type-streng «%s»"
+
+#: src/od.c:1029
+msgid "cannot skip past end of combined input"
+msgstr "kan ikke hoppe til bak slutten av kombinert inndata"
+
+#: src/od.c:1341
+msgid "old-style offset"
+msgstr "posisjon på gammel stil"
+
+#: src/od.c:1660
+#, c-format
+msgid "invalid output address radix `%c'; it must be one character from [doxn]"
+msgstr "ugyldig ut-adresse radix «%c»; det må være ett av tegnene [doxn]"
+
+#: src/od.c:1671
+msgid "skip argument"
+msgstr "hopp over argument"
+
+#: src/od.c:1682
+msgid "limit argument"
+msgstr "begrens argument"
+
+#: src/od.c:1686
+#, c-format
+msgid ""
+"specified number of bytes `%s' is larger than the maximum\n"
+"representable value of type `long'"
+msgstr ""
+"angitt antall bytes «%s» er større enn den maksimale representérbare\n"
+"verdien av type «long»"
+
+#: src/od.c:1697
+msgid "minimum string length"
+msgstr "minimal strenglengde"
+
+#: src/od.c:1751
+msgid "width specification"
+msgstr "breddespesifikasjon"
+
+#: src/od.c:1770
+msgid "no type may be specified when dumping strings"
+msgstr "ingen type kan spesifiseres ved dumping av strenger"
+
+#: src/od.c:1815
+#, c-format
+msgid "invalid second operand in compatibility mode `%s'"
+msgstr "ugyldig andre-operand i kompatibilitetsmodus «%s»"
+
+#: src/od.c:1836
+msgid "in compatibility mode, the last two arguments must be offsets"
+msgstr "i kompatibilitetsmodus må de siste to argumentene være posisjoner"
+
+#: src/od.c:1843
+msgid "compatibility mode supports at most three arguments"
+msgstr "kompatibilitetsmodus støtter maksimum tre argumenter"
+
+#: src/od.c:1911
+#, c-format
+msgid "warning: invalid width %lu; using %d instead"
+msgstr "advarsel: ugyldig bredde %lu; bruker %d istedet"
+
+#: src/od.c:1927
+#, c-format
+msgid "%d: fmt=\"%s\" width=%d\n"
+msgstr "%d: fmt=\"%s\" bredde=%d\n"
+
+#: src/paste.c:214
+msgid "standard input is closed"
+msgstr "standard inn er lukket"
+
+#: src/paste.c:413
+msgid ""
+"Write lines consisting of the sequentially corresponding lines from\n"
+"each FILE, separated by TABs, to standard output.\n"
+"With no FILE, or when FILE is -, read standard input.\n"
+"\n"
+"  -d, --delimiters=LIST   reuse characters from LIST instead of TABs\n"
+"  -s, --serial            paste one file at a time instead of in parallel\n"
+"      --help              display this help and exit\n"
+"      --version           output version information and exit\n"
+"\n"
+msgstr ""
+"Skriv linjer som består av de sekvensielt tilsvarende linjene fra hver\n"
+"FIL separert med tabulatorer til standard ut.\n"
+"Dersom ingen FIL er spesifisert, eller FIL er -, leses det fra standard "
+"inn.\n"
+"\n"
+"  -d, --delimiters=LISTE  bruk tegn fra LISTE istedet for tabulatorer\n"
+"  -s, --serial            ta en fil om gangen i steder for i parallell\n"
+"      --help              vis denne hjelpteksten og avslutt\n"
+"      --version           vis programversjon og avslutt\n"
+"\n"
+
+#: src/pr.c:788
+#, c-format
+msgid "`--pages' invalid range of page numbers: `%s'"
+msgstr "«--pages» ugyldig område med sidenummer: «%s»"
+
+#: src/pr.c:800
+#, c-format
+msgid "`--pages' invalid starting page number: `%s'"
+msgstr "«--pages» ugyldig start-sidenummer: «%s»"
+
+#: src/pr.c:812
+#, c-format
+msgid "`--pages' invalid ending page number: `%s'"
+msgstr "«--pages» ugyldig slutt-sidenummer: «%s»"
+
+#: src/pr.c:819
+msgid "`--pages' starting page number is larger than ending page number"
+msgstr "«--pages» start-sidenummeret er større enn slutt-sidenummeret"
+
+#: src/pr.c:910
+msgid "`--pages=FIRST_PAGE[:LAST_PAGE]' missing argument"
+msgstr "«--pages=FØRSTE_SIZE[:SISTE_SIDE]» mangler argument"
+
+#: src/pr.c:921
+#, c-format
+msgid "`--columns=COLUMN' invalid number of columns: `%s'"
+msgstr "«--columns=SPALTER» ugyldig antall kolonner: «%s»"
+
+#: src/pr.c:973
+#, c-format
+msgid "`-l PAGE_LENGTH' invalid number of lines: `%s'"
+msgstr "«-l SIDE_LENGDE» igyldig antall linjer: «%s»"
+
+#: src/pr.c:997
+#, c-format
+msgid "`-N NUMBER' invalid starting line number: `%s'"
+msgstr "«-N TALL» ugyldig start-linjenummer: «%s»"
+
+#: src/pr.c:1009
+#, c-format
+msgid "`-o MARGIN' invalid line offset: `%s'"
+msgstr "«-o MARG» ugyldig linje-offset: «%s»"
+
+#: src/pr.c:1050
+#, c-format
+msgid "`-w PAGE_WIDTH' invalid number of characters: `%s'"
+msgstr "«-w SIDE_BREDDE» igyldig antall tegn: «%s»"
+
+#: src/pr.c:1062
+#, c-format
+msgid "`-W PAGE_WIDTH' invalid number of characters: `%s'"
+msgstr "«-W SIDE_BREDDE» ugyldig antall tegn: «%s»"
+
+#: src/pr.c:1080
+msgid "Cannot specify number of columns when printing in parallel."
+msgstr "Kan ikke spesifisere antall kolonner når det skrives i parallell."
+
+#: src/pr.c:1084
+msgid "Cannot specify both printing across and printing in parallel."
+msgstr "Kan ikke spesifisere både skriving i kryss og skriving i parallell"
+
+#: src/pr.c:1182
+#, c-format
+msgid "`-%c' extra characters or invalid number in the argument: `%s'"
+msgstr "«-%c» ekstra tegn eller ugyldig tall i argumentet: «%s»"
+
+#: src/pr.c:1293
+msgid "page width too narrow"
+msgstr "sidebredde for smal"
+
+#: src/pr.c:1706
+#, c-format
+msgid "%s%*s%s%*sPage"
+msgstr "%s%*s%s%*sSide"
+
+#: src/pr.c:2389
+#, c-format
+msgid "starting page number larger than total number of pages: `%d'"
+msgstr "start-sidenummeret er større enn totalt antall sider: «%d»"
+
+#: src/pr.c:2781
+#, fuzzy
+msgid ""
+"Paginate or columnate FILE(s) for printing.\n"
+"\n"
+"  +FIRST_PAGE[:LAST_PAGE], --pages=FIRST_PAGE[:LAST_PAGE]\n"
+"                    begin [stop] printing with page FIRST_[LAST_]PAGE\n"
+"  -COLUMN, --columns=COLUMN\n"
+"                    produce COLUMN-column output and print columns down,\n"
+"                    unless -a is used. Balance number of lines in the\n"
+"                    columns on each page.\n"
+"  -a, --across      print columns across rather than down, used together\n"
+"                    with -COLUMN\n"
+"  -c, --show-control-chars\n"
+"                    use hat notation (^G) and octal backslash notation\n"
+"  -d, --double-space\n"
+"                    double space the output\n"
+"  -e[CHAR[WIDTH]], --expand-tabs[=CHAR[WIDTH]]\n"
+"                    expand input CHARs (TABs) to tab WIDTH (8)\n"
+"  -F, -f, --form-feed\n"
+"                    use form feeds instead of newlines to separate pages\n"
+"                    (by a 3-line page header with -F or a 5-line header\n"
+"                    and trailer without -F)\n"
+msgstr ""
+"Formater FIL(er) i sider og spalter for utskriving.\n"
+"\n"
+"Fra versjon 1.22i: Redefinering av noen av flaggene med små bokstaver "
+"(bedre\n"
+"POSIZ-støtte og tilpassing til andre UNIXer i noen tilfeller) som fører til\n"
+"brudd i bakover-kompatibilitet.  Noen nye flagg med store bokstaver er\n"
+"definert for å unngå uventede forstyrrelser av flagg.  Flagg med store\n"
+"bokstaver dominierer flagg med små bokstaver.\n"
+"Sideskift i inndata fører til sideskift i utdata.  Flere sideskift\n"
+"fører til tomme sider\n"
+"\n"
+"  +FØRSTE_SIDE[:SISTE_SIDE], --pages=FØRSTE_SIZE[:SISTE_SIDE]\n"
+"                    start [slutt] utskrift med FØRSTE_[SISTE_]SIDE\n"
+"  -SPALTER, --columns=SPALTER\n"
+"                    lag SPALTER-spalters utskrift og skriv spalter nedover\n"
+"                    med mindre «-a» er spesifisert: balansér antall linjer\n"
+"                    i spaltene på hver side.\n"
+"  -a, --across      skriv spalter bortover isteden for nedover. Brukes\n"
+"                    sammen med -SPALTER\n"
+"  -c, --show-control-chars\n"
+"                    bruk hatt-notasjon (^G) og oktal backslashnotasjon\n"
+"  -d, --double-space\n"
+"                    dobbel avstand i utskriften\n"
+"  -e[TEGN[BREDDE]], --expand-tabs[=TEGN[BREDDE]]\n"
+"                    utvid inn-TEGN (TABs) til BREDDE blanktegn (8)\n"
+"  -F, -f, --form-feed\n"
+"                    bruk sideforskyvning(FF) istedenfor linjeskift for å\n"
+"                    separere sider.  (Med et 3-linjers sidehode med -F "
+"eller\n"
+"                    et 5-linjers hode og bunn uten -F).\n"
+"  -h HODE, --header=HODE\n"
+"                    bruk HODE isteden for filnavn i sidetopptekstene\n"
+"                    med lange hoder kan venstre-trunkering forekomme.\n"
+"                    -h \"\" skriver en blank linje.  Ikke bruk -h\"\".\n"
+"  -i[TEGN[BREDDE]], --output-tabs=[TEGN[BREDDE]]\n"
+"                    erstatt BREDDE (8) mellomrom til TEGN (TABs) \n"
+"  -J, --join-lines  føy sammen fulle linjer.  Skrur av -W linjetrunkering,\n"
+"                    ingen kolonnejustering, -S[STRENG] setter separatorer\n"
+"  -l SIDELENGDE, --length=SIDELENGDE\n"
+"                    sett sidelendge til SIDELENGDE (66) linjer\n"
+"                    (forvalgt antall linjer med tekst er 56 med -f 63)\n"
+
+#: src/pr.c:2803
+msgid ""
+"  -h HEADER, --header=HEADER\n"
+"                    use a centered HEADER instead of filename in page "
+"header,\n"
+"                    with long headers left-hand-side truncation may occur,\n"
+"                    -h \"\" prints a blank line, don't use -h\"\"\n"
+"  -i[CHAR[WIDTH]], --output-tabs[=CHAR[WIDTH]]\n"
+"                    replace spaces with CHARs (TABs) to tab WIDTH (8)\n"
+"  -J, --join-lines  merge full lines, turns off -W line truncation, no "
+"column\n"
+"                    alignment, -S[STRING] sets separators\n"
+"  -l PAGE_LENGTH, --length=PAGE_LENGTH\n"
+"                    set the page length to PAGE_LENGTH (66) lines\n"
+"                    (default number of lines of text 56, and with -F 63)\n"
+"  -m, --merge       print all files in parallel, one in each column,\n"
+"                    truncate lines, but join lines of full length with -J\n"
+"  -n[SEP[DIGITS]], --number-lines[=SEP[DIGITS]]\n"
+"                    number lines, use DIGITS (5) digits, then SEP (TAB),\n"
+"                    default counting starts with 1st line of input file\n"
+"  -N NUMBER, --first-line-number=NUMBER\n"
+"                    start counting with NUMBER at 1st line of first\n"
+"                    page printed (see +FIRST_PAGE)\n"
+"  -o MARGIN, --indent=MARGIN\n"
+"                    offset each line with MARGIN (zero) spaces, do not\n"
+"                    affect -w or -W, MARGIN will be added to PAGE_WIDTH\n"
+"  -r, --no-file-warnings\n"
+"                    omit warning when a file cannot be opened\n"
+msgstr ""
+
+#: src/pr.c:2829
+#, fuzzy
+msgid ""
+"  -s[CHAR],--separator[=CHAR]\n"
+"                    separate columns by a single character, default for "
+"CHAR\n"
+"                    is the <TAB> character without -w and 'no char' with -w\n"
+"                    -s[CHAR] turns off line truncation of all 3 column\n"
+"                    options (-COLUMN|-a -COLUMN|-m) except -w is set\n"
+"  -S[STRING], --sep-string[=STRING]\n"
+"                    separate columns by an optional STRING, don't use\n"
+"                    -S \"STRING\", -S only: No separator used (same as "
+"-S\"\"),\n"
+"                    without -S: Default separator <TAB> with -J and <space>\n"
+"                    otherwise (same as -S\" \"), no effect on column "
+"options\n"
+"  -t, --omit-header omit page headers and trailers\n"
+"  -T, --omit-pagination\n"
+"                    omit page headers and trailers, eliminate any "
+"pagination\n"
+"                    by form feeds set in input files\n"
+"  -v, --show-nonprinting\n"
+"                    use octal backslash notation\n"
+"  -w PAGE_WIDTH, --width=PAGE_WIDTH\n"
+"                    set page width to PAGE_WIDTH (72) characters for\n"
+"                    multiple text-column output only, -s[char] turns off "
+"(72)\n"
+"  -W PAGE_WIDTH, --page-width=PAGE_WIDTH\n"
+"                    set page width to PAGE_WIDTH (72) characters always,\n"
+"                    truncate lines, except -J option is set, no "
+"interference\n"
+"                    with -S or -s\n"
+"  --help            display this help and exit\n"
+"  --version         output version information and exit\n"
+"\n"
+"-T implied by -l nn when nn <= 10 or <= 3 with -F. With no FILE, or when\n"
+"FILE is -, read standard input.\n"
+msgstr ""
+"  -m, --merge       skriv ut alle filer parallelt, en i hver spalte\n"
+"                    trunkér linjer, men føy sammen linjer av full lengde med "
+"-j\n"
+"  -n[SEP[SIFFER]], --number-lines[=SEP[SIFFER]\n"
+"                    nummerér linjer, bruk SIFFER (5) siffer, så SEP (TAB)\n"
+"                    forvalgt telling starter med første linje av innfil\n"
+"  -N NUMMER, --first-line-number=NUMMER\n"
+"                    start telling med NUMMER på første linje på første side\n"
+"                    som skrives (se +FØRSTE_SIDE)\n"
+"  -o MARG, --indent=MARG\n"
+"                    rykk inn linjer MARG mellomrom (påvirker ikke -w)\n"
+"  -r, --no-file-warnings\n"
+"                    ikke advar når en fil ikke kan åpnes\n"
+"  -s[TEGN], --separator[=TEGN]\n"
+"                    skill spalter med et enkelt TEGN.  Forvalgt TEGN er\n"
+"                    TAB uten -w og «ingen tegn» med -w.\n"
+"                    -s[TEGN] slår av linjetrunkering for alle 3 spalte-\n"
+"                    flaggene (-SPALTER|-a -SPALTER|-m) bortsett fra -w\n"
+"  -s[STRENG], --sep-string[=STRENG]\n"
+"                    skill spalter med en evt. STRENG, ikke bruk\n"
+"                    -S \"STRENG\".  Med bare -S brukes ingen skilletegn\n"
+"                    (samme som -S\"\").\n"
+"                    uten -S: forvalgt skilletegn er TAB med -J og mellomrom\n"
+"                    ellers (samme som -S\" \"), ingen effekt på spalteflagg\n"
+"  -t, --omit-header ikke bruk topp- og bunntekst\n"
+"  -T, --omit-pagination\n"
+"                    ikke bruk topp- og bunntekst, eliminer evt. side-layout\n"
+"                    ved sideforskyvning(FF) satt i innfiler\n"
+"  -v, --show-nonprinting\n"
+"                    bruk oktal backslashnotasjon\n"
+"  -w SIDEBREDDE, --width=SIDEBREDDE\n"
+"                    sett sidebredde til SIDEBREDDE (72) kolonner, kun for\n"
+"                    flerspalteutskrift.  -s[tegn] slår av (72)\n"
+"  -W SIDEBREDDE, --page-width=SIDEBREDDE\n"
+"                    sett sidebredde til SIDEBREDDE (72) kolonner, alltid.\n"
+"                    Trunkér linjer hvis -J ikke er satt.  Har ingen\n"
+"                    innblanding med -S eller -s\n"
+"      --help        vis denne hjelpteksten og avslutt\n"
+"      --version     vis programversjon og avslutt\n"
+"\n"
+"-T impliseres av -l nn, når nn <= 10 eller <= 3 ved -F. Dersom ingen FIL\n"
+"er spesifisert eller FIL er -, leses det fra standard inn.\n"
+
+#: src/ptx.c:409
+#, c-format
+msgid "%s (for regexp `%s')"
+msgstr "%s (for regexp «%s»)"
+
+#: src/ptx.c:1858
+#, c-format
+msgid ""
+"Usage: %s [OPTION]... [INPUT]...   (without -G)\n"
+"  or:  %s -G [OPTION]... [INPUT [OUTPUT]]\n"
+msgstr ""
+"Bruk : %s [FLAGG]... [INN]... (uten -G)\n"
+"eller: %s -G [FLAGG]... [INN [UT]]\n"
+
+#: src/ptx.c:1862
+msgid ""
+"Mandatory arguments to long options are mandatory for short options too.\n"
+"\n"
+"  -A, --auto-reference           output automatically generated references\n"
+"  -C, --copyright                display Copyright and copying conditions\n"
+"  -G, --traditional              behave more like System V `ptx'\n"
+"  -F, --flag-truncation=STRING   use STRING for flagging line truncations\n"
+"  -M, --macro-name=STRING        macro name to use instead of `xx'\n"
+"  -O, --format=roff              generate output as roff directives\n"
+"  -R, --right-side-refs          put references at right, not counted in -w\n"
+"  -S, --sentence-regexp=REGEXP   for end of lines or end of sentences\n"
+"  -T, --format=tex               generate output as TeX directives\n"
+"  -W, --word-regexp=REGEXP       use REGEXP to match each keyword\n"
+"  -b, --break-file=FILE          word break characters in this FILE\n"
+"  -f, --ignore-case              fold lower case to upper case for sorting\n"
+"  -g, --gap-size=NUMBER          gap size in columns between output fields\n"
+"  -i, --ignore-file=FILE         read ignore word list from FILE\n"
+"  -o, --only-file=FILE           read only word list from this FILE\n"
+"  -r, --references               first field of each line is a reference\n"
+"  -t, --typeset-mode               - not implemented -\n"
+"  -w, --width=NUMBER             output width in columns, reference "
+"excluded\n"
+"      --help                     display this help and exit\n"
+"      --version                  output version information and exit\n"
+"\n"
+"With no FILE or if FILE is -, read Standard Input.  `-F /' by default.\n"
+msgstr ""
+"Obligatoriske argumenter til lange flagg er også obligatoriske for korte "
+"flagg.\n"
+"\n"
+"  -A, --auto-reference           skriv ut automatisk genererte referanser\n"
+"  -C, --copyright                vis Copyright og kopieringsbetingelser\n"
+"  -G, --traditional              vær mer som System Vs «ptx»\n"
+"  -F, --flag-truncation=STRENG   bruk STRENG for å markere linjetrunkering\n"
+"  -M, --macro-name=STRENG        makronavn å bruke istedenfor «xx»\n"
+"  -O, --format=roff              generer utskrift som roff-direktiver\n"
+"  -R, --right-side-refs          plassér referansene på høyre side, ikke\n"
+"                                 telt med i -w\n"
+"  -S, --sentence-regexp=REGEXP   for slutten av linjer eller slutten av\n"
+"                                 setninger\n"
+"  -T, --format=tex               generer utskrift som TeX-direktiver\n"
+"  -W, --word-regexp=REGEXP       bruk REGEXP for å treffe hvert nøkkelord\n"
+"  -b, --break-file=FIL           tegn for orddeling i denne FILen\n"
+"  -f, --ignore-case              gjør om små bokstaver til store for "
+"sortering\n"
+"  -g, --gap-size=TALL            størrelse på mellomrom mellom spalter i "
+"utfelt\n"
+"  -i, --ignore-file=FIL          les liste over ord som skal ignoreres fra\n"
+"                                 denne FILen\n"
+"  -o, --only-file=FIL            les liste over ord som *ikke* skal "
+"ignoreres\n"
+"                                 fra denne FILen\n"
+"  -r, --references               første felt av hver linje er en referanse\n"
+"  -t, --typeset-mode               - ikke implementert -\n"
+"  -w, --width=BREDDE             utskriftbredde for spalter, eksklusive\n"
+"                                 referanser\n"
+"      --help                     vis denne hjelpeteksten og avslutt\n"
+"      --version                  vis programversjon og avslutt\n"
+"\n"
+"Ved ingen FIL eller hvis FIL er -, leses det fra standard inn.  «-F /» er\n"
+"forvalgt.\n"
+
+#: src/ptx.c:1962
+msgid ""
+"This program is free software; you can redistribute it and/or modify\n"
+"it under the terms of the GNU General Public License as published by\n"
+"the Free Software Foundation; either version 2, or (at your option)\n"
+"any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful,\n"
+"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+"GNU General Public License for more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License\n"
+"along with this program; if not, write to the Free Software Foundation,\n"
+"Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.\n"
+msgstr ""
+"Dette programmet er fri programvare.  Du kan redistribuerer det og/eller\n"
+"endre det under betingelsene gitt i «GNU General Public License» som\n"
+"utgitt av «Free Software Foundation» -- enten versjon 2, eller (ved ditt\n"
+"valg) en hvilken som helst senere versjon.\n"
+"\n"
+"Dette programmet er distribuert under håp om at det vil være nyttig,\n"
+"men UTEN NOEN GARANTIER, heller ikke impliserte om SALGBARHET eller\n"
+"EGNETHET FOR NOEN SPESIELL ANVENDELSE.  Se «GNU General Public License»\n"
+"for flere detaljer.\n"
+"\n"
+"Du skal ha mottatt en kopi av «GNU General Public License» sammen med\n"
+"dette programmet -- hvis ikke, skriv til Free Software Foundation Inc.,\n"
+"59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.\n"
+
+#: src/sort.c:259
+#, fuzzy, c-format
+msgid ""
+"Write sorted concatenation of all FILE(s) to standard output.\n"
+"\n"
+"  +POS1 [-POS2]    start a key at POS1, end it *before* POS2 (obsolescent)\n"
+"\t\t     field numbers and character offsets are numbered\n"
+"                     starting with zero (contrast with the -k option)\n"
+"  -b               ignore leading blanks in sort fields or keys\n"
+"  -c               check if given files already sorted, do not sort\n"
+"  -d               consider only [a-zA-Z0-9 ] characters in keys\n"
+"  -f               fold lower case to upper case characters in keys\n"
+"  -g               compare according to general numerical value, imply -b\n"
+"  -i               consider only [\\040-\\0176] characters in keys\n"
+"  -k POS1[,POS2]   start a key at POS1, end it *at* POS2\n"
+"\t\t     field numbers and character offsets are numbered\n"
+"                     starting with one (contrast with zero-based +POS form)\n"
+"  -m               merge already sorted files, do not sort\n"
+"  -M               compare (unknown) < `JAN' < ... < `DEC', imply -b\n"
+"  -n               compare according to string numerical value, imply -b\n"
+"  -o FILE          write result on FILE instead of standard output\n"
+"  -r               reverse the result of comparisons\n"
+"  -s               stabilize sort by disabling last resort comparison\n"
+"  -t SEP           use SEParator instead of non- to whitespace transition\n"
+"  -T DIRECTORY     use DIRECTORY for temporary files, not $TMPDIR or %s\n"
+"  -u               with -c, check for strict ordering;\n"
+"                   with -m, only output the first of an equal sequence\n"
+"  -z               end lines with 0 byte, not newline, for find -print0\n"
+"      --help       display this help and exit\n"
+"      --version    output version information and exit\n"
+"\n"
+msgstr ""
+"Skriv en sortert sammenføyning av alle FIL(er) til standard ut.\n"
+"\n"
+"  +POS1 [-POS2]    start en nøkkel ved POS1, avslutt den ved POS2\n"
+"  -b               ignorer ledende mellomrom i sorterings-felt og -nøkler\n"
+"  -c               sjekk om filene allerede er sorterte, ikke sortér\n"
+"  -d               bruk bare [a-zA-Z0-9 ]-tegnene i nøkler\n"
+"  -f               gjør om små bokstaver til store i nøkler\n"
+"  -g               sammenlign i henhold til generell numerisk verdi, impl. "
+"-b\n"
+"  -i               betrakt kun [\\040-\\0176]-tegnene i nøkler\n"
+"  -k POS1[,POS2]   samme som +POS1 [-POS2], alle posisjoner telles fra 1\n"
+"  -m               legg sammen allerede sorterte filer, ikke sortér\n"
+"  -M               sammenlign (ukjent) < `JAN' < ... < `DEC', impliserer -b\n"
+"  -n               sammenlign i henhold til streng-numerisk verdi, impl. -b\n"
+"  -o FIL           skriv resultat til FIL istedet for til standard ut\n"
+"  -r               gi resultatet i motsatt rekkefølge\n"
+"  -s               stabiliser sortering ved å slå av \n"
+"                   «last resort comparison»\n"
+"  -t SEP           bruk SEP som skilletegn istedet for mellomrom.\n"
+"  -T HENVIS        bruk HENVIS for temporære filer, ikke $TMPDIR eller %s\n"
+"  -u               med -c, sjekk om «strict ordering» brukes\n"
+"                   med -m, skriv kun ut den første av to like setninger\n"
+"  -z               avslutt linjer med en 0-byte, ikke linjeskift,\n"
+"                   for «find -print0»\n"
+"      --help       vis denne hjelpteksten og avslutt\n"
+"      --version    vis programversjon og avslutt\n"
+"\n"
+"POS er F[.T][FLAGG], hvor F er et feltnummer og T en tegnposisjon\n"
+"i feltet, begge starter fra null. FLAGG er satt sammen av en eller\n"
+"flere av Mbdfinr, dette forhindrer effektivt globale settinger\n"
+"av -Mbdfinr for denne nøkkelen. Når ingen nøkkel er angitt,\n"
+"brukes hele linjen som nøkkel.  Dersom ingen FIL er spesifisert, eller \n"
+"FIL er -, leses det fra standard inn.\n"
+
+#: src/sort.c:290
+msgid ""
+"POS is F[.C][OPTS], where F is the field number and C the character "
+"position\n"
+"in the field, both counted from one with -k, from zero with the obsolescent\n"
+"form.  OPTS is made up of one or more of Mbdfinr; this effectively disables\n"
+"global -Mbdfinr settings for that key.  If no key is given, use the entire\n"
+"line as the key.  With no FILE, or when FILE is -, read standard input.\n"
+msgstr ""
+
+#: src/sort.c:381
+msgid "flushing file"
+msgstr "oppdaterer filen"
+
+#: src/sort.c:390
+msgid "error closing file"
+msgstr "feil ved lukking av filen"
+
+#: src/sort.c:402 src/sort.c:2371 src/sort.c:2376
+#, c-format
+msgid "%s: write error"
+msgstr "%s: skrivefeil"
+
+#: src/sort.c:1451
+#, c-format
+msgid "%s: %s:%d: disorder: "
+msgstr "%s: %s:%d: uorden: "
+
+#: src/sort.c:1454
+#, fuzzy
+msgid "standard error"
+msgstr "stdin: lesefeil"
+
+#: src/sort.c:1816
+#, c-format
+msgid "invalid field specification `%s'"
+msgstr "ugyldig feltspesifikasjon «%s»"
+
+#. Provoke with `sort -9'.
+#: src/sort.c:2024
+msgid ""
+"when using the old-style +POS and -POS key specifiers,\n"
+"the +POS specifier must come first"
+msgstr ""
+"når den gamle nøkkelspesifikasjonsstilen +POS og -POS blir brukt,\n"
+"må +POS komme først"
+
+#: src/sort.c:2060
+msgid "option `-k' requires an argument"
+msgstr "flagget «-k» trenger et argument"
+
+#. Provoke with `sort -k0'
+#: src/sort.c:2077
+msgid "the starting field number argument to the `-k' option must be positive"
+msgstr "startfeltnummer-argumentet til «-k»-flagget må være positivt"
+
+#. Provoke with `sort -k1.'
+#: src/sort.c:2088
+msgid "starting field spec has `.' but lacks following character offset"
+msgstr "startfeltspesifikasjonen har et «.» men mangler følgende tegnposisjon"
+
+#. Provoke with `sort -k1.0'
+#: src/sort.c:2097
+msgid ""
+"starting field character offset argument to the `-k' option\n"
+"must be positive"
+msgstr "startfeltets tegnposisjonsargument til «-k»-flagget må være positivt"
+
+#. Provoke with `sort -k1,'
+#: src/sort.c:2125
+msgid "field specification has `,' but lacks following field spec"
+msgstr "feltspesifikasjonen har et «,» men mangler følgende feltspesifikasjon"
+
+#. Provoke with `sort -k1,0'
+#: src/sort.c:2135
+msgid "ending field number argument to the `-k' option must be positive"
+msgstr "avsluttende feltnummer-argument til «-k»-flagget må være positivt"
+
+#. Provoke with `sort -k1,1.'
+#: src/sort.c:2146
+msgid "ending field spec has `.' but lacks following character offset"
+msgstr ""
+"avsluttende feltspesifikasjon har «.» men mangler følgende tegnposisjon"
+
+#: src/sort.c:2177
+msgid "option `-o' requires an argument"
+msgstr "flagget «-o» trenger et argument"
+
+#: src/sort.c:2195
+msgid "option `-t' requires an argument"
+msgstr "flagget «-t» trenger et argument"
+
+#: src/sort.c:2206
+msgid "option `-T' requires an argument"
+msgstr "flagget «-T» trenger et argument"
+
+#: src/sort.c:2221
+#, c-format
+msgid "%s: unrecognized option `-%c'\n"
+msgstr "%s: ukjent flagg «-%c»\n"
+
+#: src/split.c:87
+#, c-format
+msgid "Usage: %s [OPTION] [INPUT [PREFIX]]\n"
+msgstr "Bruk: %s [FLAGG] [INPUT [PREFIKS]]\n"
+
+#: src/split.c:91
+msgid ""
+"Output fixed-size pieces of INPUT to PREFIXaa, PREFIXab, ...; default\n"
+"PREFIX is `x'.  With no INPUT, or when INPUT is -, read standard input.\n"
+"\n"
+"  -b, --bytes=SIZE        put SIZE bytes per output file\n"
+"  -C, --line-bytes=SIZE   put at most SIZE bytes of lines per output file\n"
+"  -l, --lines=NUMBER      put NUMBER lines per output file\n"
+"  -NUMBER                 same as -l NUMBER\n"
+"      --verbose           print a diagnostic to standard error just\n"
+"                            before each output file is opened\n"
+"      --help              display this help and exit\n"
+"      --version           output version information and exit\n"
+"\n"
+"SIZE may have a multiplier suffix: b for 512, k for 1K, m for 1 Meg.\n"
+msgstr ""
+"Skriv stykker av fast størrelse av INPUT til PREFIKSaa, PREFIKSab, ...;\n"
+"Forvalgt PREFIKS er `x'. Dersom ingen INPUT er spesifisert, eller INPUT er "
+"-,\n"
+"leses det fra standard inn.\n"
+"\n"
+"  -ANTALL                    samme som -l ANTALL\n"
+"  -b, --bytes=STØRRELSE      skriv STØRRELSE bytes i hver utfil\n"
+"  -C, --line-bytes=STØRRELSE skriv maksimum STØRRELSE bytes med linjer per\n"
+"                             utfil\n"
+"  -l, --lines=ANTALL         skriv ANTALL linjer i hver utfil\n"
+"      --verbose              skriv en diagnostikk til standard error rett\n"
+"                             før hver utfil åpnes\n"
+"      --help                 vis denne hjelpteksten og avslutt\n"
+"      --version              vis programversjon og avslutt\n"
+"\n"
+"STØRRELSE kan ha en multiplikatorendelse: b for 512, k for 1K eller\n"
+" m for 1 Meg.\n"
+
+#: src/split.c:157
+#, c-format
+msgid "creating file `%s'\n"
+msgstr "lager filen «%s»\n"
+
+#: src/split.c:374 src/split.c:390 src/split.c:406 src/split.c:432
+msgid "cannot split in more than one way"
+msgstr "kan ikke dele opp på mer enn én måte"
+
+#: src/split.c:381 src/split.c:414
+#, c-format
+msgid "%s: invalid number of bytes"
+msgstr "%s: ugyldig antall bytes"
+
+#: src/split.c:397
+#, c-format
+msgid "%s: invalid number of lines"
+msgstr "%s: ugyldig antall linjer"
+
+#: src/split.c:464
+msgid "invalid number"
+msgstr "ugyldig antall"
+
+#: src/split.c:479 src/tr.c:1852 src/uniq.c:409
+msgid "too many arguments"
+msgstr "for mange argumenter"
+
+#: src/sum.c:65
+msgid ""
+"Print checksum and block counts for each FILE.\n"
+"\n"
+"  -r              defeat -s, use BSD sum algorithm, use 1K blocks\n"
+"  -s, --sysv      use System V sum algorithm, use 512 bytes blocks\n"
+"      --help      display this help and exit\n"
+"      --version   output version information and exit\n"
+"\n"
+"With no FILE, or when FILE is -, read standard input.\n"
+msgstr ""
+"Skriv ut sjekksum og block-antall for hver FIL.\n"
+"\n"
+"  -r              bruk BSD-sum-algoritme, bruk 1K-blokker\n"
+"  -s, --sysv      bruk SystemV-sum-algoritme, bruk 512 byte-blokker\n"
+"      --help      vis denne hjelpteksten og avslutt\n"
+"      --version   vis programversjon og avslutt\n"
+"\n"
+"Dersom ingen FIL er spesifisert, eller FIL er -, leses det fra standard "
+"inn.\n"
+
+#: src/tac.c:132
+msgid ""
+"Write each FILE to standard output, last line first.\n"
+"With no FILE, or when FILE is -, read standard input.\n"
+"\n"
+"  -b, --before             attach the separator before instead of after\n"
+"  -r, --regex              interpret the separator as a regular expression\n"
+"  -s, --separator=STRING   use STRING as the separator instead of newline\n"
+"      --help               display this help and exit\n"
+"      --version            output version information and exit\n"
+msgstr ""
+"Skriv hver FIL til standard ut, siste linje først.\n"
+"Dersom ingen FIL er spesifisert, eller FIL er -, leses det fra standard "
+"inn.\n"
+"\n"
+"  -b, --before             føy til separator før istedet for etter\n"
+"  -r, --regex              tolk separatoren som et regulært uttrykk\n"
+"  -s, --separator=STRENG   bruk STRENG som separator istedet for linjeskift\n"
+"      --help               vis denne hjelpteksten og avslutt\n"
+"      --version            vis programversjon og avslutt\n"
+
+#: src/tac.c:453 src/tac.c:594
+msgid "stdin: read error"
+msgstr "stdin: lesefeil"
+
+#: src/tac.c:638
+msgid "separator cannot be empty"
+msgstr "separatoren kan ikke være tom"
+
+#: src/tail.c:216
+#, fuzzy, c-format
+msgid ""
+"Print the last %d lines of each FILE to standard output.\n"
+"With more than one FILE, precede each with a header giving the file name.\n"
+"With no FILE, or when FILE is -, read standard input.\n"
+"\n"
+"      --retry              keep trying to open a file even if it is\n"
+"                             inaccessible when tail starts or if it becomes\n"
+"                             inaccessible later -- useful only with -f\n"
+"  -c, --bytes=N            output the last N bytes\n"
+"  -f, --follow[={name|descriptor}] output appended data as the file grows;\n"
+"                             -f, --follow, and --follow=descriptor are\n"
+"                             equivalent\n"
+"  -n, --lines=N            output the last N lines, instead of the last %d\n"
+"      --max-unchanged-stats=N see the texinfo documentation\n"
+"                             (the default is %d)\n"
+"      --max-consecutive-size-changes=N see the texinfo documentation\n"
+"                             (the default is %d)\n"
+"      --pid=PID            with -f, terminate after process ID, PID dies\n"
+"  -q, --quiet, --silent    never output headers giving file names\n"
+"  -s, --sleep-interval=S   with -f, sleep S seconds between iterations\n"
+"  -v, --verbose            always output headers giving file names\n"
+"      --help               display this help and exit\n"
+"      --version            output version information and exit\n"
+"\n"
+"If the first character of N (the number of bytes or lines) is a `+',\n"
+"print beginning with the Nth item from the start of each file, otherwise,\n"
+"print the last N items in the file.  N may have a multiplier suffix:\n"
+"b for 512, k for 1024, m for 1048576 (1 Meg).  A first OPTION of -VALUE\n"
+"or +VALUE is treated like -n VALUE or -n +VALUE unless VALUE has one of\n"
+"the [bkm] suffix multipliers, in which case it is treated like -c VALUE\n"
+"or -c +VALUE.\n"
+"\n"
+"With --follow (-f), tail defaults to following the file descriptor, which\n"
+"means that even if a tail'ed file is renamed, tail will continue to track\n"
+"its end.  This default behavior is not desirable when you really want to\n"
+"track the actual name of the file, not the file descriptor (e.g., log\n"
+"rotation).  Use --follow=name in that case.  That causes tail to track the\n"
+"named file by reopening it periodically to see if it has been removed and\n"
+"recreated by some other program.\n"
+"\n"
+msgstr ""
+"Skriv de siste 10 linjene av hver FIL til standard ut.\n"
+"Dersom mer enn én FIL er spesifisert, skriv ut filnavnet foran hver fil.\n"
+"Dersom ingen FIL er spesifisert eller FIL er -, leses det fra standard inn.\n"
+"\n"
+"      --allow-missing      FIXME\n"
+"  -c, --bytes=N            skriv ut de siste N bytes\n"
+"  -f, --follow[={navn|deskriptor}] skriv ut tillagte data etterhvert som "
+"filen vokser\n"
+"  -n, --lines=N            skriv ut de siste N linjene istedet for de siste "
+"10\n"
+"      --max-unchanged-stats=N FIXME\n"
+"      --max-consecutive-size-changes=N FIXME\n"
+"  -q, --quiet, --silent    ikke skriv ut filnavn\n"
+"  -s, --sleep-interval=S   med -f, sov S sekunder mellom hver iterasjon\n"
+"  -v, --verbose            skriv alltid ut filnavnet\n"
+"      --help               vis denne hjelpteksten og avslutt\n"
+"      --version            vis programversjon og avslutt\n"
+"\n"
+"Hvis det første tegnet i N (antall bytes eller linjer) er en «+»,\n"
+"skriv ut fra N'te element fra starten av hver fil, ellers skriv ut de\n"
+"siste N elementene i filen.  N kan ha en multiplikatorending:\n"
+"b for 512, k for 1024, m for 1048576 (1 Meg).  Dersom første FLAGG er \n"
+"-VERDI, eller +VERDI, tolkes det som -n VERDI, eller -n +VERDI dersom VERDI\n"
+"ikke har en av [bmk]-endingsmultiplikatorene, ellers tolkes det som -c\n"
+"VERDI eller -c +VERDI.\n"
+
+#: src/tail.c:293
+#, c-format
+msgid "closing %s (fd=%d)"
+msgstr "lukker %s (fd=%d)"
+
+#. FIXME-maybe: detect the case in which the file first becomes
+#. unreadable (perms), and later becomes readable again and can
+#. be seen to be the same file (dev/ino).  Otherwise, tail prints
+#. the entire contents of the file when it becomes readable.
+#: src/tail.c:720
+#, c-format
+msgid "`%s' has become inaccessible"
+msgstr ""
+
+#: src/tail.c:739
+#, c-format
+msgid ""
+"`%s' has been replaced with a non-regular file;  cannot follow end of "
+"non-regular file"
+msgstr ""
+"«%s» har blitt erstattet av en ikke-vanlig fil.  Kan ikke følge etter "
+"slutten av ikke-vanlig fil"
+
+#: src/tail.c:759
+#, c-format
+msgid "`%s' has become accessible"
+msgstr ""
+
+#: src/tail.c:767
+#, c-format
+msgid "`%s' has appeared;  following end of new file"
+msgstr "«%s» har blitt opprettet.  Følger etter slutten av ny fil"
+
+#: src/tail.c:778
+#, c-format
+msgid "`%s' has been replaced;  following end of new file"
+msgstr "«%s» har blitt erstattet.  Følger etter slutten av ny fil"
+
+#: src/tail.c:892
+msgid "file truncated"
+msgstr "fil trunkert"
+
+#: src/tail.c:912
+msgid "no files remaining"
+msgstr "ingen filer igjen"
+
+#: src/tail.c:1120
+#, c-format
+msgid "%s: cannot follow end of non-regular file"
+msgstr "%s: kan ikke følge etter slutten av ikke-vanlig fil"
+
+#: src/tail.c:1231
+#, c-format
+msgid "%c: invalid suffix character in obsolescent option"
+msgstr "%c: ugyldig suffiks-tegn i avleggs flagg"
+
+#: src/tail.c:1280
+#, c-format
+msgid ""
+"too many arguments;  When using tail's obsolescent option syntax (%s)\n"
+"there may be no more than one file argument.  Use the equivalent -n or -c\n"
+"option instead."
+msgstr ""
+"for mange argumenter.  Når tails gamle flagg-syntaks brukes (%s)\n"
+"kan det ikke være mer enn ett filargument.  Bruk det tilsvarende -n eller\n"
+"-c-flagget isteden."
+
+#: src/tail.c:1289
+#, c-format
+msgid ""
+"Warning: it is not portable to use two or more file arguments with\n"
+"tail's obsolescent option syntax (%s).  Use the equivalent -n or -c\n"
+"option instead."
+msgstr ""
+"Advarsel: det er ikke portabelt å bruke to eller flere filargumenter med\n"
+"tails gamle falggsyntaks (%s).  Bruk det tilsvarende -n eller -c-\n"
+"flagget isteden."
+
+#: src/tail.c:1371
+#, c-format
+msgid "%s: invalid maximum number of unchanged stats between opens"
+msgstr ""
+"%s: ugyldig maksimum antall av uendrete resultat av kall til stat() mellom "
+"kall til open()"
+
+#: src/tail.c:1383
+#, c-format
+msgid "%s: invalid maximum number of consecutive size changes"
+msgstr "%s: ugyldig maksimum antall etterfølgende endringer i størrelse"
+
+#: src/tail.c:1395
+#, fuzzy, c-format
+msgid "%s: invalid PID"
+msgstr "%s: ugyldig nummer"
+
+#: src/tail.c:1413
+#, c-format
+msgid "%s: invalid number of seconds"
+msgstr "%s: ugyldig antall sekunder"
+
+#: src/tail.c:1433
+msgid "warning: --retry is useful only when following by name"
+msgstr ""
+
+#: src/tail.c:1437
+msgid "warning: PID ignored; --pid=PID is useful only when following"
+msgstr ""
+
+#: src/tr.c:325
+#, c-format
+msgid "Usage: %s [OPTION]... SET1 [SET2]\n"
+msgstr "Bruk: %s [FLAGG]... SETT1 [SETT2]\n"
+
+#: src/tr.c:329
+msgid ""
+"Translate, squeeze, and/or delete characters from standard input,\n"
+"writing to standard output.\n"
+"\n"
+"  -c, --complement        first complement SET1\n"
+"  -d, --delete            delete characters in SET1, do not translate\n"
+"  -s, --squeeze-repeats   replace sequence of characters with one\n"
+"  -t, --truncate-set1     first truncate SET1 to length of SET2\n"
+"      --help              display this help and exit\n"
+"      --version           output version information and exit\n"
+msgstr ""
+"Oversett, klem sammen og/eller fjern tegn fra standard inn,\n"
+"skriv ut til standard ut.\n"
+"\n"
+"  -c, --complement        først komplementer SETT1\n"
+"  -d, --delete            slett tegn i SETT1, ikke oversett\n"
+"  -s, --squeeze-repeats   erstatt rekke av tegn med ett\n"
+"  -t, --truncate-set1     forkort først SETT1 til lengden til SETT2\n"
+"      --help              vis denne hjelpteksten og avslutt\n"
+"      --version           vis programversjon og avslutt\n"
+
+#: src/tr.c:340
+msgid ""
+"\n"
+"SETs are specified as strings of characters.  Most represent themselves.\n"
+"Interpreted sequences are:\n"
+"\n"
+"  \\NNN            character with octal value NNN (1 to 3 octal digits)\n"
+"  \\\\              backslash\n"
+"  \\a              audible BEL\n"
+"  \\b              backspace\n"
+"  \\f              form feed\n"
+"  \\n              new line\n"
+"  \\r              return\n"
+"  \\t              horizontal tab\n"
+"  \\v              vertical tab\n"
+"  CHAR1-CHAR2     all characters from CHAR1 to CHAR2 in ascending order\n"
+"  [CHAR1-CHAR2]   same as CHAR1-CHAR2, if both SET1 and SET2 use this\n"
+"  [CHAR*]         in SET2, copies of CHAR until length of SET1\n"
+"  [CHAR*REPEAT]   REPEAT copies of CHAR, REPEAT octal if starting with 0\n"
+"  [:alnum:]       all letters and digits\n"
+"  [:alpha:]       all letters\n"
+"  [:blank:]       all horizontal whitespace\n"
+"  [:cntrl:]       all control characters\n"
+"  [:digit:]       all digits\n"
+"  [:graph:]       all printable characters, not including space\n"
+"  [:lower:]       all lower case letters\n"
+"  [:print:]       all printable characters, including space\n"
+"  [:punct:]       all punctuation characters\n"
+"  [:space:]       all horizontal or vertical whitespace\n"
+"  [:upper:]       all upper case letters\n"
+"  [:xdigit:]      all hexadecimal digits\n"
+"  [=CHAR=]        all characters which are equivalent to CHAR\n"
+msgstr ""
+"\n"
+"SETT er spesifisert med strenger av tegn.  De fleste tegnene står for seg\n"
+"selv.  Følgende sekvenser tolkes spesielt:\n"
+"\n"
+"  \\NNN            tegn med oktalverdi NNN (1 til 3 oktale siffer)\n"
+"  \\\\              backslash\n"
+"  \\a              beep\n"
+"  \\b              backspace\n"
+"  \\f              sideskift (FF)\n"
+"  \\n              linjeskift (LF)\n"
+"  \\r              vognretur (CR)\n"
+"  \\t              horisontal tabulator\n"
+"  \\v              vertikal tabulator\n"
+"  TEGN1-TEGN2     alle tegn fra TEGN1 til TEGN2, stigende\n"
+"  [TEGN1-TEGN2]   samme som TEGN1-TEGN2, dersom begge sett bruker dette\n"
+"  [TEGN*]         i SETT2, kopier av TEGN inntil samme lengde til SETT1\n"
+"  [TEGN*ANT]      ANT kopier av TEGN, ANT er oktal, hvis det begynner med 0\n"
+"  [:alnum:]       alle bokstaver og tall\n"
+"  [:alpha:]       alle bokstaver\n"
+"  [:blank:]       alle horisontale blanke tegn\n"
+"  [:cntrl:]       alle kontrolltegn\n"
+"  [:digit:]       alle siffer\n"
+"  [:graph:]       alle skrivbare tegn, unntatt blanke tegn\n"
+"  [:lower:]       alle små bokstaver\n"
+"  [:print:]       alle skrivbare tegn, inkludert blanke tegn\n"
+"  [:punct:]       alle tegnsettingstegn\n"
+"  [:space:]       alle horisontale og vertikale blanke tegn\n"
+"  [:upper:]       alle store bokstaver\n"
+"  [:xdigit:]      alle hexadesimale siffer\n"
+"  [=TEGN=]        alle tegn som er like TEGN\n"
+
+#: src/tr.c:372
+msgid ""
+"\n"
+"Translation occurs if -d is not given and both SET1 and SET2 appear.\n"
+"-t may be used only when translating.  SET2 is extended to length of\n"
+"SET1 by repeating its last character as necessary.  Excess characters\n"
+"of SET2 are ignored.  Only [:lower:] and [:upper:] are guaranteed to\n"
+"expand in ascending order; used in SET2 while translating, they may\n"
+"only be used in pairs to specify case conversion.  -s uses SET1 if not\n"
+"translating nor deleting; else squeezing uses SET2 and occurs after\n"
+"translation or deletion.\n"
+msgstr ""
+"\n"
+"Oversettelse skjer dersom -d ikke er gitt, og både SETT1 og SETT2 er der.\n"
+"-t kan bare bli brukt ved oversetting. SETT2 blir utvidet til lengden av\n"
+"SETT1 ved å repetere dets siste tegn som nødvendig.  Tegn til overs i \n"
+"SETT2 ignoreres.  Bare [:lower:] og [:upper:] er garantert å ekspandere i\n"
+"stigende rekkefølge; brukt i SETT2 ved oversetting kan de bare brukes i par\n"
+"for å angi oversetting fra store/små til små/store bokstaver. \n"
+"-s bruker SETT1 hvis det ikke er oversetting eller sletting; ellers bruker \n"
+"sammenklemming SETT2 og skjer etter oversetting eller sletting.\n"
+
+#. Any octal number larger than 0377 won't
+#. fit in 8 bits.  So we stop when adding the
+#. next digit would put us over the limit and
+#. give a warning about the ambiguity.  POSIX
+#. isn't clear on this, but one person has said
+#. that in his interpretation, POSIX says tr
+#. can't even give a warning.
+#: src/tr.c:544
+#, c-format
+msgid ""
+"warning: the ambiguous octal escape \\%c%c%c is being\n"
+"\tinterpreted as the 2-byte sequence \\0%c%c, `%c'"
+msgstr ""
+"advarsel: den flertydige oktal-beskyttelsen \\%c%c%c blir tolket som \n"
+"\t2-byte-sekvensen \\0%c%c, «%c»"
+
+#: src/tr.c:553
+msgid "invalid backslash escape at end of string"
+msgstr "ugyldig backslash-beskyttelse ved slutten av streng"
+
+#: src/tr.c:559
+#, c-format
+msgid "invalid backslash escape `\\%c'"
+msgstr "ugyldig backslash-beskyttelse «\\%c»"
+
+#: src/tr.c:712
+#, c-format
+msgid "range-endpoints of `%s-%s' are in reverse collating sequence order"
+msgstr "rekke-sluttpunkt i «%s-%s» er i omvendt sorteringsrekkefølge"
+
+#: src/tr.c:927
+#, c-format
+msgid "invalid repeat count `%s' in [c*n] construct"
+msgstr "ugyldig gjentagelsesteller «%s» i [c*n]-konstruksjon"
+
+#: src/tr.c:1033
+#, c-format
+msgid "invalid character class `%s'"
+msgstr "ugyldig tegn-klasse «%s»"
+
+#: src/tr.c:1058
+#, c-format
+msgid "%s: equivalence class operand must be a single character"
+msgstr "%s: ekvivalensklasseoperanden må være et enkelt tegn"
+
+#: src/tr.c:1530
+msgid "the [c*] repeat construct may not appear in string1"
+msgstr "gjentagelseskonstruktet [c*] kan ikke opptre i streng1"
+
+#: src/tr.c:1540
+msgid "only one [c*] repeat construct may appear in string2"
+msgstr "kun ett [c*] gjentagelseskonstrukt kan opptre i streng2"
+
+#: src/tr.c:1548
+msgid "[=c=] expressions may not appear in string2 when translating"
+msgstr "[=c=]-uttrykk kan ikke opptre i streng2 under oversetting"
+
+#: src/tr.c:1561
+msgid "when not truncating set1, string2 must be non-empty"
+msgstr "når sett1 ikke blir forkortet, kan ikke streng2 være tom"
+
+#: src/tr.c:1570
+msgid ""
+"when translating with complemented character classes,\n"
+"string2 must map all characters in the domain to one"
+msgstr ""
+"når det oversettes med komlementerte tegnklasser\n"
+"må streng2 mappe alle tegn i domenet til én"
+
+#: src/tr.c:1577
+msgid ""
+"when translating, the only character classes that may appear in\n"
+"string2 are `upper' and `lower'"
+msgstr ""
+"ved oversetting er de eneste tegnklassene som kan være i streng2\n"
+"«upper» og «lower»"
+
+#: src/tr.c:1586
+msgid "the [c*] construct may appear in string2 only when translating"
+msgstr "[c*]-konstruktet kan bare opptre i streng2 ved oversetting"
+
+#: src/tr.c:1857
+msgid "two strings must be given when translating"
+msgstr "to strenger må være gitt ved oversetting"
+
+#: src/tr.c:1860
+msgid "two strings must be given when both deleting and squeezing repeats"
+msgstr ""
+"to strenger må være gitt ved både sletting og sammenklemming av gjentagelser"
+
+#: src/tr.c:1874
+msgid "only one string may be given when deleting without squeezing repeats"
+msgstr ""
+"kun én streng kan oppgis når det slettes uten sammenklemming av gjentagelser"
+
+#: src/tr.c:1880
+msgid "at least one string must be given when squeezing repeats"
+msgstr "minst en streng må være gitt ved sammenklemming av gjentagelser"
+
+#: src/tr.c:1971
+msgid "misaligned [:upper:] and/or [:lower:] construct"
+msgstr "feilplassert [:upper:]- og/eller [:lower:]-konstruksjon"
+
+#: src/tr.c:1994
+msgid ""
+"invalid identity mapping;  when translating, any [:lower:] or [:upper:]\n"
+"construct in string1 must be aligned with a corresponding construct\n"
+"([:upper:] or [:lower:], respectively) in string2"
+msgstr ""
+"ugyldig identidetsmapping; ved oversetting må evt. [:lower:]- eller\n"
+"[:upper:]-konstruksjoner i streng1 være plassert i henhold til en\n"
+"tilsvarende konstruksjon (henholdsvis [:upper:] eller [:lower:]) i\n"
+"streng2"
+
+#: src/tsort.c:93
+#, c-format
+msgid ""
+"Usage: %s [OPTION] [FILE]\n"
+"Write totally ordered list consistent with the partial ordering in FILE.\n"
+"With no FILE, or when FILE is -, read standard input.\n"
+"\n"
+"      --help       display this help and exit\n"
+"      --version    output version information and exit\n"
+msgstr ""
+"Bruk: %s [FLAGG] [FIL]\n"
+"Skriv en fullstendig sortert liste konsistent med den delvise sorteringen\n"
+"i FIL.  Hvis ingen FIL eller hvis FIL er -, leses fra standard inn.\n"
+"\n"
+"      --help      vis denne hjelpteksten og avslutt\n"
+"      --version   vis programversjon og avslutt\n"
+
+#: src/tsort.c:101
+msgid ""
+"\n"
+"Report bugs to <textutils-bugs@gnu.org>."
+msgstr ""
+"\n"
+"Rapportér feil til <textutils-bugs@gnu.org>."
+
+#: src/tsort.c:443
+#, c-format
+msgid "%s: input contains a loop:\n"
+msgstr "%s: inndata inneholder en løkke:\n"
+
+#. Should not happen.
+#: src/tsort.c:450
+msgid "could not find loop"
+msgstr "kunne ikke finne løkke"
+
+#: src/tsort.c:480
+msgid "only one argument may be specified"
+msgstr "kun ett argument kan spesifiseres"
+
+#: src/unexpand.c:365
+msgid ""
+"Convert spaces in each FILE to tabs, writing to standard output.\n"
+"With no FILE, or when FILE is -, read standard input.\n"
+"\n"
+"  -a, --all           convert all whitespace, instead of initial whitespace\n"
+"  -t, --tabs=NUMBER   have tabs NUMBER characters apart instead of 8\n"
+"  -t, --tabs=LIST     use comma separated list of explicit tab positions\n"
+"      --help          display this help and exit\n"
+"      --version       output version information and exit\n"
+"\n"
+"Instead of -t NUMBER or -t LIST, -NUMBER or -LIST may be used.\n"
+msgstr ""
+"Konverter mellomrom i hver FIL til tabulatorer, skriv ut til standard ut.\n"
+"Dersom ingen FIL er spesifisert, eller FIL er -, leses det fra standard "
+"inn.\n"
+"\n"
+"  -a, --all           konverter alle blanke tegn, istedet for bare "
+"innledende\n"
+"  -t, --tabs=ANTALL   ha tabulatorer ANTALL tegn fra hverandre istedet for "
+"8\n"
+"  -t, --tabs=LISTE    bruk komma-separert LISTE med tabulatorposisjoner.\n"
+"      --help          vis denne hjelpteksten og avslutt\n"
+"      --version       vis programversjon og avslutt\n"
+"\n"
+"Istedet for -t ANTALL eller -t LISTE, kan -ANTALL eller -LISTE brukes\n"
+
+#: src/uniq.c:100
+#, c-format
+msgid "Usage: %s [OPTION]... [INPUT [OUTPUT]]\n"
+msgstr "Bruk: %s [FLAGG]... [INN [UT]]\n"
+
+#: src/uniq.c:104
+msgid ""
+"Discard all but one of successive identical lines from INPUT (or\n"
+"standard input), writing to OUTPUT (or standard output).\n"
+"\n"
+"  -c, --count           prefix lines by the number of occurrences\n"
+"  -d, --repeated        only print duplicate lines\n"
+"  -D, --all-repeated    print all duplicate lines\n"
+"  -f, --skip-fields=N   avoid comparing the first N fields\n"
+"  -i, --ignore-case     ignore differences in case when comparing\n"
+"  -s, --skip-chars=N    avoid comparing the first N characters\n"
+"  -u, --unique          only print unique lines\n"
+"  -w, --check-chars=N   compare no more than N characters in lines\n"
+"  -N                    same as -f N\n"
+"  +N                    same as -s N\n"
+"      --help            display this help and exit\n"
+"      --version         output version information and exit\n"
+"\n"
+"A field is a run of whitespace, then non-whitespace characters.\n"
+"Fields are skipped before chars.\n"
+msgstr ""
+"Fjern alle bortsett fra én identiske linjer fra INN\n"
+"(eller standard inn), og skriv til UT (eller standard ut).\n"
+"\n"
+"  -c, --count           begynn linjer med antall forekomster\n"
+"  -d, --repeated        skriv bare ut linjer det er flere av\n"
+"  -D, --all-repeated    skriv alle linjer det er flere av\n"
+"  -f, --skip-fields=N   ikke sammenlign de første N feltene\n"
+"  -i, --ignore-case     ignorer forskjeller med store/små bokstaver\n"
+"  -s, --skip-chars=N    ikke sammenlign de første N tegnene\n"
+"  -u, --unique          skriv bare ut unike linjer\n"
+"  -w, --check-chars=N   ikke sammenlign mer enn N tegn per linje\n"
+"  -N                    samme som -f N\n"
+"  +N                    samme som -s N\n"
+"      --help            vis denne hjelpteksten og avslutt\n"
+"      --version         vis programversjon og avslutt\n"
+"\n"
+"Et felt er en rekke blanke tegn, så andre tegn.  Felt hoppes over før tegn.\n"
+
+#: src/uniq.c:272
+#, c-format
+msgid "error reading %s"
+msgstr "feil ved lesing av %s"
+
+#: src/uniq.c:275
+#, c-format
+msgid "error writing %s"
+msgstr "feil ved skriving til %s"
+
+#: src/uniq.c:337
+#, c-format
+msgid "invalid number of fields to skip: `%s'"
+msgstr "ugyldig antall felt å hoppe over: «%s»"
+
+#: src/uniq.c:353
+#, c-format
+msgid "invalid number of bytes to skip: `%s'"
+msgstr "ugyldig antall bytes å hoppe over: «%s»"
+
+#: src/uniq.c:369 src/uniq.c:395
+#, c-format
+msgid "invalid number of bytes to compare: `%s'"
+msgstr "ugyldig antall bytes å sammenligne: «%s»"
+
+#: src/uniq.c:416
+msgid "printing all duplicated lines and repeat counts is meaningless"
+msgstr "å skrive alle dupliserte linjer *og* gjentagelsesantall er meningsløst"
+
+#: src/wc.c:89
+msgid ""
+"Print line, word, and byte counts for each FILE, and a total line if\n"
+"more than one FILE is specified.  With no FILE, or when FILE is -,\n"
+"read standard input.\n"
+"  -c, --bytes, --chars   print the byte counts\n"
+"  -l, --lines            print the newline counts\n"
+"  -L, --max-line-length  print the length of the longest line\n"
+"  -w, --words            print the word counts\n"
+"      --help             display this help and exit\n"
+"      --version          output version information and exit\n"
+msgstr ""
+"Skriv ut antall linjer, ord og bytes for hver FIL, og en total-linje\n"
+"dersom mer enn én FIL er spesifisert.  Dersom ingen FIL er spesifisert,\n"
+"eller FIL er -, leses det fra standard inn.\n"
+"  -c, --bytes, --chars   skriv ut antall bytes\n"
+"  -l, --lines            skriv ut antall linjer.\n"
+"  -L, --max-line-length  skriv ut lengden av den lengste linjen.\n"
+"  -w, --words            skriv ut antall ord\n"
+"      --help             vis denne hjelpteksten og avslutt\n"
+"      --version          vid programversjon og avslutt\n"
+
+#: src/wc.c:364
+msgid "total"
+msgstr "totalt"
+
+#~ msgid "`%s' has reappeared"
+#~ msgstr "«%s» har blitt gjenopprettet"
+
+#~ msgid "`-w PAGE_WIDTH' invalid column number: `%s'"
+#~ msgstr "«-w SIDE_BREDDE» ugyldig kolonnenummer: «%s»"
+
+#~ msgid ""
+#~ "\n"
+#~ "Report bugs to textutils-bugs@gnu.org"
+#~ msgstr ""
+#~ "\n"
+#~ "Rapportér feil til textutils-bugs@gnu.org"

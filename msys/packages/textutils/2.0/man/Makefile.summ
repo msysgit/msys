@@ -1,0 +1,27 @@
+# -*- makefile -*-
+cat-summary = concatenate files and print on the standard output
+cksum-summary = checksum and count the bytes in a file
+comm-summary = compare two sorted files line by line
+csplit-summary = split a file into sections determined by context lines
+cut-summary = remove sections from each line of files
+expand-summary = convert tabs to spaces
+fmt-summary = simple optimal text formatter
+fold-summary = wrap each input line to fit in specified width
+head-summary = output the first part of files
+join-summary = join lines of two files on a common field
+md5sum-summary = compute and check MD5 message digest
+nl-summary = number lines of files
+od-summary = dump files in octal and other formats
+paste-summary = merge lines of files
+ptx-summary = produce a permuted index of file contents
+pr-summary = convert text files for printing
+sort-summary = sort lines of text files
+split-summary = split a file into pieces
+sum-summary = checksum and count the blocks in a file
+tac-summary = concatenate and print files in reverse
+tail-summary = output the last part of files
+tr-summary = translate or delete characters
+tsort-summary = perform topological sort
+unexpand-summary = convert spaces to tabs
+uniq-summary = remove duplicate lines from a sorted file
+wc-summary = print the number of bytes, words, and lines in files
