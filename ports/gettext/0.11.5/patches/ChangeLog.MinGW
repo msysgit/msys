@@ -1,0 +1,71 @@
+2002.11.22  Earnie Boyd  <earnie@users.sf.net>
+
+	* Makefile.in: Regenerated.
+	* doc/Makefile.in: Ditto.
+	* intl-java/Makefile.in: Ditto.
+	* lib/Makefile.in: Ditto.
+	* libuniname/Makefile.in: Ditto.
+	* m4/Makefile.in: Ditto.
+	* man/Makefile.in: Ditto.
+	* misc/Makefile.in: Ditto.
+	* projects/Makefile.in: Ditto.
+	* src/Makefile.in: Ditto.
+	* tests/Makefile.in: Ditto.
+	* aclocal.m4: Ditto.
+	* config.h.in: Ditto.
+	* configure: Ditto.
+	* configure.in: dnl comment change to # comment throughout.
+	(AC_CANONICAL_SYSTEM): Add.
+	(AC_CHECK_HEADERS): Add sys/utsname.h.
+	(LT_AC_PROG_SED): Ditto.
+	(AC_CANONICAL_HOST): Remove.
+	(AC_FUNC_VFORK): Changed to AC_FUNC_FORK([]).
+	(AC_LIB_HAVE_LINKFLAGS([expat]...)): Changed to AC_LIB_LINKFLAGS.
+	(LTLIBOBJS): Don't set.  Added comments as to why.
+	(AC_OUTPUT): Changed to use AC_CONFIG_FILES and AC_CONFIG_COMMANDS.
+	(WINSOCK): Add variable.  Set to -lws2_32 if target_os is mingw32.
+	(EXPORT): Add an AH_VERBATIM to define this macro.
+	(IMPORT): Add an AH_VERBATIM to define this macro.
+	Note: Some of the above changes were accomplished with autoupdate.
+	* elisp-comp: moved from misc/.
+	* intl/*.c: Add EXPORT where needed throughout.
+	* lib/*.c: Ditto.
+	* lib/*.c: Ditto.
+	* lib/c-ctype.c: Add include of config.h.
+	* lib/execute.c: Code for Win32 spawn.
+	* lib/pipe-bidi.c: Code for Win32 pipes.  Note, I've not found a way
+	to do non-blocking I/O.
+	* lib/pipe-in.c: Ditto.
+	* lib/pipe-out.c: Ditto.
+	* lib/pipe.h: Add a pipe() macro for win32.
+	* lib/wait-process.c: Conditionalize inclusion of sys/wait.h.
+	* lib/wait-process.h: Add a waitpid() macro.
+	* ltmain.sh: Replace with cvs HEAD version.
+	* m4/fnmatch.m4: Use AC_LIBOBJ instead of explicit set of LIBOBJS.
+	* m4/getline.m4: Ditto.
+	* m4/lib-link.m4: Modified by autoupdate.
+	* m4/libtool.m4: Replaced with cvs HEAD version.
+	* misc/elisp-comp: Moved to ../.
+	* src/Makefile.am (LDADD): Use @WINSOCK@.
+	* src/hostname.c: Declarations for gethostname for _WIN32.
+	(sys/utsname.h): Add HAVE_SYS_UTSNAME_H guard.
+	* src/msgfilter.c: Conditionalize use of fcntl.
+	* src/msgfmt.c: Setup sigsetjmp and siglongjmp emulation for _WIN32.
+	* src/msginit.c: Conditionalize use of pwd.h and associated structs
+	and functions.
+	* tests/msgexec-1-win32: Copy of msgexec-1 modified for win32.
+	* tests/rpathlx/aclocal.m4: Regenerated. (Needs to be done again.)
+	* tests/rpathlx/configure: Ditto.
+	* tests/rpathly/aclocal.m4: Ditto.
+	* tests/rpathly/configure: Ditto.
+	* tests/rpathlyx/aclocal.m4: Ditto.
+	* tests/rpathlyx/configure: Ditto.
+	* tests/rpathlz/aclocal.m4: Ditto.
+	* tests/rpathlz/configure: Ditto.
+	* tests/rpathlzyx/aclocal.m4: Ditto.
+	* tests/rpathlzyx/configure: Ditto.
+	* tests/rpathx/aclocal.m4: Ditto.
+	* tests/rpathx/configure: Ditto.
+	* tests/rpathy/aclocal.m4: Ditto.
+	* tests/rpathz/aclocal.m4: Ditto.
+	* tests/rpathz/configure: Ditto.
