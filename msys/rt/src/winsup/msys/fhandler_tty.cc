@@ -37,6 +37,7 @@ static DWORD WINAPI process_ioctl (void *);		// Ioctl requests thread
 fhandler_tty_master::fhandler_tty_master (const char *name, int unit) :
 	fhandler_pty_master (name, FH_TTYM, unit)
 {
+  TRACE_IN;
   set_cb (sizeof *this);
   console = NULL;
   hThread = NULL;
@@ -45,6 +46,7 @@ fhandler_tty_master::fhandler_tty_master (const char *name, int unit) :
 int
 fhandler_tty_master::init (int ntty)
 {
+  TRACE_IN;
   HANDLE h;
   termios_printf ("Creating master for tty%d", ntty);
 
@@ -116,6 +118,7 @@ DWORD
 fhandler_tty_common::__acquire_output_mutex (const char *fn, int ln,
 					   DWORD ms)
 {
+  TRACE_IN;
   if (strace.active)
     strace.prntf (_STRACE_TERMIOS, fn, "(%d): tty output_mutex: waiting %d ms", ln, ms);
   DWORD res = WaitForSingleObject (output_mutex, ms);
@@ -138,6 +141,7 @@ fhandler_tty_common::__acquire_output_mutex (const char *fn, int ln,
 void
 fhandler_tty_common::__release_output_mutex (const char *fn, int ln)
 {
+  TRACE_IN;
   if (ReleaseMutex (output_mutex))
     {
 #ifndef DEBUGGING
@@ -158,6 +162,7 @@ fhandler_tty_common::__release_output_mutex (const char *fn, int ln)
 void
 fhandler_pty_master::doecho (const void *str, DWORD len)
 {
+  TRACE_IN;
   acquire_output_mutex (INFINITE);
   if (!WriteFile (get_ttyp ()->to_master, str, len, &len, NULL))
     termios_printf ("Write to %p failed, %E", get_ttyp ()->to_master);
@@ -168,6 +173,7 @@ fhandler_pty_master::doecho (const void *str, DWORD len)
 int
 fhandler_pty_master::accept_input ()
 {
+  TRACE_IN;
   DWORD bytes_left, written;
   DWORD n;
   DWORD rc;
@@ -213,6 +219,7 @@ fhandler_pty_master::accept_input ()
 static DWORD WINAPI
 process_input (void *)
 {
+  TRACE_IN;
   char rawbuf[INP_BUFFER_SIZE];
 
   while (1)
@@ -226,6 +233,7 @@ process_input (void *)
 BOOL
 fhandler_pty_master::hit_eof ()
 {
+  TRACE_IN;
   if (get_ttyp ()->was_opened && !get_ttyp ()->slave_alive ())
     {
       /* We have the only remaining open handle to this pty, and
@@ -242,6 +250,7 @@ fhandler_pty_master::hit_eof ()
 int
 fhandler_pty_master::process_slave_output (char *buf, size_t len, int pktmode_on)
 {
+  TRACE_IN;
   size_t rlen;
   char outbuf[OUT_BUFFER_SIZE + 1];
   DWORD n;
@@ -396,6 +405,7 @@ out:
 static DWORD WINAPI
 process_output (void *)
 {
+  TRACE_IN;
   char buf[OUT_BUFFER_SIZE*2];
 
   for (;;)
@@ -422,6 +432,7 @@ process_output (void *)
 static DWORD WINAPI
 process_ioctl (void *)
 {
+  TRACE_IN;
   while (1)
     {
       WaitForSingleObject (tty_master->ioctl_request_event, INFINITE);
@@ -439,6 +450,7 @@ process_ioctl (void *)
 fhandler_tty_slave::fhandler_tty_slave (int num, const char *name) :
 	fhandler_tty_common (FH_TTYS, name, num)
 {
+  TRACE_IN;
   set_cb (sizeof *this);
   ttynum = num;
   /* FIXME: This is wasteful.  We should rewrite the set_name path to eliminate the
@@ -453,6 +465,7 @@ fhandler_tty_slave::fhandler_tty_slave (int num, const char *name) :
 fhandler_tty_slave::fhandler_tty_slave (const char *name) :
 	fhandler_tty_common (FH_TTYS, name, 0)
 {
+  TRACE_IN;
   set_cb (sizeof *this);
   inuse = NULL;
 }
@@ -462,6 +475,7 @@ fhandler_tty_slave::fhandler_tty_slave (const char *name) :
 int
 fhandler_tty_slave::open (const char *, int flags, mode_t)
 {
+  TRACE_IN;
   tcinit (cygwin_shared->tty[ttynum]);
 
   attach_tty (ttynum);
@@ -565,6 +579,7 @@ fhandler_tty_slave::open (const char *, int flags, mode_t)
 void
 fhandler_tty_slave::init (HANDLE, DWORD a, mode_t)
 {
+  TRACE_IN;
   int mode = 0;
 
   a &= GENERIC_READ | GENERIC_WRITE;
@@ -581,6 +596,7 @@ fhandler_tty_slave::init (HANDLE, DWORD a, mode_t)
 int
 fhandler_tty_slave::write (const void *ptr, size_t len)
 {
+  TRACE_IN;
   DWORD n, towrite = len;
 
   termios_printf ("tty%d, write(%x, %d)", ttynum, ptr, len);
@@ -635,6 +651,7 @@ fhandler_tty_slave::write (const void *ptr, size_t len)
 int
 fhandler_tty_slave::read (void *ptr, size_t len)
 {
+  TRACE_IN;
   DWORD n;
   int totalread = 0;
   int vmin = INT_MAX;
@@ -776,6 +793,7 @@ fhandler_tty_slave::read (void *ptr, size_t len)
 int
 fhandler_tty_common::dup (fhandler_base *child)
 {
+  TRACE_IN;
   fhandler_tty_slave *fts = (fhandler_tty_slave *) child;
   int errind;
 
@@ -873,6 +891,7 @@ err:
 int
 fhandler_tty_slave::tcgetattr (struct termios *t)
 {
+  TRACE_IN;
   *t = get_ttyp ()->ti;
   return 0;
 }
@@ -880,6 +899,7 @@ fhandler_tty_slave::tcgetattr (struct termios *t)
 int
 fhandler_tty_slave::tcsetattr (int, const struct termios *t)
 {
+  TRACE_IN;
   acquire_output_mutex (INFINITE);
   get_ttyp ()->ti = *t;
   release_output_mutex ();
@@ -889,12 +909,14 @@ fhandler_tty_slave::tcsetattr (int, const struct termios *t)
 int
 fhandler_tty_slave::tcflush (int)
 {
+  TRACE_IN;
   return 0;
 }
 
 int
 fhandler_tty_slave::ioctl (unsigned int cmd, void *arg)
 {
+  TRACE_IN;
   termios_printf ("ioctl (%x)", cmd);
 
   if (myself->pgid && get_ttyp ()->getpgid () != myself->pgid &&
@@ -957,6 +979,7 @@ out:
 fhandler_pty_master::fhandler_pty_master (const char *name, DWORD devtype, int unit) :
 	fhandler_tty_common (devtype, name, unit)
 {
+  TRACE_IN;
   set_cb (sizeof *this);
   ioctl_request_event = NULL;
   ioctl_done_event = NULL;
@@ -967,6 +990,7 @@ fhandler_pty_master::fhandler_pty_master (const char *name, DWORD devtype, int u
 int
 fhandler_pty_master::open (const char *, int flags, mode_t)
 {
+  TRACE_IN;
   ttynum = cygwin_shared->tty.allocate_tty (0);
   if (ttynum < 0)
     return 0;
@@ -983,6 +1007,7 @@ fhandler_pty_master::open (const char *, int flags, mode_t)
 int
 fhandler_tty_common::close ()
 {
+  TRACE_IN;
   if (output_done_event && !CloseHandle (output_done_event))
     termios_printf ("CloseHandle (output_done_event), %E");
   if (ioctl_done_event && !CloseHandle (ioctl_done_event))
@@ -1018,6 +1043,7 @@ fhandler_tty_common::close ()
 int
 fhandler_pty_master::close ()
 {
+  TRACE_IN;
 #if 0
   while (accept_input () > 0)
     continue;
@@ -1046,6 +1072,7 @@ fhandler_pty_master::close ()
 int
 fhandler_pty_master::write (const void *ptr, size_t len)
 {
+  TRACE_IN;
   (void) line_edit ((char *) ptr, len);
   return len;
 }
@@ -1053,12 +1080,14 @@ fhandler_pty_master::write (const void *ptr, size_t len)
 int
 fhandler_pty_master::read (void *ptr, size_t len)
 {
+  TRACE_IN;
   return process_slave_output ((char *) ptr, len, pktmode);
 }
 
 int
 fhandler_pty_master::tcgetattr (struct termios *t)
 {
+  TRACE_IN;
   *t = cygwin_shared->tty[ttynum]->ti;
   return 0;
 }
@@ -1066,6 +1095,7 @@ fhandler_pty_master::tcgetattr (struct termios *t)
 int
 fhandler_pty_master::tcsetattr (int, const struct termios *t)
 {
+  TRACE_IN;
   cygwin_shared->tty[ttynum]->ti = *t;
   return 0;
 }
@@ -1073,12 +1103,14 @@ fhandler_pty_master::tcsetattr (int, const struct termios *t)
 int
 fhandler_pty_master::tcflush (int)
 {
+  TRACE_IN;
   return 0;
 }
 
 int
 fhandler_pty_master::ioctl (unsigned int cmd, void *arg)
 {
+  TRACE_IN;
   switch (cmd)
     {
       case TIOCPKT:
@@ -1104,6 +1136,7 @@ fhandler_pty_master::ioctl (unsigned int cmd, void *arg)
 char *
 fhandler_pty_master::ptsname (void)
 {
+  TRACE_IN;
   static char buf[32];
 
   __small_sprintf (buf, "/dev/tty%d", ttynum);
@@ -1113,6 +1146,7 @@ fhandler_pty_master::ptsname (void)
 void
 fhandler_tty_common::set_close_on_exec (int val)
 {
+  TRACE_IN;
 #ifndef DEBUGGING
   this->fhandler_base::set_close_on_exec (val);
 #else
@@ -1139,6 +1173,7 @@ fhandler_tty_common::set_close_on_exec (int val)
 void
 fhandler_tty_common::fixup_after_fork (HANDLE parent)
 {
+  TRACE_IN;
   this->fhandler_termios::fixup_after_fork (parent);
   if (output_done_event)
     fork_fixup (parent, output_done_event, "output_done_event");
@@ -1164,6 +1199,7 @@ fhandler_tty_common::fixup_after_fork (HANDLE parent)
 void
 fhandler_pty_master::set_close_on_exec (int val)
 {
+  TRACE_IN;
   this->fhandler_tty_common::set_close_on_exec (val);
 
   /* FIXME: There is a console handle leak here. */
@@ -1179,6 +1215,7 @@ fhandler_pty_master::set_close_on_exec (int val)
 void
 fhandler_tty_master::fixup_after_fork (HANDLE child)
 {
+  TRACE_IN;
   this->fhandler_pty_master::fixup_after_fork (child);
   console->fixup_after_fork (child);
 }
@@ -1186,6 +1223,7 @@ fhandler_tty_master::fixup_after_fork (HANDLE child)
 void
 fhandler_tty_master::fixup_after_exec (HANDLE)
 {
+  TRACE_IN;
   console->close ();
   init_console ();
   return;
@@ -1194,6 +1232,7 @@ fhandler_tty_master::fixup_after_exec (HANDLE)
 int
 fhandler_tty_master::init_console ()
 {
+  TRACE_IN;
   console = (fhandler_console *) cygheap->fdtab.build_fhandler (-1, FH_CONSOLE, "/dev/ttym");
   if (console == NULL)
     return -1;
