@@ -378,19 +378,19 @@ relunit:
   | tSNUMBER tDAY_UNIT
       { PC.rel_day += $1.value * $2; }
   | tDAY_UNIT
-      { PC.rel_day += $1 }
+      { PC.rel_day += $1; }
   | tUNUMBER tHOUR_UNIT
       { PC.rel_hour += $1.value * $2; }
   | tSNUMBER tHOUR_UNIT
       { PC.rel_hour += $1.value * $2; }
   | tHOUR_UNIT
-      { PC.rel_hour += $1 }
+      { PC.rel_hour += $1; }
   | tUNUMBER tMINUTE_UNIT
       { PC.rel_minutes += $1.value * $2; }
   | tSNUMBER tMINUTE_UNIT
       { PC.rel_minutes += $1.value * $2; }
   | tMINUTE_UNIT
-      { PC.rel_minutes += $1 }
+      { PC.rel_minutes += $1; }
   | tUNUMBER tSEC_UNIT
       { PC.rel_seconds += $1.value * $2; }
   | tSNUMBER tSEC_UNIT
