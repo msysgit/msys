@@ -1,3 +1,9 @@
+2001-09-26  Earnie Boyd  <earnie@SF.net>
+
+	* path.cc (fchdir): Apply Corinna's 8/3/2001 patch.
+	Set the fhandler's path to absolute value to ensure changing to the
+	correct directory even if the fhandler originally points to a
+	relative path.
 
 2001-09-21  Earnie Boyd  <earnie@SF.net>
 
