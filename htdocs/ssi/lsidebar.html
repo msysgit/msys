@@ -1,4 +1,4 @@
-<!--$Id: lsidebar.html,v 1.9 2002-01-20 03:01:20 stevedperkins Exp $-->
+<!--$Id: lsidebar.html,v 1.10 2002-05-06 14:31:03 earnie Exp $-->
 <!-- ================================================================== -->
 <!--                                                                    -->
 <!--			     Left Sidebar                               -->
@@ -19,4 +19,32 @@
    <tr><td colspan="2"><a href="who.shtml">Who are we?</a></td></tr>
    <tr><td colspan="2"><a href="news.shtml">News</a></td></tr>
    <tr><td colspan="2"><a href="history.shtml">Project History</a></td></tr>
+
+   <!-- Search box -->
+   <tr><td colspan="2">
+   <br>
+   <table border="1" align="center">
+   <tr><td align="center">
+   <b>Search the archives</b>
+   </td></tr>
+   <tr><td>
+   <form method="post" action="http://sourceforge.net/search/">
+   <select name="forum_id">
+     <option value="5119">MinGW-users</option>
+     <option value="4855">MinGW-msys</option>
+     <option value="5123">MinGW-dvlpr</option>
+     <option value="5122">MinGW-editor</option>
+     <option value="5120">MinGW-patches</option>
+     <option value="5121">MinGW-notify</option>
+   </select>
+   <input type="hidden" name="type_of_search" value="mlists">
+   <input type="hidden" name="group_id" value="2435">
+   <input type="text" size="12" name="words" value=""><br>
+   <input type="submit" name="Search" value="Search"><br>
+   <input type="checkbox" name="exact" value="1" checked>Require all words?</td>
+   </form>
+   </td></tr>
+   </table>
+   </td></tr>
 </table>
+

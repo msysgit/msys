@@ -1,4 +1,8 @@
-2001-12-20  Earnie Boyd  <earnie@ussers.sf.net>
+2002-05-06  Earnie Boyd  <earnie@users.sf.net>
+
+	* ssi/lsidebar.html: Add search box.
+
+2001-12-20  Earnie Boyd  <earnie@users.sf.net>
 
 	* mingwfag.shtml:  Add a section about MSYS.
 	* lists.shtml: Ditto.
