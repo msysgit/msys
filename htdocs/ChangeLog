@@ -1,20 +1,9 @@
 2002-12-27   Nathan Fisher <natbobc@users.sf.net>
 
-           *  index.shtml: Add "News:" to news column
-
-2002-12-27   Nathan Fisher <natbobc@users.sf.net>
-
-            * download.shtml: Change title to "Download"
-
-2002-12-27   Nathan Fisher <natbobc@users.sf.net>
-
-	* index.shtml: Change H4 tags to bold type face
-	* index.shtml: Removed Release info
-	* index.shtml: Add new column for news
-	* mingw.css: Add bold class for SPAN tag
-
-2002-12-27   Nathan Fisher <natbobc@users.sf.net>
-	
+	* index.shtml: Change H4 tags to bold type face.
+	Removed Release info.  Add new column for news.
+	* mingw.css: Add bold class for SPAN tag.
+	* download.shtml: Change title to "Download"
 	* ssi/lsidebar.html: Reverted back to r1.12
 
 2002-12-26   Nathan Fisher <natbobc@users.sf.net>
