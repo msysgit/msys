@@ -1,4 +1,10 @@
 2003-01-05   Nathan Fisher <natbobc@users.sf.net>
+
+	* index.shtml: Changed "News:" P tag to class centre 
+	* index.shtml: Changed "News:" to "Latest News:"
+	* mingw.css: Created P class centre
+
+2003-01-05   Nathan Fisher <natbobc@users.sf.net>
 	
 	* index.shtml: Coloured news section
 	* mingw.css: Created TD class news

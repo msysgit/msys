@@ -6,6 +6,8 @@ OL { margin-top: 1em; margin-bottom: 1em;  }
 OL.alpha { list-style-type: upper-alpha; }
 OL.romanum { list-style-type: lower-roman; }
 
+P.centre { text-align: center; }
+
 SPAN.bold { font-weight: bold; }
 
 TABLE { width: 100%; text-align: left; }
