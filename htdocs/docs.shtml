@@ -41,6 +41,9 @@ documenting the various pieces. </p>
 <a href="mingwfaq.shtml">MinGW FAQ</a> is a 
 good place to start. 
 </li>
+<li> <a href="faq.shtml">Alternative FAQ</a> covers
+mostly installation procedure.
+</li>
 </ul>
 
 <h2 align="left">GNU Development Tools Documentation</h2>
