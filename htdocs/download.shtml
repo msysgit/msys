@@ -205,8 +205,8 @@
 
 		    <hr>
 		    <h2><a href="#Contents" name="hdr5">
-		      Decompression and Unarchiving Utilities</h2>
-                    </a><p>
+		      Decompression and Unarchiving Utilities</a></h2>
+                    <p>
                      <em><b>WinZip Caution:</b></em><br>
                       Make sure that you first <b>uncheck</b> the
                       "TAR file smart CR/LF conversion" checkbox
@@ -339,7 +339,7 @@
     </p>
     <address>
       <br>
-      Last revised $Date: 2003-06-30 17:23:44 $
+      Last revised $Date: 2003-06-30 18:07:51 $
     </address>
   </body>
 </html>
