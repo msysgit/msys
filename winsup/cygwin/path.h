@@ -195,7 +195,8 @@ class suffix_scan
 public:
   const char *path;
   char *has (const char *, const suffix_info *);
-  int next ();
+  void add(const char *);
+  void del();
   int lnk_match () {return nextstate >= SCAN_EXTRALNK;}
 };
 
