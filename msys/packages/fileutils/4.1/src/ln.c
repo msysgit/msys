@@ -228,6 +228,11 @@ do_link (const char *source, const char *dest)
       && (!symbolic_link || stat (source, &source_stats) == 0)
       && source_stats.st_dev == dest_stats.st_dev
       && source_stats.st_ino == dest_stats.st_ino
+#if defined (__CYGWIN__) || defined (__MSYS__)
+      && (strlen (source) < 5
+	 || strncasecmp (source, dest, strlen (dest)) != 0
+	 || strcasecmp (source + strlen (source) - 4, ".exe") != 0)
+#endif
       /* The following detects whether removing DEST will also remove
  	 SOURCE.  If the file has only one link then both are surely
  	 the same link.  Otherwise check whether they point to the same
@@ -252,7 +257,13 @@ do_link (const char *source, const char *dest)
 	  if (!yesno ())
 	    return 0;
 	}
-      else if (!remove_existing_files && backup_type == none)
+      else if (!remove_existing_files && backup_type == none
+#if defined (__CYGWIN__) || defined (__MSYS__)
+	    && (strlen (source) < 5
+		|| strncasecmp (source, dest, strlen (dest)) != 0
+		|| strcasecmp (source + strlen (source) - 4, ".exe") != 0)
+#endif
+	    )
 	{
 	  error (0, 0, _("%s: File exists"), quote (dest));
 	  return 1;

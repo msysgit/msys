@@ -197,6 +197,25 @@ copy_reg (const char *src_path, const char *dst_path,
   source_desc = open (src_path, O_RDONLY);
   if (source_desc < 0)
     {
+#if defined (__CYGWIN__) || defined (__MSYS__)
+      char *p;
+      if ((p = strchr (src_path, '\0') - 4) <= src_path || strcasecmp (p, ".exe") != 0)
+	{
+	  p = alloca (strlen (src_path) + 5);
+	  src_path = strcat (strcpy (p, src_path), ".exe");
+	  source_desc = open (src_path, O_RDONLY);
+	  if (source_desc >= 0)
+	    {
+	      if ((p = strchr (dst_path, '\0') - 4) <= dst_path ||
+		  (p[-1] != '.' && strcasecmp (p, ".exe") != 0 ))
+		{
+		  p = alloca (strlen (dst_path) + 5);
+		  dst_path = strcat (strcpy (p, dst_path), ".exe");
+		}
+	      goto ok;
+	    }
+	}
+#endif /*__CYGWIN__*/
       /* If SRC_PATH doesn't exist, then chances are good that the
 	 user did something like this `cp --backup foo foo': and foo
 	 existed to start with, but copy_internal renamed DST_PATH
@@ -210,6 +229,9 @@ copy_reg (const char *src_path, const char *dst_path,
       return -1;
     }
 
+#if defined (__CYGWIN__) || defined (__MSYS__)
+ ok:
+#endif
   /* These semantics are required for cp.
      The if-block will be taken in move_mode.  */
   if (*new_dst)
@@ -1141,12 +1163,23 @@ copy_internal (const char *src_path, const char *dst_path,
     {
       if (chmod (dst_path, get_dest_mode (x, src_mode)))
 	{
+#if defined (__CYGWIN__) || defined (__MSYS__)
+	char *p;
+	if ((p = strchr (dst_path, '\0') - 4) <= src_path || strcasecmp (p, ".exe") != 0)
+	  {
+	    p = alloca (strlen (dst_path) + 5);
+	    (void) strcat (strcpy (p, src_path), ".exe");
+	    if (chmod (p, src_mode & x->umask_kill) == 0)
+	      goto ok;
+	  }
+#endif /*__CYGWIN__*/
 	  error (0, errno, _("setting permissions for %s"), quote (dst_path));
 	  if (x->set_mode || x->require_preserve)
 	    return 1;
 	}
     }
 
+ ok:
   return delayed_fail;
 
 un_backup:
