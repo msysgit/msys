@@ -1,3 +1,9 @@
+2002-12-02  Earnie Boyd  <earnie@users.sf.net>
+
+	* path.cc (cygwin_conv_to_win32_path): Convert / to \ if we have a path
+	list; else convert \ to /.
+	* Makefile.in (WINDRES): Add the appropriate include directory.
+
 2002-12-01  Earnie Boyd  <earnie@users.sf.net>
 
 	* path.cc (cygwin_conv_to_win32_path): Modify the conversion of \ to /
