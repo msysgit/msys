@@ -1,3 +1,8 @@
+2000-09-10  Paul Sokolovsky  <Paul.Sokolovsky@technologist.com>
+
+	* Installed automatical update of live site from CVS
+        (this entry is a test for it).
+
 2000-09-08  Earnie Boyd <earnie_boyd@yahoo.com>
 
         * all *.shtml files: change the "web page maintainer" from
