@@ -13,6 +13,6 @@ details. */
 #ifndef _SYS_MTIO_H
 #define _SYS_MTIO_H
 
-#include <cygwin/mtio.h>
+#include <msys/mtio.h>
 
 #endif /* _SYS_MTIO_H */

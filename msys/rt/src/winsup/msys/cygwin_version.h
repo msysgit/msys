@@ -10,7 +10,7 @@ This software is a copyrighted work licensed under the terms of the
 Cygwin license.  Please consult the file "CYGWIN_LICENSE" for
 details. */
 
-#include <cygwin/version.h>
+#include <msys/version.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -27,7 +27,7 @@ struct cygwin_version_info
   unsigned short shared_data;
   unsigned short mount_registry;
   const char *dll_build_date;
-  char shared_id[sizeof (CYGWIN_VERSION_DLL_IDENTIFIER) + 64];
+  char shared_id[sizeof (DLL_VERSION_IDENTIFIER) + 64];
 };
 
 #ifndef __cplusplus

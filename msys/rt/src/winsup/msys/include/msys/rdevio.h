@@ -1,4 +1,4 @@
-/* cygwin/rdevio.h
+/* msys/rdevio.h
 
    Copyright 1999, 2001 Red Hat, Inc.
 
@@ -11,13 +11,13 @@ Cygwin license.  Please consult the file "CYGWIN_LICENSE" for
 details. */
 
 /*
- * cygwin/rdevio.h header file for Cygwin.
+ * msys/rdevio.h header file for Cygwin.
  *
  * Written by C. Vinschen.
  */
 
-#ifndef _CYGWIN_RDEVIO_H
-#define _CYGWIN_RDEVIO_H
+#ifndef _MSYS_RDEVIO_H
+#define _MSYS_RDEVIO_H
 
 /* structure for RDIOCDOP - raw device operation */
 struct rdop {
@@ -39,4 +39,4 @@ struct rdget {
 #define RDIOCDOP	_IOW('r', 128, struct rdop)
 #define RDIOCGET	_IOR('r', 129, struct rdget)
 
-#endif /* _CYGWIN_RDEVIO_H */
+#endif /* _MSYS_RDEVIO_H */

@@ -10,8 +10,8 @@
  *              as published by the Free Software Foundation; either version
  *              2 of the License, or (at your option) any later version.
  */
-#ifndef _CYGWIN_IN_SYSTM_H
-#define _CYGWIN_IN_SYSTM_H
+#ifndef _MSYS_IN_SYSTM_H
+#define _MSYS_IN_SYSTM_H
 
 #include <sys/cdefs.h>
 #include <sys/types.h>
@@ -31,4 +31,4 @@ typedef u_int32_t n_time;       /* ms since 00:00 GMT, byte rev   */
 
 __END_DECLS
 
-#endif /* _CYGWIN_IN_SYSTM_H */
+#endif /* _MSYS_IN_SYSTM_H */

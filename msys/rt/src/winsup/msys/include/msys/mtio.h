@@ -1,4 +1,4 @@
-/* cygwin/mtio.h
+/* msys/mtio.h
 
    Copyright 1999, 2001 Red Hat, Inc.
 
@@ -10,12 +10,12 @@ This software is a copyrighted work licensed under the terms of the
 Cygwin license.  Please consult the file "CYGWIN_LICENSE" for
 details. */
 
-/* cygwin/mtio.h header file for Cygwin.
+/* msys/mtio.h header file for Cygwin.
 
    by C. Vinschen.  */
 
-#ifndef _CYGWIN_MTIO_H
-#define _CYGWIN_MTIO_H
+#ifndef _MSYS_MTIO_H
+#define _MSYS_MTIO_H
 
 #include <sys/ioctl.h>
 #include <asm/socket.h>
@@ -196,4 +196,4 @@ struct mt_tape_info {
 	{0, NULL} \
 }
 
-#endif /* _CYGWIN_MTIO_H */
+#endif /* _MSYS_MTIO_H */

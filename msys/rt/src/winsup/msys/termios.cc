@@ -19,7 +19,7 @@ details. */
 #include "fhandler.h"
 #include "dtable.h"
 #include "cygheap.h"
-#include "cygwin/version.h"
+#include "msys/version.h"
 #include "perprocess.h"
 #include <sys/termios.h>
 

@@ -24,7 +24,7 @@ details. */
 #include <winnls.h>
 #include <wininet.h>
 #include <lmcons.h> /* for UNLEN */
-#include <cygwin/version.h>
+#include <msys/version.h>
 #include <sys/cygwin.h>
 #include "cygerrno.h"
 #include "perprocess.h"
@@ -1633,12 +1633,6 @@ extern "C" int
 _cygwin_istext_for_stdio (int fd)
 {
   syscall_printf ("_cygwin_istext_for_stdio (%d)\n", fd);
-  if (CYGWIN_VERSION_OLD_STDIO_CRLF_HANDLING)
-    {
-      syscall_printf (" _cifs: old API\n");
-      return 0; /* we do it for old apps, due to getc/putc macros */
-    }
-
   if (cygheap->fdtab.not_open (fd))
     {
       syscall_printf (" _cifs: fd not open\n");

@@ -34,8 +34,7 @@ class mount_item
   struct mntent *getmntent ();
 };
 
-/* Warning: Decreasing this value will cause cygwin.dll to ignore existing
-   higher numbered registry entries.  Don't change this number willy-nilly.
+/* FIXME:
    What we need is to have a more dynamic allocation scheme, but the current
    scheme should be satisfactory for a long while yet.  */
 #define MAX_MOUNTS 128
@@ -51,12 +50,6 @@ class mount_info
   int nmounts;
   mount_item mount[MAX_MOUNTS];
 
-  /* cygdrive_prefix is used as the root of the path automatically
-     prepended to a path when the path has no associated mount.
-     cygdrive_flags are the default flags for the cygdrives. */
-  char cygdrive[MAX_PATH];
-  size_t cygdrive_len;
-  unsigned cygdrive_flags;
  private:
   int posix_sorted[MAX_MOUNTS];
   int native_sorted[MAX_MOUNTS];
@@ -82,11 +75,6 @@ class mount_info
 			  int keep_rel_p);
   struct mntent *getmntent (int x);
 
-  int write_cygdrive_info_to_registry (const char *cygdrive_prefix, unsigned flags);
-  int remove_cygdrive_info_from_registry (const char *cygdrive_prefix, unsigned flags);
-  int get_cygdrive_info (char *user, char *system, char* user_flags,
-			 char* system_flags);
-
   void import_v1_mounts ();
 
  private:
@@ -97,9 +85,6 @@ class mount_info
   void mount_slash ();
   void to_registry ();
 
-  int cygdrive_win32_path (const char *src, char *dst, int trailing_slash_p);
-  void cygdrive_posix_path (const char *src, char *dst, int trailing_slash_p);
-  void read_cygdrive_info_from_registry ();
 };
 
 /******** Close-on-delete queue ********/

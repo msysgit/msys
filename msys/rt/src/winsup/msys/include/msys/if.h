@@ -1,4 +1,4 @@
-/* cygwin/if.h
+/* msys/if.h
 
    Copyright 1996, 2001 Red Hat, Inc.
 
@@ -8,8 +8,8 @@ This software is a copyrighted work licensed under the terms of the
 Cygwin license.  Please consult the file "CYGWIN_LICENSE" for
 details. */
 
-#ifndef _CYGWIN_IF_H_
-#define _CYGWIN_IF_H_
+#ifndef _MSYS_IF_H_
+#define _MSYS_IF_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -87,4 +87,4 @@ struct ifconf
 };
 #endif /* __cplusplus */
 
-#endif /* _CYGWIN_IF_H_ */
+#endif /* _MSYS_IF_H_ */

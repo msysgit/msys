@@ -11,7 +11,7 @@ details. */
 #ifndef _ASM_SOCKET_H
 #define _ASM_SOCKET_H
 
-#include <cygwin/if.h>
+#include <msys/if.h>
 
 #define IOCPARM_MASK    0x7f            /* parameters must be < 128 bytes */
 #define IOC_VOID        0x20000000      /* no parameters */

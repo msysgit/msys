@@ -1,30 +1,32 @@
-/* winsup.h: main Cygwin header file.
+/* winsup.h: main MSYS header file.
 
    Copyright 1996, 1997, 1998, 1999, 2000, 2001 Red Hat, Inc.
+   Copyright 2001, 2002 Earnie Boyd <earnie@users.sf.net>
 
-This file is part of Cygwin.
+This file is part of MSYS.
 
 This software is a copyrighted work licensed under the terms of the
 Cygwin license.  Please consult the file "CYGWIN_LICENSE" for
-details. */
+details. 
+ 
+This software is also a copyrighted work licensed under the terms of the
+MSYS license.  Please consult the file "MSYS_LICENSE for details.
+ */
 
 #ifdef HAVE_CONFIG_H
 # include "config.h"
-#endif
-
-#if defined (__CYGWIN__)
-  #define __INSIDE_CYGWIN__ 1
 #endif
 
 #if defined (__MSYS__)
   #define __INSIDE_MSYS__ 1
 #endif
 
-#define FIXME(FIXNO) debug_printf("%s-%s", "FIXME", (FIXNO))
 #define HMMM(HUM) debug_printf("%s-%d: %s", "HMMM", __LINE__, (HUM))
 #if DEBUGGING
+# define FIXME debug_printf("FIXME - %s (%s): %d", __FILE__, __FUNCTION__, __LINE__)
 # define TRACE_IN debug_printf("TRACE_IN: %s, %d", __FILE__, __LINE__)
 #else
+# define FIXME
 # define TRACE_IN
 #endif
 
@@ -50,9 +52,9 @@ details. */
 #include <sys/strace.h>
 
 extern const char case_folded_lower[];
-#define cyg_tolower(c) (case_folded_lower[(unsigned char)(c)])
+#define folded_tolower(c) (case_folded_lower[(unsigned char)(c)])
 extern const char case_folded_upper[];
-#define cyg_toupper(c) (case_folded_upper[(unsigned char)(c)])
+#define folded_toupper(c) (case_folded_upper[(unsigned char)(c)])
 
 #ifndef MALLOC_DEBUG
 #define cfree newlib_cfree_dont_use

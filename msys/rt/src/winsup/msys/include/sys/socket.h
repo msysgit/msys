@@ -12,7 +12,7 @@ details. */
 #define _SYS_SOCKET_H
 
 #include <features.h>
-#include <cygwin/socket.h>
+#include <msys/socket.h>
 #include <sys/time.h>
 
 #ifdef __cplusplus

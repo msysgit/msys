@@ -26,6 +26,7 @@ int sigcatchers;	/* FIXME: Not thread safe. */
 static inline void
 set_sigcatchers (void (*oldsig) (int), void (*cursig) (int))
 {
+  TRACE_IN;
 #ifdef DEBUGGING
   int last_sigcatchers = sigcatchers;
 #endif
@@ -43,6 +44,7 @@ set_sigcatchers (void (*oldsig) (int), void (*cursig) (int))
 extern "C" _sig_func_ptr
 signal (int sig, _sig_func_ptr func)
 {
+  TRACE_IN;
   _sig_func_ptr prev;
 
   /* check that sig is in right range */
@@ -65,6 +67,7 @@ signal (int sig, _sig_func_ptr func)
 extern "C" unsigned int
 sleep (unsigned int seconds)
 {
+  TRACE_IN;
   int rc;
   sigframe thisframe (mainthread);
   DWORD ms, start_time, end_time;
@@ -92,6 +95,7 @@ sleep (unsigned int seconds)
 extern "C" unsigned int
 usleep (unsigned int useconds)
 {
+  TRACE_IN;
   syscall_printf ("usleep (%d)", useconds);
   WaitForSingleObject (signal_arrived, (useconds + 500) / 1000);
   syscall_printf ("0 = usleep (%d)", useconds);
@@ -101,6 +105,7 @@ usleep (unsigned int useconds)
 extern "C" int
 sigprocmask (int sig, const sigset_t *set, sigset_t *oldset)
 {
+  TRACE_IN;
   /* check that sig is in right range */
   if (sig < 0 || sig >= NSIG)
     {
@@ -140,6 +145,7 @@ sigprocmask (int sig, const sigset_t *set, sigset_t *oldset)
 static int
 kill_worker (pid_t pid, int sig)
 {
+  TRACE_IN;
   int res = 0;
   pinfo dest (pid);
   BOOL sendSIGCONT;
@@ -180,6 +186,7 @@ kill_worker (pid_t pid, int sig)
 int
 _raise (int sig)
 {
+  TRACE_IN;
   return _kill (myself->pid, sig);
 }
 
@@ -187,6 +194,7 @@ _raise (int sig)
 int
 _kill (pid_t pid, int sig)
 {
+  TRACE_IN;
   syscall_printf ("kill (%d, %d)", pid, sig);
   /* check that sig is in right range */
   if (sig < 0 || sig >= NSIG)
@@ -208,6 +216,7 @@ _kill (pid_t pid, int sig)
 int
 kill_pgrp (pid_t pid, int sig)
 {
+  TRACE_IN;
   int res = 0;
   int found = 0;
   int killself = 0;
@@ -251,12 +260,14 @@ kill_pgrp (pid_t pid, int sig)
 extern "C" int
 killpg (pid_t pgrp, int sig)
 {
+  TRACE_IN;
   return _kill (-pgrp, sig);
 }
 
 extern "C" int
 sigaction (int sig, const struct sigaction *newact, struct sigaction *oldact)
 {
+  TRACE_IN;
   sigproc_printf ("signal %d, newact %p, oldact %p", sig, newact, oldact);
   /* check that sig is in right range */
   if (sig < 0 || sig >= NSIG)
@@ -292,6 +303,7 @@ sigaction (int sig, const struct sigaction *newact, struct sigaction *oldact)
 extern "C" int
 sigaddset (sigset_t *set, const int sig)
 {
+  TRACE_IN;
   /* check that sig is in right range */
   if (sig <= 0 || sig >= NSIG)
     {
@@ -307,6 +319,7 @@ sigaddset (sigset_t *set, const int sig)
 extern "C" int
 sigdelset (sigset_t *set, const int sig)
 {
+  TRACE_IN;
   /* check that sig is in right range */
   if (sig <= 0 || sig >= NSIG)
     {
@@ -322,6 +335,7 @@ sigdelset (sigset_t *set, const int sig)
 extern "C" int
 sigismember (const sigset_t *set, int sig)
 {
+  TRACE_IN;
   /* check that sig is in right range */
   if (sig <= 0 || sig >= NSIG)
     {
@@ -339,6 +353,7 @@ sigismember (const sigset_t *set, int sig)
 extern "C" int
 sigemptyset (sigset_t *set)
 {
+  TRACE_IN;
   *set = (sigset_t) 0;
   return 0;
 }
@@ -346,6 +361,7 @@ sigemptyset (sigset_t *set)
 extern "C" int
 sigfillset (sigset_t *set)
 {
+  TRACE_IN;
   *set = ~((sigset_t) 0);
   return 0;
 }
@@ -353,6 +369,7 @@ sigfillset (sigset_t *set)
 extern "C" int
 sigpending (sigset_t *set)
 {
+  TRACE_IN;
   unsigned bit;
   *set = 0;
   for (int sig = 1; sig < NSIG; sig++)
@@ -364,17 +381,20 @@ sigpending (sigset_t *set)
 extern "C" int
 sigsuspend (const sigset_t *set)
 {
+  TRACE_IN;
   return handle_sigsuspend (*set);
 }
 
 extern "C" int
 sigpause (int signal_mask)
 {
+  TRACE_IN;
   return handle_sigsuspend ((sigset_t) signal_mask);
 }
 
 extern "C" int
 pause (void)
 {
+  TRACE_IN;
   return handle_sigsuspend (myself->getsigmask ());
 }

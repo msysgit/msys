@@ -70,7 +70,7 @@ details. */
 #include <winnls.h>
 #include <winnetwk.h>
 #include <sys/cygwin.h>
-#include <cygwin/version.h>
+#include <msys/version.h>
 #include "cygerrno.h"
 #include "perprocess.h"
 #include "security.h"
@@ -115,15 +115,6 @@ struct symlink_info
 };
 
 int pcheck_case = PCHECK_RELAXED; /* Determines the case check behaviour. */
-
-/* Determine if path prefix matches current cygdrive */
-#define iscygdrive(path) \
-  (path_prefix_p (mount_table->cygdrive, (path), mount_table->cygdrive_len))
-
-#define iscygdrive_device(path) \
-  (iscygdrive(path) && isalpha(path[mount_table->cygdrive_len]) && \
-   (isdirsep(path[mount_table->cygdrive_len + 1]) || \
-    !path[mount_table->cygdrive_len + 1]))
 
 /* Return non-zero if PATH1 is a prefix of PATH2.
    Both are assumed to be of the same path style and / vs \ usage.
@@ -910,7 +901,7 @@ get_raw_device_number (const char *uxname, const char *w32path, int &unit)
   else if (isdrive (w32path + 4))
     {
       devn = FH_FLOPPY;
-      unit = cyg_tolower (w32path[4]) - 'a';
+      unit = folded_tolower (w32path[4]) - 'a';
     }
   else if (strncasematch (w32path, "\\\\.\\physicaldrive", 17))
     {
@@ -1246,8 +1237,7 @@ mount_info::init ()
   nmounts = 0;
   had_to_create_mount_areas = 0;
 
-  /* Fetch the mount table and cygdrive-related information from
-     the registry.  */
+  /* Fetch the mount table information from the registry.  */
   from_registry ();
 }
 
@@ -1387,19 +1377,6 @@ mount_info::conv_to_win32_path (const char *src_path, char *dst,
       goto out_no_chroot_check;
     }
 
-  /* Check if the cygdrive prefix was specified.  If so, just strip
-     off the prefix and transform it into an MS-DOS path. */
-  MALLOC_CHECK;
-#if ! NEW_PATH_METHOD
-  if (iscygdrive_device (pathbuf))
-    {
-      if (!cygdrive_win32_path (pathbuf, dst, 0))
-	return ENOENT;
-      *flags = cygdrive_flags;
-      goto out;
-    }
-#endif
-
   int chrooted_path_len;
   chrooted_path_len = 0;
   /* Check the mount table for prefix matches. */
@@ -1485,52 +1462,6 @@ mount_info::conv_to_win32_path (const char *src_path, char *dst,
   last_unit = unit;
   last_flags = *flags;
   return rc;
-}
-
-/* cygdrive_posix_path: Build POSIX path used as the
-   mount point for cygdrives created when there is no other way to
-   obtain a POSIX path from a Win32 one. */
-
-void
-mount_info::cygdrive_posix_path (const char *src, char *dst, int trailing_slash_p)
-{
-  TRACE_IN;
-  int len = cygdrive_len;
-
-  memcpy (dst, cygdrive, len + 1);
-
-  /* Now finish the path off with the drive letter to be used.
-     The cygdrive prefix always ends with a trailing slash so
-     the drive letter is added after the path. */
-  dst[len++] = cyg_tolower (src[0]);
-  if (!src[2] || (SLASH_P (src[2]) && !src[3]))
-    dst[len++] = '\000';
-  else
-    {
-      int n;
-      dst[len++] = '/';
-      if (SLASH_P (src[2]))
-	n = 3;
-      else
-	n = 2;
-      strcpy (dst + len, src + n);
-    }
-  slashify (dst, dst, trailing_slash_p);
-}
-
-int
-mount_info::cygdrive_win32_path (const char *src, char *dst, int trailing_slash_p)
-{
-  TRACE_IN;
-  const char *p = src + cygdrive_len;
-  if (!isalpha (*p) || (!isdirsep (p[1]) && p[1]))
-    return 0;
-  dst[0] = *p;
-  dst[1] = ':';
-  strcpy (dst + 2, p + 1);
-  backslashify (dst, dst, trailing_slash_p || !dst[2]);
-  debug_printf ("src '%s', dst '%s'", src, dst);
-  return 1;
 }
 
 /* conv_to_posix_path: Ensure src_path is a POSIX path.
@@ -1646,14 +1577,10 @@ mount_info::conv_to_posix_path (const char *src_path, char *posix_path,
      letter not covered by the mount table.  If it's a relative path then the
      caller must want an absolute path (otherwise we would have returned
      above).  So we always return an absolute path at this point. */
-  if (isdrive (pathbuf))
-    cygdrive_posix_path (pathbuf, posix_path, trailing_slash_p);
-  else
-    {
-      /* The use of src_path and not pathbuf here is intentional.
-	 We couldn't translate the path, so just ensure no \'s are present. */
-      slashify (src_path, posix_path, trailing_slash_p);
-    }
+
+    /* The use of src_path and not pathbuf here is intentional.
+       We couldn't translate the path, so just ensure no \'s are present. */
+    slashify (src_path, posix_path, trailing_slash_p);
 
 out:
   debug_printf ("%s = conv_to_posix_path (%s)", posix_path, src_path);
@@ -1695,7 +1622,7 @@ mount_info::read_mounts (reg_key& r)
   mount_flags |= MOUNT_AUTO;
   mount_flags |= MOUNT_BINARY;
 
-  AbsDllPath ("msys-1.0.dll", DllPath, sizeof (DllPath));
+  AbsDllPath ("msys-1.1.dll", DllPath, sizeof (DllPath));
   {
     char *ptr;
     strcpy(RootPath, DllPath);
@@ -1799,8 +1726,7 @@ mount_info::read_mounts (reg_key& r)
   }  
 }
 
-/* from_registry: Build the entire mount table from the registry.  Also,
-   read in cygdrive-related information from its registry location. */
+/* from_registry: Build the entire mount table from the registry. */
 
 void
 mount_info::from_registry ()
@@ -1855,46 +1781,6 @@ mount_info::add_reg_mount (const char * native_path, const char * posix_path, un
 
 int
 mount_info::del_reg_mount (const char * posix_path, unsigned flags)
-{
-  TRACE_IN;
-  set_errno(ENOSYS);
-  return -1;
-}
-
-/* read_cygdrive_info_from_registry: Read the default prefix and flags
-   to use when creating cygdrives from the special user registry
-   location used to store cygdrive information. */
-
-void
-mount_info::read_cygdrive_info_from_registry ()
-{
-  TRACE_IN;
-  set_errno(ENOSYS);
-}
-
-/* write_cygdrive_info_to_registry: Write the default prefix and flags
-   to use when creating cygdrives to the special user registry
-   location used to store cygdrive information. */
-
-int
-mount_info::write_cygdrive_info_to_registry (const char *cygdrive_prefix, unsigned flags)
-{
-  TRACE_IN;
-  set_errno(ENOSYS);
-  return -1;
-}
-
-int
-mount_info::remove_cygdrive_info_from_registry (const char *cygdrive_prefix, unsigned flags)
-{
-  TRACE_IN;
-  set_errno(ENOSYS);
-  return -1;
-}
-
-int
-mount_info::get_cygdrive_info (char *user, char *system, char* user_flags,
-			       char* system_flags)
 {
   TRACE_IN;
   set_errno(ENOSYS);
@@ -2171,7 +2057,7 @@ fillout_mntent (const char *native_path, const char *posix_path, unsigned flags)
   else if (flags & MOUNT_EXEC)
     strcat (_reent_winsup ()->mnt_opts, (char *) ",exec");
 
-  if ((flags & MOUNT_AUTO))		/* cygdrive */
+  if ((flags & MOUNT_AUTO))
     strcat (_reent_winsup ()->mnt_opts, (char *) ",noumount");
 
   ret.mnt_opts = _reent_winsup ()->mnt_opts;
@@ -2188,44 +2074,12 @@ mount_item::getmntent ()
   return fillout_mntent (native_path, posix_path, flags);
 }
 
-static struct mntent *
-cygdrive_getmntent ()
-{
-  TRACE_IN;
-  char native_path[4];
-  char posix_path[MAX_PATH];
-  DWORD mask = 1, drive = 'a';
-  struct mntent *ret = NULL;
-
-  while (available_drives)
-    {
-      for (/* nothing */; drive <= 'z'; mask <<= 1, drive++)
-	if (available_drives & mask)
-	  break;
-
-      __small_sprintf (native_path, "%c:\\", drive);
-      if (GetDriveType (native_path) == DRIVE_REMOVABLE ||
-	  GetFileAttributes (native_path) == (DWORD) -1)
-	{
-	  available_drives &= ~mask;
-	  continue;
-	}
-      native_path[2] = '\0';
-      __small_sprintf (posix_path, "%s%c", mount_table->cygdrive, drive);
-      ret = fillout_mntent (native_path, posix_path, mount_table->cygdrive_flags);
-      break;
-    }
-
-  return ret;
-}
-
 struct mntent *
 mount_info::getmntent (int x)
 {
   TRACE_IN;
   if (x < 0 || x >= nmounts)
-    return cygdrive_getmntent ();
-
+      return NULL;
   return mount[native_sorted[x]].getmntent ();
 }
 
@@ -2286,19 +2140,7 @@ cygwin_umount (const char *path, unsigned flags)
 {
   TRACE_IN;
   int res = -1;
-
-  if (flags & MOUNT_AUTO)
-    {
-      /* When flags include MOUNT_AUTO, take this to mean that we actually want
-	 to remove the cygdrive prefix and flags without actually unmounting
-	 anything. */
-      res = mount_table->remove_cygdrive_info_from_registry (path, flags);
-    }
-  else
-    {
-      res = mount_table->del_item (path, flags, TRUE);
-    }
-
+  res = mount_table->del_item (path, flags, TRUE);
   syscall_printf ("%d = cygwin_umount (%s, %d)", res,  path, flags);
   return res;
 }
@@ -2880,7 +2722,7 @@ hash_path_name (unsigned long hash, const char *name)
 	{
 	  char *nn, *newname = (char *) alloca (strlen (name) + 2);
 	  nn = newname;
-	  *nn = isupper (*name) ? cyg_tolower (*name) : *name;
+	  *nn = isupper (*name) ? folded_tolower (*name) : *name;
 	  *++nn = ':';
 	  name += 2;
 	  if (*name != '\\')
@@ -2909,7 +2751,7 @@ hashit:
      \a\b\.  but allow a single \ if that's all there is. */
   do
     {
-      int ch = cyg_tolower(*name);
+      int ch = folded_tolower(*name);
       hash += ch + (ch << 17);
       hash ^= hash >> 2;
     }
@@ -3119,15 +2961,23 @@ int
 cygwin_conv_to_win32_path (const char *path, char *win32_path)
 {
   TRACE_IN;
+
+  if (!path || !*path)
+    {
+      *win32_path = '\0';
+      return 0;
+    }
+
   static bool path_list_found = false;
   static bool path_changed = false;
   const char *spath = path;
   char *sptr;
   char * sspath;
-  char *swin32_path = (char *)calloc (1, MAX_PATH);
+  char *swin32_path = (char *)cmalloc (HEAP_STR, MAX_PATH);
+  memset (swin32_path, 0, MAX_PATH);
   int swin32_pathlen;
   // retpath will be what sets win32_path before exiting.
-  char *retpath = (char *)calloc (1, MAX_PATH);
+  char *retpath = (char *)cmalloc (HEAP_STR, MAX_PATH);
   int retpath_len = 0;
   int retpath_buflen = MAX_PATH;
   int sret;
@@ -3140,7 +2990,7 @@ cygwin_conv_to_win32_path (const char *path, char *win32_path)
     { \
       retpath_buflen = ((retpath_buflen * 2 <= retpath_len) ? \
 	  retpath_len + 1 : retpath_buflen * 2); \
-      retpath = (char *)realloc (retpath, retpath_buflen); \
+      retpath = (char *)crealloc (retpath, retpath_buflen); \
     } \
   strcat (retpath, retstr);
 
@@ -3155,15 +3005,9 @@ cygwin_conv_to_win32_path (const char *path, char *win32_path)
     { \
       retpath_buflen = ((retpath_buflen * 2 <= retpath_len) ? \
 	  retpath_len + 1 : retpath_buflen * 2); \
-      retpath = (char *)realloc (retpath, retpath_buflen); \
+      retpath = (char *)crealloc (retpath, retpath_buflen); \
     } \
   strcpy (retpath, retstr);
-
-  if (!path || !*path)
-    {
-      *win32_path = '\0';
-      return 0;
-    }
 
   *win32_path = '\0';
 
@@ -3462,9 +3306,9 @@ cygwin_conv_to_win32_path (const char *path, char *win32_path)
     }
 
   if (swin32_path)
-    free (swin32_path);
-  *retpath = '\0';
-  retpath_len = 0;
+    cfree(swin32_path);
+  if (retpath)
+    cfree(retpath);
   return retval;
 }
 

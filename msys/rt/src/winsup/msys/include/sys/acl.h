@@ -12,6 +12,6 @@ details. */
 #ifndef _SYS_ACL_H
 #define _SYS_ACL_H
 
-#include <cygwin/acl.h>
+#include <msys/acl.h>
 
 #endif /* _SYS_ACL_H */

@@ -15,10 +15,10 @@
  *		as published by the Free Software Foundation; either version
  *		2 of the License, or (at your option) any later version.
  */
-#ifndef _CYGWIN_IN_H
-#define _CYGWIN_IN_H
+#ifndef _MSYS_IN_H
+#define _MSYS_IN_H
 
-#include <cygwin/types.h>
+#include <msys/types.h>
 
 /* Standard well-defined IP protocols.  */
 enum {
@@ -185,4 +185,4 @@ struct sockaddr_in6
 	struct in6_addr sin6_addr;
 };
 
-#endif	/* _CYGWIN_IN_H */
+#endif	/* _MSYS_IN_H */

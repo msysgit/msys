@@ -67,7 +67,7 @@ cat <<EOF 1>&9
 
 #define strval(x) #x
 #define str(x) strval(x)
-#define shared_data_version str(CYGWIN_VERSION_SHARED_DATA)
+#define shared_data_version str(SHARED_DATA_VERSION)
 
 const char *cygwin_version_strings =
   "BEGIN_CYGWIN_VERSION_INFO\n"
@@ -91,7 +91,7 @@ wv_cvs_tag="$cvs_tag"
 '"$cvs_tag"
 
 #
-# Look in the source directory containing the include/cygwin/version.h
+# Look in the source directory containing the include/msys/version.h
 # and set dir accordingly.
 dir=`echo $dir | sed -e 's%/include/cygwin.*$%%' -e 's%include/cygwin.*$%.%'`
 
@@ -106,7 +106,7 @@ fi
 
 #
 # Scan the version.h file for strings that begin with CYGWIN_INFO or
-# CYGWIN_VERSION.  Perform crude parsing on the lines to get the values
+# DLL_VERSION.  Perform crude parsing on the lines to get the values
 # associated with these values and then pipe it into a while loop which
 # outputs these values in C palatable format for inclusion in the DLL
 # with a '%% ' identifier that will introduce "interesting" strings.
@@ -114,7 +114,8 @@ fi
 # interesting information.
 #
 (sed -n -e 's%#define CYGWIN_INFO_\([A-Z_]*\)[ 	][ 	]*\([a-zA-Z0-9"][^/]*\).*%_\1\
-\2%p' -e 's%#define CYGWIN_VERSION_\([A-Z_]*\)[ 	][ 	]*\([a-zA-Z0-9"][^/]*\).*%_\1\
+\2%p' -e 's%#define DLL_VERSION_\([A-Z_]*\)[ 	][ 	]*\([a-zA-Z0-9"][^/]*\).*%DLL \1\
+\2%p' -e 's%#define API_VERSION_\([A-Z_]*\)[ 	][ 	]*\([a-zA-Z0-9"][^/]*\).*%API \1\
 \2%p' $incfile | sed -e 's/["\\]//g'  -e '/^_/y/ABCDEFGHIJKLMNOPQRSTUVWXYZ_/abcdefghijklmnopqrstuvwxyz /';
 echo ' build date'; echo $build_date; [ -n "$cvs_tag" ] && echo "$cvs_tag";\
 [ -n "$snapshot" ] && echo "$snapshot"
@@ -139,34 +140,34 @@ fi
 #
 cat <<EOF 1>&9
 #ifdef DEBUGGING
-  "%%% MSYS shared id: " CYGWIN_VERSION_DLL_IDENTIFIER "S" shared_data_version "-$builddate\n"
+  "%%% MSYS shared id: " DLL_VERSION_IDENTIFIER "S" shared_data_version "-$builddate\n"
 #else
-  "%%% MSYS shared id: " CYGWIN_VERSION_DLL_IDENTIFIER "S" shared_data_version "\n"
+  "%%% MSYS shared id: " DLL_VERSION_IDENTIFIER "S" shared_data_version "\n"
 #endif
   "END_CYGWIN_VERSION_INFO\n\0";
 cygwin_version_info cygwin_version =
 {
-  CYGWIN_VERSION_API_MAJOR, CYGWIN_VERSION_API_MINOR,
-  CYGWIN_VERSION_DLL_MAJOR, CYGWIN_VERSION_DLL_MINOR,
-  CYGWIN_VERSION_SHARED_DATA,
+  API_VERSION_MAJOR, API_VERSION_MINOR,
+  DLL_VERSION_MAJOR, DLL_VERSION_MINOR,
+  SHARED_DATA_VERSION,
   CYGWIN_VERSION_MOUNT_REGISTRY,
   "$usedate",
 #ifdef DEBUGGING
-  CYGWIN_VERSION_DLL_IDENTIFIER "S" shared_data_version "-$builddate"
+  DLL_VERSION_IDENTIFIER "S" shared_data_version "-$builddate"
 #else
-  CYGWIN_VERSION_DLL_IDENTIFIER "S" shared_data_version
+  DLL_VERSION_IDENTIFIER "S" shared_data_version
 #endif
 };
 EOF
 
 #
-# Generate winver.o using cygwin/version.h information.
+# Generate winver.o using msys/version.h information.
 # Turn the cygwin major number from some large number to something like 1.1.0.
 #
-eval `sed -n 's/^.*dll \(m[ai][jn]or\): \([0-9]*\)[^0-9]*$/\1=\2/p' /tmp/mkvers.$$`
-cygverhigh=`expr $major / 1000`
-cygverlow=`expr $major % 1000`
-cygwin_ver="$cygverhigh.$cygverlow.$minor"
+eval `sed -n 's/^.*DLL \(M[AI][JN]OR\): \([0-9]*\)[^0-9]*$/\1=\2/p' /tmp/mkvers.$$`
+cygverhigh=`expr $MAJOR / 1000`
+cygverlow=`expr $MAJOR % 1000`
+cygwin_ver="$cygverhigh.$cygverlow.$MINOR"
 if [ -n "$cvs_tag" ]; then
     cvs_tag="`echo $wv_cvs_tag | sed -e 's/-branch.*//'`"
     cygwin_ver="$cygwin_ver-$cvs_tag"
@@ -174,4 +175,4 @@ fi
 
 echo "Version $cygwin_ver"
 set -$- $builddate
-$windres --include-dir $dir/../w32api/include --include-dir $dir/include --define CYGWIN_BUILD_DATE="$1" --define CYGWIN_BUILD_TIME="$2" --define CYGWIN_VERSION='"'"$cygwin_ver"'"' $rcfile winver.o
+$windres --include-dir $dir/../w32api/include --include-dir $dir/include --define DLL_BUILD_DATE="$1" --define DLL_BUILD_TIME="$2" --define MSYS_VERSION='"'"$cygwin_ver"'"' $rcfile winver.o

@@ -13,6 +13,6 @@ details. */
 #ifndef _SYS_PROCFS_H
 #define _SYS_PROCFS_H
 
-#include <cygwin/core_dump.h>
+#include <msys/core_dump.h>
 
 #endif /* _SYS_PROCFS_H */

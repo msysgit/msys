@@ -91,8 +91,8 @@ extern "C"
   struct _reent reent_data = _REENT_INIT(reent_data);
   struct per_process __cygwin_user_data =
   {/* initial_sp */ 0, /* magic_biscuit */ 0,
-   /* dll_major */ CYGWIN_VERSION_DLL_MAJOR,
-   /* dll_major */ CYGWIN_VERSION_DLL_MINOR,
+   /* dll_major */ DLL_VERSION_MAJOR,
+   /* dll_major */ DLL_VERSION_MINOR,
    /* impure_ptr_ptr */ NULL, /* envptr */ NULL,
    /* malloc */ export_malloc, /* free */ export_free,
    /* realloc */ export_realloc,
@@ -105,8 +105,8 @@ extern "C"
    /* unused */ {0, 0, 0, 0, 0, 0, 0},
    /* forkee */ 0,
    /* hmodule */ NULL,
-   /* api_major */ CYGWIN_VERSION_API_MAJOR,
-   /* api_minor */ CYGWIN_VERSION_API_MINOR,
+   /* api_major */ API_VERSION_MAJOR,
+   /* api_minor */ API_VERSION_MINOR,
    /* unused2 */ {0, 0, 0, 0, 0},
    /* resourcelocks */ &_reslock, /* threadinterface */ &_mtinterf,
    /* impure_ptr */ &reent_data,
@@ -531,9 +531,9 @@ check_sanity_and_sync (per_process *p)
   /* Make sure that the app and the dll are in sync. */
 
   /* Complain if older than last incompatible change */
-  if (p->dll_major < CYGWIN_VERSION_DLL_EPOCH)
+  if (p->dll_major < DLL_VERSION_EPOCH)
     api_fatal ("cygwin DLL and APP are out of sync -- DLL version mismatch %d < %d",
-	       p->dll_major, CYGWIN_VERSION_DLL_EPOCH);
+	       p->dll_major, DLL_VERSION_EPOCH);
 
   /* magic_biscuit != 0 if using the old style version numbering scheme.  */
   if (p->magic_biscuit != SIZEOF_PER_PROCESS)
@@ -545,8 +545,8 @@ check_sanity_and_sync (per_process *p)
     api_fatal ("cygwin DLL and APP are out of sync -- API version mismatch %d < %d",
 	       p->api_major, cygwin_version.api_major);
 
-  if (CYGWIN_VERSION_DLL_MAKE_COMBINED (p->dll_major, p->dll_minor) <=
-      CYGWIN_VERSION_DLL_BAD_SIGNAL_MASK)
+  if (DLL_VERSION_MAKE_COMBINED (p->dll_major, p->dll_minor) <=
+      DLL_VERSION_BAD_SIGNAL_MASK)
     signal_shift_subtract = 0;
 }
 
@@ -941,14 +941,7 @@ _dll_crt0 ()
 	      break;
 	    }
 	  default:
-#if defined (__MSYS__)
 	    fork_info = NULL;
-#else /* !__MSYS__ */
-	    if (_cygwin_testing)
-	      fork_info = NULL;
-	    else if ((fork_info->type & PROC_MAGIC_MASK) == PROC_MAGIC_GENERIC)
-	      api_fatal ("conflicting versions of cygwin1.dll detected.  Use only the most recent version.\n");
-#endif /* !__MSYS__ */
 	    break;
 	}
     }
@@ -968,7 +961,7 @@ dll_crt0 (per_process *uptr)
   _dll_crt0 ();
 }
 
-/* This must be called by anyone who uses LoadLibrary to load msys-1.0.dll */
+/* This must be called by anyone who uses LoadLibrary to load msys-1.1.dll */
 extern "C" void
 msys_dll_init ()
 {

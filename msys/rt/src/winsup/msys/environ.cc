@@ -14,7 +14,7 @@ details. */
 #include <ctype.h>
 #include <fcntl.h>
 #include <sys/cygwin.h>
-#include <cygwin/version.h>
+#include <msys/version.h>
 #include "sync.h"
 #include "sigproc.h"
 #include "pinfo.h"
@@ -41,10 +41,6 @@ BOOL reset_com = TRUE;
 static BOOL envcache = TRUE;
 
 static char **lastenviron;
-
-#define ENVMALLOC \
-  (CYGWIN_VERSION_DLL_MAKE_COMBINED (user_data->api_major, user_data->api_minor) \
-	  <= CYGWIN_VERSION_DLL_MALLOC_ENV)
 
 /* List of names which are converted from dos to unix
    on the way in and back again on the way out.
@@ -267,7 +263,7 @@ _addenv (const char *name, const char *value, int overwrite)
   char *envhere;
   if (!issetenv)
     /* Not setenv. Just overwrite existing. */
-    envhere = cur_environ ()[offset] = (char *) (ENVMALLOC ? strdup (name) : name);
+    envhere = cur_environ ()[offset] = (char *)name;
   else
     {				/* setenv */
       /* Look for an '=' in the name and ignore anything after that if found. */
@@ -372,7 +368,7 @@ ucenv (char *p, char *eq)
      we only do it for the first process in a session group. */
   for (; p < eq; p++)
     if (islower (*p))
-      *p = cyg_toupper (*p);
+      *p = folded_toupper (*p);
 }
 
 /* Parse CYGWIN options */
@@ -569,17 +565,26 @@ parse_options (char *buf)
        p != NULL;
        p = strtok_r (NULL, " \t", &lasts))
     {
+      //
+      // Check for negative paramater, e.g. nontsec
+      //
       if (!(istrue = !strncasematch (p, "no", 2)))
 	p += 2;
       else if (!(istrue = *p != '-'))
 	p++;
 
+      //
+      // Check for value to switch
+      //
       char ch, *eq;
       if ((eq = strchr (p, '=')) != NULL || (eq = strchr (p, ':')) != NULL)
 	ch = *eq, *eq++ = '\0';
       else
 	ch = 0;
 
+      //
+      // Set processing switches based on known parameters
+      //
       for (parse_thing *k = known; k->name != NULL; k++)
 	if (strcasematch (p, k->name))
 	  {
@@ -616,11 +621,12 @@ parse_options (char *buf)
 	    if (n > 0)
 	      p[n] = ':';
 	    k->remember = p;
+	    //
+	    // Exit for loop once we find and process our match.
+	    //	
 	    break;
 	  }
-      }
-  debug_printf ("returning");
-  return;
+    }
 }
 
 /* Set options from the registry. */
@@ -640,8 +646,8 @@ regopt (const char *name)
   else
     {
       reg_key r1 (HKEY_LOCAL_MACHINE, KEY_READ, "SOFTWARE",
-		  CYGWIN_INFO_CYGNUS_REGISTRY_NAME,
-		  CYGWIN_INFO_CYGWIN_REGISTRY_NAME,
+		  MSYS_REGISTRY_ID,
+		  MSYS_REGISTRY_VERSION,
 		  CYGWIN_INFO_PROGRAM_OPTIONS_NAME, NULL);
       if (r1.get_string (lname, buf, sizeof (buf) - 1, "") == ERROR_SUCCESS)
 	parse_options (buf);
@@ -660,53 +666,26 @@ environ_init (char **envp, int envc)
   char *p;
   char *newp;
   int sawTERM = 0;
-  bool envp_passed_in;
-  static char NO_COPY cygterm[] = "TERM=cygwin";
+  static char NO_COPY cygterm[] = "TERM=msys";
 
   static int initted;
   if (!initted)
     {
       for (int i = 0; conv_envvars[i].name != NULL; i++)
 	{
-	  conv_start_chars[cyg_tolower(conv_envvars[i].name[0])] = 1;
-	  conv_start_chars[cyg_toupper(conv_envvars[i].name[0])] = 1;
+	  conv_start_chars[folded_tolower(conv_envvars[i].name[0])] = 1;
+	  conv_start_chars[folded_toupper(conv_envvars[i].name[0])] = 1;
 	}
       initted = 1;
     }
 
-#if ! __MSYS__
-  regopt ("default");
-  if (myself->progname[0])
-    regopt (myself->progname);
-#endif
-
-#if ! __MSYS__
-#ifdef NTSEC_ON_BY_DEFAULT
-  /* Set ntsec explicit as default, if NT is running */
-  if (iswinnt)
-    allow_ntsec = TRUE;
-#endif
-#endif /* ! __MSYS__ */
-
-  if (!envp)
-    envp_passed_in = 0;
-  else
+  if (envp)
     {
       char **newenv = (char **) malloc (envc);
       memcpy (newenv, envp, envc);
       cfree (envp);
 
-      /* Older applications relied on the fact that cygwin malloced elements of the
-	 environment list.  */
       envp = newenv;
-      if (ENVMALLOC)
-	for (char **e = newenv; *e; e++)
-	  {
-	    char *p = *e;
-	    *e = strdup (p);
-	    cfree (p);
-	  }
-      envp_passed_in = 1;
       goto out;
     }
 
@@ -748,12 +727,6 @@ environ_init (char **envp, int envc)
 out:
   __cygwin_environ = envp;
   update_envptrs ();
-  if (envp_passed_in)
-    {
-      p = getenv ("CYGWIN");
-      if (p)
-	parse_options (p);
-    }
   parse_options (NULL);
   MALLOC_CHECK;
 }
@@ -772,9 +745,7 @@ env_sort (const void *a, const void *b)
 /* Keep this list in upper case and sorted */
 static const NO_COPY char* forced_winenv_vars [] =
   {
-#if __MSYS__
     "MSYSTEM",
-#endif /* __MSYS__ */
     "SYSTEMDRIVE",
     "SYSTEMROOT",
     NULL

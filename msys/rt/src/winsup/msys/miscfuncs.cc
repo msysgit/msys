@@ -52,7 +52,7 @@ const char case_folded_upper[] NO_COPY = {
  240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 254, 255
 };
 
-#define ch_case_eq(ch1, ch2) (cyg_tolower(ch1) == cyg_tolower(ch2))
+#define ch_case_eq(ch1, ch2) (folded_tolower(ch1) == folded_tolower(ch2))
 
 /* Return TRUE if two strings match up to length n */
 extern "C" int __stdcall

@@ -8,8 +8,8 @@ This software is a copyrighted work licensed under the terms of the
 Cygwin license.  Please consult the file "CYGWIN_LICENSE" for
 details. */
 
-#ifndef _CYGWIN_STRING_H
-#define _CYGWIN_STRING_H
+#ifndef __MSYS_STRING_H
+#define __MSYS_STRING_H
 
 #include_next <string.h>
 
@@ -41,4 +41,4 @@ strchr (const char *s, int c)
 #ifdef __cplusplus
 }
 #endif
-#endif /* _CYGWIN_STRING_H */
+#endif /* __MSYS_STRING_H */

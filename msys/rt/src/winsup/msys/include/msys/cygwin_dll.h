@@ -8,8 +8,8 @@ This software is a copyrighted work licensed under the terms of the
 Cygwin license.  Please consult the file "CYGWIN_LICENSE" for
 details. */
 
-#ifndef __CYGWIN_CYGWIN_DLL_H__
-#define __CYGWIN_CYGWIN_DLL_H__
+#ifndef __MSYS_CYGWIN_DLL_H__
+#define __MSYS_CYGWIN_DLL_H__
 
 #include <windows.h>
 
@@ -91,4 +91,4 @@ int WINAPI _msys_nonmsys_dll_entry (HINSTANCE h, DWORD reason, void *ptr) \
   return _msys_dll_entry (h, reason, ptr);				      \
 }									      \
 
-#endif /* __CYGWIN_CYGWIN_DLL_H__ */
+#endif /* __MSYS_CYGWIN_DLL_H__ */

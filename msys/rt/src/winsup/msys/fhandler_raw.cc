@@ -14,7 +14,7 @@
 #include <errno.h>
 #include <unistd.h>
 
-#include <cygwin/rdevio.h>
+#include <msys/rdevio.h>
 #include <sys/mtio.h>
 #include "cygerrno.h"
 #include "perprocess.h"

@@ -18,7 +18,7 @@ details. */
 #include "cygerrno.h"
 #include "perprocess.h"
 #include "security.h"
-#include "cygwin/version.h"
+#include "msys/version.h"
 #include "fhandler.h"
 #include "dtable.h"
 #include "cygheap.h"
@@ -37,6 +37,7 @@ DWORD binmode;
 inline fhandler_base&
 fhandler_base::operator =(fhandler_base &x)
 {
+  TRACE_IN;
   memcpy (this, &x, sizeof *this);
   unix_path_name = x.unix_path_name ? cstrdup (x.unix_path_name) : NULL;
   win32_path_name = x.win32_path_name ? cstrdup (x.win32_path_name) : NULL;
@@ -51,6 +52,7 @@ fhandler_base::operator =(fhandler_base &x)
 int
 fhandler_base::puts_readahead (const char *s, size_t len = (size_t) -1)
 {
+  TRACE_IN;
   int success = 1;
   while ((*s || (len != (size_t) -1 && len--))
 	 && (success = put_readahead (*s++) > 0))
@@ -61,6 +63,7 @@ fhandler_base::puts_readahead (const char *s, size_t len = (size_t) -1)
 int
 fhandler_base::put_readahead (char value)
 {
+  TRACE_IN;
   char *newrabuf;
   if (raixput < rabuflen)
     /* Nothing to do */;
@@ -77,6 +80,7 @@ fhandler_base::put_readahead (char value)
 int
 fhandler_base::get_readahead ()
 {
+  TRACE_IN;
   int chret = -1;
   if (raixget < ralen)
     chret = ((unsigned char) rabuf[raixget++]) & 0xff;
@@ -89,6 +93,7 @@ fhandler_base::get_readahead ()
 int
 fhandler_base::peek_readahead (int queryput)
 {
+  TRACE_IN;
   int chret = -1;
   if (!queryput && raixget < ralen)
     chret = ((unsigned char) rabuf[raixget]) & 0xff;
@@ -100,6 +105,7 @@ fhandler_base::peek_readahead (int queryput)
 void
 fhandler_base::set_readahead_valid (int val, int ch = -1)
 {
+  TRACE_IN;
   if (!val)
     ralen = raixget = raixput = 0;
   if (ch != -1)
@@ -109,6 +115,7 @@ fhandler_base::set_readahead_valid (int val, int ch = -1)
 int
 fhandler_base::eat_readahead (int n)
 {
+  TRACE_IN;
   int oralen = ralen;
   if (n < 0)
     n = ralen;
@@ -129,6 +136,7 @@ fhandler_base::eat_readahead (int n)
 int
 fhandler_base::get_readahead_into_buffer (char *buf, size_t buflen)
 {
+  TRACE_IN;
   int ch;
   int copied_chars = 0;
 
@@ -153,6 +161,7 @@ fhandler_base::get_readahead_into_buffer (char *buf, size_t buflen)
 void
 fhandler_base::set_name (const char *unix_path, const char *win32_path, int unit)
 {
+  TRACE_IN;
   if (!no_free_names ())
     {
       if (unix_path_name != NULL && unix_path_name != fhandler_disk_dummy_name)
@@ -193,6 +202,7 @@ fhandler_base::set_name (const char *unix_path, const char *win32_path, int unit
 static int __stdcall
 is_at_eof (HANDLE h, DWORD err)
 {
+  TRACE_IN;
   DWORD size, upper1, curr;
 
   size = GetFileSize (h, &upper1);
@@ -215,6 +225,7 @@ is_at_eof (HANDLE h, DWORD err)
 int
 fhandler_base::raw_read (void *ptr, size_t ulen)
 {
+  TRACE_IN;
   DWORD bytes_read;
 
   if (!ReadFile (get_handle(), ptr, ulen, &bytes_read, 0))
@@ -252,6 +263,7 @@ fhandler_base::raw_read (void *ptr, size_t ulen)
 int
 fhandler_base::raw_write (const void *ptr, size_t len)
 {
+  TRACE_IN;
   DWORD bytes_written;
 
   if (!WriteFile (get_handle(), ptr, len, &bytes_written, 0))
@@ -270,6 +282,7 @@ fhandler_base::raw_write (const void *ptr, size_t len)
 int
 fhandler_base::get_default_fmode (int flags)
 {
+  TRACE_IN;
   if (perfile_table)
     {
       size_t nlen = strlen (get_name ());
@@ -295,6 +308,7 @@ fhandler_base::get_default_fmode (int flags)
 int
 fhandler_base::open (int flags, mode_t mode)
 {
+  TRACE_IN;
   int res = 0;
   HANDLE x;
   int file_attributes;
@@ -469,6 +483,7 @@ done:
 int
 fhandler_base::read (void *in_ptr, size_t in_len)
 {
+  TRACE_IN;
   int len = (int) in_len;
   char *ptr = (char *) in_ptr;
 
@@ -575,6 +590,7 @@ fhandler_base::read (void *in_ptr, size_t in_len)
 int
 fhandler_base::write (const void *ptr, size_t len)
 {
+  TRACE_IN;
   int res;
 
   if (get_append_p ())
@@ -689,6 +705,7 @@ fhandler_base::write (const void *ptr, size_t len)
 off_t
 fhandler_base::lseek (off_t offset, int whence)
 {
+  TRACE_IN;
   off_t res;
 
   /* Seeks on text files is tough, we rewind and read till we get to the
@@ -787,6 +804,7 @@ fhandler_base::lseek (off_t offset, int whence)
 int
 fhandler_base::close ()
 {
+  TRACE_IN;
   int res = -1;
 
   syscall_printf ("handle %p", get_handle());
@@ -805,6 +823,7 @@ fhandler_base::close ()
 int
 fhandler_base::ioctl (unsigned int cmd, void *buf)
 {
+  TRACE_IN;
   if (cmd == FIONBIO)
     syscall_printf ("ioctl (FIONBIO, %p)", buf);
   else
@@ -817,6 +836,7 @@ fhandler_base::ioctl (unsigned int cmd, void *buf)
 int
 fhandler_base::lock (int, struct flock *)
 {
+  TRACE_IN;
   set_errno (ENOSYS);
   return -1;
 }
@@ -824,6 +844,7 @@ fhandler_base::lock (int, struct flock *)
 extern "C" char * __stdcall
 rootdir(char *full_path)
 {
+  TRACE_IN;
   /* Possible choices:
    * d:... -> d:/
    * \\server\share... -> \\server\share\
@@ -857,6 +878,7 @@ rootdir(char *full_path)
 int
 fhandler_disk_file::fstat (struct stat *buf)
 {
+  TRACE_IN;
   int res = 0;	// avoid a compiler warning
   BY_HANDLE_FILE_INFORMATION local;
   save_errno saved_errno;
@@ -1029,6 +1051,7 @@ fhandler_disk_file::fstat (struct stat *buf)
 void
 fhandler_base::init (HANDLE f, DWORD a, mode_t bin)
 {
+  TRACE_IN;
   set_io_handle (f);
   set_r_binary (bin);
   set_w_binary (bin);
@@ -1047,12 +1070,14 @@ fhandler_base::init (HANDLE f, DWORD a, mode_t bin)
 void
 fhandler_base::dump (void)
 {
+  TRACE_IN;
   paranoid_printf ("here");
 }
 
 int
 fhandler_base::dup (fhandler_base *child)
 {
+  TRACE_IN;
   debug_printf ("in fhandler_base dup");
 
   HANDLE nh;
@@ -1071,6 +1096,7 @@ fhandler_base::dup (fhandler_base *child)
 
 int fhandler_base::fcntl (int cmd, void *arg)
 {
+  TRACE_IN;
   int res;
 
   switch (cmd)
@@ -1096,11 +1122,6 @@ int fhandler_base::fcntl (int cmd, void *arg)
 	 */
 	const int allowed_flags = O_APPEND | O_NONBLOCK_MASK;
 	int new_flags = (int) arg & allowed_flags;
-	/* Carefully test for the O_NONBLOCK or deprecated OLD_O_NDELAY flag.
-	   Set only the flag that has been passed in.  If both are set, just
-	   record O_NONBLOCK.   */
-	if ((new_flags & OLD_O_NDELAY) && (new_flags & O_NONBLOCK))
-	  new_flags = O_NONBLOCK;
 	set_flags ((get_flags () & ~allowed_flags) | new_flags);
       }
       res = 0;
@@ -1123,6 +1144,7 @@ int fhandler_base::fcntl (int cmd, void *arg)
 int
 fhandler_base::tcflush (int)
 {
+  TRACE_IN;
   set_errno (ENOTTY);
   return -1;
 }
@@ -1130,6 +1152,7 @@ fhandler_base::tcflush (int)
 int
 fhandler_base::tcsendbreak (int)
 {
+  TRACE_IN;
   set_errno (ENOTTY);
   return -1;
 }
@@ -1137,6 +1160,7 @@ fhandler_base::tcsendbreak (int)
 int
 fhandler_base::tcdrain (void)
 {
+  TRACE_IN;
   set_errno (ENOTTY);
   return -1;
 }
@@ -1144,6 +1168,7 @@ fhandler_base::tcdrain (void)
 int
 fhandler_base::tcflow (int)
 {
+  TRACE_IN;
   set_errno (ENOTTY);
   return -1;
 }
@@ -1151,6 +1176,7 @@ fhandler_base::tcflow (int)
 int
 fhandler_base::tcsetattr (int, const struct termios *)
 {
+  TRACE_IN;
   set_errno (ENOTTY);
   return -1;
 }
@@ -1158,6 +1184,7 @@ fhandler_base::tcsetattr (int, const struct termios *)
 int
 fhandler_base::tcgetattr (struct termios *)
 {
+  TRACE_IN;
   set_errno (ENOTTY);
   return -1;
 }
@@ -1165,6 +1192,7 @@ fhandler_base::tcgetattr (struct termios *)
 int
 fhandler_base::tcsetpgrp (const pid_t)
 {
+  TRACE_IN;
   set_errno (ENOTTY);
   return -1;
 }
@@ -1172,6 +1200,7 @@ fhandler_base::tcsetpgrp (const pid_t)
 int
 fhandler_base::tcgetpgrp (void)
 {
+  TRACE_IN;
   set_errno (ENOTTY);
   return -1;
 }
@@ -1179,6 +1208,7 @@ fhandler_base::tcgetpgrp (void)
 void
 fhandler_base::operator delete (void *p)
 {
+  TRACE_IN;
   cfree (p);
   return;
 }
@@ -1196,6 +1226,7 @@ fhandler_base::fhandler_base (DWORD devtype, const char *name, int unit):
   rabuflen (0),
   open_status (0)
 {
+  TRACE_IN;
   status = devtype;
   int bin = __fmode & O_TEXT ? 0 : 1;
   if (status != FH_DISK && status != FH_CONSOLE)
@@ -1212,6 +1243,7 @@ fhandler_base::fhandler_base (DWORD devtype, const char *name, int unit):
 /* Normal I/O destructor */
 fhandler_base::~fhandler_base (void)
 {
+  TRACE_IN;
   if (!no_free_names ())
     {
       if (unix_path_name != NULL && unix_path_name != fhandler_disk_dummy_name)
@@ -1230,6 +1262,7 @@ fhandler_base::~fhandler_base (void)
 fhandler_disk_file::fhandler_disk_file (const char *name) :
 	fhandler_base (FH_DISK, name)
 {
+  TRACE_IN;
   set_cb (sizeof *this);
   set_no_free_names ();
   unix_path_name = win32_path_name = fhandler_disk_dummy_name;
@@ -1238,6 +1271,7 @@ fhandler_disk_file::fhandler_disk_file (const char *name) :
 int
 fhandler_disk_file::open (const char *path, int flags, mode_t mode)
 {
+  TRACE_IN;
   syscall_printf ("(%s, %p)", path, flags);
 
   /* O_NOSYMLINK is an internal flag for implementing lstat, nothing more. */
@@ -1262,6 +1296,7 @@ fhandler_disk_file::open (const char *path, int flags, mode_t mode)
 int
 fhandler_disk_file::open (path_conv& real_path, int flags, mode_t mode)
 {
+  TRACE_IN;
   if (get_win32_name () == fhandler_disk_dummy_name)
     {
       win32_path_name = real_path.get_win32 ();
@@ -1317,6 +1352,7 @@ out:
 int
 fhandler_disk_file::close ()
 {
+  TRACE_IN;
   int res = this->fhandler_base::close ();
   if (!res)
     cygwin_shared->delqueue.process_queue ();
@@ -1340,6 +1376,7 @@ fhandler_disk_file::close ()
 int
 fhandler_disk_file::lock (int cmd, struct flock *fl)
 {
+  TRACE_IN;
   int win32_start;
   int win32_len;
   DWORD win32_upper;
@@ -1485,12 +1522,14 @@ fhandler_disk_file::lock (int cmd, struct flock *fl)
 fhandler_dev_null::fhandler_dev_null (const char *name) :
 	fhandler_base (FH_NULL, name)
 {
+  TRACE_IN;
   set_cb (sizeof *this);
 }
 
 void
 fhandler_dev_null::dump (void)
 {
+  TRACE_IN;
   paranoid_printf ("here");
 }
 
@@ -1500,12 +1539,14 @@ fhandler_dev_null::dump (void)
 fhandler_pipe::fhandler_pipe (const char *name, DWORD devtype) :
 	fhandler_base (devtype, name)
 {
+  TRACE_IN;
   set_cb (sizeof *this);
 }
 
 off_t
 fhandler_pipe::lseek (off_t offset, int whence)
 {
+  TRACE_IN;
   debug_printf ("(%d, %d)", offset, whence);
   set_errno (ESPIPE);
   return -1;
@@ -1521,6 +1562,7 @@ void
 fhandler_base::set_inheritance (HANDLE &h, int not_inheriting, const char *nameparm)
 #undef nameparm
 {
+  TRACE_IN;
   HANDLE newh;
 
   if (!DuplicateHandle (hMainProc, h, hMainProc, &newh, 0, !not_inheriting,
@@ -1552,6 +1594,7 @@ fhandler_base::set_inheritance (HANDLE &h, int not_inheriting, const char *namep
 void
 fhandler_base::fork_fixup (HANDLE parent, HANDLE &h, const char *name)
 {
+  TRACE_IN;
   if (!get_close_on_exec ())
     debug_printf ("handle %p already opened", h);
   else if (!DuplicateHandle (parent, h, hMainProc, &h, 0, !get_close_on_exec (),
@@ -1562,6 +1605,7 @@ fhandler_base::fork_fixup (HANDLE parent, HANDLE &h, const char *name)
 void
 fhandler_base::set_close_on_exec (int val)
 {
+  TRACE_IN;
   set_inheritance (io_handle, val);
   set_close_on_exec_flag (val);
   debug_printf ("set close_on_exec for %s to %d", get_name (), val);
@@ -1570,6 +1614,7 @@ fhandler_base::set_close_on_exec (int val)
 void
 fhandler_base::fixup_after_fork (HANDLE parent)
 {
+  TRACE_IN;
   debug_printf ("inheriting '%s' from parent", get_name ());
   fork_fixup (parent, io_handle, "io_handle");
 }
@@ -1577,12 +1622,14 @@ fhandler_base::fixup_after_fork (HANDLE parent)
 int
 fhandler_base::is_nonblocking ()
 {
+  TRACE_IN;
   return (openflags & O_NONBLOCK_MASK) != 0;
 }
 
 void
 fhandler_base::set_nonblocking (int yes)
 {
+  TRACE_IN;
   int current = openflags & O_NONBLOCK_MASK;
   int new_flags = yes ? (!current ? O_NONBLOCK : current) : 0;
   openflags = (openflags & ~O_NONBLOCK_MASK) | new_flags;

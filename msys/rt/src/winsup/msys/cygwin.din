@@ -1,4 +1,4 @@
-LIBRARY "msys-1.0.dll" BASE=0x71000000
+LIBRARY "msys-1.1.dll" BASE=0x71000000
 
 EXPORTS
 __assert

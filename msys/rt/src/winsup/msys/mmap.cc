@@ -756,7 +756,7 @@ fhandler_disk_file::mmap (caddr_t *addr, size_t len, DWORD access,
       char namebuf[MAX_PATH];
       cygwin_conv_to_full_posix_path (get_name (), namebuf);
       for (int i = strlen (namebuf) - 1; i >= 0; --i)
-	namebuf[i] = cyg_tolower (namebuf [i]);
+	namebuf[i] = folded_tolower (namebuf [i]);
 
       if (!(h = OpenFileMapping (access, TRUE, namebuf)))
 	h = CreateFileMapping (get_handle(), &sec_none, protect, 0, 0, namebuf);

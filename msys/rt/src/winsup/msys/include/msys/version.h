@@ -44,49 +44,37 @@ details. */
   /* The current cygwin version is 1.3.3 */
   /* The current msys version is 1.0.7 */
 
-#define CYGWIN_VERSION_DLL_MAJOR 1000
-#define CYGWIN_VERSION_DLL_MINOR 8
+#define DLL_VERSION_MAJOR 1001
+#define DLL_VERSION_MINOR 0
 
-      /* Major numbers before CYGWIN_VERSION_DLL_EPOCH are
+      /* Major numbers before DLL_VERSION_EPOCH are
 	 incompatible. */
 
-#define CYGWIN_VERSION_DLL_EPOCH 19
+#define DLL_VERSION_EPOCH 19
 
-      /* CYGWIN_VERSION_DLL_COMBINED gives us a single number
+      /* DLL_VERSION_COMBINED gives us a single number
 	 representing the combined DLL major and minor numbers. */
 
       /* WATCH OUT FOR OCTAL!  Don't use, say, "00020" for 0.20 */
 
-#define CYGWIN_VERSION_DLL_MAKE_COMBINED(maj, min) (((maj) * 1000) + min)
-#define CYGWIN_VERSION_DLL_COMBINED \
-  CYGWIN_VERSION_DLL_MAKE_COMBINED (CYGWIN_VERSION_DLL_MAJOR, CYGWIN_VERSION_DLL_MINOR)
+#define DLL_VERSION_MAKE_COMBINED(maj, min) (((maj) * 1000) + min)
+#define DLL_VERSION_COMBINED \
+  DLL_VERSION_MAKE_COMBINED (DLL_VERSION_MAJOR, DLL_VERSION_MINOR)
 
      /* Every version of cygwin <= this uses an old, incorrect method
 	to determine signal masks. */
 
-#define CYGWIN_VERSION_DLL_BAD_SIGNAL_MASK	19005
+#define DLL_VERSION_BAD_SIGNAL_MASK	19005
 
     /* API versions <= this had a termios structure whose members were
        too small to accomodate modern settings. */
-#define CYGWIN_VERSION_DLL_OLD_TERMIOS		5
-#define CYGWIN_VERSION_DLL_IS_OLD_TERMIOS \
-  (CYGWIN_VERSION_DLL_MAKE_COMBINED (user_data->api_major, user_data->api_minor) <= \
-  CYGWIN_VERSION_DLL_OLD_TERMIOS)
+#define DLL_VERSION_OLD_TERMIOS		5
+#define DLL_VERSION_IS_OLD_TERMIOS \
+  (DLL_VERSION_MAKE_COMBINED (user_data->api_major, user_data->api_minor) <= \
+  DLL_VERSION_OLD_TERMIOS)
 
-#define CYGWIN_VERSION_DLL_MALLOC_ENV		28
-     /* Old APIs had getc/putc macros that conflict with new CR/LF
-	handling in the stdio buffers */
-#define CYGWIN_VERSION_OLD_STDIO_CRLF_HANDLING \
-  (CYGWIN_VERSION_DLL_MAKE_COMBINED (user_data->api_major, user_data->api_minor) <= \
-  20)
+#define DLL_VERSION_MALLOC_ENV		28
 
-#define CYGWIN_VERSION_CHECK_FOR_S_IEXEC \
-  (CYGWIN_VERSION_DLL_MAKE_COMBINED (user_data->api_major, user_data->api_minor) >= \
-  36)
-
-#define CYGWIN_VERSION_CHECK_FOR_OLD_O_NONBLOCK \
-  (CYGWIN_VERSION_DLL_MAKE_COMBINED (user_data->api_major, user_data->api_minor) <= \
-  28)
      /* We used to use the DLL major/minor to track
 	non-backward-compatible interface changes to the API.  Now we
 	use an API major/minor number for this purpose. */
@@ -147,8 +135,8 @@ details. */
        46: Remove cygwin_getshared
      */
 
-#define CYGWIN_VERSION_API_MAJOR 0
-#define CYGWIN_VERSION_API_MINOR 46
+#define API_VERSION_MAJOR 0
+#define API_VERSION_MINOR 46
 
      /* There is also a compatibity version number associated with the
 	shared memory regions.  It is incremented when incompatible
@@ -156,13 +144,13 @@ details. */
 	shared mutexes, semaphores, etc.   The arbitrary starting
 	version was 0 (cygwin release 98r2). */
 
-#define CYGWIN_VERSION_SHARED_DATA 3
+#define SHARED_DATA_VERSION 3
 
      /* An identifier used in the names used to create shared objects.
-	The full names include the CYGWIN_VERSION_SHARED_DATA version
+	The full names include the SHARED_DATA_VERSION version
 	as well as this identifier. */
 
-#define CYGWIN_VERSION_DLL_IDENTIFIER	"cygwin1"
+#define DLL_VERSION_IDENTIFIER	"msys1.0"
 
      /* The Cygwin mount table interface in the Win32 registry also
 	has a version number associated with it in case that is
@@ -178,8 +166,8 @@ details. */
 
      /* Identifiers used in the Win32 registry. */
 
-#define CYGWIN_INFO_CYGNUS_REGISTRY_NAME "msys"
-#define CYGWIN_INFO_CYGWIN_REGISTRY_NAME "1.0"
+#define MSYS_REGISTRY_ID "msys"
+#define MSYS_REGISTRY_VERSION "1.0"
 #define CYGWIN_INFO_PROGRAM_OPTIONS_NAME "Program Options"
 #define CYGWIN_INFO_CYGWIN_MOUNT_REGISTRY_NAME "mounts v2"
 #define CYGWIN_INFO_CYGDRIVE_FLAGS "cygdrive flags"

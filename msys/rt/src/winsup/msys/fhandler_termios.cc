@@ -301,7 +301,7 @@ fhandler_termios::line_edit (const char *rptr, int nread, int always_accept)
 	}
 
       if (tc->ti.c_iflag & IUCLC && isupper (c))
-	c = cyg_tolower (c);
+	c = folded_tolower (c);
 
       if (tc->ti.c_lflag & ECHO)
 	doecho (&c, 1);

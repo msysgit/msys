@@ -1,4 +1,4 @@
-/* cygwin/acl.h header file for Cygwin.
+/* msys/acl.h header file for Cygwin.
 
    Copyright 1999, 2000, 2001 Red Hat, Inc.
    Written by C. Vinschen.
@@ -9,11 +9,11 @@ This software is a copyrighted work licensed under the terms of the
 Cygwin license.  Please consult the file "CYGWIN_LICENSE" for
 details. */
 
-#ifndef _CYGWIN_ACL_H
+#ifndef _MSYS_ACL_H
 #ifdef __cplusplus
 extern "C" {
 #endif
-#define _CYGWIN_ACL_H
+#define _MSYS_ACL_H
 
 #include <_ansi.h>
 
@@ -79,4 +79,4 @@ aclent_t *_EXFUN(aclfromtext,(char *acltextp, int *aclcnt));
 #ifdef __cplusplus
 }
 #endif
-#endif /* _CYGWIN_ACL_H */
+#endif /* _MSYS_ACL_H */

@@ -12,6 +12,6 @@ details. */
    default DllMain stub in the library if there is no user supplied
    one. */
 
-#include "cygwin/cygwin_dll.h"
+#include "msys/cygwin_dll.h"
 
 DECLARE_CYGWIN_DLL (DllMain);

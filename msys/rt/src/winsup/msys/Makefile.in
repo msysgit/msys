@@ -86,13 +86,13 @@ RUNTEST = `if [ -f $${srcdir}/../dejagnu/runtest ] ; then \
 	    else echo runtest; fi`
 RUNTESTFLAGS =
 
-# Parameters used in building the cygwin.dll.
-# We build as new-cygwin.dll and rename at install time to overcome
+# Parameters used in building the MSYS dll.
+# We build as new-msys-MAJOR.MINOR.dll and rename at install time to overcome
 # native rebuilding issues (we don't want the build tools to see a partially
-# built cygwin.dll and attempt to use it instead of the old one).
+# built MSYS dll and attempt to use it instead of the old one).
 
-DLL_NAME:=msys-1.0.dll
-LIB_NAME:=libmsys-1.0.dll.a
+DLL_NAME:=msys-1.1.dll
+LIB_NAME:=libmsys-1.1.dll.a
 DEF_FILE:=cygwin.def
 DLL_ENTRY:=@DLL_ENTRY@
 
@@ -209,7 +209,7 @@ $(LIBGMON_A): $(GMON_OFILES) $(GMON_START)
 version.cc winver.o: winver_stamp
 	@ :
 
-winver_stamp: mkvers.sh include/cygwin/version.h winver.rc $(DLL_OFILES)
+winver_stamp: mkvers.sh include/msys/version.h winver.rc $(DLL_OFILES)
 	@echo "Making version.o and winver.o";\
 	$(SHELL) ${word 1,$^} ${word 2,$^} ${word 3,$^} $(WINDRES) && \
 	touch $@ && \

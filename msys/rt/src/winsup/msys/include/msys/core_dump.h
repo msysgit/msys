@@ -10,8 +10,8 @@ This software is a copyrighted work licensed under the terms of the
 Cygwin license.  Please consult the file "CYGWIN_LICENSE" for
 details. */
 
-#ifndef _CYGWIN_CORE_DUMP_H
-#define _CYGWIN_CORE_DUMP_H
+#ifndef _MSYS_CORE_DUMP_H
+#define _MSYS_CORE_DUMP_H
 
 #include <windows.h>
 
@@ -70,4 +70,4 @@ struct win32_pstatus
 
 typedef struct win32_pstatus win32_pstatus_t ;
 
-#endif /* _CYGWIN_CORE_DUMP_H */
+#endif /* _MSYS_CORE_DUMP_H */

@@ -1,4 +1,4 @@
-/* cygwin/socket.h
+/* msys/socket.h
 
    Copyright 1999, 2000, 2001 Red Hat, Inc.
 
@@ -8,8 +8,8 @@ This software is a copyrighted work licensed under the terms of the
 Cygwin license.  Please consult the file "CYGWIN_LICENSE" for
 details. */
 
-#ifndef _CYGWIN_SOCKET_H
-#define _CYGWIN_SOCKET_H
+#ifndef _MSYS_SOCKET_H
+#define _MSYS_SOCKET_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -21,8 +21,8 @@ struct sockaddr {
 };
 
 #include <asm/socket.h>			/* arch-dependent defines	*/
-#include <cygwin/sockios.h>		/* the SIOCxxx I/O controls	*/
-#include <cygwin/uio.h>			/* iovec support		*/
+#include <msys/sockios.h>		/* the SIOCxxx I/O controls	*/
+#include <msys/uio.h>			/* iovec support		*/
 #include <sys/types.h>
 
 struct linger {
@@ -160,4 +160,4 @@ struct msghdr
 };
 #endif /* __cplusplus */
 
-#endif /* _CYGWIN_SOCKET_H */
+#endif /* _MSYS_SOCKET_H */

@@ -12,7 +12,7 @@ details. */
 #include "shared_info.h"
 #include "registry.h"
 #include "security.h"
-#include <cygwin/version.h>
+#include <msys/version.h>
 #include <errno.h>
 #include "cygerrno.h"
 
@@ -31,8 +31,8 @@ reg_key::reg_key (REGSAM access, ...)
   va_list av;
 
   new (this) reg_key (HKEY_CURRENT_USER, access, "SOFTWARE",
-		 CYGWIN_INFO_CYGNUS_REGISTRY_NAME,
-		 CYGWIN_INFO_CYGWIN_REGISTRY_NAME, NULL);
+		 MSYS_REGISTRY_ID,
+		 MSYS_REGISTRY_VERSION, NULL);
 
   HKEY top = key;
   va_start (av, access);
@@ -45,8 +45,8 @@ reg_key::reg_key (REGSAM access, ...)
 reg_key::reg_key (REGSAM access)
 {
   new (this) reg_key (HKEY_CURRENT_USER, access, "SOFTWARE",
-		 CYGWIN_INFO_CYGNUS_REGISTRY_NAME,
-		 CYGWIN_INFO_CYGWIN_REGISTRY_NAME,
+		 MSYS_REGISTRY_ID,
+		 MSYS_REGISTRY_VERSION,
 		 CYGWIN_INFO_CYGWIN_MOUNT_REGISTRY_NAME, NULL);
 }
 

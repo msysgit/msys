@@ -24,7 +24,7 @@
 #include <winsock2.h>
 #include "cygerrno.h"
 #include "security.h"
-#include "cygwin/version.h"
+#include "msys/version.h"
 #include "perprocess.h"
 #include "fhandler.h"
 #include "dtable.h"
@@ -424,12 +424,7 @@ fhandler_socket::fcntl (int cmd, void *arg)
     {
     case F_SETFL:
       {
-	/* Carefully test for the O_NONBLOCK or deprecated OLD_O_NDELAY flag.
-	   Set only the flag that has been passed in.  If both are set, just
-	   record O_NONBLOCK.   */
 	int new_flags = (int) arg & O_NONBLOCK_MASK;
-	if ((new_flags & OLD_O_NDELAY) && (new_flags & O_NONBLOCK))
-	  new_flags = O_NONBLOCK;
 	current = get_flags () & O_NONBLOCK_MASK;
 	request = new_flags ? 1 : 0;
 	if (!!current != !!new_flags && (res = ioctl (FIONBIO, &request)))

@@ -121,6 +121,7 @@ int
 cygwin_select (int maxfds, fd_set *readfds, fd_set *writefds, fd_set *exceptfds,
 	       struct timeval *to)
 {
+  TRACE_IN;
   select_stuff sel;
   fd_set *dummy_readfds = allocfd_set (maxfds);
   fd_set *dummy_writefds = allocfd_set (maxfds);
@@ -197,6 +198,7 @@ cygwin_select (int maxfds, fd_set *readfds, fd_set *writefds, fd_set *exceptfds,
 void
 select_stuff::cleanup ()
 {
+  TRACE_IN;
   select_record *s = &start;
 
   select_printf ("calling cleanup routines");
@@ -211,6 +213,7 @@ select_stuff::cleanup ()
 /* Destroy all storage associated with select stuff. */
 select_stuff::~select_stuff ()
 {
+  TRACE_IN;
   cleanup ();
   select_record *s = &start;
   select_record *snext = start.next;
@@ -228,6 +231,7 @@ int
 select_stuff::test_and_set (int i, fd_set *readfds, fd_set *writefds,
 			    fd_set *exceptfds)
 {
+  TRACE_IN;
   select_record *s = NULL;
   if (UNIX_FD_ISSET (i, readfds) && (s = cygheap->fdtab.select_read (i, s)) == NULL)
     return 0; /* error */
@@ -241,7 +245,7 @@ select_stuff::test_and_set (int i, fd_set *readfds, fd_set *writefds,
   if (s->read_ready || s->write_ready || s->except_ready)
     always_ready = TRUE;
 
-  if (s->windows_handle || s->windows_handle || s->windows_handle)
+  if (s->windows_handle)
     windows_used = TRUE;
 
   s->next = start.next;
@@ -253,6 +257,7 @@ select_stuff::test_and_set (int i, fd_set *readfds, fd_set *writefds,
 int
 select_stuff::poll (fd_set *readfds, fd_set *writefds, fd_set *exceptfds)
 {
+  TRACE_IN;
   int n = 0;
   select_record *s = &start;
   while ((s = s->next))
@@ -266,6 +271,7 @@ int
 select_stuff::wait (fd_set *readfds, fd_set *writefds, fd_set *exceptfds,
 		    DWORD ms)
 {
+  TRACE_IN;
   int wait_ret;
   HANDLE w4[MAXIMUM_WAIT_OBJECTS];
   select_record *s = &start;
@@ -364,6 +370,7 @@ static int
 set_bits (select_record *me, fd_set *readfds, fd_set *writefds,
 	   fd_set *exceptfds)
 {
+  TRACE_IN;
   int ready = 0;
   select_printf ("me %p, testing fd %d (%s)", me, me->fd, me->fh->get_name ());
   if (me->read_selected && me->read_ready)
@@ -388,6 +395,7 @@ set_bits (select_record *me, fd_set *readfds, fd_set *writefds,
 static int
 verify_true (select_record *, fd_set *, fd_set *, fd_set *)
 {
+  TRACE_IN;
   return 1;
 }
 
@@ -395,24 +403,28 @@ static int
 verify_ok (select_record *me, fd_set *readfds, fd_set *writefds,
 	   fd_set *exceptfds)
 {
+  TRACE_IN;
   return set_bits (me, readfds, writefds, exceptfds);
 }
 
 static int
 no_startup (select_record *, select_stuff *)
 {
+  TRACE_IN;
   return 1;
 }
 
 static int
 no_verify (select_record *, fd_set *, fd_set *, fd_set *)
 {
+  TRACE_IN;
   return 0;
 }
 
 static int
 peek_pipe (select_record *s, int ignra)
 {
+  TRACE_IN;
   int n = 0;
   int gotone = 0;
   fhandler_base *fh = s->fh;
@@ -496,6 +508,7 @@ static int
 poll_pipe (select_record *me, fd_set *readfds, fd_set *writefds,
 	   fd_set *exceptfds)
 {
+  TRACE_IN;
   return peek_pipe (me, 0) ?
 	 set_bits (me, readfds, writefds, exceptfds) :
 	 0;
@@ -515,40 +528,25 @@ struct pipeinf
 static DWORD WINAPI
 thread_pipe (void *arg)
 {
+  TRACE_IN;
   pipeinf *pi = (pipeinf *)arg;
-  BOOL gotone = FALSE;
 
-  for (;;)
+  while (true)
     {
       select_record *s = pi->start;
       while ((s = s->next))
 	if (s->startup == start_thread_pipe)
-	  {
-	    if (peek_pipe (s, 0))
-	      gotone = TRUE;
-	    if (pi->stop_thread_pipe)
-	      {
-		select_printf ("stopping");
-		goto out;
-	      }
-	  }
-      /* Paranoid check */
-      if (pi->stop_thread_pipe)
-	{
-	  select_printf ("stopping from outer loop");
-	  break;
-	}
-      if (gotone)
-	break;
+	    if (peek_pipe (s, 0) || pi->stop_thread_pipe)
+	      return 0;
+	
       Sleep (10);
     }
-out:
-  return 0;
 }
 
 static int
 start_thread_pipe (select_record *me, select_stuff *stuff)
 {
+  TRACE_IN;
   if (stuff->device_specific[FHDEVN(FH_PIPE)])
     {
       me->h = ((pipeinf *) stuff->device_specific[FHDEVN(FH_PIPE)])->thread;
@@ -567,6 +565,7 @@ start_thread_pipe (select_record *me, select_stuff *stuff)
 static void
 pipe_cleanup (select_record *, select_stuff *stuff)
 {
+  TRACE_IN;
   pipeinf *pi = (pipeinf *)stuff->device_specific[FHDEVN(FH_PIPE)];
   if (pi && pi->thread)
     {
@@ -581,6 +580,7 @@ pipe_cleanup (select_record *, select_stuff *stuff)
 select_record *
 fhandler_pipe::select_read (select_record *s)
 {
+  TRACE_IN;
   if (!s)
     s = new select_record;
   s->startup = start_thread_pipe;
@@ -594,6 +594,7 @@ fhandler_pipe::select_read (select_record *s)
 select_record *
 fhandler_pipe::select_write (select_record *s)
 {
+  TRACE_IN;
   if (!s)
     {
       s = new select_record;
@@ -609,6 +610,7 @@ fhandler_pipe::select_write (select_record *s)
 select_record *
 fhandler_pipe::select_except (select_record *s)
 {
+  TRACE_IN;
   if (!s)
       s = new select_record;
   s->startup = start_thread_pipe;
@@ -622,6 +624,7 @@ fhandler_pipe::select_except (select_record *s)
 static int
 peek_console (select_record *me, int ignra)
 {
+  TRACE_IN;
   extern const char * get_nonascii_key (INPUT_RECORD& input_rec, char *);
   fhandler_console *fh = (fhandler_console *)me->fh;
 
@@ -677,6 +680,7 @@ static int
 poll_console (select_record *me, fd_set *readfds, fd_set *writefds,
 	      fd_set *exceptfds)
 {
+  TRACE_IN;
   return peek_console (me, 0) ?
 	 set_bits (me, readfds, writefds, exceptfds) :
 	 0;
@@ -687,6 +691,7 @@ MAKEready (console)
 select_record *
 fhandler_console::select_read (select_record *s)
 {
+  TRACE_IN;
   if (!s)
     {
       s = new select_record;
@@ -704,6 +709,7 @@ fhandler_console::select_read (select_record *s)
 select_record *
 fhandler_console::select_write (select_record *s)
 {
+  TRACE_IN;
   if (!s)
     {
       s = new select_record;
@@ -721,6 +727,7 @@ fhandler_console::select_write (select_record *s)
 select_record *
 fhandler_console::select_except (select_record *s)
 {
+  TRACE_IN;
   if (!s)
     {
       s = new select_record;
@@ -737,6 +744,7 @@ fhandler_console::select_except (select_record *s)
 int
 fhandler_tty_common::ready_for_read (int fd, DWORD howlong, int ignra)
 {
+  TRACE_IN;
 #if 0
   if (myself->pgid && get_ttyp ()->getpgid () != myself->pgid &&
 	myself->ctty == ttynum) // background process?
@@ -748,18 +756,21 @@ fhandler_tty_common::ready_for_read (int fd, DWORD howlong, int ignra)
 select_record *
 fhandler_tty_common::select_read (select_record *s)
 {
+  TRACE_IN;
   return ((fhandler_pipe*)this)->fhandler_pipe::select_read (s);
 }
 
 select_record *
 fhandler_tty_common::select_write (select_record *s)
 {
+  TRACE_IN;
   return ((fhandler_pipe *)this)->fhandler_pipe::select_write (s);
 }
 
 select_record *
 fhandler_tty_common::select_except (select_record *s)
 {
+  TRACE_IN;
   return ((fhandler_pipe *)this)->fhandler_pipe::select_except (s);
 }
 
@@ -767,6 +778,7 @@ static int
 verify_tty_slave (select_record *me, fd_set *readfds, fd_set *writefds,
 	   fd_set *exceptfds)
 {
+  TRACE_IN;
   if (WaitForSingleObject (me->h, 0) == WAIT_OBJECT_0)
     me->read_ready = 1;
   return set_bits (me, readfds, writefds, exceptfds);
@@ -775,6 +787,7 @@ verify_tty_slave (select_record *me, fd_set *readfds, fd_set *writefds,
 select_record *
 fhandler_tty_slave::select_read (select_record *s)
 {
+  TRACE_IN;
   if (!s)
     s = new select_record;
   s->h = input_available_event;
@@ -789,6 +802,7 @@ fhandler_tty_slave::select_read (select_record *s)
 int
 fhandler_tty_slave::ready_for_read (int fd, DWORD howlong, int ignra)
 {
+  TRACE_IN;
   HANDLE w4[2];
   if (!ignra && get_readahead_valid ())
     {
@@ -813,6 +827,7 @@ fhandler_tty_slave::ready_for_read (int fd, DWORD howlong, int ignra)
 select_record *
 fhandler_dev_null::select_read (select_record *s)
 {
+  TRACE_IN;
   if (!s)
     {
       s = new select_record;
@@ -829,6 +844,7 @@ fhandler_dev_null::select_read (select_record *s)
 select_record *
 fhandler_dev_null::select_write (select_record *s)
 {
+  TRACE_IN;
   if (!s)
     {
       s = new select_record;
@@ -845,6 +861,7 @@ fhandler_dev_null::select_write (select_record *s)
 select_record *
 fhandler_dev_null::select_except (select_record *s)
 {
+  TRACE_IN;
   if (!s)
     {
       s = new select_record;
@@ -870,6 +887,7 @@ struct serialinf
 static int
 peek_serial (select_record *s, int)
 {
+  TRACE_IN;
   DWORD ev;
   COMSTAT st;
 
@@ -976,34 +994,25 @@ err:
 static DWORD WINAPI
 thread_serial (void *arg)
 {
+  TRACE_IN;
   serialinf *si = (serialinf *)arg;
-  BOOL gotone= FALSE;
 
-  for (;;)
+  while (true)
     {
       select_record *s = si->start;
       while ((s = s->next))
 	if (s->startup == start_thread_serial)
-	  {
-	    if (peek_serial (s, 0))
-	      gotone = TRUE;
-	  }
-      if (si->stop_thread_serial)
-	{
-	  select_printf ("stopping");
-	  break;
-	}
-      if (gotone)
-	break;
-    }
+	    if (peek_serial (s, 0) || si->stop_thread_serial)
+	      return 0;
 
-  select_printf ("exiting");
-  return 0;
+      Sleep (10);
+    }
 }
 
 static int
 start_thread_serial (select_record *me, select_stuff *stuff)
 {
+  TRACE_IN;
   if (stuff->device_specific[FHDEVN(FH_SERIAL)])
     {
       me->h = ((pipeinf *) stuff->device_specific[FHDEVN(FH_SERIAL)])->thread;
@@ -1022,6 +1031,7 @@ start_thread_serial (select_record *me, select_stuff *stuff)
 static void
 serial_cleanup (select_record *, select_stuff *stuff)
 {
+  TRACE_IN;
   serialinf *si = (serialinf *)stuff->device_specific[FHDEVN(FH_SERIAL)];
   if (si && si->thread)
     {
@@ -1038,6 +1048,7 @@ poll_serial (select_record *me, fd_set *readfds, fd_set *writefds,
 	   fd_set *exceptfds)
 
 {
+  TRACE_IN;
   return peek_serial (me, 0) ?
 	 set_bits (me, readfds, writefds, exceptfds) :
 	 0;
@@ -1048,6 +1059,7 @@ MAKEready (serial)
 select_record *
 fhandler_serial::select_read (select_record *s)
 {
+  TRACE_IN;
   if (!s)
     {
       s = new select_record;
@@ -1063,6 +1075,7 @@ fhandler_serial::select_read (select_record *s)
 select_record *
 fhandler_serial::select_write (select_record *s)
 {
+  TRACE_IN;
   if (!s)
     {
       s = new select_record;
@@ -1079,6 +1092,7 @@ fhandler_serial::select_write (select_record *s)
 select_record *
 fhandler_serial::select_except (select_record *s)
 {
+  TRACE_IN;
   if (!s)
     {
       s = new select_record;
@@ -1094,12 +1108,14 @@ fhandler_serial::select_except (select_record *s)
 int
 fhandler_base::ready_for_read (int, DWORD, int)
 {
+  TRACE_IN;
   return 1;
 }
 
 select_record *
 fhandler_base::select_read (select_record *s)
 {
+  TRACE_IN;
   if (!s)
     {
       s = new select_record;
@@ -1116,6 +1132,7 @@ fhandler_base::select_read (select_record *s)
 select_record *
 fhandler_base::select_write (select_record *s)
 {
+  TRACE_IN;
   if (!s)
     {
       s = new select_record;
@@ -1132,6 +1149,7 @@ fhandler_base::select_write (select_record *s)
 select_record *
 fhandler_base::select_except (select_record *s)
 {
+  TRACE_IN;
   if (!s)
     {
       s = new select_record;
@@ -1156,6 +1174,7 @@ struct socketinf
 static int
 peek_socket (select_record *me, int)
 {
+  TRACE_IN;
   winsock_fd_set ws_readfds, ws_writefds, ws_exceptfds;
   struct timeval tv = {0, 0};
   WINSOCK_FD_ZERO (&ws_readfds);
@@ -1206,6 +1225,7 @@ static int
 poll_socket (select_record *me, fd_set *readfds, fd_set *writefds,
 	   fd_set *exceptfds)
 {
+  TRACE_IN;
   return peek_socket (me, 0) ?
 	 set_bits (me, readfds, writefds, exceptfds) :
 	 0;
@@ -1218,6 +1238,7 @@ static int start_thread_socket (select_record *, select_stuff *);
 static DWORD WINAPI
 thread_socket (void *arg)
 {
+  TRACE_IN;
   socketinf *si = (socketinf *)arg;
 
   select_printf ("stuff_start %p", &si->start);
@@ -1259,6 +1280,7 @@ extern "C" unsigned long htonl (unsigned long);
 static int
 start_thread_socket (select_record *me, select_stuff *stuff)
 {
+  TRACE_IN;
   socketinf *si;
 
   if ((si = (socketinf *)stuff->device_specific[FHDEVN(FH_SOCKET)]))
@@ -1345,6 +1367,7 @@ err:
 void
 socket_cleanup (select_record *, select_stuff *stuff)
 {
+  TRACE_IN;
   socketinf *si = (socketinf *)stuff->device_specific[FHDEVN(FH_SOCKET)];
   select_printf ("si %p si->thread %p", si, si ? si->thread : NULL);
   if (si && si->thread)
@@ -1383,6 +1406,7 @@ socket_cleanup (select_record *, select_stuff *stuff)
 select_record *
 fhandler_socket::select_read (select_record *s)
 {
+  TRACE_IN;
   if (!s)
     {
       s = new select_record;
@@ -1399,6 +1423,7 @@ fhandler_socket::select_read (select_record *s)
 select_record *
 fhandler_socket::select_write (select_record *s)
 {
+  TRACE_IN;
   if (!s)
     {
       s = new select_record;
@@ -1415,6 +1440,7 @@ fhandler_socket::select_write (select_record *s)
 select_record *
 fhandler_socket::select_except (select_record *s)
 {
+  TRACE_IN;
   if (!s)
     {
       s = new select_record;
@@ -1432,6 +1458,7 @@ fhandler_socket::select_except (select_record *s)
 static int
 peek_windows (select_record *me, int)
 {
+  TRACE_IN;
   MSG m;
   HANDLE h;
   set_handle_or_return_if_not_open (h, me);
@@ -1454,6 +1481,7 @@ static int
 poll_windows (select_record *me, fd_set *readfds, fd_set *writefds,
 	      fd_set *exceptfds)
 {
+  TRACE_IN;
 
   return peek_windows (me, 0) ?
 	 set_bits (me, readfds, writefds, exceptfds) :
@@ -1465,6 +1493,7 @@ MAKEready (windows)
 select_record *
 fhandler_windows::select_read (select_record *s)
 {
+  TRACE_IN;
   if (!s)
     {
       s = new select_record;
@@ -1482,6 +1511,7 @@ fhandler_windows::select_read (select_record *s)
 select_record *
 fhandler_windows::select_write (select_record *s)
 {
+  TRACE_IN;
   if (!s)
     {
       s = new select_record;
@@ -1499,6 +1529,7 @@ fhandler_windows::select_write (select_record *s)
 select_record *
 fhandler_windows::select_except (select_record *s)
 {
+  TRACE_IN;
   if (!s)
     {
       s = new select_record;

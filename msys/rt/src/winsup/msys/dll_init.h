@@ -68,7 +68,7 @@ public:
   int tot;
   int loaded_dlls;
   int reload_on_fork;
-  dll *operator [] (const char *name);
+  dll *operator [] (const char *name); 			// find dll by name
   dll *alloc (HINSTANCE, per_process *, dll_type);
   void detach (dll *);
   void init ();

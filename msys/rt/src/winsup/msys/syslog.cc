@@ -24,8 +24,8 @@ details. */
 /* FIXME: These should probably be in the registry. */
 /* FIXME: The Win95 path should be whatever slash is */
 
-#define WIN95_EVENT_LOG_PATH "C:\\CYGWIN_SYSLOG.TXT"
-#define CYGWIN_LOG_NAME "Cygwin"
+#define WIN95_EVENT_LOG_PATH "C:\\MSYS_SYSLOG.TXT"
+#define MSYS_LOG_NAME "MSYS"
 
 /*
  * Utility function to help enable moving
@@ -340,7 +340,7 @@ syslog (int priority, const char *message, ...)
       {
 	/* For NT, open the event log and send the message */
 	HANDLE hEventSrc = RegisterEventSourceA (NULL, (process_ident != NULL) ?
-					 process_ident : CYGWIN_LOG_NAME);
+					 process_ident : MSYS_LOG_NAME);
 	if (hEventSrc == NULL)
 	  {
 	    debug_printf ("RegisterEventSourceA failed with %E");
