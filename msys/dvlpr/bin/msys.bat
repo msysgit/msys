@@ -21,7 +21,7 @@ if "%1" == "MSYS" set MSYSTEM=MSYS
 
 if "x%USERNAME%" == "x" set USERNAME=Win32User
 if "x%HOME%" == "x" set HOME=/home/%USERNAME%
-if "x%DISPLAY%" == "x" else set DISPLAY=
+if NOT "x%DISPLAY%" == "x" set DISPLAY=
 
 rem Setup the default colors for rxvt.
 if "x%MSYSBGCOLOR%" == "x" set MSYSBGCOLOR=White
