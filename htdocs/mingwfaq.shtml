@@ -1,4 +1,4 @@
-<!-- $Id: mingwfaq.shtml,v 1.37 2002-08-11 05:53:32 infidel Exp $ -->
+<!-- $Id: mingwfaq.shtml,v 1.38 2002-08-12 01:28:20 infidel Exp $ -->
 
 <html>
 <head>
@@ -393,20 +393,6 @@
          To find out more about PW32, try it out, or volunteer to help... see 
          <a href="http://pw32.sourceforge.net/">http://pw32.sourceforge.net</a>. 
       </p>
-      <p>
-         There is yet another runtime under development called the Mingw32
-         Alternate C Runtime library. It was developed to remove the dependency
-         over MSVCRT.DLL and to allow Mingw32 developers to have access to the
-         entire C Runtime Library Source code like Microsoft Visual C++
-         developers do.  When users have access to the source code, they can
-         easily modify it and redistribute it, like Visual C++ developers get
-         with MSVCRT.DLL. It will implement all ANSI/ISO functions, including
-         the C99 standard and Unicode functions. It will be licensed under the
-         BSD license. There are currently no releases of the library, but some
-         pieces of code can be obtained via anonymous CVS. To find out more
-         about the Mingw32 Alternate C Runtime Library or to volunteer to help, 
-         see <a href="http://mingwacr.souceforge.net">http://mingwacr.sourceforge.net</a>.
-      </p>
       <p><a href="#index">Back to index</a></p>
 
       <hr />
@@ -587,7 +573,7 @@
 
    <hr />
    <address>
-   <br />Last revised $Date: 2002-08-11 05:53:32 $
+   <br />Last revised $Date: 2002-08-12 01:28:20 $
    </address>
 
 </body>
