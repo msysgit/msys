@@ -1,3 +1,8 @@
+2000-12-03  Paul Sokolovsky  <Paul.Sokolovsky@technologist.com>
+
+	* docs.shtml: Added link to uploaded BFD docs for current
+        release.
+
 2000-11-27  Earnie Boyd  <earnie@users.sourceforge.net>
 
 	* MINGW-USERS-MONTHLY.txt: correct English verbage mistakes.

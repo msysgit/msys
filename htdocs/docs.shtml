@@ -79,6 +79,7 @@ well.</li>
 
 <h2 align="left">GNU Development Tools Documentation</h2>
 <ul>
+<li> <a href="/info/bfd/">GNU Binary File Descriptor library (BFD)</a></li>
 <li> <a href="http://gcc.gnu.org/onlinedocs/">GCC Manual</a>.</li>
 <li> <a href="http://www.delorie.com/gnu/docs/">GNU Documentation</a> for
 documentation on all GNU tools.</li>
