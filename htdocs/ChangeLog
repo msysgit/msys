@@ -3,6 +3,8 @@
 	* links.shtml: Added section "Sites useful for Windows32
         programmers".
 
+        * mingwfaq.shtml: IDE links moved to links.shtml.
+
 2000-10-08  Paul Sokolovsky  <Paul.Sokolovsky@technologist.com>
 
 	* mingwfaq.shtml: remove blank lines.
