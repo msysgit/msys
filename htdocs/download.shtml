@@ -8,10 +8,13 @@
   <meta name="keywords"
  content="mingw, mingw32, programming, C++, C, C/C++, libraries, software, development tools, editors, IDEs, GNU">
   <link href="mingw.css" type="text/css" rel="stylesheet" title="MinGW">
-  <title>MinGW - Download Sites</title>
+  <title>Download</title>
 </head>
+
 <body link="#000099" vlink="#990099" alink="#000099">
+
 <h1 align="center">MinGW: Minimalist GNU For Windows</h1>
+
 <table class="prim" cellspacing="6" border="0">
   <tbody>
     <tr>
@@ -21,7 +24,8 @@
       <table class="sec" cellspacing="6" border="0">
         <tbody>
           <tr>
-            <td><!-- ======================================================================= --><!--                                                                         --><!--                               Main Body                                 --><!--                                                                         -->
+            <td>
+<!-- ======================================================================= --><!--                                                                         --><!--                               Main Body                                 --><!--                                                                         -->
             <h2>Downloading MinGW</h2>
             <p> Development of MinGW is done within a framework of
 inter-related <i>packages</i>.  There is a package for the MinGW
@@ -168,6 +172,6 @@ for more detail). </p>
 </table>
 <!--#include file="ssi/bottombar.html"--><!--#include file="ssi/footer.html"-->
 <address> <br>
-Last revised $Date: 2002-12-26 12:18:43 $ </address>
+Last revised $Date: 2002-12-27 21:16:21 $ </address>
 </body>
 </html>
