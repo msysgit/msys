@@ -23,6 +23,7 @@ drmingw/Makefile
 pexports/Makefile
 redir/Makefile
 reimp/Makefile
+res2coff/Makefile
 scripts/Makefile
 unix2dos/Makefile
 ])
