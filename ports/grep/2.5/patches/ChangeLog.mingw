@@ -1,13 +1,12 @@
 2002-11-08  Manu B  <manubee@users.sourceforge.net>
 
+	* Readme.mingw: Correct typo, specify '- grep-2.5.tar.gz (Internet Shortcut)'.
+	* build-i386-mini: Add missing close quote. Perform "./configure && make".
+
+2002-11-08  Manu B  <manubee@users.sourceforge.net>
+
 	* Readme.mingw: New file.
 	* build-i386-mini: Ditto.
 	* src/grep.c (reset): Add a _WIN32 filter. (S_ISSOCK doesn't define with MinGW)
 	* intl/localename.c: Define LANG_SORBIAN.
 	* ChangeLog created.
-
-2002-11-08  Manu B  <manubee@users.sourceforge.net>
-
-	* Readme.mingw: Correct typo, specify '- grep-2.5.tar.gz (Internet Shortcut)'.
-	* build-i386-mini: Add missing close quote. Perform "./configure && make".
-	
