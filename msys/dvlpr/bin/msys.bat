@@ -59,7 +59,7 @@ if "%MSYSTEM%" == "MSYS" set FGCOLOR=%MSYSFGCOLOR%
 if "%MSYSTEM%" == "MINGW32" set BGCOLOR=%MINGW32BGCOLOR%
 if "%MSYSTEM%" == "MINGW32" set FGCOLOR=%MINGW32FGCOLOR%
 
-start rxvt -backspacekey  -sl 2500 -fg %FGCOLOR% -bg %BGCOLOR% -sr -fn Courier-12 -tn msys -e /bin/sh --login -i
+start rxvt -backspacekey  -sl 2500 -fg %FGCOLOR% -bg %BGCOLOR% -sr -fn Courier-12 -tn msys -geometry 80x25 -e /bin/sh --login -i
 exit
 
 :startsh
