@@ -97,9 +97,9 @@ So, how do they differ?</p>
    POSIX stuff and porting ``Unix-type'' code is not necessarily trivial.
    <br />
    For general information, see Colin Peters' <br />
-     <a href="http://www.geocities.com/Tokyo/Towers/6162/gcc.html">
+     <a href="http://webclub.kcom.ne.jp/ma/colinp/gcc.html">
      GCC for Win32 
-     &lt;URL:http://www.geocities.com/Tokyo/Towers/6162/gcc.html&gt;</a>
+     &lt;URL:http://webclub.kcom.ne.jp/ma/gcc.html&gt;</a>
    <br />
    For gcc toolchain, see:
      <a href="http://www.xraylith.wisc.edu/~khan/software/gnu-win32/gcc.html">
