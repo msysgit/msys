@@ -45,7 +45,7 @@ details. */
   /* The current msys version is 1.0.2 */
 
 #define CYGWIN_VERSION_DLL_MAJOR 1000
-#define CYGWIN_VERSION_DLL_MINOR 2
+#define CYGWIN_VERSION_DLL_MINOR 4
 
       /* Major numbers before CYGWIN_VERSION_DLL_EPOCH are
 	 incompatible. */
