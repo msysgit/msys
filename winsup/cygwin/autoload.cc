@@ -383,6 +383,7 @@ LoadDLLfunc (NetLocalGroupGetMembers, 32, netapi32)
 LoadDLLfunc (NetUserGetGroups, 28, netapi32)
 LoadDLLfunc (NetUserGetInfo, 16, netapi32)
 LoadDLLfunc (NetWkstaUserGetInfo, 12, netapi32)
+LoadDLLfunc (NetServerEnum, 36, netapi32)
 
 LoadDLLfuncEx (NtCreateToken, 52, ntdll, 1)
 LoadDLLfuncEx (NtMapViewOfSection, 40, ntdll, 1)

@@ -28,6 +28,12 @@ DWORD __stdcall WFMO (DWORD, CONST HANDLE *, BOOL, DWORD) __attribute__ ((regpar
 #if !defined(_DEBUG_H_)
 #define _DEBUG_H_
 
+#if DEBUGGING
+#define being_debugged() 1
+#else
+#define being_debugged() 0
+#endif
+
 void threadname_init ();
 HANDLE __stdcall makethread (LPTHREAD_START_ROUTINE, LPVOID, DWORD, const char *) __attribute__ ((regparm(3)));
 const char * __stdcall threadname (DWORD, int lockit = TRUE) __attribute__ ((regparm(2)));
