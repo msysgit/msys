@@ -3243,7 +3243,9 @@ cygwin_conv_to_win32_path (const char *path, char *win32_path)
 	  spath = strchr(spath, '=');
 	  spath++;
 	  if (QuotedRelativePath (spath))
-	    found_path = false;
+	      found_path = false;
+	  if (! (strchr (spath, '/') || strchr (spath, '\\')))
+	      found_path = false;
 	  else
 	    {
 	      spath++;

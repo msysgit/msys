@@ -506,7 +506,11 @@ static struct parse_thing
   {"forkchunk", {x: &chunksize}, justset, NULL, {{8192}, {0}}},
   {"glob", {func: &glob_init}, isfunc, NULL, {{0}, {s: "normal"}}},
 #if ! __MSYS__
-/* For MSys, these aren't feasible so don't allow them. */
+/* For MSys, these aren't feasible so always force to FALSE. */
+  {"ntea", {&allow_ntea}, justset, NULL, {{FALSE}, {FALSE}}},
+  {"ntsec", {&allow_ntsec}, justset, NULL, {{FALSE}, {FALSE}}},
+  {"smbntsec", {&allow_smbntsec}, justset, NULL, {{FALSE}, {FALSE}}},
+#else /* ! __MSYS__ */
   {"ntea", {&allow_ntea}, justset, NULL, {{FALSE}, {TRUE}}},
   {"ntsec", {&allow_ntsec}, justset, NULL, {{FALSE}, {TRUE}}},
   {"smbntsec", {&allow_smbntsec}, justset, NULL, {{FALSE}, {TRUE}}},
