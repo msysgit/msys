@@ -41,6 +41,13 @@
 #     this script and submit your additions to the author.
 #
 # Changelog (incomplete):
+#   2003-11-25: Amitai Yuval
+#     Strip DOS line-endings from DSW's too.
+#  
+#   2002-11-07: Alain Touret
+#     Fix bug in the linker output target determination.
+#     Support for C++ source files with .cc and .cxx extensions.
+#
 #   2001-02-18: José Fonseca
 #     Improved linker libraries and options handling.
 #     Debug output.
@@ -903,7 +910,7 @@ function parse_dsw(infile, outfile, i)
 	# print the rules for each project target
 	for(i = 0; i < nprojects; i++) {
 		print ".PHONY: " project_name[i] > outfile
-		print project_name[i] ": " project_dependencies[i] > outfile
+		print project_name[i] ":" project_dependencies[i] > outfile
 		if(project_makefile[i] != "") {
 			if(basedir(project_makefile[i]) == "")
 				print "\t$(MAKE) -f " project_makefile[i] > outfile

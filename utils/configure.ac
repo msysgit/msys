@@ -1,8 +1,8 @@
 # Process this file with autoconf 2.53 or better to produce a configure script.
 
-AC_INIT(mingw-utils,0.2)
+AC_INIT(mingw-utils,0.3)
 AC_PREREQ(2.53)
-AM_INIT_AUTOMAKE(1.6 no-define)
+AM_INIT_AUTOMAKE(1.7 no-define)
 AC_CONFIG_SRCDIR(Makefile.am)
 AM_CONFIG_HEADER(config.h)
 AM_MAINTAINER_MODE
@@ -15,7 +15,7 @@ AC_PROG_MAKE_SET
 AC_PROG_AWK
 AC_PROG_RANLIB
 
-AM_PROG_LEX
+AC_PROG_LEX
 AC_PROG_YACC
 
 AC_ARG_VAR(WINDRES, [Windows Resource compiler tool path])
@@ -40,13 +40,8 @@ AC_CHECK_HEADER(utime.h,
 )
 # AC_MSG_RESULT($where_toGet_utime_h)
 
-# Checks for typedefs, structures, and compiler characteristics.
-
 # Checks for library functions.
-AC_FUNC_MALLOC
-AC_FUNC_STAT
 AC_CHECK_FUNCS(mkstemp mktemp, break)
-AC_FUNC_UTIME_NULL
 AC_CHECK_FUNCS(utime)
 
 AC_CONFIG_FILES([

@@ -1,7 +1,41 @@
-2003-02-04 01:45  infidel
+2003-11-25 16:51  jrfonseca
 
-	* redir/Makefile.am, reimp/Makefile.am, res2coff/Makefile.am:
-	Install documentation in the doc subdirectory.
+	* pexports/hlex.l: input()/unput() must be called within the
+	actions.
+
+2003-11-25 15:30  jrfonseca
+
+	* scripts/dsw2mak.in: Strip DOS line-endings from DSW too (Amitai
+	Yuval)
+
+2003-05-24 11:57  jrfonseca
+
+	* scripts/dsw2mak.in: Changed the dsw2mak license to LPGL.
+
+2003-02-04 01:49  infidel
+
+	* ChangeLog, redir/Makefile.am, reimp/Makefile.am,
+	res2coff/Makefile.am: 2003-02-04 01:45	infidel
+	
+		* redir/Makefile.am, reimp/Makefile.am,
+	res2coff/Makefile.am:
+		Install documentation in the doc subdirectory.
+
+2003-01-25 13:43  jrfonseca
+
+	* drmingw/main.c: Make DrMingw accept hexadecimal numbers as the
+	process ID. (Daniel K. O.)
+
+2003-01-16 20:58  jrfonseca
+
+	* drmingw/exchndl.c: Optionally remove the BFD dependency of
+	exchndl.c (with omition the HAVE_BFD macro), generating a truly
+	LPGL exchndl.dll. (Heiko Gerdau)
+
+2002-12-04 12:24  jrfonseca
+
+	* ChangeLog, drmingw/Makefile.am: Dr.MinGW documentation wasn't
+	being included in the sources.
 
 2002-12-04 12:15  jrfonseca
 
