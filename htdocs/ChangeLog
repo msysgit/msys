@@ -1,3 +1,9 @@
+2003-03-16  Nathan Fisher <natbobc@users.sf.net>
+	
+	* mingwfaq.shtml: Fix Makefile comments.
+	Add GJC and GPC to the languages section.
+	Change --shared to -shared in JNI DLL section.
+
 2003-03-15  Nathan Fisher <natbobc@users.sf.net>
 
 	* mingwfaq.shtml: Add Makefile section.

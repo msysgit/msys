@@ -3,12 +3,18 @@
   
   
   
+  
+  
   <meta content="HTML Tidy for Linux/x86 (vers 1st February 2003), see www.w3.org" name="generator">
 
 
 
 
+
+
  
+  
+  
   
   
   
@@ -17,7 +23,11 @@
 
 
 
+
+
  
+  
+  
   
   
   
@@ -26,7 +36,11 @@
 
 
 
+
+
  
+  
+  
   
   
   
@@ -35,16 +49,18 @@
 
 
 
+
+
  
+  
+  
   
   
   
   <link href="mingw.css" type="text/css" rel="stylesheet" title="MinGW">
   <title>MinGW FAQ</title>
 
-  
-
-</head><body link="#000099" vlink="#990099" alink="#000099">
+  </head><body link="#000099" vlink="#990099" alink="#000099">
  
 <h1>MinGW FAQ</h1>
 
@@ -52,8 +68,12 @@
 
 
 
+
+
  
 <table class="prim" cellspacing="6" border="0">
+
+
 
 
 
@@ -100,9 +120,10 @@
            </li>
        <li><a href="download.shtml#release">What is the current version?</a>
            </li>
-       <li><a href="#faq-usingolderversions">Can I use older versions?</a></li><li><a href="#faq-languages">What Languages Are Supported?</a><br>
-              </li>
-
+       <li><a href="#faq-usingolderversions">Can I use older versions?</a>
+           </li>
+       <li><a href="#faq-languages">What Languages Are Supported?</a>
+           </li>
        <li><a href="#faq-configure">How do I execute configure scripts?</a>
            </li>
        <li><a href="#faq-usingwithmsys">How do I use MinGW with MSYS?</a>
@@ -111,22 +132,26 @@
            </li>
        <li><a href="#faq-comsupport">Is support provided for COM?</a>
            </li>
-       <li><a href="#faq-msvcdll">
-             How can an MSVC program call a MinGW DLL, and vice versa?</a></li><li><a href="#faq-jni-dll">How can a JNI DLL be created?</a><br>
-              </li>
-
+       <li><a href="#faq-msvcdll">How can an MSVC program call a MinGW DLL, and vice versa?</a>
+           </li>
+       <li><a href="#faq-jni-dll">How can a JNI DLL be created?</a>
+           </li>
        <li><a href="#faq-cross">How can I build a cross compiler?</a>
            </li>
        <li><a href="#faq-mingw32-gcc.exe">
-             What's the difference between gcc.exe and mingw32-gcc.exe?"</a></li><li><a href="#faq-Makefile">What is a Makefile and how do I create one?</a></li>
-
-       <li><a href="#faq-mingw32-make.exe">Why is make named mingw32-make.exe?</a></li><li><a href="#faq-ridconsole">How to remove DOS command windows?</a>
+           What's the difference between gcc.exe and mingw32-gcc.exe?"</a>
+           </li>
+       <li><a href="#faq-Makefile">What is a Makefile and how do I create one?</a>
+           </li>
+       <li><a href="#faq-mingw32-make.exe">Why is make named mingw32-make.exe?</a>
+           </li>
+       <li><a href="#faq-ridconsole">How to remove DOS command windows?</a>
            </li>
        <li><a href="#faq-bugreports">How can I report bugs?</a>
            </li>
       </ul>
-      <hr>
 
+<hr>
 
       <h3><a name="faq-what">
           What is MinGW?</a></h3>
@@ -159,8 +184,8 @@
          Began.</p>
 
       <p><a href="#index">Back to index</a></p>
-      <hr>
 
+<hr>
 
       <h3><a name="faq-msys">
           What is MSYS?</a></h3>
@@ -187,8 +212,8 @@
          website.</p>
 
       <p><a href="#index">Back to index</a></p>
-      <hr>
 
+<hr>
 
       <h3><a name="faq-w32api">
           What is w32api?</a></h3>
@@ -208,8 +233,8 @@
          .</p>
 
       <p><a href="#index">Back to index</a></p>
-      <hr>
 
+<hr>
 
       <h3><a name="faq-where">
           Where can I get MinGW?</a></h3>
@@ -250,8 +275,8 @@
          page.</p>
 
       <p><a href="#index">Back to index</a></p>
-      <hr>
 
+<hr>
 
       <h3><a name="faq-license">
           How is MinGW licensed?</a></h3>
@@ -282,23 +307,23 @@
               system, is completely in the public domain. The
               runtime system includes MinGW headers (such as
               stdio.h), libraries (such as libmingw32.a) and
-              import libraries for CRTDLL/MSVCRT.</li>
-
+              import libraries for CRTDLL/MSVCRT.
+              </li>
           <li>W32API, which consists of the headers and
               import libraries related to WIN32 API access,
-              is released under</li>
-
+              is released under
+              </li>
           <li><a href="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/mingw/w32api/README.w32api?rev=HEAD&amp;content-type=text/vnd.viewcvs-markup">
                 copyright</a>
               . The copyright agreement states
               no restrictions are placed on programs or
-              object files compiled with the library.</li>
-
+              object files compiled with the library.
+              </li>
           <li>Mingw development tools, which include
               compilers, linkers, other tools in the bin
               directory, etc., are released under the GNU
-              General Public License.</li>
-
+              General Public License.
+              </li>
           <li>Profiled code, which is code compiled and
               linked with the <code>-pg</code> option for
               runtime profiling, also falls under the GNU
@@ -306,7 +331,9 @@
               not distribute proprietary source with
               profiling enabled. The profiling library is
               covered by the GPL which infects your product
-              to conform to the GPL as well.</em></li>
+              to conform to the GPL as well.</em>
+              </li>
+
          </ul>
 
       <p>Here are some further reference sources for
@@ -314,37 +341,37 @@
          MinGW distribution:</p>
 
          <ul>
+
           <li>GNU General Public License, 
               <a href="http://www.gnu.org/copyleft/gpl.html">
                 http://www.gnu.org/copyleft/gpl.html</a>
               </li>
-
           <li>GNU Lesser General Public License,
               <a href="http://www.gnu.org/copyleft/lgpl.html">
                 http://www.gnu.org/copyleft/lgpl.html</a>
               </li>
-
           <li>For more information on the copyleft
               concept, 
               <a href="http://www.gnu.org/copyleft/">
                 http://www.gnu.org/copyleft/</a>
               </li>
+
          </ul>
 
       <p><a href="#index">Back to index</a></p>
-      <hr>
 
+<hr>
 
       <h3><a name="faq-version">
           What is the current version?</a></h3>
 
-      <p>Please refer to the release section of the
-         download page located 
-         <a href="download.shtml#download-release">here</a>.</p>
+      <p>Please refer to the
+         <a href="download.shtml#download-release">release section</a>
+         of the download page located here.</p>
 
       <p><a href="#index">Back to index</a></p>
-      <hr>
 
+<hr>
 
       <h3><a name="faq-usingolderversions">
           Can I use older versions?</a></h3>
@@ -357,28 +384,29 @@
          latest version, especially if you are having any
          difficulties with installation or use. If you are
          not sure of your version, you can type <code>gcc
-         --version</code> to find out what you are
+         -v</code> to find out what you are
          using.</p>
 
       <p><a href="#index">Back to index</a></p>
       
 <hr>
 
-      <h3><a name="faq-languages"></a>
-          What Languages Are Supported?</h3>
+      <h3><a name="faq-languages">
+          What Languages Are Supported?</a></h3>
 
-      <p>As of MinGW-2.0.0-3.exe, MinGW carries support for C , C++,
-         ObjC, Fortran 77, while ADA is available as a seperate 
-         binary.&nbsp; Java is not implemented yet, however 
-         work is being done to hopefully include it with the 
-         release of gcc-3.3 for MinGW.</p>
+      <p>As of MinGW-2.0.0-3.exe, MinGW carries support
+         for C, C++, ObjC, and Fortran 77.&nbsp; ADA is 
+         available as a seperate binary, while Java (GCJ) 
+         is implemented as a release candidate.&nbsp; Continual 
+         work is being done with the hope of it being included in the 
+         next major release.&nbsp; 
+         And last, but not least Pascal is available as a
+         contributed package (GPC).</p>
 
 
-      <p><a href="#index">Back to index</a>
-         </p>
+      <p><a href="#index">Back to index</a></p>
 
 <hr>
-
 
       <h3><a name="faq-configure">
           How do I execute configure scripts?</a></h3>
@@ -396,8 +424,8 @@
          below.</p>
 
       <p><a href="#index">Back to index</a></p>
-      <hr>
 
+<hr>
 
       <h3><a name="faq-usingwithmsys">
           How do I use MinGW with MSYS?</a></h3>
@@ -594,7 +622,7 @@
             <blockquote><code>
             gcc -Wall -D_JNI_IMPLEMENTATION_ -Wl,--kill-at \<br>
             -I/java/include -I/java/include/win32 \<br>
-            --shared -o JavaImp.dll someJavaImp.c<br>
+            -shared -o JavaImp.dll someJavaImp.c<br>
             </code></blockquote>
 
             <p>In a standard command console it can be generated as follows (one continuous line):
@@ -604,7 +632,7 @@
             <blockquote><code>
             gcc -Wall -D_JNI_IMPLEMENTATION_ -Wl,--kill-at <br>
             -Ic:/j2sdk1.4.1_02/include -Ic:/j2sdk1.4.1_02/include/win32 <br>
-            --shared someJavaImp.c -o JavaImp.dll
+            -shared someJavaImp.c -o JavaImp.dll
             </code></blockquote>
 
             <p>Where JavaImp.dll should be named whatever you refer to the library as
@@ -693,8 +721,8 @@
       <p><a href="#index">Back to index</a></p>
       
 <hr>
-            <h3><a name="faq-Makefile"></a>
-                What is a Makefile and how do I create one?</h3>
+            <h3><a name="faq-Makefile">
+                What is a Makefile and how do I create one?</a></h3>
 
             <p>A Makefile is a plain textfile that is used to reduce repeatitive
                commands such as compiler invocation.&nbsp; All indentation in a
@@ -724,17 +752,15 @@
             # combined w/ next line will compile recently changed .c files<br>
             &nbsp;&nbsp;&nbsp;&nbsp; $(CC) $(CFLAGS) -o $@ -c $&lt;<br>
             <br>
+.PHONY : all&nbsp;&nbsp;&nbsp;&nbsp; # .PHONY ignores files named all<br>
             all: $(EXE)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;                             # all is dependent on $(EXE) to be complete<br>
            <br>
            $(EXE): $(OBJ)&nbsp;&nbsp;                     # $(EXE) is dependent on all of the files in $(OBJ) to exist<br>
            &nbsp;&nbsp;&nbsp;&nbsp; $(CC) $(OBJ) $(LDFLAGS)<br>
            <br>
-           .PHONY : clean&nbsp;&nbsp;                    # .PHONY prevents clean from exiting if errors are
-           encountered<br>
+           .PHONY : clean&nbsp;&nbsp;                    # .PHONY ignores files named clean<br>
            clean:<br>
-           &nbsp;&nbsp;&nbsp; -$(RM) $(OBJ) core
-           </code></blockquote>
-           <p>This Makefile can be invoked in any of the following ways:</p>
+           &nbsp;&nbsp;&nbsp; -$(RM) $(OBJ) core &nbsp;&nbsp; # '-' causes errors not to exit the process</code></blockquote><p>This Makefile can be invoked in any of the following ways:</p>
 
            <blockquote><code>
            # for the above file will compile everything required by the all label<br>
@@ -822,6 +848,8 @@
 
 
 
+
+
  
 
 <p>
@@ -834,11 +862,15 @@
 
 
 
+
+
  
 <address>
   <br>
-  Last revised $Date: 2003-03-15 22:06:12 $
+  Last revised $Date: 2003-03-17 04:27:50 $
  </address>
+
+
 
 
 
