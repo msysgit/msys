@@ -1,3 +1,8 @@
+2002.11.26  Earnie Boyd  <earnie@users.sf.net>
+
+	* doc/msys/README.rtf: Add notes about use of clipboard.
+	* doc/msys/MSYS-1.0.8-changes.rtf: Add note about msys.bat changes.
+
 2002.11.25  Earnie Boyd  <earnie@users.sf.net>
 
 	* bin/msys.bat: Modify to allow automatic expansion of environment
