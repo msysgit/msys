@@ -307,8 +307,8 @@ SET PATH=C:\mingw32\bin&#59;&#37;PATH&#37;
     distribution includes a working GUI resource editor that may work
     with other compilers such as mingw as well.
     </li>
-    <li>bloodshed Dev-C++ from <a href="http://www.bloodshed.nu/devc.html">
-    http://www.bloodshed.nu/devc.html</a> is a distribution of mingw32 with
+    <li>bloodshed Dev-C++ from <a href="http://www.bloodshed.net/devcpp.html">
+    http://www.bloodshed.net/devcpp.html</a> is a distribution of mingw32 with
     an IDE and other integrated tools.
     </li>
     <li>rsxnt, rsxntdj from <a href="http://www.mathematik.uni-bielefeld.de/%7Erainer/">
@@ -1770,5 +1770,6 @@ utility.  For more information, see the <a href="#patches">Patches</a> section.
 <br />Last revised 20000907
 </address>
 </body>
+$Id: mingwfaq.shtml,v 1.2 2000-09-12 13:23:46 earnie Exp $
 </html>
 

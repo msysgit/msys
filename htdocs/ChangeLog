@@ -1,3 +1,8 @@
+2000-09-12  Earnie Boyd  <earnie_boyd@yahoo.com>
+
+        * mingwfaq.shtml: modified link for the Bloodshed Dev-C++ to be as
+	reported by "Ian C. Smith" <icsmi2@student.monash.edu.au>
+
 2000-09-12  Paul Sokolovsky  <Paul.Sokolovsky@technologist.com>
 
 	* history.shtml: Added rough sketch of history.
