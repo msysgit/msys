@@ -20,9 +20,9 @@
  *  DISCLAMED. This includes but is not limited to warrenties of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Revision: 1.4 $
+ * $Revision: 1.5 $
  * $Author: earnie $
- * $Date: 2002-11-12 15:29:37 $
+ * $Date: 2003-01-06 22:14:18 $
  *
  */
 
@@ -46,6 +46,9 @@
  *       be manually synchronized, but it does lead to this not-generally-
  *       a-good-idea use of include. */
 #include "init.c"
+
+
+extern void _pei386_runtime_relocator (void);
 
 extern int main (int, char **, char **);
 
@@ -202,6 +205,10 @@ __mingw_CRTStartup ()
    * NOTE: DLLs don't do this because that would be rude!
    */
   _mingw32_init_fmode ();
+
+  
+   /* Adust references to dllimported data that have non-zero offsets.  */
+  _pei386_runtime_relocator ();
 
   /*
    * Call the main function. If the user does not supply one
