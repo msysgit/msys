@@ -18,9 +18,9 @@
  *  DISCLAIMED. This includes but is not limited to warranties of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Revision: 1.8 $
+ * $Revision: 1.9 $
  * $Author: dannysmith $
- * $Date: 2002-01-11 21:53:48 $
+ * $Date: 2002-01-16 08:48:08 $
  *
  */
 
@@ -348,6 +348,10 @@ void	_seterrormode (int);
 void	_sleep (unsigned long);
 
 void	_exit	(int) _ATTRIB_NORETURN;
+
+/* _onexit is MS extension. Use atexit for portability.  */
+typedef  int (* _onexit_t)(void); 
+_onexit_t _onexit( _onexit_t );
 
 int	_putenv	(const char*);
 void	_searchenv (const char*, const char*, char*);
