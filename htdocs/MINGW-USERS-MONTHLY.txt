@@ -50,9 +50,7 @@ Because MinGW was specifically created to allow "native" runtimes to
 be compiled with GCC, most MSVC projects will compile without change.
 However, with many projects there maybe a requirement to modify the 
 build procedure.  Tools for automating MSVC project conversion are
-available. 
-
---?AVAILABLE CONVERSION TOOLS HERE?--
+available in the MinGW-utils package. 
 
 
 What is MSYS and why should I use it?
