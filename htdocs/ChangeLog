@@ -1,3 +1,11 @@
+2000-12-22  Paul Sokolovsky  <Paul.Sokolovsky@technologist.com>
+
+	* docs.shtml: Added link to faq.shtml
+
+        * faq.shtml: Barf out installation instructions.
+
+        * lsidebar.shtml, bottombar.shtml: Point "Who are we" link to
+        SF project members page.
 
 Fri Dec 22 07:23:46 PST 2000  Earnie Boyd  <earnie@users.sourceforge.net>
 

@@ -141,6 +141,58 @@ For example, <tt>binutils-2.10.91-20001205.zip</tt> is a binutils
 on 5th of December, 2000.
 </p>
 
+<h2>
+Installing MinGW
+</h2>
+
+<h3>
+Installing packages
+</h3>
+<p>
+After you have downloaded packages you decided to install
+(following packages are mandatory:
+<tt>libbfd</tt>, <tt>binutils</tt>, <tt>ld</tt>, <tt>gcc</tt>,
+<tt>w32api</tt>, <tt>mingw-runtime</tt>), you should choose installation
+directory (<i>recommended</i> location is <tt>/mingw</tt> (which means
+top-level directory "<tt>mingw</tt>" on your usual development drive,
+something like <tt>e:\mingw</tt> in legacy DOS notation)), you should install
+packages by simply unpacking them into that directory.
+</p>
+<p>
+The last step is to add <tt>bin</tt> subdirectory of MinGW installation to
+your PATH (you should use DOS notation there!). The easiest way to achieve
+this is to create MinGW startup file, e.g. <tt>rc.mingw.bat</tt> and put
+there commands:
+<blockquote>
+<tt>
+PATH e:\mingw\bin;%PATH%<br>
+command.com
+</tt>
+</blockquote>
+(replace <tt>command.com</tt> with your favorite shell).
+</p>
+<p>
+Afterwards, you can start your MinGW session by starting
+<tt>rc.mingw.bat</tt>.
+</p>
+
+<h3>
+Verifying installation
+</h3>
+<p>
+To verify that installation completed properly, run "<tt>gcc -v</tt>". You
+should see output close to the following:
+<blockquote>
+<pre>
+Reading specs from e:\mingw\bin\..\lib\gcc-lib\mingw32\2.95.2\specs
+gcc driver version 2.95.2 19991024 (release) executing gcc version 2.95.2-mingw
+snapshot 20001214
+</pre>
+</blockquote>
+(Not that actual snapshot timestamp may differ)
+</p>
+
+
 </td>
 </tr>
 </table>
