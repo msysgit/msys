@@ -1,4 +1,4 @@
-<!-- $Id: index.shtml,v 1.32 2002-09-06 15:33:56 earnie Exp $ -->
+<!-- $Id: index.shtml,v 1.33 2002-09-06 16:52:20 infidel Exp $ -->
 
 <html>
 <head>
@@ -89,11 +89,11 @@ checkbox found in the Configuration -&gt; Miscellaneous tab of the Options menu.
 
 <br><br><em><a href="http://www.7-zip.org">7-Zip</a></em><br>
 We've found that this zip/unzip utility is fast and reliable for differing 
-compression algorithims.  If you need a decompression utility, you should
+compression algorithms.  If you need a decompression utility, you should
 visit <a href=http://www.7-Zip.org>7-Zip</a> for the latest version.  If
-you don't need a compression/decompression utiltiy, I suggest you visit
+you don't need a compression/decompression utility, I suggest you visit
 <a href="http://www.7-Zip.org">7-Zip</a> for one of the best compression
-algorithims available.
+algorithms available.
 
 </p>
 
@@ -135,7 +135,7 @@ width="88" /></a>
 <!--#include virtual="/cgi-bin/showstatsdate.cgi?mingw"--></a>.
 </p>
 <address>
-<br />Last revised $Date: 2002-09-06 15:33:56 $
+<br />Last revised $Date: 2002-09-06 16:52:20 $
 </address>
 
 </body>
