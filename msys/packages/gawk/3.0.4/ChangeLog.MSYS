@@ -1,0 +1,4 @@
+2002.05.13  Earnie Boyd  <earnie@users.sf.net>
+
+	* config.guess: Update with msys targets.
+	* config.sub: Ditto.
