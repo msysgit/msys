@@ -492,9 +492,12 @@ spawn_guts (HANDLE hToken, const char * prog_arg, const char *const *argv,
 	  //convert argv to win32
 	  char tmpbuf[MAX_PATH];
 
-	  cygwin_conv_to_win32_path(newargv[i], tmpbuf);
-	  debug_printf("%d of %d, %s, %s", i, ac, newargv[i], tmpbuf);
-	  newargv.replace (i, tmpbuf);
+	  if (strlen(newargv[i]) < MAX_PATH)
+	    {
+	      cygwin_conv_to_win32_path(newargv[i], tmpbuf);
+	      debug_printf("%d of %d, %s, %s", i, ac, newargv[i], tmpbuf);
+	      newargv.replace (i, tmpbuf);
+	    }
 	}
       for (int i = 0; i < newargv.argc; i++)
 	{
