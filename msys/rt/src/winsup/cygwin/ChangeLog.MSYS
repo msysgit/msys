@@ -1,3 +1,8 @@
+2004-03-17  Earnie Boyd  <earnie@users.sf.net>
+
+	* include/cygwin/version.h: Increment version to 1.0.11.
+	(CYGWIN_VERSION_DLL_IDENTIFIER): Change value to "msys-1.0".
+
 2004-03-15  Earnie Boyd  <earnie@users.sf.net>
 
 	* dcrt0.cc (build_argv): Revert previous change due to
