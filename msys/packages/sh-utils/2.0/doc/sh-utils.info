@@ -1,4 +1,4 @@
-This is sh-utils.info, produced by makeinfo version 3.12p from
+This is sh-utils.info, produced by makeinfo version 4.0 from
 sh-utils.texi.
 
 START-INFO-DIR-ENTRY
@@ -2787,19 +2787,19 @@ Index
 * &:                                     Relations for expr.
 * *:                                     Numeric expressions.
 * +:                                     Numeric expressions.
-* - <1>:                                 su invocation.
+* - <1>:                                 Numeric expressions.
 * - <2>:                                 env invocation.
-* -:                                     Numeric expressions.
+* -:                                     su invocation.
 * --adjustment:                          nice invocation.
-* --all <1>:                             uname invocation.
-* --all:                                 stty invocation.
+* --all <1>:                             stty invocation.
+* --all:                                 uname invocation.
 * --append:                              tee invocation.
 * --command:                             su invocation.
 * --count:                               who invocation.
 * --date:                                Options for date.
 * --fast:                                su invocation.
-* --file <1>:                            Options for date.
-* --file:                                stty invocation.
+* --file <1>:                            stty invocation.
+* --file:                                Options for date.
 * --format=FORMAT:                       seq invocation.
 * --group:                               id invocation.
 * --groups:                              id invocation.
@@ -2840,80 +2840,80 @@ Index
 * -a:                                    Connectives for test.
 * -ADJUSTMENT:                           nice invocation.
 * -b:                                    File type tests.
-* -c <1>:                                su invocation.
-* -c:                                    File type tests.
-* -d <1>:                                Options for date.
-* -d:                                    File type tests.
+* -c <1>:                                File type tests.
+* -c:                                    su invocation.
+* -d <1>:                                File type tests.
+* -d:                                    Options for date.
 * -e <1>:                                File characteristics tests.
 * -e:                                    echo invocation.
 * -ef:                                   File characteristics tests.
 * -eq:                                   Numeric tests.
-* -f <1>:                                su invocation.
-* -f:                                    Options for date.
+* -f:                                    su invocation.
 * -F:                                    stty invocation.
+* -f <1>:                                Options for date.
 * -f:                                    File type tests.
 * -f FORMAT:                             seq invocation.
-* -G:                                    id invocation.
-* -g <1>:                                id invocation.
-* -g:                                    stty invocation.
 * -G:                                    Access permission tests.
-* -g:                                    Access permission tests.
+* -g <1>:                                Access permission tests.
+* -g:                                    stty invocation.
+* -G:                                    id invocation.
+* -g:                                    id invocation.
 * -ge:                                   Numeric tests.
 * -gt:                                   Numeric tests.
-* -H:                                    who invocation.
 * -h:                                    File type tests.
-* -i <1>:                                env invocation.
-* -i <2>:                                who invocation.
-* -i:                                    tee invocation.
+* -H:                                    who invocation.
+* -i <1>:                                who invocation.
+* -i <2>:                                tee invocation.
+* -i:                                    env invocation.
 * -I[TIMESPEC]:                          Options for date.
 * -k:                                    Access permission tests.
+* -L:                                    File type tests.
 * -l <1>:                                su invocation.
 * -l:                                    who invocation.
-* -L:                                    File type tests.
 * -le:                                   Numeric tests.
 * -lt:                                   Numeric tests.
-* -m <1>:                                su invocation.
+* -m <1>:                                who invocation.
 * -m <2>:                                uname invocation.
-* -m:                                    who invocation.
-* -n <1>:                                nice invocation.
-* -n <2>:                                uname invocation.
+* -m:                                    su invocation.
+* -n <1>:                                String tests.
+* -n <2>:                                nice invocation.
 * -n <3>:                                id invocation.
-* -n <4>:                                String tests.
+* -n <4>:                                uname invocation.
 * -n:                                    echo invocation.
 * -ne:                                   Numeric tests.
 * -nt:                                   File characteristics tests.
 * -o:                                    Connectives for test.
 * -O:                                    Access permission tests.
 * -ot:                                   File characteristics tests.
-* -p <1>:                                su invocation.
+* -p <1>:                                File type tests.
 * -p <2>:                                uname invocation.
 * -p <3>:                                pathchk invocation.
-* -p:                                    File type tests.
+* -p:                                    su invocation.
 * -q:                                    who invocation.
-* -r <1>:                                uname invocation.
+* -r <1>:                                id invocation.
 * -r:                                    Options for date.
 * -R:                                    Options for date.
-* -r <1>:                                id invocation.
-* -r:                                    Access permission tests.
-* -s <1>:                                su invocation.
+* -r <1>:                                Access permission tests.
+* -r:                                    uname invocation.
+* -s <1>:                                who invocation.
 * -s <2>:                                uname invocation.
-* -s <3>:                                Options for date.
-* -s <4>:                                who invocation.
-* -s <5>:                                tty invocation.
-* -s:                                    File characteristics tests.
+* -s:                                    tty invocation.
 * -S:                                    File type tests.
+* -s <1>:                                Options for date.
+* -s <2>:                                File characteristics tests.
+* -s:                                    su invocation.
 * -su:                                   su invocation.
-* -T:                                    who invocation.
 * -t:                                    File type tests.
-* -u <1>:                                env invocation.
-* -u <2>:                                Options for date.
+* -T:                                    who invocation.
+* -u <1>:                                Access permission tests.
+* -u <2>:                                env invocation.
 * -u <3>:                                who invocation.
-* -u <4>:                                id invocation.
-* -u:                                    Access permission tests.
+* -u <4>:                                Options for date.
+* -u:                                    id invocation.
 * -unset:                                env invocation.
 * -v:                                    uname invocation.
-* -w <1>:                                who invocation.
-* -w:                                    Access permission tests.
+* -w <1>:                                Access permission tests.
+* -w:                                    who invocation.
 * -x:                                    Access permission tests.
 * -z:                                    String tests.
 * .cshrc:                                su invocation.
@@ -2928,8 +2928,8 @@ Index
 * /etc/wtmp:                             users invocation.
 * <:                                     Relations for expr.
 * <=:                                    Relations for expr.
-* = <1>:                                 Relations for expr.
-* =:                                     String tests.
+* = <1>:                                 String tests.
+* =:                                     Relations for expr.
 * ==:                                    Relations for expr.
 * >:                                     Relations for expr.
 * >=:                                    Relations for expr.
@@ -2946,11 +2946,11 @@ Index
 * ago in date strings:                   Relative item in date strings.
 * am i:                                  who invocation.
 * am in date strings:                    Time of day item.
-* and operator <1>:                      Relations for expr.
-* and operator:                          Connectives for test.
+* and operator <1>:                      Connectives for test.
+* and operator:                          Relations for expr.
 * appropriate privileges <1>:            nice invocation.
-* appropriate privileges <2>:            hostname invocation.
-* appropriate privileges:                Setting the time.
+* appropriate privileges <2>:            Setting the time.
+* appropriate privileges:                hostname invocation.
 * arbitrary date strings, parsing:       Options for date.
 * arbitrary text, displaying:            echo invocation.
 * arithmetic tests:                      Numeric tests.
@@ -2972,9 +2972,9 @@ Index
 * brkint:                                Input.
 * bsN:                                   Output.
 * bugs, reporting:                       Introduction.
-* built-in shell commands, conflicts with <1>: nice invocation.
-* built-in shell commands, conflicts with <2>: pwd invocation.
-* built-in shell commands, conflicts with: test invocation.
+* built-in shell commands, conflicts with <1>: test invocation.
+* built-in shell commands, conflicts with <2>: nice invocation.
+* built-in shell commands, conflicts with: pwd invocation.
 * C-s/C-q flow control:                  Input.
 * calendar date item:                    Calendar date item.
 * case translation:                      Local.
@@ -3005,11 +3005,11 @@ Index
 * compare values:                        test invocation.
 * comparison operators:                  Relations for expr.
 * conditions:                            Conditions.
-* conflicts with shell built-ins <1>:    nice invocation.
-* conflicts with shell built-ins <2>:    pwd invocation.
-* conflicts with shell built-ins:        test invocation.
-* connectives, logical <1>:              Relations for expr.
-* connectives, logical:                  Connectives for test.
+* conflicts with shell built-ins <1>:    pwd invocation.
+* conflicts with shell built-ins <2>:    test invocation.
+* conflicts with shell built-ins:        nice invocation.
+* connectives, logical <1>:              Connectives for test.
+* connectives, logical:                  Relations for expr.
 * context, system:                       System context.
 * control characters, using ^C:          Local.
 * control settings:                      Control.
@@ -3054,8 +3054,8 @@ Index
 * do nothing, successfully:              true invocation.
 * do nothing, unsuccessfully:            false invocation.
 * dsusp:                                 Characters.
-* echo <1>:                              Local.
-* echo:                                  echo invocation.
+* echo <1>:                              echo invocation.
+* echo:                                  Local.
 * echoctl:                               Local.
 * echoe:                                 Local.
 * echok:                                 Local.
@@ -3064,8 +3064,8 @@ Index
 * echoprt:                               Local.
 * effective uid and gid, printing:       id invocation.
 * effective UID, printing:               whoami invocation.
-* eight-bit characters <1>:              Combination.
-* eight-bit characters:                  Control.
+* eight-bit characters <1>:              Control.
+* eight-bit characters:                  Combination.
 * eight-bit input:                       Input.
 * ek:                                    Combination.
 * env:                                   env invocation.
@@ -3121,8 +3121,8 @@ Index
 * general date syntax:                   General date syntax.
 * getdate:                               Date input formats.
 * globbing, disabled:                    su invocation.
-* Greenwich Mean Time <1>:               Options for date.
-* Greenwich Mean Time:                   Time zone item.
+* Greenwich Mean Time <1>:               Time zone item.
+* Greenwich Mean Time:                   Options for date.
 * group wheel, not supported:            su invocation.
 * groups:                                groups invocation.
 * hangups, immunity to:                  nohup invocation.
@@ -3169,8 +3169,8 @@ Index
 * last DAY <1>:                          Options for date.
 * last DAY:                              Day of week item.
 * last in date strings:                  General date syntax.
-* LCASE:                                 Combination.
 * lcase:                                 Combination.
+* LCASE:                                 Combination.
 * leading directory components, stripping: basename invocation.
 * length:                                String expressions.
 * line:                                  Special.
@@ -3185,8 +3185,8 @@ Index
 * logical and operator:                  Connectives for test.
 * logical connectives <1>:               Relations for expr.
 * logical connectives:                   Connectives for test.
-* logical or operator <1>:               Relations for expr.
-* logical or operator:                   Connectives for test.
+* logical or operator <1>:               Connectives for test.
+* logical or operator:                   Relations for expr.
 * login name, printing:                  logname invocation.
 * login sessions, printing users with:   users invocation.
 * login shell:                           su invocation.
@@ -3203,8 +3203,8 @@ Index
 * match:                                 String expressions.
 * matching patterns:                     String expressions.
 * message status:                        who invocation.
-* Meyering, Jim <1>:                     Authors of getdate.
-* Meyering, Jim:                         Introduction.
+* Meyering, Jim <1>:                     Introduction.
+* Meyering, Jim:                         Authors of getdate.
 * midnight in date strings:              Time of day item.
 * min:                                   Special.
 * minute in date strings:                Relative item in date strings.
@@ -3284,8 +3284,8 @@ Index
 * parsing date strings:                  Options for date.
 * pass8:                                 Combination.
 * passwd entry, and su shell:            su invocation.
-* PATH <1>:                              su invocation.
-* PATH:                                  env invocation.
+* PATH <1>:                              env invocation.
+* PATH:                                  su invocation.
 * pathchk:                               pathchk invocation.
 * pattern matching:                      String expressions.
 * permission tests:                      Access permission tests.
@@ -3458,84 +3458,84 @@ Index
 
 
 Tag Table:
-Node: Top3323
-Node: Introduction4231
-Node: Common options5985
-Node: Date input formats6702
-Node: General date syntax9164
-Node: Calendar date item10614
-Node: Time of day item12568
-Node: Time zone item14221
-Node: Day of week item17115
-Node: Relative item in date strings18099
-Node: Pure numbers in date strings20029
-Node: Authors of getdate21011
-Node: Printing text21747
-Node: echo invocation22125
-Node: printf invocation23109
-Node: yes invocation24128
-Node: Conditions24589
-Node: false invocation25176
-Node: true invocation25893
-Node: test invocation26698
-Node: File type tests27838
-Node: Access permission tests28627
-Node: File characteristics tests29392
-Node: String tests30059
-Node: Numeric tests30640
-Node: Connectives for test31424
-Node: expr invocation31764
-Node: String expressions32924
-Node: Numeric expressions35492
-Node: Relations for expr36111
-Node: Examples of expr36972
-Node: Redirection37687
-Node: tee invocation38128
-Node: File name manipulation38949
-Node: basename invocation39393
-Node: dirname invocation39942
-Node: pathchk invocation40484
-Node: Working context41689
-Node: pwd invocation42329
-Node: stty invocation42929
-Node: Control45594
-Node: Input46342
-Node: Output47729
-Node: Local48973
-Node: Combination50540
-Node: Characters52678
-Node: Special54220
-Node: printenv invocation55559
-Node: tty invocation56314
-Node: User information57011
-Node: id invocation57659
-Node: logname invocation58798
-Node: whoami invocation59301
-Node: groups invocation59695
-Node: users invocation60327
-Node: who invocation61133
-Node: System context63128
-Node: date invocation63551
-Node: Time directives64724
-Node: Date directives65874
-Node: Literal directives67336
-Node: Padding67611
-Node: Setting the time68417
-Node: Options for date69381
-Node: Examples of date71459
-Node: uname invocation74353
-Node: hostname invocation75506
-Node: Modified command invocation75999
-Node: chroot invocation76625
-Node: env invocation77462
-Node: nice invocation78696
-Node: nohup invocation79876
-Node: su invocation81052
-Node: Delaying85318
-Node: sleep invocation85520
-Node: Numeric operations86047
-Node: factor invocation86364
-Node: seq invocation86823
-Node: Index87847
+Node: Top3321
+Node: Introduction4229
+Node: Common options5983
+Node: Date input formats6700
+Node: General date syntax9162
+Node: Calendar date item10612
+Node: Time of day item12566
+Node: Time zone item14219
+Node: Day of week item17113
+Node: Relative item in date strings18097
+Node: Pure numbers in date strings20027
+Node: Authors of getdate21009
+Node: Printing text21745
+Node: echo invocation22123
+Node: printf invocation23107
+Node: yes invocation24126
+Node: Conditions24587
+Node: false invocation25174
+Node: true invocation25891
+Node: test invocation26696
+Node: File type tests27836
+Node: Access permission tests28625
+Node: File characteristics tests29390
+Node: String tests30057
+Node: Numeric tests30638
+Node: Connectives for test31422
+Node: expr invocation31762
+Node: String expressions32922
+Node: Numeric expressions35490
+Node: Relations for expr36109
+Node: Examples of expr36970
+Node: Redirection37685
+Node: tee invocation38126
+Node: File name manipulation38947
+Node: basename invocation39391
+Node: dirname invocation39940
+Node: pathchk invocation40482
+Node: Working context41687
+Node: pwd invocation42327
+Node: stty invocation42927
+Node: Control45592
+Node: Input46340
+Node: Output47727
+Node: Local48971
+Node: Combination50538
+Node: Characters52676
+Node: Special54218
+Node: printenv invocation55557
+Node: tty invocation56312
+Node: User information57009
+Node: id invocation57657
+Node: logname invocation58796
+Node: whoami invocation59299
+Node: groups invocation59693
+Node: users invocation60325
+Node: who invocation61131
+Node: System context63126
+Node: date invocation63549
+Node: Time directives64722
+Node: Date directives65872
+Node: Literal directives67334
+Node: Padding67609
+Node: Setting the time68415
+Node: Options for date69379
+Node: Examples of date71457
+Node: uname invocation74351
+Node: hostname invocation75504
+Node: Modified command invocation75997
+Node: chroot invocation76623
+Node: env invocation77460
+Node: nice invocation78694
+Node: nohup invocation79874
+Node: su invocation81050
+Node: Delaying85316
+Node: sleep invocation85518
+Node: Numeric operations86045
+Node: factor invocation86362
+Node: seq invocation86821
+Node: Index87845
 
 End Tag Table
