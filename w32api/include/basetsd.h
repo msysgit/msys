@@ -1,6 +1,8 @@
 #ifndef _BASETSD_H
 #define _BASETSD_H
 
+#include <_mingw.h>  /* for definition of __int64 */
+
 #if defined(_WIN64)
 #define __int3264   __int64
 #define ADDRESS_TAG_BIT 0x40000000000UI64
