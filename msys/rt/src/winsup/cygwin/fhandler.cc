@@ -1280,12 +1280,10 @@ fhandler_disk_file::open (const char *path, int flags, mode_t mode)
   TRACE_IN;
   syscall_printf ("(%s, %p)", path, flags);
 
-  /* O_NOSYMLINK is an internal flag for implementing lstat, nothing more. */
-  path_conv real_path (path, (flags & O_NOSYMLINK) ?
-			     PC_SYM_NOFOLLOW : PC_SYM_FOLLOW);
+  path_conv real_path (path, PC_SYM_NOFOLLOW);
 
   if (real_path.error &&
-      (flags & O_NOSYMLINK || real_path.error != ENOENT
+      (real_path.error != ENOENT
        || !(flags & O_CREAT) || real_path.case_clash))
     {
       set_errno (flags & O_CREAT && real_path.case_clash ? ECASECLASH

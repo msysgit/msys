@@ -787,7 +787,7 @@ extern "C" int
 chown (const char * name, uid_t uid, gid_t gid)
 {
   sigframe thisframe (mainthread);
-  return chown_worker (name, PC_SYM_FOLLOW, uid, gid);
+  return chown_worker (name, PC_SYM_NOFOLLOW, uid, gid);
 }
 
 extern "C" int
@@ -819,7 +819,7 @@ fchown (int fd, uid_t uid, gid_t gid)
 
   syscall_printf ("fchown (%d,...): calling chown_worker (%s,FOLLOW,...)",
 		  fd, path);
-  return chown_worker (path, PC_SYM_FOLLOW, uid, gid);
+  return chown_worker (path, PC_SYM_NOFOLLOW, uid, gid);
 }
 
 /* umask: POSIX 5.3.3.1 */
@@ -1043,15 +1043,13 @@ stat_dev (DWORD devn, int unit, unsigned long ino, struct stat *buf)
 
 suffix_info stat_suffixes[] =
 {
-  suffix_info ("", 1),
   suffix_info (".exe", 1),
   suffix_info (NULL)
 };
 
 /* Cygwin internal */
 static int
-stat_worker (const char *caller, const char *name, struct stat *buf,
-	     int nofollow)
+stat_worker (const char *caller, const char *name, struct stat *buf)
 {
   int res = -1;
   int oret = 1;
@@ -1066,10 +1064,9 @@ stat_worker (const char *caller, const char *name, struct stat *buf,
 
   MALLOC_CHECK;
 
-  debug_printf ("stat_worker (%s (%s, %p) %s, %d)", caller, name, buf, buf, nofollow);
+  debug_printf ("stat_worker (%s (%s, %p) %s)", caller, name, buf, buf);
 
-  path_conv real_path (name, (nofollow ? PC_SYM_NOFOLLOW : PC_SYM_FOLLOW) |
-					 PC_FULL, stat_suffixes);
+  path_conv real_path (name, PC_SYM_NOFOLLOW | PC_FULL, stat_suffixes);
 
   if (real_path.error)
     {
@@ -1097,15 +1094,13 @@ stat_worker (const char *caller, const char *name, struct stat *buf,
 	&& dtype != DRIVE_NO_ROOT_DIR
 	&& dtype != DRIVE_UNKNOWN)))
     {
-      oret = fh.open (real_path, O_RDONLY | O_BINARY | O_DIROPEN |
-				 (nofollow ? O_NOSYMLINK : 0), 0);
+      oret = fh.open (real_path, O_RDONLY | O_BINARY | O_DIROPEN, 0);
       /* If we couldn't open the file, try a "query open" with no permissions.
 	 This will allow us to determine *some* things about the file, at least. */
       if (!oret)
 	{
 	  fh.set_query_open (TRUE);
-	  oret = fh.open (real_path, O_RDONLY | O_BINARY | O_DIROPEN |
-				     (nofollow ? O_NOSYMLINK : 0), 0);
+	  oret = fh.open (real_path, O_RDONLY | O_BINARY | O_DIROPEN, 0);
 	}
       /* Check a special case here. If ntsec is ON it happens
 	 that a process creates a file using mode 000 to disallow
@@ -1117,8 +1112,7 @@ stat_worker (const char *caller, const char *name, struct stat *buf,
 	  && !attribute && uid == myself->uid && gid == myself->gid)
 	{
 	  set_file_attribute (TRUE, real_path, 0400);
-	  oret = fh.open (real_path, O_RDONLY | O_BINARY | O_DIROPEN |
-				     (nofollow ? O_NOSYMLINK : 0), 0);
+	  oret = fh.open (real_path, O_RDONLY | O_BINARY | O_DIROPEN, 0);
 	  set_file_attribute (TRUE, real_path.get_win32 (), 0);
 	}
       if (oret)
@@ -1200,7 +1194,7 @@ _stat (const char *name, struct stat *buf)
 {
   TRACE_IN;
   sigframe thisframe (mainthread);
-  return stat_worker ("stat", name, buf, 0);
+  return stat_worker ("stat", name, buf);
 }
 
 /* lstat: Provided by SVR4 and 4.3+BSD, POSIX? */
@@ -1209,7 +1203,7 @@ lstat (const char *name, struct stat *buf)
 {
   TRACE_IN;
   sigframe thisframe (mainthread);
-  return stat_worker ("lstat", name, buf, 1);
+  return stat_worker ("lstat", name, buf);
 }
 
 extern int acl_access (const char *, int);
@@ -1588,7 +1582,7 @@ pathconf (const char *file, int v)
     case _PC_POSIX_PERMISSIONS:
     case _PC_POSIX_SECURITY:
       {
-	path_conv full_path (file, PC_SYM_FOLLOW | PC_FULL);
+	path_conv full_path (file, PC_SYM_NOFOLLOW | PC_FULL);
 	if (full_path.error)
 	  {
 	    set_errno (full_path.error);
@@ -1840,7 +1834,7 @@ statfs (const char *fname, struct statfs *sfs)
       return -1;
     }
 
-  path_conv full_path (fname, PC_SYM_FOLLOW | PC_FULL);
+  path_conv full_path (fname, PC_SYM_NOFOLLOW | PC_FULL);
   char *root = rootdir (full_path);
 
   syscall_printf ("statfs %s", root);
@@ -2286,7 +2280,7 @@ chroot (const char *newroot)
 {
   sigframe thisframe (mainthread);
   int ret = -1;
-  path_conv path (newroot, PC_SYM_FOLLOW | PC_FULL);
+  path_conv path (newroot, PC_SYM_NOFOLLOW | PC_FULL);
 
   if (path.error)
     goto done;
