@@ -18,9 +18,9 @@
  *  DISCLAMED. This includes but is not limited to warranties of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Revision: 1.4 $
+ * $Revision: 1.5 $
  * $Author: dannysmith $
- * $Date: 2001-10-11 23:05:20 $
+ * $Date: 2001-10-26 22:51:56 $
  *
  */
 
@@ -48,7 +48,7 @@
  * These values may be used as exit status codes.
  */
 #define	EXIT_SUCCESS	0
-#define	EXIT_FAILURE	-1
+#define	EXIT_FAILURE	1
 
 /*
  * Definitions for path name functions.

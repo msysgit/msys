@@ -1,6 +1,10 @@
+2001-10-27  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/stdlib.h (EXIT_FAILURE): Change value to 1.
+
 2001-10-12  Danny Smith  <dannysmith@users.sourceforge.net>
 
-	* include/stdlib.h (__p__environ, __p__wenviron): use
+	* include/stdlib.h (__p__environ, __p__wenviron): Use
 	__STDC__ prototypes.
 	
 2001-09-19  Earnie Boyd  <earnie@SF.net>
