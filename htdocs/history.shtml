@@ -73,23 +73,24 @@ this version of the Mingw compiler code. </p>  <p> The very first <i>native</i> 
 <a href="http://agnes.dida.physik.uni-essen.de/~janjaap/mingw32/links.html">
 Jan-Jaap van der Heijden</a>. Besides GCC 2.8.1, Meister van der Heijdens'  contributions included
 GNU binutils, GNU make  and just about everything else needed to develop your own software 
-using Mingw32 (Minimalist Gnu-Win32).</p>
+using Mingw32 (Minimalist Gnu-Windows32).</p>
 
 <p>
 <a href="http://www.xraylith.wisc.edu/~khan/software/gnu-win32/">Mumit Khan</a>
 took the baton and over a couple of following years has been doing great work
 of maintanance and development of Mingw32. He did many developments for
-supporting Win32-specific features in GCC and Binutils (which is of
-course of great value for entire GNU/Win32), provided binary releases of
+supporting Windows32-specific features in GCC and Binutils (which is of
+course of great value for entire GNU/Windows32), provided binary releases of
 them (with each new release of GCC and often before one was available
 for Cygwin) and developed more comprehensive bindings for runtime libraries.
 Significant addition to Mingw32 was
 <a href="">Anders Norlander</a>'s w32api headers, which brought more
-comprehensive bindings for Win32 API than what were previously available.
+comprehensive bindings for Windows32 API than what were previously available.
 </p>
 
 <p>
-In 199x, user base of Mingw32 became large enough to split off Cygwin
+To the second half of 1999, user base of Mingw32 became
+large enough to split off Cygwin
 mailing list and set up list specifically for Mingw32.
 <a href="http://gw32.freeyellow.com/">Earnie Boyd</a> and
 Dale Handerson moderated it.
