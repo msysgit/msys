@@ -1,23 +1,15 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
-  <head>
-    <meta content=
-    "HTML Tidy for Linux/x86 (vers 1st February 2003), see www.w3.org"
-          name="generator">
-    <meta http-equiv="content-type" content=
-    "text/html; charset=us-ascii">
-    <link href="mingw.css" type="text/css" rel="stylesheet"
-          title="MinGW">
-    <title>
-      MinGW - Reporting bugs
-    </title>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html><head>
+    <meta content="HTML Tidy for Linux/x86 (vers 1st February 2003), see www.w3.org" name="generator">
+    <meta http-equiv="content-type" content="text/html; charset=us-ascii">
+    <link href="mingw.css" type="text/css" rel="stylesheet" title="MinGW"><title>MinGW - Reporting bugs</title>
+    
     <style type="text/css">
     :link { color: #000099 }
     :visited { color: #990099 }
     :active { color: #000099 }
     img.c3 {border:0;width:88px;height:31px}
-    </style>
-  </head>
+    </style></head>
+
   <body>
     <h1>
       Reporting bugs
@@ -49,8 +41,12 @@
                      
                     <ul>
                       <li>
+                        OS version ( Windows 98, ME, NT, 2000, XP )<br>
+                      </li>
+                      <li>
                         gcc version ( `gcc -v` )
                       </li>
+
                       <li>
                         ld version ( `ld -v` )<br>
                       </li>
@@ -87,13 +83,10 @@
                       </li>
                     </ul>&nbsp;SourceForge gives us nice tools to
                     keep track of your bug reports, so please
-                    <a href=
-                    "https://sourceforge.net/tracker/?group_id=2435&amp;atid=102435"
-                        target="_nw">follow this link to file your
+                    <a href="https://sourceforge.net/tracker/?group_id=2435&amp;atid=102435" target="_nw">follow this link to file your
                         report.</a> You will need a SourceForge
                         login account. If you don't have one then
-                        <a href=
-                        "https://sourceforge.net/account/register.php">follow
+                        <a href="https://sourceforge.net/account/register.php">follow
                         this link to register for one.</a><br>
                     <br>
                      <span class="bold">Generic Package
@@ -130,19 +123,16 @@
                     <ul>
                       <li>
                         gcc bug reporting guidelines:<br>
-                         <a href=
-                        "http://www.gnu.org/software/gcc/bugs.html">
+                         <a href="http://www.gnu.org/software/gcc/bugs.html">
                         http://www.gnu.org/software/gcc/bugs.html</a>
                       </li>
                       <li>
                         gcc mailing list archives:<br>
-                         <a href=
-                        "http://gcc.gnu.org/lists.html">http://gcc.gnu.org/lists.html</a>
+                         <a href="http://gcc.gnu.org/lists.html">http://gcc.gnu.org/lists.html</a>
                       </li>
                       <li>
                         cygwin (binutils, gdb and cygwin):<br>
-                         <a href=
-                        "http://sources.redhat.com/lists.html">http://sources.redhat.com/lists.html</a><br>
+                         <a href="http://sources.redhat.com/lists.html">http://sources.redhat.com/lists.html</a><br>
                         </li>
                     </ul>
 <!--                            End of Main Body                             -->
@@ -156,17 +146,10 @@
     </table><!--#include file="ssi/bottombar.html"-->
     <!--#include file="ssi/footer.html"-->
     <p>
-      <a href=
-           "http://validator.w3.org/check/referer"><img border="0"
-           src="http://www.w3.org/Icons/valid-html401" alt=
-           "Valid HTML 4.01!" height="31" width="88"></a> <a href=
-           "http://jigsaw.w3.org/css-validator/"><img class="c3"
-           src="http://jigsaw.w3.org/css-validator/images/vcss"
-           alt="Valid CSS!"></a>
+      <a href="http://validator.w3.org/check/referer"><img border="0" src="http://www.w3.org/Icons/valid-html401" alt="Valid HTML 4.01!" height="31" width="88"></a> <a href="http://jigsaw.w3.org/css-validator/"><img class="c3" src="http://jigsaw.w3.org/css-validator/images/vcss" alt="Valid CSS!"></a>
     </p>
     <address>
       <br>
-       Last revised $Date: 2003-02-18 05:46:11 $
+       Last revised $Date: 2003-02-18 23:41:03 $
     </address>
-  </body>
-</html>
+  </body></html>

@@ -1,3 +1,9 @@
+2003-02-18  Nathan Fisher <natbobc@users.sf.net>
+
+	* download.shtml: Add package installation instructions.
+	Add detailed post-MSYS MinGW normalization instructions.
+	* bugs.shtml: Add request for OS info.
+
 2003-02-17  Nathan Fisher <natbobc@users.sf.net>
 
 	* bugs.shtml: Update version info retrieval.

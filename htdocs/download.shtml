@@ -1,268 +1,502 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
-<head>
-  <meta http-equiv="content-type"
- content="text/html; charset=ISO-8859-1">
-  <meta name="description"
- content="Home of MinGW -- Minimalist GNU for Windows -- project. Contains information about the MinGW runtime library and GNU/OSS development tools for MinGW.">
-  <meta name="keywords"
- content="mingw, mingw32, programming, C++, C, C/C++, libraries, software, development tools, editors, IDEs, GNU">
-  <link href="mingw.css" type="text/css" rel="stylesheet" title="MinGW">
-  <title>Download</title>
-</head>
-<body link="#000099" vlink="#990099" alink="#000099">
-<h1 align="center">MinGW: Download</h1>
-<table class="prim" cellspacing="6" border="0">
-  <tbody>
-    <tr>
-      <td class="side"><!--#include file="ssi/lsidebar.html"--> <br>
-&nbsp;</td>
-      <td>
-      <table class="sec" cellspacing="6" border="0">
-        <tbody>
-          <tr>
-            <td><!-- ======================================================================= --><!--                                                                         --><!--                               Main Body                                 --><!--                                                                         -->
-            <h2>Downloading MinGW</h2>
-            <p> Development of MinGW is done within a framework of
-inter-related <i>packages</i>.  There is a package for the MinGW
-runtime, packages             for GCC and other tool ports, a package
-for the w32api, and so forth.             All of these packages conform
-to a set of common conventions (internal layout, directory structure,
-naming scheme).             The traditional method for installing MinGW
-was to create a directory for the installation, download the desired
-individual packages, and extract their contents into the installation
-directory (the common  internal layout shared by the packages made this
-possible). </p>
-            <p> However, in mid-2001 the team began publishing a
-single-archive "MinGW distribution"... bundling the latest versions of
-all individual             packages available at the time of release.
-This was done partially to             streamline the installation
-process for newbies, and partially to             help application and
-library developers design products that will build using MinGW
-(previously MinGW was a moving target with all the constant updates to
-individual packages, but now it is easier to verify things as being
-"MinGW 1.0 compatible"). </p>
-            <p> The individual packages making up the MinGW distribution
-are still             produced and made available for download
-seperately. Updated versions of             individual packages will
-sometimes be made available in between releases             of the main
-MinGW distribution... in most cases it should be possible to extract a
-package's content into your MinGW directory to take advantage of the
-updates immediately. </p>
-            <h3>Download location</h3>
-            <p> The standard MinGW download page is hosted by <a
- target="_nw"
- href="http://sourceforge.net/project/showfiles.php?group_id=2435">
-SourceForge</a>.  This page contains the latest version of the main
-MinGW distribution archive, as well as all available pacakges files to
-download.<br>
-            </p>
-            <a name="download-release"></a><!--#include file="ssi/release.html"-->
-            <h3>Mirror Sites</h3>
-            <ul>
-              <li> 	 <a href="http://prdownloads.sf.net/mingw/"> 	
-http://prdownloads.sf.net/mingw/ 	 </a> 	 </li>
-              <li> <a href="ftp://gd.tuwien.ac.at/gnu/mingw/">ftp://gd.tuwien.ac.at/gnu/mingw/</a> </li>
-              <li> 	 <a href="http://gd.tuwien.ac.at/gnu/mingw/"> 	
-http://gd.tuwien.ac.at/gnu/mingw/</a></li>
-            </ul>
-            <p>If you wish to mirror the MinGW distributions then
-please send a request to <a
- href="mailto:mingw-users-admin@lists.sourceforge.net">
-mingw-users-admin@lists.sourceforge.net</a>.</p>
-            <h3>Downloading the distribution</h3>
-            <p> The naming scheme for the main MinGW distribution file
-is: </p>
-            <blockquote> <tt>
-Mingw-&lt;version&gt;[-&lt;stamp&gt;].&lt;tar.gz or zip&gt; </tt> </blockquote>
-Where:
-            <dl>
-              <dt> <tt>&lt;version&gt;</tt> </dt>
-              <dd> Arbitrarily chosen by the MinGW development team, the
-latest version at the                   time of this writing was 1.0.1.
-Major updates to the distribution will involve incrementing the
-most-significant digit in the version number,  smaller updates will
-increment less-significant digits. </dd>
-              <dt> <tt>&lt;stamp&gt;</tt> </dt>
-              <dd> Always YYYYMMDD format, representing the date on
-which the distribution                   was bundled (not related to the
-timestamp or version of any component                   package. </dd>
-              <dt> <tt>&lt;suffix&gt;</tt> </dt>
-              <dd> File extension corresponding to the compression
-method used. We are using <tt>zip</tt> and/or <tt>tar.gz</tt>.</dd>
-            </dl>
-            <h3>Downloading packages</h3>
-            <p> All the MinGW releases use consistent naming scheme: </p>
-            <blockquote> <tt>
-&lt;package_name&gt;-&lt;original_version&gt;[-&lt;stamp&gt;].&lt;suffix&gt; </tt> </blockquote>
-Where:
-            <dl>
-              <dt> <tt>&lt;package_name&gt;</tt> </dt>
-              <dd> Package name of this release. Package name is usually
-obtained from                   the official short software name. </dd>
-              <dt> <tt>&lt;original_version&gt;</tt> </dt>
-              <dd> Official software vesrion. Since most of MinGW
-packages is official GNU                   software, we don't control
-this field and take it as is from documentation                   or
-specification files. </dd>
-              <dt> <tt>&lt;stamp&gt;</tt> </dt>
-              <dd> Stamp is:
-                <ul>
-                  <li> Always YYYYMMDD timestamp for non-production
-releases (i.e. alpha                         and beta releases). </li>
-                  <li> Sequental integer (release number) for official
-releases of ported                         software (i.e.  software
-which we do not maintain). </li>
-                  <li> May not be present for our own packages (we
-increment version for them,                         not release number). </li>
-                </ul>
-              </dd>
-              <dt> <tt>&lt;suffix&gt;</tt> </dt>
-              <dd> File extension corresponding to the compression
-method used. We are using <tt>zip</tt> and/or <tt>tar.gz</tt>.</dd>
-            </dl>
-For example, <tt>binutils-2.10.91-20001205.zip</tt> is a binutils
-(which are GNU Binary Utilities) 2.10.91 alpha or beta release made on
-5th of December, 2000.<br>
-            <br>
-            <em><b>WinZip Caution:</b></em><br>
-Make sure that you first <b>uncheck</b> the "TAR file smart CR/LF
-conversion" checkbox found in the Configuration -&gt; Miscellaneous tab
-of the Options menu. <br>
-            <br>
-            <em><a href="http://www.7-zip.org" target="_nw">7-Zip</a></em><br>
-            <p>We've found that this zip/unzip utility is fast and
-reliable for differing compression algorithms.  If you need a
-decompression utility, you should visit <a href="http://www.7-Zip.org"
- target="_nw">7-Zip</a> for the latest version.  If you don't need a
-compression/decompression utility, I suggest you visit <a
- href="http://www.7-Zip.org" target="_nw">7-Zip</a> for one of the best
-compression algorithms available. <b> </b></p>
-            <hr>
-            <h2>Installing MinGW</h2>
-            <span style="font-weight: bold;">Installing MinGW using
-MinGW-__VERSION__.exe:<br>
-            </span><br>
-            <span style="text-decoration: underline;">Summary for the
-click happy and impatient:</span><br>
-            <ul>
-              <li>Make sure you read and understand the License
-agreement.</li>
-              <li>Accept all of the defaults unless you have reason not
-to (ie/ installation dir to c:\msys\__VERSION__\mingw for a combined
-MinGW/MSYS installation).</li>
-            </ul>
-            <span style="text-decoration: underline;">Detailed
-Instructions:</span><br>
-            <span style="font-weight: bold;"></span>
-            <ol>
-              <li>Download the latest MinGW binary executable.</li>
-              <li>Run the executable.</li>
-              <li>Click "<span style="text-decoration: underline;">N</span>ext"
-if you wish to continue with the installation.<br>
-              </li>
-              <li>Carefully read through the License Agreement.</li>
-              <li>Click "<span style="text-decoration: underline;">Y</span>es"
-only if you agree with the terms of the license.</li>
-              <li>Read through the Setup Info.</li>
-              <li>Click "<span style="text-decoration: underline;">N</span>ext".</li>
-              <li>Select your installation directory or accept the
-default.</li>
-              <li>Click "<span style="text-decoration: underline;">N</span>ext".</li>
-              <li>An architecture dialog will be displayed, accept the
-default.</li>
-              <li>Click "<span style="text-decoration: underline;">N</span>ext".</li>
-              <li>Review the installation summary go "<span
- style="text-decoration: underline;">B</span>ack" if necessary.</li>
-              <li>Click "Install" to continue with the installation.</li>
-              <li>A progress bar will be displayed indicating the
-current install progress.</li>
-              <li>Upon completion click "<span
- style="text-decoration: underline;">N</span>ext"</li>
-              <li>Click "<span style="text-decoration: underline;">F</span>inish"
-to finalize the installation.</li>
-            </ol>
-            <span style="font-weight: bold;">Normalizing MinGW with
-your build environment<br>
-            <br>
-Windows Command prompt:<br>
-            <br>
-            </span><span style="text-decoration: underline;">Summary:</span><br>
-            <ul>
-              <li>set PATH=c:\__MinGW_Install_Dir__\bin;%PATH%</li>
-              <li>test installation with "gcc -v"<br>
-              </li>
-              <li>add the above path to c:\autoexec.bat</li>
-            </ul>
-            <span style="text-decoration: underline;">Detailed
-Instructions:<br>
-            </span>
-            <ol>
-              <li>run command.com (98 or ME) or cmd.exe (NT, 2000 or XP)</li>
-              <li>type "set PATH=c:\__MinGW_Install_Dir__\bin;%PATH%",
-substituting __MinGW_Install_Dir__ with the directory path you installed
-MinGW into.</li>
-              <li>type "gcc -v" and ensure that it outputs version
-information which will start similar to the following:<br>
-                <pre>   Reading specs from c:/mingw/bin/../lib/gcc-lib/i386-pc-mingw32/3.2.1/specs<br>            </pre>
-              </li>
-              <li>To permanently set the path type "notepad
-c:\autoexec.bat" at the command prompt</li>
-              <li>In notepad goto the last line and add the 'set PATH'
-command you typed in step 2.</li>
-              <li>Save and close notepad.</li>
-            </ol>
-            <span style="font-weight: bold;">pre-MSYS:<br>
-            </span><br>
-            <span style="text-decoration: underline;">Summary:</span><br>
-            <ul>
-              <li>During the MSYS install specify your MinGW directory
-during the environment normalization</li>
-            </ul>
-            <span style="text-decoration: underline;">Detailed
-Instructions:<br>
-            <span style="text-decoration: underline;"></span></span>Sorry
-on the todo list<span style="text-decoration: underline;"><span
- style="text-decoration: underline;"></span><br>
-            <br>
-            </span> <span style="font-weight: bold;">post-MSYS:<br>
-            <br>
-            </span><span style="text-decoration: underline;">Summary:<br>
-            </span>
-            <ul>
-              <li>Start up msys, copy /etc/fstab.sample to /etc/fstab</li>
-              <li>Edit /etc/fstab updating the location of your MinGW
-installation appropriately</li>
-            </ul>
-            <span style="text-decoration: underline;">Detailed
-Instructions:</span><br>
-Sorry on the todo list<br>
-            <br>
-            <span style="text-decoration: underline;"></span><span
- style="font-weight: bold;">Cygwin:<br>
-            </span>Sorry on the todo list<br>
-            <br>
-            <span style="font-weight: bold;">Other:<br>
-            </span>Please submit to suggestions as a&nbsp; patch.<!--                            End of Main Body                             --> </td>
-          </tr>
-          <tr>
-            <td style="vertical-align: top;"><br>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      </td>
-    </tr>
-  </tbody>
-</table>
-<!--#include file="ssi/bottombar.html"--><!--#include file="ssi/footer.html"-->
-<p> <a href="http://validator.w3.org/check/referer"><img border="0"
- src="http://www.w3.org/Icons/valid-html401" alt="Valid HTML 4.01!"
- height="31" width="88"></a> <a
- href="http://jigsaw.w3.org/css-validator/"> <img
- style="border: 0pt none ; width: 88px; height: 31px;"
- src="http://jigsaw.w3.org/css-validator/images/vcss" alt="Valid CSS!"></a>	</p>
-<address> <br>
-Last revised $Date: 2003-02-04 21:44:54 $ </address>
-</body>
+  <head>
+    <meta content=
+    "HTML Tidy for Linux/x86 (vers 1st February 2003), see www.w3.org"
+          name="generator">
+    <meta http-equiv="content-type" content=
+    "text/html; charset=us-ascii">
+    <meta name="description" content=
+    "Home of MinGW -- Minimalist GNU for Windows -- project. Contains information about the MinGW runtime library and GNU/OSS development tools for MinGW.">
+    <meta name="keywords" content=
+    "mingw, mingw32, programming, C++, C, C/C++, libraries, software, development tools, editors, IDEs, GNU">
+    <link href="mingw.css" type="text/css" rel="stylesheet"
+          title="MinGW">
+    <title>
+      Download
+    </title>
+    <style type="text/css">
+    :link { color: #000099 }
+    :visited { color: #990099 }
+    :active { color: #000099 }
+    img.c5 {border: 0pt none ; width: 88px; height: 31px;}
+    td.c4 {vertical-align: top;}
+    </style>
+  </head>
+  <body>
+    <h1>
+      MinGW: Download
+    </h1>
+    <table class="prim" cellspacing="6" border="0">
+      <tbody>
+        <tr>
+          <td class="side">
+            <!--#include file="ssi/lsidebar.html"--><br>
+            &nbsp;
+          </td>
+          <td>
+            <table class="sec" cellspacing="6" border="0">
+              <tbody>
+                <tr>
+                  <td>
+<!-- ======================================================================= --><!--                                                                         --><!--                               Main Body                                 --><!--                                                                         -->
+                    <h2>
+                      Downloading MinGW
+                    </h2>
+                    <p>
+                      Development of MinGW is done within a
+                      framework of inter-related <i>packages</i>.
+                      There is a package for the MinGW runtime,
+                      packages for GCC and other tool ports, a
+                      package for the w32api, and so forth. All of
+                      these packages conform to a set of common
+                      conventions (internal layout, directory
+                      structure, naming scheme). The traditional
+                      method for installing MinGW was to create a
+                      directory for the installation, download the
+                      desired individual packages, and extract
+                      their contents into the installation
+                      directory (the common internal layout shared
+                      by the packages made this possible).
+                    </p>
+                    <p>
+                      However, in mid-2001 the team began
+                      publishing a single-archive "MinGW
+                      distribution"... bundling the latest versions
+                      of all individual packages available at the
+                      time of release. This was done partially to
+                      streamline the installation process for
+                      newbies, and partially to help application
+                      and library developers design products that
+                      will build using MinGW (previously MinGW was
+                      a moving target with all the constant updates
+                      to individual packages, but now it is easier
+                      to verify things as being "MinGW 1.0
+                      compatible").
+                    </p>
+                    <p>
+                      The individual packages making up the MinGW
+                      distribution are still produced and made
+                      available for download seperately. Updated
+                      versions of individual packages will
+                      sometimes be made available in between
+                      releases of the main MinGW distribution... in
+                      most cases it should be possible to extract a
+                      package's content into your MinGW directory
+                      to take advantage of the updates immediately.
+                    </p>
+                    <h3>
+                      Download location
+                    </h3>
+                    <p>
+                      The standard MinGW download page is hosted by
+                      <a target="_nw" href=
+                      "http://sourceforge.net/project/showfiles.php?group_id=2435">
+                      SourceForge</a>. This page contains the
+                      latest version of the main MinGW distribution
+                      archive, as well as all available pacakges
+                      files to download.
+                    </p><a name="download-release"></a>
+                    <!--#include file="ssi/release.html"-->
+                     
+                    <h3>
+                      Mirror Sites
+                    </h3>
+                    <ul>
+                      <li>
+                        <a href=
+                        "http://prdownloads.sf.net/mingw/">http://prdownloads.sf.net/mingw/</a>
+                      </li>
+                      <li>
+                        <a href=
+                        "ftp://gd.tuwien.ac.at/gnu/mingw/">ftp://gd.tuwien.ac.at/gnu/mingw/</a>
+                      </li>
+                      <li>
+                        <a href=
+                        "http://gd.tuwien.ac.at/gnu/mingw/">http://gd.tuwien.ac.at/gnu/mingw/</a>
+                      </li>
+                    </ul>
+                    <p>
+                      If you wish to mirror the MinGW distributions
+                      then please send a request to <a href=
+                      "mailto:mingw-users-admin@lists.sourceforge.net">
+                      mingw-users-admin@lists.sourceforge.net</a>.
+                    </p>
+                    <h3>
+                      Downloading the distribution
+                    </h3>
+                    <p>
+                      The naming scheme for the main MinGW
+                      distribution file is:
+                    </p>
+                    <blockquote>
+                      <tt>Mingw-&lt;version&gt;[-&lt;stamp&gt;].&lt;tar.gz
+                      or zip&gt;</tt>
+                    </blockquote>Where: 
+                    <dl>
+                      <dt>
+                        <tt>&lt;version&gt;</tt>
+                      </dt>
+                      <dd>
+                        Arbitrarily chosen by the MinGW development
+                        team, the latest version at the time of
+                        this writing was 1.0.1. Major updates to
+                        the distribution will involve incrementing
+                        the most-significant digit in the version
+                        number, smaller updates will increment
+                        less-significant digits.
+                      </dd>
+                      <dt>
+                        <tt>&lt;stamp&gt;</tt>
+                      </dt>
+                      <dd>
+                        Always YYYYMMDD format, representing the
+                        date on which the distribution was bundled
+                        (not related to the timestamp or version of
+                        any component package.
+                      </dd>
+                      <dt>
+                        <tt>&lt;suffix&gt;</tt>
+                      </dt>
+                      <dd>
+                        File extension corresponding to the
+                        compression method used. We are using
+                        <tt>zip</tt> and/or <tt>tar.gz</tt>.
+                      </dd>
+                    </dl>
+                    <h3>
+                      Downloading packages
+                    </h3>
+                    <p>
+                      All the MinGW releases use consistent naming
+                      scheme:
+                    </p>
+                    <blockquote>
+                      <tt>&lt;package_name&gt;-&lt;original_version&gt;[-&lt;stamp&gt;].&lt;suffix&gt;</tt>
+                    </blockquote>Where: 
+                    <dl>
+                      <dt>
+                        <tt>&lt;package_name&gt;</tt>
+                      </dt>
+                      <dd>
+                        Package name of this release. Package name
+                        is usually obtained from the official short
+                        software name.
+                      </dd>
+                      <dt>
+                        <tt>&lt;original_version&gt;</tt>
+                      </dt>
+                      <dd>
+                        Official software vesrion. Since most of
+                        MinGW packages is official GNU software, we
+                        don't control this field and take it as is
+                        from documentation or specification files.
+                      </dd>
+                      <dt>
+                        <tt>&lt;stamp&gt;</tt>
+                      </dt>
+                      <dd>
+                        Stamp is: 
+                        <ul>
+                          <li>
+                            Always YYYYMMDD timestamp for
+                            non-production releases (i.e. alpha and
+                            beta releases).
+                          </li>
+                          <li>
+                            Sequental integer (release number) for
+                            official releases of ported software
+                            (i.e. software which we do not
+                            maintain).
+                          </li>
+                          <li>
+                            May not be present for our own packages
+                            (we increment version for them, not
+                            release number).
+                          </li>
+                        </ul>
+                      </dd>
+                      <dt>
+                        <tt>&lt;suffix&gt;</tt>
+                      </dt>
+                      <dd>
+                        File extension corresponding to the
+                        compression method used. We are using
+                        <tt>zip</tt> and/or <tt>tar.gz</tt>.
+                      </dd>
+                    </dl>For example,
+                    <tt>binutils-2.10.91-20001205.zip</tt> is a
+                    binutils (which are GNU Binary Utilities)
+                    2.10.91 alpha or beta release made on 5th of
+                    December, 2000.<br>
+                    <br>
+                     <em><b>WinZip Caution:</b></em><br>
+                    Make sure that you first <b>uncheck</b> the
+                    "TAR file smart CR/LF conversion" checkbox
+                    found in the Configuration -&gt; Miscellaneous
+                    tab of the Options menu.<br>
+                    <br>
+                     <em><a href="http://www.7-zip.org" target=
+                    "_nw">7-Zip</a></em><br>
+                     
+                    <p>
+                      We've found that this zip/unzip utility is
+                      fast and reliable for differing compression
+                      algorithms. If you need a decompression
+                      utility, you should visit <a href=
+                      "http://www.7-Zip.org" target="_nw">7-Zip</a>
+                      for the latest version. If you don't need a
+                      compression/decompression utility, I suggest
+                      you visit <a href="http://www.7-Zip.org"
+                      target="_nw">7-Zip</a> for one of the best
+                      compression algorithms available.
+                    </p>
+                    <hr>
+                    <h2>
+                      Installing MinGW
+                    </h2><span class="bold">Installing MinGW using
+                    MinGW-__VERSION__.exe:<br></span><br>
+                     <span class="underline">Summary for the click happy
+                    and impatient:</span><br>
+                     
+                    <ul>
+                      <li>
+                        Make sure you read and understand the
+                        License agreement.
+                      </li>
+                      <li>
+                        Accept all of the defaults unless you have
+                        reason not to (ie/ installation dir to
+                        c:\msys\__VERSION__\mingw for a combined
+                        MinGW/MSYS installation).
+                      </li>
+                    </ul><span class="underline">Detailed
+                    Instructions:</span><br>
+                      
+                    <ol>
+                      <li>
+                        Download the latest MinGW binary
+                        executable.
+                      </li>
+                      <li>
+                        Run the executable.
+                      </li>
+                      <li>
+                        Click "<span class="underline">N</span>ext" if you
+                        wish to continue with the installation.<br>
+                      </li>
+                      <li>
+                        Carefully read through the License
+                        Agreement.
+                      </li>
+                      <li>
+                        Click "<span class="underline">Y</span>es" only if
+                        you agree with the terms of the license.
+                      </li>
+                      <li>
+                        Read through the Setup Info.
+                      </li>
+                      <li>
+                        Click "<span class="underline">N</span>ext".
+                      </li>
+                      <li>
+                        Select your installation directory or
+                        accept the default.
+                      </li>
+                      <li>
+                        Click "<span class="underline">N</span>ext".
+                      </li>
+                      <li>
+                        An architecture dialog will be displayed,
+                        accept the default.
+                      </li>
+                      <li>
+                        Click "<span class="underline">N</span>ext".
+                      </li>
+                      <li>
+                        Review the installation summary go
+                        "<span class="underline">B</span>ack" if
+                        necessary.
+                      </li>
+                      <li>
+                        Click "Install" to continue with the
+                        installation.
+                      </li>
+                      <li>
+                        A progress bar will be displayed indicating
+                        the current install progress.
+                      </li>
+                      <li>
+                        Upon completion click "<span class=
+                        "underline">N</span>ext"
+                      </li>
+                      <li>
+                        Click "<span class="underline">F</span>inish" to
+                        finalize the installation.
+                      </li>
+                    </ol><span class="bold"><span class=
+                    "bold">Installing MinGW package
+                    updates:</span></span><br>
+                    <br>
+                     <span class="underline">Summary:</span><br>
+                     
+                    <ul>
+                      <li>
+                        Unpack the mingw tarball into the root of
+                        your mingw installation (ie/ C:\mingw).
+                      </li>
+                    </ul><span class="underline">Detailed
+                    Instructions:</span><br>
+                    Sory on the todo list<br>
+                     <span class="bold"><br>
+                    Normalizing MinGW with your build
+                    environment<br>
+                    <br>
+                     Windows Command prompt:<br>
+                    <br></span> <span class=
+                    "underline">Summary:</span><br>
+                     
+                    <ul>
+                      <li>
+                        set
+                        PATH=c:\__MinGW_Install_Dir__\bin;%PATH%
+                      </li>
+                      <li>
+                        test installation with "gcc -v"<br>
+                      </li>
+                      <li>
+                        add the above path to c:\autoexec.bat
+                      </li>
+                    </ul><span class="underline">Detailed
+                    Instructions:<br></span> 
+                    <ol>
+                      <li>
+                        Run command.com (98 or ME) or cmd.exe (NT,
+                        2000 or XP).
+                      </li>
+                      <li>
+                        Type "set
+                        PATH=c:\__MinGW_Install_Dir__\bin;%PATH%",
+                        substituting __MinGW_Install_Dir__ with the
+                        directory path you installed MinGW into.
+                      </li>
+                      <li>
+                        Type "gcc -v" and ensure that it outputs
+                        version information which will start
+                        similar to the following:<br>
+                         
+                        <pre>
+   Reading specs from c:/mingw/bin/../lib/gcc-lib/i386-pc-mingw32/3.2.1/specs<br>           
+                        </pre>
+                      </li>
+                      <li>
+                        To permanently set the path type "notepad
+                        c:\autoexec.bat" at the command prompt.
+                      </li>
+                      <li>
+                        In notepad goto the last line and add the
+                        'set PATH' command you typed in step 2.
+                      </li>
+                      <li>
+                        Save and close notepad.
+                      </li>
+                    </ol><span class="bold">pre-MSYS:<br></span><br>
+                     <span class="underline">Summary:</span><br>
+                     
+                    <ul>
+                      <li>
+                        During the MSYS install specify your MinGW
+                        directory during the environment
+                        normalization
+                      </li>
+                    </ul><span class="underline">Detailed
+                    Instructions:<br></span> Sorry on the todo
+                    list<span class="underline"><br>
+                    <br></span> <span class="bold">post-MSYS:<br>
+                    <br></span> <span class=
+                    "underline">Summary:<br></span> 
+                    <ul>
+                      <li>
+                        Start up msys, copy /etc/fstab.sample to
+                        /etc/fstab
+                      </li>
+                      <li>
+                        Edit /etc/fstab updating the location of
+                        your MinGW installation appropriately
+                      </li>
+                    </ul><span class="underline">Detailed
+                    Instructions:</span><br>
+                     
+                    <ol>
+                      <li>
+                        Start MSYS.
+                      </li>
+                      <li>
+                        Type "cd /etc".
+                      </li>
+                      <li>
+                        Type "cp fstab.sample fstab".
+                      </li>
+                      <li>
+                        Type "notepad fstab".
+                      </li>
+                      <li>
+                        If necessary modify the
+                        "c:/mingw&nbsp;&nbsp; /mingw" entry to
+                        reflect where you installed MinGW during
+                        setup.
+                      </li>
+                      <li>
+                        Save the file.
+                      </li>
+                      <li>
+                        Shutdown and restart MSYS.
+                      </li>
+                      <li>
+                        Type "gcc -v" and ensure that it outputs
+                        version information which will start
+                        similar to the following:<br>
+                         
+                        <pre>
+   Reading specs from c:/mingw/bin/../lib/gcc-lib/i386-pc-mingw32/3.2.1/specs
+                        </pre>
+                      </li>
+                      <li>
+                        Happy programming if you get the above
+                        output.<br>
+                      </li>
+                    </ol><span class="bold">Cygwin:<br></span> Sorry
+                    on the todo list<br>
+                    <br>
+                     <span class="bold">Other:<br></span> Please
+                    submit to suggestions as a&nbsp; patch.
+                    <!--                            End of Main Body                             -->
+                  </td>
+                </tr>
+                <tr>
+                  <td class="c4">
+                    <br>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+      </tbody>
+    </table><!--#include file="ssi/bottombar.html"-->
+    <!--#include file="ssi/footer.html"-->
+    <p>
+      <a href=
+           "http://validator.w3.org/check/referer"><img border="0"
+           src="http://www.w3.org/Icons/valid-html401" alt=
+           "Valid HTML 4.01!" height="31" width="88"></a> <a href=
+           "http://jigsaw.w3.org/css-validator/"><img class="c5"
+           src="http://jigsaw.w3.org/css-validator/images/vcss"
+           alt="Valid CSS!"></a>
+    </p>
+    <address>
+      <br>
+      Last revised $Date: 2003-02-18 23:41:03 $
+    </address>
+  </body>
 </html>
