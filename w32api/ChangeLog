@@ -1,3 +1,25 @@
+2002-01-24  Phillip Susi  <psusi@cfl.rr.com> 
+
+	* include/commctrl.h: Add missing HDM_*,HDN_*,LVSICF_* defines.
+
+2002-01-24  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/commctrl.h (HDITEM[AW]): Rename _HD_ITEM[AW] to
+	_HDITEM[AW], with parallel changes to typedefs.	Use defines for
+	backward compatability with old names. Update UNICODE mappings.
+	(HDLAYOUT): Remove struct _HD_LAYOUT_XP.  Use new typedefs
+	for struct _HD_LAYOUT and add defines for backward
+	compatability with old names.
+	(NMLISTVIEW): Rename _NM_LISTVIEW to tagNMLISTVIEW, with
+	parallel chages to typedefs. Add defines for backward
+	compatability with old names.
+	(TCHITTESTINFO, IMAGELISTDRAWPARAMS): Fix _WIN32_IE guard.
+
+2002-01-21  Robert Collins  <rbtcollins@hotmail.com>
+
+	* include/winnt.h: Add missing MEM_ defines, and convert existing to 
+	hex for readability.
+
 2002-01-17  Marcus Geelnard  <marcus.geelnard@home.se>
 
 	* include/winsuser.h (tagKBDLLHOOKSTRUCT): Define struct
@@ -22,6 +44,10 @@
 	(FILE_ATTRIBUTE_DEVICE): Add define.
 
 
+2002-01-14  Corinna Vinschen  <vinschen@redhat.com>
+
+	* include/winnt.h: Add INVALID_FILE_ATTRIBUTES.
+
 2002-01-11  Danny Smith  <dannysmith@users.sourceforge.net>
 
 	* ChangeLog: correct date in last entry. 
@@ -32,6 +58,20 @@
 	(EnumDisplayMonitors): Add prototype.
 	* lib/user32.def (EnumDisplayMonitors): Add stub.
 	
+2002-01-11 Ralf Habacker  <Ralf.Habacker@freenet.de>
+
+	* include/ntsecapi.h:  Fixed missing void parameter type in some 
+	prototypes.
+	* include/objbase.h: Ditto.
+	* include/rapi.h: Ditto.
+	* include/rpc.h: Ditto.
+	* include/rpcdce.h: Ditto.
+	* include/rpcdcep.h: Ditto.
+	* include/rpcndr.h: Ditto.
+	* include/rpcnsip.h: Ditto.
+	* include/rpcproxy.h: Ditto.
+	* include/windef.h: Ditto.
+									
 2002-01-07  Danny Smith  <dannysmith@users.sourceforge.net>
 
 	* lib/vfw32.def (LIBRARY): Change to MSVFW32.DLL.
@@ -54,6 +94,31 @@
 	Add prototype.
 	(SetCriticalSectionSpinCount): Likewise.
 
+2001-12-30  Guido Serassio <serassio@libero.it>
+
+	* include/winsvc.h: Add EnumServiceStatusEx(),
+	QueryServiceStatusEx()
+	& RegisterServiceCtrlHandlerEx()
+  
+2001-12-21  Robert Collins  <rbtcollins@hotmail.com>
+
+	* include/wingdi.h: Add GetRandomRgn and SYSRGN.
+
+2001-12-20  Christopher Faylor  <cgf@redhat.com>
+
+	* lib/Makefile.in: Revert inst_installdir definitions to working
+	versions.
+
+2001-12-17  Guido Serassio <serassio@libero.it>
+
+	* include/winsvc.h: Add ChangeServiceConfig2() &
+	QueryServiceConfig2() definition
+    
+2001-12-17  Robert Collins  <rbtcollins@hotmail.com>
+
+	* include/commctrl.h: New typedefs for HDLAYOUT and LPHDLAYOUT based
+	on MSDN documentation for XP.
+	
 2001-12-15  Andrew Begel  <abegel@eecs.berkeley.edu>
 
 	*include/winbase.h (CreateHardLink): Correct typo in UNICODE
@@ -84,6 +149,19 @@
 	(tagTVINSERTSTRUCT[AW]: Add union member.
 	* include/winbase.h (VirtualAllocEx): Add prototype.
 	* include/winuser.h (SS_*): Add new defines.
+
+2001-12-07  Earnie Boyd  <earnie@users.sf.net>
+
+	* Makefile.in: Increment VERSION.
+	* include/w32api.h: Ditto.
+
+2001-12-07  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/setupi.h (SetupDiCreateDeviceInterfaceRegKey[AW],
+	SetupDiCreateDevRegKey[AW],SetupDiDeleteDeviceInterfaceRegKey,
+	SetupDiDeleteDevRegKey,SetupDiOpenClassRegKey,
+	SetupDiOpenClassRegKeyEx[AW],SetupDiOpenDeviceInterfaceRegKey,
+	SetupDiOpenDevRegKey): Correct function names.
 
 2001-12-07  Earnie Boyd  <earnie@users.sf.net>
 

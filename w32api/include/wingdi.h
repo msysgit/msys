@@ -2017,6 +2017,8 @@ typedef struct _RGNDATA {
 	RGNDATAHEADER rdh;
 	char Buffer[1];
 } RGNDATA,*LPRGNDATA;
+/* for GetRandomRgn */
+#define SYSRGN  4
 typedef struct tagGCP_RESULTSA {
 	DWORD lStructSize;
 	LPSTR lpOutString;
@@ -2547,6 +2549,7 @@ COLORREF WINAPI GetPixel(HDC,int,int);
 int WINAPI GetPixelFormat(HDC);
 int WINAPI GetPolyFillMode(HDC);
 BOOL WINAPI GetRasterizerCaps(LPRASTERIZER_STATUS,UINT);
+int WINAPI GetRandomRgn (HDC,HRGN,INT);
 DWORD WINAPI GetRegionData(HRGN,DWORD,LPRGNDATA);
 int WINAPI GetRgnBox(HRGN,LPRECT);
 int WINAPI GetROP2(HDC);
