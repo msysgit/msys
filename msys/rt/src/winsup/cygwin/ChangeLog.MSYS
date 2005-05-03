@@ -1,3 +1,7 @@
+2005-05-03  Earnie Boyd <earnie@users.sf.net>
+
+	* syscalls.cc (_open): Add O_BINARY flag.
+
 2005-03-29  Earnie Boyd <earnie@users.sf.net>
 
 	* environ.cc (_addenv): Look for variable name prefix and set value
