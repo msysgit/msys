@@ -1,6 +1,8 @@
 2005-05-03  Earnie Boyd <earnie@users.sf.net>
 
 	* syscalls.cc (_open): Add O_BINARY flag.
+	* cygheap.cc (init_cheap): Add system_printf to capture true Win32
+	error.  Thanks to Scott Michel (pingbak @ sf . net).
 
 2005-03-29  Earnie Boyd <earnie@users.sf.net>
 
