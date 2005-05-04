@@ -3,6 +3,10 @@
 	* syscalls.cc (_open): Add O_BINARY flag.
 	* cygheap.cc (init_cheap): Add system_printf to capture true Win32
 	error.  Thanks to Scott Michel (pingbak @ sf . net).
+	* fhandler_tty (fhandler_pty_master::process_slave_output): Clean up.
+	(fhandler_tty_slave::read): Use common variable CharsInPipe.
+	Remove variable peek_buf. Remove unnecessary reading and peeking of
+	the pipe.
 
 2005-03-29  Earnie Boyd <earnie@users.sf.net>
 
