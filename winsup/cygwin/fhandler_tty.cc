@@ -290,10 +290,8 @@ fhandler_pty_master::process_slave_output (char *buf, size_t len, int pktmode_on
 
       HANDLE handle = get_io_handle ();
 
-      CharsInPipe = 0; // get_readahead_into_buffer (outbuf, len);
-	      OutputDebugString ("PeekNamedPipe");
-	      if (!PeekNamedPipe (handle, NULL, 0, NULL, &CharsInPipe, NULL))
-		goto err;
+      if (!PeekNamedPipe (handle, NULL, 0, NULL, &CharsInPipe, NULL))
+	goto err;
       if (1)
 	{
 	  /* Doing a busy wait like this is quite inefficient, but nothing
@@ -662,9 +660,8 @@ fhandler_tty_slave::read (void *ptr, size_t len)
   int vmin = INT_MAX;
   int vtime = 0;	/* Initialized to prevent -Wuninitialized warning */
   size_t readlen;
-  DWORD bytes_in_pipe;
+  DWORD CharsInPipe;
   char buf[INP_BUFFER_SIZE];
-  char peek_buf[INP_BUFFER_SIZE];
   DWORD time_to_wait;
   DWORD rc;
   HANDLE w4[2];
@@ -718,13 +715,13 @@ fhandler_tty_slave::read (void *ptr, size_t len)
 	  termios_printf ("failed to acquire input mutex after input event arrived");
 	  break;
 	}
-      if (!PeekNamedPipe (get_handle (), peek_buf, sizeof(peek_buf), &bytes_in_pipe, NULL, NULL))
+      if (!PeekNamedPipe (get_handle (), NULL, 0, NULL, &CharsInPipe, NULL))
 	{
 	  termios_printf ("PeekNamedPipe failed, %E");
 	  _raise (SIGHUP);
-	  bytes_in_pipe = 0;
+	  CharsInPipe = 0;
 	}
-      readlen = min (bytes_in_pipe, min (len, sizeof (buf)));
+      readlen = min (CharsInPipe, min (len, sizeof (buf)));
       if (readlen)
 	{
 	  termios_printf ("reading %d bytes (vtime %d)", readlen, vtime);
@@ -732,16 +729,6 @@ fhandler_tty_slave::read (void *ptr, size_t len)
 	    {
 	      termios_printf ("read failed, %E");
 	      _raise (SIGHUP);
-	    }
-	  /* MSDN states that 5th prameter can be used to determine total
-	     number of bytes in pipe, but for some reason this number doesn't
-	     change after successful read. So we have to peek into the pipe
-	     again to see if input is still available */
-	  if (!PeekNamedPipe (get_handle (), peek_buf, 1, &bytes_in_pipe, NULL, NULL))
-	    {
-	      termios_printf ("PeekNamedPipe failed, %E");
-	      _raise (SIGHUP);
-	      bytes_in_pipe = 0;
 	    }
 	  if (n)
 	    {
@@ -752,7 +739,7 @@ fhandler_tty_slave::read (void *ptr, size_t len)
 	    }
 	}
 
-      if (!bytes_in_pipe)
+      if (!CharsInPipe)
 	ResetEvent (input_available_event);
 
       ReleaseMutex (input_mutex);
