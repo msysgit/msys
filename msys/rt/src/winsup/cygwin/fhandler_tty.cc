@@ -253,154 +253,133 @@ fhandler_pty_master::process_slave_output (char *buf, size_t len, int pktmode_on
   TRACE_IN;
   size_t rlen;
   char outbuf[OUT_BUFFER_SIZE + 1];
+  char peekbuf[OUT_BUFFER_SIZE * 2];
   DWORD CharsInPipe;
+  DWORD CharsRead;
+  DWORD PipeRead;
   int column = 0;
   int rc = 0;
+  char *optr = buf;
 
   if (len == 0)
-    goto out;
+    debug_printf("process_slave_output called with zero length");
 
-  if (need_nl)
+  while (!hit_eof () && len != 0)
     {
-      /* We need to return a left over \n character, resulting from
-	 \r\n conversion.  Note that we already checked for FLUSHO and
-	 output_stopped at the time that we read the character, so we
-	 don't check again here.  */
-      buf[0] = '\n';
-      need_nl = 0;
-      rc = 1;
-      goto out;
-    }
+      if (need_nl)
+      {
+	/* We need to return a left over \n character, resulting from
+	   \r\n conversion.  Note that we already checked for FLUSHO and
+	   output_stopped at the time that we read the character, so we
+	   don't check again here.  */
+	*optr++ = '\n';
+	need_nl = 0;
+      } else {
 
 
-  for (;;)
-    {
-      /* Set RLEN to the number of bytes to read from the pipe.  */
-      rlen = len;
-      if (get_ttyp ()->ti.c_oflag & OPOST && get_ttyp ()->ti.c_oflag & ONLCR)
+	/* Set RLEN to the number of bytes to read from the pipe.  */
+	rlen = len;
+	if (get_ttyp ()->ti.c_oflag & OPOST && get_ttyp ()->ti.c_oflag & ONLCR)
+	  {
+	    /* We are going to expand \n to \r\n, so don't read more than
+	       half of the number of bytes requested.  */
+	    rlen = (rlen / 2) + 1;
+	  }
+	//FIXME: Shouldn't rlen > sizeof outbuf be an error!!
+	//Perhaps we should dynamically allocate the memory for outbuf?
+	if (rlen > sizeof outbuf)
+	  rlen = sizeof outbuf;
+
+	HANDLE handle = get_io_handle ();
+	SetConsoleMode (handle, ENABLE_PROCESSED_OUTPUT|ENABLE_PROCESSED_INPUT);
+
+	if (PeekNamedPipe (handle, peekbuf, sizeof peekbuf, &PipeRead, &CharsInPipe, NULL) &&
+	    ReadFile (handle, outbuf, rlen, &CharsRead, NULL)
+	   )
 	{
-	  /* We are going to expand \n to \r\n, so don't read more than
-	     half of the number of bytes requested.  */
-	  rlen /= 2;
-	  if (rlen == 0)
-	    rlen = 1;
-	}
-      if (rlen > sizeof outbuf)
-	rlen = sizeof outbuf;
+	  debug_printf("CharsInPipe=%d", CharsInPipe);
+	  debug_printf ("Read %d of %d", CharsRead, rlen);
+	  debug_printf ("IN PIPE\n%s\n", peekbuf);
 
-      HANDLE handle = get_io_handle ();
+	  termios_printf ("bytes read %u", CharsRead);
+	  get_ttyp ()->write_error = 0;
+	  if (output_done_event != NULL)
+	    SetEvent (output_done_event);
 
-      if (!PeekNamedPipe (handle, NULL, 0, NULL, &CharsInPipe, NULL))
-	goto err;
-      if (1)
-	{
-	  /* Doing a busy wait like this is quite inefficient, but nothing
-	     else seems to work completely.  Windows should provide some sort
-	     of overlapped I/O for pipes, or something, but it doesn't.  */
-	  while (1)
+	  if (get_ttyp ()->ti.c_lflag & FLUSHO)
+	    continue;
+
+	  if (pktmode_on)
+	    *optr++ = TIOCPKT_DATA;
+
+	  if (!(get_ttyp ()->ti.c_oflag & OPOST))	// post-process output
 	    {
-	      if (CharsInPipe > 0)
-		break;
-	      if (hit_eof ())
-		goto out;
-	      if (CharsInPipe == 0 && is_nonblocking ())
-		{
-		  set_errno (EAGAIN);
-		  rc = -1;
-		  break;
-		}
-
-	      Sleep (10);
+	      memcpy (optr, outbuf, CharsRead);
+	      optr += CharsRead;
 	    }
-
-	  if (ReadFile (handle, outbuf, rlen, &CharsInPipe, NULL) == FALSE)
-	    goto err;
-	}
-
-      termios_printf ("bytes read %u", CharsInPipe);
-      get_ttyp ()->write_error = 0;
-      if (output_done_event != NULL)
-	SetEvent (output_done_event);
-
-      if (get_ttyp ()->ti.c_lflag & FLUSHO)
-	continue;
-
-      char *optr;
-      optr = buf;
-      if (pktmode_on)
-	*optr++ = TIOCPKT_DATA;
-
-      if (!(get_ttyp ()->ti.c_oflag & OPOST))	// post-process output
-	{
-	  memcpy (optr, outbuf, CharsInPipe);
-	  optr += CharsInPipe;
-	}
-      else					// raw output mode
-	{
-	  char *iptr = outbuf;
-
-	  while (CharsInPipe--)
+	  else					// raw output mode
 	    {
-	      switch (*iptr)
-		{
-		case '\r':
-		  if ((get_ttyp ()->ti.c_oflag & ONOCR) && column == 0)
-		    {
-		      iptr++;
-		      continue;
-		    }
-		  if (get_ttyp ()->ti.c_oflag & OCRNL)
-		    *iptr = '\n';
-		  else
-		    column = 0;
-		  break;
-		case '\n':
-		  if (get_ttyp ()->ti.c_oflag & ONLCR)
-		    {
-		      *optr++ = '\r';
-		      column = 0;
-		    }
-		  if (get_ttyp ()->ti.c_oflag & ONLRET)
-		    column = 0;
-		  break;
-		default:
-		  column++;
-		  break;
-		}
+	      char *iptr = outbuf;
 
-	      /* Don't store data past the end of the user's buffer.  This
-		 can happen if the user requests a read of 1 byte when
-		 doing \r\n expansion.  */
-	      if (optr - buf >= (int) len)
+	      while (CharsRead--)
 		{
-		  OutputDebugString("optr - buf >= (int) len");
-		  if (*iptr != '\n' || CharsInPipe != 0)
-		    system_printf ("internal error: %d unexpected characters", CharsInPipe);
-		  OutputDebugString("need_nl = 1");
-		  need_nl = 1;
-		  break;
-		}
+		  switch (*iptr)
+		    {
+		    case '\r':
+		      if ((get_ttyp ()->ti.c_oflag & ONOCR) && column == 0)
+			{
+			  iptr++;
+			  continue;
+			}
+		      if (get_ttyp ()->ti.c_oflag & OCRNL)
+			*iptr = '\n';
+		      else
+			column = 0;
+		      break;
+		    case '\n':
+		      if (get_ttyp ()->ti.c_oflag & ONLCR)
+			{
+			  *optr++ = '\r';
+			  column = 0;
+			}
+		      if (get_ttyp ()->ti.c_oflag & ONLRET)
+			column = 0;
+		      break;
+		    default:
+		      column++;
+		      break;
+		    }
 
-	      *optr++ = *iptr++;
+		  /* Don't store data past the end of the user's buffer.  This
+		     can happen if the user requests a read of 1 byte when
+		     doing \r\n expansion.  */
+		  if (optr - buf >= (int) len)
+		    {
+		      OutputDebugString("optr - buf >= (int) len");
+		      if (*iptr != '\n' || CharsRead != 0)
+			system_printf ("internal error: %d unexpected characters", CharsInPipe);
+		      OutputDebugString("need_nl = 1");
+		      need_nl = 1;
+		      break;
+		    }
+
+		  *optr++ = *iptr++;
+		}
 	    }
+	} else {
+	  if (GetLastError () != ERROR_BROKEN_PIPE)
+	  {
+	    __seterrno ();
+	    rc = -1;
+	    debug_printf ("process_slave_output error, %E");
+	    break;
+	  }
 	}
+      }
       rc = optr - buf;
       break;
-
-    err:
-      OutputDebugString ("process_slave_output error");
-      if (GetLastError () == ERROR_BROKEN_PIPE)
-	rc = 0;
-      else
-	{
-	  __seterrno ();
-	  rc = -1;
-	}
-      break;
     }
 
-out:
-  TRACE_IN;
   termios_printf ("returning %d", rc);
   return rc;
 }
@@ -655,12 +634,12 @@ int
 fhandler_tty_slave::read (void *ptr, size_t len)
 {
   TRACE_IN;
-  DWORD n;
   int totalread = 0;
   int vmin = INT_MAX;
   int vtime = 0;	/* Initialized to prevent -Wuninitialized warning */
   size_t readlen;
   DWORD CharsInPipe;
+  DWORD CharsRead;
   char buf[INP_BUFFER_SIZE];
   DWORD time_to_wait;
   DWORD rc;
@@ -725,17 +704,17 @@ fhandler_tty_slave::read (void *ptr, size_t len)
       if (readlen)
 	{
 	  termios_printf ("reading %d bytes (vtime %d)", readlen, vtime);
-	  if (ReadFile (get_handle (), buf, readlen, &n, NULL) == FALSE)
+	  if (ReadFile (get_handle (), buf, readlen, &CharsRead, NULL) == FALSE)
 	    {
 	      termios_printf ("read failed, %E");
 	      _raise (SIGHUP);
 	    }
-	  if (n)
+	  if (CharsRead)
 	    {
-	      len -= n;
-	      totalread += n;
-	      memcpy (ptr, buf, n);
-	      ptr = (char *) ptr + n;
+	      len -= CharsRead;
+	      totalread += CharsRead;
+	      memcpy (ptr, buf, CharsRead);
+	      ptr = (char *) ptr + CharsRead;
 	    }
 	}
 
