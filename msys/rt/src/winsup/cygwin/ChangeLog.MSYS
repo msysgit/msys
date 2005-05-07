@@ -1,3 +1,14 @@
+2005-05-06  Earnie Boyd <earnie@users.sf.net>
+
+	* cygheap.cc (init_cheap): Add TRACE_IN.
+	* fhandler_console.cc (set_console_state_for_spawn): Try to make good
+	use of it for PTY.  Renamed variable h to hconin.
+	* fhandler_tty.cc (fhandler_pty_master::process_slave_output): Reformat
+	code for easier reading.
+	(fhandler_tty_slave::read): Ditto.
+	* select.cc (fhandler_tty_common::ready_for_read): Remove unused code.
+	Add debug info.
+
 2005-05-03  Earnie Boyd <earnie@users.sf.net>
 
 	* syscalls.cc (_open): Add O_BINARY flag.

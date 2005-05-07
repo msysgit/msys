@@ -745,11 +745,7 @@ int
 fhandler_tty_common::ready_for_read (int fd, DWORD howlong, int ignra)
 {
   TRACE_IN;
-#if 0
-  if (myself->pgid && get_ttyp ()->getpgid () != myself->pgid &&
-	myself->ctty == ttynum) // background process?
-    return 1;	// Yes. Let read return an error
-#endif
+  debug_printf("fhandler_tty_common::ready_for_read (int %d, DWORD %d, int %d)", fd, howlong, ignra);
   return ((fhandler_pipe*)this)->fhandler_pipe::ready_for_read (fd, howlong, ignra);
 }
 

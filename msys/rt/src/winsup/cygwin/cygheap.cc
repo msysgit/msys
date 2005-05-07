@@ -50,6 +50,7 @@ static void __stdcall _cfree (void *ptr) __attribute__((regparm(1)));
 inline static void
 init_cheap ()
 {
+  TRACE_IN;
   cygheap = (init_cygheap *) VirtualAlloc ((void *) &_cygheap_start, CYGHEAPSIZE, MEM_RESERVE, PAGE_NOACCESS);
   if (!cygheap)
     {
