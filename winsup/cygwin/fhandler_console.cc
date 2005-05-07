@@ -151,27 +151,23 @@ int __stdcall
 set_console_state_for_spawn ()
 {
   TRACE_IN;
-  //FIXME: It doesn't do what we need it to.
-  //I.E.: Display from non msys programs does not work properly; stdout is blocked from displaying, stdin and stderr do not seem to be blocked.
-  //For the time being just return 0 to indicate invalid handle.
-  return 0;
-  HANDLE h = CreateFileA ("CONIN$", GENERIC_READ, FILE_SHARE_WRITE,
+  HANDLE hconin = CreateFileA ("CONIN$", GENERIC_READ, FILE_SHARE_WRITE | FILE_FLAG_NO_BUFFERING,
 			  &sec_none_nih, OPEN_EXISTING,
 			  FILE_ATTRIBUTE_NORMAL, NULL);
 
-  if (h == INVALID_HANDLE_VALUE || h == NULL)
+  if (hconin == INVALID_HANDLE_VALUE || hconin == NULL)
     return 0;
 
   // FIXME: Why should shared_console_info be null
   if (shared_console_info != NULL)
     {
 #     define tc shared_console_info	/* ACK.  Temporarily define for use in TTYSETF macro */
-      SetConsoleMode (h, ENABLE_LINE_INPUT | ENABLE_ECHO_INPUT | ENABLE_PROCESSED_INPUT);
+      SetConsoleMode (hconin, ENABLE_PROCESSED_INPUT);
       TTYSETF (RSTCONS);
 #     undef tc
     }
 
-  CloseHandle (h);
+  CloseHandle (hconin);
   return 1;
 }
 
@@ -206,6 +202,7 @@ int
 fhandler_console::read (void *pv, size_t buflen)
 {
   TRACE_IN;
+  debug_printf("buflen=%d", buflen);
   if (!buflen)
     return 0;
 
