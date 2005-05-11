@@ -1,3 +1,8 @@
+2005.05.11  Earnie Boyd <earnie@users.sf.net>
+
+	* include/wchar.h (size_t): Define.
+	(FILE): Ditto.
+
 2005-05-06  Earnie Boyd <earnie@users.sf.net>
 
 	* cygheap.cc (init_cheap): Add TRACE_IN.
