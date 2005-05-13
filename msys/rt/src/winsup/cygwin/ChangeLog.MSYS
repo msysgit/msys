@@ -1,3 +1,27 @@
+2005.05.13  Earnie Boyd <earnie@users.sf.net>
+
+	* winsup.h: Define TRACETTY.
+	* fhander_tty.cc: Use TRACETTY instead of TRACE_IN throughout.
+	(fhandler_tty_master::init): Comment out an unneeded(?) function.
+	(fhandler_pty_master::hit_eof): Remove TRACETTY as hit_eof is
+	constantly called making the trace data useless.
+	(fhandler_pty_master::process_slave_output): Dynamicly allocate output
+	buffer based on size of request.  Restructure code for easier reading.
+	(fhandler_tty_slave::read): Removed peek_buf.  Renamed variable n to
+	CharsRead.  Renamed bytes_in_pipe to CharsInPipe for consistency.
+	* tty.cc: Use TRACETTY instead of TRACE_IN throughout.
+	(create_tty_master): Remove call to tty_master->init.
+	(tty_list::allocate_tty): Remove call to create_tty_master.
+	(tty::slave_alive): Remove.
+	(tty::master_alive): Remove.
+	(tty::alive): Removed TRACETTY as alive is constantly called making the
+	trace data useless.
+	(tty::make_pipes): Added SetConsoleMode calls for from_slave and
+	to_slave handles.
+	* tty.h (tty::slave_alive): Removed.
+	(tty::master_alive): Ditto.
+	(tty::exists): Use alive instead of slave_alive.
+	
 2005.05.11  Earnie Boyd <earnie@users.sf.net>
 
 	* include/wchar.h (size_t): Define.
