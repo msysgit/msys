@@ -104,8 +104,6 @@ public:
   HANDLE create_inuse (const char *);
   BOOL common_init (fhandler_pty_master *);
   BOOL alive (const char *fmt);
-  BOOL slave_alive ();
-  BOOL master_alive ();
   HWND gethwnd () {return hwnd;}
   void sethwnd (HWND wnd) {hwnd = wnd;}
   int make_pipes (fhandler_pty_master *ptym);
@@ -129,7 +127,7 @@ public:
 	CloseHandle (h);
 	return 1;
       }
-    return slave_alive ();
+    return alive (TTY_SLAVE_ALIVE);
   }
 };
 
