@@ -30,10 +30,17 @@ details. */
 # define FIXME
 #endif
 #if TRACING
-//# define TRACE_IN debug_printf("TRACE_IN: %s, %d", __FILE__, __LINE__)
 # define TRACE_IN {char TrcInBuf[256]; __small_sprintf(TrcInBuf, "TRACE_IN: %s, %d, %s", __FILE__, __LINE__, __PRETTY_FUNCTION__); OutputDebugString (TrcInBuf);}
 #else
 # define TRACE_IN
+#endif
+
+#if TRACETTY
+# undef TRACETTY
+# define TRACETTY {char TrcInBuf[256]; __small_sprintf(TrcInBuf, "TRACETTY: %s, %d, %s", __FILE__, __LINE__, __PRETTY_FUNCTION__); OutputDebugString (TrcInBuf);}
+#else
+# undef TRACETTY
+# define TRACETTY
 #endif
 
 #define alloca __builtin_alloca
@@ -51,6 +58,7 @@ details. */
 
 #include <sys/types.h>
 #include <sys/strace.h>
+#include <fcntl.h>
 
 extern const char case_folded_lower[];
 #define cyg_tolower(c) (case_folded_lower[(unsigned char)(c)])
