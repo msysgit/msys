@@ -21,6 +21,8 @@
 	* tty.h (tty::slave_alive): Removed.
 	(tty::master_alive): Ditto.
 	(tty::exists): Use alive instead of slave_alive.
+	* spawn.cc (spawn_guts): Avoid setting up for a MSYS dependent child
+	when it isn't.
 	
 2005.05.11  Earnie Boyd <earnie@users.sf.net>
 
