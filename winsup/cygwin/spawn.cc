@@ -310,6 +310,7 @@ spawn_guts (HANDLE hToken, const char * prog_arg, const char *const *argv,
 {
   TRACE_IN;
   BOOL rc;
+  bool ismsysdep;
   pid_t cygpid;
   sigframe thisframe (mainthread);
 #if DEBUGGING
@@ -498,10 +499,11 @@ spawn_guts (HANDLE hToken, const char * prog_arg, const char *const *argv,
 
   FIXME;
   // iscygexec needs adjusted so that it truely identifies an MSYS executable.
-  if (real_path.iscygexec ())
+  if (real_path.iscygexec ()) {
     newargv.dup_all ();
-  else
-    {
+    ismsysdep = true;
+  } else {
+    ismsysdep = false;
       for (int i = 0; i < newargv.argc; i++)
 	{
 	  //convert argv to win32
@@ -627,7 +629,7 @@ spawn_guts (HANDLE hToken, const char * prog_arg, const char *const *argv,
   char *envblock;
   if (envblockarg)
     free (envblockarg);
-  if (real_path.iscygexec ())
+  if (ismsysdep)
     envblockarg = winenv (envp, 1);
   else 
     envblockarg = winenv (envp, 0);
@@ -635,9 +637,13 @@ spawn_guts (HANDLE hToken, const char * prog_arg, const char *const *argv,
   /* Preallocated buffer for `sec_user' call */
   char sa_buf[1024];
 
-  if (!hToken && cygheap->user.impersonated
-      && cygheap->user.token != INVALID_HANDLE_VALUE)
-    hToken = cygheap->user.token;
+  if (ismsysdep) {
+    if (!hToken && cygheap->user.impersonated
+	&& cygheap->user.token != INVALID_HANDLE_VALUE)
+      hToken = cygheap->user.token;
+  } else {
+    hToken = NULL;
+  }
 
   const char *runpath = null_app_name ? NULL : (const char *) real_path;
 
@@ -646,12 +652,16 @@ spawn_guts (HANDLE hToken, const char * prog_arg, const char *const *argv,
   cygbench ("spawn-guts");
   if (!hToken)
     {
-      ciresrv.moreinfo->uid = getuid ();
-      FIXME;
-      /* FIXME: This leaks a handle in the CreateProcessAsUser case since the
-	 child process doesn't know about cygwin_mount_h. */
-      ciresrv.mount_h = cygwin_mount_h;
-      cygheap_setup_for_child (&ciresrv);
+      // The native process doesn't know about MSYS structures so don't fill
+      // them in for native processes.
+      if (ismsysdep) {
+	ciresrv.moreinfo->uid = getuid ();
+	FIXME;
+	/* FIXME: This leaks a handle in the CreateProcessAsUser case since the
+	   child process doesn't know about cygwin_mount_h. */
+	ciresrv.mount_h = cygwin_mount_h;
+	cygheap_setup_for_child (&ciresrv);
+      }
       rc = CreateProcess (runpath,	/* image name - with full path */
 			  one_line.buf,	/* what was passed to exec */
 					  /* process security attrs */
@@ -664,6 +674,13 @@ spawn_guts (HANDLE hToken, const char * prog_arg, const char *const *argv,
 			  0,	/* use current drive/directory */
 			  &si,
 			  &pi);
+      
+      if (!ismsysdep) {
+	//FIXME: The child process needs help.  The stdout handle is blocking.
+	//A child process that ismsysdep will execute initialization through
+	// methods of fork_child in fork.cc.  A child process that !ismsysdep
+	// doesn't have the opportunity to execute the fork_child method.
+      }
     }
   else
     {
