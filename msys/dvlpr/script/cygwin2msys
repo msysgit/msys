@@ -1,0 +1,13 @@
+#! /bin/sh
+
+find . -type f -maxdepth 1 -name cygwin2msys.diff -exec rm -f {} \;
+find . -type f -exec sh -c 'echo {} && sed -e "s/-lcygwin/-lmsys-1.0/g" -e "s/libcygwin.a/libmsys-1.0.dll.a/g" -e "s/cygwin/msys/g" -e "s/__CYGWIN__/__MSYS__/g" -e "s/__INSIDE_CYGWIN__/__INSIDE_MSYS__/g" -e "s/__OUTSIDE_CYGWIN__/__OUTSIDE_MSYS__/g" -e "s/_CYGWIN_/_MSYS_/g" -e "s/:CYGWIN\*:/:MSYS*:/g" -e "s.include/msys.include/cygwin.g" {} > {}.cygwin2msys && echo "diff -u3p {} {}.cygwin2msys" >> cygwin2msys.diff && diff -u3p {} {}.cygwin2msys >> cygwin2msys.diff; mv {}.cygwin2msys {}' \;
+find . -type f -name aclocal.m4 -exec touch {} \;
+find . -type f -name Makefile.in -exec touch {} \;
+find . -type f -name configure -exec touch {} \;
+
+# $Log: cygwin2msys,v $
+# Revision 1.1  2005/05/19 11:30:24  earnie
+#
+# 	* script/cygwin2msys: New file.
+#

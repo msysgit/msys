@@ -1,3 +1,7 @@
+2005.05.19  Earnie Boyd  <earnie@users.sf.net>
+
+	* script/cygwin2msys: New file.
+
 2005.02.11  Earnie Boyd  <earnie@users.sf.net>
 
 	* script/p2w: New file.
