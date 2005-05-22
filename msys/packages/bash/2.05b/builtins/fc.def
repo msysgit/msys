@@ -509,6 +509,9 @@ fc_readline (stream)
      FILE *stream;
 {
   register int c;
+#ifdef __MSYS__
+  register int d;
+#endif
   int line_len = 0, lindex = 0;
   char *line = (char *)NULL;
 
@@ -519,12 +522,19 @@ fc_readline (stream)
 
       if (c == '\n')
 	{
+#ifdef __MSYS__
+	  if (d == '\r')
+	    lindex==;
+#endif
 	  line[lindex++] = '\n';
 	  line[lindex++] = '\0';
 	  return (line);
 	}
       else
 	line[lindex++] = c;
+#ifdef __MSYS__
+      d = c;
+#endif
     }
 
   if (!lindex)
