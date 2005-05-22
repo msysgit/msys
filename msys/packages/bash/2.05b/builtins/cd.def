@@ -291,10 +291,11 @@ cd_builtin (list)
 
 $BUILTIN pwd
 $FUNCTION pwd_builtin
-$SHORT_DOC pwd [-PL]
+$SHORT_DOC pwd [-PLW]
 Print the current working directory.  With the -P option, pwd prints
 the physical directory, without any symbolic links; the -L option
-makes pwd follow symbolic links.
+makes pwd follow symbolic links; the -W option makes pwd print the absolute
+windows path.
 $END
 
 /* Non-zero means that pwd always prints the physical directory, without
@@ -311,7 +312,7 @@ pwd_builtin (list)
 
   verbatim_pwd = no_symbolic_links;
   reset_internal_getopt ();
-  while ((opt = internal_getopt (list, "LP")) != -1)
+  while ((opt = internal_getopt (list, "LPW")) != -1)
     {
       switch (opt)
 	{
@@ -320,6 +321,9 @@ pwd_builtin (list)
 	  break;
 	case 'L':
 	  verbatim_pwd = 0;
+	  break;
+	case 'W':
+	  verbatim_pwd = 2;
 	  break;
 	default:
 	  builtin_usage ();
@@ -330,8 +334,18 @@ pwd_builtin (list)
 
 #define tcwd the_current_working_directory
 
-  directory = tcwd ? (verbatim_pwd ? sh_physpath (tcwd, 0) : tcwd)
+  switch (verbatim_pwd)
+  {
+  case 2:
+    {
+      directory = xmalloc(PATH_MAX);
+      cygwin_conv_to_win32_path (tcwd, directory);
+    }
+    break;
+  default:
+    directory = tcwd ? (verbatim_pwd ? sh_physpath (tcwd, 0) : tcwd)
 		   : get_working_directory ("pwd");
+  }
 #undef tcwd
 
   if (directory)

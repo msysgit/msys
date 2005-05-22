@@ -1,0 +1,15 @@
+2005.05.22  Earnie Boyd  <earnie@users.sf.net>
+
+	* ChangeLog: New file.
+	* support/config.guess: Add support for MSYS.
+	* support/config.sub: Ditto.
+	* builtin/cd.def (pwd): Add -W switch.
+	* builtin/fc.def (fc_readline): Handle \r.
+	* subst.c (string_list_dollar_at): Handle win32 separators.
+	(read_comsub): Handle \r.
+	(command_substitute): Ditto.
+	* variables.c (make_variable_value): Path conversion for prefix
+	variable.
+	(bind_variable): Handle \r.
+	* parse.y (yy_getc): Ditto.
+	* y.tab.c (yy_getc): Ditto.

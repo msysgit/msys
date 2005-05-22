@@ -1638,11 +1638,10 @@ string_list_dollar_at (list, quoted)
 
 /* This performs word splitting and quoted null character removal on
    STRING. */
-#if 0
-#define issep(c)	((separators)[1] ? (member ((c), separators)) : (c) == (separators)[0])
-#else
-#define issep(c)	((separators)[1] ? isifs(c) : (c) == (separators)[0])
-#endif
+#define issep(c) \
+	(((separators)[0]) ? ((separators)[1] ? isifs(c) \
+					      : (c) == (separators)[0]) \
+			   : 0)
 
 WORD_LIST *
 list_string (string, separators, quoted)
@@ -3627,7 +3626,7 @@ read_comsub (fd, quoted)
   istring = (char *)NULL;
   istring_index = istring_size = bufn = 0;
 
-#ifdef __CYGWIN__
+#ifdef __MSYS__
   setmode (fd, O_TEXT);		/* we don't want CR/LF, we want Unix-style */
 #endif
 
@@ -3662,7 +3661,7 @@ read_comsub (fd, quoted)
       istring[istring_index++] = c;
 
 #if 0
-#if defined (__CYGWIN__)
+#if defined (__MSYS__)
       if (c == '\n' && istring_index > 1 && istring[istring_index - 2] == '\r')
 	{
 	  istring_index--;
@@ -3707,6 +3706,18 @@ read_comsub (fd, quoted)
   return istring;
 }
 
+#ifdef __MSYS__
+static inline void RemoveCR();
+static void
+RemoveCR (string)
+  char * string;
+{
+  char *pstr;
+  if (string && (pstr = strchr (string, '\0')) && *(--pstr) == '\r')
+    *pstr = '\0';
+}
+#endif
+
 /* Perform command substitution on STRING.  This returns a string,
    possibly quoted. */
 char *
@@ -3717,6 +3728,7 @@ command_substitute (string, quoted)
   pid_t pid, old_pid, old_pipeline_pgrp;
   char *istring;
   int result, fildes[2], function_value;
+  int i, closeit[3];
 
   istring = (char *)NULL;
 
@@ -3743,12 +3755,26 @@ command_substitute (string, quoted)
   if (subst_assign_varlist == 0 || garglist == 0)
     maybe_make_export_env ();	/* XXX */
 
+
+  for (i = 0; i <= 2; i++)
+    if (fcntl (i, F_GETFD, &result) != -1)
+      closeit[i] = 0;
+    else
+      {
+	open ("/dev/null", O_RDONLY);
+	closeit[i] = 1;
+      }
+
   /* Pipe the output of executing STRING into the current shell. */
   if (pipe (fildes) < 0)
     {
       sys_error ("cannot make pipe for command substitution");
       goto error_exit;
     }
+
+  for (i = 0; i <= 2; i++)
+    if (closeit[i])
+      close (i);
 
   old_pid = last_made_pid;
 #if defined (JOB_CONTROL)
@@ -3759,7 +3785,7 @@ command_substitute (string, quoted)
   cleanup_the_pipeline ();
 #endif
 
-  pid = make_child ((char *)NULL, 0);
+  pid = make_child ((char *)NULL, subshell_environment & SUBSHELL_ASYNC);
   if (pid == 0)
     /* Reset the signal handlers in the child, but don't free the
        trap strings. */
@@ -3794,21 +3820,8 @@ command_substitute (string, quoted)
 	  exit (EXECUTION_FAILURE);
 	}
 
-      /* If standard output is closed in the parent shell
-	 (such as after `exec >&-'), file descriptor 1 will be
-	 the lowest available file descriptor, and end up in
-	 fildes[0].  This can happen for stdin and stderr as well,
-	 but stdout is more important -- it will cause no output
-	 to be generated from this command. */
-      if ((fildes[1] != fileno (stdin)) &&
-	  (fildes[1] != fileno (stdout)) &&
-	  (fildes[1] != fileno (stderr)))
-	close (fildes[1]);
-
-      if ((fildes[0] != fileno (stdin)) &&
-	  (fildes[0] != fileno (stdout)) &&
-	  (fildes[0] != fileno (stderr)))
-	close (fildes[0]);
+      close (fildes[1]);
+      close (fildes[0]);
 
       /* The currently executing shell is not interactive. */
       interactive = 0;
@@ -3883,6 +3896,9 @@ command_substitute (string, quoted)
 	give_terminal_to (pipeline_pgrp, 0);
 #endif /* JOB_CONTROL */
 
+#ifdef __MSYS__
+      RemoveCR (istring);
+#endif
       return (istring);
     }
 }
