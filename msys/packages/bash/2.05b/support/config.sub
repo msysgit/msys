@@ -579,6 +579,10 @@ case $basic_machine in
 		basic_machine=i386-pc		# bash
 		os=-go32
 		;;
+	i386-msys)
+		basic_machine=i386-pc		# bash
+		os=-msys
+		;;
 	i386-mingw32)
 		basic_machine=i386-pc		# bash
 		os=-mingw32
@@ -1128,7 +1132,7 @@ case $os in
 	      | -ptx* | -coff* | -ecoff* | -winnt* | -domain* | -vsta* \
 	      | -udi* | -eabi* | -lites* | -ieee* | -go32* | -aux* \
 	      | -chorusos* | -chorusrdb* \
-	      | -cygwin* | -pe* | -psos* | -moss* | -proelf* | -rtems* \
+	      | -msys* | -cygwin* | -pe* | -psos* | -moss* | -proelf* | -rtems* \
 	      | -mingw32* | -linux-gnu* | -uxpv* | -beos* | -mpeix* | -udk* \
 	      | -interix* | -uwin* | -rhapsody* | -darwin* | -opened* \
 	      | -openstep* | -oskit* | -conix* | -pw32* | -nonstopux* \
