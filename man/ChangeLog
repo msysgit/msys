@@ -1,0 +1,12 @@
+2005-05-26  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Started recording ChangeLog entries.
+	
+	* ChangeLog: New file.
+
+2005-05-26  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Initial import based on man-1.5m2 distribution.
+
+	* All files (MAN-IMPORT): Tag assigned for `vendor' branch.
+	(MAN-1-5M2-MINGW): Tag assigned for initial state of `trunk'.
