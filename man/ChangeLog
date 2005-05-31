@@ -1,3 +1,7 @@
+2005-05-31  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	* man/it/makewhatis.8 ($Id$): make it match man-1.5m2 release.
+
 2005-05-26  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Started recording ChangeLog entries.
