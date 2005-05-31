@@ -1,5 +1,10 @@
 2005-05-31  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
+	* All files: Tagged MAN-1-5M2-AC; this is the starting point for
+	autoconf managed implementation.
+
+2005-05-31  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
 	Switch to autoconf management of configure script.
 
 	* All files: Tagged MAN-1-5M2-PRE-AC prior to switch.
