@@ -1,73 +1,131 @@
-#
 # Master Makefile for man, apropos, whatis, and makewhatis
+# Source: Makefile.in -- processed by configure, to create Makefile.
 #
-# Copyright (c) 1990, 1991, John W. Eaton.
-# Copyright (c) 1994-2001, Andries E. Brouwer
+# Copyright (C) 1990, 1991, John W. Eaton.
+# Copyright (C) 1994-2001, Andries E. Brouwer
+# Copyright (C) 2005, Keith D. Marshall <keithmarshall@users.sourceforge.net>
 #
-# You may distribute under the terms of the GNU General Public
-# License as specified in the README file that comes with the man 1.0
-# distribution.  
+# This file is part of the man package.
+#
+# man is free software; you can redistribute it and/or modify it under the
+# terms of the GNU General Public License as published by the Free Software
+# Foundation; either version 2, or (at your option) any later version.
+#
+# man is distributed in the hope that it will be useful, but WITHOUT ANY
+# WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+# FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+# details.
+#
+# You should have received a copy of the GNU General Public License along
+# with man; see the file COPYING.  If not, write to the Free Software
+# Foundation, 51 Franklin St - Fifth Floor, Boston, MA 02110-1301, USA.
 #
 # various changes - aeb, March 1994
 # use of catalogs - aeb, June 1994
+# autoconf hooks  - kdm, May 2005
+# VPATH support   - kdm, June 2005
 
+# To allow building in a separate build directory,
+# (when the "make" program in use supports the VPATH capability),
+# set up the srcdir mapping to VPATH.
+srcdir = @srcdir@
+VPATH = $(srcdir)
+
+# Other autoconf specified directory references.
+top_srcdir = @top_srcdir
+top_builddir = @top_builddir@
+
+# Compiler and installer.
 CC = @CC@
 INSTALL = @INSTALL@
 
+# Platform dependent file name extensions.
+EXEEXT = @EXEEXT@
+OBJEXT = @OBJEXT@
+
 pager = @pager@
 
-GS = -DGREPSILENT=\'@grepsilent@\'
-DEFS = @DEFS@ $(GS)
+DEFS = @DEFS@
+GREPSILENT = -DGREPSILENT=\"@man_grepsilent@\"
 CWARN = -Wall -Wstrict-prototypes -Wmissing-prototypes
 CWARNNP = -Wall
 
-.c.o:
-	$(CC) -c $(CWARN) $(CFLAGS) -I. $(DEFS) $<
+INCLUDES = -I$(srcdir) -I$(top_builddir)
+
+.c.$(OBJEXT):
+	$(CC) -c $(CWARN) $(CFLAGS) $(INCLUDES) $(DEFS) $<
 
 # LDFLAGS = -g
-LDFLAGS = -s
-
-LIBOBJS = @LIBOBJS@
+# LDFLAGS = -s
 
 all: man man.conf apropos whatis makewhatis
 
-MANOBJS = man.o manfile.o manpath.o man-config.o man-getopt.o \
-	man-iconv.o to_cat.o different.o gripes.o glob.o util.o msg.o
+MANOBJS = \
+  man.$(OBJEXT) manfile.$(OBJEXT) manpath.$(OBJEXT) \
+  man-config.$(OBJEXT) man-getopt.$(OBJEXT) man-iconv.$(OBJEXT) \
+  to_cat.$(OBJEXT) different.$(OBJEXT) gripes.$(OBJEXT) \
+  glob.$(OBJEXT) util.$(OBJEXT) msg.$(OBJEXT)
 
-man: $(MANOBJS) $(LIBOBJS)
-	$(CC) $(LDFLAGS) $(GS) -o man $(MANOBJS) $(LIBOBJS) $(LIBS)
+WIN32MANOBJS = winposix.$(OBJEXT)
+
+man: $(MANOBJS) $(WIN32MANOBJS) $(LIBS)
+	$(CC) $(LDFLAGS) -o man $(MANOBJS) $(WIN32MANOBJS) $(LIBS)
+
+man.$(OBJEXT): man.c
+	$(CC) -c $(CWARN) $(CFLAGS) $(INCLUDES) $(DEFS) $(GREPSILENT) man.c
 
 msg.c gripedefs.h: ../msgs/mess.en makemsg
 	./makemsg ../msgs/mess.en gripedefs.h msg.c
 
+makemsg: makemsg.$(OBJEXT)
+
 # glob.c does not have prototypes
-glob.o: glob.c ndir.h
-	$(CC) -c $(CWARNNP) $(CFLAGS) -I. $(DEFS) glob.c
+glob.$(OBJEXT): glob.c ndir.h
+	$(CC) -c $(CWARNNP) $(CFLAGS) $(INCLUDES) $(DEFS) glob.c
 
-man-config.o man-getopt.o man.o manpath.o to_cat.o: defs.h
-different.o man.o: different.h
-man.o manfile.o: glob.h
-different.o gripes.o man-config.o man-getopt.o man.o manpath.o util.o: gripes.h gripedefs.h
-different.o man-config.o man-getopt.o man.o manpath.o: man-config.h
-gripes.o man-config.o man-getopt.o man.o manpath.o util.o: man.h
-man-getopt.o man.o manpath.o: man-getopt.h
-man.o manfile.o to_cat.o: manfile.h
-man.o man-iconv.o: man-iconv.h
-man.o manpath.o: manpath.h
-man-config.o: paths.h
-different.o man-config.o man-getopt.o man.o manpath.o util.o: util.h
-man-getopt.o: version.h
-msg.o: msg.c
-gripes.o: ../catopen/catopen.c
+man-config.$(OBJEXT) man-getopt.$(OBJEXT) man.$(OBJEXT) manpath.$(OBJEXT) \
+to_cat.$(OBJEXT): defs.h
 
-man.conf:	man.conf.in ../conf_script
-	../conf_script man.conf
+different.$(OBJEXT) man.$(OBJEXT): different.h
 
-paths.h:	paths.h.in ../conf_script
-	../conf_script paths.h
+man.$(OBJEXT) manfile.$(OBJEXT): glob.h
 
-version.h: ../version Makefile
-	vers=`sed -e s/man-// ../version`; \
+different.$(OBJEXT) gripes.$(OBJEXT) man-config.$(OBJEXT) man-getopt.$(OBJEXT) \
+man.$(OBJEXT) manpath.$(OBJEXT) util.$(OBJEXT): gripes.h gripedefs.h
+
+different.$(OBJEXT) man-config.$(OBJEXT) man-getopt.$(OBJEXT) \
+man.$(OBJEXT) manpath.$(OBJEXT): man-config.h
+
+gripes.$(OBJEXT) man-config.$(OBJEXT) man-getopt.$(OBJEXT) \
+man.$(OBJEXT) manpath.$(OBJEXT) util.$(OBJEXT): man.h
+
+man-getopt.$(OBJEXT) man.$(OBJEXT) manpath.$(OBJEXT): man-getopt.h
+
+man.$(OBJEXT) manfile.$(OBJEXT) to_cat.$(OBJEXT): manfile.h
+
+man.$(OBJEXT) man-iconv.$(OBJEXT): man-iconv.h
+
+man.$(OBJEXT) manpath.$(OBJEXT): manpath.h
+
+man-config.$(OBJEXT): paths.h
+
+different.$(OBJEXT) man-config.$(OBJEXT) man-getopt.$(OBJEXT) \
+man.$(OBJEXT) manpath.$(OBJEXT) util.$(OBJEXT): util.h
+
+man-getopt.$(OBJEXT): version.h
+
+msg.$(OBJEXT): msg.c
+
+gripes.$(OBJEXT): $(top_srcdir)/catopen/catopen.c
+
+man.conf: man.conf.in $(config_sed)
+	sed -f $(top_builddir)/config.sed $(srcdir)/man.conf.in > man.conf
+
+paths.h: paths.h.in $(config_sed)
+	sed -f $(top_builddir)/config.sed $(srcdir)/paths.h.in > paths.h
+
+version.h: $(top_srcdir)/version Makefile
+	vers=`sed -e s/man-// $(top_srcdir)/version`; \
 	echo "static char version[] = \"$$vers\";" > version.h
 
 apropos: apropos.sh Makefile
@@ -109,7 +167,8 @@ install: all apropos whatis makewhatis
 	$(INSTALL) -c -m 644 man.conf $(MANCONFIG)
 
 clean:
-	rm -f *.o *~ core man apropos whatis makewhatis makemsg
+	rm -f *.$(OBJEXT) *~ core man apropos whatis makewhatis makemsg
+	test -n "$(EXEEXT)" && rm -f *$(EXEEXT)
 
 spotless: clean
 	rm -f Makefile config.status paths.h version.h man.conf

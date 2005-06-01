@@ -1,3 +1,19 @@
+2005-06-01  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Adaptation to autoconf configuration and build framework.
+
+	* install-sh: New file;  autoconf generated configure requires it;
+	source it from autoconf 2.59 distribution.
+
+	* Makefile.in, src/Makefile.in: Add comments in file headers,
+	to bring them up to a GPL conforming standard.
+	Add standard autoconf path name substitutions; use them.
+	(OBJEXT, EXEEXT): Added autoconf substitutions; use them.
+	(VPATH): Defined to autoconf specified $(srcdir).
+
+	* gencat/Makefile: Renamed...
+	* gencat/Makefile.in: ...to this; need it so for VPATH support.
+
 2005-05-31  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	* All files: Tagged MAN-1-5M2-AC; this is the starting point for

@@ -1,29 +1,59 @@
 # Makefile for man
-# [need allow_null_glob_expansion=true]
-# The parts behind % are removed when no message catalogs should be installed
+# Source: Makefile.in -- processed by configure, to create Makefile.
+#
+# Copyright (C) 2005, Keith D. Marshall <keithmarshall@users.sourceforge.net>
+#
+# This file is part of the man package.
+#
+# man is free software; you can redistribute it and/or modify it under the
+# terms of the GNU General Public License as published by the Free Software
+# Foundation; either version 2, or (at your option) any later version.
+#
+# man is distributed in the hope that it will be useful, but WITHOUT ANY
+# WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+# FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+# details.
+#
+# You should have received a copy of the GNU General Public License along
+# with man; see the file COPYING.  If not, write to the Free Software
+# Foundation, 51 Franklin St - Fifth Floor, Boston, MA 02110-1301, USA.
 
-all:	Makefile conf_script source manhtml manpages %messages
+# To allow building in a separate build directory,
+# (when the "make" program in use supports the VPATH capability),
+# set up the srcdir mapping to VPATH.
+
+srcdir = @srcdir@
+VPATH = $(srcdir)
+
+# Allow "configure" to choose if message catalogues will be built,
+# and subsequently installed.
+
+# (Disabled at present; uncomment to activate)...
+# make_messages = @make_messages@
+# install_messages = @make_install_messages@
+
+all:	Makefile $(config_sed) source manhtml manpages $(make_messages)
 	@echo; echo 'You can now do "make install"'
 
 Makefile: Makefile.in configure
 	@echo "Please run configure first"
 	exit 1
 
-conf_script:	configure
+config.sed: configure
 	@echo "Please run configure first"
 	exit 1
 
-src/Makefile:	conf_script src/Makefile.in
-	cd src; ../conf_script Makefile
+src/Makefile: $(config_sed) src/Makefile.in
+	cd src; sed -f ../config.sed Makefile.in > Makefile
 
-man2html/Makefile:	conf_script man2html/Makefile.in
-	cd man2html; ../conf_script Makefile			
+man2html/Makefile: $(config_sed) man2html/Makefile.in
+	cd man2html; sed -f ../config.sed Makefile.in > Makefile
 
-man/Makefile:	conf_script man/Makefile.in
-	cd man; ../conf_script Makefile
+man/Makefile: $(config_sed) man/Makefile.in
+	cd man; sed -f ../config.sed Makefile.in > Makefile
 
-msgs/Makefile:	conf_script msgs/Makefile.in
-	cd msgs; ../conf_script Makefile
+msgs/Makefile: $(config_sed) msgs/Makefile.in
+	cd msgs; sed -f ../config.sed Makefile.in > Makefile
 
 makefiles: src/Makefile man2html/Makefile man/Makefile msgs/Makefile
 
@@ -36,22 +66,29 @@ manhtml: man2html/Makefile
 manpages: man/Makefile
 	cd man; $(MAKE) subdirs
 
-%messages: gencat/gencat msgs/Makefile
-%	cd msgs; $(MAKE)
+messages: gencat/gencat msgs/Makefile
+	cd msgs; $(MAKE)
 
-%gencat/gencat:
-%	cd gencat; $(MAKE)
+gencat/gencat:
+	cd gencat; $(MAKE)
 
-install: src/Makefile man/Makefile man2html/Makefile %msgs/Makefile
+install: install-core $(install_messages) install-done
+
+install-core: src/Makefile man/Makefile man2html/Makefile
 	cd src; $(MAKE) install
 	cd man2html; $(MAKE) install
 	cd man; $(MAKE) installsubdirs
-%	cd msgs; $(MAKE) install
+
+install-messages: msgs/Makefile
+	cd msgs; $(MAKE) install
+
+install-done:
 	@echo; echo 'Done.'
-	@echo 'In case you want to browse man pages using a www browser,'
+	@echo 'If you would like to enable a www browser for man pages.'
 	@echo '"cd man2html", read README, and perhaps "make install-scripts".'
 #	@echo; echo 'Done. In case you want to mount /usr read-only, please'
-#	@echo 'install a symlink /usr/man/whatis -> /var/catman/whatis, or so.'
+#	@echo 'install a symlink /usr/man/whatis -> /var/catman/whatis,'
+#	@echo '(or to whatever cat page location is appropriate).'
 
 clean: src/Makefile man/Makefile msgs/Makefile man2html/Makefile
 	cd src; $(MAKE) clean
@@ -67,7 +104,7 @@ spotless distclean reallyclean: clean
 	cd man; $(MAKE) spotlesssubdirs
 	cd msgs; $(MAKE) spotless
 	cd gencat; $(MAKE) clean
-	rm -f conf_script Makefile
+	rm -f config.sed Makefile
 
 DISTR = COPYING README README.HP README.RedHat README.GNU-WIN32 INSTALL \
 	Makefile.in configure src man2html man msgs gencat catopen misc
