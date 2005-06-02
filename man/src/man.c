@@ -18,18 +18,41 @@
  * Some more fixes, Pauline Middelink & aeb, Oct 1994
  * man -K: aeb, Jul 1995
  * Split off of manfile for man2html, aeb, New Year's Eve 1997
+ * Portability enhancements - kdm, June 2005
  */
+#include "compat.h"
 
 #include <stdio.h>
 #include <ctype.h>
+
+#if defined(HAVE_STRING_H)
 #include <string.h>
+#elif defined(HAVE_STRINGS_H)
+#include <strings.h>
+#endif
+
+#ifdef HAVE_STDLIB_H
 #include <stdlib.h>
+#endif
+
+#ifdef HAVE_SYS_FILE_H
 #include <sys/file.h>
+#endif
+
+#ifdef HAVE_SYS_STAT_H
 #include <sys/stat.h>		/* for chmod */
+#endif
+
 #include <signal.h>
 #include <errno.h>
+
+#ifdef HAVE_UNISTD_H
 #include <unistd.h>
+#endif
+
+#ifdef HAVE_LOCALE_H
 #include <locale.h>
+#endif
 
 #ifndef R_OK
 #define R_OK 4
@@ -98,7 +121,9 @@ int do_compress = 0;
  * joey, 950902
  */
 
-#include <sys/ioctl.h>
+#ifdef HAVE_SYS_IOCTL_H
+# include <sys/ioctl.h>
+#endif
 
 int line_length = 80;
 int ll = 0;
@@ -1102,10 +1127,10 @@ do_global_apropos (char *name, char *section) {
 	       for( ; *gf; gf++) {
 		    const char *expander = get_expander (*gf);
 		    if (expander)
-			 command = my_xsprintf("%s %S | grep -%c '%Q'",
+			 command = my_xsprintf("%s %S | grep %s '%Q'",
 				 expander, *gf, GREPSILENT, name);
 		    else
-			 command = my_xsprintf("grep -%c '%Q' %S",
+			 command = my_xsprintf("grep %s '%Q' %S",
 				 GREPSILENT, name, *gf);
 		    res = do_system_command (command, 1);
 		    free (command);
@@ -1217,9 +1242,16 @@ main (int argc, char **argv) {
 #endif
 
 
-#ifndef __FreeBSD__ 
-     /* Slaven Rezif: FreeBSD-2.2-SNAP does not recognize LC_MESSAGES. */
+/* #ifndef __FreeBSD__  */
+/* Slaven Rezif: FreeBSD-2.2-SNAP does not recognize LC_MESSAGES. */
+/* Keith Marshall: neither does MinGW, but why be platform specific?
+ *   Don't setlocale for either of LC_CTYPE or LC_MESSAGES,
+ *   unless they are defined
+ */
+#ifdef LC_CTYPE
      setlocale(LC_CTYPE, "");	/* used anywhere? maybe only isdigit()? */
+#endif
+#ifdef LC_MESSAGES
      setlocale(LC_MESSAGES, "");
 #endif
 

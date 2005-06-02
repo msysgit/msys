@@ -1,7 +1,17 @@
+#include "compat.h"
+
 #include <stdio.h>
+#ifdef HAVE_STDLIB_H
 #include <stdlib.h>
+#endif
+
+#ifdef HAVE_UNISTD_H
 #include <unistd.h>
+#endif
+
+#ifdef HAVE_STRING_H
 #include <string.h>
+#endif
 
 #include "defs.h"
 #include "gripes.h"
@@ -250,13 +260,14 @@ man_getopt (int argc, char **argv) {
 	Ignore errors (out of memory?) */
 
      if (pager && (global_apropos || apropos || whatis)) {
-#if defined(__sgi__) || defined(__sun__) || defined(sun)
+
+#ifdef HAVE_SETENV
+	     setenv("PAGER", pager, 1);
+#else
 	     int len = 5+1+strlen(pager)+1;
 	     char *str = my_malloc(len);
 	     sprintf(str, "PAGER=%s", pager);
 	     putenv(str);
-#else
-	     setenv("PAGER", pager, 1);
 #endif
      }
 

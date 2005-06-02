@@ -1,13 +1,16 @@
+#include "compat.h"
+
 #include <stdio.h>
+
+#ifdef STDC_HEADERS
 #include <stdarg.h>
 #include <stdlib.h>
+#endif
 
 #include "gripes.h"
 #include "man.h"		/* for progname */
 
 extern char *msg[];
-
-static char *mantexts = "man";		/* e.g. /usr/lib/locale/%L/man.cat */
 
 #ifdef NONLS
 
@@ -24,7 +27,9 @@ getmsg (int n) {
     return s;
 }
 
-#else /* NONLS */
+#else /* NLS (i.e. ! NONLS) */
+
+static char *mantexts = "man";		/* e.g. /usr/lib/locale/%L/man.cat */
 
 #include <nl_types.h>
 #include "../catopen/catopen.c"

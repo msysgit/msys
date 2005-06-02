@@ -20,12 +20,27 @@
  * aeb - 940315
  */
 
+#include "compat.h"
+
 #include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
+
+#ifdef STDC_HEADERS
+# include <stdlib.h>
+# include <string.h>
+#endif
+
+#ifdef HAVE_UNISTD_H
 #include <unistd.h>
+#endif
+
+#ifdef HAVE_SYS_TYPES_H
 #include <sys/types.h>
+#endif
+
+#ifdef HAVE_SYS_STAT_H
 #include <sys/stat.h>
+#endif
+
 
 /* not always in <string.h> */
 extern char *index(const char *, int);
@@ -44,7 +59,7 @@ static int mandirlistlth = 0;
 static int mandirlistmax = 0;
 
 /*
- * Input: a string, with : as separator
+ * Input: a string, with PATH_SEPARATOR_CHAR as separator
  * For each entry in the string, call fn.
  */
 static void
@@ -52,9 +67,9 @@ split (char *string, void (*fn)(char *, int), int perrs) {
      char *p, *q, *r;
 
      if (string) {
-          p = my_strdup(string);
+          p = my_strdup(win32posix(string));
 	  for (q = p; ; ) {
-	       r = index(q, ':');
+	       r = index(q, PATH_SEPARATOR_CHAR);
 	       if (r) {
 		    *r = 0;
 		    fn (q, perrs);
@@ -73,9 +88,9 @@ split2 (char *s, char *string, void (*fn)(char *, char *, int), int perrs) {
      char *p, *q, *r;
 
      if (string) {
-          p = my_strdup(string);
+          p = my_strdup(win32posix(string));
 	  for (q = p; ; ) {
-	       r = index(q, ':');
+	       r = index(q, PATH_SEPARATOR_CHAR);
 	       if (r) {
 		    *r = 0;
 		    fn (s, q, perrs);
@@ -176,10 +191,10 @@ add_to_list (char *dir, char *lang, int perrs) {
 	  lang = "";
 
      /* only add absolute paths */
-     if (*dir != '/') {
+     if (!isabspath(dir)) {
 	  if (!getcwd(cwd, sizeof(cwd)))
 	       return; /* cwd not readable, or pathname very long */
-	  if (cwd[0] != '/')
+	  if (!isabspath(win32posix(cwd)))
 	       return; /* strange.. */
 	  if (strlen(dir) + strlen(lang) + strlen(cwd) + 3 > sizeof(cwd))
 	       return;

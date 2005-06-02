@@ -14,19 +14,42 @@
  * Austin, Texas  78712
  */
 
+#include "compat.h"
+
 #include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <stdarg.h>
+
+#ifdef STDC_HEADERS
+# include <stdlib.h>
+# include <stdarg.h>
+# include <string.h>
+#endif
+
 #include <signal.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <sys/wait.h>
-#include <unistd.h>
+
+#ifdef HAVE_SYS_TYPES_H
+# include <sys/types.h>
+#endif
+
+#ifdef HAVE_SYS_STAT_H
+# include <sys/stat.h>
+#endif
+
+#ifdef HAVE_SYS_WAIT_H
+# include <sys/wait.h>
+#endif
+
+#ifdef HAVE_UNISTD_H
+# include <unistd.h>
+#endif
 
 #include "util.h"
 #include "gripes.h"
 #include "man.h"		/* for debug */
+#include "man-config.h"		/* for getval */
+
+#ifdef HAVE_PROCESS_H
+# include "winexec.h"
+#endif
 
 /*
  * Extract last element of a name like /foo/bar/baz.
@@ -34,8 +57,7 @@
 const char *
 mkprogname (const char *s) {
      const char *t;
-
-     t = strrchr (s, '/');
+     t = strrchr (win32posix (s), '/');
      if (t == (char *)NULL)
 	  t = s;
      else
@@ -91,7 +113,7 @@ get_permissions (void) {
 void
 no_privileges (void) {
      if (suid) {
-#if !defined (__CYGWIN32__) && !defined (__BEOS__)
+#if !defined(_WIN32) && !defined (__CYGWIN32__) && !defined (__BEOS__)
 	  setreuid(ruid, ruid);
 	  setregid(rgid, rgid);
 #endif
@@ -116,13 +138,19 @@ static void catch_int(int a) {
 static int
 system1 (const char *command) {
 	void (*prev_handler)(int) = signal (SIGINT,catch_int);
+#ifdef _WIN32
+	int ret;
+	static const char *shell = NULL;
+	if( shell == NULL ) shell = getval( "SHELL" );
+	ret = spawnlp( _P_WAIT, shell, shell, "-c", command, NULL );
+#else
 	int ret = system(command);
 
 	/* child terminated with signal? */
 	if (WIFSIGNALED(ret) &&
 	    (WTERMSIG(ret) == SIGINT || WTERMSIG(ret) == SIGQUIT))
 		exit(1);
-
+#endif
 	/* or we caught an interrupt? */
 	if (interrupted)
 		exit(1);
@@ -133,6 +161,10 @@ system1 (const char *command) {
 
 static int
 my_system (const char *command) {
+
+#ifdef _WIN32
+     return system1 (command);
+#else
      int pid, pid2, status, stat;
 
      if (!suid)
@@ -172,11 +204,14 @@ my_system (const char *command) {
 	  return WEXITSTATUS(stat);
      fatal (CHILD_TERMINATED_ABNORMALLY, command);
      return -1;			/* not reached */
+#endif
 }
 
 FILE *
 my_popen(const char *command, const char *type) {
+#ifndef _WIN32
      FILE *r;
+#endif
 
      if (!suid)
 	  return popen(command, type);

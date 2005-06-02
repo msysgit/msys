@@ -125,8 +125,8 @@ paths.h: paths.h.in $(config_sed)
 	sed -f $(top_builddir)/config.sed $(srcdir)/paths.h.in > paths.h
 
 version.h: $(top_srcdir)/version Makefile
-	vers=`sed -e s/man-// $(top_srcdir)/version`; \
-	echo "static char version[] = \"$$vers\";" > version.h
+	version=`sed -e s/man-// $(top_srcdir)/version`; \
+	echo "static char version[] = \"$$version\";" > version.h
 
 apropos: apropos.sh Makefile
 	rm -f apropos
@@ -134,7 +134,7 @@ apropos: apropos.sh Makefile
 	    -e 's,%version%,@version@,' \
 	    -e 's,%pager%,@pager@,' -e 's,%manpathoption%,@manpathoption@,' \
 	    -e 's,%grepsilent%,@grepsilent@,' \
-		apropos.sh > apropos
+		$(srcdir)/apropos.sh > apropos
 	chmod +x apropos
 
 whatis: apropos.sh Makefile
@@ -143,13 +143,13 @@ whatis: apropos.sh Makefile
 	    -e 's,%version%,@version@,' \
 	    -e 's,%pager%,@pager@,' -e 's,%manpathoption%,@manpathoption@,' \
 	    -e 's,%grepsilent%,@grepsilent@,' \
-		apropos.sh > whatis
+		$(srcdir)/apropos.sh > whatis
 	chmod +x whatis
 
 makewhatis: makewhatis.sh Makefile
 	rm -f makewhatis
 	sed -e 's,%version%,@version@,' \
-	    -e 's,%awk%,@awk@,' makewhatis.sh > makewhatis
+	    -e 's,%awk%,@awk@,' $(srcdir)/makewhatis.sh > makewhatis
 	chmod +x makewhatis
 
 MANCONFIG=$(PREFIX)@man_config_file@

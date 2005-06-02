@@ -64,7 +64,8 @@ AC_CHECK_FUNCS([strchr strdup strrchr strstr])
 AC_CHECK_FUNCS([bzero getcwd memset putenv setenv])
 AC_CHECK_FUNCS([nl_langinfo setlocale])
 #
-AC_CONFIG_FILES([Makefile src/Makefile src/paths.h])
+AC_CONFIG_FILES([Makefile])
+AC_CONFIG_FILES([src/Makefile src/paths.h src/man.conf])
 AC_CONFIG_FILES([man/Makefile gencat/Makefile msgs/Makefile])
 AC_CONFIG_FILES([man2html/Makefile])
 AC_OUTPUT

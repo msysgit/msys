@@ -1,5 +1,82 @@
 2005-06-02  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
+	Make code in src directory compile on Win32/MinGW platform.
+
+	* configure.ac (AC_CONFIG_FILES): add src/man.conf.
+
+	* configure: Regenerated.
+
+	* src/Makefile.in (apropos.sh): Use $(srcdir) to find it.
+
+	* src/compat.h: New file; it defines platform specific dependencies
+	for use within C compilation units.
+
+	* src/makemsg.c (compat.h): Include unconditionally.
+	(stdlib.h, unistd.h, string.h): Include conditionally.
+
+	* src/man.c (compat.h): Include unconditionally.
+	(locale.h, stdlib.h, string.h, sys/file.h, sys/stat.h, unistd.h):
+	Previously included unconditionally; make them conditional.
+	(strings.h): Include conditionally, unless we already have string.h.
+	(GREPSILENT): Change from single character definition to string;
+	format it using "%s".  (Rationale: UNIX SysV grep can't use -q or -s
+	to suppress output; must redirect to null device stream).
+	(setlocale): Some platforms don't define LC_MESSAGES; don't use it
+	when we don't have it.  Similarly for LC_CTYPE.
+
+	* src/manpath.c (compat.h): Include unconditionally.
+	(stdlib.h, string.h, sys/types.h, sys/stat.h, unistd.h): Previously
+	included unconditionally; make them conditional.
+	(split, split2): Use win32posix() function to ensure that Win32 path
+	names include only slashes, and no backslashes;
+	Use PATH_SEPARATOR_CHAR, defined in compat.h, to locate point at which
+	to split a path list; previously these assumed splitting at a colon.
+	(add_to_list): Use isabspath(dir) macro, defined in compat.h, to check
+	if dir is specified with absolute path name; previously required first
+	character to be a slash.
+
+	* src/man-config.c, src/to_cat.c (compat.h): Include unconditionally.
+	(stdlib.h, string.h): Include conditionally; were previously included
+	unconditionally.
+
+	* src/man-getopt.c (compat.h): Include unconditionally.
+	(stdlib.h, string.h, unistd.h): Include conditionally; were previously
+	included unconditionally.
+	(man_getopt): Use setenv() if configure defined HAVE_SETENV; else use
+	putenv(); previously used dedicated logic for specific platforms.
+
+	* src/gripes.c (compat.h): Include unconditionally.
+	(stdarg.h, stdlib.h): Include conditionally; were previously included
+	unconditionally.
+	(mantexts): Don't declare it when NONLS is in effect.
+
+	* src/glob.c (compat.h): Include unconditionally.
+	(config.h): Included by compat.h; don't care if SHELL defined.
+
+	* src/util.c (compat.h): Include unconditionally.
+	(stdarg.h, stdlib.h, string.h, unistd.h): Include conditionally; were
+	previously included unconditionally.
+	(sys/stat.h, sys/types.h, sys/wait.h): Likewise.
+	(man-config.h): Include unconditionally; previously not included.  It
+	prototypes the getval() function, used to get the name of the SHELL,
+	which _WIN32 will spawnlp() in system1().
+	(winexec.h): Include it when configure says HAVE_PROCESS_H; it is a
+	wrapper for process.h, to work around an argument parsing bug in
+	Win32's spawnlp(), and similar functions.
+	(mkprogname): Use win32posix() to avoid backslashes in Win32 style
+	path names.
+	(noprivileges): Don't call setreuid() or setregid() in _WIN32.
+	(system1): Use spawnlp() rather than system(), in _WIN32, to invoke
+	the man command pipeline.
+	(my_system): Never use fork() in _WIN32; never run asynchronous _WIN32
+	pipelines, therefore no need to call wait().
+	(my_popen): FILE variable `r' unused in _WIN32; don't declare it.
+
+	* src/winposix.c: New file; it defines the win32posix() function, used
+	to replace backslashes with slashes, in Win32 path names.
+
+2005-06-02  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
 	* src/Makefile.in (INCLUDES): Add "-I.".
 	(top_srcdir): Correct definition, and...
 	(msg.c, gripedefs.h): ...use it to locate msgs/mess.en.

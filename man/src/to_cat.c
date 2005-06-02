@@ -1,6 +1,11 @@
+#include "compat.h"
+
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+
+#ifdef STDC_HEADERS
+# include <stdlib.h>
+# include <string.h>
+#endif
 
 extern char *rindex (const char *, int);	/* not always in <string.h> */
 

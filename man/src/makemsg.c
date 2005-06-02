@@ -17,13 +17,28 @@
  * or
  *	makemsg -c input message_catalog
  */
+
+#include "compat.h"
+
 #include <stdio.h>
+#ifdef HAVE_STDLIB_H
+#include <stdlib.h>
+#endif
+
+#ifdef HAVE_UNISTD_H
 #include <unistd.h>
+#endif
+
 #ifdef __QNX__
 #include <unix.h>
 #endif
+
+#ifdef HAVE_STRING_H
+#include <string.h>
+#else
 extern char *index(const char *, int);
 extern char *rindex(const char *, int);
+#endif
 
 #define BUFSIZE 4096
 

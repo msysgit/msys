@@ -19,9 +19,7 @@
    Unix programs use to perform this function.  I wrote this from scratch
    based on specifications for the pattern matching.  --RMS.  */
 
-#ifdef SHELL
-#include "config.h"
-#endif /* SHELL */
+#include "compat.h"
 
 #include <sys/types.h>
 

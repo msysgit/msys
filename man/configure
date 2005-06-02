@@ -6757,7 +6757,9 @@ fi
 done
 
 #
-                              ac_config_files="$ac_config_files Makefile src/Makefile src/paths.h"
+          ac_config_files="$ac_config_files Makefile"
+
+                              ac_config_files="$ac_config_files src/Makefile src/paths.h src/man.conf"
 
                               ac_config_files="$ac_config_files man/Makefile gencat/Makefile msgs/Makefile"
 
@@ -7291,6 +7293,7 @@ do
   "Makefile" ) CONFIG_FILES="$CONFIG_FILES Makefile" ;;
   "src/Makefile" ) CONFIG_FILES="$CONFIG_FILES src/Makefile" ;;
   "src/paths.h" ) CONFIG_FILES="$CONFIG_FILES src/paths.h" ;;
+  "src/man.conf" ) CONFIG_FILES="$CONFIG_FILES src/man.conf" ;;
   "man/Makefile" ) CONFIG_FILES="$CONFIG_FILES man/Makefile" ;;
   "gencat/Makefile" ) CONFIG_FILES="$CONFIG_FILES gencat/Makefile" ;;
   "msgs/Makefile" ) CONFIG_FILES="$CONFIG_FILES msgs/Makefile" ;;

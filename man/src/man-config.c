@@ -15,9 +15,14 @@
  *	# Comment
  */
 
+#include "compat.h"
+
 #include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
+
+#ifdef STDC_HEADERS
+# include <stdlib.h>
+# include <string.h>
+#endif
 
 #include "defs.h"
 #include "man-config.h"
