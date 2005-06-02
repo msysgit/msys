@@ -32,7 +32,7 @@ srcdir = @srcdir@
 VPATH = $(srcdir)
 
 # Other autoconf specified directory references.
-top_srcdir = @top_srcdir
+top_srcdir = @top_srcdir@
 top_builddir = @top_builddir@
 
 # Compiler and installer.
@@ -50,7 +50,7 @@ GREPSILENT = -DGREPSILENT=\"@man_grepsilent@\"
 CWARN = -Wall -Wstrict-prototypes -Wmissing-prototypes
 CWARNNP = -Wall
 
-INCLUDES = -I$(srcdir) -I$(top_builddir)
+INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
 
 .c.$(OBJEXT):
 	$(CC) -c $(CWARN) $(CFLAGS) $(INCLUDES) $(DEFS) $<
@@ -72,16 +72,16 @@ man: $(MANOBJS) $(WIN32MANOBJS) $(LIBS)
 	$(CC) $(LDFLAGS) -o man $(MANOBJS) $(WIN32MANOBJS) $(LIBS)
 
 man.$(OBJEXT): man.c
-	$(CC) -c $(CWARN) $(CFLAGS) $(INCLUDES) $(DEFS) $(GREPSILENT) man.c
+	$(CC) -c $(CWARN) $(CFLAGS) $(INCLUDES) $(DEFS) $(GREPSILENT) $(srcdir)/man.c
 
-msg.c gripedefs.h: ../msgs/mess.en makemsg
-	./makemsg ../msgs/mess.en gripedefs.h msg.c
+msg.c gripedefs.h: $(top_srcdir)/msgs/mess.en makemsg
+	./makemsg $(top_srcdir)/msgs/mess.en gripedefs.h msg.c
 
 makemsg: makemsg.$(OBJEXT)
 
 # glob.c does not have prototypes
 glob.$(OBJEXT): glob.c ndir.h
-	$(CC) -c $(CWARNNP) $(CFLAGS) $(INCLUDES) $(DEFS) glob.c
+	$(CC) -c $(CWARNNP) $(CFLAGS) $(INCLUDES) $(DEFS) $(srcdir)/glob.c
 
 man-config.$(OBJEXT) man-getopt.$(OBJEXT) man.$(OBJEXT) manpath.$(OBJEXT) \
 to_cat.$(OBJEXT): defs.h

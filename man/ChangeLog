@@ -1,3 +1,10 @@
+2005-06-02  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	* src/Makefile.in (INCLUDES): Add "-I.".
+	(top_srcdir): Correct definition, and...
+	(msg.c, gripedefs.h): ...use it to locate msgs/mess.en.
+	(man.c, glob.c): Use $(srcdir) to locate source.
+
 2005-06-01  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Adaptation to autoconf configuration and build framework.
