@@ -20,7 +20,7 @@
 #include <ctype.h>
 #include <sys/stat.h>
 #include "defs.h"
-#include "../src/version.h"
+#include "version.h"
 
 /* BSD mandoc Bd/Ed example(?) blocks */
 #define BD_LITERAL  1

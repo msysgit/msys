@@ -30,8 +30,12 @@ version = @PACKAGE_VERSION@
 srcdir = @srcdir@
 VPATH = $(srcdir)
 
+# Other autoconf defined path names.
+top_builddir = @top_builddir@
+
 CC = @CC@
-CFLAGS = -Wall -Wstrict-prototypes -Wmissing-prototypes -O
+CWARN = -Wall -Wstrict-prototypes -Wmissing-prototypes
+CFLAGS = $(CWARN) -O -I$(top_builddir)/src
 OBJECTS = man2html.o cgibase.o abbrev.o strdefs.o
 bindir = $(PREFIX)/usr/bin
 mandir = $(PREFIX)@mandir@
@@ -42,13 +46,13 @@ cgigroup = nobody
 
 all: man2html hman
 
-man2html:	$(OBJECTS)
+man2html: $(OBJECTS)
 	$(CC) $(LDFLAGS) -o man2html $(OBJECTS)
 
-# man2html:	../src/version.h
+# man2html: $(top_builddir)/src/version.h
 
 # This installs the man2html utility
-install:	man2html
+install: man2html
 	install -m 755 man2html $(DESTDIR)/$(bindir)
 	mkdir -p $(DESTDIR)/$(mandir)/man1
 	install -m 644 man2html.1 $(DESTDIR)/$(mandir)/man1/man2html.@man1ext@
@@ -81,7 +85,7 @@ install-glimpse-stuff:
 # you can set MANHTMLHOST if the pages are not on localhost.
 hman: hman.sh
 	rm -f hman
-	sed -e 's,%version%,$(package)-$(version),' hman.sh > hman
+	sed -e 's,%version%,$(package)-$(version),' $(srcdir)/hman.sh > hman
 
 install-hman: hman
 	install -m 555 hman $(bindir)/hman
