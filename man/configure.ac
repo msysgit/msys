@@ -1,4 +1,8 @@
 # -*- Autoconf -*-  configure.ac for man.
+
+AC_PREREQ(2.59)
+AC_INIT(man,1.5m3)
+
 # Copyright (C) 2005 by Keith Marshall <keithmarshall@users.sourceforge.net>
 #
 # This file is part of the man package.
@@ -17,21 +21,19 @@
 # Foundation, 51 Franklin St - Fifth Floor, Boston, MA 02110-1301, USA.
 #
 # Process this file with autoconf to produce a configure script.
-# 
-AC_INIT
-AC_PREREQ(2.59)
+ 
 AC_CONFIG_SRCDIR([src/man.c])
 AC_CONFIG_HEADER([config.h])
-#
+
 # Checks for programs.
 AC_PROG_AWK
 AC_PROG_CC
 AC_PROG_INSTALL
 AC_PROG_LN_S
 AC_PROG_MAKE_SET
-#
+
 # Checks for libraries.
-#
+
 # Checks for header files.
 AC_HEADER_STDC
 AC_FUNC_ALLOCA
@@ -41,14 +43,14 @@ AC_CHECK_HEADERS([fcntl.h sys/file.h sys/ioctl.h])
 AC_CHECK_HEADERS([memory.h stdlib.h sys/param.h unistd.h])
 AC_CHECK_HEADERS([langinfo.h locale.h nl_types.h])
 AC_HEADER_SYS_WAIT
-#
+
 # Checks for typedefs, structures, and compiler characteristics.
 AC_C_CONST
 AC_C_INLINE
 AC_TYPE_OFF_T
 AC_TYPE_SIZE_T
 AC_STRUCT_TM
-#
+
 # Checks for library functions.
 AC_FUNC_CLOSEDIR_VOID
 AC_FUNC_ERROR_AT_LINE
@@ -63,7 +65,7 @@ AC_FUNC_VPRINTF
 AC_CHECK_FUNCS([strchr strdup strrchr strstr])
 AC_CHECK_FUNCS([bzero getcwd memset putenv setenv])
 AC_CHECK_FUNCS([nl_langinfo setlocale])
-#
+
 AC_CONFIG_FILES([Makefile])
 AC_CONFIG_FILES([src/Makefile src/paths.h src/man.conf])
 AC_CONFIG_FILES([man/Makefile gencat/Makefile msgs/Makefile])

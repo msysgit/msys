@@ -1,3 +1,35 @@
+# Makefile for man2html
+# Source: Makefile.in -- processed by configure, to create Makefile.
+#
+# Copyright (C) 1990, 1991, John W. Eaton.
+# Copyright (C) 1994-2001, Andries E. Brouwer
+# Copyright (C) 2005, Keith D. Marshall <keithmarshall@users.sourceforge.net>
+#
+# This file is part of the man package.
+#
+# man is free software; you can redistribute it and/or modify it under the
+# terms of the GNU General Public License as published by the Free Software
+# Foundation; either version 2, or (at your option) any later version.
+#
+# man is distributed in the hope that it will be useful, but WITHOUT ANY
+# WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+# FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+# details.
+#
+# You should have received a copy of the GNU General Public License along
+# with man; see the file COPYING.  If not, write to the Free Software
+# Foundation, 51 Franklin St - Fifth Floor, Boston, MA 02110-1301, USA.
+
+# Package identification.
+package = @PACKAGE_NAME@
+version = @PACKAGE_VERSION@
+
+# To allow building in a separate build directory,
+# (when the "make" program in use supports the VPATH capability),
+# set up the srcdir mapping to VPATH.
+srcdir = @srcdir@
+VPATH = $(srcdir)
+
 CC = @CC@
 CFLAGS = -Wall -Wstrict-prototypes -Wmissing-prototypes -O
 OBJECTS = man2html.o cgibase.o abbrev.o strdefs.o
@@ -49,7 +81,7 @@ install-glimpse-stuff:
 # you can set MANHTMLHOST if the pages are not on localhost.
 hman: hman.sh
 	rm -f hman
-	sed -e 's,%version%,@version@,' hman.sh > hman
+	sed -e 's,%version%,$(package)-$(version),' hman.sh > hman
 
 install-hman: hman
 	install -m 555 hman $(bindir)/hman

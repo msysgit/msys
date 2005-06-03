@@ -1,4 +1,4 @@
-# man.conf from @version@
+# man.conf from @PACKAGE_NAME@-@PACKAGE_VERSION@
 #
 # For more information about this file, see the man pages man(1)
 # and man.conf(5).

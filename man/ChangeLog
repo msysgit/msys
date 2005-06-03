@@ -1,3 +1,26 @@
+2005-06-03  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Set package versioning from configure.ac.
+
+	* configure.ac (AC_INIT): Supply PACKAGE_NAME and PACKAGE_VERSION
+	parameter values; PACKAGE_NAME=man, PACKAGE_VALUE=1.5m3.
+
+	* configure: Regenerated.
+
+	* version: Redundant file; removed.
+
+	* src/Makefile.in (package, version): New identifiers; initialise them
+	from PACKAGE_NAME and PACKAGE_VERSION respectively.
+	(version.h): Make it depend on configure.ac; insert $(version).
+	(apropos, whatis, makewhatis): Identify as $(package)-$(version).
+
+	* src/man.conf.in: Identify as PACKAGE_NAME-PACKAGE_VERSION.
+
+	* man2html/Makefile.in (package, version): New identifiers; initialise
+	them from PACKAGE_NAME and PACKAGE_VERSION.
+	(hman): Identify as $(package)-$(version).
+	(VPATH): Defined to autoconf specified $(srcdir).
+
 2005-06-02  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Make code in src directory compile on Win32/MinGW platform.

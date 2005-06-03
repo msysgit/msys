@@ -25,6 +25,10 @@
 # autoconf hooks  - kdm, May 2005
 # VPATH support   - kdm, June 2005
 
+# Package identification.
+package = @PACKAGE_NAME@
+version = @PACKAGE_VERSION@
+
 # To allow building in a separate build directory,
 # (when the "make" program in use supports the VPATH capability),
 # set up the srcdir mapping to VPATH.
@@ -124,31 +128,30 @@ man.conf: man.conf.in $(config_sed)
 paths.h: paths.h.in $(config_sed)
 	sed -f $(top_builddir)/config.sed $(srcdir)/paths.h.in > paths.h
 
-version.h: $(top_srcdir)/version Makefile
-	version=`sed -e s/man-// $(top_srcdir)/version`; \
-	echo "static char version[] = \"$$version\";" > version.h
+version.h: $(top_srcdir)/configure.ac Makefile
+	echo "static char version[] = \"$(version)\";" > version.h
 
 apropos: apropos.sh Makefile
 	rm -f apropos
 	sed -e 's,%apropos_or_whatis%,apropos,' \
-	    -e 's,%version%,@version@,' \
+	    -e 's,%version%,$(package)-$(version),' \
 	    -e 's,%pager%,@pager@,' -e 's,%manpathoption%,@manpathoption@,' \
-	    -e 's,%grepsilent%,@grepsilent@,' \
+	    -e 's,%grepsilent%,@man_grepsilent@,' \
 		$(srcdir)/apropos.sh > apropos
 	chmod +x apropos
 
 whatis: apropos.sh Makefile
 	rm -f whatis
 	sed -e 's,%apropos_or_whatis%,whatis,' \
-	    -e 's,%version%,@version@,' \
+	    -e 's,%version%,$(package)-$(version),' \
 	    -e 's,%pager%,@pager@,' -e 's,%manpathoption%,@manpathoption@,' \
-	    -e 's,%grepsilent%,@grepsilent@,' \
+	    -e 's,%grepsilent%,@man_grepsilent@,' \
 		$(srcdir)/apropos.sh > whatis
 	chmod +x whatis
 
 makewhatis: makewhatis.sh Makefile
 	rm -f makewhatis
-	sed -e 's,%version%,@version@,' \
+	sed -e 's,%version%,$(package)-$(version),' \
 	    -e 's,%awk%,@awk@,' $(srcdir)/makewhatis.sh > makewhatis
 	chmod +x makewhatis
 
