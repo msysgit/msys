@@ -417,7 +417,7 @@ prmanpath () {
      if (mandirlist) {
 	  for (dp0 = dp = mandirlist; *dp; dp++) {
 	       if (dp != dp0)
-		    printf(":");
+		    putchar (PATH_SEPARATOR_CHAR);
 	       printf("%s", *dp);
 	  }
      }
