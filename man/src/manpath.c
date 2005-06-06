@@ -67,7 +67,7 @@ split (char *string, void (*fn)(char *, int), int perrs) {
      char *p, *q, *r;
 
      if (string) {
-          p = my_strdup(win32posix(string));
+          p = my_strdup (POSIX_STYLE_PATH (string));
 	  for (q = p; ; ) {
 	       r = index(q, PATH_SEPARATOR_CHAR);
 	       if (r) {
@@ -88,7 +88,7 @@ split2 (char *s, char *string, void (*fn)(char *, char *, int), int perrs) {
      char *p, *q, *r;
 
      if (string) {
-          p = my_strdup(win32posix(string));
+          p = my_strdup (POSIX_STYLE_PATH (string));
 	  for (q = p; ; ) {
 	       r = index(q, PATH_SEPARATOR_CHAR);
 	       if (r) {
@@ -191,10 +191,10 @@ add_to_list (char *dir, char *lang, int perrs) {
 	  lang = "";
 
      /* only add absolute paths */
-     if (!isabspath(dir)) {
+     if (! IS_ABSOLUTE_PATH (dir)) {
 	  if (!getcwd(cwd, sizeof(cwd)))
 	       return; /* cwd not readable, or pathname very long */
-	  if (!isabspath(win32posix(cwd)))
+	  if (! IS_ABSOLUTE_PATH (cwd))
 	       return; /* strange.. */
 	  if (strlen(dir) + strlen(lang) + strlen(cwd) + 3 > sizeof(cwd))
 	       return;

@@ -57,7 +57,7 @@
 const char *
 mkprogname (const char *s) {
      const char *t;
-     t = strrchr (win32posix (s), '/');
+     t = strrchr (POSIX_STYLE_PATH (s), '/');
      if (t == (char *)NULL)
 	  t = s;
      else

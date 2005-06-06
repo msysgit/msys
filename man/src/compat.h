@@ -75,8 +75,10 @@
  * still use ";" as the path separator.
  */
 
-extern const char *win32posix(const char *);
 #define PATH_SEPARATOR_CHAR ';'
+#define POSIX_STYLE_PATH(p) win32path_transform(p)
+
+extern const char *win32path_transform(const char *);
 
 /*
  * Because we are forcing the use of "/" as a directory separator,
@@ -84,7 +86,9 @@ extern const char *win32posix(const char *);
  * but we *do* still need to allow for a drive designator.
  */
 
-#define isabspath(p) ((*(p) == '/') || (((p)[1] == ':') && ((p)[2] == '/')))
+#define IS_ABSOLUTE_PATH(p) win32path_is_absolute((p))
+
+extern int win32path_is_absolute(const char *);
 
 /*
  * Win32 User Identification
@@ -109,14 +113,14 @@ extern const char *win32posix(const char *);
  * and we keep to the standard ":" as the path separator.
  */
 
-#define win32posix(p) p
-#define PATH_SEPARATOR_CHAR ';'
+#define PATH_SEPARATOR_CHAR ':'
+#define POSIX_STYLE_PATH(p)  p
 
 /*
  * POSIX mandates that absolute path names begin with a "/".
  */
 
-#define isabspath(p)  (*(p) == '/')
+#define IS_ABSOLUTE_PATH(p)  (*(p) == '/')
 #endif
 
 #endif /* COMPAT_H */

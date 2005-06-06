@@ -1,3 +1,23 @@
+2005-06-06  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	WinPOSIX bug fixes and API enhancements.
+
+	* src/winposix (win32posix): Function renamed...
+	(win32path_transform): ...to this.
+	(win32path_is_absolute): New function; it checks if a specified Win32
+	path name is absolute.
+
+	* src/compat.h (isabspath): Macro renamed...
+	(IS_ABSOLUTE_PATH): ...to this.
+	(POSIX_STYLE_PATH): New macro; use it to invoke the
+	win32path_transform function, when required.
+	(PATH_SEPARATOR_CHAR): Fix it, for non-Win32 hosts; had ';',
+	should be ':'.
+
+	* src/manpath.c: Use POSIX_STYLE_PATH and IS_ABSOLUTE_PATH macros.
+
+	* src/util.c: Use POSIX_STYLE_PATH macro.
+
 2005-06-03  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	* man2html/Makefile.in (top_builddir): New identifier; have autoconf
