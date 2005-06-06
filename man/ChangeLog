@@ -1,5 +1,10 @@
 2005-06-06  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
+	* src/manpath.c (prmanpath): Use PATH_SEPARATOR_CHAR; previously it
+	always used ':' to separate MANPATH components.
+
+2005-06-06  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
 	WinPOSIX bug fixes and API enhancements.
 
 	* src/winposix (win32posix): Function renamed...
