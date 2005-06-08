@@ -1,3 +1,8 @@
+2005.06.08  Earnie Boyd  <earnie@users.sf.net>
+
+	* src/rmt.h (_remdev): Length of rmt_path__ must be greater than one;
+	allows for windows/dos style paths; e.g c:/temp/foobar.tar.
+
 2003.04.16  Earnie Boyd  <earnie@users.sf.net>
 
 	* lib/getdate.y: Add now required semicolon ; character to end of
