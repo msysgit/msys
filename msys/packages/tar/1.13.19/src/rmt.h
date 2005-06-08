@@ -32,7 +32,8 @@ int rmt_ioctl__ PARAMS ((int, int, char *));
 
 #define _remdev(Path) \
   (!force_local_option && (rmt_path__ = strchr (Path, ':')) \
-   && rmt_path__ > (Path) && ! memchr (Path, rmt_path__ - (Path), '/'))
+   && rmt_path__ > (Path) && ! memchr (Path, rmt_path__ - (Path), '/') \
+   && (rmt_path__ - Path) > 1)
 
 #define _isrmt(Fd) \
   ((Fd) >= __REM_BIAS)
