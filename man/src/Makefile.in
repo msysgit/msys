@@ -39,6 +39,8 @@ VPATH = $(srcdir)
 top_srcdir = @top_srcdir@
 top_builddir = @top_builddir@
 
+PREFIX = @prefix@
+
 # Compiler and installer.
 CC = @CC@
 INSTALL = @INSTALL@
@@ -49,7 +51,7 @@ OBJEXT = @OBJEXT@
 
 pager = @pager@
 
-DEFS = @DEFS@
+DEFS = @DEFS@ $(INCLUDES)
 GREPSILENT = -DGREPSILENT=\"@man_grepsilent@\"
 CWARN = -Wall -Wstrict-prototypes -Wmissing-prototypes
 CWARNNP = -Wall
@@ -57,7 +59,7 @@ CWARNNP = -Wall
 INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
 
 .c.$(OBJEXT):
-	$(CC) -c $(CWARN) $(CFLAGS) $(INCLUDES) $(DEFS) $<
+	$(CC) -c $(CWARN) $(CFLAGS) $(DEFS) $<
 
 # LDFLAGS = -g
 # LDFLAGS = -s
@@ -72,11 +74,19 @@ MANOBJS = \
 
 WIN32MANOBJS = winposix.$(OBJEXT)
 
+stamp.h: paths.h
+	for f in $?; \
+	  do $(RM) $@; \
+	     mv $$f $@; \
+	     sed -e 's,$${prefix},${PREFIX},g' $@ > $$f; \
+	  done
+	echo timestamp > $@
+
 man: $(MANOBJS) $(WIN32MANOBJS) $(LIBS)
 	$(CC) $(LDFLAGS) -o man $(MANOBJS) $(WIN32MANOBJS) $(LIBS)
 
 man.$(OBJEXT): man.c
-	$(CC) -c $(CWARN) $(CFLAGS) $(INCLUDES) $(DEFS) $(GREPSILENT) $(srcdir)/man.c
+	$(CC) -c $(CWARN) $(CFLAGS) $(DEFS) $(GREPSILENT) $(srcdir)/man.c
 
 msg.c gripedefs.h: $(top_srcdir)/msgs/mess.en makemsg
 	./makemsg $(top_srcdir)/msgs/mess.en gripedefs.h msg.c
@@ -85,7 +95,7 @@ makemsg: makemsg.$(OBJEXT)
 
 # glob.c does not have prototypes
 glob.$(OBJEXT): glob.c ndir.h
-	$(CC) -c $(CWARNNP) $(CFLAGS) $(INCLUDES) $(DEFS) $(srcdir)/glob.c
+	$(CC) -c $(CWARNNP) $(CFLAGS) $(DEFS) $(srcdir)/glob.c
 
 man-config.$(OBJEXT) man-getopt.$(OBJEXT) man.$(OBJEXT) manpath.$(OBJEXT) \
 to_cat.$(OBJEXT): defs.h
@@ -111,7 +121,7 @@ man.$(OBJEXT) man-iconv.$(OBJEXT): man-iconv.h
 
 man.$(OBJEXT) manpath.$(OBJEXT): manpath.h
 
-man-config.$(OBJEXT): paths.h
+man-config.$(OBJEXT): stamp.h
 
 different.$(OBJEXT) man-config.$(OBJEXT) man-getopt.$(OBJEXT) \
 man.$(OBJEXT) manpath.$(OBJEXT) util.$(OBJEXT): util.h
@@ -125,8 +135,8 @@ gripes.$(OBJEXT): $(top_srcdir)/catopen/catopen.c
 man.conf: man.conf.in $(config_sed)
 	sed -f $(top_builddir)/config.sed $(srcdir)/man.conf.in > man.conf
 
-paths.h: paths.h.in $(config_sed)
-	sed -f $(top_builddir)/config.sed $(srcdir)/paths.h.in > paths.h
+#paths.h: paths.h.in $(config_sed)
+#	sed -f $(top_builddir)/config.sed $(srcdir)/paths.h.in > paths.h
 
 version.h: $(top_srcdir)/configure.ac Makefile
 	echo "static char version[] = \"$(version)\";" > version.h
@@ -174,5 +184,5 @@ clean:
 	test -n "$(EXEEXT)" && rm -f *$(EXEEXT)
 
 spotless: clean
-	rm -f Makefile config.status paths.h version.h man.conf
+	rm -f Makefile config.status stamp.h paths.h version.h man.conf
 	rm -f gripedefs.h msg.c mess.*.cat

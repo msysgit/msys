@@ -251,26 +251,7 @@ exec 6>&1
 #
 # Initializations.
 #
-ac_dir="/usr/local"
-pwd -W >/dev/null 2>&1 && ac_pwd_w="pwd -W" || ac_pwd_w=pwd
-until ac_default_prefix=`exec 2>/dev/null; cd "$ac_dir" && $ac_pwd_w`
-do
-  ac_dir=`(dirname "$ac_dir") 2>/dev/null ||
-$as_expr X"$ac_dir" : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
-	 X"$ac_dir" : 'X\(//\)[^/]' \| \
-	 X"$ac_dir" : 'X\(//\)$' \| \
-	 X"$ac_dir" : 'X\(/\)' \| \
-	 .     : '\(.\)' 2>/dev/null ||
-echo X"$ac_dir" |
-    sed '/^X\(.*[^/]\)\/\/*[^/][^/]*\/*$/{ s//\1/; q; }
-  	  /^X\(\/\/\)[^/].*/{ s//\1/; q; }
-  	  /^X\(\/\/\)$/{ s//\1/; q; }
-  	  /^X\(\/\).*/{ s//\1/; q; }
-  	  s/.*/./; q'`
-done
-ac_dir=`echo "$ac_dir" | sed 's?^[./]*??'`
-ac_default_prefix=`echo "$ac_default_prefix" | sed 's?/*$??'`
-ac_default_prefix=`echo "/usr/local" | sed "s?^[./]*$ac_dir/*?$ac_default_prefix/?"';s?/*$??'`
+ac_default_prefix=/usr/local
 ac_config_libobj_dir=.
 cross_compiling=no
 subdirs=
@@ -328,7 +309,7 @@ ac_includes_default="\
 # include <unistd.h>
 #endif"
 
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS AWK CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA LN_S SET_MAKE CPP EGREP ALLOCA LIBOBJS LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS AWK CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA LN_S SET_MAKE CPP EGREP ALLOCA LIBOBJS man_config_file LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -858,6 +839,13 @@ if test -n "$ac_init_help"; then
    esac
   cat <<\_ACEOF
 
+Optional Packages:
+  --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
+  --without-PACKAGE       do not use PACKAGE (same as --with-PACKAGE=no)
+  --with-confdir          directory where the configuration file is installed
+                          [${prefix}/lib]
+  --with-config=NAME      name to use for the configuration file [man.conf]
+
 Some influential environment variables:
   CC          C compiler command
   CFLAGS      C compiler flags
@@ -1336,11 +1324,11 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
 # Process this file with autoconf to produce a configure script.
 
 
-          ac_config_headers="$ac_config_headers config.h"
+            ac_config_headers="$ac_config_headers config.h"
 
 
 # Checks for programs.
-for ac_prog in gawk mawk nawk awk
+  for ac_prog in gawk mawk nawk awk
 do
   # Extract the first word of "$ac_prog", so it can be a program name with args.
 set dummy $ac_prog; ac_word=$2
@@ -1380,7 +1368,7 @@ fi
   test -n "$AWK" && break
 done
 
-ac_ext=c
+  ac_ext=c
 ac_cpp='$CPP $CPPFLAGS'
 ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
 ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
@@ -2310,7 +2298,7 @@ ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
 ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
 ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
-ac_aux_dir=
+  ac_aux_dir=
 for ac_dir in $srcdir $srcdir/.. $srcdir/../..; do
   if test -f $ac_dir/install-sh; then
     ac_aux_dir=$ac_dir
@@ -2414,7 +2402,7 @@ test -z "$INSTALL_SCRIPT" && INSTALL_SCRIPT='${INSTALL}'
 
 test -z "$INSTALL_DATA" && INSTALL_DATA='${INSTALL} -m 644'
 
-echo "$as_me:$LINENO: checking whether ln -s works" >&5
+  echo "$as_me:$LINENO: checking whether ln -s works" >&5
 echo $ECHO_N "checking whether ln -s works... $ECHO_C" >&6
 LN_S=$as_ln_s
 if test "$LN_S" = "ln -s"; then
@@ -2425,7 +2413,7 @@ else
 echo "${ECHO_T}no, using $LN_S" >&6
 fi
 
-echo "$as_me:$LINENO: checking whether ${MAKE-make} sets \$(MAKE)" >&5
+  echo "$as_me:$LINENO: checking whether ${MAKE-make} sets \$(MAKE)" >&5
 echo $ECHO_N "checking whether ${MAKE-make} sets \$(MAKE)... $ECHO_C" >&6
 set dummy ${MAKE-make}; ac_make=`echo "$2" | sed 'y,:./+-,___p_,'`
 if eval "test \"\${ac_cv_prog_make_${ac_make}_set+set}\" = set"; then
@@ -2875,7 +2863,7 @@ _ACEOF
 
 fi
 
-# The Ultrix 4.2 mips builtin alloca declared by alloca.h only works
+  # The Ultrix 4.2 mips builtin alloca declared by alloca.h only works
 # for constant arguments.  Useless!
 echo "$as_me:$LINENO: checking for working alloca.h" >&5
 echo $ECHO_N "checking for working alloca.h... $ECHO_C" >&6
@@ -3564,7 +3552,7 @@ fi
 
 fi
 
-# On IRIX 5.3, sys/types and inttypes.h are conflicting.
+  # On IRIX 5.3, sys/types and inttypes.h are conflicting.
 
 
 
@@ -4244,7 +4232,7 @@ fi
 
 done
 
-echo "$as_me:$LINENO: checking for sys/wait.h that is POSIX.1 compatible" >&5
+  echo "$as_me:$LINENO: checking for sys/wait.h that is POSIX.1 compatible" >&5
 echo $ECHO_N "checking for sys/wait.h that is POSIX.1 compatible... $ECHO_C" >&6
 if test "${ac_cv_header_sys_wait_h+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
@@ -4317,7 +4305,7 @@ fi
 
 
 # Checks for typedefs, structures, and compiler characteristics.
-echo "$as_me:$LINENO: checking for an ANSI C-conforming const" >&5
+  echo "$as_me:$LINENO: checking for an ANSI C-conforming const" >&5
 echo $ECHO_N "checking for an ANSI C-conforming const... $ECHO_C" >&6
 if test "${ac_cv_c_const+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
@@ -4424,7 +4412,7 @@ _ACEOF
 
 fi
 
-echo "$as_me:$LINENO: checking for inline" >&5
+  echo "$as_me:$LINENO: checking for inline" >&5
 echo $ECHO_N "checking for inline... $ECHO_C" >&6
 if test "${ac_cv_c_inline+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
@@ -4495,7 +4483,7 @@ _ACEOF
     ;;
 esac
 
-echo "$as_me:$LINENO: checking for off_t" >&5
+  echo "$as_me:$LINENO: checking for off_t" >&5
 echo $ECHO_N "checking for off_t... $ECHO_C" >&6
 if test "${ac_cv_type_off_t+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
@@ -4561,7 +4549,7 @@ _ACEOF
 
 fi
 
-echo "$as_me:$LINENO: checking for size_t" >&5
+  echo "$as_me:$LINENO: checking for size_t" >&5
 echo $ECHO_N "checking for size_t... $ECHO_C" >&6
 if test "${ac_cv_type_size_t+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
@@ -4627,7 +4615,7 @@ _ACEOF
 
 fi
 
-echo "$as_me:$LINENO: checking whether struct tm is in sys/time.h or time.h" >&5
+  echo "$as_me:$LINENO: checking whether struct tm is in sys/time.h or time.h" >&5
 echo $ECHO_N "checking whether struct tm is in sys/time.h or time.h... $ECHO_C" >&6
 if test "${ac_cv_struct_tm+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
@@ -4692,7 +4680,7 @@ fi
 
 
 # Checks for library functions.
-echo "$as_me:$LINENO: checking whether closedir returns void" >&5
+  echo "$as_me:$LINENO: checking whether closedir returns void" >&5
 echo $ECHO_N "checking whether closedir returns void... $ECHO_C" >&6
 if test "${ac_cv_func_closedir_void+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
@@ -4753,7 +4741,7 @@ _ACEOF
 
 fi
 
-echo "$as_me:$LINENO: checking for error_at_line" >&5
+  echo "$as_me:$LINENO: checking for error_at_line" >&5
 echo $ECHO_N "checking for error_at_line... $ECHO_C" >&6
 if test "${ac_cv_lib_error_at_line+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
@@ -4818,7 +4806,7 @@ esac
 
 fi
 
-echo "$as_me:$LINENO: checking for pid_t" >&5
+  echo "$as_me:$LINENO: checking for pid_t" >&5
 echo $ECHO_N "checking for pid_t... $ECHO_C" >&6
 if test "${ac_cv_type_pid_t+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
@@ -5369,7 +5357,7 @@ _ACEOF
 
 fi
 
-if test $ac_cv_c_compiler_gnu = yes; then
+  if test $ac_cv_c_compiler_gnu = yes; then
     echo "$as_me:$LINENO: checking whether $CC needs -traditional" >&5
 echo $ECHO_N "checking whether $CC needs -traditional... $ECHO_C" >&6
 if test "${ac_cv_prog_gcc_traditional+set}" = set; then
@@ -5881,7 +5869,7 @@ fi
 
 
 
-echo "$as_me:$LINENO: checking return type of signal handlers" >&5
+  echo "$as_me:$LINENO: checking return type of signal handlers" >&5
 echo $ECHO_N "checking return type of signal handlers... $ECHO_C" >&6
 if test "${ac_cv_type_signal+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
@@ -5950,7 +5938,7 @@ cat >>confdefs.h <<_ACEOF
 _ACEOF
 
 
-echo "$as_me:$LINENO: checking whether lstat dereferences a symlink specified with a trailing slash" >&5
+  echo "$as_me:$LINENO: checking whether lstat dereferences a symlink specified with a trailing slash" >&5
 echo $ECHO_N "checking whether lstat dereferences a symlink specified with a trailing slash... $ECHO_C" >&6
 if test "${ac_cv_func_lstat_dereferences_slashed_symlink+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
@@ -6788,15 +6776,87 @@ fi
 done
 
 
-          ac_config_files="$ac_config_files Makefile"
+# Establish the name and location for the configuration file.
+#
+# (The defaults are as defined here; if you wish to change these,
+#  uncomment the next two macro lines, and modify accordingly.
+#  Note the use of single quotes to defer expansion of
+#  ${prefix} until "make" time).
+#
+# MAN_CONFIG_FILE_DEFAULT([man.conf])
+# MAN_CONFDIR_DEFAULT(['${prefix}/lib'])
 
-                              ac_config_files="$ac_config_files src/Makefile src/paths.h src/man.conf"
+# Check whether --with-confdir or --without-confdir was given.
+if test "${with_confdir+set}" = set; then
+  withval="$with_confdir"
+  man_confdir=${withval}/
+else
+  man_confdir=${man_confdir_default-'${prefix}/lib/'}
+fi;
 
-                              ac_config_files="$ac_config_files man/Makefile gencat/Makefile msgs/Makefile"
 
-          ac_config_files="$ac_config_files man2html/Makefile"
+# Check whether --with-config or --without-config was given.
+if test "${with_config+set}" = set; then
+  withval="$with_config"
+  man_config_file=${withval}
+else
+  man_config_file=${man_config_file_default-'man.conf'}
+fi;
+ if test `(dirname ${man_config_file}) 2>/dev/null ||
+$as_expr X${man_config_file} : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
+	 X${man_config_file} : 'X\(//\)[^/]' \| \
+	 X${man_config_file} : 'X\(//\)$' \| \
+	 X${man_config_file} : 'X\(/\)' \| \
+	 .     : '\(.\)' 2>/dev/null ||
+echo X${man_config_file} |
+    sed '/^X\(.*[^/]\)\/\/*[^/][^/]*\/*$/{ s//\1/; q; }
+  	  /^X\(\/\/\)[^/].*/{ s//\1/; q; }
+  	  /^X\(\/\/\)$/{ s//\1/; q; }
+  	  /^X\(\/\).*/{ s//\1/; q; }
+  	  s/.*/./; q'` = "."
+ then
+  man_config_file=${man_confdir}${man_config_file}
 
-cat >confcache <<\_ACEOF
+ else
+  man_config_file=${man_config_file}
+
+ fi
+ case ${man_config_file} in
+  '${prefix}'*) ;;
+  *) ac_dir="${man_config_file}"
+ pwd -W >/dev/null 2>&1 && ac_pwd_w="pwd -W" || ac_pwd_w=pwd
+ until ac_val=`exec 2>/dev/null; cd "$ac_dir" && $ac_pwd_w`
+ do
+   ac_dir=`(dirname "$ac_dir") 2>/dev/null ||
+$as_expr X"$ac_dir" : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
+	 X"$ac_dir" : 'X\(//\)[^/]' \| \
+	 X"$ac_dir" : 'X\(//\)$' \| \
+	 X"$ac_dir" : 'X\(/\)' \| \
+	 .     : '\(.\)' 2>/dev/null ||
+echo X"$ac_dir" |
+    sed '/^X\(.*[^/]\)\/\/*[^/][^/]*\/*$/{ s//\1/; q; }
+  	  /^X\(\/\/\)[^/].*/{ s//\1/; q; }
+  	  /^X\(\/\/\)$/{ s//\1/; q; }
+  	  /^X\(\/\).*/{ s//\1/; q; }
+  	  s/.*/./; q'`
+ done
+ ac_dir=`echo "$ac_dir" | sed 's?^[./]*??'`
+ ac_val=`echo "$ac_val" | sed 's?/*$??'`
+ man_config_file=`echo "${man_config_file}" | sed "s?^[./]*$ac_dir/*?$ac_val/?"'
+   s?/*$??'`
+ ;;
+ esac
+
+
+            ac_config_files="$ac_config_files Makefile"
+
+                                ac_config_files="$ac_config_files src/Makefile src/paths.h src/man.conf"
+
+                                ac_config_files="$ac_config_files man/Makefile gencat/Makefile msgs/Makefile"
+
+            ac_config_files="$ac_config_files man2html/Makefile"
+
+  cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
 # tests run on this system so they can be shared between configure
 # scripts and configure runs, see configure's option --config-cache.
@@ -7431,6 +7491,7 @@ s,@CPP@,$CPP,;t t
 s,@EGREP@,$EGREP,;t t
 s,@ALLOCA@,$ALLOCA,;t t
 s,@LIBOBJS@,$LIBOBJS,;t t
+s,@man_config_file@,$man_config_file,;t t
 s,@LTLIBOBJS@,$LTLIBOBJS,;t t
 CEOF
 

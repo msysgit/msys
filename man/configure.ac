@@ -1,7 +1,7 @@
 # -*- Autoconf -*-  configure.ac for man.
 
-AC_PREREQ(2.59)
-AC_INIT(man,1.5m3)
+  AC_PREREQ(2.59)
+  AC_INIT(man,1.5m3)
 
 # Copyright (C) 2005 by Keith Marshall <keithmarshall@users.sourceforge.net>
 #
@@ -22,54 +22,65 @@ AC_INIT(man,1.5m3)
 #
 # Process this file with autoconf to produce a configure script.
  
-AC_CONFIG_SRCDIR([src/man.c])
-AC_CONFIG_HEADER([config.h])
+  AC_CONFIG_SRCDIR([src/man.c])
+  AC_CONFIG_HEADER([config.h])
 
 # Checks for programs.
-AC_PROG_AWK
-AC_PROG_CC
-AC_PROG_INSTALL
-AC_PROG_LN_S
-AC_PROG_MAKE_SET
+  AC_PROG_AWK
+  AC_PROG_CC
+  AC_PROG_INSTALL
+  AC_PROG_LN_S
+  AC_PROG_MAKE_SET
 
 # Checks for libraries.
 
 # Checks for header files.
-AC_HEADER_STDC
-AC_FUNC_ALLOCA
-AC_HEADER_DIRENT
-AC_CHECK_HEADERS([string.h strings.h], break)
-AC_CHECK_HEADERS([fcntl.h sys/file.h sys/ioctl.h])
-AC_CHECK_HEADERS([memory.h stdlib.h sys/param.h unistd.h])
-AC_CHECK_HEADERS([langinfo.h locale.h nl_types.h])
-AC_HEADER_SYS_WAIT
+  AC_HEADER_STDC
+  AC_FUNC_ALLOCA
+  AC_HEADER_DIRENT
+  AC_CHECK_HEADERS([string.h strings.h], break)
+  AC_CHECK_HEADERS([fcntl.h sys/file.h sys/ioctl.h])
+  AC_CHECK_HEADERS([memory.h stdlib.h sys/param.h unistd.h])
+  AC_CHECK_HEADERS([langinfo.h locale.h nl_types.h])
+  AC_HEADER_SYS_WAIT
 
 # Checks for typedefs, structures, and compiler characteristics.
-AC_C_CONST
-AC_C_INLINE
-AC_TYPE_OFF_T
-AC_TYPE_SIZE_T
-AC_STRUCT_TM
+  AC_C_CONST
+  AC_C_INLINE
+  AC_TYPE_OFF_T
+  AC_TYPE_SIZE_T
+  AC_STRUCT_TM
 
 # Checks for library functions.
-AC_FUNC_CLOSEDIR_VOID
-AC_FUNC_ERROR_AT_LINE
-AC_FUNC_FORK
-AC_PROG_GCC_TRADITIONAL
-AC_FUNC_MALLOC
-AC_FUNC_REALLOC
-AC_TYPE_SIGNAL
-AC_FUNC_STAT
-AC_FUNC_STRFTIME
-AC_FUNC_VPRINTF
-AC_CHECK_FUNCS([strchr strdup strrchr strstr])
-AC_CHECK_FUNCS([bzero getcwd memset putenv setenv])
-AC_CHECK_FUNCS([nl_langinfo setlocale])
+  AC_FUNC_CLOSEDIR_VOID
+  AC_FUNC_ERROR_AT_LINE
+  AC_FUNC_FORK
+  AC_PROG_GCC_TRADITIONAL
+  AC_FUNC_MALLOC
+  AC_FUNC_REALLOC
+  AC_TYPE_SIGNAL
+  AC_FUNC_STAT
+  AC_FUNC_STRFTIME
+  AC_FUNC_VPRINTF
+  AC_CHECK_FUNCS([strchr strdup strrchr strstr])
+  AC_CHECK_FUNCS([bzero getcwd memset putenv setenv])
+  AC_CHECK_FUNCS([nl_langinfo setlocale])
 
-AC_CONFIG_FILES([Makefile])
-AC_CONFIG_FILES([src/Makefile src/paths.h src/man.conf])
-AC_CONFIG_FILES([man/Makefile gencat/Makefile msgs/Makefile])
-AC_CONFIG_FILES([man2html/Makefile])
-AC_OUTPUT
+# Establish the name and location for the configuration file.
+#
+# (The defaults are as defined here; if you wish to change these,
+#  uncomment the next two macro lines, and modify accordingly.
+#  Note the use of single quotes to defer expansion of
+#  ${prefix} until "make" time).
+#
+# MAN_CONFIG_FILE_DEFAULT([man.conf])
+# MAN_CONFDIR_DEFAULT(['${prefix}/lib'])
+  MAN_CONFIG_FILE
+
+  AC_CONFIG_FILES([Makefile])
+  AC_CONFIG_FILES([src/Makefile src/paths.h src/man.conf])
+  AC_CONFIG_FILES([man/Makefile gencat/Makefile msgs/Makefile])
+  AC_CONFIG_FILES([man2html/Makefile])
+  AC_OUTPUT
 #
 # EOF: vim: ft=autoconf

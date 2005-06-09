@@ -1,3 +1,19 @@
+2005-06-09  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Add autoconf support for configuration file specification.
+
+	* aclocal.m4: New file; it defines package specific autoconf macros.
+
+	* configure.ac: Add specification for man configuration file; it is
+	defined using the MAN_CONFIG_FILE macro, and optionally also the
+	MAN_CONFIG_FILE_DEFAULT and MAN_CONFDIR_DEFAULT macros from
+	aclocal.m4.
+
+	* configure: Regenerated.
+
+	* src/Makefile.in (INCLUDES): Pass them to $(CC) in $(DEFS).
+	(stamp.h): New dummy target; use it to update paths.h.
+
 2005-06-06  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	* src/manpath.c (prmanpath): Use PATH_SEPARATOR_CHAR; previously it
