@@ -1,7 +1,7 @@
 #!/bin/sh
 # mkRelease
 # Copyright (C) 2003 Earnie Boyd, earnie@users.sourceforge.net
-# $Id: mkRelease.tcl,v 1.3 2004-12-29 17:08:57 earnie Exp $
+# $Id: mkRelease.tcl,v 1.4 2005-06-09 13:37:53 earnie Exp $
 #\
 exec tclsh "$0" "$@"
 
@@ -74,7 +74,7 @@ proc process_current_files_page {} {
     }
     if {[lsearch -regexp [lindex $lline $Idx] ".*\?download\".*"] >= 0} {
       incr Idx
-      set file_name [lindex [split [lindex $lline $Idx] "<"] 0]
+      set file_name [lindex [split [lindex [split [lindex $lline $Idx] "<"] 0] " "] 1]
       incr Idx 3
       set file_size [lindex [split [lindex $lline $Idx] "<"] 0]
       incr Idx 2
