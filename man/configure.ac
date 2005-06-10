@@ -76,6 +76,7 @@
 # MAN_CONFIG_FILE_DEFAULT([man.conf])
 # MAN_CONFDIR_DEFAULT(['${prefix}/lib'])
   MAN_CONFIG_FILE
+  MAN_GREP_SILENT
 
   AC_CONFIG_FILES([Makefile])
   AC_CONFIG_FILES([src/Makefile src/paths.h src/man.conf])

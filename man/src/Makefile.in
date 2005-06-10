@@ -52,7 +52,7 @@ OBJEXT = @OBJEXT@
 pager = @pager@
 
 DEFS = @DEFS@ $(INCLUDES)
-GREPSILENT = -DGREPSILENT=\"@man_grepsilent@\"
+GREPSILENT = -DGREPSILENT='"@man_grepsilent@"'
 CWARN = -Wall -Wstrict-prototypes -Wmissing-prototypes
 CWARNNP = -Wall
 

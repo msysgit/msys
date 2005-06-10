@@ -1,3 +1,18 @@
+2005-06-10  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Configure silent output capability for "grep" command.
+
+	* aclocal.m4 (MAN_GREP_SILENT): New macro.
+	(WIN32_AC_NULLDEV): New macro; MAN_GREP_SILENT uses it to identify the
+	name of the null device, used for redirection of discarded output from
+	grep; this should be `nul' for Win32, or `/dev/null' elsewhere.
+
+	* configure.ac: Invoke MAN_GREP_SILENT.
+
+	* configure: Regenerated.
+
+	* src/Makefile.in (GREPSILENT): Correct quoting.
+
 2005-06-09  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Add autoconf support for configuration file specification.

@@ -116,6 +116,7 @@ AC_DEFUN([MAN_CONFIG_FILE],
    [name to use for the configuration file [[man.conf]]]),
   [man_config_file=${withval}],
   [man_config_file=${man_config_file_default-'man.conf'}])
+ AC_MSG_CHECKING([where to install '${man_config_file}'])
  if test `AS_DIRNAME([${man_config_file}])` = "."
  then
   AC_SUBST([man_config_file],[${man_confdir}${man_config_file}])
@@ -126,6 +127,52 @@ AC_DEFUN([MAN_CONFIG_FILE],
   '${prefix}'*) ;;
   *) MSYS_AC_CANONICAL_PATH([man_config_file],[${man_config_file}]) ;;
  esac
+ AC_MSG_RESULT([${man_config_file}])
+])
+
+
+## ================================== ##
+## Package Portability Considerations ##
+## ================================== ##
+#
+# WIN32_AC_NULLDEV
+# ----------------
+# Select appropriate name for null device: Win32 = nul; else /dev/null.
+# (Use the compiler, so we can set the correct value for the target platform,
+#  even when we are cross compiling).
+#
+AC_DEFUN([WIN32_AC_NULLDEV],
+[AC_MSG_CHECKING([name for NULL device])
+ AC_LANG_PUSH([C])
+ AC_COMPILE_IFELSE(
+ [[
+   #if defined(_WIN32) || defined(__CYGWIN32__)
+    choke me
+   #endif
+ ]],
+ [NULLDEV=/dev/null],
+ [NULLDEV=nul])
+ AC_LANG_POP([C])
+ AC_MSG_RESULT([$NULLDEV])
+ AC_SUBST([NULLDEV])
+])  
+
+# MAN_GREP_SILENT
+# ---------------
+# Identify how to make grep discard its output.
+# Safest is to redirect to the null device, but IF we are sure we are
+# NOT cross compiling, then try `grep -q' or `grep -s' as alternatives.
+#
+AC_DEFUN([MAN_GREP_SILENT],
+[AC_REQUIRE([WIN32_AC_NULLDEV])dnl
+ AC_MSG_CHECKING([how to run grep silently])
+ man_grepsilent=">$NULLDEV 2>&1"
+ if test x$cross_compiling = xno; then
+   test x`echo testing | grep -q testing` = x && man_grepsilent=-q
+   test x`echo testing | grep -s testing` = x && man_grepsilent=-s
+ fi
+ AC_MSG_RESULT([grep $man_grepsilent])
+ AC_SUBST([man_grepsilent])
 ])
 
 # EOF -- vim: ft=config
