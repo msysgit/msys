@@ -45,11 +45,6 @@
 #include "util.h"
 #include "gripes.h"
 #include "man.h"		/* for debug */
-#include "man-config.h"		/* for getval */
-
-#ifdef HAVE_PROCESS_H
-# include "winexec.h"
-#endif
 
 /*
  * Extract last element of a name like /foo/bar/baz.
@@ -138,14 +133,9 @@ static void catch_int(int a) {
 static int
 system1 (const char *command) {
 	void (*prev_handler)(int) = signal (SIGINT,catch_int);
-#ifdef _WIN32
-	int ret;
-	static const char *shell = NULL;
-	if( shell == NULL ) shell = getval( "SHELL" );
-	ret = spawnlp( _P_WAIT, shell, shell, "-c", command, NULL );
-#else
-	int ret = system(command);
+	int ret = RUN_COMMAND_SEQUENCE (command);
 
+#ifndef _WIN32
 	/* child terminated with signal? */
 	if (WIFSIGNALED(ret) &&
 	    (WTERMSIG(ret) == SIGINT || WTERMSIG(ret) == SIGQUIT))

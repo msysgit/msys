@@ -42,6 +42,7 @@
   AC_CHECK_HEADERS([fcntl.h sys/file.h sys/ioctl.h])
   AC_CHECK_HEADERS([memory.h stdlib.h sys/param.h unistd.h])
   AC_CHECK_HEADERS([langinfo.h locale.h nl_types.h])
+  AC_CHECK_HEADERS([process.h])
   AC_HEADER_SYS_WAIT
 
 # Checks for typedefs, structures, and compiler characteristics.
@@ -79,7 +80,7 @@
   MAN_GREP_SILENT
 
   AC_CONFIG_FILES([Makefile])
-  AC_CONFIG_FILES([src/Makefile src/paths.h src/man.conf])
+  AC_CONFIG_FILES([src/Makefile src/win32/Makefile src/paths.h src/man.conf])
   AC_CONFIG_FILES([man/Makefile gencat/Makefile msgs/Makefile])
   AC_CONFIG_FILES([man2html/Makefile])
   AC_OUTPUT

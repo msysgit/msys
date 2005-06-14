@@ -57,6 +57,7 @@ CWARN = -Wall -Wstrict-prototypes -Wmissing-prototypes
 CWARNNP = -Wall
 
 INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
+WIN32LIBS = ${WIN32LIBEXEC}
 
 .c.$(OBJEXT):
 	$(CC) -c $(CWARN) $(CFLAGS) $(DEFS) $<
@@ -72,7 +73,12 @@ MANOBJS = \
   to_cat.$(OBJEXT) different.$(OBJEXT) gripes.$(OBJEXT) \
   glob.$(OBJEXT) util.$(OBJEXT) msg.$(OBJEXT)
 
-WIN32MANOBJS = winposix.$(OBJEXT)
+WIN32LIBEXEC = win32/libexec.a
+WIN32LIBOBJS = winposix.$(OBJEXT) wincmds.$(OBJEXT) \
+  spawnlp.$(OBJEXT) spawnvp.$(OBJEXT) quotearg.$(OBJEXT)
+
+win32/libexec.a: FORCE
+	@cd win32; $(MAKE) LIBOBJECTS='$(WIN32LIBOBJS)'
 
 stamp.h: paths.h
 	for f in $?; \
@@ -82,8 +88,8 @@ stamp.h: paths.h
 	  done
 	echo timestamp > $@
 
-man: $(MANOBJS) $(WIN32MANOBJS) $(LIBS)
-	$(CC) $(LDFLAGS) -o man $(MANOBJS) $(WIN32MANOBJS) $(LIBS)
+man: $(MANOBJS) $(LIBS) $(WIN32LIBS)
+	$(CC) $(LDFLAGS) -o man $(MANOBJS) $(WIN32LIBS) $(LIBS)
 
 man.$(OBJEXT): man.c
 	$(CC) -c $(CWARN) $(CFLAGS) $(DEFS) $(GREPSILENT) $(srcdir)/man.c
@@ -182,7 +188,12 @@ install: all apropos whatis makewhatis
 clean:
 	rm -f *.$(OBJEXT) *~ core man apropos whatis makewhatis makemsg
 	test -n "$(EXEEXT)" && rm -f *$(EXEEXT)
+	@cd win32; $(MAKE) clean
 
 spotless: clean
 	rm -f Makefile config.status stamp.h paths.h version.h man.conf
 	rm -f gripedefs.h msg.c mess.*.cat
+
+FORCE:
+
+# EOF -- vim: ft=make

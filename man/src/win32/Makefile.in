@@ -1,0 +1,99 @@
+# Makefile Template for Win32 Wrapper Library
+# Source: Makefile.in -- processed by configure, to create Makefile.
+#
+# Written by Keith D. Marshall <keithmarshall@users.sourceforge.net>
+#
+# Copyright (C) 2004, 2005 by Keith D. Marshall
+#
+# This is free software; you can redistribute it and/or modify it under the
+# terms of the GNU General Public License as published by the Free Software
+# Foundation; either version 2, or (at your option) any later version.
+#
+# This software is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+# or FITNESS FOR ANY PARTICULAR PURPOSE.  See the GNU General Public License
+# for more details.
+#
+# You should have received a copy of the GNU General Public License with
+# this software; see the file COPYING.  If not, write to the Free Software
+# Foundation, 51 Franklin St - Fifth Floor, Boston, MA 02110-1301, USA.
+
+prefix = @prefix@
+exec_prefix = @exec_prefix@
+
+srcdir = @srcdir@
+top_srcdir = @top_srcdir@
+VPATH = ${srcdir}:${top_srcdir}:${top_srcdir}/src/win32
+abs_top_builddir = @abs_top_builddir@
+
+GCC  = $(CC) $(CPPFLAGS) $(CWARN) $(CFLAGS) $(DEFS) $(INCLUDES)
+
+OBJEXT = @OBJEXT@
+EXEEXT = @EXEEXT@
+
+DEFS     = @DEFS@
+CFLAGS   = @CFLAGS@
+CPPFLAGS = @CPPFLAGS@
+CXXFLAGS = @CXXFLAGS@
+CWARN    = -Wall -Wstrict-prototypes -Wmissing-prototypes
+
+INCLUDES = -I$(srcdir) -I$(top_srcdir)/src -I$(abs_top_builddir)
+
+.SUFFIXES: $(EXEEXT) .$(OBJEXT)
+.$(OBJEXT)$(EXEEXT):
+	$(CC) $(LDFLAGS) -o $@ $(LIBS) $^
+
+.c.$(OBJEXT):
+	$(GCC) -c -o $@ $<
+
+# The default set of objects for inclusion in the library
+# is the complete set of wrapper functions, which are required
+# to work around defects in Microsoft's spawn/exec functions.
+#
+LIBRARY    = libexec.a
+LIBOBJECTS = $(WIN32_WRAPPERS) quotearg.$(OBJEXT) getenvp.$(OBJEXT)
+
+WIN32_WRAPPERS       = $(WIN32_EXEC_WRAPPERS)   $(WIN32_SPAWN_WRAPPERS)
+WIN32_EXEC_WRAPPERS  = $(WIN32_EXECL_WRAPPERS)  $(WIN32_EXECV_WRAPPERS)
+WIN32_SPAWN_WRAPPERS = $(WIN32_SPAWNL_WRAPPERS) $(WIN32_SPAWNV_WRAPPERS)
+
+all: $(LIBRARY)
+
+$(LIBRARY): $(LIBOBJECTS)
+	$(AR) rf $@ $^
+
+# For builds using the Microsoft C runtime libraries,
+# the argument passing in "exec" and "spawn" function calls is broken.
+# To work around the defect, these functions must be called indirectly,
+# using the following wrappers:
+
+WIN32_EXECL_WRAPPERS =	\
+  execl.$(OBJEXT) execlp.$(OBJEXT) execle.$(OBJEXT) execlpe.$(OBJEXT)
+
+WIN32_EXECV_WRAPPERS =	\
+  execv.$(OBJEXT) execvp.$(OBJEXT) execve.$(OBJEXT) execvpe.$(OBJEXT)
+
+WIN32_SPAWNL_WRAPPERS =	\
+  spawnl.$(OBJEXT) spawnlp.$(OBJEXT) spawnle.$(OBJEXT) spawnlpe.$(OBJEXT)
+
+WIN32_SPAWNV_WRAPPERS =	\
+  spawnv.$(OBJEXT) spawnvp.$(OBJEXT) spawnve.$(OBJEXT) spawnvpe.$(OBJEXT)
+
+$(WIN32_EXECL_WRAPPERS) \
+$(WIN32_SPAWNL_WRAPPERS): execlw.c
+	$(GCC) -c -o $@ -DFUNCTION=$* $^
+
+$(WIN32_EXECV_WRAPPERS) \
+$(WIN32_SPAWNV_WRAPPERS): execvw.c
+	$(GCC) -c -o $@ -DFUNCTION=$* $^
+
+clean:
+	$(RM) *.$(OBJEXT) *.a
+
+distclean: clean
+	$(RM) Makefile
+
+realclean: distclean
+spotless: distclean
+
+# EOF -- vim: ft=make

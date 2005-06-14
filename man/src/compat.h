@@ -103,6 +103,23 @@ extern int win32path_is_absolute(const char *);
 #define getgid()   0
 #define getegid()  0
 
+/*
+ * Running a Command Pipeline on Win32
+ * -----------------------------------
+ *
+ * On POSIXy systems, we do this by simply passing an appropriately
+ * formatted command line to the system() function.  On Win32, this
+ * implies the use of cmd.exe to run the pipeline, which is a POSIX
+ * format command line, and will, therefore, fail; instead we use a
+ * replacement function, win32run_command_sequence(), which spawns
+ * a UNIXy shell, to execute the command sequence.
+ */
+
+#define RUN_COMMAND_SEQUENCE(cmds)  win32run_command_sequence (cmds)
+
+extern int win32run_command_sequence (const char *);
+
+
 #else /* !_WIN32 */
 /*
  * POSIX Style Path Name Handling
@@ -121,6 +138,15 @@ extern int win32path_is_absolute(const char *);
  */
 
 #define IS_ABSOLUTE_PATH(p)  (*(p) == '/')
-#endif
+
+/*
+ * Running a POSIX Command Pipeline
+ * --------------------------------
+ *
+ * This is achieved by using a simple system() function call.
+ */
+
+#define RUN_COMMAND_SEQUENCE(cmds)  system (cmds)
+#endif /* !_WIN32 */
 
 #endif /* COMPAT_H */

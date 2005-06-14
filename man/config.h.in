@@ -65,6 +65,9 @@
 /* Define to 1 if you have the <nl_types.h> header file. */
 #undef HAVE_NL_TYPES_H
 
+/* Define to 1 if you have the <process.h> header file. */
+#undef HAVE_PROCESS_H
+
 /* Define to 1 if you have the `putenv' function. */
 #undef HAVE_PUTENV
 

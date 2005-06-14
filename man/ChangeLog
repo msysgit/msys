@@ -1,3 +1,60 @@
+2005-06-14  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Add support for Win32 command invocation using a UNIXy shell.
+
+	* src/win32: New directory.
+
+	* src/winposix.c: Removed...
+	* src/win32/winposix.c: ...and relocated to here.
+
+	* src/win32/wincmds.c: New file; it spawns a UNIXy shell to execute a
+	specified command sequence.
+
+	* src/win32/quotearg.c: New file; adapted from "groff" code, it
+	ensures that all arguments passed in a Win32 spawn or exec function
+	call are properly quoted; (Microsoft's default behaviour is broken).
+
+	* src/win32/execvw.c: New file; compile it to generate a wrapper for
+	the "spawnvp" function, which ensures that all arguments are properly
+	quoted.
+
+	* src/win32/execlw.c: New file; compile it to generate a wrapper for
+	the "spawnlp" function, redirecting its action through the wrapped
+	"spawnvp" function.
+
+	* src/win32/getenvp.c: New file; included for completness, it is
+	required by execlw.c, when generating wrapper functions which pass an
+	explicit "envp" argument; it is not required by "man".
+
+	* src/win32/winexec.h: New file; it transparently redirects all calls
+	to Microsoft's spawn and exec functions through appropriate wrappers,
+	to ensure proper argument quoting.
+
+	* src/win32/Makefile.in: New file; processed by configure to generate
+	Makefile, it defines the rules for building a library of Win32 wrapper
+	functions.
+
+	* src/Makefile.in (win32/libexec.a): New target; use it to build a
+	Win32 support function library in src/win32.
+	(WIN32LIBS): New variable; it specifies the support libraries to be
+	linked in a Win32 build.
+	(WIN32LIBEXEC): New variable; it sets the name for the support
+	library, (libexec.a), to be built in src/win32.
+	(WIN32LIBOBJS): New variable; use it to define the list of object
+	modules to include in WIN32LIBEXEC.
+	(FORCE): New dummy target; use it to force building of WIN32LIBEXEC.
+
+	* src/compat.h (RUN_COMMAND_SEQUENCE): New macro; it invokes the
+	"win32run_command_sequence" function to spawn commands on Win32
+	platforms, or the "system" function otherwise.
+
+	* src/util.c (system1): Use RUN_COMMAND_SEQUENCE macro.
+
+	* configure.ac (process.h): Add check for header; it is required to
+	use the Win32 spawn and exec functions.
+
+	* configure: Regenerated.
+
 2005-06-10  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Configure silent output capability for "grep" command.
