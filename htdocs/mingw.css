@@ -21,7 +21,7 @@ h1 {
 }
 a {
 	color:#09c;
-	font-weight:600;
+	font-weight:400;
 	text-decoration:none;
 }
 a:link {
@@ -48,15 +48,15 @@ tr {
 #Content {
 /* IE margins here */
 	margin-left: 14em;
-	margin-right: 1em;
-	padding-right: 1em;
+	margin-right: .1em;
+	padding-right: .1em;
 	text-align: justify;
 	width: auto;
 }
 body>div#Content {
 /* Mozilla margins here */
 	margin-left: 15em;
-	margin-right: 1em;
+	margin-right: .1em;
 }
 .dec {
 	background-color:#eee;
@@ -68,7 +68,7 @@ body>div#Content {
 }
 #Footer {
 	float: left;
-	font-size: smaller;
+	font-size: .6em;
 	margin-top: 1em;
 	text-align: center;
 	width: 100%;
@@ -96,7 +96,7 @@ body>div#Content {
 	margin-right: 1ex;
 	overflow: hidden;
 	width: 20em;
-        font-size: small;
+        font-size: .7em;
 }
 span#Label {
 	font-size: smaller;
@@ -119,7 +119,7 @@ ul#Menu {
 /* This addition to mingw.css shows the main content onscreen. */
 @media screen {
 #Content {
-      PADDING-RIGHT: 1em; MARGIN-LEFT: 14em; WIDTH: auto; MARGIN-RIGHT: 1em;
+      MARGIN-LEFT: 1em auto; WIDTH: auto; MARGIN-RIGHT: 0em auto;
 TEXT-ALIGN: justify
 }
 }
