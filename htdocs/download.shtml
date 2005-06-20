@@ -121,6 +121,15 @@
 		      File List
 		    </a></h2>
 		    
+		    <p>The automated creation of ssi/release.html that displays
+		    the table below is currently functioning.  The dynamic data
+		    on from the SF site is refreshed on an hourly basis to the
+		    www.mingw.org site.  For the most up to date view of the
+		    data you need to the 
+		    <a target="_nw"
+                       href="http://sf.net/project/showfiles.php?group_id=2435">
+		    SF File Release</a> pages.
+		    </p> 
                     <!--#include file="ssi/release.html"-->
                      
 		    <hr>

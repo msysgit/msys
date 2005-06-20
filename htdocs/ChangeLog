@@ -1,3 +1,10 @@
+2005-06-19  Earnie Boyd  <earnie@users.sf.net>
+
+	* mingw.css: Update CVS with site data.
+	* downloads.shtml: Ditto.
+	* ssi/lside.html: Ditto.
+	* ported.shtml: Remove unused page file.
+
 2004-05-06  Earnie Boyd  <earnie@users.sf.net>
 
 	* index.shtml: Include news-short.html instead of rside.html.  This

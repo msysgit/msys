@@ -95,7 +95,8 @@ body>div#Content {
 	float: right;
 	margin-right: 1ex;
 	overflow: hidden;
-	width: 18em;
+	width: 20em;
+        font-size: small;
 }
 span#Label {
 	font-size: smaller;
@@ -113,4 +114,42 @@ ul#Menu {
 }
 .small {
 	font-size: smaller;
+}
+
+/* This addition to mingw.css shows the main content onscreen. */
+@media screen {
+#Content {
+      PADDING-RIGHT: 1em; MARGIN-LEFT: 14em; WIDTH: auto; MARGIN-RIGHT: 1em;
+TEXT-ALIGN: justify
+}
+}
+
+/*
+  The below is added thanks to:
+ Subject:    	 [Mingw-users] Offtopic: Website prints badly
+From: 	"Kauker, Hubert" <Hubert.Kauker@travelbasys.de>
+Date: 	9:35:40 am 2005-04-04
+*/
+/* This addition to mingw.css print the main content. */
+@media print {
+#Content {
+    /* Note: the left margin is zero. */
+      PADDING-RIGHT: 1em; MARGIN-LEFT: 0em; WIDTH: auto; MARGIN-RIGHT: 1em;
+TEXT-ALIGN: justify
+}
+}
+
+/* This addition to mingw.css shows the left sidebar onscreen. */
+@media screen {
+.sidebar {
+      BORDER-RIGHT: #999 1px dashed; PADDING-RIGHT: 10px; BORDER-TOP: #999
+1px dashed; MARGIN-TOP: 2em; PADDING-LEFT: 10px; PADDING-BOTTOM: 10px;
+BORDER-LEFT: #999 1px dashed; PADDING-TOP: 10px; BORDER-BOTTOM: #999 1px
+dashed; BACKGROUND-COLOR: #eee
+}
+}
+
+/* This addition to mingw.css suppresses the left sidebar on print. */
+@media print {
+.sidebar { display: none }
 }
