@@ -1,3 +1,7 @@
+2005-06-24  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	* src/paths.h.in: Tidy layout.
+
 2005-06-14  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Add support for Win32 command invocation using a UNIXy shell.
