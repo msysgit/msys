@@ -328,7 +328,7 @@ ac_includes_default="\
 # include <unistd.h>
 #endif"
 
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS AWK CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA LN_S SET_MAKE CPP EGREP ALLOCA LIBOBJS man_config_file NULLDEV man_grepsilent LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS AWK CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA LN_S SET_MAKE CPP EGREP ALLOCA LIBOBJS man_config_file sections NULLDEV man_grepsilent LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -864,6 +864,8 @@ Optional Packages:
   --with-confdir          directory where the configuration file is installed
                           [${prefix}/lib]
   --with-config=NAME      name to use for the configuration file [man.conf]
+  --with-sections=LIST    colon separated ordered LIST of MANPAGE sections to
+                          search [1:8:2:3:4:5:6:7:9:tcl:n:l:p:o]
 
 Some influential environment variables:
   CC          C compiler command
@@ -7020,6 +7022,20 @@ echo X"$ac_dir" |
  echo "$as_me:$LINENO: result: ${man_config_file}" >&5
 echo "${ECHO_T}${man_config_file}" >&6
 
+
+# Specify which manual sections will be supported,
+# and the order in which they will be searched.
+#
+
+# Check whether --with-sections or --without-sections was given.
+if test "${with_sections+set}" = set; then
+  withval="$with_sections"
+  sections=${withval}
+else
+  sections=1:8:2:3:4:5:6:7:9:tcl:n:l:p:o
+fi;
+
+
   echo "$as_me:$LINENO: checking name for NULL device" >&5
 echo $ECHO_N "checking name for NULL device... $ECHO_C" >&6
  ac_ext=c
@@ -7732,6 +7748,7 @@ s,@EGREP@,$EGREP,;t t
 s,@ALLOCA@,$ALLOCA,;t t
 s,@LIBOBJS@,$LIBOBJS,;t t
 s,@man_config_file@,$man_config_file,;t t
+s,@sections@,$sections,;t t
 s,@NULLDEV@,$NULLDEV,;t t
 s,@man_grepsilent@,$man_grepsilent,;t t
 s,@LTLIBOBJS@,$LTLIBOBJS,;t t

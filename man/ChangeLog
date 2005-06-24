@@ -1,5 +1,17 @@
 2005-06-24  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
+	Configure MANSECT specification.
+
+	* aclocal.m4 (MANSECT_SEARCH_ORDER): New macro.
+
+	* configure.ac (MANSECT_SEARCH_ORDER): Use it to specify the default
+	man sections search order, as defined by the MANSECT key in
+	src/man.conf.in and src/paths.h.in.
+
+	* configure: Regenerated.
+
+2005-06-24  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
 	* src/paths.h.in: Tidy layout.
 
 2005-06-14  Keith Marshall  <keithmarshall@users.sourceforge.net>

@@ -131,6 +131,22 @@ AC_DEFUN([MAN_CONFIG_FILE],
 ])
 
 
+## =================================================================== ##
+## MANSECT Search Order, Default MANPATH and MANPATH_MAP Configuration ##
+## =================================================================== ##
+#
+# MANSECT_SEARCH_ORDER( LIST )
+# ----------------------------
+#
+AC_DEFUN([MANSECT_SEARCH_ORDER],
+[AC_ARG_WITH([sections],
+ AS_HELP_STRING([--with-sections=LIST],
+  [colon separated ordered LIST of MANPAGE sections to search @<:@$1@:>@]),
+ [sections=${withval}], [sections=$1])
+ AC_SUBST([sections])dnl
+])
+
+
 ## ================================== ##
 ## Package Portability Considerations ##
 ## ================================== ##

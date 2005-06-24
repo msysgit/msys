@@ -77,6 +77,12 @@
 # MAN_CONFIG_FILE_DEFAULT([man.conf])
 # MAN_CONFDIR_DEFAULT(['${prefix}/lib'])
   MAN_CONFIG_FILE
+
+# Specify which manual sections will be supported,
+# and the order in which they will be searched.
+#
+  MANSECT_SEARCH_ORDER([1:8:2:3:4:5:6:7:9:tcl:n:l:p:o])
+
   MAN_GREP_SILENT
 
   AC_CONFIG_FILES([Makefile])
