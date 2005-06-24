@@ -1,5 +1,28 @@
 2005-06-24  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
+	Configure automatic MANPATH generation feature.
+
+	* aclocal.m4 (MANPATH_DEFAULT_SUBST): New macro; used by...
+	(MANPATH_DEFAULT_INCLUDE): New macro.
+
+	* configure.ac (MANPATH_DEFAULT_INCLUDE): Use it to specify the
+	standard paths, and the optional paths, which are assigned to MANPATH
+	by src/man.conf.in.
+
+	* configure: Regenerated.
+
+	* src/man.conf (MANPATH): Transform the path name entries into
+	autoconf substitution fields, to be filled out by configure; add space
+	after initial `#', when key is occluded.
+	(NOAUTOPATH, NOCACHE, MANDEFOPTIONS): Normally occluded; add space
+	after occluding `#'.
+
+	* src/Makefile.in (stamp.h): Add dependency on src/man.conf;
+	adapt sed script, in associated commands, to clean up __undef__(path)
+	substitutions specified by the MANPATH_DEFAULT_INCLUDE macro.
+
+2005-06-24  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
 	Configure MANSECT specification.
 
 	* aclocal.m4 (MANSECT_SEARCH_ORDER): New macro.

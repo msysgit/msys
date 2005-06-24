@@ -146,6 +146,25 @@ AC_DEFUN([MANSECT_SEARCH_ORDER],
  AC_SUBST([sections])dnl
 ])
 
+# MANPATH_DEFAULT_INCLUDE( PATHNAME )
+# -----------------------------------
+#
+AC_DEFUN([MANPATH_DEFAULT_INCLUDE],
+[MANPATH_DEFAULT_SUBST([path_]m4_translit([$1], [-/.], [___]), [$1])dnl
+])
+
+# MANPATH_DEFAULT_SUBST( VARNAME, PATHNAME, [MAP] )
+# -------------------------------------------------
+#
+AC_DEFUN([MANPATH_DEFAULT_SUBST],
+[AC_REQUIRE([WIN32_AC_NULLDEV])dnl
+ AC_CACHE_CHECK([$2 entry in MANPATH$3], [man_cv_$1],
+ [MSYS_AC_CANONICAL_PATH([man_cv_$1], [$2])
+  [(exec >${NULLDEV} 2>&1; cd $2) || man_cv_$1="__undef__(${man_cv_$1})"]dnl
+ ])
+ AC_SUBST([$1], [${man_cv_$1}])dnl
+])
+
 
 ## ================================== ##
 ## Package Portability Considerations ##

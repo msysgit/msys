@@ -80,11 +80,16 @@ WIN32LIBOBJS = winposix.$(OBJEXT) wincmds.$(OBJEXT) \
 win32/libexec.a: FORCE
 	@cd win32; $(MAKE) LIBOBJECTS='$(WIN32LIBOBJS)'
 
-stamp.h: paths.h
+stamp.h: paths.h man.conf
 	for f in $?; \
-	  do $(RM) $@; \
-	     mv $$f $@; \
-	     sed -e 's,$${prefix},${PREFIX},g' $@ > $$f; \
+	  do sed \
+	      -e 's,$${prefix},${PREFIX},g' \
+	      -e ':loop' \
+	      -e   '/__undef__(\([^)]*\))/{' \
+	      -e   's//\1/' -e 's/^#* */# /' \
+	      -e   'b loop' \
+	      -e '}' $$f > $@ && { rm -f $$f; \
+	     mv $@ $$f; } \
 	  done
 	echo timestamp > $@
 

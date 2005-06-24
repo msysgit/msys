@@ -83,6 +83,27 @@
 #
   MANSECT_SEARCH_ORDER([1:8:2:3:4:5:6:7:9:tcl:n:l:p:o])
 
+# Set up the default MANPATH entries, in the configuration file.
+# (First, the standard set, which are normally included)...
+#
+  MANPATH_DEFAULT_INCLUDE([/usr/man])
+  MANPATH_DEFAULT_INCLUDE([/usr/local/man])
+  MANPATH_DEFAULT_INCLUDE([/usr/share/man])
+  MANPATH_DEFAULT_INCLUDE([/usr/X11R6/man])
+#
+# (followed by the optional set, which are normally commented out)...
+# (we use MANPATH_DEFAULT_INCLUDE, but OCCLUSION is specified by
+#  a leading `#' in src/man.conf.in).
+#
+  MANPATH_DEFAULT_INCLUDE([/opt/teTeX/man])
+  MANPATH_DEFAULT_INCLUDE([/usr/lib/perl5/man])
+  MANPATH_DEFAULT_INCLUDE([/usr/share/perl5/man])
+  MANPATH_DEFAULT_INCLUDE([/usr/share/tcl-8.0/man])
+  MANPATH_DEFAULT_INCLUDE([/usr/share/tk-8.0/man])
+  MANPATH_DEFAULT_INCLUDE([/usr/share/tix-4.1/man])
+  MANPATH_DEFAULT_INCLUDE([/usr/share/coas/man])
+  MANPATH_DEFAULT_INCLUDE([/usr/kerberos/man])
+
   MAN_GREP_SILENT
 
   AC_CONFIG_FILES([Makefile])

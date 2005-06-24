@@ -34,23 +34,23 @@
 #
 # MANBIN		/usr/local/bin/man
 #
-# Every automatically generated MANPATH includes these fields
+# Every automatically generated MANPATH includes these standard directories...
 #
-MANPATH	/usr/man
-MANPATH /usr/share/man
-MANPATH	/usr/local/man
-MANPATH	/usr/X11R6/man
+MANPATH 		@path__usr_man@
+MANPATH 		@path__usr_share_man@
+MANPATH 		@path__usr_local_man@
+MANPATH 		@path__usr_X11R6_man@
 #
-# Uncomment if you want to include one of these by default
+# Uncomment any of these which you want to include by default...
 #
-#MANPATH /opt/teTeX/man
-#MANPATH /usr/lib/perl5/man
-#MANPATH /usr/share/perl5/man
-#MANPATH /usr/share/tcl-8.0/man
-#MANPATH /usr/share/tk-8.0/man
-#MANPATH /usr/share/tix-4.1/man
-#MANPATH /usr/share/coas/man
-#MANPATH /usr/kerberos/man
+# MANPATH 		@path__opt_teTeX_man@
+# MANPATH 		@path__usr_lib_perl5_man@
+# MANPATH 		@path__usr_share_perl5_man@
+# MANPATH 		@path__usr_share_tcl_8_0_man@
+# MANPATH 		@path__usr_share_tk_8_0_man@
+# MANPATH 		@path__usr_share_tix_4_1_man@
+# MANPATH 		@path__usr_share_coas_man@
+# MANPATH 		@path__usr_kerberos_man@
 #
 # Set up PATH to MANPATH mapping
 #
@@ -74,13 +74,13 @@ MANPATH_MAP	/usr/bin/mh		/usr/share/man
 # NOAUTOPATH keeps man from automatically adding directories that look like
 # manual page directories to the path.
 #
-#NOAUTOPATH
+# NOAUTOPATH
 #
 # NOCACHE keeps man from creating cache pages ("cat pages")
 # (generally one enables/disable cat page creation by creating/deleting
 # the directory they would live in - man never does mkdir)
 # 
-#NOCACHE
+# NOCACHE
 #
 # Useful paths - note that COL should not be defined when
 # NROFF is defined as "groff -Tascii" or "groff -Tlatin1";
@@ -126,7 +126,7 @@ MANSECT		@sections@
 # This is mainly for the benefit of those that think -a should be the default
 # Note that some systems have /usr/man/allman, causing pages to be shown twice.
 #
-#MANDEFOPTIONS	-a
+# MANDEFOPTIONS	-a
 #
 # Decompress with given decompressor when input file has given extension
 # The command given must act as a filter.
