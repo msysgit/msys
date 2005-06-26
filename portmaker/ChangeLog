@@ -1,3 +1,16 @@
+2005-06-26  Earnie Boyd  <earnie@users.sf.net>
+
+	* src/version.sh: Add echo in the event the file is executed.
+	* src/makeport: Rename.
+	* src/portmaker.sh: Renamed makeport.
+	* src/Makefile: New file.
+	* template/Makefile: Ditto.
+	* template/mingwPORT.afterrpatch: Ditto.
+	* template/mingwPORT.beforerpatch: Ditto.
+	* lib/Makefile: Ditto.
+	* doc/Makefile: Ditto.
+	* config.mak: Ditto.
+
 2005-04-03  Earnie Boyd  <earnie@users.sf.net>
 
 	* portmaker: New project.

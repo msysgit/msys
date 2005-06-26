@@ -1,8 +1,13 @@
 #! /bin/sh
+# makeport
+
+VERSION=@VERSION@
 
 CURDIR=`pwd`
+LIBDIR=@PREFIX@/lib/portmaker-${VERSION}
+TMPLDIR=@PREFIX@/share/portmaker-${VERSION}
 
-. ${CURDIR}/mingwPORT.functions
+. ${LIBDIR}/mingwPORT.functions
 
 ask "PACKAGE" "" PACKAGE
 ask "VERSION" "" VERSION
@@ -38,14 +43,14 @@ PREFIX=$PREFIX
 CFLAGS="$CFLAGS"
 CXXFLAGS="$CXXFLAGS"
 EOD
-cat mingwPORT.README | sed -e "s@\[PACKAGEFILE\]@${ARCHIVEFILE}@" -e "s@\[PACKAGEHOME\]@${ARCHIVEHOME}@" > $PORTPATH/mingwPORT.README
-cp mingwPORT.question $PORTPATH
-cp mingwPORT.afterquestion $PORTPATH
-cp mingwPORT.configure $PORTPATH
-cp mingwPORT.make $PORTPATH
-cp mingwPORT.install $PORTPATH
-cp mingwPORT.cleanup $PORTPATH
-cp mingwPORT.sh $PORTPATH
-cp mingwPORT.functions $PORTPATH
-cp mingwPORT.exports $PORTPATH
-cp mirrors.sf $PORTPATH
+cat ${TMPLDIR}/mingwPORT.README | sed -e "s@\[PACKAGEFILE\]@${ARCHIVEFILE}@" -e "s@\[PACKAGEHOME\]@${ARCHIVEHOME}@" > $PORTPATH/mingwPORT.README
+cp ${TMPLDIR}/mingwPORT.question $PORTPATH
+cp ${TMPLDIR}/mingwPORT.afterquestion $PORTPATH
+cp ${TMPLDIR}/mingwPORT.configure $PORTPATH
+cp ${TMPLDIR}/mingwPORT.make $PORTPATH
+cp ${TMPLDIR}/mingwPORT.install $PORTPATH
+cp ${TMPLDIR}/mingwPORT.cleanup $PORTPATH
+cp ${TMPLDIR}/mingwPORT.sh $PORTPATH
+cp ${LIBDIR}/mingwPORT.functions $PORTPATH
+cp ${TMPLDIR}/mingwPORT.exports $PORTPATH
+cp ${TMPLDIR}/mirrors.sf $PORTPATH

@@ -1,3 +1,4 @@
+#!/bin/echo This file is used by the configure process to set version variables
 #version.sh
 # File used by the configure process to set the VERSION variable in the script
 

@@ -1,0 +1,3 @@
+# mingwPORT.beforerpatch
+# Add commands to prepare before reverse patching the source
+PATCHFLAGS='-p 0'
