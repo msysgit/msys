@@ -70,12 +70,22 @@
 # Establish the name and location for the configuration file.
 #
 # (The defaults are as defined here; if you wish to change these,
-#  uncomment the next two macro lines, and modify accordingly.
-#  Note the use of single quotes to defer expansion of
-#  ${prefix} until "make" time).
+#  uncomment the next two macro lines, and modify them accordingly.
+#  Note the use of single quotes to defer expansion of ${prefix}
+#  until "make" time).
 #
 # MAN_CONFIG_FILE_DEFAULT([man.conf])
 # MAN_CONFDIR_DEFAULT(['${prefix}/lib'])
+#
+# The default for MAN_CONFDIR may need to be modified,
+# if conformance with FHS or FSSTND standards is requested.
+#
+  MAN_FHS_ENABLE
+  MAN_FSSTND_ENABLE
+#
+# Subject to established defaults,
+# identify the appropriate configuration file name and location.
+#
   MAN_CONFIG_FILE
 
 # Specify which manual sections will be supported,

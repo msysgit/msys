@@ -72,9 +72,53 @@ AC_DEFUN([MSYS_AC_CANONICAL_PATH],
 ])
 
 
-## ========================================= ##
-## Package Configuration File Identification ##
-## ========================================= ##
+## ================================================================== ##
+## Configuration File Identification and Standards Compliance Options ##
+## ================================================================== ##
+#
+# MAN_FHS_ENABLE
+# --------------
+# Allow "--enable-fhs" configure option
+# to request an FHS standards compliant installation.
+#
+# Note: this option is cached; use "--disable-fhs" to disable it,
+# if a previous caching run of configure had "--enable-fhs".
+#
+AC_DEFUN([MAN_FHS_ENABLE],
+[MAN_STANDARD_ENABLE([FHS], [fhs])dnl
+])
+
+# MAN_FSSTND_ENABLE
+# -----------------
+# Allow "--enable-fsstnd" configure option
+# to request an FSSTND standards compliant installation.
+#
+# Note: "--enable-fhs" will override and disable this option.
+# Otherwise, the option is cached; use "--disable-fsstnd" to disable it,
+# if a previous caching run of configure had "--enable-fsstnd".
+#
+AC_DEFUN([MAN_FSSTND_ENABLE],
+[MAN_STANDARD_ENABLE([FSSTND], [fsstnd], [FHS])dnl
+])
+
+# MAN_STANDARD_ENABLE( VARIABLE, STANDARD, [OVERRIDE] )
+# -----------------------------------------------------
+# Helper used by MAN_FHS_ENABLE and MAN_FSSTND_ENABLE.
+# Sets VARIABLE according to status of "--enable-STANDARD" option.
+# Forces "--disable-STANDARD" if "--enable-OVERRIDE" is active.
+#
+AC_DEFUN([MAN_STANDARD_ENABLE],
+[AC_MSG_CHECKING([whether to adopt the $1 standard])
+ AC_ARG_ENABLE([$2],
+   AC_HELP_STRING([--enable-$2],
+     [implement $1 standard installation paths]),
+   [test x${enableval} = xno && man_cv_$1=no || man_cv_$1=yes],
+   [AC_CACHE_VAL([man_cv_$1], [man_cv_$1=no])])
+ m4_ifvaln([$3], [test $man_cv_$3 = no || man_cv_$1=no])dnl
+ [test $man_cv_$1 = no && $1="__undef__($1)"]
+ AC_SUBST([$1], [${$1-"$1"}])
+ AC_MSG_RESULT([$man_cv_$1])dnl
+])
 
 # MAN_CONFIG_FILE_DEFAULT( FILENAME )
 # -----------------------------------

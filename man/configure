@@ -328,7 +328,7 @@ ac_includes_default="\
 # include <unistd.h>
 #endif"
 
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS AWK CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA LN_S SET_MAKE CPP EGREP ALLOCA LIBOBJS man_config_file sections NULLDEV path__usr_man path__usr_local_man path__usr_share_man path__usr_X11R6_man path__opt_teTeX_man path__usr_lib_perl5_man path__usr_share_perl5_man path__usr_share_tcl_8_0_man path__usr_share_tk_8_0_man path__usr_share_tix_4_1_man path__usr_share_coas_man path__usr_kerberos_man man_grepsilent LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS AWK CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA LN_S SET_MAKE CPP EGREP ALLOCA LIBOBJS FHS FSSTND man_config_file sections NULLDEV path__usr_man path__usr_local_man path__usr_share_man path__usr_X11R6_man path__opt_teTeX_man path__usr_lib_perl5_man path__usr_share_perl5_man path__usr_share_tcl_8_0_man path__usr_share_tk_8_0_man path__usr_share_tix_4_1_man path__usr_share_coas_man path__usr_kerberos_man man_grepsilent LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -857,6 +857,12 @@ if test -n "$ac_init_help"; then
      short | recursive ) echo "Configuration of man 1.5m3:";;
    esac
   cat <<\_ACEOF
+
+Optional Features:
+  --disable-FEATURE       do not include FEATURE (same as --enable-FEATURE=no)
+  --enable-FEATURE[=ARG]  include FEATURE [ARG=yes]
+  --enable-fhs            implement FHS standard installation paths
+  --enable-fsstnd         implement FSSTND standard installation paths
 
 Optional Packages:
   --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
@@ -6950,12 +6956,59 @@ done
 # Establish the name and location for the configuration file.
 #
 # (The defaults are as defined here; if you wish to change these,
-#  uncomment the next two macro lines, and modify accordingly.
-#  Note the use of single quotes to defer expansion of
-#  ${prefix} until "make" time).
+#  uncomment the next two macro lines, and modify them accordingly.
+#  Note the use of single quotes to defer expansion of ${prefix}
+#  until "make" time).
 #
 # MAN_CONFIG_FILE_DEFAULT([man.conf])
 # MAN_CONFDIR_DEFAULT(['${prefix}/lib'])
+#
+# The default for MAN_CONFDIR may need to be modified,
+# if conformance with FHS or FSSTND standards is requested.
+#
+  echo "$as_me:$LINENO: checking whether to adopt the FHS standard" >&5
+echo $ECHO_N "checking whether to adopt the FHS standard... $ECHO_C" >&6
+ # Check whether --enable-fhs or --disable-fhs was given.
+if test "${enable_fhs+set}" = set; then
+  enableval="$enable_fhs"
+  test x${enableval} = xno && man_cv_FHS=no || man_cv_FHS=yes
+else
+  if test "${man_cv_FHS+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  man_cv_FHS=no
+fi
+
+fi;
+  test $man_cv_FHS = no && FHS="__undef__(FHS)"
+ FHS=${FHS-"FHS"}
+
+ echo "$as_me:$LINENO: result: $man_cv_FHS" >&5
+echo "${ECHO_T}$man_cv_FHS" >&6
+  echo "$as_me:$LINENO: checking whether to adopt the FSSTND standard" >&5
+echo $ECHO_N "checking whether to adopt the FSSTND standard... $ECHO_C" >&6
+ # Check whether --enable-fsstnd or --disable-fsstnd was given.
+if test "${enable_fsstnd+set}" = set; then
+  enableval="$enable_fsstnd"
+  test x${enableval} = xno && man_cv_FSSTND=no || man_cv_FSSTND=yes
+else
+  if test "${man_cv_FSSTND+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  man_cv_FSSTND=no
+fi
+
+fi;
+ test $man_cv_FHS = no || man_cv_FSSTND=no
+ test $man_cv_FSSTND = no && FSSTND="__undef__(FSSTND)"
+ FSSTND=${FSSTND-"FSSTND"}
+
+ echo "$as_me:$LINENO: result: $man_cv_FSSTND" >&5
+echo "${ECHO_T}$man_cv_FSSTND" >&6
+#
+# Subject to established defaults,
+# identify the appropriate configuration file name and location.
+#
 
 # Check whether --with-confdir or --without-confdir was given.
 if test "${with_confdir+set}" = set; then
@@ -8152,6 +8205,8 @@ s,@CPP@,$CPP,;t t
 s,@EGREP@,$EGREP,;t t
 s,@ALLOCA@,$ALLOCA,;t t
 s,@LIBOBJS@,$LIBOBJS,;t t
+s,@FHS@,$FHS,;t t
+s,@FSSTND@,$FSSTND,;t t
 s,@man_config_file@,$man_config_file,;t t
 s,@sections@,$sections,;t t
 s,@NULLDEV@,$NULLDEV,;t t

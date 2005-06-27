@@ -10,9 +10,9 @@
 # It may also record the pathname of the man binary. [This is unused.]
 # The format is:
 #
-# MANBIN		pathname
-# MANPATH		manpath_element	[corresponding_catdir]
-# MANPATH_MAP		path_element	manpath_element
+# MANBIN	pathname
+# MANPATH	manpath_element	[corresponding_catdir]
+# MANPATH_MAP	path_element	manpath_element
 #
 # If no catdir is given, it is assumed to be equal to the mandir
 # (so that this dir has both man1 etc. and cat1 etc. subdirs).
@@ -26,31 +26,31 @@
 # The keyword FHS will cause this behaviour (and overrides FSSTND).
 # Explicitly given catdirs override.
 #
-@fsstnd@FSSTND
-@fhs@FHS
+@FSSTND@
+@FHS@
 #
 # This file is also read by man in order to find how to call nroff, less, etc.,
 # and to determine the correspondence between extensions and decompressors.
 #
-# MANBIN		/usr/local/bin/man
+# MANBIN	${prefix}/bin/man
 #
 # Every automatically generated MANPATH includes these standard directories...
 #
-MANPATH 		@path__usr_man@
-MANPATH 		@path__usr_share_man@
-MANPATH 		@path__usr_local_man@
-MANPATH 		@path__usr_X11R6_man@
+MANPATH 	@path__usr_man@
+MANPATH 	@path__usr_share_man@
+MANPATH 	@path__usr_local_man@
+MANPATH 	@path__usr_X11R6_man@
 #
 # Uncomment any of these which you want to include by default...
 #
-# MANPATH 		@path__opt_teTeX_man@
-# MANPATH 		@path__usr_lib_perl5_man@
-# MANPATH 		@path__usr_share_perl5_man@
-# MANPATH 		@path__usr_share_tcl_8_0_man@
-# MANPATH 		@path__usr_share_tk_8_0_man@
-# MANPATH 		@path__usr_share_tix_4_1_man@
-# MANPATH 		@path__usr_share_coas_man@
-# MANPATH 		@path__usr_kerberos_man@
+# MANPATH 	@path__opt_teTeX_man@
+# MANPATH 	@path__usr_lib_perl5_man@
+# MANPATH 	@path__usr_share_perl5_man@
+# MANPATH 	@path__usr_share_tcl_8_0_man@
+# MANPATH 	@path__usr_share_tk_8_0_man@
+# MANPATH 	@path__usr_share_tix_4_1_man@
+# MANPATH 	@path__usr_share_coas_man@
+# MANPATH 	@path__usr_kerberos_man@
 #
 # Set up PATH to MANPATH mapping
 #

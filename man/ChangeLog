@@ -1,3 +1,19 @@
+2005-06-27  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	* aclocal.m4 (MAN_STANDARD_ENABLE): New macro; used by...
+	(MAN_FHS_ENABLE, MAN_FSSTND_ENABLE): New macros; they request
+	FHS or FSSTND conformance, when configured with `--enable-fhs'
+	or `--enable-fsstnd' respectively, (subject to `--enable-fhs'
+	overriding `--enable-fsstnd').
+
+	* configure.ac (MAN_FHS_ENABLE, MAN_FSSTND_ENABLE): Invoke them.
+
+	* configure: Regenerated.
+
+	* src/man.conf.in (FHS, FSSTND): New syntax.
+	(MANBIN, MANPATH): Tidy column alignment.
+	(MANBIN): Resolve location according to `${prefix}'.
+
 2005-06-24  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Configure automatic MANPATH generation feature.
