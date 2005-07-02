@@ -1874,6 +1874,15 @@ statfs (const char *fname, struct statfs *sfs)
       return -1;
     }
 
+  _ULARGE_INTEGER fba, tnb, tfa;
+
+  if (!GetDiskFreeSpaceEx (root, &fba, &tnb, &tfa))
+    {
+      fba.QuadPart = (unsigned long long)freec * spc * bps;
+      tnb.QuadPart = (unsigned long long)totalc * spc * bps;
+      tfa.QuadPart = (unsigned long long)freec * spc * bps;
+    }
+
   DWORD vsn, maxlen, flags;
 
   if (!GetVolumeInformation (root, NULL, 0, &vsn, &maxlen, &flags, NULL, 0))
@@ -1883,8 +1892,9 @@ statfs (const char *fname, struct statfs *sfs)
     }
   sfs->f_type = flags;
   sfs->f_bsize = spc*bps;
-  sfs->f_blocks = totalc;
-  sfs->f_bfree = sfs->f_bavail = freec;
+  sfs->f_blocks = tnb.QuadPart / sfs->f_bsize;
+  sfs->f_bavail = fba.QuadPart / sfs->f_bsize;
+  sfs->f_bfree = tfa.QuadPart / sfs->f_bsize;
   sfs->f_files = -1;
   sfs->f_ffree = -1;
   sfs->f_fsid = vsn;
