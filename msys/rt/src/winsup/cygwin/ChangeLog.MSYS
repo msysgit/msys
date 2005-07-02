@@ -1,3 +1,7 @@
+2005.07.02  Max T. Woodbury  <mtew@users.sf.net>
+
+	* syscalls.cc (statfs): Allow for bigger disks.
+
 2005.05.13  Earnie Boyd <earnie@users.sf.net>
 
 	* winsup.h: Define TRACETTY.
