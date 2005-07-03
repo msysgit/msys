@@ -1,0 +1,5 @@
+2005-07-03  Earnie Boyd  <earnie@users.sf.net>
+
+	* w32/Makefile (clean): Add -f to rm.
+	* wrap/Makefile (clean): Ditto.
+	* ChangeLog.MSYS: New file.
