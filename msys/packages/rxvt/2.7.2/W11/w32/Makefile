@@ -21,4 +21,4 @@ debug:
 	gcc -c xlib.c -g -I.. 
 
 clean:
-	rm ../lib/libW11.dll xlib.o ntutil.o event.o
+	rm -f ../lib/libW11.dll xlib.o ntutil.o event.o
