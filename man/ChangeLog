@@ -1,3 +1,28 @@
+2005-07-04  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Define MANPATH_MAP and other general comment improvements.
+
+	* aclocal.m4 (MAN_STANDARD_ENABLE): Improve comments.
+	Use PREFIX instead of ${prefix}, in help string.
+	(MANSECT_SEARCH_ORDER): Add comment.  Simplify help string.
+	(MANPATH_DEFAULT_INCLUDE): Add comment.
+	(MANPATH_DEFAULT_SUBST): MAP argument removed.  Add comment.  Improve
+	text of "checking" message.
+	(MANPATH_MAP_DEFAULT, MANPATH_MAP_ALIAS): New macros.
+	(MANPATH_MAP_CANONICAL, MANPATH_MAP_DEFINE, MANPATH_MAP_CACHE_ASSIGN):
+	New internal macros; they facilitate the implementation of
+	MANPATH_MAP_DEFAULT.
+	(MANPATH_REMAP): New internal macro; it facilitates the implementation
+	of MANPATH_MAP_ALIAS.
+
+	* configure.ac (MANPATH_MAP_DEFAULT, MANPATH_MAP_ALIAS): Deploy them
+	to define the default MANPATH_MAP, with FHS specific remap of /usr/man
+	to /usr/share/man.
+
+	* configure: Regenerated.
+
+	* src/man.conf.in (MANPATH_MAP): Define autoconf substitutions.
+
 2005-06-27  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	* aclocal.m4 (MAN_STANDARD_ENABLE): New macro; used by...

@@ -61,15 +61,15 @@ MANPATH 	@path__usr_X11R6_man@
 # in the mandatory manpath already, but will keep man from statting
 # lots of other nearby files and directories.
 #
-MANPATH_MAP	/bin			/usr/share/man
-MANPATH_MAP	/sbin			/usr/share/man
-MANPATH_MAP	/usr/bin		/usr/share/man
-MANPATH_MAP	/usr/sbin		/usr/share/man
-MANPATH_MAP	/usr/local/bin		/usr/local/man
-MANPATH_MAP	/usr/local/sbin		/usr/local/man
-MANPATH_MAP	/usr/X11R6/bin		/usr/X11R6/man
-MANPATH_MAP	/usr/bin/X11		/usr/X11R6/man
-MANPATH_MAP	/usr/bin/mh		/usr/share/man
+MANPATH_MAP	@path__bin@			@map_to__usr_man@
+MANPATH_MAP	@path__sbin@    		@map_to__usr_man@
+MANPATH_MAP	@path__usr_bin@ 		@map_to__usr_man@
+MANPATH_MAP	@path__usr_sbin@		@map_to__usr_man@
+MANPATH_MAP	@path__usr_local_bin@		@map_to__usr_local_man@
+MANPATH_MAP	@path__usr_local_sbin@		@map_to__usr_local_man@
+MANPATH_MAP	@path__usr_X11R6_bin@		@map_to__usr_X11R6_man@
+MANPATH_MAP	@path__usr_bin_X11@		@map_to__usr_X11R6_man@
+MANPATH_MAP	@path__usr_bin_mh@		@map_to__usr_man@
 #
 # NOAUTOPATH keeps man from automatically adding directories that look like
 # manual page directories to the path.

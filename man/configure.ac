@@ -114,6 +114,25 @@
   MANPATH_DEFAULT_INCLUDE([/usr/share/coas/man])
   MANPATH_DEFAULT_INCLUDE([/usr/kerberos/man])
 
+# Specify standard MANPATH_MAP aliases,
+# for conformance with FHS or FSSTND standards, when in use.
+# (This MUST be set up BEFORE the MANPATH_MAP is defined,
+#  to ensure that the aliases are resolved in the map).
+#
+  MANPATH_MAP_ALIAS([FHS], [/usr/man], [/usr/share/man])
+
+# Now, define the default MANPATH_MAP.
+#
+  MANPATH_MAP_DEFAULT([/bin],            [/usr/man])
+  MANPATH_MAP_DEFAULT([/sbin],           [/usr/man])
+  MANPATH_MAP_DEFAULT([/usr/bin],        [/usr/man])
+  MANPATH_MAP_DEFAULT([/usr/sbin],       [/usr/man])
+  MANPATH_MAP_DEFAULT([/usr/local/bin],  [/usr/local/man])
+  MANPATH_MAP_DEFAULT([/usr/local/sbin], [/usr/local/man])
+  MANPATH_MAP_DEFAULT([/usr/X11R6/bin],  [/usr/X11R6/man])
+  MANPATH_MAP_DEFAULT([/usr/bin/X11],    [/usr/X11R6/man])
+  MANPATH_MAP_DEFAULT([/usr/bin/mh],     [/usr/man])
+
   MAN_GREP_SILENT
 
   AC_CONFIG_FILES([Makefile])

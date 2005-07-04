@@ -103,8 +103,8 @@ AC_DEFUN([MAN_FSSTND_ENABLE],
 
 # MAN_STANDARD_ENABLE( VARIABLE, STANDARD, [OVERRIDE] )
 # -----------------------------------------------------
-# Helper used by MAN_FHS_ENABLE and MAN_FSSTND_ENABLE.
-# Sets VARIABLE according to status of "--enable-STANDARD" option.
+# Internal macro called by MAN_FHS_ENABLE and MAN_FSSTND_ENABLE.
+# Sets VARIABLE according to the status of the "--enable-STANDARD" option.
 # Forces "--disable-STANDARD" if "--enable-OVERRIDE" is active.
 #
 AC_DEFUN([MAN_STANDARD_ENABLE],
@@ -141,7 +141,7 @@ AC_DEFUN([MAN_CONFDIR_DEFAULT], [man_confdir_default=$1/])
 AC_DEFUN([MAN_CONFDIR],
 [AC_ARG_WITH([confdir],
   AS_HELP_STRING([--with-confdir],
-   [directory where the configuration file is installed [[${prefix}/lib]]]),
+   [directory where the configuration file is installed [[PREFIX/lib]]]),
   [man_confdir=${withval}/],
   [man_confdir=${man_confdir_default-'${prefix}/lib/'}])
 ])
@@ -181,38 +181,129 @@ AC_DEFUN([MAN_CONFIG_FILE],
 #
 # MANSECT_SEARCH_ORDER( LIST )
 # ----------------------------
+# Define a colon separated LIST of manual sections,
+# which will be searched in the order specified, when resolving
+# references for any requested manpage.
 #
 AC_DEFUN([MANSECT_SEARCH_ORDER],
 [AC_ARG_WITH([sections],
  AS_HELP_STRING([--with-sections=LIST],
-  [colon separated ordered LIST of MANPAGE sections to search @<:@$1@:>@]),
+  [colon separated ordered LIST of MANPAGE sections to search [[$1]]]),
  [sections=${withval}], [sections=$1])
  AC_SUBST([sections])dnl
 ])
 
 # MANPATH_DEFAULT_INCLUDE( PATHNAME )
 # -----------------------------------
+# Specify a POSIX format PATHNAME,
+# which is to be included in the system default MANPATH.
 #
 AC_DEFUN([MANPATH_DEFAULT_INCLUDE],
 [MANPATH_DEFAULT_SUBST([path_]m4_translit([$1], [-/.], [___]), [$1])dnl
 ])
 
-# MANPATH_DEFAULT_SUBST( VARNAME, PATHNAME, [MAP] )
-# -------------------------------------------------
+# MANPATH_DEFAULT_SUBST( VARNAME, PATHNAME )
+# ------------------------------------------
+# Internal macro called only by MANPATH_DEFAULT_INCLUDE,
+# to assign the canonical representation of PATHNAME to the substitution
+# variable VARNAME, for incorporation into man.conf by configure;
+# mark as "__undef__(PATHNAME)" if PATHNAME does not exist.
+# (DO NOT invoke this macro directly).
 #
 AC_DEFUN([MANPATH_DEFAULT_SUBST],
 [AC_REQUIRE([WIN32_AC_NULLDEV])dnl
- AC_CACHE_CHECK([$2 entry in MANPATH$3], [man_cv_$1],
- [MSYS_AC_CANONICAL_PATH([man_cv_$1], [$2])
+ AC_CACHE_CHECK([canonical MANPATH form for $2],
+  [man_cv_$1], [MSYS_AC_CANONICAL_PATH([man_cv_$1], [$2])
   [(exec >${NULLDEV} 2>&1; cd $2) || man_cv_$1="__undef__(${man_cv_$1})"]dnl
  ])
  AC_SUBST([$1], [${man_cv_$1}])dnl
 ])
 
+# MANPATH_MAP_DEFAULT( PATHDIR, MANDIR )
+# --------------------------------------
+# Specify a default MANPATH_MAP entry,
+# such that when PATHDIR is present in the system PATH,
+# then MANDIR will be added to the MANPATH.
+#
+AC_DEFUN([MANPATH_MAP_DEFAULT],
+[MANPATH_MAP_CANONICAL([path_]m4_translit([$1], [-/.], [___]), [$1], [$2])dnl
+])
 
-## ================================== ##
-## Package Portability Considerations ##
-## ================================== ##
+# MANPATH_MAP_ALIAS( STANDARD, PRIMARY, ALIAS )
+# ---------------------------------------------
+# Create a remapped MANDIR alias,
+# such that when STANDARD (either FHS or FSSTND) is in effect,
+# then any MANPATH_MAP entry with a default MANDIR = PRIMARY mapping,
+# will instead refer to MANDIR = ALIAS.
+#
+AC_DEFUN([MANPATH_MAP_ALIAS],
+[MANPATH_REMAP([$1], m4_translit([$2], [-/.], [___]), [$3])dnl
+])
+
+# MANPATH_REMAP( STANDARD, VARNAME, ALIAS )
+# -----------------------------------------
+# Internal macro called by MANPATH_MAP_ALIAS, to remap the MANPATH_MAP
+# substitution VARNAME to ALIAS, when STANDARD is in effect.
+# (DO NOT invoke this macro directly).
+#
+AC_DEFUN([MANPATH_REMAP],
+[AC_REQUIRE([MAN_$1_ENABLE])dnl
+ test -z "$man_alias_$2" && test x$man_cv_$1 != xno && man_alias_$2="$3"
+])
+
+# MANPATH_MAP_CANONICAL( VARNAME, PATHDIR, MANDIR )
+# -------------------------------------------------
+# Internal macro called by MANPATH_MAP_DEFAULT,
+# to assign the substitution VARNAME associated with PATHDIR,
+# and to establish the appropriate MANDIR mapping.
+# (DO NOT invoke this macro directly).
+#
+AC_DEFUN([MANPATH_MAP_CANONICAL],
+[AC_CACHE_CHECK([canonical form for $2],
+  [man_cv_$1], [MSYS_AC_CANONICAL_PATH([man_cv_$1], [$2])])
+ MANPATH_MAP_DEFINE([man_cv_$1], m4_translit([$3], [-/.], [___]), [$3])
+ AC_SUBST([$1], [${man_cv_$1}])dnl
+])
+
+# MANPATH_MAP_DEFINE( PATHDIR, VARNAME, MAPDIR )
+# ----------------------------------------------
+# Internal macro called only by MANPATH_MAP_CANONICAL,
+# to establish the MAPDIR reference to associate with PATHDIR,
+# and assign it to appropriate VARNAME substitution variables.
+# (DO NOT invoke this macro directly).
+#
+AC_DEFUN([MANPATH_MAP_DEFINE],
+[AC_MSG_CHECKING([canonical MANPATH_MAP for $$1])
+ test -z "$man_alias_$2" && man_alias_$2="$3"
+ if test "$man_alias_$2" = "$man_cv_alias_$2"
+ then
+   AC_CACHE_VAL([man_cv_map_to_$2],
+     MANPATH_MAP_CACHE_ASSIGN([man_cv_map_to_$2], [man_alias_$2]))
+ else
+   MANPATH_MAP_CACHE_ASSIGN([man_cv_map_to_$2], [man_alias_$2])
+   man_cv_alias_$2="$man_alias_$2"
+ fi
+ AC_SUBST([map_to_$2], [$man_cv_map_to_$2])
+ AC_MSG_RESULT([${map_to_$2}])dnl
+])
+
+# MANPATH_MAP_CACHE_ASSIGN( VARNAME, MAPDIR )
+# -------------------------------------------
+# Internal macro called only by MANPATH_MAP_DEFINE,
+# to assign the canonical representation of MAPDIR to the cached VARNAME,
+# marking it as "__undef__(MAPDIR)", if MAPDIR does not exist.
+# (DO NOT invoke this macro directly).
+#
+AC_DEFUN([MANPATH_MAP_CACHE_ASSIGN],
+[AC_REQUIRE([WIN32_AC_NULLDEV])dnl
+ MSYS_AC_CANONICAL_PATH([$1], [$$2])
+ (exec >${NULLDEV} 2>&1; cd $$2) || $1="__undef__($$1)"dnl
+])
+
+
+## ================================================ ##
+## Miscellaneous Package Portability Considerations ##
+## ================================================ ##
 #
 # WIN32_AC_NULLDEV
 # ----------------
