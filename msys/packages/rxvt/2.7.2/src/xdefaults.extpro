@@ -1,3 +1,0 @@
-void             usage                   __PROTO((int type));
-void             get_options             __PROTO((int argc, const char *const *argv));
-void             extract_resources       __PROTO((Display *display, const char *name));

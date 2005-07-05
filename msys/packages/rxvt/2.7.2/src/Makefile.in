@@ -1,4 +1,4 @@
-# $Id: Makefile.in,v 1.1 2002/12/06 23:08:02 earnie Exp $
+# $Id: Makefile.in,v 1.2 2005/07/05 17:56:36 earnie Exp $
 @MCOMMON@
 
 srcdir =	@srcdir@
@@ -18,10 +18,12 @@ first_rule: all
 dummy:
 
 SRCS =	command.c graphics.c grkelot.c logging.c main.c menubar.c \
-	misc.c netdisp.c screen.c scrollbar.c strings.c xdefaults.c xpm.c
+	misc.c netdisp.c screen.c scrollbar.c strings.c xdefaults.c xpm.c \
+	rxvt_res.rc
 
 HDRS =	command.h grkelot.h menubar.h protos.h rxvtgrx.h version.h \
-	feature.h logging.h netdisp.h rxvt.h screen.h
+	feature.h logging.h netdisp.h rxvt.h screen.h \
+	rxvt_res.h
 
 # it was ``be kind to gmake week''.  Now it's ``autoconf week''
 #OBJS =	$(SRCS:S,.c,.o,)
@@ -51,13 +53,16 @@ DEPS =  rxvt.h ${basedir}/config.h feature.h rsizes.h
 DIST = $(HDRS) $(SRCS) Makefile.in rsizes.h.in gcc-Wall .indent.pro \
 	makeintprotos-awk makeextprotos-awk $(INTPROS) $(EXTPROS)
 
-.SUFFIXES:	.c .o .intpro
+.SUFFIXES:	.c .o .intpro .rc
 .PHONY:		protos
 .DONTCARE:	protos
 
 # inference rules
 .c.o:
-	$(CC) $(DEFS) $(DEBUG) -c $(CPPFLAGS) $(XINC)  -I. -I$(basedir) -I$(srcdir) $(DINCLUDE) $(CFLAGS) $<
+	$(CC) $(DEFS) $(DEBUG) -c $(CPPFLAGS) $(XINC)  -I$(basedir) -I$(basedir)/W11 -I$(srcdir) $(DINCLUDE) $(CFLAGS) $<
+
+.rc.o:
+	$(RC) -i $< -o $@
 #-------------------------------------------------------------------------
 all: protos rxvt
 
@@ -161,6 +166,7 @@ netdisp.o:   netdisp.c   $(DEPS) netdisp.h				\
 	main.extpro menubar.extpro misc.extpro netdisp.intpro		\
 	screen.extpro scrollbar.extpro strings.extpro xdefaults.extpro	\
 	xpm.extpro
+rxvt_res.o:  rxvt_res.rc rxvt_res.h
 screen.o:    screen.c    $(DEPS) screen.h				\
 	command.extpro graphics.extpro grkelot.extpro logging.extpro	\
 	main.extpro menubar.extpro misc.extpro netdisp.extpro		\

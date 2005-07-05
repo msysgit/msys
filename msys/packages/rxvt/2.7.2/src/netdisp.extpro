@@ -1,1 +1,0 @@
-char           * network_display         __PROTO((const char *display));

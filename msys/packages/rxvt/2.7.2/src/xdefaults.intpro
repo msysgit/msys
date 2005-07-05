@@ -1,3 +1,0 @@
-Bool             define_key              __PROTO((XrmDatabase *database, XrmBindingList bindings, XrmQuarkList quarks, XrmRepresentation *type, XrmValue *value, XPointer closure));
-int              parse_keysym            __PROTO((const char *str, const char *arg));
-void             get_xdefaults           __PROTO((FILE *stream, const char *name));

@@ -1,3 +1,0 @@
-void             rxvt_update_wtmp        __PROTO((const char *fname, const UTMP *putmp));
-int              write_bsd_utmp          __PROTO((UTMP wu));
-void             rxvt_update_lastlog     __PROTO((const char *fname, const char *pty, const char *host));

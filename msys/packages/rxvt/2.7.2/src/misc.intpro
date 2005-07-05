@@ -1,1 +1,0 @@
-char           * File_search_path        __PROTO((const char *pathlist, const char *file, const char *ext));
