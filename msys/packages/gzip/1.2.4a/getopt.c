@@ -20,6 +20,7 @@
    along with this program; if not, write to the Free Software
    Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.  */
 
+#ifndef __MSYS__
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
@@ -753,3 +754,4 @@ main (argc, argv)
 }
 
 #endif /* TEST */
+#endif /* __MSYS__ */
