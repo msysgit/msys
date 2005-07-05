@@ -89,7 +89,7 @@ _register_window_class()
 	wc.cbClsExtra = 0;
 	wc.cbWndExtra = 0;
 	wc.hInstance = curInstance;
-	wc.hIcon = LoadIcon(curInstance, MAKEINTRESOURCE( IDI_RXTV ));
+	wc.hIcon = LoadIcon(curInstance, MAKEINTRESOURCE( IDI_RXVT ));
 	wc.hCursor =  LoadCursor(NULL, IDC_ARROW);
 	wc.hbrBackground = NULL;
 	wc.lpszMenuName =  NULL;

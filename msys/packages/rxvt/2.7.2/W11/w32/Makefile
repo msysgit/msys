@@ -20,5 +20,5 @@ event.o: event.c ntdef.h
 debug:
 	gcc -c xlib.c -g -I.. 
 
-clean:
+clean distclean:
 	rm -f ../lib/libW11.dll xlib.o ntutil.o event.o

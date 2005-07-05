@@ -74,20 +74,24 @@ QEvent(WinEventQ *q, NT_window *window,UINT message,UINT wParam,LONG lParam)
 		cjh_printf("Queue count %d q->num %d\n", q->count, q->num);
 	}
 	if (q->count>1 && (message == WM_MOVE ||
-					   message == WM_PAINT)) {
+			   message == WM_SIZE ||
+			   message == WM_PAINT)) {
 		/* only the most recent is interesting, so remove the previous
 		   event in the queue */
 		i = j = q->avail; i--; if (i<0) i=q->num;
-		while (i!=q->next && (q->list[i].message!=message || q->list[i].window!=window)) {
-			j=i; i--; if (i<0) i = q->num;
+		while (i!=q->next && 
+		       (q->list[i].message!=message || 
+			q->list[i].window!=window)) {
+		    j=i; i--; if (i<0) i = q->num;
 		}
-		if (q->list[i].message==message && q->list[i].window==window) {
-			while(j!=q->avail) {
-				copyWinEvent(&q->list[i],&q->list[j]);
-				i=j; j++; if (j>q->num) j=0;
-			}
-			q->avail = i;
-			q->count --;
+		if (q->list[i].message==message && 
+		    q->list[i].window==window) {
+		    while(j!=q->avail) {
+			copyWinEvent(&q->list[i],&q->list[j]);
+			i=j; j++; if (j>q->num) j=0;
+		    }
+		    q->avail = i;
+		    q->count --;
 		}
 	}
 	q->list[q->avail].window=window;
