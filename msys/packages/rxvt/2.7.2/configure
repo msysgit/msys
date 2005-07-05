@@ -5112,7 +5112,7 @@ else
 EOF
 
 fi
-OBJLIST="command.o $OBJGRAPHICS $OBJGRKELOT $OBJLOGGING main.o $OBJMENUBAR misc.o netdisp.o screen.o scrollbar.o $OBJSTRINGS xdefaults.o $OBJXPM"
+OBJLIST="command.o $OBJGRAPHICS $OBJGRKELOT $OBJLOGGING main.o $OBJMENUBAR misc.o netdisp.o screen.o scrollbar.o rxvt_res.o $OBJSTRINGS xdefaults.o $OBJXPM"
 
 
 MCOMMON=./autoconf/Make.common

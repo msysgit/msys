@@ -52,10 +52,10 @@ INSTALL_DATA = @INSTALL@ -m 644
 
 CFLAGS = @CFLAGS@ 
 CPPFLAGS = @CPPFLAGS@ @XPM_CPPFLAGS@
-LDFLAGS = @LDFLAGS@
+LDFLAGS = @LDFLAGS@ -L../W11/lib -L./W11/lib
 DEFS = @DEFS@
 LIBS = @LIBS@
-DINCLUDE = @DINCLUDE@
+DINCLUDE = @DINCLUDE@ -I . -I .. -I ../.. -I./W11 -I../W11
 DLIB = @DLIB@
 
 # X Include directory
@@ -63,6 +63,8 @@ XINC = @X_CFLAGS@ @XPM_CFLAGS@
 
 # extra libraries needed by X on some systems, X library location
 XLIB = @X_LIBS@ @XPM_LIBS@ -lX11 @X_EXTRA_LIBS@
+
+RC = windres --include-dir $(srcdir)
 
 # End of common section of the Makefile
 #-------------------------------------------------------------------------

@@ -1,6 +1,6 @@
 dnl# -*- sh -*-
 dnl#
-dnl# $Id: configure.in,v 1.1 2002-12-06 23:07:59 earnie Exp $
+dnl# $Id: configure.in,v 1.2 2005-07-05 17:56:35 earnie Exp $
 dnl#
 dnl# Process this file with autoconf to produce a configure script.
 dnl#
@@ -1001,7 +1001,7 @@ if test x$support_addstrings = xyes; then
 else
     AC_DEFINE(NO_STRINGS)
 fi
-OBJLIST="command.o $OBJGRAPHICS $OBJGRKELOT $OBJLOGGING main.o $OBJMENUBAR misc.o netdisp.o screen.o scrollbar.o $OBJSTRINGS xdefaults.o $OBJXPM"
+OBJLIST="command.o $OBJGRAPHICS $OBJGRKELOT $OBJLOGGING main.o $OBJMENUBAR misc.o netdisp.o screen.o scrollbar.o rxvt_res.o $OBJSTRINGS xdefaults.o $OBJXPM"
 AC_SUBST(OBJLIST)
 
 dnl# common parts of the Makefile
