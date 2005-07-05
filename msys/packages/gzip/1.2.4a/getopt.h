@@ -15,6 +15,9 @@
    along with this program; if not, write to the Free Software
    Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.  */
 
+#if defined __MSYS__
+# include <unistd.h>
+#else
 #ifndef _GETOPT_H
 #define _GETOPT_H 1
 
@@ -125,3 +128,4 @@ extern int _getopt_internal ();
 #endif
 
 #endif /* _GETOPT_H */
+#endif /* __MSYS__ */

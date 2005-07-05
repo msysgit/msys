@@ -2,3 +2,5 @@
 
 	* tailor.h (__MSYS__): Add definition for SET_BINARY_MODE.
 	* ChangeLog.MSYS: New file.
+	* getout.c: Cause a null object when __MSYS__.
+	* getout.h: Include unistd.h when __MSYS__.
