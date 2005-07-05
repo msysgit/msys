@@ -61,8 +61,8 @@ CFLAGS= $(CDEBUGFLAGS) $(DEFINES) $(INCLUDES)
 
 all: ../X11/xpm.h libXpm.a
 
-clean: 
-	$(RM) *.o libXpm.a
+clean distclean: 
+	$(RM) *.o libXpm.a ../../lib/libXpm.a
 
 libXpm.a: $(OBJS)
 	$(AR) libXpm.a $(OBJS)

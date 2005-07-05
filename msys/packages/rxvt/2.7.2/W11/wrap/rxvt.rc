@@ -1,7 +1,6 @@
 #include "wrap.h"
 
-IDI_RXTV ICON    DISCARDABLE PRELOAD     "rxtv.ico"
-IDI_RXVT ICON       "rxvt.ico"
+IDI_RXVT ICON    DISCARDABLE PRELOAD     "msys.ico"
 
 1 VERSIONINFO 
 FILEVERSION 2, 7, 2, 6

@@ -17,5 +17,5 @@ rxvt_res.o: rxvt.rc
 xwrappers.gen: ../X11/Xlib.h
 	perl mkproxy.pl ../X11/Xlib.h > xwrappers.gen
 
-clean:
+clean distclean:
 	rm -f wrap.o rxvt_res.o ../lib/libX11.a 

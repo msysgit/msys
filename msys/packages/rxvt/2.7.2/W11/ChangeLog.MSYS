@@ -1,5 +1,27 @@
+2005-07-05  Earnie Boyd  <earnie@users.sf.net>
+
+	* w32/Makefile (distclean): Add target.
+	* wrap/Makefile (distclean): Ditto.
+	* xpm-3.4k/lib/Makefile.noX (distclean): Ditto.
+	* Makefile.in (distclean): Ditto.
+	* wrap/msys.ico: New file.
+	* w32/event.c: Line ending change.
+	* wrap/rxvt.c (IDI_RXTV): Remove resource.
+	* wrap/wrap.h (IDI_RXTV): Ditto.
+	(IDI_RXVT): Change icon file to msys.ico.
+	* wrap/wrap.c (_register_window_class): Use IDI_RXVT.
+
 2005-07-03  Earnie Boyd  <earnie@users.sf.net>
 
 	* w32/Makefile (clean): Add -f to rm.
 	* wrap/Makefile (clean): Ditto.
+
+2004.04.30  Earnie Boyd  <earnie@users.sf.net>
+
+	* w32/event.c (NT_handleMsg): Add a Sleep(0) for WM_SIZE to avoid event
+	racing and deadlock.
+	* w32/Makefile: Remove -mwin32 switch.
+	* wrap/Makefile: Ditto.
+	* xpm-3.4k/lib/RdFToBuf.c: Modify filters for system headers to allow
+	compilation.
 	* ChangeLog.MSYS: New file.
