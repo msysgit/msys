@@ -8,7 +8,7 @@
  * The target dependent functions should be defined in tailor.c.
  */
 
-/* $Id: tailor.h,v 1.1 2002-05-13 18:31:41 earnie Exp $ */
+/* $Id: tailor.h,v 1.2 2005-07-05 11:40:46 earnie Exp $ */
 
 #if defined(__MSDOS__) && !defined(MSDOS)
 #  define MSDOS
@@ -106,6 +106,10 @@
 #    define EXPAND(argc,argv) \
        {response_expand(&argc, &argv);}
 #  endif
+#endif
+
+#ifdef __MSYS__
+#  define SET_BINARY_MODE(fd) setmode(fd, O_BINARY)
 #endif
 
 #ifdef WIN32 /* Windows NT */

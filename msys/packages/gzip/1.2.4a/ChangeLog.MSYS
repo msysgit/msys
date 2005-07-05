@@ -1,0 +1,4 @@
+2005.07.05  Earnie Boyd  <earnie@users.sf.net>
+
+	* tailor.h (__MSYS__): Add definition for SET_BINARY_MODE.
+	* ChangeLog.MSYS: New file.
