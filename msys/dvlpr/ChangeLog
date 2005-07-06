@@ -1,3 +1,9 @@
+2005.07.07  Max Woodbury  <mtew@users.sf.net>
+
+	* bin/msys.bat:  Fixed command.com filter.
+	Minimized intermediate CMD windows.
+	Execute sh.exe if rxvt isn't found.
+
 2005.05.19  Earnie Boyd  <earnie@users.sf.net>
 
 	* script/cygwin2msys: New file.
