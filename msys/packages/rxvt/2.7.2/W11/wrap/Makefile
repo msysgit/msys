@@ -1,3 +1,4 @@
+INC=$(DINCLUDE)
 
 first_rule: all
 
@@ -9,7 +10,7 @@ alldoc tags:
 	ar r ../lib/libX11.a wrap.o rxvt_res.o
 
 wrap.o: wrap.c xwrappers.gen
-	gcc -O -c wrap.c -I.. 
+	gcc -O -c wrap.c $(INC) 
 
 rxvt_res.o: rxvt.rc
 	windres -i rxvt.rc -o rxvt_res.o
