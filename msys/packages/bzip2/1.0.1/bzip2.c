@@ -204,6 +204,17 @@
            ERROR_IF_MINUS_ONE ( retVal );               \
         } while ( 0 )
 #   endif
+#   ifdef __MSYS__
+#     include <io.h>
+#     include <fcntl.h>
+#     undef SET_BINARY_MODE
+#     define SET_BINARY_MODE(fd)                        \
+        do {                                            \
+           int retVal = setmode ( fileno ( fd ),        \
+                                 O_BINARY );            \
+           ERROR_IF_MINUS_ONE ( retVal );               \
+        } while ( 0 )
+#   endif
 #endif
 
 

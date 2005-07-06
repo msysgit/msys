@@ -1,0 +1,9 @@
+2005.07.06  Earnie Boyd  <earnie@users.sf.net>
+
+	* Makefile (LDFLAGS): Add for -s switch.
+	(bzip2): Use LDFLAGS.
+	(bzip2recover): Ditto.
+	(install): Add -p to mkdir.
+	* bzip2.c (SET_BINARY_MODE): Define if __MSYS__.
+	* bzlib.c (SET_BINARY_MODE): Ditto.
+	* ChangeLog.MSYS: New file.
