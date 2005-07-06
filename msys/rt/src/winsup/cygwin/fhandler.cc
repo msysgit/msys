@@ -1244,7 +1244,11 @@ fhandler_disk_file::open (const char *path, int flags, mode_t mode)
 
   set_name (path, real_path.get_win32 ());
   set_no_free_names (0);
-  return open (real_path, flags, mode);
+  int res = open (real_path, flags, mode);
+  if (!res && !iswinnt && !(flags & (O_WRONLY | O_RDWR)) &&
+      FILE_ATTRIBUTE_DIRECTORY & real_path.file_attributes ())
+    res = 1;
+  return res;
 }
 
 int
