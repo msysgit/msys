@@ -59,6 +59,9 @@ OBJS= data.o create.o misc.o rgb.o scan.o parse.o hashtab.o \
 
 CFLAGS= $(CDEBUGFLAGS) $(DEFINES) $(INCLUDES)
 
+.c.o:
+	$(CC) -c $< $(INCLUDES) $(DEFINES) $(CFLAGS)
+
 all: ../X11/xpm.h libXpm.a
 
 clean distclean: 

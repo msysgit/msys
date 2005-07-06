@@ -1,3 +1,12 @@
+2005-07-06  Earnie Boyd  <earnie@users.sf.net>
+
+	* Makefile.in (all): Use $(MAKE) for make execution.
+	Pass DINCLUDE value to subdir make execution.
+	* w32/Makefile: Use DINLUDE value.
+	* wrap/Makefile: Ditto.
+	* xpm-3.4k/lib/Makefile.noX (.c.o): Add target to specify INCLUDES,
+	DEFINES and CFLAGS to allow user to specify CFLAGS.
+
 2005-07-05  Earnie Boyd  <earnie@users.sf.net>
 
 	* w32/Makefile (distclean): Add target.

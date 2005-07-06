@@ -5,13 +5,13 @@ first_rule: all
 
 all allbin alldoc:
 	cd xpm-3.4k/lib; make -f Makefile.noX all install
-	cd wrap; make $@
-	cd w32; make $@
+	cd wrap; $(MAKE) $@ DINCLUDE="$(DINCLUDE)"
+	cd w32; $(MAKE) $@ DINCLUDE="$(DINCLUDE)"
 
 tags clean distclean:
 	cd xpm-3.4k/lib; make -f Makefile.noX $@
-	cd wrap; make $@
-	cd w32; make $@
+	cd wrap; $(MAKE) $@
+	cd w32; $(MAKE) $@
 
 install:
 	$(INSTALL_PROGRAM) lib/libW11.dll $(bindir)/libW11.dll
