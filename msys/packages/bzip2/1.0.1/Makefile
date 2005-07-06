@@ -2,6 +2,7 @@ SHELL=/bin/sh
 CC=gcc
 BIGFILES=-D_FILE_OFFSET_BITS=64
 CFLAGS=-Wall -Winline -O2 -fomit-frame-pointer -fno-strength-reduce $(BIGFILES)
+LDFLAGS=-s
 
 OBJS= blocksort.o  \
       huffman.o    \
@@ -14,10 +15,10 @@ OBJS= blocksort.o  \
 all: libbz2.a bzip2 bzip2recover test
 
 bzip2: libbz2.a bzip2.o
-	$(CC) $(CFLAGS) -o bzip2 bzip2.o -L. -lbz2
+	$(CC) $(CFLAGS) $(LDFLAGS) -o bzip2 bzip2.o -L. -lbz2
 
 bzip2recover: bzip2recover.o
-	$(CC) $(CFLAGS) -o bzip2recover bzip2recover.o
+	$(CC) $(CFLAGS) $(LDFLAGS) -o bzip2recover bzip2recover.o
 
 libbz2.a: $(OBJS)
 	rm -f libbz2.a
@@ -47,11 +48,11 @@ test: bzip2
 PREFIX=/usr
 
 install: bzip2 bzip2recover
-	if ( test ! -d $(PREFIX)/bin ) ; then mkdir $(PREFIX)/bin ; fi
-	if ( test ! -d $(PREFIX)/lib/msys ) ; then mkdir $(PREFIX)/lib/msys ; fi
-	if ( test ! -d $(PREFIX)/man ) ; then mkdir $(PREFIX)/man ; fi
-	if ( test ! -d $(PREFIX)/man/man1 ) ; then mkdir $(PREFIX)/man/man1 ; fi
-	if ( test ! -d $(PREFIX)/include/msys ) ; then mkdir $(PREFIX)/include/msys ; fi
+	if ( test ! -d $(PREFIX)/bin ) ; then mkdir -p $(PREFIX)/bin ; fi
+	if ( test ! -d $(PREFIX)/lib/msys ) ; then mkdir -p $(PREFIX)/lib/msys ; fi
+	if ( test ! -d $(PREFIX)/man ) ; then mkdir -p $(PREFIX)/man ; fi
+	if ( test ! -d $(PREFIX)/man/man1 ) ; then mkdir -p $(PREFIX)/man/man1 ; fi
+	if ( test ! -d $(PREFIX)/include/msys ) ; then mkdir -p $(PREFIX)/include/msys ; fi
 	cp -f bzip2 $(PREFIX)/bin/bzip2.exe
 	cp -f bzip2 $(PREFIX)/bin/bunzip2.exe
 	cp -f bzip2 $(PREFIX)/bin/bzcat.exe
