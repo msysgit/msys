@@ -1,3 +1,8 @@
+2005.07.05  Max T. Woodbury <mtew@users.sf.net>
+
+	* fhandler.cc (fhandler_disk_file::open): Fake successful open on 
+	directories for !iswinnt.
+
 2005.07.02  Max T. Woodbury  <mtew@users.sf.net>
 
 	* syscalls.cc (statfs): Allow for bigger disks.
