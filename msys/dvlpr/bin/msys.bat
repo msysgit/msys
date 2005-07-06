@@ -24,18 +24,18 @@ rem ember that we only execute here if we are in command.com.
 :_Windows
 
 if "x%COMSPEC%" == "x" set COMSPEC=command.com
-start %COMSPEC% /e:4096 /c %0 GOTO: _Resume %0 %1 %2 %3 %4 %5 %6 %7 %8 %9
+start /min %COMSPEC% /e:4096 /c %0 GOTO: _Resume %0 %1 %2 %3 %4 %5 %6 %7 %8 %9
 goto EOF
 
 rem ember that we execute here if we recursed.
 :_Resume
 for %%F in (1 2 3) do shift
-set WD=.\bin\
+if NOT EXIST %WD%msys-1.0.dll set WD=.\bin\
 
 rem ember that we get here even in command.com.
 :_WindowsNT
 
-if "x%WD%" == "x" set WD=%~dp0\bin\
+if NOT EXIST %WD%msys-1.0.dll set WD=%~dp0\bin\
 
 rem ember Set up option to use rxvt based on value of %1
 if "x%MSYSCON%" == "x" set MSYSCON=rxvt.exe
@@ -65,7 +65,7 @@ exit 1
 rem If you don't want to use rxvt then rename the file rxvt.exe to something
 rem else.  Then sh.exe will be used instead.
 :startrxvt
-if NOT EXIST %WD%rxvt.exe goto notfound
+if NOT EXIST %WD%rxvt.exe goto startsh
 
 rem Setup the default colors for rxvt.
 if "x%MSYSBGCOLOR%" == "x" set MSYSBGCOLOR=White
@@ -159,4 +159,9 @@ rem	* Add method to determine absolute path of msys.bat so that we no
 rem	longer need to change to the bin directory.  This allows msys.bat to be
 rem	called from any working directory.
 rem	Thanks to Kevin Mack  mailto:kevin.mack@us.cd-adapco.com
+rem
+rem 2005.07.06  Max TE Woodbury  mailto:mtew@users.sf.net
+rem     * Fixed WD check for command.com systems.
+rem     * Minimized intermediate CMD window to reduce startup flashyness.
+rem     * If rxvt.exe cannot be found, try sh.exe.
 rem
