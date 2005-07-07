@@ -1,4 +1,8 @@
-2005.07.07  Max Woodbury  <mtew@users.sf.net>
+2005.07.07  Earnie Boyd  <earnie@users.sf.net>
+
+	* var/msys/etc.dat (config.site): Remove.
+
+2005.07.06  Max Woodbury  <mtew@users.sf.net>
 
 	* bin/msys.bat:  Fixed command.com filter.
 	Minimized intermediate CMD windows.
