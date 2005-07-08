@@ -1,3 +1,7 @@
+2005-07-08  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	* Makefile.in: add accreditation for original authors.
+
 2005-07-04  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Define MANPATH_MAP and other general comment improvements.

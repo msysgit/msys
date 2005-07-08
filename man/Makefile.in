@@ -3,6 +3,9 @@
 #
 # Copyright (C) 2005, Keith D. Marshall <keithmarshall@users.sourceforge.net>
 #
+# (Based on an unaccredited original implementation, believed to be the
+#  work of John W. Eaton and/or Andries E. Brouwer).
+#
 # This file is part of the man package.
 #
 # man is free software; you can redistribute it and/or modify it under the
