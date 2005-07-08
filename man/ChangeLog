@@ -1,5 +1,27 @@
 2005-07-08  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
+	Implement autoconf checks for filter programs.
+
+	* aclocal.m4 (MAN_AC_PATH_PROG_CHECKING, MAN_AC_PATH_RESOLVE)...
+	(MAN_AC_PATH_COMMAND_RESOLVE, MAN_AC_PATH_PROG_RESULT): New macros;
+	use them to implement...
+	(MAN_AC_PATH_COMMAND, MAN_AC_PATH_COMMAND_OVERRIDE_CACHE): New macros;
+	they provide a modified reimplementation of autoconf's AC_PATH_PROG,
+	but preserving arguments which follow the resolved path, and offering
+	the capability to override any previously cached result.  Use them to
+	implement...
+	(MAN_FILTER_CONFIGURE_PREFERRED, MAN_FILTER_CONFIGURE_ALTERNATE): New
+	internal macros; use them to implement...
+	(MAN_FILTER_PREFERRED, MAN_FILTER_ALTERNATE): New macros.
+
+	* configure.ac (MAN_FILTER_PREFERRED, MAN_FILTER_ALTERNATE): Use them
+	to specify filter command substitutions for src/man.conf and
+	src/paths.h.
+
+	* configure: Regenerated.
+
+2005-07-08  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
 	* Makefile.in: add accreditation for original authors.
 
 2005-07-04  Keith Marshall  <keithmarshall@users.sourceforge.net>

@@ -301,6 +301,145 @@ AC_DEFUN([MANPATH_MAP_CACHE_ASSIGN],
 ])
 
 
+## ======================================================== ##
+## Support Program Detection and Command Line Configuration ##
+## ======================================================== ##
+#
+# MAN_FILTER_PREFERRED( CLASS, COMMAND )
+# --------------------------------------
+# Specify the preferred COMMAND to be used
+# to invoke the filter program for the specified filter CLASS.
+#
+AC_DEFUN([MAN_FILTER_PREFERRED],
+[MAN_FILTER_CONFIGURE_PREFERRED([$1], m4_translit([$1], [A-Z], [a-z]), [$2])dnl
+])
+
+# MAN_FILTER_CONFIGURE_PREFERRED( CLASS, VARNAME, COMMAND )
+# ---------------------------------------------------------
+# Internal macro, invoked only by MAN_FILTER_PREFERRED,
+# to identify the absolute path name for the program required by COMMAND,
+# and assign the full path qualified invocation command line to VARNAME,
+# (a lower case transform of CLASS).
+#
+AC_DEFUN([MAN_FILTER_CONFIGURE_PREFERRED],
+[AC_ARG_WITH([$2],
+  AS_HELP_STRING([--with-$2=COMMAND], [invoke $1 using COMMAND @<:@$3@:>@]),
+  MAN_AC_PATH_COMMAND_OVERRIDE_CACHE([$2], [$withval]),
+  MAN_AC_PATH_COMMAND([$2], [$3]))dnl
+])
+
+# MAN_FILTER_ALTERNATE( CLASS, COMMAND )
+# --------------------------------------
+# Specify an alternative COMMAND which may be used
+# to invoke an alternative filter program for the specified filter CLASS,
+# if the program required by any earlier COMMAND preference for this CLASS
+# cannot be located, when configure is executed.
+#
+AC_DEFUN([MAN_FILTER_ALTERNATE],
+[MAN_FILTER_CONFIGURE_ALTERNATE([$1], m4_translit([$1], [A-Z], [a-z]), [$2])dnl
+])
+
+# MAN_FILTER_CONFIGURE_ALTERNATE( CLASS, VARNAME, COMMAND )
+# ---------------------------------------------------------
+# Internal macro, invoked only by MAN_FILTER_ALTERNATE,
+# to identify the absolute path name for the program required by COMMAND,
+# and assign the full path qualified invocation command line to VARNAME,
+# (a lower case transform of CLASS); does NOTHING, if VARNAME has been
+# previously assigned a non-empty value.
+#
+AC_DEFUN([MAN_FILTER_CONFIGURE_ALTERNATE],
+[AS_IF([test -z "$$2"], MAN_AC_PATH_COMMAND([$2], [$3]))dnl
+])
+
+# MAN_AC_PATH_COMMAND( VARNAME, COMMAND, [DEFAULT], [PATH] )
+# ----------------------------------------------------------
+# A modular reimplementation of autoconf's standard AC_PATH_PROG macro,
+# with enhanced cache handling, and modified to preserve COMMAND arguments.
+# (Handling for the DEFAULT argument is currently unimplemented).
+#
+AC_DEFUN([MAN_AC_PATH_COMMAND],
+[MAN_AC_MSG_PATH_PROG_CHECKING([ac_word], [$2])
+ AC_CACHE_VAL([ac_cv_path_$1],
+   [MAN_AC_PATH_COMMAND_RESOLVE([ac_cv_path_$1], [$ac_word], [$4])])
+ MAN_AC_MSG_PATH_PROG_RESULT([$1], [ac_cv_path_$1])dnl
+])
+
+# MAN_AC_PATH_COMMAND_OVERRIDE_CACHE( VARNAME, COMMAND, [DEFAULT], [PATH] )
+# -------------------------------------------------------------------------
+# An alternative reimplementation of autoconf's AC_PATH_PROG macro...
+# This version ALWAYS overrides any prior result in config.cache!
+#
+AC_DEFUN([MAN_AC_PATH_COMMAND_OVERRIDE_CACHE],
+[MAN_AC_MSG_PATH_PROG_CHECKING([ac_word], [$2])
+ MAN_AC_PATH_COMMAND_RESOLVE([ac_cv_path_$1], [$ac_word], [$4])
+ MAN_AC_MSG_PATH_PROG_RESULT([$1], [ac_cv_path_$1])dnl
+])
+
+# MAN_AC_MSG_PATH_PROG_CHECKING( VARNAME, COMMAND )
+# -------------------------------------------------
+# A component of the modular reimplementation of AC_PATH_PROG...
+# This component macro displays the "checking for ..." message.
+#
+AC_DEFUN([MAN_AC_MSG_PATH_PROG_CHECKING],
+[# Extract the first word of "$2", so it can be a program name with args.
+  set dummy $2; $1=$[2]
+  AC_MSG_CHECKING([for $$1])dnl
+])
+
+# MAN_AC_PATH_COMMAND_RESOLVE( VARNAME, PROGNAME, [PATH] )
+# --------------------------------------------------------
+# Resolve PROGNAME to its absolute canonical path name,
+# by searching PATH, (default as defined in the environment).
+# Append any arguments captured by MAN_AC_MSG_PATH_PROG_CHECKING,
+# and assign the resolved command to VARNAME.
+#
+AC_DEFUN([MAN_AC_PATH_COMMAND_RESOLVE],
+[MAN_AC_PATH_RESOLVE([$1], [$2], [$3])
+[shift 2
+case $[#] in
+  0) ;;
+  *) test -n "$$1" && $1="$$1 $[@]" ;;
+esac]dnl
+])
+
+# MAN_AC_PATH_RESOLVE( VARNAME, PROGNAME, [PATH] )
+# ------------------------------------------------
+# A component of the modular reimplementation of AC_PATH_PROG...
+# This internal macro, based on the PATH search algorithm in AC_PATH_PROG,
+# walks PATH (default as defined in the environment), searching for PROGNAME.
+# If found, it sets VARNAME to the canonical pathname for the program.
+#
+## !!! WARNING !!! ##
+#
+# This macro employs undocumented m4sugar internals.
+# Behaviour is correct for autoconf version 2.59, but may require
+# review, if these m4sugar macros are modified for some future
+# version of autoconf.
+#
+AC_DEFUN([MAN_AC_PATH_RESOLVE],
+[_AS_PATH_WALK([$3],
+[for ac_exec_ext in '' $ac_executable_extensions; do
+  if AS_EXECUTABLE_P(["$as_dir/$2$ac_exec_ext"])
+  then
+    MSYS_AC_CANONICAL_PATH([$1], ["$as_dir/$2$ac_exec_ext"])
+    echo "$as_me:$LINENO: found $$1" >&AS_MESSAGE_LOG_FD
+    break 2
+  fi
+done])dnl
+])
+
+# MAN_AC_MSG_PATH_PROG_RESULT( CACHENAME, VARNAME )
+# -------------------------------------------------
+# A component of the modular reimplementation of AC_PATH_PROG...
+# This component macro appends the result to the "checking for ..." message.
+#
+AC_DEFUN([MAN_AC_MSG_PATH_PROG_RESULT],
+[AC_SUBST([$1], [$$2])
+ test -n "$$1" && ac_word="$$1" || ac_word=no
+ AC_MSG_RESULT([$ac_word])dnl
+])
+
+
 ## ================================================ ##
 ## Miscellaneous Package Portability Considerations ##
 ## ================================================ ##

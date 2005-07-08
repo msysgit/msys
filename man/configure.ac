@@ -133,6 +133,47 @@
   MANPATH_MAP_DEFAULT([/usr/bin/X11],    [/usr/X11R6/man])
   MANPATH_MAP_DEFAULT([/usr/bin/mh],     [/usr/man])
 
+# Identify the PAGER program to be used.
+#
+  MAN_FILTER_PREFERRED([PAGER],  [less -is])
+  MAN_FILTER_ALTERNATE([PAGER],  [more])
+
+# Select the filter programs to be used
+# for TROFF formatting of man page source documents.
+#
+  MAN_FILTER_PREFERRED([CAT],    [cat])
+#
+  MAN_FILTER_PREFERRED([TROFF],  [groff -Tps -mandoc])
+  MAN_FILTER_ALTERNATE([TROFF],  [troff -mandoc])
+#
+  MAN_FILTER_PREFERRED([NROFF],  [nroff -Tlatin1 -mandoc])
+#
+  MAN_FILTER_PREFERRED([JNROFF], [groff -Tnippon -mandocj])
+#
+  MAN_FILTER_PREFERRED([COL],    [col])
+#
+  MAN_FILTER_PREFERRED([EQN],    [geqn -Tps])
+  MAN_FILTER_ALTERNATE([EQN],    [eqn -Tps])
+#
+  MAN_FILTER_PREFERRED([NEQN],   [neqn -Tlatin1])
+#
+  MAN_FILTER_PREFERRED([JNEQN],  [neqn -Tlatin1])
+#
+  MAN_FILTER_PREFERRED([TBL],    [gtbl])
+  MAN_FILTER_ALTERNATE([TBL],    [tbl])
+#
+  MAN_FILTER_PREFERRED([VGRIND], [vgrind])
+#
+  MAN_FILTER_PREFERRED([REFER],  [grefer])
+  MAN_FILTER_ALTERNATE([REFER],  [refer])
+#
+  MAN_FILTER_PREFERRED([GRAP],   [grap])
+#
+  MAN_FILTER_PREFERRED([PIC],    [gpic])
+  MAN_FILTER_ALTERNATE([PIC],    [pic])
+
+  MAN_FILTER_PREFERRED([CMP],    [cmp -s])
+
   MAN_GREP_SILENT
 
   AC_CONFIG_FILES([Makefile])
