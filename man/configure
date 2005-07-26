@@ -863,6 +863,7 @@ Optional Features:
   --enable-FEATURE[=ARG]  include FEATURE [ARG=yes]
   --enable-fhs            implement FHS standard installation paths
   --enable-fsstnd         implement FSSTND standard installation paths
+  --enable-sgr            use nroff's SGR output mode, if available
 
 Optional Packages:
   --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
@@ -872,24 +873,24 @@ Optional Packages:
   --with-config=NAME      name to use for the configuration file [man.conf]
   --with-sections=LIST    colon separated ordered LIST of MANPAGE sections to
                           search [1:8:2:3:4:5:6:7:9:tcl:n:l:p:o]
-  --with-pager=COMMAND    invoke PAGER using COMMAND [less -is]
-  --with-cat=COMMAND      invoke CAT using COMMAND [cat]
-  --with-troff=COMMAND    invoke TROFF using COMMAND [groff -Tps
-                          -mandoc]
-  --with-nroff=COMMAND    invoke NROFF using COMMAND [nroff -Tlatin1
-                          -mandoc]
-  --with-jnroff=COMMAND   invoke JNROFF using COMMAND [groff -Tnippon
-                          -mandocj]
-  --with-col=COMMAND      invoke COL using COMMAND [col]
-  --with-eqn=COMMAND      invoke EQN using COMMAND [geqn -Tps]
-  --with-neqn=COMMAND     invoke NEQN using COMMAND [neqn -Tlatin1]
-  --with-jneqn=COMMAND    invoke JNEQN using COMMAND [neqn -Tlatin1]
-  --with-tbl=COMMAND      invoke TBL using COMMAND [gtbl]
-  --with-vgrind=COMMAND   invoke VGRIND using COMMAND [vgrind]
-  --with-refer=COMMAND    invoke REFER using COMMAND [grefer]
-  --with-grap=COMMAND     invoke GRAP using COMMAND [grap]
-  --with-pic=COMMAND      invoke PIC using COMMAND [gpic]
-  --with-cmp=COMMAND      invoke CMP using COMMAND [cmp -s]
+  --with-pager=COMMAND    use COMMAND [less -is] to invoke PAGER
+  --with-cat=COMMAND      use COMMAND [cat] to invoke CAT
+  --with-troff=COMMAND    use COMMAND [groff -Tps -mandoc] to invoke
+                          TROFF
+  --with-nroff=COMMAND    use COMMAND [nroff -Tlatin1 -mandoc] to invoke
+                          NROFF
+  --with-jnroff=COMMAND   use COMMAND [groff -Tnippon -mandocj] to
+                          invoke JNROFF
+  --with-col=COMMAND      use COMMAND [col] to invoke COL
+  --with-eqn=COMMAND      use COMMAND [geqn -Tps] to invoke EQN
+  --with-neqn=COMMAND     use COMMAND [neqn -Tlatin1] to invoke NEQN
+  --with-jneqn=COMMAND    use COMMAND [neqn -Tlatin1] to invoke JNEQN
+  --with-tbl=COMMAND      use COMMAND [gtbl] to invoke TBL
+  --with-vgrind=COMMAND   use COMMAND [vgrind] to invoke VGRIND
+  --with-refer=COMMAND    use COMMAND [grefer] to invoke REFER
+  --with-grap=COMMAND     use COMMAND [grap] to invoke GRAP
+  --with-pic=COMMAND      use COMMAND [gpic] to invoke PIC
+  --with-cmp=COMMAND      use COMMAND [cmp -s] to invoke CMP
 
 Some influential environment variables:
   CC          C compiler command
@@ -8480,9 +8481,9 @@ done
 done
 
 shift 2
-case $# in
+case ${#} in
   0) ;;
-  *) test -n "$ac_cv_path_pager" && ac_cv_path_pager="$ac_cv_path_pager $@" ;;
+  *) test -n "$ac_cv_path_pager" && ac_cv_path_pager="$ac_cv_path_pager ${@}" ;;
 esac
  pager=$ac_cv_path_pager
 
@@ -8534,9 +8535,9 @@ done
 done
 
 shift 2
-case $# in
+case ${#} in
   0) ;;
-  *) test -n "$ac_cv_path_pager" && ac_cv_path_pager="$ac_cv_path_pager $@" ;;
+  *) test -n "$ac_cv_path_pager" && ac_cv_path_pager="$ac_cv_path_pager ${@}" ;;
 esac
 fi
 
@@ -8591,9 +8592,9 @@ done
 done
 
 shift 2
-case $# in
+case ${#} in
   0) ;;
-  *) test -n "$ac_cv_path_pager" && ac_cv_path_pager="$ac_cv_path_pager $@" ;;
+  *) test -n "$ac_cv_path_pager" && ac_cv_path_pager="$ac_cv_path_pager ${@}" ;;
 esac
 fi
 
@@ -8653,9 +8654,9 @@ done
 done
 
 shift 2
-case $# in
+case ${#} in
   0) ;;
-  *) test -n "$ac_cv_path_cat" && ac_cv_path_cat="$ac_cv_path_cat $@" ;;
+  *) test -n "$ac_cv_path_cat" && ac_cv_path_cat="$ac_cv_path_cat ${@}" ;;
 esac
  cat=$ac_cv_path_cat
 
@@ -8707,9 +8708,9 @@ done
 done
 
 shift 2
-case $# in
+case ${#} in
   0) ;;
-  *) test -n "$ac_cv_path_cat" && ac_cv_path_cat="$ac_cv_path_cat $@" ;;
+  *) test -n "$ac_cv_path_cat" && ac_cv_path_cat="$ac_cv_path_cat ${@}" ;;
 esac
 fi
 
@@ -8765,9 +8766,9 @@ done
 done
 
 shift 2
-case $# in
+case ${#} in
   0) ;;
-  *) test -n "$ac_cv_path_troff" && ac_cv_path_troff="$ac_cv_path_troff $@" ;;
+  *) test -n "$ac_cv_path_troff" && ac_cv_path_troff="$ac_cv_path_troff ${@}" ;;
 esac
  troff=$ac_cv_path_troff
 
@@ -8819,9 +8820,9 @@ done
 done
 
 shift 2
-case $# in
+case ${#} in
   0) ;;
-  *) test -n "$ac_cv_path_troff" && ac_cv_path_troff="$ac_cv_path_troff $@" ;;
+  *) test -n "$ac_cv_path_troff" && ac_cv_path_troff="$ac_cv_path_troff ${@}" ;;
 esac
 fi
 
@@ -8876,9 +8877,9 @@ done
 done
 
 shift 2
-case $# in
+case ${#} in
   0) ;;
-  *) test -n "$ac_cv_path_troff" && ac_cv_path_troff="$ac_cv_path_troff $@" ;;
+  *) test -n "$ac_cv_path_troff" && ac_cv_path_troff="$ac_cv_path_troff ${@}" ;;
 esac
 fi
 
@@ -8935,9 +8936,9 @@ done
 done
 
 shift 2
-case $# in
+case ${#} in
   0) ;;
-  *) test -n "$ac_cv_path_nroff" && ac_cv_path_nroff="$ac_cv_path_nroff $@" ;;
+  *) test -n "$ac_cv_path_nroff" && ac_cv_path_nroff="$ac_cv_path_nroff ${@}" ;;
 esac
  nroff=$ac_cv_path_nroff
 
@@ -8989,9 +8990,9 @@ done
 done
 
 shift 2
-case $# in
+case ${#} in
   0) ;;
-  *) test -n "$ac_cv_path_nroff" && ac_cv_path_nroff="$ac_cv_path_nroff $@" ;;
+  *) test -n "$ac_cv_path_nroff" && ac_cv_path_nroff="$ac_cv_path_nroff ${@}" ;;
 esac
 fi
 
@@ -9001,6 +9002,55 @@ fi
  echo "$as_me:$LINENO: result: $ac_word" >&5
 echo "${ECHO_T}$ac_word" >&6
 fi;
+   if test "x$nroff" != xno
+ then
+   echo "$as_me:$LINENO: checking whether nroff requires suppression of SGR output" >&5
+echo $ECHO_N "checking whether nroff requires suppression of SGR output... $ECHO_C" >&6
+   # Check whether --enable-sgr or --disable-sgr was given.
+if test "${enable_sgr+set}" = set; then
+  enableval="$enable_sgr"
+  man_sgr_check=indeterminate
+ test x$cross_compiling = xno && man_sgr_check=yes
+ test x$enableval = xno || man_sgr_check=no
+else
+       man_sgr_check=indeterminate
+ test x$cross_compiling = xno && man_sgr_check=yes
+ test xno = xno || man_sgr_check=no
+fi;    echo "$as_me:$LINENO: result: $man_sgr_check" >&5
+echo "${ECHO_T}$man_sgr_check" >&6
+   if test x$man_sgr_check = xyes
+   then
+     echo "$as_me:$LINENO: checking whether installed nroff supports SGR output" >&5
+echo $ECHO_N "checking whether installed nroff supports SGR output... $ECHO_C" >&6
+     man_sgr_check=`(echo .TH; echo .SH TEST) | $nroff 2>$NULLDEV`
+     case $man_sgr_check in
+       *0m*) man_sgr_check=yes ;;
+       *)    man_sgr_check=no  ;;
+     esac
+     echo "$as_me:$LINENO: result: $man_sgr_check" >&5
+echo "${ECHO_T}$man_sgr_check" >&6
+   fi
+   if test x$man_sgr_check = xyes
+   then
+     echo "$as_me:$LINENO: checking how to suppress nroff's SGR output" >&5
+echo $ECHO_N "checking how to suppress nroff's SGR output... $ECHO_C" >&6
+     man_sgr_check=unknown
+     for ac_val in -P-c -c
+     do
+       if test "$man_sgr_check" = unknown
+       then
+	 case `(echo .TH; echo .SH TEST) | $nroff $ac_val 2>$NULLDEV \
+	 || echo 0m` in
+	   *0m*) ;;
+	   *) man_sgr_check="$nroff $ac_val" ;;
+	 esac
+       fi
+     done
+     test "$man_sgr_check" = unknown || nroff=$man_sgr_check
+     echo "$as_me:$LINENO: result: $man_sgr_check" >&5
+echo "${ECHO_T}$man_sgr_check" >&6
+   fi
+ fi
 #
 
 # Check whether --with-jnroff or --without-jnroff was given.
@@ -9047,9 +9097,9 @@ done
 done
 
 shift 2
-case $# in
+case ${#} in
   0) ;;
-  *) test -n "$ac_cv_path_jnroff" && ac_cv_path_jnroff="$ac_cv_path_jnroff $@" ;;
+  *) test -n "$ac_cv_path_jnroff" && ac_cv_path_jnroff="$ac_cv_path_jnroff ${@}" ;;
 esac
  jnroff=$ac_cv_path_jnroff
 
@@ -9101,9 +9151,9 @@ done
 done
 
 shift 2
-case $# in
+case ${#} in
   0) ;;
-  *) test -n "$ac_cv_path_jnroff" && ac_cv_path_jnroff="$ac_cv_path_jnroff $@" ;;
+  *) test -n "$ac_cv_path_jnroff" && ac_cv_path_jnroff="$ac_cv_path_jnroff ${@}" ;;
 esac
 fi
 
@@ -9159,9 +9209,9 @@ done
 done
 
 shift 2
-case $# in
+case ${#} in
   0) ;;
-  *) test -n "$ac_cv_path_col" && ac_cv_path_col="$ac_cv_path_col $@" ;;
+  *) test -n "$ac_cv_path_col" && ac_cv_path_col="$ac_cv_path_col ${@}" ;;
 esac
  col=$ac_cv_path_col
 
@@ -9213,9 +9263,9 @@ done
 done
 
 shift 2
-case $# in
+case ${#} in
   0) ;;
-  *) test -n "$ac_cv_path_col" && ac_cv_path_col="$ac_cv_path_col $@" ;;
+  *) test -n "$ac_cv_path_col" && ac_cv_path_col="$ac_cv_path_col ${@}" ;;
 esac
 fi
 
@@ -9271,9 +9321,9 @@ done
 done
 
 shift 2
-case $# in
+case ${#} in
   0) ;;
-  *) test -n "$ac_cv_path_eqn" && ac_cv_path_eqn="$ac_cv_path_eqn $@" ;;
+  *) test -n "$ac_cv_path_eqn" && ac_cv_path_eqn="$ac_cv_path_eqn ${@}" ;;
 esac
  eqn=$ac_cv_path_eqn
 
@@ -9325,9 +9375,9 @@ done
 done
 
 shift 2
-case $# in
+case ${#} in
   0) ;;
-  *) test -n "$ac_cv_path_eqn" && ac_cv_path_eqn="$ac_cv_path_eqn $@" ;;
+  *) test -n "$ac_cv_path_eqn" && ac_cv_path_eqn="$ac_cv_path_eqn ${@}" ;;
 esac
 fi
 
@@ -9382,9 +9432,9 @@ done
 done
 
 shift 2
-case $# in
+case ${#} in
   0) ;;
-  *) test -n "$ac_cv_path_eqn" && ac_cv_path_eqn="$ac_cv_path_eqn $@" ;;
+  *) test -n "$ac_cv_path_eqn" && ac_cv_path_eqn="$ac_cv_path_eqn ${@}" ;;
 esac
 fi
 
@@ -9441,9 +9491,9 @@ done
 done
 
 shift 2
-case $# in
+case ${#} in
   0) ;;
-  *) test -n "$ac_cv_path_neqn" && ac_cv_path_neqn="$ac_cv_path_neqn $@" ;;
+  *) test -n "$ac_cv_path_neqn" && ac_cv_path_neqn="$ac_cv_path_neqn ${@}" ;;
 esac
  neqn=$ac_cv_path_neqn
 
@@ -9495,9 +9545,9 @@ done
 done
 
 shift 2
-case $# in
+case ${#} in
   0) ;;
-  *) test -n "$ac_cv_path_neqn" && ac_cv_path_neqn="$ac_cv_path_neqn $@" ;;
+  *) test -n "$ac_cv_path_neqn" && ac_cv_path_neqn="$ac_cv_path_neqn ${@}" ;;
 esac
 fi
 
@@ -9553,9 +9603,9 @@ done
 done
 
 shift 2
-case $# in
+case ${#} in
   0) ;;
-  *) test -n "$ac_cv_path_jneqn" && ac_cv_path_jneqn="$ac_cv_path_jneqn $@" ;;
+  *) test -n "$ac_cv_path_jneqn" && ac_cv_path_jneqn="$ac_cv_path_jneqn ${@}" ;;
 esac
  jneqn=$ac_cv_path_jneqn
 
@@ -9607,9 +9657,9 @@ done
 done
 
 shift 2
-case $# in
+case ${#} in
   0) ;;
-  *) test -n "$ac_cv_path_jneqn" && ac_cv_path_jneqn="$ac_cv_path_jneqn $@" ;;
+  *) test -n "$ac_cv_path_jneqn" && ac_cv_path_jneqn="$ac_cv_path_jneqn ${@}" ;;
 esac
 fi
 
@@ -9665,9 +9715,9 @@ done
 done
 
 shift 2
-case $# in
+case ${#} in
   0) ;;
-  *) test -n "$ac_cv_path_tbl" && ac_cv_path_tbl="$ac_cv_path_tbl $@" ;;
+  *) test -n "$ac_cv_path_tbl" && ac_cv_path_tbl="$ac_cv_path_tbl ${@}" ;;
 esac
  tbl=$ac_cv_path_tbl
 
@@ -9719,9 +9769,9 @@ done
 done
 
 shift 2
-case $# in
+case ${#} in
   0) ;;
-  *) test -n "$ac_cv_path_tbl" && ac_cv_path_tbl="$ac_cv_path_tbl $@" ;;
+  *) test -n "$ac_cv_path_tbl" && ac_cv_path_tbl="$ac_cv_path_tbl ${@}" ;;
 esac
 fi
 
@@ -9776,9 +9826,9 @@ done
 done
 
 shift 2
-case $# in
+case ${#} in
   0) ;;
-  *) test -n "$ac_cv_path_tbl" && ac_cv_path_tbl="$ac_cv_path_tbl $@" ;;
+  *) test -n "$ac_cv_path_tbl" && ac_cv_path_tbl="$ac_cv_path_tbl ${@}" ;;
 esac
 fi
 
@@ -9835,9 +9885,9 @@ done
 done
 
 shift 2
-case $# in
+case ${#} in
   0) ;;
-  *) test -n "$ac_cv_path_vgrind" && ac_cv_path_vgrind="$ac_cv_path_vgrind $@" ;;
+  *) test -n "$ac_cv_path_vgrind" && ac_cv_path_vgrind="$ac_cv_path_vgrind ${@}" ;;
 esac
  vgrind=$ac_cv_path_vgrind
 
@@ -9889,9 +9939,9 @@ done
 done
 
 shift 2
-case $# in
+case ${#} in
   0) ;;
-  *) test -n "$ac_cv_path_vgrind" && ac_cv_path_vgrind="$ac_cv_path_vgrind $@" ;;
+  *) test -n "$ac_cv_path_vgrind" && ac_cv_path_vgrind="$ac_cv_path_vgrind ${@}" ;;
 esac
 fi
 
@@ -9947,9 +9997,9 @@ done
 done
 
 shift 2
-case $# in
+case ${#} in
   0) ;;
-  *) test -n "$ac_cv_path_refer" && ac_cv_path_refer="$ac_cv_path_refer $@" ;;
+  *) test -n "$ac_cv_path_refer" && ac_cv_path_refer="$ac_cv_path_refer ${@}" ;;
 esac
  refer=$ac_cv_path_refer
 
@@ -10001,9 +10051,9 @@ done
 done
 
 shift 2
-case $# in
+case ${#} in
   0) ;;
-  *) test -n "$ac_cv_path_refer" && ac_cv_path_refer="$ac_cv_path_refer $@" ;;
+  *) test -n "$ac_cv_path_refer" && ac_cv_path_refer="$ac_cv_path_refer ${@}" ;;
 esac
 fi
 
@@ -10058,9 +10108,9 @@ done
 done
 
 shift 2
-case $# in
+case ${#} in
   0) ;;
-  *) test -n "$ac_cv_path_refer" && ac_cv_path_refer="$ac_cv_path_refer $@" ;;
+  *) test -n "$ac_cv_path_refer" && ac_cv_path_refer="$ac_cv_path_refer ${@}" ;;
 esac
 fi
 
@@ -10117,9 +10167,9 @@ done
 done
 
 shift 2
-case $# in
+case ${#} in
   0) ;;
-  *) test -n "$ac_cv_path_grap" && ac_cv_path_grap="$ac_cv_path_grap $@" ;;
+  *) test -n "$ac_cv_path_grap" && ac_cv_path_grap="$ac_cv_path_grap ${@}" ;;
 esac
  grap=$ac_cv_path_grap
 
@@ -10171,9 +10221,9 @@ done
 done
 
 shift 2
-case $# in
+case ${#} in
   0) ;;
-  *) test -n "$ac_cv_path_grap" && ac_cv_path_grap="$ac_cv_path_grap $@" ;;
+  *) test -n "$ac_cv_path_grap" && ac_cv_path_grap="$ac_cv_path_grap ${@}" ;;
 esac
 fi
 
@@ -10229,9 +10279,9 @@ done
 done
 
 shift 2
-case $# in
+case ${#} in
   0) ;;
-  *) test -n "$ac_cv_path_pic" && ac_cv_path_pic="$ac_cv_path_pic $@" ;;
+  *) test -n "$ac_cv_path_pic" && ac_cv_path_pic="$ac_cv_path_pic ${@}" ;;
 esac
  pic=$ac_cv_path_pic
 
@@ -10283,9 +10333,9 @@ done
 done
 
 shift 2
-case $# in
+case ${#} in
   0) ;;
-  *) test -n "$ac_cv_path_pic" && ac_cv_path_pic="$ac_cv_path_pic $@" ;;
+  *) test -n "$ac_cv_path_pic" && ac_cv_path_pic="$ac_cv_path_pic ${@}" ;;
 esac
 fi
 
@@ -10340,9 +10390,9 @@ done
 done
 
 shift 2
-case $# in
+case ${#} in
   0) ;;
-  *) test -n "$ac_cv_path_pic" && ac_cv_path_pic="$ac_cv_path_pic $@" ;;
+  *) test -n "$ac_cv_path_pic" && ac_cv_path_pic="$ac_cv_path_pic ${@}" ;;
 esac
 fi
 
@@ -10399,9 +10449,9 @@ done
 done
 
 shift 2
-case $# in
+case ${#} in
   0) ;;
-  *) test -n "$ac_cv_path_cmp" && ac_cv_path_cmp="$ac_cv_path_cmp $@" ;;
+  *) test -n "$ac_cv_path_cmp" && ac_cv_path_cmp="$ac_cv_path_cmp ${@}" ;;
 esac
  cmp=$ac_cv_path_cmp
 
@@ -10453,9 +10503,9 @@ done
 done
 
 shift 2
-case $# in
+case ${#} in
   0) ;;
-  *) test -n "$ac_cv_path_cmp" && ac_cv_path_cmp="$ac_cv_path_cmp $@" ;;
+  *) test -n "$ac_cv_path_cmp" && ac_cv_path_cmp="$ac_cv_path_cmp ${@}" ;;
 esac
 fi
 

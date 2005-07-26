@@ -147,6 +147,7 @@
   MAN_FILTER_ALTERNATE([TROFF],  [troff -mandoc])
 #
   MAN_FILTER_PREFERRED([NROFF],  [nroff -Tlatin1 -mandoc])
+  MAN_DISABLE_NROFF_SGR
 #
   MAN_FILTER_PREFERRED([JNROFF], [groff -Tnippon -mandocj])
 #

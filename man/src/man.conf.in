@@ -88,8 +88,9 @@ MANPATH_MAP	@path__usr_bin_mh@		@map_to__usr_man@
 # For use with utf-8, NROFF should be "nroff -mandoc" without -T option.
 # (Maybe - but today I need -Tlatin1 to prevent double conversion to utf8.)
 #
-# If you have a new troff (version 1.18.1?) and its colored output
-# causes problems, add the -c option to TROFF, NROFF, JNROFF.
+# If you have a new troff (groff version >= 1.18) and its colored output
+# causes problems, try adding the -c option to TROFF, NROFF, JNROFF.
+# (Note: if NROFF is invoked as "groff ...", use -P-c rather than -c).
 #
 TROFF		@troff@
 NROFF		@nroff@

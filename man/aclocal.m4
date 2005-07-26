@@ -323,7 +323,7 @@ AC_DEFUN([MAN_FILTER_PREFERRED],
 #
 AC_DEFUN([MAN_FILTER_CONFIGURE_PREFERRED],
 [AC_ARG_WITH([$2],
-  AS_HELP_STRING([--with-$2=COMMAND], [invoke $1 using COMMAND @<:@$3@:>@]),
+  AS_HELP_STRING([--with-$2=COMMAND], [use COMMAND @<:@$3@:>@ to invoke $1]),
   MAN_AC_PATH_COMMAND_OVERRIDE_CACHE([$2], [$withval]),
   MAN_AC_PATH_COMMAND([$2], [$3]))dnl
 ])
@@ -396,9 +396,9 @@ AC_DEFUN([MAN_AC_MSG_PATH_PROG_CHECKING],
 AC_DEFUN([MAN_AC_PATH_COMMAND_RESOLVE],
 [MAN_AC_PATH_RESOLVE([$1], [$2], [$3])
 [shift 2
-case $[#] in
+case ${#} in
   0) ;;
-  *) test -n "$$1" && $1="$$1 $[@]" ;;
+  *) test -n "$$1" && $1="$$1 ${@}" ;;
 esac]dnl
 ])
 
@@ -482,6 +482,67 @@ AC_DEFUN([MAN_GREP_SILENT],
  fi
  AC_MSG_RESULT([grep $man_grepsilent])
  AC_SUBST([man_grepsilent])
+])
+
+# MAN_DISABLE_NROFF_SGR
+# ---------------------
+# If the host's nroff implementation is based on groff >= 1.18,
+# then it may be necessary to disable its default SGR output mode;
+# modify the "nroff" substitution variable as required.
+#
+AC_DEFUN([MAN_DISABLE_NROFF_SGR],
+[AC_REQUIRE([WIN32_AC_NULLDEV])dnl
+ if test "x$nroff" != xno
+ then
+   AC_MSG_CHECKING([whether nroff requires suppression of SGR output])
+   AC_ARG_ENABLE([sgr],
+     AS_HELP_STRING([--enable-sgr],
+       [use nroff's SGR output mode, if available]),
+     MAN_NROFF_SGR_CHECK([$enableval]),dnl
+     MAN_NROFF_SGR_CHECK([no]))dnl
+   AC_MSG_RESULT([$man_sgr_check])
+   if test x$man_sgr_check = xyes
+   then
+     AC_MSG_CHECKING([whether installed nroff supports SGR output])
+     man_sgr_check=`(echo .TH; echo .SH TEST) | $nroff 2>$NULLDEV`
+     case $man_sgr_check in
+       [*0m*) man_sgr_check=yes ;;]
+       [*)    man_sgr_check=no  ;;]
+     esac
+     AC_MSG_RESULT([$man_sgr_check])
+   fi
+   if test x$man_sgr_check = xyes
+   then
+     AC_MSG_CHECKING([how to suppress nroff's SGR output])
+     man_sgr_check=unknown
+     for ac_val in -P-c -c
+     do
+       if test "$man_sgr_check" = unknown
+       then
+	 case `(echo .TH; echo .SH TEST) | $nroff $ac_val 2>$NULLDEV \
+	 || echo 0m` in
+	   [*0m*) ;;]
+	   [*) man_sgr_check="$nroff $ac_val" ;;]
+	 esac
+       fi
+     done
+     test "$man_sgr_check" = unknown || nroff=$man_sgr_check
+     AC_MSG_RESULT([$man_sgr_check])
+   fi
+ fi[]dnl
+])
+
+# MAN_NROFF_SGR_CHECK
+# -------------------
+# Internal macro, called only by MAN_DISABLE_NROFF_SGR.
+# Check if we are able to verify the availability of nroff SGR output;
+# (we can't when we are cross compiling, and we won't bother if the user
+#  explicitly configures with the '--enable-sgr' option).
+#
+AC_DEFUN([MAN_NROFF_SGR_CHECK],
+[man_sgr_check=indeterminate
+ test x$cross_compiling = xno && man_sgr_check=yes
+ test x$1 = xno || man_sgr_check=no[]dnl
 ])
 
 # EOF -- vim: ft=config

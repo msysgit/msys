@@ -1,3 +1,18 @@
+2005-07-26  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Handle nroff SGR output quirks for groff >= 1.18.
+
+	* aclocal.m4 (MAN_NROFF_SGR_CHECK): New macro; used by...
+	(MAN_DISABLE_NROFF_SGR): New macro.
+	(MAN_FILTER_PREFERRED): Modified `help' string.
+	(MAN_AC_PATH_COMMAND_RESOLVE): Use braces in ${#}, ${@}.
+
+	* configure.ac (MAN_DISABLE_NROFF_SGR): Use it.
+
+	* configure: Regenerated.
+
+	* src/man.conf.in: Update note about groff colour support.
+
 2005-07-08  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Implement autoconf checks for filter programs.
