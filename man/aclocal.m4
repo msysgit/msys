@@ -545,4 +545,23 @@ AC_DEFUN([MAN_NROFF_SGR_CHECK],
  test x$1 = xno || man_sgr_check=no[]dnl
 ])
 
+# MAN_DISABLE_COL_WITH_GROFF
+# --------------------------
+# When "groff" is used to provide the TROFF filter,
+# post-filtering with "col" may damage the formatted output,
+# so inhibit the use of "col" in this configuration.
+#
+# (This macro is also responsible for establishing the proper
+#  relationship between the "col" and "pcol" substitution variables).
+#
+AC_DEFUN([MAN_DISABLE_COL_WITH_GROFF],
+[AC_SUBST([pcol], ["$col"])
+ AC_MSG_CHECKING([whether the COL filter should be deployed])
+ case $troff in
+   [*groff*) pcol="" col="__undef__($col)" ac_val="no; (using groff)" ;;]
+   [*)       ac_val=yes ;;]
+ esac
+ AC_MSG_RESULT([$ac_val])dnl
+])
+
 # EOF -- vim: ft=config

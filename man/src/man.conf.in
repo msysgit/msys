@@ -99,7 +99,7 @@ EQN		@eqn@
 NEQN		@neqn@
 JNEQN		@jneqn@
 TBL		@tbl@
-@nocol@COL		@col@
+COL		@col@
 REFER		@refer@
 PIC		@pic@
 VGRIND		@vgrind@

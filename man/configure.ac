@@ -152,6 +152,7 @@
   MAN_FILTER_PREFERRED([JNROFF], [groff -Tnippon -mandocj])
 #
   MAN_FILTER_PREFERRED([COL],    [col])
+  MAN_DISABLE_COL_WITH_GROFF
 #
   MAN_FILTER_PREFERRED([EQN],    [geqn -Tps])
   MAN_FILTER_ALTERNATE([EQN],    [eqn -Tps])

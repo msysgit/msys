@@ -1,5 +1,16 @@
 2005-07-26  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
+	Avoid using `col' in conjunction with `groff'.
+
+	* aclocal.m4 (MAN_DISABLE_COL_WITH_GROFF): New macro...
+	* configure.ac: Use it.
+
+	* configure: Regenerated.
+
+	* src/man.conf.in (@nocol@): Redundant substitution; removed.
+
+2005-07-26  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
 	Handle nroff SGR output quirks for groff >= 1.18.
 
 	* aclocal.m4 (MAN_NROFF_SGR_CHECK): New macro; used by...
