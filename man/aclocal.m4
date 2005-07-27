@@ -301,9 +301,9 @@ AC_DEFUN([MANPATH_MAP_CACHE_ASSIGN],
 ])
 
 
-## ======================================================== ##
-## Support Program Detection and Command Line Configuration ##
-## ======================================================== ##
+## ================================================ ##
+## Specify Filter Programs for Formatting man Pages ##
+## ================================================ ##
 #
 # MAN_FILTER_PREFERRED( CLASS, COMMAND )
 # --------------------------------------
@@ -437,6 +437,53 @@ AC_DEFUN([MAN_AC_MSG_PATH_PROG_RESULT],
 [AC_SUBST([$1], [$$2])
  test -n "$$1" && ac_word="$$1" || ac_word=no
  AC_MSG_RESULT([$ac_word])dnl
+])
+
+
+## ======================================================== ##
+## Specify Filters for Handling of Compressed man/cat Pages ##
+## ======================================================== ##
+#
+# MAN_COMPRESS_WITH( PREFERENCE, COMMAND, EXT )
+# ---------------------------------------------
+# Invoke the PREFERENCE macro, which should be MAN_FILTER_PREFERRED
+# on first reference, and MAN_FILTER_ALTERNATE on any subsequent reference,
+# to specify COMMAND as the COMPRESS filter, if available, and specify
+# EXT as the corresponding file name extension to identify
+# a compressed cat file.
+#
+AC_DEFUN([MAN_COMPRESS_WITH],
+[$1([COMPRESS], [$2])
+ test -n "$compress" && compress_ext=${compress_ext-".$3"}
+ AC_SUBST([compress_ext])dnl
+])
+
+# MAN_SET_DEFAULT_DECOMPRESSION_FILTER
+# ------------------------------------
+# Set the DO_COMPRESS symbol, to reflect availability of compression,
+# and identify the decompression filter for the chosen compression format.
+#
+AC_DEFUN([MAN_SET_DEFAULT_DECOMPRESSION_FILTER],
+[AC_MSG_CHECKING([whether compressed cat pages can be supported])
+ if test -n "$compress_ext"
+ then
+   AC_MSG_RESULT([yes])
+   AC_DEFINE([DO_COMPRESS], [1], [Define to 1 if compressed cat pages are required.])
+   AC_MSG_CHECKING([default decompression filter])
+   case $compress_ext in
+     [.gz)  decompress=${gunzip-"none"}  ;;]
+     [.bz2) decompress=${bzip2-"none"}   ;;]
+     [.z)   decompress=${pcat-"none"}    ;;]
+     [.Z)   decompress=${zcat-"none"}    ;;]
+     [.F)   decompress=${fcat-"none"}    ;;]
+     [.Y)   decompress=${unyabba-"none"} ;;]
+   esac
+   AC_MSG_RESULT([${decompress-"none"}])
+ else
+   AC_MSG_RESULT([no])
+ fi
+ test "$decompress" = none && decompress=""
+ AC_SUBST([decompress])dnl
 ])
 
 

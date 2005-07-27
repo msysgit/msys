@@ -1,3 +1,20 @@
+2005-07-27  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Configure compression and decompression filters.
+
+	* aclocal.m4 (MAN_COMPRESS_WITH): New macro.
+	(MAN_SET_DEFAULT_DECOMPRESSION_FILTER): New macro.
+
+	* configure.ac (COMPRESS): Define using MAN_COMPRESS_WITH; this sets
+	the @compress@ and @compress_ext@ substitutions.
+	(MAN_SET_DEFAULT_DECOMPRESSION_FILTER): Use it to define DO_COMPRESS
+	symbol and @decompress@ substitution.
+	(GUNZIP, BZIP2, PCAT, ZCAT, FCAT, UNYABBA): Define using
+	MAN_FILTER_PREFERRED.
+	(MAN_GREP_SILENT): Relocate; add comment.
+
+	* configure, config.h.in: Regenerated.
+
 2005-07-26  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Avoid using `col' in conjunction with `groff'.

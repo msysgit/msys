@@ -328,7 +328,7 @@ ac_includes_default="\
 # include <unistd.h>
 #endif"
 
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS AWK CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA LN_S SET_MAKE CPP EGREP ALLOCA LIBOBJS FHS FSSTND man_config_file sections NULLDEV path__usr_man path__usr_local_man path__usr_share_man path__usr_X11R6_man path__opt_teTeX_man path__usr_lib_perl5_man path__usr_share_perl5_man path__usr_share_tcl_8_0_man path__usr_share_tk_8_0_man path__usr_share_tix_4_1_man path__usr_share_coas_man path__usr_kerberos_man map_to__usr_man path__bin path__sbin path__usr_bin path__usr_sbin map_to__usr_local_man path__usr_local_bin path__usr_local_sbin map_to__usr_X11R6_man path__usr_X11R6_bin path__usr_bin_X11 path__usr_bin_mh pager cat troff nroff jnroff col pcol eqn neqn jneqn tbl vgrind refer grap pic cmp man_grepsilent LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS AWK CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA LN_S SET_MAKE CPP EGREP ALLOCA LIBOBJS FHS FSSTND man_config_file sections NULLDEV path__usr_man path__usr_local_man path__usr_share_man path__usr_X11R6_man path__opt_teTeX_man path__usr_lib_perl5_man path__usr_share_perl5_man path__usr_share_tcl_8_0_man path__usr_share_tk_8_0_man path__usr_share_tix_4_1_man path__usr_share_coas_man path__usr_kerberos_man map_to__usr_man path__bin path__sbin path__usr_bin path__usr_sbin map_to__usr_local_man path__usr_local_bin path__usr_local_sbin map_to__usr_X11R6_man path__usr_X11R6_bin path__usr_bin_X11 path__usr_bin_mh pager man_grepsilent cat troff nroff jnroff col pcol eqn neqn jneqn tbl vgrind refer grap pic cmp compress compress_ext gunzip bzip2 pcat zcat fcat unyabba decompress LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -891,6 +891,13 @@ Optional Packages:
   --with-grap=COMMAND     use COMMAND [grap] to invoke GRAP
   --with-pic=COMMAND      use COMMAND [gpic] to invoke PIC
   --with-cmp=COMMAND      use COMMAND [cmp -s] to invoke CMP
+  --with-compress=COMMAND use COMMAND [bzip2 -c] to invoke COMPRESS
+  --with-gunzip=COMMAND   use COMMAND [gzip -c -d] to invoke GUNZIP
+  --with-bzip2=COMMAND    use COMMAND [bzip2 -c -d] to invoke BZIP2
+  --with-pcat=COMMAND     use COMMAND [pcat] to invoke PCAT
+  --with-zcat=COMMAND     use COMMAND [zcat] to invoke ZCAT
+  --with-fcat=COMMAND     use COMMAND [fcat] to invoke FCAT
+  --with-unyabba=COMMAND  use COMMAND [unyabba] to invoke UNYABBA
 
 Some influential environment variables:
   CC          C compiler command
@@ -8606,6 +8613,22 @@ echo "${ECHO_T}$ac_word" >&6
 fi
 
 
+# We need to work out how to invoke `grep' silently,
+# i.e. just check for presence of an expression match, with no output,
+# and without displaying any error messages.
+#
+   echo "$as_me:$LINENO: checking how to run grep silently" >&5
+echo $ECHO_N "checking how to run grep silently... $ECHO_C" >&6
+ man_grepsilent=">$NULLDEV 2>&1"
+ if test x$cross_compiling = xno; then
+   test x`echo testing | grep -q testing` = x && man_grepsilent=-q
+   test x`echo testing | grep -s testing` = x && man_grepsilent=-s
+ fi
+ echo "$as_me:$LINENO: result: grep $man_grepsilent" >&5
+echo "${ECHO_T}grep $man_grepsilent" >&6
+
+
+
 # Select the filter programs to be used
 # for TROFF formatting of man page source documents.
 #
@@ -10414,6 +10437,9 @@ echo "${ECHO_T}$ac_word" >&6
 fi
 
 
+# For `catpage' support, `cmp' is also required,
+# to determine when obsolete cat pages must be updated.
+#
 
 # Check whether --with-cmp or --without-cmp was given.
 if test "${with_cmp+set}" = set; then
@@ -10526,16 +10552,1125 @@ fi
 echo "${ECHO_T}$ac_word" >&6
 fi;
 
-   echo "$as_me:$LINENO: checking how to run grep silently" >&5
-echo $ECHO_N "checking how to run grep silently... $ECHO_C" >&6
- man_grepsilent=">$NULLDEV 2>&1"
- if test x$cross_compiling = xno; then
-   test x`echo testing | grep -q testing` = x && man_grepsilent=-q
-   test x`echo testing | grep -s testing` = x && man_grepsilent=-s
- fi
- echo "$as_me:$LINENO: result: grep $man_grepsilent" >&5
-echo "${ECHO_T}grep $man_grepsilent" >&6
+# Select a default compression filter,
+# which will be used when preformatted `cat pages' are saved.
+#
 
+# Check whether --with-compress or --without-compress was given.
+if test "${with_compress+set}" = set; then
+  withval="$with_compress"
+  # Extract the first word of "$withval", so it can be a program name with args.
+  set dummy $withval; ac_word=$2
+  echo "$as_me:$LINENO: checking for $ac_word" >&5
+echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
+ as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if $as_executable_p "$as_dir/$ac_word$ac_exec_ext"
+  then
+    ac_dir=""$as_dir/$ac_word$ac_exec_ext""
+ pwd -W >/dev/null 2>&1 && ac_pwd_w="pwd -W" || ac_pwd_w=pwd
+ until ac_val=`exec 2>/dev/null; cd "$ac_dir" && $ac_pwd_w`
+ do
+   ac_dir=`(dirname "$ac_dir") 2>/dev/null ||
+$as_expr X"$ac_dir" : 'X\(.*^/\)//*^/^/*/*$' \| \
+	 X"$ac_dir" : 'X\(//\)^/' \| \
+	 X"$ac_dir" : 'X\(//\)$' \| \
+	 X"$ac_dir" : 'X\(/\)' \| \
+	 .     : '\(.\)' 2>/dev/null ||
+echo X"$ac_dir" |
+    sed '/^X\(.*^/\)\/\/*^/^/*\/*$/{ s//\1/; q; }
+  	  /^X\(\/\/\)^/.*/{ s//\1/; q; }
+  	  /^X\(\/\/\)$/{ s//\1/; q; }
+  	  /^X\(\/\).*/{ s//\1/; q; }
+  	  s/.*/./; q'`
+ done
+ ac_dir=`echo "$ac_dir" | sed 's?^./*??'`
+ ac_val=`echo "$ac_val" | sed 's?/*$??'`
+ ac_cv_path_compress=`echo ""$as_dir/$ac_word$ac_exec_ext"" | sed "s?^./*$ac_dir/*?$ac_val/?"'
+   s?/*$??'`
+
+    echo "$as_me:$LINENO: found $ac_cv_path_compress" >&5
+    break 2
+  fi
+done
+done
+
+shift 2
+case ${#} in
+  0) ;;
+  *) test -n "$ac_cv_path_compress" && ac_cv_path_compress="$ac_cv_path_compress ${@}" ;;
+esac
+ compress=$ac_cv_path_compress
+
+ test -n "$compress" && ac_word="$compress" || ac_word=no
+ echo "$as_me:$LINENO: result: $ac_word" >&5
+echo "${ECHO_T}$ac_word" >&6
+else
+  # Extract the first word of "bzip2 -c", so it can be a program name with args.
+  set dummy bzip2 -c; ac_word=$2
+  echo "$as_me:$LINENO: checking for $ac_word" >&5
+echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
+ if test "${ac_cv_path_compress+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if $as_executable_p "$as_dir/$ac_word$ac_exec_ext"
+  then
+    ac_dir=""$as_dir/$ac_word$ac_exec_ext""
+ pwd -W >/dev/null 2>&1 && ac_pwd_w="pwd -W" || ac_pwd_w=pwd
+ until ac_val=`exec 2>/dev/null; cd "$ac_dir" && $ac_pwd_w`
+ do
+   ac_dir=`(dirname "$ac_dir") 2>/dev/null ||
+$as_expr X"$ac_dir" : 'X\(.*^/\)//*^/^/*/*$' \| \
+	 X"$ac_dir" : 'X\(//\)^/' \| \
+	 X"$ac_dir" : 'X\(//\)$' \| \
+	 X"$ac_dir" : 'X\(/\)' \| \
+	 .     : '\(.\)' 2>/dev/null ||
+echo X"$ac_dir" |
+    sed '/^X\(.*^/\)\/\/*^/^/*\/*$/{ s//\1/; q; }
+  	  /^X\(\/\/\)^/.*/{ s//\1/; q; }
+  	  /^X\(\/\/\)$/{ s//\1/; q; }
+  	  /^X\(\/\).*/{ s//\1/; q; }
+  	  s/.*/./; q'`
+ done
+ ac_dir=`echo "$ac_dir" | sed 's?^./*??'`
+ ac_val=`echo "$ac_val" | sed 's?/*$??'`
+ ac_cv_path_compress=`echo ""$as_dir/$ac_word$ac_exec_ext"" | sed "s?^./*$ac_dir/*?$ac_val/?"'
+   s?/*$??'`
+
+    echo "$as_me:$LINENO: found $ac_cv_path_compress" >&5
+    break 2
+  fi
+done
+done
+
+shift 2
+case ${#} in
+  0) ;;
+  *) test -n "$ac_cv_path_compress" && ac_cv_path_compress="$ac_cv_path_compress ${@}" ;;
+esac
+fi
+
+ compress=$ac_cv_path_compress
+
+ test -n "$compress" && ac_word="$compress" || ac_word=no
+ echo "$as_me:$LINENO: result: $ac_word" >&5
+echo "${ECHO_T}$ac_word" >&6
+fi;
+ test -n "$compress" && compress_ext=${compress_ext-".bz2"}
+
+  if test -z "$compress"; then
+  # Extract the first word of "gzip -c", so it can be a program name with args.
+  set dummy gzip -c; ac_word=$2
+  echo "$as_me:$LINENO: checking for $ac_word" >&5
+echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
+ if test "${ac_cv_path_compress+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if $as_executable_p "$as_dir/$ac_word$ac_exec_ext"
+  then
+    ac_dir=""$as_dir/$ac_word$ac_exec_ext""
+ pwd -W >/dev/null 2>&1 && ac_pwd_w="pwd -W" || ac_pwd_w=pwd
+ until ac_val=`exec 2>/dev/null; cd "$ac_dir" && $ac_pwd_w`
+ do
+   ac_dir=`(dirname "$ac_dir") 2>/dev/null ||
+$as_expr X"$ac_dir" : 'X\(.*^/\)//*^/^/*/*$' \| \
+	 X"$ac_dir" : 'X\(//\)^/' \| \
+	 X"$ac_dir" : 'X\(//\)$' \| \
+	 X"$ac_dir" : 'X\(/\)' \| \
+	 .     : '\(.\)' 2>/dev/null ||
+echo X"$ac_dir" |
+    sed '/^X\(.*^/\)\/\/*^/^/*\/*$/{ s//\1/; q; }
+  	  /^X\(\/\/\)^/.*/{ s//\1/; q; }
+  	  /^X\(\/\/\)$/{ s//\1/; q; }
+  	  /^X\(\/\).*/{ s//\1/; q; }
+  	  s/.*/./; q'`
+ done
+ ac_dir=`echo "$ac_dir" | sed 's?^./*??'`
+ ac_val=`echo "$ac_val" | sed 's?/*$??'`
+ ac_cv_path_compress=`echo ""$as_dir/$ac_word$ac_exec_ext"" | sed "s?^./*$ac_dir/*?$ac_val/?"'
+   s?/*$??'`
+
+    echo "$as_me:$LINENO: found $ac_cv_path_compress" >&5
+    break 2
+  fi
+done
+done
+
+shift 2
+case ${#} in
+  0) ;;
+  *) test -n "$ac_cv_path_compress" && ac_cv_path_compress="$ac_cv_path_compress ${@}" ;;
+esac
+fi
+
+ compress=$ac_cv_path_compress
+
+ test -n "$compress" && ac_word="$compress" || ac_word=no
+ echo "$as_me:$LINENO: result: $ac_word" >&5
+echo "${ECHO_T}$ac_word" >&6
+fi
+
+ test -n "$compress" && compress_ext=${compress_ext-".gz"}
+
+  if test -z "$compress"; then
+  # Extract the first word of "pack", so it can be a program name with args.
+  set dummy pack; ac_word=$2
+  echo "$as_me:$LINENO: checking for $ac_word" >&5
+echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
+ if test "${ac_cv_path_compress+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if $as_executable_p "$as_dir/$ac_word$ac_exec_ext"
+  then
+    ac_dir=""$as_dir/$ac_word$ac_exec_ext""
+ pwd -W >/dev/null 2>&1 && ac_pwd_w="pwd -W" || ac_pwd_w=pwd
+ until ac_val=`exec 2>/dev/null; cd "$ac_dir" && $ac_pwd_w`
+ do
+   ac_dir=`(dirname "$ac_dir") 2>/dev/null ||
+$as_expr X"$ac_dir" : 'X\(.*^/\)//*^/^/*/*$' \| \
+	 X"$ac_dir" : 'X\(//\)^/' \| \
+	 X"$ac_dir" : 'X\(//\)$' \| \
+	 X"$ac_dir" : 'X\(/\)' \| \
+	 .     : '\(.\)' 2>/dev/null ||
+echo X"$ac_dir" |
+    sed '/^X\(.*^/\)\/\/*^/^/*\/*$/{ s//\1/; q; }
+  	  /^X\(\/\/\)^/.*/{ s//\1/; q; }
+  	  /^X\(\/\/\)$/{ s//\1/; q; }
+  	  /^X\(\/\).*/{ s//\1/; q; }
+  	  s/.*/./; q'`
+ done
+ ac_dir=`echo "$ac_dir" | sed 's?^./*??'`
+ ac_val=`echo "$ac_val" | sed 's?/*$??'`
+ ac_cv_path_compress=`echo ""$as_dir/$ac_word$ac_exec_ext"" | sed "s?^./*$ac_dir/*?$ac_val/?"'
+   s?/*$??'`
+
+    echo "$as_me:$LINENO: found $ac_cv_path_compress" >&5
+    break 2
+  fi
+done
+done
+
+shift 2
+case ${#} in
+  0) ;;
+  *) test -n "$ac_cv_path_compress" && ac_cv_path_compress="$ac_cv_path_compress ${@}" ;;
+esac
+fi
+
+ compress=$ac_cv_path_compress
+
+ test -n "$compress" && ac_word="$compress" || ac_word=no
+ echo "$as_me:$LINENO: result: $ac_word" >&5
+echo "${ECHO_T}$ac_word" >&6
+fi
+
+ test -n "$compress" && compress_ext=${compress_ext-".z"}
+
+  if test -z "$compress"; then
+  # Extract the first word of "compress", so it can be a program name with args.
+  set dummy compress; ac_word=$2
+  echo "$as_me:$LINENO: checking for $ac_word" >&5
+echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
+ if test "${ac_cv_path_compress+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if $as_executable_p "$as_dir/$ac_word$ac_exec_ext"
+  then
+    ac_dir=""$as_dir/$ac_word$ac_exec_ext""
+ pwd -W >/dev/null 2>&1 && ac_pwd_w="pwd -W" || ac_pwd_w=pwd
+ until ac_val=`exec 2>/dev/null; cd "$ac_dir" && $ac_pwd_w`
+ do
+   ac_dir=`(dirname "$ac_dir") 2>/dev/null ||
+$as_expr X"$ac_dir" : 'X\(.*^/\)//*^/^/*/*$' \| \
+	 X"$ac_dir" : 'X\(//\)^/' \| \
+	 X"$ac_dir" : 'X\(//\)$' \| \
+	 X"$ac_dir" : 'X\(/\)' \| \
+	 .     : '\(.\)' 2>/dev/null ||
+echo X"$ac_dir" |
+    sed '/^X\(.*^/\)\/\/*^/^/*\/*$/{ s//\1/; q; }
+  	  /^X\(\/\/\)^/.*/{ s//\1/; q; }
+  	  /^X\(\/\/\)$/{ s//\1/; q; }
+  	  /^X\(\/\).*/{ s//\1/; q; }
+  	  s/.*/./; q'`
+ done
+ ac_dir=`echo "$ac_dir" | sed 's?^./*??'`
+ ac_val=`echo "$ac_val" | sed 's?/*$??'`
+ ac_cv_path_compress=`echo ""$as_dir/$ac_word$ac_exec_ext"" | sed "s?^./*$ac_dir/*?$ac_val/?"'
+   s?/*$??'`
+
+    echo "$as_me:$LINENO: found $ac_cv_path_compress" >&5
+    break 2
+  fi
+done
+done
+
+shift 2
+case ${#} in
+  0) ;;
+  *) test -n "$ac_cv_path_compress" && ac_cv_path_compress="$ac_cv_path_compress ${@}" ;;
+esac
+fi
+
+ compress=$ac_cv_path_compress
+
+ test -n "$compress" && ac_word="$compress" || ac_word=no
+ echo "$as_me:$LINENO: result: $ac_word" >&5
+echo "${ECHO_T}$ac_word" >&6
+fi
+
+ test -n "$compress" && compress_ext=${compress_ext-".Z"}
+
+  if test -z "$compress"; then
+  # Extract the first word of "freeze", so it can be a program name with args.
+  set dummy freeze; ac_word=$2
+  echo "$as_me:$LINENO: checking for $ac_word" >&5
+echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
+ if test "${ac_cv_path_compress+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if $as_executable_p "$as_dir/$ac_word$ac_exec_ext"
+  then
+    ac_dir=""$as_dir/$ac_word$ac_exec_ext""
+ pwd -W >/dev/null 2>&1 && ac_pwd_w="pwd -W" || ac_pwd_w=pwd
+ until ac_val=`exec 2>/dev/null; cd "$ac_dir" && $ac_pwd_w`
+ do
+   ac_dir=`(dirname "$ac_dir") 2>/dev/null ||
+$as_expr X"$ac_dir" : 'X\(.*^/\)//*^/^/*/*$' \| \
+	 X"$ac_dir" : 'X\(//\)^/' \| \
+	 X"$ac_dir" : 'X\(//\)$' \| \
+	 X"$ac_dir" : 'X\(/\)' \| \
+	 .     : '\(.\)' 2>/dev/null ||
+echo X"$ac_dir" |
+    sed '/^X\(.*^/\)\/\/*^/^/*\/*$/{ s//\1/; q; }
+  	  /^X\(\/\/\)^/.*/{ s//\1/; q; }
+  	  /^X\(\/\/\)$/{ s//\1/; q; }
+  	  /^X\(\/\).*/{ s//\1/; q; }
+  	  s/.*/./; q'`
+ done
+ ac_dir=`echo "$ac_dir" | sed 's?^./*??'`
+ ac_val=`echo "$ac_val" | sed 's?/*$??'`
+ ac_cv_path_compress=`echo ""$as_dir/$ac_word$ac_exec_ext"" | sed "s?^./*$ac_dir/*?$ac_val/?"'
+   s?/*$??'`
+
+    echo "$as_me:$LINENO: found $ac_cv_path_compress" >&5
+    break 2
+  fi
+done
+done
+
+shift 2
+case ${#} in
+  0) ;;
+  *) test -n "$ac_cv_path_compress" && ac_cv_path_compress="$ac_cv_path_compress ${@}" ;;
+esac
+fi
+
+ compress=$ac_cv_path_compress
+
+ test -n "$compress" && ac_word="$compress" || ac_word=no
+ echo "$as_me:$LINENO: result: $ac_word" >&5
+echo "${ECHO_T}$ac_word" >&6
+fi
+
+ test -n "$compress" && compress_ext=${compress_ext-".F"}
+
+  if test -z "$compress"; then
+  # Extract the first word of "yabba", so it can be a program name with args.
+  set dummy yabba; ac_word=$2
+  echo "$as_me:$LINENO: checking for $ac_word" >&5
+echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
+ if test "${ac_cv_path_compress+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if $as_executable_p "$as_dir/$ac_word$ac_exec_ext"
+  then
+    ac_dir=""$as_dir/$ac_word$ac_exec_ext""
+ pwd -W >/dev/null 2>&1 && ac_pwd_w="pwd -W" || ac_pwd_w=pwd
+ until ac_val=`exec 2>/dev/null; cd "$ac_dir" && $ac_pwd_w`
+ do
+   ac_dir=`(dirname "$ac_dir") 2>/dev/null ||
+$as_expr X"$ac_dir" : 'X\(.*^/\)//*^/^/*/*$' \| \
+	 X"$ac_dir" : 'X\(//\)^/' \| \
+	 X"$ac_dir" : 'X\(//\)$' \| \
+	 X"$ac_dir" : 'X\(/\)' \| \
+	 .     : '\(.\)' 2>/dev/null ||
+echo X"$ac_dir" |
+    sed '/^X\(.*^/\)\/\/*^/^/*\/*$/{ s//\1/; q; }
+  	  /^X\(\/\/\)^/.*/{ s//\1/; q; }
+  	  /^X\(\/\/\)$/{ s//\1/; q; }
+  	  /^X\(\/\).*/{ s//\1/; q; }
+  	  s/.*/./; q'`
+ done
+ ac_dir=`echo "$ac_dir" | sed 's?^./*??'`
+ ac_val=`echo "$ac_val" | sed 's?/*$??'`
+ ac_cv_path_compress=`echo ""$as_dir/$ac_word$ac_exec_ext"" | sed "s?^./*$ac_dir/*?$ac_val/?"'
+   s?/*$??'`
+
+    echo "$as_me:$LINENO: found $ac_cv_path_compress" >&5
+    break 2
+  fi
+done
+done
+
+shift 2
+case ${#} in
+  0) ;;
+  *) test -n "$ac_cv_path_compress" && ac_cv_path_compress="$ac_cv_path_compress ${@}" ;;
+esac
+fi
+
+ compress=$ac_cv_path_compress
+
+ test -n "$compress" && ac_word="$compress" || ac_word=no
+ echo "$as_me:$LINENO: result: $ac_word" >&5
+echo "${ECHO_T}$ac_word" >&6
+fi
+
+ test -n "$compress" && compress_ext=${compress_ext-".Y"}
+
+
+# Also identify the decompression filters which are available,
+# so that we can directly support compressed `man' or `cat' pages,
+# in a variety of compression formats.
+#
+
+# Check whether --with-gunzip or --without-gunzip was given.
+if test "${with_gunzip+set}" = set; then
+  withval="$with_gunzip"
+  # Extract the first word of "$withval", so it can be a program name with args.
+  set dummy $withval; ac_word=$2
+  echo "$as_me:$LINENO: checking for $ac_word" >&5
+echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
+ as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if $as_executable_p "$as_dir/$ac_word$ac_exec_ext"
+  then
+    ac_dir=""$as_dir/$ac_word$ac_exec_ext""
+ pwd -W >/dev/null 2>&1 && ac_pwd_w="pwd -W" || ac_pwd_w=pwd
+ until ac_val=`exec 2>/dev/null; cd "$ac_dir" && $ac_pwd_w`
+ do
+   ac_dir=`(dirname "$ac_dir") 2>/dev/null ||
+$as_expr X"$ac_dir" : 'X\(.*^/\)//*^/^/*/*$' \| \
+	 X"$ac_dir" : 'X\(//\)^/' \| \
+	 X"$ac_dir" : 'X\(//\)$' \| \
+	 X"$ac_dir" : 'X\(/\)' \| \
+	 .     : '\(.\)' 2>/dev/null ||
+echo X"$ac_dir" |
+    sed '/^X\(.*^/\)\/\/*^/^/*\/*$/{ s//\1/; q; }
+  	  /^X\(\/\/\)^/.*/{ s//\1/; q; }
+  	  /^X\(\/\/\)$/{ s//\1/; q; }
+  	  /^X\(\/\).*/{ s//\1/; q; }
+  	  s/.*/./; q'`
+ done
+ ac_dir=`echo "$ac_dir" | sed 's?^./*??'`
+ ac_val=`echo "$ac_val" | sed 's?/*$??'`
+ ac_cv_path_gunzip=`echo ""$as_dir/$ac_word$ac_exec_ext"" | sed "s?^./*$ac_dir/*?$ac_val/?"'
+   s?/*$??'`
+
+    echo "$as_me:$LINENO: found $ac_cv_path_gunzip" >&5
+    break 2
+  fi
+done
+done
+
+shift 2
+case ${#} in
+  0) ;;
+  *) test -n "$ac_cv_path_gunzip" && ac_cv_path_gunzip="$ac_cv_path_gunzip ${@}" ;;
+esac
+ gunzip=$ac_cv_path_gunzip
+
+ test -n "$gunzip" && ac_word="$gunzip" || ac_word=no
+ echo "$as_me:$LINENO: result: $ac_word" >&5
+echo "${ECHO_T}$ac_word" >&6
+else
+  # Extract the first word of "gzip -c -d", so it can be a program name with args.
+  set dummy gzip -c -d; ac_word=$2
+  echo "$as_me:$LINENO: checking for $ac_word" >&5
+echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
+ if test "${ac_cv_path_gunzip+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if $as_executable_p "$as_dir/$ac_word$ac_exec_ext"
+  then
+    ac_dir=""$as_dir/$ac_word$ac_exec_ext""
+ pwd -W >/dev/null 2>&1 && ac_pwd_w="pwd -W" || ac_pwd_w=pwd
+ until ac_val=`exec 2>/dev/null; cd "$ac_dir" && $ac_pwd_w`
+ do
+   ac_dir=`(dirname "$ac_dir") 2>/dev/null ||
+$as_expr X"$ac_dir" : 'X\(.*^/\)//*^/^/*/*$' \| \
+	 X"$ac_dir" : 'X\(//\)^/' \| \
+	 X"$ac_dir" : 'X\(//\)$' \| \
+	 X"$ac_dir" : 'X\(/\)' \| \
+	 .     : '\(.\)' 2>/dev/null ||
+echo X"$ac_dir" |
+    sed '/^X\(.*^/\)\/\/*^/^/*\/*$/{ s//\1/; q; }
+  	  /^X\(\/\/\)^/.*/{ s//\1/; q; }
+  	  /^X\(\/\/\)$/{ s//\1/; q; }
+  	  /^X\(\/\).*/{ s//\1/; q; }
+  	  s/.*/./; q'`
+ done
+ ac_dir=`echo "$ac_dir" | sed 's?^./*??'`
+ ac_val=`echo "$ac_val" | sed 's?/*$??'`
+ ac_cv_path_gunzip=`echo ""$as_dir/$ac_word$ac_exec_ext"" | sed "s?^./*$ac_dir/*?$ac_val/?"'
+   s?/*$??'`
+
+    echo "$as_me:$LINENO: found $ac_cv_path_gunzip" >&5
+    break 2
+  fi
+done
+done
+
+shift 2
+case ${#} in
+  0) ;;
+  *) test -n "$ac_cv_path_gunzip" && ac_cv_path_gunzip="$ac_cv_path_gunzip ${@}" ;;
+esac
+fi
+
+ gunzip=$ac_cv_path_gunzip
+
+ test -n "$gunzip" && ac_word="$gunzip" || ac_word=no
+ echo "$as_me:$LINENO: result: $ac_word" >&5
+echo "${ECHO_T}$ac_word" >&6
+fi;
+
+# Check whether --with-bzip2 or --without-bzip2 was given.
+if test "${with_bzip2+set}" = set; then
+  withval="$with_bzip2"
+  # Extract the first word of "$withval", so it can be a program name with args.
+  set dummy $withval; ac_word=$2
+  echo "$as_me:$LINENO: checking for $ac_word" >&5
+echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
+ as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if $as_executable_p "$as_dir/$ac_word$ac_exec_ext"
+  then
+    ac_dir=""$as_dir/$ac_word$ac_exec_ext""
+ pwd -W >/dev/null 2>&1 && ac_pwd_w="pwd -W" || ac_pwd_w=pwd
+ until ac_val=`exec 2>/dev/null; cd "$ac_dir" && $ac_pwd_w`
+ do
+   ac_dir=`(dirname "$ac_dir") 2>/dev/null ||
+$as_expr X"$ac_dir" : 'X\(.*^/\)//*^/^/*/*$' \| \
+	 X"$ac_dir" : 'X\(//\)^/' \| \
+	 X"$ac_dir" : 'X\(//\)$' \| \
+	 X"$ac_dir" : 'X\(/\)' \| \
+	 .     : '\(.\)' 2>/dev/null ||
+echo X"$ac_dir" |
+    sed '/^X\(.*^/\)\/\/*^/^/*\/*$/{ s//\1/; q; }
+  	  /^X\(\/\/\)^/.*/{ s//\1/; q; }
+  	  /^X\(\/\/\)$/{ s//\1/; q; }
+  	  /^X\(\/\).*/{ s//\1/; q; }
+  	  s/.*/./; q'`
+ done
+ ac_dir=`echo "$ac_dir" | sed 's?^./*??'`
+ ac_val=`echo "$ac_val" | sed 's?/*$??'`
+ ac_cv_path_bzip2=`echo ""$as_dir/$ac_word$ac_exec_ext"" | sed "s?^./*$ac_dir/*?$ac_val/?"'
+   s?/*$??'`
+
+    echo "$as_me:$LINENO: found $ac_cv_path_bzip2" >&5
+    break 2
+  fi
+done
+done
+
+shift 2
+case ${#} in
+  0) ;;
+  *) test -n "$ac_cv_path_bzip2" && ac_cv_path_bzip2="$ac_cv_path_bzip2 ${@}" ;;
+esac
+ bzip2=$ac_cv_path_bzip2
+
+ test -n "$bzip2" && ac_word="$bzip2" || ac_word=no
+ echo "$as_me:$LINENO: result: $ac_word" >&5
+echo "${ECHO_T}$ac_word" >&6
+else
+  # Extract the first word of "bzip2 -c -d", so it can be a program name with args.
+  set dummy bzip2 -c -d; ac_word=$2
+  echo "$as_me:$LINENO: checking for $ac_word" >&5
+echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
+ if test "${ac_cv_path_bzip2+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if $as_executable_p "$as_dir/$ac_word$ac_exec_ext"
+  then
+    ac_dir=""$as_dir/$ac_word$ac_exec_ext""
+ pwd -W >/dev/null 2>&1 && ac_pwd_w="pwd -W" || ac_pwd_w=pwd
+ until ac_val=`exec 2>/dev/null; cd "$ac_dir" && $ac_pwd_w`
+ do
+   ac_dir=`(dirname "$ac_dir") 2>/dev/null ||
+$as_expr X"$ac_dir" : 'X\(.*^/\)//*^/^/*/*$' \| \
+	 X"$ac_dir" : 'X\(//\)^/' \| \
+	 X"$ac_dir" : 'X\(//\)$' \| \
+	 X"$ac_dir" : 'X\(/\)' \| \
+	 .     : '\(.\)' 2>/dev/null ||
+echo X"$ac_dir" |
+    sed '/^X\(.*^/\)\/\/*^/^/*\/*$/{ s//\1/; q; }
+  	  /^X\(\/\/\)^/.*/{ s//\1/; q; }
+  	  /^X\(\/\/\)$/{ s//\1/; q; }
+  	  /^X\(\/\).*/{ s//\1/; q; }
+  	  s/.*/./; q'`
+ done
+ ac_dir=`echo "$ac_dir" | sed 's?^./*??'`
+ ac_val=`echo "$ac_val" | sed 's?/*$??'`
+ ac_cv_path_bzip2=`echo ""$as_dir/$ac_word$ac_exec_ext"" | sed "s?^./*$ac_dir/*?$ac_val/?"'
+   s?/*$??'`
+
+    echo "$as_me:$LINENO: found $ac_cv_path_bzip2" >&5
+    break 2
+  fi
+done
+done
+
+shift 2
+case ${#} in
+  0) ;;
+  *) test -n "$ac_cv_path_bzip2" && ac_cv_path_bzip2="$ac_cv_path_bzip2 ${@}" ;;
+esac
+fi
+
+ bzip2=$ac_cv_path_bzip2
+
+ test -n "$bzip2" && ac_word="$bzip2" || ac_word=no
+ echo "$as_me:$LINENO: result: $ac_word" >&5
+echo "${ECHO_T}$ac_word" >&6
+fi;
+
+# Check whether --with-pcat or --without-pcat was given.
+if test "${with_pcat+set}" = set; then
+  withval="$with_pcat"
+  # Extract the first word of "$withval", so it can be a program name with args.
+  set dummy $withval; ac_word=$2
+  echo "$as_me:$LINENO: checking for $ac_word" >&5
+echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
+ as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if $as_executable_p "$as_dir/$ac_word$ac_exec_ext"
+  then
+    ac_dir=""$as_dir/$ac_word$ac_exec_ext""
+ pwd -W >/dev/null 2>&1 && ac_pwd_w="pwd -W" || ac_pwd_w=pwd
+ until ac_val=`exec 2>/dev/null; cd "$ac_dir" && $ac_pwd_w`
+ do
+   ac_dir=`(dirname "$ac_dir") 2>/dev/null ||
+$as_expr X"$ac_dir" : 'X\(.*^/\)//*^/^/*/*$' \| \
+	 X"$ac_dir" : 'X\(//\)^/' \| \
+	 X"$ac_dir" : 'X\(//\)$' \| \
+	 X"$ac_dir" : 'X\(/\)' \| \
+	 .     : '\(.\)' 2>/dev/null ||
+echo X"$ac_dir" |
+    sed '/^X\(.*^/\)\/\/*^/^/*\/*$/{ s//\1/; q; }
+  	  /^X\(\/\/\)^/.*/{ s//\1/; q; }
+  	  /^X\(\/\/\)$/{ s//\1/; q; }
+  	  /^X\(\/\).*/{ s//\1/; q; }
+  	  s/.*/./; q'`
+ done
+ ac_dir=`echo "$ac_dir" | sed 's?^./*??'`
+ ac_val=`echo "$ac_val" | sed 's?/*$??'`
+ ac_cv_path_pcat=`echo ""$as_dir/$ac_word$ac_exec_ext"" | sed "s?^./*$ac_dir/*?$ac_val/?"'
+   s?/*$??'`
+
+    echo "$as_me:$LINENO: found $ac_cv_path_pcat" >&5
+    break 2
+  fi
+done
+done
+
+shift 2
+case ${#} in
+  0) ;;
+  *) test -n "$ac_cv_path_pcat" && ac_cv_path_pcat="$ac_cv_path_pcat ${@}" ;;
+esac
+ pcat=$ac_cv_path_pcat
+
+ test -n "$pcat" && ac_word="$pcat" || ac_word=no
+ echo "$as_me:$LINENO: result: $ac_word" >&5
+echo "${ECHO_T}$ac_word" >&6
+else
+  # Extract the first word of "pcat", so it can be a program name with args.
+  set dummy pcat; ac_word=$2
+  echo "$as_me:$LINENO: checking for $ac_word" >&5
+echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
+ if test "${ac_cv_path_pcat+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if $as_executable_p "$as_dir/$ac_word$ac_exec_ext"
+  then
+    ac_dir=""$as_dir/$ac_word$ac_exec_ext""
+ pwd -W >/dev/null 2>&1 && ac_pwd_w="pwd -W" || ac_pwd_w=pwd
+ until ac_val=`exec 2>/dev/null; cd "$ac_dir" && $ac_pwd_w`
+ do
+   ac_dir=`(dirname "$ac_dir") 2>/dev/null ||
+$as_expr X"$ac_dir" : 'X\(.*^/\)//*^/^/*/*$' \| \
+	 X"$ac_dir" : 'X\(//\)^/' \| \
+	 X"$ac_dir" : 'X\(//\)$' \| \
+	 X"$ac_dir" : 'X\(/\)' \| \
+	 .     : '\(.\)' 2>/dev/null ||
+echo X"$ac_dir" |
+    sed '/^X\(.*^/\)\/\/*^/^/*\/*$/{ s//\1/; q; }
+  	  /^X\(\/\/\)^/.*/{ s//\1/; q; }
+  	  /^X\(\/\/\)$/{ s//\1/; q; }
+  	  /^X\(\/\).*/{ s//\1/; q; }
+  	  s/.*/./; q'`
+ done
+ ac_dir=`echo "$ac_dir" | sed 's?^./*??'`
+ ac_val=`echo "$ac_val" | sed 's?/*$??'`
+ ac_cv_path_pcat=`echo ""$as_dir/$ac_word$ac_exec_ext"" | sed "s?^./*$ac_dir/*?$ac_val/?"'
+   s?/*$??'`
+
+    echo "$as_me:$LINENO: found $ac_cv_path_pcat" >&5
+    break 2
+  fi
+done
+done
+
+shift 2
+case ${#} in
+  0) ;;
+  *) test -n "$ac_cv_path_pcat" && ac_cv_path_pcat="$ac_cv_path_pcat ${@}" ;;
+esac
+fi
+
+ pcat=$ac_cv_path_pcat
+
+ test -n "$pcat" && ac_word="$pcat" || ac_word=no
+ echo "$as_me:$LINENO: result: $ac_word" >&5
+echo "${ECHO_T}$ac_word" >&6
+fi;
+
+# Check whether --with-zcat or --without-zcat was given.
+if test "${with_zcat+set}" = set; then
+  withval="$with_zcat"
+  # Extract the first word of "$withval", so it can be a program name with args.
+  set dummy $withval; ac_word=$2
+  echo "$as_me:$LINENO: checking for $ac_word" >&5
+echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
+ as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if $as_executable_p "$as_dir/$ac_word$ac_exec_ext"
+  then
+    ac_dir=""$as_dir/$ac_word$ac_exec_ext""
+ pwd -W >/dev/null 2>&1 && ac_pwd_w="pwd -W" || ac_pwd_w=pwd
+ until ac_val=`exec 2>/dev/null; cd "$ac_dir" && $ac_pwd_w`
+ do
+   ac_dir=`(dirname "$ac_dir") 2>/dev/null ||
+$as_expr X"$ac_dir" : 'X\(.*^/\)//*^/^/*/*$' \| \
+	 X"$ac_dir" : 'X\(//\)^/' \| \
+	 X"$ac_dir" : 'X\(//\)$' \| \
+	 X"$ac_dir" : 'X\(/\)' \| \
+	 .     : '\(.\)' 2>/dev/null ||
+echo X"$ac_dir" |
+    sed '/^X\(.*^/\)\/\/*^/^/*\/*$/{ s//\1/; q; }
+  	  /^X\(\/\/\)^/.*/{ s//\1/; q; }
+  	  /^X\(\/\/\)$/{ s//\1/; q; }
+  	  /^X\(\/\).*/{ s//\1/; q; }
+  	  s/.*/./; q'`
+ done
+ ac_dir=`echo "$ac_dir" | sed 's?^./*??'`
+ ac_val=`echo "$ac_val" | sed 's?/*$??'`
+ ac_cv_path_zcat=`echo ""$as_dir/$ac_word$ac_exec_ext"" | sed "s?^./*$ac_dir/*?$ac_val/?"'
+   s?/*$??'`
+
+    echo "$as_me:$LINENO: found $ac_cv_path_zcat" >&5
+    break 2
+  fi
+done
+done
+
+shift 2
+case ${#} in
+  0) ;;
+  *) test -n "$ac_cv_path_zcat" && ac_cv_path_zcat="$ac_cv_path_zcat ${@}" ;;
+esac
+ zcat=$ac_cv_path_zcat
+
+ test -n "$zcat" && ac_word="$zcat" || ac_word=no
+ echo "$as_me:$LINENO: result: $ac_word" >&5
+echo "${ECHO_T}$ac_word" >&6
+else
+  # Extract the first word of "zcat", so it can be a program name with args.
+  set dummy zcat; ac_word=$2
+  echo "$as_me:$LINENO: checking for $ac_word" >&5
+echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
+ if test "${ac_cv_path_zcat+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if $as_executable_p "$as_dir/$ac_word$ac_exec_ext"
+  then
+    ac_dir=""$as_dir/$ac_word$ac_exec_ext""
+ pwd -W >/dev/null 2>&1 && ac_pwd_w="pwd -W" || ac_pwd_w=pwd
+ until ac_val=`exec 2>/dev/null; cd "$ac_dir" && $ac_pwd_w`
+ do
+   ac_dir=`(dirname "$ac_dir") 2>/dev/null ||
+$as_expr X"$ac_dir" : 'X\(.*^/\)//*^/^/*/*$' \| \
+	 X"$ac_dir" : 'X\(//\)^/' \| \
+	 X"$ac_dir" : 'X\(//\)$' \| \
+	 X"$ac_dir" : 'X\(/\)' \| \
+	 .     : '\(.\)' 2>/dev/null ||
+echo X"$ac_dir" |
+    sed '/^X\(.*^/\)\/\/*^/^/*\/*$/{ s//\1/; q; }
+  	  /^X\(\/\/\)^/.*/{ s//\1/; q; }
+  	  /^X\(\/\/\)$/{ s//\1/; q; }
+  	  /^X\(\/\).*/{ s//\1/; q; }
+  	  s/.*/./; q'`
+ done
+ ac_dir=`echo "$ac_dir" | sed 's?^./*??'`
+ ac_val=`echo "$ac_val" | sed 's?/*$??'`
+ ac_cv_path_zcat=`echo ""$as_dir/$ac_word$ac_exec_ext"" | sed "s?^./*$ac_dir/*?$ac_val/?"'
+   s?/*$??'`
+
+    echo "$as_me:$LINENO: found $ac_cv_path_zcat" >&5
+    break 2
+  fi
+done
+done
+
+shift 2
+case ${#} in
+  0) ;;
+  *) test -n "$ac_cv_path_zcat" && ac_cv_path_zcat="$ac_cv_path_zcat ${@}" ;;
+esac
+fi
+
+ zcat=$ac_cv_path_zcat
+
+ test -n "$zcat" && ac_word="$zcat" || ac_word=no
+ echo "$as_me:$LINENO: result: $ac_word" >&5
+echo "${ECHO_T}$ac_word" >&6
+fi;
+
+# Check whether --with-fcat or --without-fcat was given.
+if test "${with_fcat+set}" = set; then
+  withval="$with_fcat"
+  # Extract the first word of "$withval", so it can be a program name with args.
+  set dummy $withval; ac_word=$2
+  echo "$as_me:$LINENO: checking for $ac_word" >&5
+echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
+ as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if $as_executable_p "$as_dir/$ac_word$ac_exec_ext"
+  then
+    ac_dir=""$as_dir/$ac_word$ac_exec_ext""
+ pwd -W >/dev/null 2>&1 && ac_pwd_w="pwd -W" || ac_pwd_w=pwd
+ until ac_val=`exec 2>/dev/null; cd "$ac_dir" && $ac_pwd_w`
+ do
+   ac_dir=`(dirname "$ac_dir") 2>/dev/null ||
+$as_expr X"$ac_dir" : 'X\(.*^/\)//*^/^/*/*$' \| \
+	 X"$ac_dir" : 'X\(//\)^/' \| \
+	 X"$ac_dir" : 'X\(//\)$' \| \
+	 X"$ac_dir" : 'X\(/\)' \| \
+	 .     : '\(.\)' 2>/dev/null ||
+echo X"$ac_dir" |
+    sed '/^X\(.*^/\)\/\/*^/^/*\/*$/{ s//\1/; q; }
+  	  /^X\(\/\/\)^/.*/{ s//\1/; q; }
+  	  /^X\(\/\/\)$/{ s//\1/; q; }
+  	  /^X\(\/\).*/{ s//\1/; q; }
+  	  s/.*/./; q'`
+ done
+ ac_dir=`echo "$ac_dir" | sed 's?^./*??'`
+ ac_val=`echo "$ac_val" | sed 's?/*$??'`
+ ac_cv_path_fcat=`echo ""$as_dir/$ac_word$ac_exec_ext"" | sed "s?^./*$ac_dir/*?$ac_val/?"'
+   s?/*$??'`
+
+    echo "$as_me:$LINENO: found $ac_cv_path_fcat" >&5
+    break 2
+  fi
+done
+done
+
+shift 2
+case ${#} in
+  0) ;;
+  *) test -n "$ac_cv_path_fcat" && ac_cv_path_fcat="$ac_cv_path_fcat ${@}" ;;
+esac
+ fcat=$ac_cv_path_fcat
+
+ test -n "$fcat" && ac_word="$fcat" || ac_word=no
+ echo "$as_me:$LINENO: result: $ac_word" >&5
+echo "${ECHO_T}$ac_word" >&6
+else
+  # Extract the first word of "fcat", so it can be a program name with args.
+  set dummy fcat; ac_word=$2
+  echo "$as_me:$LINENO: checking for $ac_word" >&5
+echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
+ if test "${ac_cv_path_fcat+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if $as_executable_p "$as_dir/$ac_word$ac_exec_ext"
+  then
+    ac_dir=""$as_dir/$ac_word$ac_exec_ext""
+ pwd -W >/dev/null 2>&1 && ac_pwd_w="pwd -W" || ac_pwd_w=pwd
+ until ac_val=`exec 2>/dev/null; cd "$ac_dir" && $ac_pwd_w`
+ do
+   ac_dir=`(dirname "$ac_dir") 2>/dev/null ||
+$as_expr X"$ac_dir" : 'X\(.*^/\)//*^/^/*/*$' \| \
+	 X"$ac_dir" : 'X\(//\)^/' \| \
+	 X"$ac_dir" : 'X\(//\)$' \| \
+	 X"$ac_dir" : 'X\(/\)' \| \
+	 .     : '\(.\)' 2>/dev/null ||
+echo X"$ac_dir" |
+    sed '/^X\(.*^/\)\/\/*^/^/*\/*$/{ s//\1/; q; }
+  	  /^X\(\/\/\)^/.*/{ s//\1/; q; }
+  	  /^X\(\/\/\)$/{ s//\1/; q; }
+  	  /^X\(\/\).*/{ s//\1/; q; }
+  	  s/.*/./; q'`
+ done
+ ac_dir=`echo "$ac_dir" | sed 's?^./*??'`
+ ac_val=`echo "$ac_val" | sed 's?/*$??'`
+ ac_cv_path_fcat=`echo ""$as_dir/$ac_word$ac_exec_ext"" | sed "s?^./*$ac_dir/*?$ac_val/?"'
+   s?/*$??'`
+
+    echo "$as_me:$LINENO: found $ac_cv_path_fcat" >&5
+    break 2
+  fi
+done
+done
+
+shift 2
+case ${#} in
+  0) ;;
+  *) test -n "$ac_cv_path_fcat" && ac_cv_path_fcat="$ac_cv_path_fcat ${@}" ;;
+esac
+fi
+
+ fcat=$ac_cv_path_fcat
+
+ test -n "$fcat" && ac_word="$fcat" || ac_word=no
+ echo "$as_me:$LINENO: result: $ac_word" >&5
+echo "${ECHO_T}$ac_word" >&6
+fi;
+
+# Check whether --with-unyabba or --without-unyabba was given.
+if test "${with_unyabba+set}" = set; then
+  withval="$with_unyabba"
+  # Extract the first word of "$withval", so it can be a program name with args.
+  set dummy $withval; ac_word=$2
+  echo "$as_me:$LINENO: checking for $ac_word" >&5
+echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
+ as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if $as_executable_p "$as_dir/$ac_word$ac_exec_ext"
+  then
+    ac_dir=""$as_dir/$ac_word$ac_exec_ext""
+ pwd -W >/dev/null 2>&1 && ac_pwd_w="pwd -W" || ac_pwd_w=pwd
+ until ac_val=`exec 2>/dev/null; cd "$ac_dir" && $ac_pwd_w`
+ do
+   ac_dir=`(dirname "$ac_dir") 2>/dev/null ||
+$as_expr X"$ac_dir" : 'X\(.*^/\)//*^/^/*/*$' \| \
+	 X"$ac_dir" : 'X\(//\)^/' \| \
+	 X"$ac_dir" : 'X\(//\)$' \| \
+	 X"$ac_dir" : 'X\(/\)' \| \
+	 .     : '\(.\)' 2>/dev/null ||
+echo X"$ac_dir" |
+    sed '/^X\(.*^/\)\/\/*^/^/*\/*$/{ s//\1/; q; }
+  	  /^X\(\/\/\)^/.*/{ s//\1/; q; }
+  	  /^X\(\/\/\)$/{ s//\1/; q; }
+  	  /^X\(\/\).*/{ s//\1/; q; }
+  	  s/.*/./; q'`
+ done
+ ac_dir=`echo "$ac_dir" | sed 's?^./*??'`
+ ac_val=`echo "$ac_val" | sed 's?/*$??'`
+ ac_cv_path_unyabba=`echo ""$as_dir/$ac_word$ac_exec_ext"" | sed "s?^./*$ac_dir/*?$ac_val/?"'
+   s?/*$??'`
+
+    echo "$as_me:$LINENO: found $ac_cv_path_unyabba" >&5
+    break 2
+  fi
+done
+done
+
+shift 2
+case ${#} in
+  0) ;;
+  *) test -n "$ac_cv_path_unyabba" && ac_cv_path_unyabba="$ac_cv_path_unyabba ${@}" ;;
+esac
+ unyabba=$ac_cv_path_unyabba
+
+ test -n "$unyabba" && ac_word="$unyabba" || ac_word=no
+ echo "$as_me:$LINENO: result: $ac_word" >&5
+echo "${ECHO_T}$ac_word" >&6
+else
+  # Extract the first word of "unyabba", so it can be a program name with args.
+  set dummy unyabba; ac_word=$2
+  echo "$as_me:$LINENO: checking for $ac_word" >&5
+echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
+ if test "${ac_cv_path_unyabba+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if $as_executable_p "$as_dir/$ac_word$ac_exec_ext"
+  then
+    ac_dir=""$as_dir/$ac_word$ac_exec_ext""
+ pwd -W >/dev/null 2>&1 && ac_pwd_w="pwd -W" || ac_pwd_w=pwd
+ until ac_val=`exec 2>/dev/null; cd "$ac_dir" && $ac_pwd_w`
+ do
+   ac_dir=`(dirname "$ac_dir") 2>/dev/null ||
+$as_expr X"$ac_dir" : 'X\(.*^/\)//*^/^/*/*$' \| \
+	 X"$ac_dir" : 'X\(//\)^/' \| \
+	 X"$ac_dir" : 'X\(//\)$' \| \
+	 X"$ac_dir" : 'X\(/\)' \| \
+	 .     : '\(.\)' 2>/dev/null ||
+echo X"$ac_dir" |
+    sed '/^X\(.*^/\)\/\/*^/^/*\/*$/{ s//\1/; q; }
+  	  /^X\(\/\/\)^/.*/{ s//\1/; q; }
+  	  /^X\(\/\/\)$/{ s//\1/; q; }
+  	  /^X\(\/\).*/{ s//\1/; q; }
+  	  s/.*/./; q'`
+ done
+ ac_dir=`echo "$ac_dir" | sed 's?^./*??'`
+ ac_val=`echo "$ac_val" | sed 's?/*$??'`
+ ac_cv_path_unyabba=`echo ""$as_dir/$ac_word$ac_exec_ext"" | sed "s?^./*$ac_dir/*?$ac_val/?"'
+   s?/*$??'`
+
+    echo "$as_me:$LINENO: found $ac_cv_path_unyabba" >&5
+    break 2
+  fi
+done
+done
+
+shift 2
+case ${#} in
+  0) ;;
+  *) test -n "$ac_cv_path_unyabba" && ac_cv_path_unyabba="$ac_cv_path_unyabba ${@}" ;;
+esac
+fi
+
+ unyabba=$ac_cv_path_unyabba
+
+ test -n "$unyabba" && ac_word="$unyabba" || ac_word=no
+ echo "$as_me:$LINENO: result: $ac_word" >&5
+echo "${ECHO_T}$ac_word" >&6
+fi;
+
+# Identify which of these available decompression filters
+# to associate with the selected default compression filter.
+#
+  echo "$as_me:$LINENO: checking whether compressed cat pages can be supported" >&5
+echo $ECHO_N "checking whether compressed cat pages can be supported... $ECHO_C" >&6
+ if test -n "$compress_ext"
+ then
+   echo "$as_me:$LINENO: result: yes" >&5
+echo "${ECHO_T}yes" >&6
+
+cat >>confdefs.h <<\_ACEOF
+#define DO_COMPRESS 1
+_ACEOF
+
+   echo "$as_me:$LINENO: checking default decompression filter" >&5
+echo $ECHO_N "checking default decompression filter... $ECHO_C" >&6
+   case $compress_ext in
+     .gz)  decompress=${gunzip-"none"}  ;;
+     .bz2) decompress=${bzip2-"none"}   ;;
+     .z)   decompress=${pcat-"none"}    ;;
+     .Z)   decompress=${zcat-"none"}    ;;
+     .F)   decompress=${fcat-"none"}    ;;
+     .Y)   decompress=${unyabba-"none"} ;;
+   esac
+   echo "$as_me:$LINENO: result: ${decompress-\"none\"}" >&5
+echo "${ECHO_T}${decompress-\"none\"}" >&6
+ else
+   echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6
+ fi
+ test "$decompress" = none && decompress=""
 
 
             ac_config_files="$ac_config_files Makefile"
@@ -11212,6 +12347,7 @@ s,@path__usr_X11R6_bin@,$path__usr_X11R6_bin,;t t
 s,@path__usr_bin_X11@,$path__usr_bin_X11,;t t
 s,@path__usr_bin_mh@,$path__usr_bin_mh,;t t
 s,@pager@,$pager,;t t
+s,@man_grepsilent@,$man_grepsilent,;t t
 s,@cat@,$cat,;t t
 s,@troff@,$troff,;t t
 s,@nroff@,$nroff,;t t
@@ -11227,7 +12363,15 @@ s,@refer@,$refer,;t t
 s,@grap@,$grap,;t t
 s,@pic@,$pic,;t t
 s,@cmp@,$cmp,;t t
-s,@man_grepsilent@,$man_grepsilent,;t t
+s,@compress@,$compress,;t t
+s,@compress_ext@,$compress_ext,;t t
+s,@gunzip@,$gunzip,;t t
+s,@bzip2@,$bzip2,;t t
+s,@pcat@,$pcat,;t t
+s,@zcat@,$zcat,;t t
+s,@fcat@,$fcat,;t t
+s,@unyabba@,$unyabba,;t t
+s,@decompress@,$decompress,;t t
 s,@LTLIBOBJS@,$LTLIBOBJS,;t t
 CEOF
 

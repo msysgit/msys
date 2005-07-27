@@ -1,7 +1,7 @@
 # -*- Autoconf -*-  configure.ac for man.
 
   AC_PREREQ(2.59)
-  AC_INIT(man,1.5m3)
+  AC_INIT(man, 1.5m3)
 
 # Copyright (C) 2005 by Keith Marshall <keithmarshall@users.sourceforge.net>
 #
@@ -138,6 +138,12 @@
   MAN_FILTER_PREFERRED([PAGER],  [less -is])
   MAN_FILTER_ALTERNATE([PAGER],  [more])
 
+# We need to work out how to invoke `grep' silently,
+# i.e. just check for presence of an expression match, with no output,
+# and without displaying any error messages.
+#
+  MAN_GREP_SILENT
+
 # Select the filter programs to be used
 # for TROFF formatting of man page source documents.
 #
@@ -174,9 +180,36 @@
   MAN_FILTER_PREFERRED([PIC],    [gpic])
   MAN_FILTER_ALTERNATE([PIC],    [pic])
 
+# For `catpage' support, `cmp' is also required,
+# to determine when obsolete cat pages must be updated.
+#
   MAN_FILTER_PREFERRED([CMP],    [cmp -s])
 
-  MAN_GREP_SILENT
+# Select a default compression filter,
+# which will be used when preformatted `cat pages' are saved.
+#
+  MAN_COMPRESS_WITH([MAN_FILTER_PREFERRED], [bzip2 -c], [bz2])
+  MAN_COMPRESS_WITH([MAN_FILTER_ALTERNATE], [gzip -c],  [gz])
+  MAN_COMPRESS_WITH([MAN_FILTER_ALTERNATE], [pack],     [z])
+  MAN_COMPRESS_WITH([MAN_FILTER_ALTERNATE], [compress], [Z])
+  MAN_COMPRESS_WITH([MAN_FILTER_ALTERNATE], [freeze],   [F])
+  MAN_COMPRESS_WITH([MAN_FILTER_ALTERNATE], [yabba],    [Y])
+
+# Also identify the decompression filters which are available,
+# so that we can directly support compressed `man' or `cat' pages,
+# in a variety of compression formats.
+#
+  MAN_FILTER_PREFERRED([GUNZIP],  [gzip -c -d])
+  MAN_FILTER_PREFERRED([BZIP2],   [bzip2 -c -d])
+  MAN_FILTER_PREFERRED([PCAT],    [pcat])
+  MAN_FILTER_PREFERRED([ZCAT],    [zcat])
+  MAN_FILTER_PREFERRED([FCAT],    [fcat])
+  MAN_FILTER_PREFERRED([UNYABBA], [unyabba])
+
+# Identify which of these available decompression filters
+# to associate with the selected default compression filter.
+#
+  MAN_SET_DEFAULT_DECOMPRESSION_FILTER
 
   AC_CONFIG_FILES([Makefile])
   AC_CONFIG_FILES([src/Makefile src/win32/Makefile src/paths.h src/man.conf])
