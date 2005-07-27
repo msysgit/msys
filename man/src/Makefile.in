@@ -38,8 +38,12 @@ VPATH = $(srcdir)
 # Other autoconf specified directory references.
 top_srcdir = @top_srcdir@
 top_builddir = @top_builddir@
+sbindir = @sbindir@
+bindir = @bindir@
 
-PREFIX = @prefix@
+prefix = @prefix@
+exec_prefix = @exec_prefix@
+PREFIX = ${prefix}
 
 # Compiler and installer.
 CC = @CC@
@@ -84,6 +88,7 @@ stamp.h: paths.h man.conf
 	for f in $?; \
 	  do sed \
 	      -e 's,$${prefix},${PREFIX},g' \
+	      -e 's,$${bindir},${bindir},g' \
 	      -e ':loop' \
 	      -e   '/__undef__(\([^)]*\))/{' \
 	      -e   's//\1/' -e 's/^#* */# /' \

@@ -1,5 +1,14 @@
 2005-07-27  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
+	Set compiled location for `apropos' and `whatis'.
+
+	* src/Makefile.in (bindir, sbindir, prefix, exec_prefix): Defined.
+	(stamp.h): Add substitution for ${bindir}.
+
+	* src/paths.h.in (APROPOS, WHATIS): Define in terms of ${bindir}.
+
+2005-07-27  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
 	Configure compression and decompression filters.
 
 	* aclocal.m4 (MAN_COMPRESS_WITH): New macro.
