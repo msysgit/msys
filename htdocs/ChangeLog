@@ -1,3 +1,7 @@
+2005-07-28  Earnie Boyd  <earnie@users.sf.net>
+
+	* mingw.css: Cleanup, prettify and design look changes.
+
 2005-06-20  Earnie Boyd  <earnie@users.sf.net>
 
 	* mingw.css: Modify to make IE and Firefox look nearly the same.

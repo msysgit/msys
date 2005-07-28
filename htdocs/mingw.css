@@ -19,6 +19,9 @@ h1 {
 	padding:0;
 	text-align:center;
 }
+h2 {
+	left-margin: 10em;
+}
 a {
 	color:#09c;
 	font-weight:400;
@@ -33,9 +36,6 @@ a:visited {
 a:hover {
 	background-color:#0ff;
 }
-p {
-	padding-top: 0;
-}
 table {
 	border: 1px solid #999;
 }
@@ -45,19 +45,7 @@ td {
 tr {
 	border: 1px solid #999;
 }
-#Content {
-/* IE margins here */
-	margin-left: 14em;
-	margin-right: .1em;
-	padding-right: .1em;
-	text-align: justify;
-	width: auto;
-}
-body>div#Content {
-/* Mozilla margins here */
-	margin-left: 15em;
-	margin-right: .1em;
-}
+
 .dec {
 	background-color:#eee;
 	border-bottom: 1px solid black;
@@ -107,7 +95,7 @@ input#Words {
 ul#Menu {
 	list-style: none;
 	margin: 0;
-	padding: 0;
+	padding: 0em;
 }
 .bold { 
 	font-weight: bold;
@@ -116,40 +104,88 @@ ul#Menu {
 	font-size: smaller;
 }
 
-/* This addition to mingw.css shows the main content onscreen. */
-@media screen {
-#Content {
-      MARGIN-LEFT: 1em auto; WIDTH: auto; MARGIN-RIGHT: 0em auto;
-TEXT-ALIGN: justify
-}
-}
-
 /*
   The below is added thanks to:
  Subject:    	 [Mingw-users] Offtopic: Website prints badly
 From: 	"Kauker, Hubert" <Hubert.Kauker@travelbasys.de>
 Date: 	9:35:40 am 2005-04-04
 */
+
+/* This addition to mingw.css shows the main content onscreen. */
+@media screen {
+  #Content {
+      	margin-left: 	14em auto; 
+	padding-left:	2em;
+      	width:		auto; 
+      	margin-right: 	1em auto;
+	padding-right:  2em;
+	text-align: 	justify;
+  }
+  body>div#Content {
+  /* Mozilla margins here */
+	margin-left: 	14em auto;
+	margin-right: 	1em auto;
+	width:		auto;
+	text-align:	justify;
+  }
+  ul {
+	padding-left: 	15em;
+  }
+  h2 {
+	padding-left: 8em;
+  }
+  p {
+	padding-top: 0;
+	padding-left: 15em;
+  }
+}
+
 /* This addition to mingw.css print the main content. */
 @media print {
-#Content {
+  #Content {
     /* Note: the left margin is zero. */
-      PADDING-RIGHT: 1em; MARGIN-LEFT: 0em; WIDTH: auto; MARGIN-RIGHT: 1em;
-TEXT-ALIGN: justify
-}
+        padding-right: 	1em; 
+      	margin-left: 	0em; 
+	width: 		auto; 
+	margin-right: 	1em;
+	text-align: 	justify;
+  }
+  p {
+	padding-top: 0;
+	padding-left: 5em;
+  }
+  ul {
+        padding-left: 6em;
+  }
 }
 
 /* This addition to mingw.css shows the left sidebar onscreen. */
 @media screen {
-.sidebar {
-      BORDER-RIGHT: #999 1px dashed; PADDING-RIGHT: 10px; BORDER-TOP: #999
-1px dashed; MARGIN-TOP: 2em; PADDING-LEFT: 10px; PADDING-BOTTOM: 10px;
-BORDER-LEFT: #999 1px dashed; PADDING-TOP: 10px; BORDER-BOTTOM: #999 1px
-dashed; BACKGROUND-COLOR: #eee
-}
+  .sidebar {
+      	border-right: 	#999 1px dashed; 
+	padding-right: 	1em; 
+	margin-right:	auto;
+	border-top: 	#999 1px dashed; 
+	margin-top: 	2em; 
+	padding-left: 	1em; 
+	padding-bottom: 10px;
+	border-left: 	#999 1px dashed; 
+	padding-top: 	10px; 
+	border-bottom: 	#999 1px dashed; 
+	background-color: #eee
+  }
 }
 
 /* This addition to mingw.css suppresses the left sidebar on print. */
 @media print {
-.sidebar { display: none }
+  .sidebar { 
+	display: 	none 
+  }
+#RSide {
+	float: right;
+	margin-right: 1ex;
+	overflow: hidden;
+	width: 20em;
+        font-size: .7em;
+}
 }
