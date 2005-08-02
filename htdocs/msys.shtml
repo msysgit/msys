@@ -1,65 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
-<head>
-  <meta name="description"
- content="Home of MinGW -- Minimalist GNU for Windows -- project. Contains information about the MinGW runtime library and GNU/OSS development tools for MinGW.">
-  <meta name="keywords"
- content="mingw, mingw32, programming, C++, C, C/C++, libraries, software, development tools, editors, IDEs, GNU">
-	<link rel="stylesheet" type="text/css" href="mingw.css">
-	<title>MinGW - Minimal SYStem</title>
-</head>
+  <head>
+    <meta name="generator" content="HTML Tidy, see www.w3.org">
+    <meta name="description" content=
+    "Home of MinGW -- Minimalist GNU for Windows -- project. Contains information about the MinGW runtime library and GNU/OSS development tools for MinGW.">
+    <meta name="keywords" content=
+    "mingw, mingw32, programming, C++, C, C/C++, libraries, software, development tools, editors, IDEs, GNU">
+    <link rel="stylesheet" type="text/css" href="mingw.css">
 
-<body>
-<span style="visibility: hidden;">.</span>
+    <title>MinGW - Minimal SYStem</title>
+  </head>
 
-<!--#include virtual="ssi/header.html" -->
+  <body>
+    <span style="visibility: hidden;">.</span> 
+    <!--#include virtual="ssi/header.html" -->
+    <!--#include virtual="ssi/lside.html" -->
 
-<!--#include virtual="ssi/lside.html" -->
+    <div id="Content">
+      <h1>MinGW - Minimal SYStem</h1>
 
+      <p>MSYS was created out of a long-lived desire to provide the MinGW
+      community a Minimal SYStem, with which a configure script could be
+      executed. This is finally available from the <a href=
+      "http://sourceforge.net/project/showfiles.php?group_id=2435">MinGW
+      download area</a> on SourceForge.</p>
 
-<div id="Content">
-<h1>MinGW - Minimal SYStem</h1>
-<p>
-				<p>
-            MSYS was created out of a long-lived desire to provide the MinGW community a
-            Minimal SYStem, with which a configure script could be executed.  This is finally 
-            available from the 
-            <a href="http://sourceforge.net/project/showfiles.php?group_id=2435">MinGW download area</a> on SourceForge.
-         </p>
-         <p>
-            Most users will need only the binary distribution of MSYS, which is provided
-            as a Windows installer executable. MSYS versions prior to 1.0.8 are available
-            for three processor architectures:
-         </p>
-            <ul>
-               <li><b>i386</b>, which will run on any 32-bit Intel-compatible processor.</li>
-               <li><b>i586</b>, which will run on Pentium processors or newer (and compatibles).</li>
-               <li><b>i686</b>, which will run on Pentium Pro, Pentium II and Celeron processors or newer
-                  (and compatibles).
-            </ul>
-         <p>
-            MSYS versions 1.0.8 and later include only the i386 binary distribution, which will run
-            on any 32-bit Intel-compatible processor.
-            The tarball flagged as &quot;src&quot; contains the source code for MSYS runtime and each package used to provide executable binaries, which is unnecessary unless a 
-            manual build is desired. Source tarballs may not be provided for snapshots and
-            prereleases, so the latest source should be obtained from the &quot;msys&quot; module in
-            <a href="http://sourceforge.net/cvs/?group_id=2435">MinGW CVS</a>.
-            The files flagged as &quot;odmp&quot; and &quot;perdr&quot;
-            are used to diagnose problems in MSYS itself, and are only useful for MSYS developers.
-         </p>
-         <p>
-            More information about using MinGW with 
-            MSYS can be found in the <a href="mingwfaq.shtml#faq-usingwithmsys">FAQ</a>, 
-            and the current MSYS documentation can be found in the &quot;\msys\1.0\doc\msys&quot; 
-            subdirectory within the binary distribution.
-         </p>
-         <p>
-            There is also a mailing list for MSYS discussion (MinGW-msys).  See the 
-            <a href="lists.shtml">Mailing Lists</a> page for more information and access to this list.
-         </p>
-</p>
-</div>
+      <p>MSYS versions 1.0.8 and later include only the i386 binary
+      distribution, which will run on any 32-bit Intel-compatible processor.
+      The tarball flagged as "src" contains the source code for MSYS runtime
+      and each package used to provide executable binaries, which is
+      unnecessary unless a manual build is desired. Source tarballs may not
+      be provided for snapshots and prereleases, so the latest source should
+      be obtained from the "msys/rt" and "msys/packages" modules in <a href=
+      "http://sourceforge.net/cvs/?group_id=2435">MinGW CVS</a>. The files
+      ending in "odmp" and "perdr" are used to diagnose the a stackdump
+      should that occur.</p>
 
-<!--#include virtual="ssi/footer.html" -->
+      <p>More information about using MinGW with MSYS can be found in the <a
+      href="mingwfaq.shtml#faq-usingwithmsys">FAQ</a>, and the current MSYS
+      documentation can be found in the "\msys\1.0\doc\msys" subdirectory
+      within the binary distribution.</p>
 
-</body>
+      <p>There is also a mailing list for MSYS discussion (MinGW-msys). See
+      the <a href="lists.shtml">Mailing Lists</a> page for more information
+      and access to this list.</p>
+    </div>
+    <!--#include virtual="ssi/footer.html" -->
+  </body>
 </html>

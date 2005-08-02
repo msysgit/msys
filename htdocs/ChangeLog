@@ -1,3 +1,9 @@
+2005-08-02  Earnie Boyd  <earnie@users.sf.net>
+
+	* index.shtml: Tidy. Add section for published system of choice.
+	* msys.shtml: Tidy. Remove verbiage about the i386, i586 and i686
+	older distributions.
+
 2005-07-28  Earnie Boyd  <earnie@users.sf.net>
 
 	* mingw.css: Cleanup, prettify and design look changes.
