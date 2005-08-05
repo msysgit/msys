@@ -1,3 +1,8 @@
+2005-08-05  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	* man/ja/man.man (@man_config_fils@): Typing error; corrected...
+	(@man_config_file@): ...to this.
+
 2005-07-27  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Set compiled location for `apropos' and `whatis'.
