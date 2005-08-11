@@ -1,6 +1,200 @@
+2005-07-28  Earnie Boyd  <earnie@users.sf.net>
+
+	* include/winnt.h (SUBLANG_PORTUGUESE, SUBLANG_PORTUGUESE_BRAZILIAN):
+	Correct their values.
+	Thanks to: Daniel K. O. <danielosmari at users dont sf dot net>
+
+2005-07-25  Chris Sutcliffe <ir0nh34d@users.sourceforge.net>
+
+	* include/winuser.h (HSHELL_RUDEAPPACTIVATED): Define.
+
+2005-07-20  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/wingdi.h (TT_PRIM_CSPLINE): Define.
+	Thanks to: Bob Jamison <ishmal at users dot sourceforge dot net>
+
+2005-07-20  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/richedit.h (SETTEXTEX): Define structure and
+	associated constants.
+	(GT_SELECTION): Define GETTEXTEX flag constant. 
+
+2005-07-19  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/wingdi.h (SYSPAL_NOSTATIC256): Define.
+
+2005-07-19  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/wingdi.h (WINGDIAPI): Define to DECLSPEC_DLLIMPORT
+	if __W32API_USE_DLLIMPORT__.   Use throughout to qualify
+	prototypes.
+
+2005-07-19  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/commctrl.h (RBBS_USECHEVRON): Define.
+	(RBBS_*): Use hex notation, group together.
+
+2005-07-18  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* lib/kernel32.def (GetUserGeoID): Correct suffix.
+	Thanks to: "bernd23" <bernd23 at users dot sourceforge dot net>
+
+2005-07-18  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/commctrl.h (TreeView_SetItemState): Initilise
+	_tvi.hItem.
+	Thanks to:  Joseph Remes <jremes at users dot sourceforge dot net>
+
+2005-07-18  Mattia Barbon  <mbarbon@users.sourceforge.net>
+
+	* include/commctrl.h (NMLVFINDITEM): Add structure.
+
+2005-07-18  Michael Gerdau  <mgdde@users.sourceforge.net>
+
+	* include/wininet.h (WININET_API_FLAG_*): Add defines.
+
+2005-07-18  Daniel Atallah  <datallah@users.sourceforge.net>
+
+	* include/winnt.h (VER_SET_CONDITION): Define.
+
+2005-07-18  Michael Gerdau  <mgdde@users.sourceforge.net>
+
+	* include/wincon.h (AttachConsole): Correct _WIN32_WINNT guard.
+	(ATTACH_PARENT_PROCESS): Define.
+	(CONSOLE_WINDOWED_MODE): Correct definition to match MSDN
+	documentation.
+
+2005-07-17  Benoit Blanchon  <bblanchon@users.sourceforge.net>
+
+	* include/winbase.h (QueueUserWorkItem): Add prototype.
+
+2005-07-13  Benoit Blanchon  <bblanchon@users.sourceforge.net>
+
+	* include/wingdi.h (SHADEBLENDCAPS, SB_NONE, SB_CONST_ALPHA,
+	SB_PIXEL_ALPHA, SB_PREMULT_ALPHA, SB_GRAD_RECT, SB_GRAD_TRI,
+	COLORMGMTCAPS, CM_NONE, CM_DEVICE_ICM, CM_GAMMA_RAMP,
+	CM_CMYK_COLOR): Define.
+
+2005-06-19  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/winldap.h (ldap_simple_bindW, ldap_simple_bind_sW,
+	ldap_bindW, ldap_bind_sW): Change PCHAR arg to PWCHAR.
+	Thanks to: Christian  <chhd at users dot sf dot net>
+
+2005-06-18  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/richedit.h (GETTEXTEX): Correct name of lpUsedDefChar
+	field.
+	Thanks to: Saulius Menkevicius  <bobas at users dot sf dot net>
+
+2005-06-18  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/winbase.h (GlobalDiscard): Define as macro.
+	Thanks to: David Golub  <david_golub  at users dot sf dot net>
+
+2005-05-13  Corinna Vinschen  <corinna@vinschen.de>
+
+	* include/winnetwk.h (WNetGetResourceParentA): Add missing declaration.
+	(WNetGetResourceParentW): Ditto.
+	* include/ddk/ntifs.h (FILE_ID_FULL_DIRECTORY_INFORMATION): Define.
+	(FILE_ID_BOTH_DIRECTORY_INFORMATION): Define.
+
+2005-04-26  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/wininet.h (FtpGetFileSize): Add prototype.
+	(FtpCommand[AW]): Correct prototypes.
+	Reported by: <siger at users dot sf dot net>
+
+2005-04-25  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/vfw.h (capCreateCaptureWindow[AW]): Add prototypes.
+	(capGetDriverDescription[AW]): Likewise.
+
+2005-04-03  Corinna Vinschen  <corinna@vinschen.de>
+
+	* include/winnt.h (SE_UNDOCK_NAME TEXT): Define.
+	(SE_MANAGE_VOLUME_NAME TEXT): Ditto.
+	(SE_IMPERSONATE_NAME TEXT): Ditto.
+	(SE_ENABLE_DELEGATION_NAME TEXT): Ditto.
+	(SE_SYNC_AGENT_NAME TEXT): Ditto.
+
+2005-03-16  Christopher Faylor  <cgf@timesys.com>
+
+	* include/winnt.h (SYSTEM_LUID): Fix definitition invalidated by below
+	change.
+
+2005-03-16  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/winnt.h (_LUID): Add structure. Correct LUID typedef. 
+	Thanks to:
+	Paul-Christiaan Spruijtenburg <wakarimasu at users dot sf dot net>
+
+2005-03-07  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/ws2tcpip.h (getaddrinfo, freeaddrinfo, getnameinfo):
+	Guard with _WIN32_WINNT >= 0x0501. Add FIXME comment.
+	(gai_strerror[AW]): Put into #if 0 block.
+
+2005-03-07  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/basetyps.h (__int16): Correct define.
+
+2005-02-10  Jiri Malak  <Jiri.Malak@iol.cz>
+            Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* lib/directx/dinput_private.h (ATTRIBUTE_TEXT_SECTION): New
+	define for Open Watcom portability.
+	* lib/directx/(dinput_joy.c, dinput_joy2.c, dinput_kbd.c, 
+	dinput_mouse.c, dinput_mouse2.c): Use new macro in definition
+	of local c_rgodfDI* objects. Replace .rdata section attribute
+	with 'const' keyword in definition of global c_dfDI* objects.
+
+2005-02-07  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/winioctl.h (IOCTL_VOLUME_BASE,
+	IOCTL_VOLUME_GET_VOLUME_DISK_EXTENTS, IOCTL_VOLUME_IS_CLUSTERED):
+	Copy defines from include/ddk/ntdddvol.h.
+	Bug reported to Debian by Anand Kumria  <wildfire@progsoc.org>
+
+2005-01-27  Oliver Stoeneberg  <oliverst@online.de>
+
+	* include/winbase.h (PWIN32_FIND_DATA): Add typedef.
+
+2005-01-26  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/winuser.h (SW_SMOOTHSCROLL): Add define. 
+	Reported by: Christian Ehrlicher  <chehrlic@users.sf.net>
+
+2005-01-21  Chris Sutcliffe  <ir0nh34d@users.sourceforge.net>
+
+	* include/commdlg.h (OFN_DONTADDTORECENT): Added definition.
+
+2005-01-18  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* lib/user32.def (MonitorFromPoint): Correct suffix.
+
+2005-01-13  Benoit Blanchon  <bblanchon@users.sourceforge.net>
+
+	* include/wininet.h (InternetCheckConnectionA,
+	InternetCheckConnectionW) Add prototypes.
+	(INTERNET_RAS_INSTALLED, INTERNET_CONNECTION_OFFLINE,
+	INTERNET_CONNECTION_CONFIGURED): Add defines.
+
+2005-01-07  Chris Sutcliffe  <ir0nh34d@users.sourceforge.net>
+
+	* include/commctrl.h (ComboBox_SetMinVisible,
+	ComboBox_GetMinVisible): Added Macros.
+	* include/winuser.h (CB_SETMINVISIBLE, CB_GETMINVISIBLE):
+	Added definitions.
+
+2005-01-02  Jiri Malak  <Jiri.Malak@geac.cz>
+
+	* include/winnt.h (GetCurrentFiber, GetFiberData): Make inline
+	assembly code conditional on _X86_.
+
 2005-01-02  Earnie Boyd  <earnie@users.sf.net>
 
-	* include/w32api.h: Increment version.
+	* include/w32api.h: Increment version to 3.2.
 	* Makefile.in: Ditto.
 	* include/afxres.h: Remove the \r from the line ending.
 	* include/errorrep.h: Ditto.
@@ -114,7 +308,7 @@
 
 	* include/winuser.h (LLKHF_EXTENDED, LLKHF_INJECTED, LLKHF_UP):
 	Add defines.
-	(LLKHF_ALTDOWN): Define based on KF_ALTDOWN,
+	(LLKHF_ALTDOWN): Define based on KF_ALTDOWN.
              
 2004-11-19  Benoit Blanchon  <bblanchon@users.sourceforge.net>
 
