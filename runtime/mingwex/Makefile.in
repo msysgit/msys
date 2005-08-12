@@ -33,15 +33,16 @@ DISTFILES = Makefile.in configure configure.in \
 	ldtoa.c lltoa.c lltow.c mbsinit.c mingw-aligned-malloc.c \
 	mingw-fseek.c sitest.c strtof.c strtoimax.c strtold.c strtoumax.c \
 	testwmem.c tst-aligned-malloc.c ulltoa.c ulltow.c wcstof.c \
-	wcstoimax.c wcstold.c wcstoumax.c wdirent.c wmemchr.c wmemcmp.c \
-	wmemcpy.c wmemmove.c wmemset.c wtoll.c
-	
+	wcstoimax.c wcstold.c wcstoumax.c wctrans.c wctype.c \
+	wdirent.c wmemchr.c wmemcmp.c wmemcpy.c wmemmove.c wmemset.c wtoll.c \
+	wcrtomb.c wctob.c mbrtowc.c btowc.c mb_wc_common.h
 MATH_DISTFILES = \
 	acosf.c acosl.c asinf.c asinl.c atan2f.c atan2l.c \
 	atanf.c atanl.c cbrt.c cbrtf.c cbrtl.c ceilf.S ceill.S \
 	cephes_emath.h cephes_emath.c cephes_mconf.h \
 	copysign.S copysignf.S copysignl.S cosf.S coshf.c coshl.c cosl.S \
-	exp2.S exp2f.S exp2l.S expf.c expl.c fabs.c fabsf.c fabsl.c \
+	erfl.c exp2.S exp2f.S exp2l.S expf.c expl.c expm1.c expm1l.c expm1f.c \
+	fabs.c fabsf.c fabsl.c \
 	fdim.c fdimf.c fdiml.c floorf.S floorl.S fma.S fmaf.S fmal.c \
 	fmax.c fmaxf.c fmaxl.c fmin.c fminf.c fminl.c fmodf.c \
 	fmodl.c fp_consts.c fp_consts.h fp_constsf.c  fp_constsl.c \
@@ -53,7 +54,8 @@ MATH_DISTFILES = \
 	log10f.S log10l.S log1p.S log1pf.S log1pl.S log2.S log2f.S \
 	log2l.S logb.c logbf.c logbl.c logf.S logl.S lrint.c lrintf.c \
 	lrintl.c lround.c lroundf.c lroundl.c modff.c modfl.c \
-	nearbyint.S nearbyintf.S nearbyintl.S nextafterf.c \
+	nearbyint.S nearbyintf.S nearbyintl.S \
+	nextafterf.c nextafterl.c nexttowardf.c nexttoward.c \
 	powf.c powi.c powif.c powil.c powl.c \
 	remainder.S remainderf.S remainderl.S remquo.S \
 	remquof.S remquol.S rint.c rintf.c rintl.c round.c roundf.c \
@@ -113,7 +115,8 @@ LIBMINGWEX_A = libmingwex.a
 Q8_OBJS = \
 	fwide.o imaxabs.o imaxdiv.o mbsinit.o \
 	strtoimax.o strtoumax.o wcstoimax.o wcstoumax.o \
-	wmemchr.o wmemcmp.o wmemcpy.o wmemmove.o wmemset.o
+	wmemchr.o wmemcmp.o wmemcpy.o wmemmove.o wmemset.o \
+	wctrans.o wctype.o wcrtomb.o wctob.o mbrtowc.o btowc.o
 STDLIB_OBJS = \
 	strtold.o wcstold.o
 STDLIB_STUB_OBJS = \
@@ -131,7 +134,8 @@ MATH_OBJS = \
 	atanf.o atanl.o cbrt.o cbrtf.o cbrtl.o ceilf.o ceill.o \
 	cephes_emath.o \
 	copysign.o copysignf.o copysignl.o cosf.o coshf.o coshl.o cosl.o \
-	exp2.o exp2f.o exp2l.o expf.o expl.o fabs.o fabsf.o fabsl.o \
+	erfl.o exp2.o exp2f.o exp2l.o expf.o expl.o expm1.o expm1l.o expm1f.o \
+	fabs.o fabsf.o fabsl.o \
 	fdim.o fdimf.o fdiml.o floorf.o floorl.o fma.o fmaf.o fmal.o \
 	fmax.o fmaxf.o fmaxl.o fmin.o fminf.o fminl.o fmodf.o \
 	fmodl.o fp_consts.o fp_constsf.o fp_constsl.o \
@@ -143,7 +147,8 @@ MATH_OBJS = \
 	log10f.o log10l.o log1p.o log1pf.o log1pl.o log2.o log2f.o \
 	log2l.o logb.o logbf.o logbl.o logf.o logl.o lrint.o lrintf.o \
 	lrintl.o lround.o lroundf.o lroundl.o modff.o modfl.o \
-	nearbyint.o nearbyintf.o nearbyintl.o nextafterf.o \
+	nearbyint.o nearbyintf.o nearbyintl.o \
+	nextafterf.o nextafterl.o nexttowardf.o nexttoward.o \
 	powf.o powi.o powif.o powil.o powl.o \
 	remainder.o remainderf.o remainderl.o remquo.o \
 	remquof.o remquol.o rint.o rintf.o rintl.o round.o roundf.o \
@@ -230,7 +235,7 @@ wcstold.o: $(srcdir)/wcstold.c $(srcdir)/math/cephes_emath.h
 acosh.o acoshf.o acoshl.o \
 asinh.o asinhf.o asinhl.o \
 atanh.o atanhf.o atanhl.o: fastmath.h
-
+mbrtowc.o wcrtomb.o: mb_wc_common.h  
 
 dist:
 	mkdir $(distdir)/mingwex

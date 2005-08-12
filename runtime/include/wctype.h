@@ -79,8 +79,11 @@ _CRTIMP int __cdecl	iswspace(wint_t);
 _CRTIMP int __cdecl	iswupper(wint_t);
 _CRTIMP int __cdecl	iswxdigit(wint_t);
 
-_CRTIMP wchar_t __cdecl	towlower(wchar_t);
-_CRTIMP wchar_t __cdecl	towupper(wchar_t);
+/* Older MS docs uses wchar_t for arg and return type, while newer
+   online MS docs say arg is wint_t and return is int.
+   ISO C uses wint_t for both.  */
+_CRTIMP wint_t __cdecl	towlower (wint_t);
+_CRTIMP wint_t __cdecl	towupper (wint_t);
 
 _CRTIMP int __cdecl	isleadbyte (int);
 
@@ -128,9 +131,17 @@ __CRT_INLINE int __cdecl isleadbyte(int c) {return (_pctype[(unsigned char)(c)] 
 
 
 typedef wchar_t wctrans_t;
-_CRTIMP wint_t __cdecl		towctrans(wint_t, wctrans_t);
-_CRTIMP wctrans_t __cdecl	wctrans(const char*);
-_CRTIMP wctype_t __cdecl	wctype(const char*);
+
+/* These are resolved by libmingwex.a.  Note, that they are also exported
+   by the MS C++ runtime lib (msvcp60.dll).  The msvcp60.dll implementations
+   of wctrans and towctrans are not C99 compliant in that wctrans("tolower")
+   returns 0, while std specifies that a non-zero value should be returned
+   for a valid string descriptor.  If you want the MS behaviour (and you have
+   msvcp60.dll in your path) add -lmsvcp60 to your command line.  */ 	
+
+wint_t __cdecl		towctrans(wint_t, wctrans_t);
+wctrans_t __cdecl	wctrans(const char*);
+wctype_t __cdecl	wctype(const char*);
 
 #ifdef __cplusplus
 }

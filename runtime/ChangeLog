@@ -1,3 +1,190 @@
+2005-08-10  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/wctype.h (towupper, towlower): Change arg and return value
+	types to wint_t.
+	* include/ctype.h (towupper, towlower): Likewise.
+
+2005-08-10  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* mthr_stub.c (__mingwthr_key_dtor): Replace assert(0) with 
+	a diagnostic, guarded by #ifdef DEBUG.
+	(__mingwthr_remove_key_dtor): Likewise.
+
+2005-08-08  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* moldname.def.in (sleep, beep, seterrormode): Remove.
+
+2005-06-16  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* profile/profile.h (_MCOUNT_CALL): Define as regparm(2)
+	(_MCOUNT_DECL): Use it.
+	(MCOUNT): Save and restore eax, ecx, edx registers.
+	* profile/mcount.c (_mcount): ANSI-fy.
+
+2005-06-16  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/_mingw.h (__MINGW_GNUC_PREREQ): Define. Use to
+	guard __MINGW_ATTRIB macro definitions.
+	* include/math.h (logb[fl]):  Don't define inlines for
+	GCC-4.0+ && __FAST_MATH__.
+	(rint[fl], lrint[fl], llrint[fl]); Likewise.  Clean up
+	line-continuation backslashes.
+
+2005-06-06  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/_mingw.h (__MINGW_ATTRIBUTE_NONNULL): Fix typo
+	in GNUC version guard.
+
+2005-05-20  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* crt1.c (_gnu_exception_handler): Handle illegal instruction
+	OS exception as a signal if user has defined a SIGILL handler.
+
+2005-05-10  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* mingwex/math/nexttoward.c: New file.
+	* mingwex/math/nexttowardf.c: New file.
+	* mingwex/math/nextafterl.c: Add nexttowardl alias.
+	* mingwex/Makefile.in (MATH_DISTFILES): Add nexttoward.c,
+	mexttowardf.c,
+	(MATH_OBJS):  Add nexttoward.o,	nexttowardf.o,
+	* include/math.h (nexttoward, nextowardf, nexttowardl): Add
+	prototypes.
+
+2005-05-09  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* mingwex/math/nextafterf.c (nextafterf): Correct
+	handling of -0.0.
+	* mingwex/math/nextafterl.c: New file.
+	* mingwex/Makefile.in (MATH_DISTFILES): Add nextafterl.c.
+	(MATH_OBJS): Add nextafterl.o.
+	* include/math.h (nextafterl): Uncomment prototype.
+
+2005-05-08  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* mingwex/math/erfl.c: New file.
+	* mingwex/Makefile.in (MATH_DISTFILES): Add erfl.c.
+	(MATH_OBJS): Add erfl.o.
+	* include/math.h (erfl, erfcl): Uncomment prototypes.
+
+2005-05-04  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/wchar.h (WCHAR_MAX): Define as 0xffff, so preprocessor
+	#if (WCHAR_MAX <= WCHAR_MIN) is false.
+	* include/stdint.h (WCHAR_MAX): Likwise.
+	(WINT_MAX): Likewise.
+
+2005-05-03  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* mingwex/math/signbit.c (__signbit):  Make return value
+	consistent with GCC's __builtin_signbit.
+	* mingwex/math/signbitf.c (__signbitf):  Likewise.
+	* mingwex/math/signbitf.c (__signbitl):  Likewise.
+	* include/math.h (__signbit, __signbitf, __signbitl): Likewise
+	for inlines.
+
+2005-05-02  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/_mingw.h (__MINGW_ATTRIB_NONNULL): Don't define as
+	variadic macro.
+	* mingwex/mbrtowc.c (__mbrtowc_cp): Use __MINGW_ATTRIB_NONNULL.
+	Remove unused MBTOWC_FLAGS define.
+
+2005-04-23  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* mingwex/mbrtowc.c: New file.
+	* mingwex/wcrtomb.c: New file.
+	* mingwex/btowc.c: New file.
+	* mingwex/wctob.c: New file.
+	* mingwex/mb_wc_common.h: New file.
+	* mingwex/Makefile.in (DISTFILES): Add new files.
+	(Q8_OBJS): Add new objects.
+	* include/wchar.h: Adjust comment about mbrtowc() and related
+	funcions. Add __restrict__ to pointer params in prototypes.
+	(wmemset. wmemchr, wmemcpy, wmemmove, wcstoll, wcstoull): Remove
+	arg names from protototypes.
+
+2005-04-23  Wu Yongwei  <adah@sh163.net>
+
+	* mingwex/dirent.c: Formatting changes.
+	* mingwex/dirent.c (_topendir): Make the end-of-path slash check
+	MBCS-safe.
+
+2005-03-31  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/_mingw.h (__MINGW_ATTRIB_NONNULL): Define.
+
+2005-03-24  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/stdio.h (__mingw_fwrite): Change return value to
+	size_t.
+	* mingwex/mingw-fseek.c (__mingw_fwrite): Likewise.
+
+2005-03-15  Hans Leidekker  <hans@it.vu.nl>
+
+	* include/malloc.h (_FREEENTRY, _USEDENTRY): Correct defines.
+
+2005-02-25  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/wctype.h (wctrans): Remove _CRTIMP.
+	(towctrans): Likewise.
+	(wctype): Likewise,
+
+2005-02-25  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/wctype.h:  Add comment on wctrans, towctrans, wctype.
+
+2005-02-25  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* mingwex/wctype.c: New file.
+	* mingwex/wctrans.c: New file.
+	* mingwex/Makefile.in (DISTFILES): Add wctype.c, wctrans.c.
+	* mingwex/Makefile.in (Q8_OBJS): Add wctype.o, wctrans.o.
+
+2005-02-11  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/tchar.h (_tstat64, _tstati64): Add Unicode/ANSI mappings.
+
+2005-02-11  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/assert.h: Remove header guard.  #undef assert macro.
+	(_assert): Use __MINGW_ATTRIB_NORETURN define.
+
+2005-02-11  Gregory W. Chicares  <chicares@cox.net>
+            Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/math.h (expm1, expm1f, expmll): Add prototypes.
+	* mingwex/Makefile.in (MATH_DISTFILES): Add expm1.c,
+	expm1f.c, expm1l.c.
+	(MATH_OBJS): Add expm1.o, expm1f.o, expm1l.o.
+	* mingwex/math/expm1.c: New file.
+	* mingwex/math/expm1f.c: New file.
+	* mingwex/math/expm1l.c: New file.
+
+2005-02-07  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/sys/stat.h (struct stat): Guard with _NO_OLDNAMES.
+	* include/wchar.h (struct stat): Likwwise.
+	Bug reported to Debian by Anand Kumria  <wildfire@progsoc.org>
+
+	* include/sys/stat.h: Remove empty __STRICT_ANSI__ guard.
+
+2005-02-01  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* mingwex/strtold.c (__asctoe64): Set endptr to 'e' if exponent
+	string is not valid.
+
+2005-01-26  Oliver Stoeneberg  <oliverst@online.de>
+
+	* include/malloc.h: Add missing return code defines for
+	_heapwalk()
+
+2005-01-17  Danny Smith  <dannysmith@users.sourceforge.net>
+
+	* include/sys/stat.h (struct __stat64): Change st_size type to
+	 __int64.
+	* include/wchar.h (struct __stat64): Change st_size type to __int64.
+
 2005-01-13  Earnie Boyd  <earnie@users.sf.net>
 
 	* include/sys/stat.h (_S_IFLNK, S_IFLNK, _S_ISLNK, S_ISLNK, _lstat,
