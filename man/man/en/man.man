@@ -18,8 +18,6 @@
 .LO 1
 .SH NAME
 man \- format and display the on-line manual pages
-.br
-manpath \- determine user's search path for man pages
 .SH SYNOPSIS
 .B man 
 .RB [ \-acdfFhkKtwW ]
@@ -34,6 +32,10 @@ manpath \- determine user's search path for man pages
 .IR pathlist ]
 .RB [ \-P
 .IR pager ] 
+.RB [ \-B
+.IR browser ] 
+.RB [ \-H
+.IR htmlpager ] 
 .RB [ \-S 
 .IR section_list ] 
 .RI [ section ] 
@@ -89,6 +91,24 @@ variable.  By default,
 .B man
 uses
 .BR "@pager@" .
+.TP
+.B \-\^B
+Specify which browser to use on HTML files. 
+This option overrides the
+.B BROWSER
+environment variable. By default,
+.B man
+uses
+.BR @browser@ ,
+.TP
+.B \-\^H
+Specify a command that renders HTML files as text. 
+This option overrides the
+.B HTMLPAGER
+environment variable. By default,
+.B man
+uses
+.BR @htmlpager@ ,
 .TP
 .B \-\^S " section_list"
 List is a colon separated list of manual sections to search.
@@ -208,6 +228,13 @@ The option
 .B \-c
 forces reformatting a page, even if a recent cat page exists.
 
+.SH "HTML PAGES"
+Man will find HTML pages if they live in directories named as
+'html' followed by a section extension.  The last file extension is
+expected to be ".html", thus a valid name for an HTML version of the
+.BR ls (1)
+man page would be
+.IR /usr/share/man/htmlman1/ls.1.html .
 
 .SH "SEARCH PATH FOR MANUAL PAGES"
 .B man
@@ -386,6 +413,14 @@ the man page.  If not, then
 is used. If that has no value either,
 .B @pager@
 is used.
+.TP
+.B BROWSER
+The name of a browser to use for displaying HTML manual pages.  If
+it is not set, @browser@ is used.
+.TP
+.B HTMLPAGER
+The command to use for rendering HTML manual pages as text.  If
+it is not set, @htmlpager@ is used.
 .TP
 .B LANG
 If

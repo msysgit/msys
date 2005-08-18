@@ -14,9 +14,9 @@
 .\"
 .\" T³umaczenie - 950322 Rafa³ Maszkowski <rzm@pdi.net>
 .\"
-.TH whatis 1 "Jan 5, 1991"
+.TH whatis 1 "5 stycznia 1991"
 .LO 1
-.SH NAME
+.SH NAZWA
 whatis \- szukaj s³ów w bazie whatis.
 .SH SK£ADNIA
 .BI whatis
@@ -26,5 +26,5 @@ whatis szuka s³ów kluczowych w zestawie plików zawieraj±cych krótkie
 opisy komend systemowych i wy¶wietla rezultat przez standardowe
 wyj¶cie. Wy¶wietlane s± tylko komendy, których nazwy pasuj± dok³adnie.
 Baza whatis jest tworzona przy u¿yciu komendy @makewhatis@.
-.SH "ZOBACZ TE¯"
+.SH "ZOBACZ TAK¯E"
 apropos(1), man(1).

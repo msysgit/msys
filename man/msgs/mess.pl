@@ -14,13 +14,13 @@ ale plik konfiguracyjny nie definiuje COMPRESS.\n"
 NO_NAME_FROM_SECTION
 	"Jak± stronê w sekcji %s chcesz przeczytaæ?\n"
 NO_NAME_NO_SECTION
-	"Jak± stronê chcesz przeczytaæ?"
+	"Jak± stronê chcesz przeczytaæ?\n"
 NO_SUCH_ENTRY_IN_SECTION
 	"Nie ma strony %s w sekcji %s manuala\n"
 NO_SUCH_ENTRY
 	"Nie ma strony manuala dla %s\n"
 PAGER_IS
-	"\nuzywam %s jako pagera\n"
+	"\nu¿ywam %s jako pagera\n"
 SYSTEM_FAILED
 	"B³±d w trakcie formatowania lub wy¶wietlania.\n\
 Komenda %s zwróci³a status %d.\n"
@@ -107,9 +107,9 @@ IS_IN_CONFIG
 IS_NOT_IN_CONFIG
 	"nie jest obecny w pliku konfiguracyjnym\n"
 MAN_NEARBY
-	"ale jest katalog man niedaleko (?)\n"
+	"ale jest katalog man niedaleko\n"
 NO_MAN_NEARBY
-	"i nie ma katalogu man niedaleko (?)\n"
+	"i nie ma katalogu man niedaleko\n"
 ADDING_MANDIRS
 	"\ndodajê obowi±zkowe katalogi man\n\n"
 CATNAME_IS
@@ -138,14 +138,14 @@ USAGE6
   w : wy¶wietl po³o¿enie stron(y) man, która bylaby byla wy¶wietlona\n\
       (je¿eli nie podana ¿adna nazwa: wy¶wietl przeszukiwane katalogi)\n\n\
   W : tak jak -w, ale wypisz tylko nazwy plików\n\n\
-  C plik   : uzyj `file' jako plik konfiguracyjny\n\
+  C plik   : u¿yj `plik' jako plik konfiguracyjny\n\
   M ¶cie¿ka: ustaw ¶cie¿kê poszukiwania stron jako `¶cie¿ka'\n\
   P pager  : u¿yj programu `pager' do wyswietlania stron\n\
   S lista  : lista sekcji oddzielona dwukropkami\n"
 USAGE7
 	"  m system : szukaj stron man alternatywnego systemu\n"
 USAGE8
-	"  p ³añcuch : ³añcuch znaków podaj±cy, jakie uzyæ prepocesory\n\
+	"  p ³añcuch : ³añcuch znaków podaj±cy, jakie u¿yæ preprocesory\n\
                e - [n]eqn(1)   p - pic(1)    t - tbl(1)\n\
                g - grap(1)     r - refer(1)  v - vgrind(1)\n"
 USER_CANNOT_OPEN_CAT
@@ -153,13 +153,13 @@ USER_CANNOT_OPEN_CAT
 USER_CAN_OPEN_CAT
 	"ale rzeczywisty u¿ytkownik mo¿e otworzyæ plik\n"
 CANNOT_FORK
-	"neudana próba fork komendy _%s_\n"
+	"nieudana próba fork komendy _%s_\n"
 WAIT_FAILED
 	"b³±d w trakcie czekania na proces potomny _%s_\n"
 GOT_WRONG_PID
-	"bardzo dziwne..., z³y pid w trakcie czekania na mój proces potomny\n"
+	"bardzo dziwne... z³y pid w trakcie czekania na mój proces potomny\n"
 CHILD_TERMINATED_ABNORMALLY
-	"b³±d krytyczny: komenda _%s_ zakoñczona nieprawidlowo\n"
+	"b³±d krytyczny: komenda _%s_ zakoñczona nieprawid³owo\n"
 IDENTICAL
 	"Strona man %s jest identyczna jak %s\n"
 MAN_FOUND

@@ -1,6 +1,5 @@
 #include <string.h>
 #include "defs.h"
-
 /*
  * lookup_abbrev() is used for TX macros - is that
  * something SUN-specific?

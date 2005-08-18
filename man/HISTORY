@@ -1,3 +1,45 @@
+man-1.6
+
+- New Maintainer Federico Lucifredi (flucifredi@acm.org).
+- Ability to hand HTML man pages off to a browser added (Eric S. Raymond).
+
+man-1.5p
+
+- Chinese messages (CHAO, Wei-Lun) - unused
+- Russian messages
+- Set DEFAULT_NLSPATH to "/usr/share/locale/%L/%N"
+- Prefer LC_MESSAGES over LANG
+- Don't (potentially) use a pager with apropos and whatis
+- Superfluous security fix
+- Filter .iX macros out when constructing whatis database
+- Allow globbed MANPATH items like /opt/*/man
+- Return a correct status
+- Continue search when an appropriate page was found to be inaccessible
+
+man-1.5o2:
+
+- Fixed man -k segfault
+- Allow man -k "text with spaces"
+
+man-1.5o1:
+
+- Fixed man2html array overflow
+
+man-1.5o:
+
+- Polish messages, non-dummy codesets (Jakub Bogusz <qboosh@pld-linux.org>)
+- CYGWIN fix for perl manpages (with :: in filename)
+- Fix for certain awk versions in mansec (NISHIMURA Daisuke)
+- When asked for a nonexisting page in section 1p, do not also try section 1
+
+man-1.5n:
+
+- Added "0p 1p 3p" in sections string
+- Added mess.??.codeset (with dummy content)
+- No funny Russian messages
+- man2html: handle .so with trailing whitespace
+- replace -grepsilent by >/dev/null 2>/dev/null
+
 man-1.5m:
 
 - Greek man pages and messages
