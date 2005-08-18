@@ -117,7 +117,7 @@ BEGIN {
     print "<p>Manual pages found under " man_path "." > cache_tmp;
 
 				# Find any man[1-8]/filenames
-    while (("find " man_path " -follow -type f -printf '%f\n' | sort -f " | getline manpage) > 0) {
+    while ((("find " man_path " -follow -type f -printf '%f\n' | sort -f ") | getline manpage) > 0) {
 				# Check for new letter of alphabet
       letter = tolower(substr(manpage,1,1));
       if (letter != last_letter) {

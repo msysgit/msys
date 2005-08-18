@@ -1,10 +1,10 @@
 CC = @CC@
-CFLAGS = -Wall -Wstrict-prototypes -Wmissing-prototypes -O
+CFLAGS += -Wall -Wstrict-prototypes -Wmissing-prototypes
 OBJECTS = man2html.o cgibase.o abbrev.o strdefs.o
-bindir = $(PREFIX)/usr/bin
-mandir = $(PREFIX)@mandir@
-vardir = $(PREFIX)/var
-httpdir = $(PREFIX)/home/httpd
+bindir = $(DESTDIR)$(PREFIX)/usr/bin
+mandir = $(DESTDIR)$(PREFIX)@mandir@
+vardir = $(DESTDIR)$(PREFIX)/var
+httpdir = $(DESTDIR)$(PREFIX)/home/httpd
 cgiowner = nobody
 cgigroup = nobody
 
@@ -17,9 +17,9 @@ man2html:	$(OBJECTS)
 
 # This installs the man2html utility
 install:	man2html
-	install -m 755 man2html $(DESTDIR)/$(bindir)
-	mkdir -p $(DESTDIR)/$(mandir)/man1
-	install -m 644 man2html.1 $(DESTDIR)/$(mandir)/man1/man2html.@man1ext@
+	install -m 755 man2html $(bindir)
+	mkdir -p $(mandir)/man1
+	install -m 644 man2html.1 $(mandir)/man1/man2html.@man1ext@
 
 install-scripts: install-man-scripts install-glimpse-stuff install-hman
 
@@ -27,17 +27,17 @@ install-scripts: install-man-scripts install-glimpse-stuff install-hman
 #   http://localhost/cgi-bin/man/man2html
 # to work.
 install-man-scripts:
-	mkdir -p $(DESTDIR)/$(httpdir)/cgi-bin/man
-	mkdir -p $(DESTDIR)/$(httpdir)/cgi-aux/man
-	install -m 755 scripts/cgi-bin/man/* $(DESTDIR)/$(httpdir)/cgi-bin/man
-	install -m 644 scripts/cgi-aux/man/* $(DESTDIR)/$(httpdir)/cgi-aux/man
-	install -d -o $(cgiowner) -g $(cgigroup) -m 775 $(DESTDIR)/$(vardir)/man2html
+	mkdir -p $(httpdir)/cgi-bin/man
+	mkdir -p $(httpdir)/cgi-aux/man
+	install -m 755 scripts/cgi-bin/man/* $(httpdir)/cgi-bin/man
+	install -m 644 scripts/cgi-aux/man/* $(httpdir)/cgi-aux/man
+	install -d -o $(cgiowner) -g $(cgigroup) -m 775 $(vardir)/man2html
 # (aux was renamed to cgi-aux since aux causes problems under DOS)
 
 # If you have installed glimpse, and have compressed man pages,
 # then perhaps you also want these filters.
 install-glimpse-stuff:
-	install -m 644 glimpse_filters $(DESTDIR)/$(vardir)/man2html/.glimpse_filters
+	install -m 644 glimpse_filters $(vardir)/man2html/.glimpse_filters
 
 # In order not to have to type a long command like
 #   netscape http://localhost/cgi-bin/man/man2html?section+topic

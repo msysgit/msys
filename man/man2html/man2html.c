@@ -58,34 +58,42 @@ static char charb[3];
 static char *
 expand_char(int nr)
 {
-  STRDEF *h;
-  h=chardef;
-  if (!nr) return NULL;
-  while (h)
-      if (h->nr==nr) {
-	  curpos+=h->slen;
-	  return h->st;
-      } else
-	  h=h->next;
-  charb[0]=nr/256;
-  charb[1]=nr%256;
-  charb[2]=0;
-  curpos+=2;
-  return charb;
+	STRDEF *h;
+
+	if (!nr)
+		return NULL;
+
+	h = chardef;
+	if (h->nr != V('*','*')) {
+		printf("chardef corrupted\n");
+		exit(1);
+	}
+
+	for (h = chardef; h; h = h->next)
+		if (h->nr == nr) {
+			curpos += h->slen;
+			return h->st;
+		}
+	charb[0] = nr/256;
+	charb[1] = nr%256;
+	charb[2] = 0;
+	curpos += 2;
+	return charb;
 }
 
 static char *
 expand_string(int nr)
 {
-  STRDEF *h=strdef;
-  if (!nr) return NULL;
-  while (h)
-      if (h->nr==nr) {
-	  curpos+=h->slen;
-	  return h->st;
-    } else
-	h=h->next;
-  return NULL;
+	STRDEF *h;
+
+	if (!nr)
+		return NULL;
+	for (h = strdef; h; h = h->next)
+		if (h->nr == nr) {
+			curpos += h->slen;
+			return h->st;
+		}
+	return NULL;
 }
 
 
@@ -1434,31 +1442,45 @@ section_name(char *c)
     else return c;
 }
 
-char manidx[20000];
-int subs=0;
-int mip=0;
+int manidxlen = 0;
+char *manidx = NULL;
+int subs = 0;
+int mip = 0;	/* current offset in manidx[] */
 char label[5]="lbAA";
+
+static void
+manidx_need(int m) {
+	if (mip + m >= manidxlen) {
+		manidxlen += 10000;
+		manidx = xrealloc(manidx, manidxlen);
+	}
+}
 
 static void
 add_to_index(int level, char *item)
 {
-    char *c=NULL;
+    char *c = NULL;
+
     label[3]++;
     if (label[3]>'Z') {
 	label[3]='A';
 	label[2]++;
     }
+
     if (level != subs) {
+	manidx_need(6);
 	if (subs) {
 	    strcpy(manidx+mip, "</DL>\n");
-	    mip+=6;
+	    mip += 6;
 	} else {
 	    strcpy(manidx+mip, "<DL>\n");
-	    mip+=5;
+	    mip += 5;
 	}
     }
-    subs=level;
+    subs = level;
+
     scan_troff(item, 1, &c);
+    manidx_need(100 + strlen(c));
     sprintf(manidx+mip, "<DT><A HREF=\"#%s\">%s</A><DD>\n", label, c);
     if (c) free(c);
     while (manidx[mip]) mip++;
@@ -1790,19 +1812,22 @@ scan_request(char *c) {
 		FILE *f;
 		struct stat stbuf;
 		int l; char *buf;
-		char *name=NULL;
+		char *name = NULL;
+
 		curpos=0;
-		c=c+j;
+		c += j;			/* skip .so part and whitespace */
 		if (*c == '/') {
-		    h=c;
-		} else {
-		    h=c-3;
-		    h[0]='.';
-		    h[1]='.';
-		    h[2]='/';
+		    h = c;
+		} else {		/* .so man3/cpow.3 -> ../man3/cpow.3 */
+		    h = c-3;
+		    h[0] = '.';
+		    h[1] = '.';
+		    h[2] = '/';
 		}
-		while (*c!='\n') c++;
-		*c=0;
+		while (*c != '\n') c++;
+		while (c[-1] == ' ') c--;
+		while (*c != '\n') *c++ = 0;
+		*c = 0;
 		scan_troff(h,1, &name);
 		if (name[3] == '/') h=name+3; else h=name;
 		l = 0;
@@ -1826,7 +1851,7 @@ scan_request(char *c) {
 		    /* this works alright, except for section 3 */
 		    if (!l || !(f = fopen(h,"r"))) {
 			 fprintf(stderr,
-				"man2html: unable to open or read file %s", h);
+				"man2html: unable to open or read file %s\n", h);
 			 out_html("<BLOCKQUOTE>"
 				  "man2html: unable to open or read file\n");
 			 out_html(h);
@@ -3010,7 +3035,8 @@ xrealloc(void *ptr, size_t size) {
 static void
 usage(void) {
      error_page("man2html: bad invocation",
-	"Call: man2html [-l|-h host.domain:port] [-p|-q] [filename]\n");
+	"Call: man2html [-l|-h host.domain:port] [-p|-q] [filename]\n"
+	"or:   man2html -r [filename]\n");
 }
 
 static void

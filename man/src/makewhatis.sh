@@ -41,7 +41,7 @@ program=`basename $0`
 # and should be first.
 # It is a bug to add /var/cache/man to DEFCATPATH.
 dm=
-for d in /usr/man /usr/share/man
+for d in /usr/man /usr/share/man /usr/X11R6/man /usr/local/man
 do
     if [ -d $d ]; then
 	if [ x$dm = x ]; then dm=$d; else dm=$dm:$d; fi
@@ -312,7 +312,7 @@ do
 		    sub(/^.Vb .*/, "");
 		    sub(/^.[PLTH]P$/, "");    # .PP/.LP/.TP/.HP
 		    sub(/^.Pp$/, "");
-		    sub(/^.IX .*$/, "");
+		    sub(/^.[iI]X .*$/, "");
 		    sub(/^.nolinks$/, "");
 		    sub(/^.B$/, "");
 		    sub(/^.nf$/, "");
@@ -405,7 +405,7 @@ do
        then
 	 cat ${mandir1}/whatis >> $TMPFILE
        fi
-       sed '/^$/d' < $TMPFILE | sort | uniq > ${mandir1}/whatis
+       tr -s '\n' < $TMPFILE | sort -u > ${mandir1}/whatis
 
        chmod 644 ${mandir1}/whatis
        rm $TMPFILE

@@ -1,3 +1,14 @@
+Review support under HP-UX, Irix, Solaris, AIX, OS-X and other *NIXes - 
+Currently looking at w32 and Cygwin submissions. Comments and patches welcome.
+
+Improvements and reviews of internationalization/localization, 
+French and Russian patches pending.
+
+----> The localization and platform support issues will be addressed in the
+next two minor releases. Contributions and comments in those areas are 
+particularly appreciated.
+
+
 MANPL gives page length - undocumented; may disappear again
 
 [But brobison@ecst.csuchico.edu likes it and says:

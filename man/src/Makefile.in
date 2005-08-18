@@ -12,12 +12,12 @@
 # use of catalogs - aeb, June 1994
 
 CC = @CC@
+BUILD_CC = @BUILD_CC@
 INSTALL = @INSTALL@
 
 pager = @pager@
 
-GS = -DGREPSILENT=\'@grepsilent@\'
-DEFS = @DEFS@ $(GS)
+DEFS = @DEFS@
 CWARN = -Wall -Wstrict-prototypes -Wmissing-prototypes
 CWARNNP = -Wall
 
@@ -35,7 +35,12 @@ MANOBJS = man.o manfile.o manpath.o man-config.o man-getopt.o \
 	man-iconv.o to_cat.o different.o gripes.o glob.o util.o msg.o
 
 man: $(MANOBJS) $(LIBOBJS)
-	$(CC) $(LDFLAGS) $(GS) -o man $(MANOBJS) $(LIBOBJS) $(LIBS)
+	$(CC) $(LDFLAGS) -o man $(MANOBJS) $(LIBOBJS) $(LIBS)
+
+# CC may be a cross compiler, but BUILD_CC must compile for
+# the present machine.
+makemsg:
+	$(BUILD_CC) -o makemsg makemsg.c
 
 msg.c gripedefs.h: ../msgs/mess.en makemsg
 	./makemsg ../msgs/mess.en gripedefs.h msg.c
@@ -74,8 +79,7 @@ apropos: apropos.sh Makefile
 	rm -f apropos
 	sed -e 's,%apropos_or_whatis%,apropos,' \
 	    -e 's,%version%,@version@,' \
-	    -e 's,%pager%,@pager@,' -e 's,%manpathoption%,@manpathoption@,' \
-	    -e 's,%grepsilent%,@grepsilent@,' \
+	    -e 's,%manpathoption%,@manpathoption@,' \
 		apropos.sh > apropos
 	chmod +x apropos
 
@@ -83,8 +87,7 @@ whatis: apropos.sh Makefile
 	rm -f whatis
 	sed -e 's,%apropos_or_whatis%,whatis,' \
 	    -e 's,%version%,@version@,' \
-	    -e 's,%pager%,@pager@,' -e 's,%manpathoption%,@manpathoption@,' \
-	    -e 's,%grepsilent%,@grepsilent@,' \
+	    -e 's,%manpathoption%,@manpathoption@,' \
 		apropos.sh > whatis
 	chmod +x whatis
 
@@ -94,17 +97,17 @@ makewhatis: makewhatis.sh Makefile
 	    -e 's,%awk%,@awk@,' makewhatis.sh > makewhatis
 	chmod +x makewhatis
 
-MANCONFIG=$(PREFIX)@man_config_file@
+MANCONFIG=$(DESTDIR)$(PREFIX)@man_config_file@
 
 install: all apropos whatis makewhatis
-	mkdir -p $(PREFIX)@bindir@
-	$(INSTALL) -c @man_install_flags@ man $(PREFIX)@man@
-	$(INSTALL) -c -m 755 apropos $(PREFIX)@apropos@
-	$(INSTALL) -c -m 755 whatis $(PREFIX)@whatis@
-	$(INSTALL) -c -m 755 man2dvi $(PREFIX)@man2dvi@
-	mkdir -p $(PREFIX)@sbindir@
-	$(INSTALL) -c -m 754 makewhatis $(PREFIX)@makewhatis@
-	mkdir -p $(PREFIX)@man_config_dir@
+	mkdir -p $(DESTDIR)$(PREFIX)@bindir@
+	$(INSTALL) -c @man_install_flags@ man $(DESTDIR)$(PREFIX)@man@
+	$(INSTALL) -c -m 755 apropos $(DESTDIR)$(PREFIX)@apropos@
+	$(INSTALL) -c -m 755 whatis $(DESTDIR)$(PREFIX)@whatis@
+	$(INSTALL) -c -m 755 man2dvi $(DESTDIR)$(PREFIX)@man2dvi@
+	mkdir -p $(DESTDIR)$(PREFIX)@sbindir@
+	$(INSTALL) -c -m 754 makewhatis $(DESTDIR)$(PREFIX)@makewhatis@
+	mkdir -p $(DESTDIR)$(PREFIX)@man_config_dir@
 	if [ -f $(MANCONFIG) ]; then mv $(MANCONFIG) $(MANCONFIG).orig; fi
 	$(INSTALL) -c -m 644 man.conf $(MANCONFIG)
 

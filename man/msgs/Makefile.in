@@ -1,15 +1,16 @@
 
 all:	../src/makemsg gencat
 	@for i in mess.??; do ../src/makemsg -c $$i $$i.catin; \
+	cat $$i.codeset $$i.catin > $$i.catin2; \
 	echo "==== Making $$i.cat ====" ;\
-	./gencat $$i.cat $$i.catin; done; \
-	rm -f core *.catin
+	./gencat $$i.cat $$i.catin2; done; \
+	rm -f core *.catin *.catin2
 
 install:
-	sh ./inst.sh "@languages@" "@locale@"
+	sh ./inst.sh "@languages@" "$(DESTDIR)@locale@"
 
 clean:
-	rm -f gencat gencat.out core *~ *.cat *.catin
+	rm -f gencat gencat.out core *~ *.cat *.catin *.catin2
 
 spotless:
 	rm -f Makefile

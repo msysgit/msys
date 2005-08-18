@@ -14,9 +14,9 @@
 .\"
 .\" T³umaczenie: 950322 Rafa³ Maszkowski <rzm@pdi.net>
 .\"
-.TH apropos 1 "Jan 15, 1991"
+.TH apropos 1 "15 stycznia 1991"
 .LO 1
-.SH NAME
+.SH NAZWA
 apropos \- szuka ³añcuchów znakow w bazie whatis
 .SH SK£ADNIA
 .BI apropos
@@ -25,5 +25,5 @@ s³owo_kluczowe ...
 apropos szuka s³ów kluczowych w plikach bazy danych, które
 zawieraj± krótkie opisy komend systemowych i wy¶wietla wynik
 u¿ywaj±c standardowego wyj¶cia.
-.SH "ZOBACZ TE¯"
+.SH "ZOBACZ TAK¯E"
 whatis(1), man(1).

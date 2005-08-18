@@ -1,7 +1,7 @@
 .\" @(#)man.conf
 .\" T³umaczenie: 950322 Rafa³ Maszkowski <rzm@pdi.net>
-.TH MAN.CONF 5 "30 Mar 1994"
-.SH NAME
+.TH MAN.CONF 5 "30 marca 1994"
+.SH NAZWA
 man.conf \- zawiera konfiguracjê programu man
 .SH OPIS
 .LP
@@ -36,6 +36,6 @@ NROFF /usr/bin/groff -mandoc -Tlatin1 -P-u -P-b
 .RE
 .LP
 ¿eby wy³±czyæ podkre¶lanie i wytluszczanie.
-.SH "ZOBACZ TE¯"
+.SH "ZOBACZ TAK¯E"
 col(1), (g)eqn(1), (g)pic(1), groff(1), grotty(1), (g)refer(1), (g)tbl(1),
 less(1), man (1) i compress(1), gzip(1).
