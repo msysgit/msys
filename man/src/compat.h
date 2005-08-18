@@ -29,14 +29,6 @@
 # include <config.h>
 #endif
 
-/* If we don't have nl_types.h,
- * then we won't be able to incorporate national language support.
- */
-
-#ifndef HAVE_NL_TYPES_H
-# define NONLS 1
-#endif
-
 /* Always prefer strchr() over index(), and strrchr() over rindex(),
  * if we have them.
  */

@@ -41,7 +41,6 @@
   AC_CHECK_HEADERS([string.h strings.h], break)
   AC_CHECK_HEADERS([fcntl.h sys/file.h sys/ioctl.h])
   AC_CHECK_HEADERS([memory.h stdlib.h sys/param.h unistd.h])
-  AC_CHECK_HEADERS([langinfo.h locale.h nl_types.h])
   AC_CHECK_HEADERS([process.h])
   AC_HEADER_SYS_WAIT
 
@@ -65,7 +64,6 @@
   AC_FUNC_VPRINTF
   AC_CHECK_FUNCS([strchr strdup strrchr strstr])
   AC_CHECK_FUNCS([bzero getcwd memset putenv setenv])
-  AC_CHECK_FUNCS([nl_langinfo setlocale])
 
 # Establish the name and location for the configuration file.
 #
@@ -132,6 +130,13 @@
   MANPATH_MAP_DEFAULT([/usr/X11R6/bin],  [/usr/X11R6/man])
   MANPATH_MAP_DEFAULT([/usr/bin/X11],    [/usr/X11R6/man])
   MANPATH_MAP_DEFAULT([/usr/bin/mh],     [/usr/man])
+
+# Check if National Language Support is available,
+# specify which language packs are available for installation,
+# and allow the user to select those which will be installed.
+#
+  MAN_NLS_LANGUAGE_SELECTION([MAN_LANGUAGES_AVAILABLE])
+  MAN_NLS_LOCALE_DIRECTORY([/usr/lib/locale/%N/%L], [/usr/share/locale/%L/%N])
 
 # Identify the PAGER program to be used.
 #

@@ -328,7 +328,7 @@ ac_includes_default="\
 # include <unistd.h>
 #endif"
 
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS AWK CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA LN_S SET_MAKE CPP EGREP ALLOCA LIBOBJS FHS FSSTND man_config_file sections NULLDEV path__usr_man path__usr_local_man path__usr_share_man path__usr_X11R6_man path__opt_teTeX_man path__usr_lib_perl5_man path__usr_share_perl5_man path__usr_share_tcl_8_0_man path__usr_share_tk_8_0_man path__usr_share_tix_4_1_man path__usr_share_coas_man path__usr_kerberos_man map_to__usr_man path__bin path__sbin path__usr_bin path__usr_sbin map_to__usr_local_man path__usr_local_bin path__usr_local_sbin map_to__usr_X11R6_man path__usr_X11R6_bin path__usr_bin_X11 path__usr_bin_mh pager man_grepsilent cat troff nroff jnroff col pcol eqn neqn jneqn tbl vgrind refer grap pic cmp compress compress_ext gunzip bzip2 pcat zcat fcat unyabba decompress LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS AWK CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA LN_S SET_MAKE CPP EGREP ALLOCA LIBOBJS FHS FSSTND man_config_file sections NULLDEV path__usr_man path__usr_local_man path__usr_share_man path__usr_X11R6_man path__opt_teTeX_man path__usr_lib_perl5_man path__usr_share_perl5_man path__usr_share_tcl_8_0_man path__usr_share_tk_8_0_man path__usr_share_tix_4_1_man path__usr_share_coas_man path__usr_kerberos_man map_to__usr_man path__bin path__sbin path__usr_bin path__usr_sbin map_to__usr_local_man path__usr_local_bin path__usr_local_sbin map_to__usr_X11R6_man path__usr_X11R6_bin path__usr_bin_X11 path__usr_bin_mh languages locale pager man_grepsilent cat troff nroff jnroff col pcol eqn neqn jneqn tbl vgrind refer grap pic cmp compress compress_ext gunzip bzip2 pcat zcat fcat unyabba decompress LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -863,41 +863,43 @@ Optional Features:
   --enable-FEATURE[=ARG]  include FEATURE [ARG=yes]
   --enable-fhs            implement FHS standard installation paths
   --enable-fsstnd         implement FSSTND standard installation paths
+  --disable-nls           don't include National Language Support
   --enable-sgr            use nroff's SGR output mode, if available
 
 Optional Packages:
   --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
   --without-PACKAGE       do not use PACKAGE (same as --with-PACKAGE=no)
-  --with-confdir          directory where the configuration file is installed
-                          [PREFIX/lib]
-  --with-config=NAME      name to use for the configuration file [man.conf]
+  --with-confdir=DIR      install configuration file in DIR [PREFIX/lib]
+  --with-config=NAME      NAME of configuration file [man.conf]
   --with-sections=LIST    colon separated ordered LIST of MANPAGE sections to
                           search [1:8:2:3:4:5:6:7:9:tcl:n:l:p:o]
-  --with-pager=COMMAND    use COMMAND [less -is] to invoke PAGER
-  --with-cat=COMMAND      use COMMAND [cat] to invoke CAT
-  --with-troff=COMMAND    use COMMAND [groff -Tps -mandoc] to invoke
-                          TROFF
-  --with-nroff=COMMAND    use COMMAND [nroff -Tlatin1 -mandoc] to invoke
-                          NROFF
-  --with-jnroff=COMMAND   use COMMAND [groff -Tnippon -mandocj] to
-                          invoke JNROFF
-  --with-col=COMMAND      use COMMAND [col] to invoke COL
-  --with-eqn=COMMAND      use COMMAND [geqn -Tps] to invoke EQN
-  --with-neqn=COMMAND     use COMMAND [neqn -Tlatin1] to invoke NEQN
-  --with-jneqn=COMMAND    use COMMAND [neqn -Tlatin1] to invoke JNEQN
-  --with-tbl=COMMAND      use COMMAND [gtbl] to invoke TBL
-  --with-vgrind=COMMAND   use COMMAND [vgrind] to invoke VGRIND
-  --with-refer=COMMAND    use COMMAND [grefer] to invoke REFER
-  --with-grap=COMMAND     use COMMAND [grap] to invoke GRAP
-  --with-pic=COMMAND      use COMMAND [gpic] to invoke PIC
-  --with-cmp=COMMAND      use COMMAND [cmp -s] to invoke CMP
-  --with-compress=COMMAND use COMMAND [bzip2 -c] to invoke COMPRESS
-  --with-gunzip=COMMAND   use COMMAND [gzip -c -d] to invoke GUNZIP
-  --with-bzip2=COMMAND    use COMMAND [bzip2 -c -d] to invoke BZIP2
-  --with-pcat=COMMAND     use COMMAND [pcat] to invoke PCAT
-  --with-zcat=COMMAND     use COMMAND [zcat] to invoke ZCAT
-  --with-fcat=COMMAND     use COMMAND [fcat] to invoke FCAT
-  --with-unyabba=COMMAND  use COMMAND [unyabba] to invoke UNYABBA
+  --with-languages=LIST   LIST of language packs to install [`en' only],
+                          where LIST is `all', any comma separated subset of
+                          `bg,cs,da,de,el,en,es,fi,fr,hr,it,ja,ko,nl,pl,pt,ro,sl',
+                          or `none', to disable NLS and fall back to `en' only
+  --with-localedir=DIR    message catalogue DIR [/usr/lib/locale/%N/%L]
+  --with-pager=COMMAND    invoke PAGER using COMMAND [less -is]
+  --with-cat=COMMAND      invoke CAT using COMMAND [cat]
+  --with-troff=COMMAND    invoke TROFF using COMMAND [groff -Tps -mandoc]
+  --with-nroff=COMMAND    invoke NROFF using COMMAND [nroff -Tlatin1 -mandoc]
+  --with-jnroff=COMMAND   invoke JNROFF using COMMAND [groff -Tnippon -mandocj]
+  --with-col=COMMAND      invoke COL using COMMAND [col]
+  --with-eqn=COMMAND      invoke EQN using COMMAND [geqn -Tps]
+  --with-neqn=COMMAND     invoke NEQN using COMMAND [neqn -Tlatin1]
+  --with-jneqn=COMMAND    invoke JNEQN using COMMAND [neqn -Tlatin1]
+  --with-tbl=COMMAND      invoke TBL using COMMAND [gtbl]
+  --with-vgrind=COMMAND   invoke VGRIND using COMMAND [vgrind]
+  --with-refer=COMMAND    invoke REFER using COMMAND [grefer]
+  --with-grap=COMMAND     invoke GRAP using COMMAND [grap]
+  --with-pic=COMMAND      invoke PIC using COMMAND [gpic]
+  --with-cmp=COMMAND      invoke CMP using COMMAND [cmp -s]
+  --with-compress=COMMAND invoke COMPRESS using COMMAND [bzip2 -c]
+  --with-gunzip=COMMAND   invoke GUNZIP using COMMAND [gzip -c -d]
+  --with-bzip2=COMMAND    invoke BZIP2 using COMMAND [bzip2 -c -d]
+  --with-pcat=COMMAND     invoke PCAT using COMMAND [pcat]
+  --with-zcat=COMMAND     invoke ZCAT using COMMAND [zcat]
+  --with-fcat=COMMAND     invoke FCAT using COMMAND [fcat]
+  --with-unyabba=COMMAND  invoke UNYABBA using COMMAND [unyabba]
 
 Some influential environment variables:
   CC          C compiler command
@@ -4134,158 +4136,6 @@ fi
 done
 
 
-
-
-for ac_header in langinfo.h locale.h nl_types.h
-do
-as_ac_Header=`echo "ac_cv_header_$ac_header" | $as_tr_sh`
-if eval "test \"\${$as_ac_Header+set}\" = set"; then
-  echo "$as_me:$LINENO: checking for $ac_header" >&5
-echo $ECHO_N "checking for $ac_header... $ECHO_C" >&6
-if eval "test \"\${$as_ac_Header+set}\" = set"; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-fi
-echo "$as_me:$LINENO: result: `eval echo '${'$as_ac_Header'}'`" >&5
-echo "${ECHO_T}`eval echo '${'$as_ac_Header'}'`" >&6
-else
-  # Is the header compilable?
-echo "$as_me:$LINENO: checking $ac_header usability" >&5
-echo $ECHO_N "checking $ac_header usability... $ECHO_C" >&6
-cat >conftest.$ac_ext <<_ACEOF
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-$ac_includes_default
-#include <$ac_header>
-_ACEOF
-rm -f conftest.$ac_objext
-if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
-  (eval $ac_compile) 2>conftest.er1
-  ac_status=$?
-  grep -v '^ *+' conftest.er1 >conftest.err
-  rm -f conftest.er1
-  cat conftest.err >&5
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_c_werror_flag"
-			 || test ! -s conftest.err'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; } &&
-	 { ac_try='test -s conftest.$ac_objext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  ac_header_compiler=yes
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-ac_header_compiler=no
-fi
-rm -f conftest.err conftest.$ac_objext conftest.$ac_ext
-echo "$as_me:$LINENO: result: $ac_header_compiler" >&5
-echo "${ECHO_T}$ac_header_compiler" >&6
-
-# Is the header present?
-echo "$as_me:$LINENO: checking $ac_header presence" >&5
-echo $ECHO_N "checking $ac_header presence... $ECHO_C" >&6
-cat >conftest.$ac_ext <<_ACEOF
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-#include <$ac_header>
-_ACEOF
-if { (eval echo "$as_me:$LINENO: \"$ac_cpp conftest.$ac_ext\"") >&5
-  (eval $ac_cpp conftest.$ac_ext) 2>conftest.er1
-  ac_status=$?
-  grep -v '^ *+' conftest.er1 >conftest.err
-  rm -f conftest.er1
-  cat conftest.err >&5
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } >/dev/null; then
-  if test -s conftest.err; then
-    ac_cpp_err=$ac_c_preproc_warn_flag
-    ac_cpp_err=$ac_cpp_err$ac_c_werror_flag
-  else
-    ac_cpp_err=
-  fi
-else
-  ac_cpp_err=yes
-fi
-if test -z "$ac_cpp_err"; then
-  ac_header_preproc=yes
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-  ac_header_preproc=no
-fi
-rm -f conftest.err conftest.$ac_ext
-echo "$as_me:$LINENO: result: $ac_header_preproc" >&5
-echo "${ECHO_T}$ac_header_preproc" >&6
-
-# So?  What about this header?
-case $ac_header_compiler:$ac_header_preproc:$ac_c_preproc_warn_flag in
-  yes:no: )
-    { echo "$as_me:$LINENO: WARNING: $ac_header: accepted by the compiler, rejected by the preprocessor!" >&5
-echo "$as_me: WARNING: $ac_header: accepted by the compiler, rejected by the preprocessor!" >&2;}
-    { echo "$as_me:$LINENO: WARNING: $ac_header: proceeding with the compiler's result" >&5
-echo "$as_me: WARNING: $ac_header: proceeding with the compiler's result" >&2;}
-    ac_header_preproc=yes
-    ;;
-  no:yes:* )
-    { echo "$as_me:$LINENO: WARNING: $ac_header: present but cannot be compiled" >&5
-echo "$as_me: WARNING: $ac_header: present but cannot be compiled" >&2;}
-    { echo "$as_me:$LINENO: WARNING: $ac_header:     check for missing prerequisite headers?" >&5
-echo "$as_me: WARNING: $ac_header:     check for missing prerequisite headers?" >&2;}
-    { echo "$as_me:$LINENO: WARNING: $ac_header: see the Autoconf documentation" >&5
-echo "$as_me: WARNING: $ac_header: see the Autoconf documentation" >&2;}
-    { echo "$as_me:$LINENO: WARNING: $ac_header:     section \"Present But Cannot Be Compiled\"" >&5
-echo "$as_me: WARNING: $ac_header:     section \"Present But Cannot Be Compiled\"" >&2;}
-    { echo "$as_me:$LINENO: WARNING: $ac_header: proceeding with the preprocessor's result" >&5
-echo "$as_me: WARNING: $ac_header: proceeding with the preprocessor's result" >&2;}
-    { echo "$as_me:$LINENO: WARNING: $ac_header: in the future, the compiler will take precedence" >&5
-echo "$as_me: WARNING: $ac_header: in the future, the compiler will take precedence" >&2;}
-    (
-      cat <<\_ASBOX
-## ------------------------------ ##
-## Report this to the man lists.  ##
-## ------------------------------ ##
-_ASBOX
-    ) |
-      sed "s/^/$as_me: WARNING:     /" >&2
-    ;;
-esac
-echo "$as_me:$LINENO: checking for $ac_header" >&5
-echo $ECHO_N "checking for $ac_header... $ECHO_C" >&6
-if eval "test \"\${$as_ac_Header+set}\" = set"; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  eval "$as_ac_Header=\$ac_header_preproc"
-fi
-echo "$as_me:$LINENO: result: `eval echo '${'$as_ac_Header'}'`" >&5
-echo "${ECHO_T}`eval echo '${'$as_ac_Header'}'`" >&6
-
-fi
-if test `eval echo '${'$as_ac_Header'}'` = yes; then
-  cat >>confdefs.h <<_ACEOF
-#define `echo "HAVE_$ac_header" | $as_tr_cpp` 1
-_ACEOF
-
-fi
-
-done
-
-
 for ac_header in process.h
 do
 as_ac_Header=`echo "ac_cv_header_$ac_header" | $as_tr_sh`
@@ -6876,109 +6726,6 @@ fi
 done
 
 
-
-for ac_func in nl_langinfo setlocale
-do
-as_ac_var=`echo "ac_cv_func_$ac_func" | $as_tr_sh`
-echo "$as_me:$LINENO: checking for $ac_func" >&5
-echo $ECHO_N "checking for $ac_func... $ECHO_C" >&6
-if eval "test \"\${$as_ac_var+set}\" = set"; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  cat >conftest.$ac_ext <<_ACEOF
-/* confdefs.h.  */
-_ACEOF
-cat confdefs.h >>conftest.$ac_ext
-cat >>conftest.$ac_ext <<_ACEOF
-/* end confdefs.h.  */
-/* Define $ac_func to an innocuous variant, in case <limits.h> declares $ac_func.
-   For example, HP-UX 11i <limits.h> declares gettimeofday.  */
-#define $ac_func innocuous_$ac_func
-
-/* System header to define __stub macros and hopefully few prototypes,
-    which can conflict with char $ac_func (); below.
-    Prefer <limits.h> to <assert.h> if __STDC__ is defined, since
-    <limits.h> exists even on freestanding compilers.  */
-
-#ifdef __STDC__
-# include <limits.h>
-#else
-# include <assert.h>
-#endif
-
-#undef $ac_func
-
-/* Override any gcc2 internal prototype to avoid an error.  */
-#ifdef __cplusplus
-extern "C"
-{
-#endif
-/* We use char because int might match the return type of a gcc2
-   builtin and then its argument prototype would still apply.  */
-char $ac_func ();
-/* The GNU C library defines this for functions which it implements
-    to always fail with ENOSYS.  Some functions are actually named
-    something starting with __ and the normal name is an alias.  */
-#if defined (__stub_$ac_func) || defined (__stub___$ac_func)
-choke me
-#else
-char (*f) () = $ac_func;
-#endif
-#ifdef __cplusplus
-}
-#endif
-
-int
-main ()
-{
-return f != $ac_func;
-  ;
-  return 0;
-}
-_ACEOF
-rm -f conftest.$ac_objext conftest$ac_exeext
-if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
-  (eval $ac_link) 2>conftest.er1
-  ac_status=$?
-  grep -v '^ *+' conftest.er1 >conftest.err
-  rm -f conftest.er1
-  cat conftest.err >&5
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_c_werror_flag"
-			 || test ! -s conftest.err'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; } &&
-	 { ac_try='test -s conftest$ac_exeext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  eval "$as_ac_var=yes"
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-eval "$as_ac_var=no"
-fi
-rm -f conftest.err conftest.$ac_objext \
-      conftest$ac_exeext conftest.$ac_ext
-fi
-echo "$as_me:$LINENO: result: `eval echo '${'$as_ac_var'}'`" >&5
-echo "${ECHO_T}`eval echo '${'$as_ac_var'}'`" >&6
-if test `eval echo '${'$as_ac_var'}'` = yes; then
-  cat >>confdefs.h <<_ACEOF
-#define `echo "HAVE_$ac_func" | $as_tr_cpp` 1
-_ACEOF
-
-fi
-done
-
-
 # Establish the name and location for the configuration file.
 #
 # (The defaults are as defined here; if you wish to change these,
@@ -8441,6 +8188,411 @@ echo "${ECHO_T}${map_to__usr_man}" >&6
  path__usr_bin_mh=${man_cv_path__usr_bin_mh}
 
 
+# Check if National Language Support is available,
+# specify which language packs are available for installation,
+# and allow the user to select those which will be installed.
+#
+
+
+
+for ac_header in langinfo.h locale.h nl_types.h
+do
+as_ac_Header=`echo "ac_cv_header_$ac_header" | $as_tr_sh`
+if eval "test \"\${$as_ac_Header+set}\" = set"; then
+  echo "$as_me:$LINENO: checking for $ac_header" >&5
+echo $ECHO_N "checking for $ac_header... $ECHO_C" >&6
+if eval "test \"\${$as_ac_Header+set}\" = set"; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+fi
+echo "$as_me:$LINENO: result: `eval echo '${'$as_ac_Header'}'`" >&5
+echo "${ECHO_T}`eval echo '${'$as_ac_Header'}'`" >&6
+else
+  # Is the header compilable?
+echo "$as_me:$LINENO: checking $ac_header usability" >&5
+echo $ECHO_N "checking $ac_header usability... $ECHO_C" >&6
+cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+$ac_includes_default
+#include <$ac_header>
+_ACEOF
+rm -f conftest.$ac_objext
+if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
+  (eval $ac_compile) 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+	 { ac_try='test -z "$ac_c_werror_flag"
+			 || test ! -s conftest.err'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; } &&
+	 { ac_try='test -s conftest.$ac_objext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  ac_header_compiler=yes
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+ac_header_compiler=no
+fi
+rm -f conftest.err conftest.$ac_objext conftest.$ac_ext
+echo "$as_me:$LINENO: result: $ac_header_compiler" >&5
+echo "${ECHO_T}$ac_header_compiler" >&6
+
+# Is the header present?
+echo "$as_me:$LINENO: checking $ac_header presence" >&5
+echo $ECHO_N "checking $ac_header presence... $ECHO_C" >&6
+cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+#include <$ac_header>
+_ACEOF
+if { (eval echo "$as_me:$LINENO: \"$ac_cpp conftest.$ac_ext\"") >&5
+  (eval $ac_cpp conftest.$ac_ext) 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } >/dev/null; then
+  if test -s conftest.err; then
+    ac_cpp_err=$ac_c_preproc_warn_flag
+    ac_cpp_err=$ac_cpp_err$ac_c_werror_flag
+  else
+    ac_cpp_err=
+  fi
+else
+  ac_cpp_err=yes
+fi
+if test -z "$ac_cpp_err"; then
+  ac_header_preproc=yes
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+  ac_header_preproc=no
+fi
+rm -f conftest.err conftest.$ac_ext
+echo "$as_me:$LINENO: result: $ac_header_preproc" >&5
+echo "${ECHO_T}$ac_header_preproc" >&6
+
+# So?  What about this header?
+case $ac_header_compiler:$ac_header_preproc:$ac_c_preproc_warn_flag in
+  yes:no: )
+    { echo "$as_me:$LINENO: WARNING: $ac_header: accepted by the compiler, rejected by the preprocessor!" >&5
+echo "$as_me: WARNING: $ac_header: accepted by the compiler, rejected by the preprocessor!" >&2;}
+    { echo "$as_me:$LINENO: WARNING: $ac_header: proceeding with the compiler's result" >&5
+echo "$as_me: WARNING: $ac_header: proceeding with the compiler's result" >&2;}
+    ac_header_preproc=yes
+    ;;
+  no:yes:* )
+    { echo "$as_me:$LINENO: WARNING: $ac_header: present but cannot be compiled" >&5
+echo "$as_me: WARNING: $ac_header: present but cannot be compiled" >&2;}
+    { echo "$as_me:$LINENO: WARNING: $ac_header:     check for missing prerequisite headers?" >&5
+echo "$as_me: WARNING: $ac_header:     check for missing prerequisite headers?" >&2;}
+    { echo "$as_me:$LINENO: WARNING: $ac_header: see the Autoconf documentation" >&5
+echo "$as_me: WARNING: $ac_header: see the Autoconf documentation" >&2;}
+    { echo "$as_me:$LINENO: WARNING: $ac_header:     section \"Present But Cannot Be Compiled\"" >&5
+echo "$as_me: WARNING: $ac_header:     section \"Present But Cannot Be Compiled\"" >&2;}
+    { echo "$as_me:$LINENO: WARNING: $ac_header: proceeding with the preprocessor's result" >&5
+echo "$as_me: WARNING: $ac_header: proceeding with the preprocessor's result" >&2;}
+    { echo "$as_me:$LINENO: WARNING: $ac_header: in the future, the compiler will take precedence" >&5
+echo "$as_me: WARNING: $ac_header: in the future, the compiler will take precedence" >&2;}
+    (
+      cat <<\_ASBOX
+## ------------------------------ ##
+## Report this to the man lists.  ##
+## ------------------------------ ##
+_ASBOX
+    ) |
+      sed "s/^/$as_me: WARNING:     /" >&2
+    ;;
+esac
+echo "$as_me:$LINENO: checking for $ac_header" >&5
+echo $ECHO_N "checking for $ac_header... $ECHO_C" >&6
+if eval "test \"\${$as_ac_Header+set}\" = set"; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  eval "$as_ac_Header=\$ac_header_preproc"
+fi
+echo "$as_me:$LINENO: result: `eval echo '${'$as_ac_Header'}'`" >&5
+echo "${ECHO_T}`eval echo '${'$as_ac_Header'}'`" >&6
+
+fi
+if test `eval echo '${'$as_ac_Header'}'` = yes; then
+  cat >>confdefs.h <<_ACEOF
+#define `echo "HAVE_$ac_header" | $as_tr_cpp` 1
+_ACEOF
+
+fi
+
+done
+ man_nls_headers=$ac_cv_header_langinfo_h
+ test x$ac_cv_header_locale_h = xno && man_nls_headers=no
+ test x$ac_cv_header_nl_types_h = xno && man_nls_headers=no
+
+
+for ac_func in nl_langinfo setlocale
+do
+as_ac_var=`echo "ac_cv_func_$ac_func" | $as_tr_sh`
+echo "$as_me:$LINENO: checking for $ac_func" >&5
+echo $ECHO_N "checking for $ac_func... $ECHO_C" >&6
+if eval "test \"\${$as_ac_var+set}\" = set"; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+/* Define $ac_func to an innocuous variant, in case <limits.h> declares $ac_func.
+   For example, HP-UX 11i <limits.h> declares gettimeofday.  */
+#define $ac_func innocuous_$ac_func
+
+/* System header to define __stub macros and hopefully few prototypes,
+    which can conflict with char $ac_func (); below.
+    Prefer <limits.h> to <assert.h> if __STDC__ is defined, since
+    <limits.h> exists even on freestanding compilers.  */
+
+#ifdef __STDC__
+# include <limits.h>
+#else
+# include <assert.h>
+#endif
+
+#undef $ac_func
+
+/* Override any gcc2 internal prototype to avoid an error.  */
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+/* We use char because int might match the return type of a gcc2
+   builtin and then its argument prototype would still apply.  */
+char $ac_func ();
+/* The GNU C library defines this for functions which it implements
+    to always fail with ENOSYS.  Some functions are actually named
+    something starting with __ and the normal name is an alias.  */
+#if defined (__stub_$ac_func) || defined (__stub___$ac_func)
+choke me
+#else
+char (*f) () = $ac_func;
+#endif
+#ifdef __cplusplus
+}
+#endif
+
+int
+main ()
+{
+return f != $ac_func;
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext conftest$ac_exeext
+if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
+  (eval $ac_link) 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+	 { ac_try='test -z "$ac_c_werror_flag"
+			 || test ! -s conftest.err'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; } &&
+	 { ac_try='test -s conftest$ac_exeext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  eval "$as_ac_var=yes"
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+eval "$as_ac_var=no"
+fi
+rm -f conftest.err conftest.$ac_objext \
+      conftest$ac_exeext conftest.$ac_ext
+fi
+echo "$as_me:$LINENO: result: `eval echo '${'$as_ac_var'}'`" >&5
+echo "${ECHO_T}`eval echo '${'$as_ac_var'}'`" >&6
+if test `eval echo '${'$as_ac_var'}'` = yes; then
+  cat >>confdefs.h <<_ACEOF
+#define `echo "HAVE_$ac_func" | $as_tr_cpp` 1
+_ACEOF
+
+fi
+done
+
+ man_nls_funcs=$ac_cv_func_nl_langinfo
+ test x$ac_cv_func_setlocale = xno && man_nls_funcs=no
+  echo "$as_me:$LINENO: checking whether NLS support is requested" >&5
+echo $ECHO_N "checking whether NLS support is requested... $ECHO_C" >&6
+ # Check whether --enable-nls or --disable-nls was given.
+if test "${enable_nls+set}" = set; then
+  enableval="$enable_nls"
+  man_enable_nls=$enableval
+else
+  man_enable_nls=yes
+fi;
+ echo "$as_me:$LINENO: result: $man_enable_nls" >&5
+echo "${ECHO_T}$man_enable_nls" >&6
+ if test x$man_enable_nls = xyes
+ then
+   echo "$as_me:$LINENO: checking whether NLS support is available" >&5
+echo $ECHO_N "checking whether NLS support is available... $ECHO_C" >&6
+   man_enable_nls=$man_nls_headers
+   test x$man_nls_funcs = xno && man_enable_nls=no
+   echo "$as_me:$LINENO: result: $man_enable_nls" >&5
+echo "${ECHO_T}$man_enable_nls" >&6
+ fi
+  echo "$as_me:$LINENO: checking which national language manpages are required" >&5
+echo $ECHO_N "checking which national language manpages are required... $ECHO_C" >&6
+
+# Check whether --with-languages or --without-languages was given.
+if test "${with_languages+set}" = set; then
+  withval="$with_languages"
+  test x$withval = xall && languages=bg,cs,da,de,el,en,es,fi,fr,hr,it,ja,ko,nl,pl,pt,ro,sl || languages=$withval
+else
+  languages=en
+fi;
+ test x$languages = xnone && man_enable_nls=no languages=en
+ if test x$man_enable_nls = xno
+ then
+
+cat >>confdefs.h <<\_ACEOF
+#define NONLS 1
+_ACEOF
+
+ fi
+ echo "$as_me:$LINENO: result: $languages" >&5
+echo "${ECHO_T}$languages" >&6
+ for lang in `IFS=,; echo $languages`
+ do
+   langname=`cat $srcdir/man/$lang.txt 2>$NULLDEV`
+   test x$langname = x && langname=$lang || langname="$lang ($langname)"
+   echo "$as_me:$LINENO: checking whether $langname manpages are available" >&5
+echo $ECHO_N "checking whether $langname manpages are available... $ECHO_C" >&6
+   ac_val=`exec 2>$NULLDEV; cd $srcdir/man/$lang && echo *.man || echo '*.man'`
+   if test "$ac_val" = "*.man"
+   then
+     ac_val=no
+   else
+     test x$man_languages != x && man_languages="$man_languages,"
+     man_languages=${man_languages}${lang}
+     ac_val=yes
+   fi
+   echo "$as_me:$LINENO: result: $ac_val" >&5
+echo "${ECHO_T}$ac_val" >&6
+ done
+ echo "$as_me:$LINENO: checking which national language manpages to install" >&5
+echo $ECHO_N "checking which national language manpages to install... $ECHO_C" >&6
+ test x$man_languages = x && man_languages=en
+ languages=`IFS="$IFS,"; eval echo $man_languages`
+
+ echo "$as_me:$LINENO: result: $man_languages" >&5
+echo "${ECHO_T}$man_languages" >&6
+
+# Check whether --with-localedir or --without-localedir was given.
+if test "${with_localedir+set}" = set; then
+  withval="$with_localedir"
+  echo "$as_me:$LINENO: checking where to install message catalogues" >&5
+echo $ECHO_N "checking where to install message catalogues... $ECHO_C" >&6
+ ac_dir="$withval"
+ pwd -W >/dev/null 2>&1 && ac_pwd_w="pwd -W" || ac_pwd_w=pwd
+ until ac_val=`exec 2>/dev/null; cd "$ac_dir" && $ac_pwd_w`
+ do
+   ac_dir=`(dirname "$ac_dir") 2>/dev/null ||
+$as_expr X"$ac_dir" : 'X\(.*^/\)//*^/^/*/*$' \| \
+	 X"$ac_dir" : 'X\(//\)^/' \| \
+	 X"$ac_dir" : 'X\(//\)$' \| \
+	 X"$ac_dir" : 'X\(/\)' \| \
+	 .     : '\(.\)' 2>/dev/null ||
+echo X"$ac_dir" |
+    sed '/^X\(.*^/\)\/\/*^/^/*\/*$/{ s//\1/; q; }
+  	  /^X\(\/\/\)^/.*/{ s//\1/; q; }
+  	  /^X\(\/\/\)$/{ s//\1/; q; }
+  	  /^X\(\/\).*/{ s//\1/; q; }
+  	  s/.*/./; q'`
+ done
+ ac_dir=`echo "$ac_dir" | sed 's?^./*??'`
+ ac_val=`echo "$ac_val" | sed 's?/*$??'`
+ man_cv_locale=`echo "$withval" | sed "s?^./*$ac_dir/*?$ac_val/?"'
+   s?/*$??'`
+
+ echo "$as_me:$LINENO: result: $man_cv_locale" >&5
+echo "${ECHO_T}$man_cv_locale" >&6
+else
+  if test x$man_enable_nls = xyes
+ then
+   echo "$as_me:$LINENO: checking where to install message catalogues" >&5
+echo $ECHO_N "checking where to install message catalogues... $ECHO_C" >&6
+if test "${man_cv_locale+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  ac_dir="/usr/lib/locale/%N/%L$PATH_SEPARATOR$NLSPATH"
+     ac_dir=$ac_dir$PATH_SEPARATOR`echo /usr/share/locale/%L/%N | sed s",:,$PATH_SEPARATOR,"g`
+     ac_dir="$ac_dir$PATH_SEPARATOR/usr/lib/locale/%N/%L"
+     for locale in `echo $ac_dir | sed -e s', ,%20,'g -e s",$PATH_SEPARATOR, ,"g`
+     do
+       test -d `echo $locale | sed -e s'?/%NL.*??' -e s'?%20? ?'g` && break
+     done
+     locale=`echo $locale | sed s'?%20? ?'g`
+     ac_dir="$locale"
+ pwd -W >/dev/null 2>&1 && ac_pwd_w="pwd -W" || ac_pwd_w=pwd
+ until ac_val=`exec 2>/dev/null; cd "$ac_dir" && $ac_pwd_w`
+ do
+   ac_dir=`(dirname "$ac_dir") 2>/dev/null ||
+$as_expr X"$ac_dir" : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
+	 X"$ac_dir" : 'X\(//\)[^/]' \| \
+	 X"$ac_dir" : 'X\(//\)$' \| \
+	 X"$ac_dir" : 'X\(/\)' \| \
+	 .     : '\(.\)' 2>/dev/null ||
+echo X"$ac_dir" |
+    sed '/^X\(.*[^/]\)\/\/*[^/][^/]*\/*$/{ s//\1/; q; }
+  	  /^X\(\/\/\)[^/].*/{ s//\1/; q; }
+  	  /^X\(\/\/\)$/{ s//\1/; q; }
+  	  /^X\(\/\).*/{ s//\1/; q; }
+  	  s/.*/./; q'`
+ done
+ ac_dir=`echo "$ac_dir" | sed 's?^[./]*??'`
+ ac_val=`echo "$ac_val" | sed 's?/*$??'`
+ man_cv_locale=`echo "$locale" | sed "s?^[./]*$ac_dir/*?$ac_val/?"'
+   s?/*$??'`
+
+fi
+echo "$as_me:$LINENO: result: $man_cv_locale" >&5
+echo "${ECHO_T}$man_cv_locale" >&6
+ fi
+fi;
+ locale=$man_cv_locale
+
+
 # Identify the PAGER program to be used.
 #
 
@@ -9303,7 +9455,7 @@ fi;
  echo "$as_me:$LINENO: checking whether the COL filter should be deployed" >&5
 echo $ECHO_N "checking whether the COL filter should be deployed... $ECHO_C" >&6
  case $troff in
-   *groff*) pcol="" col="__undef__($col)" ac_val="no; (using groff)" ;;
+   *groff*) pcol="" col="__undef__($col)" ac_val="no (using groff)" ;;
    *)       ac_val=yes ;;
  esac
  echo "$as_me:$LINENO: result: $ac_val" >&5
@@ -12346,6 +12498,8 @@ s,@map_to__usr_X11R6_man@,$map_to__usr_X11R6_man,;t t
 s,@path__usr_X11R6_bin@,$path__usr_X11R6_bin,;t t
 s,@path__usr_bin_X11@,$path__usr_bin_X11,;t t
 s,@path__usr_bin_mh@,$path__usr_bin_mh,;t t
+s,@languages@,$languages,;t t
+s,@locale@,$locale,;t t
 s,@pager@,$pager,;t t
 s,@man_grepsilent@,$man_grepsilent,;t t
 s,@cat@,$cat,;t t

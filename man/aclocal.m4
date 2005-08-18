@@ -140,8 +140,8 @@ AC_DEFUN([MAN_CONFDIR_DEFAULT], [man_confdir_default=$1/])
 #
 AC_DEFUN([MAN_CONFDIR],
 [AC_ARG_WITH([confdir],
-  AS_HELP_STRING([--with-confdir],
-   [directory where the configuration file is installed [[PREFIX/lib]]]),
+  AS_HELP_STRING([--with-confdir=DIR],
+   [install configuration file in DIR [[PREFIX/lib]]]),
   [man_confdir=${withval}/],
   [man_confdir=${man_confdir_default-'${prefix}/lib/'}])
 ])
@@ -157,7 +157,7 @@ AC_DEFUN([MAN_CONFIG_FILE],
 [AC_REQUIRE([MAN_CONFDIR])dnl
  AC_ARG_WITH([config],
   AS_HELP_STRING([--with-config=NAME],
-   [name to use for the configuration file [[man.conf]]]),
+   [NAME of configuration file [[man.conf]]]),
   [man_config_file=${withval}],
   [man_config_file=${man_config_file_default-'man.conf'}])
  AC_MSG_CHECKING([where to install '${man_config_file}'])
@@ -302,6 +302,212 @@ AC_DEFUN([MANPATH_MAP_CACHE_ASSIGN],
 
 
 ## ================================================ ##
+## National Language Support and Language Selection ##
+## ================================================ ##
+#
+# MAN_NLS_HEADERS
+# ---------------
+# Confirm that all header files needed to support NLS are present.
+#
+AC_DEFUN([MAN_NLS_HEADERS],
+[AC_CHECK_HEADERS([langinfo.h locale.h nl_types.h])dnl
+ [man_nls_headers=$ac_cv_header_langinfo_h]
+ [test x$ac_cv_header_locale_h = xno && man_nls_headers=no]
+ [test x$ac_cv_header_nl_types_h = xno && man_nls_headers=no]dnl
+])
+
+# MAN_NLS_FUNCTIONS
+# -----------------
+# Confirm that all functions needed to support NLS are available.
+#
+AC_DEFUN([MAN_NLS_FUNCTIONS],
+[AC_CHECK_FUNCS([nl_langinfo setlocale])
+ [man_nls_funcs=$ac_cv_func_nl_langinfo]
+ [test x$ac_cv_func_setlocale = xno && man_nls_funcs=no]dnl
+])
+
+# MAN_NLS_PREREQUISITES
+# ---------------------
+# Check if the system provides prerequisite support for NLS;
+# the user can override the requirement by specifying `--disable-nls'.
+#
+AC_DEFUN([MAN_NLS_PREREQUISITES],
+[AC_REQUIRE([MAN_NLS_HEADERS])dnl
+ AC_REQUIRE([MAN_NLS_FUNCTIONS])dnl
+ AC_MSG_CHECKING([whether NLS support is requested])
+ AC_ARG_ENABLE([nls],
+   AS_HELP_STRING([--disable-nls],
+     [don't include National Language Support]),
+   [man_enable_nls=$enableval],
+   [man_enable_nls=yes])
+ AC_MSG_RESULT([$man_enable_nls])
+ if test x$man_enable_nls = xyes
+ then
+   AC_MSG_CHECKING([whether NLS support is available])
+   man_enable_nls=$man_nls_headers
+   test x$man_nls_funcs = xno && man_enable_nls=no
+   AC_MSG_RESULT([$man_enable_nls])
+ fi[]dnl
+])
+
+# MAN_NLS_LOCALE_DIRECTORY( PREFERRED, [FALLBACK] )
+# -------------------------------------------------
+# Identify a directory in which to install NLS message catalogues;
+# it uses PREFERRED, if available, otherwise the first available from
+# the colon separated list specified in the NLSPATH environment variable,
+# followed by the supplementary colon separated FALLBACK list.
+#
+# The PREFERRED directory is named in `configure.ac', but may be overriden
+# by the user, through the `--with-localedir=DIR' option; when this option
+# is specified, the user is assumed to know best, and his specified DIR is
+# adopted, without checking for its existence.
+#
+# If this search for an existing candidate directory is unsuccessful,
+# and no directory is named with the `--with-localedir=DIR' option,
+# then the directory named as PREFERRED is assumed anyway.
+#
+AC_DEFUN([MAN_NLS_LOCALE_DIRECTORY],
+[AC_REQUIRE([MAN_NLS_PREREQUISITES])dnl
+ AC_ARG_WITH([localedir],
+   AS_HELP_STRING([--with-localedir=DIR], [message catalogue DIR [[$1]]]),
+   MAN_NLS_LOCALE_CACHE_OVERRIDE([$withval]),
+   MAN_NLS_LOCALE_CACHE_INIT([$1], [$2]))
+ AC_SUBST([locale], [$man_cv_locale])dnl
+])
+
+# MAN_NLS_LOCALE_CACHE_INIT( PREFERRED, [FALLBACK] )
+# --------------------------------------------------
+# Internal macro called by MAN_NLS_LOCALE_DIRECTORY,
+# to initialise the `config.cache' entry for the locale directory,
+# based on the PREFERRED and FALLBACK specifications, which are
+# passed down, with identical meaning, from the caller.
+#
+# (Note that this macro attempts to handle the common Win32 scenario
+#  where directories named in $NLSPATH may have spaces embedded in their
+#  names, and the path separator character is `;' rather than `:';
+#  however, it cannot handle mixed POSIX/Win32 semantics).
+#
+AC_DEFUN([MAN_NLS_LOCALE_CACHE_INIT],
+[if test x$man_enable_nls = xyes
+ then
+   AC_CACHE_CHECK([where to install message catalogues], [man_cv_locale],
+   [[ac_dir="$1$PATH_SEPARATOR$NLSPATH"
+     m4_ifvaln([$2],
+       [ac_dir=$ac_dir$PATH_SEPARATOR`echo $2 | sed s",:,$PATH_SEPARATOR,"g`])dnl
+     ac_dir="$ac_dir$PATH_SEPARATOR$1"
+     for locale in `echo $ac_dir | sed -e s', ,%20,'g -e s",$PATH_SEPARATOR, ,"g`
+     do
+       test -d `echo $locale | sed -e s'?/%[NL].*??' -e s'?%20? ?'g` && break
+     done
+     locale=`echo $locale | sed s'?%20? ?'g`
+     MSYS_AC_CANONICAL_PATH([man_cv_locale], [$locale])dnl
+   ]])
+ fi[]dnl
+])
+
+# MAN_NLS_LOCALE_CACHE_OVERRIDE( DIR )
+# ------------------------------------
+# Internal macro called by MAN_NLS_LOCALE_DIRECTORY,
+# when configuring with the `--with-localedir=DIR' option specified;
+# it bypasses the normal NLSPATH search, and overrides any previously
+# cached setting, to impose the user's choice of directory where
+# message catalogues are to be installed.
+#
+AC_DEFUN([MAN_NLS_LOCALE_CACHE_OVERRIDE],
+[AC_MSG_CHECKING([where to install message catalogues])
+ MSYS_AC_CANONICAL_PATH([man_cv_locale], [$1])
+ AC_MSG_RESULT([$man_cv_locale])dnl
+])
+
+# MAN_LANGUAGES_AVAILABLE
+# -----------------------
+# Inspect the `manpage' source repository,
+# to identify which national language `manpage' sets are available.
+#
+AC_DEFUN([MAN_LANGUAGES_AVAILABLE],
+[m4_esyscmd([cd man; echo ?? | tr " " ,])dnl
+])
+
+# MAN_NLS_LANGUAGE_SELECTION( AVAILABLE )
+# ---------------------------------------
+# ENABLE/DISABLE National Language Support,
+# and select the language pack(s) to install, from those AVAILABLE.
+#
+AC_DEFUN([MAN_NLS_LANGUAGE_SELECTION],
+[AC_REQUIRE([WIN32_AC_NULLDEV])dnl
+ AC_REQUIRE([MAN_NLS_PREREQUISITES])dnl
+ AC_MSG_CHECKING([which national language manpages are required])
+ AC_ARG_WITH([languages],
+   MAN_LANGUAGE_HELP_STRING(MAN_LANGUAGE_LIST($1)),
+   [test x$withval = xall && languages=MAN_LANGUAGE_LIST($1) || languages=$withval],
+   [languages=en])
+ test x$languages = xnone && man_enable_nls=no languages=en
+ if test x$man_enable_nls = xno
+ then
+   AC_DEFINE([NONLS], [1], [Define to 1 if you DON'T want National Language Support.])
+ fi
+ AC_MSG_RESULT([$languages])
+ for lang in `IFS=,; echo $languages`
+ do
+   langname=`cat $srcdir/man/$lang.txt 2>$NULLDEV`
+   test x$langname = x && langname=$lang || langname="$lang ($langname)"
+   AC_MSG_CHECKING([whether $langname manpages are available])
+   ac_val=`exec 2>$NULLDEV; cd $srcdir/man/$lang && echo *.man || echo '*.man'`
+   if test "$ac_val" = "*.man"
+   then
+     ac_val=no
+   else
+     test x$man_languages != x && man_languages="$man_languages,"
+     man_languages=${man_languages}${lang}
+     ac_val=yes
+   fi
+   AC_MSG_RESULT([$ac_val])
+ done
+ AC_MSG_CHECKING([which national language manpages to install])
+ test x$man_languages = x && man_languages=en
+ AC_SUBST([languages], [`IFS="$IFS,"; eval echo $man_languages`])
+ AC_MSG_RESULT([$man_languages])dnl
+])
+
+# MAN_LANGUAGE_LIST( LANGUAGES,... )
+# ----------------------------------
+# A wrapper macro called by MAN_NLS_LANGUAGE_SELECTION,
+# to remove the trailing newline character from the LANGUAGES list
+# which is generated by MAN_LANGUAGES_AVAILABLE.
+#
+AC_DEFUN([MAN_LANGUAGE_LIST], [m4_bregexp([$*], [.*], [\&])])
+
+# MAN_LANGUAGE_HELP_STRING( LANGUAGES,... )
+# -----------------------------------------
+# A helper macro called by MAN_NLS_LANGUAGE_SELECTION,
+# to emit the list of available LANGUAGES in `configure --help' output.
+#
+AC_DEFUN([MAN_LANGUAGE_HELP_STRING],
+[AS_HELP_STRING([--with-languages=LIST],
+[LIST of language packs to install] MAN_AS_HELP_DEFAULT(SQ(en) only)[,])
+MAN_AS_HELP_APPEND([where LIST is SQ(all), any comma separated subset of SQ($*),])
+MAN_AS_HELP_APPEND([or SQ(none), to disable NLS and fall back to])[ SQ(en) only]dnl
+])
+
+# MAN_AS_HELP_DEFAULT( TEXT,... )
+# -------------------------------
+# Emit TEXT, enclosed in brackets, for use in an AS_HELP_STRING.
+#
+m4_define([MAN_AS_HELP_DEFAULT], [@<:@$*@:>@])
+
+# MAN_AS_HELP_APPEND( DESCRIPTION )
+# ---------------------------------
+# Append an extra line of DESCRIPTION to an AS_HELP_STRING.
+#
+m4_define([MAN_AS_HELP_APPEND], [AS_HELP_STRING([], [$*])])
+
+# SQ( TEXT )
+# ----------
+# Emit TEXT, enclosed in single quotation marks.
+#
+m4_define([SQ], [`$*'])dnl`
+
+## ================================================ ##
 ## Specify Filter Programs for Formatting man Pages ##
 ## ================================================ ##
 #
@@ -323,7 +529,8 @@ AC_DEFUN([MAN_FILTER_PREFERRED],
 #
 AC_DEFUN([MAN_FILTER_CONFIGURE_PREFERRED],
 [AC_ARG_WITH([$2],
-  AS_HELP_STRING([--with-$2=COMMAND], [use COMMAND @<:@$3@:>@ to invoke $1]),
+  AS_HELP_STRING([--with-$2=COMMAND],
+   [invoke $1 using COMMAND]) MAN_AS_HELP_DEFAULT([$3]),
   MAN_AC_PATH_COMMAND_OVERRIDE_CACHE([$2], [$withval]),
   MAN_AC_PATH_COMMAND([$2], [$3]))dnl
 ])
@@ -584,7 +791,7 @@ AC_DEFUN([MAN_DISABLE_NROFF_SGR],
 # Internal macro, called only by MAN_DISABLE_NROFF_SGR.
 # Check if we are able to verify the availability of nroff SGR output;
 # (we can't when we are cross compiling, and we won't bother if the user
-#  explicitly configures with the '--enable-sgr' option).
+#  explicitly configures with the `--enable-sgr' option).
 #
 AC_DEFUN([MAN_NROFF_SGR_CHECK],
 [man_sgr_check=indeterminate
@@ -605,7 +812,7 @@ AC_DEFUN([MAN_DISABLE_COL_WITH_GROFF],
 [AC_SUBST([pcol], ["$col"])
  AC_MSG_CHECKING([whether the COL filter should be deployed])
  case $troff in
-   [*groff*) pcol="" col="__undef__($col)" ac_val="no; (using groff)" ;;]
+   [*groff*) pcol="" col="__undef__($col)" ac_val="no (using groff)" ;;]
    [*)       ac_val=yes ;;]
  esac
  AC_MSG_RESULT([$ac_val])dnl

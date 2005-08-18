@@ -1,3 +1,40 @@
+2005-08-16  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Add NLS support hooks for autoconf managed configure.
+
+	* aclocal.m4 (MAN_NLS_HEADERS, MAN_NLS_FUNCTIONS):...
+	(MAN_NLS_PREREQUSITES): New macros; check for prerequisite header
+	files and library functions for NLS support.
+	(MAN_NLS_LOCALE_DIRECTORY): New macro; identify the root of the
+	message catalogue repository.
+	(MAN_NLS_LOCALE_CACHE_INIT, MAN_NLS_LOCALE_CACHE_OVERRIDE): New
+	macros; used internally by MAN_NLS_LOCALE_DIRECTORY only.
+	(MAN_NLS_LANGUAGE_SELECTION): New macro; implement the
+	`--with-languages=LIST' option for `configure'.
+	(MAN_LANGUAGE_LIST, MAN_LANGUAGE_HELP_STRING):...
+	(MAN_LANGUAGES_AVAILABLE): New macros; used internally by
+	MAN_NLS_LANGUAGE_SELECTION to deduce and display the list of available
+	languages, by inspecting the content of the `man' directory in the
+	distributed package.
+	(MAN_AS_HELP_DEFAULT, SQ, MAN_AS_HELP_APPEND): New `m4' macros;
+	complement AS_HELP_STRING, for displaying default choices, single
+	quoted literals, and extended help messages.
+	(MAN_CONFDIR, MAN_CONFIG_FILE, MAN_FILTER_PREFERRED): Minor `help'
+	string changes.
+	(MAN_NROFF_SGR_CHECK): Remove semicolon from `result' string.
+
+	* configure.ac (MAN_NLS_LOCALE_DIRECTORY, MAN_NLS_LANGUAGE_SELECTION):
+	Deploy; (these also force the MAN_NLS_PREREQUISITES check).
+
+	* configure: Regenerated.
+
+	* src/compat.h (NONLS): Leave config.h to specify it.
+
+	* config.h.in: Regenerated.
+
+	* man/Makefile.in: Add VPATH support; use ${srcdir} references to make
+	it work.
+
 2005-08-05  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	* man/ja/man.man (@man_config_fils@): Typing error; corrected...
