@@ -2,7 +2,7 @@
  *   Written by Keith Marshall (keithmarshall@users.sourceforge.net)
  *
  * Provides:
- *   const char* win32path_transform( const char* pathname );
+ *   char* win32path_transform( const char* pathname );
  *
  *     This function replaces all occurrences of the "\" character,
  *     in the specified Win32 "pathname", with the "/" character.
@@ -37,14 +37,14 @@
  * (but leave "D:" as a drive designator, if it is present).
  */
 
-const char *win32path_transform (const char *pathname)
+char *win32path_transform (const char *pathname)
 {
   char *p = (char *)pathname;
 
   if ( p )
     do if (*p == '\\') *p = '/';
       while (*p++);
-  return pathname;
+  return (char *) pathname;
 }
 
 /* win32path_is_absolute(): check if a specified Win32 path,

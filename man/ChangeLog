@@ -1,3 +1,16 @@
+2005-08-18  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Fix handling of path names as topic selectors on Win32.
+
+	* src/man.c (main): Handle non-option arguments as possible
+	POSIX_STYLE_PATH specifications, converted as required for Win32.
+	(man): Use IS_ABSOLUTE_PATH macro to check if `name' argument is an
+	absolute path name, so we catch both POSIX and Win32 style path names;
+	make `fullname' a POSIX_STYLE_PATH.
+
+	* src/compat.h, src/win32/winposix.c (win32path_transform): Remove
+	`const' qualifier from function return type.
+
 2005-08-16  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Add NLS support hooks for autoconf managed configure.

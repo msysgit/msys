@@ -70,7 +70,7 @@
 #define PATH_SEPARATOR_CHAR ';'
 #define POSIX_STYLE_PATH(p) win32path_transform(p)
 
-extern const char *win32path_transform(const char *);
+extern char *win32path_transform(const char *);
 
 /*
  * Because we are forcing the use of "/" as a directory separator,

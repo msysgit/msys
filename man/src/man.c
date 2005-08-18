@@ -988,7 +988,8 @@ man (const char *name, const char *section) {
 	       return 0;
 	  }
 	  fclose (fp);
-	  if (*name != '/' && getcwd(fullname, sizeof(fullname))
+	  if ( ! IS_ABSOLUTE_PATH(name)
+              && getcwd(fullname, sizeof(fullname))
 	      && strlen(fullname) + strlen(name) + 3 < sizeof(fullname)) {
 	       strcat (fullname, "/");
 	       strcat (fullname, name);
@@ -999,7 +1000,7 @@ man (const char *name, const char *section) {
 	       return 0;
 	  }
 
-	  strcpy (fullpath, fullname);
+	  strcpy (fullpath, POSIX_STYLE_PATH(fullname));
 	  if ((cp = rindex(fullpath, '/')) != NULL
 	      && cp-fullpath+4 < sizeof(fullpath)) {
 	       strcpy(cp+1, "..");
@@ -1291,7 +1292,7 @@ main (int argc, char **argv) {
      section_list = get_section_list ();
 
      while (optind < argc) {
-	  nextarg = argv[optind++];
+	  nextarg = POSIX_STYLE_PATH(argv[optind++]);
 
 	  /* is_section correctly accepts 3Xt as section, but also 9wm,
 	     so we should not believe is_section() for the last arg. */
