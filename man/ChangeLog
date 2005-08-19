@@ -1,5 +1,12 @@
 2005-08-18  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
+	Import changes from official `man-1.6' release.
+
+	* All files (PRE-MAN-1-6): Tag assigned prior to import.
+	(MAN-1-6): Tag assigned on import.
+
+2005-08-18  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
 	Fix handling of path names as topic selectors on Win32.
 
 	* src/man.c (main): Handle non-option arguments as possible
