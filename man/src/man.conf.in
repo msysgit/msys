@@ -39,12 +39,16 @@
 MANPATH 	@path__usr_man@
 MANPATH 	@path__usr_share_man@
 MANPATH 	@path__usr_local_man@
+MANPATH 	@path__usr_local_share_man@
 MANPATH 	@path__usr_X11R6_man@
 #
 # Uncomment any of these which you want to include by default...
 #
+# MANPATH 	@path__opt___STAR___man@
 # MANPATH 	@path__opt_teTeX_man@
+# MANPATH 	@path__usr_lib___STAR___man@
 # MANPATH 	@path__usr_lib_perl5_man@
+# MANPATH 	@path__usr_share___STAR___man@
 # MANPATH 	@path__usr_share_perl5_man@
 # MANPATH 	@path__usr_share_tcl_8_0_man@
 # MANPATH 	@path__usr_share_tk_8_0_man@
@@ -105,6 +109,8 @@ PIC		@pic@
 VGRIND		@vgrind@
 GRAP		@grap@
 PAGER		@pager@
+BROWSER		@browser@
+HTMLPAGER	@htmlpager@
 CAT		@cat@
 #
 # The command "man -a xyzzy" will show all man pages for xyzzy.

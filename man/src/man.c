@@ -78,11 +78,12 @@ extern char *rindex (const char *, int);	/* not always in <string.h> */
 #define SIZE(x) (sizeof(x)/sizeof((x)[0]))
 
 const char *progname;
-const char *pager;
+const char *pager, *browser, *htmlpager;
 char *colon_sep_section_list;
 char *roff_directive;
 char *dohp = 0;
 int do_irix;
+int do_win32;
 int apropos;
 int whatis;
 int nocats;			/* set by -c option: do not use cat page */
@@ -297,6 +298,30 @@ display_cat_file (const char *file) {
 }
 
 /*
+ * Simply display the preformatted page.
+ */
+static int
+display_html_file (const char *file) {
+     int found;
+
+     found = 0;
+
+     if (access (file, R_OK) == 0 && different_cat_file(file)) {
+	  char *command = NULL;
+
+	  if (isatty(1)) {
+	       command = my_xsprintf("%s %S", browser, file);
+	  } else {
+	       command = my_xsprintf("%s %S", htmlpager, file);
+	  }
+	  found = !do_system_command (command, 0);
+     }
+     return found;
+
+     return 1;
+}
+
+/*
  * Try to find the ultimate source file.  If the first line of the
  * current file is not of the form
  *
@@ -390,8 +415,6 @@ again:
      end = beg;
      while (*end != ' ' && *end != '\t' && *end != '\n' && *end != '\0')
 	  end++;		/* note that buf is NUL-terminated */
-     				/* hence the RH patch is superfluous */
-
      *end = '\0';
 
      /* If name ends in path/manx/foo.9x then use path, otherwise
@@ -569,10 +592,14 @@ make_roff_command (const char *path, const char *file) {
 	     so we just use two echo calls when needed */
 	  strcat(bufh, "(");
 	  if (ll) {
-	       /* we should set line length and title line length */
-	       /* however, a .lt command here fails, only
-		  .ev 1; .lt ...; .ev helps for my version of groff */
+	       /*
+		* We should set line length and title line length.
+		* However, a .lt command here fails, only
+		*  .ev 1; .lt ...; .ev helps for my version of groff.
+		* The LL assignment is needed by the mandoc macros.
+		*/
 	       sprintf(eos(bufh), "echo \".ll %d.%di\"; ", ll/10, ll%10);
+	       sprintf(eos(bufh), "echo \".nr LL %d.%di\"; ", ll/10, ll%10);
 #if 0
 	       sprintf(eos(bufh), "echo \".lt %d.%di\"; ", ll/10, ll%10);
 #endif
@@ -1039,6 +1066,10 @@ man (const char *name, const char *section) {
 	       type |= TYPE_MAN;
 	  if (fhs || fsstnd)
 	       type |= TYPE_SCAT;
+
+	  n = getval("BROWSER");
+	  if (n && *n)
+	      type |= TYPE_HTML;
      }
 
      flags = type;
@@ -1052,6 +1083,8 @@ man (const char *name, const char *section) {
 	  flags |= DO_HP;
      if (do_irix)
 	  flags |= DO_IRIX;
+     if (do_win32)
+	  flags |= DO_WIN32;
 
      mp = manfile(name, section, flags, section_list, mandirlist,
 		  convert_to_cat);
@@ -1065,6 +1098,12 @@ man (const char *name, const char *section) {
                     found = 1;
                } else
 	            found = display_cat_file(mp->filename);
+	  } else if (mp->type == TYPE_HTML) {
+               if (print_where) {
+                    printf ("%s\n", mp->filename);
+                    found = 1;
+               } else
+	            found = display_html_file(mp->filename);
 	  } else
 	       /* internal error */
 	       break;
@@ -1103,18 +1142,15 @@ get_section_list (void) {
      return tmp_section_list;
 }
 
-static void
+/* return 0 when all was OK */
+static int
 do_global_apropos (char *name, char *section) {
      char **dp, **gf;
      char *pathname;
      char *command;
-     int res;
+     int status, res;
 
-     /* do_global_apropos() produces a long stream of `system' commands,
-	and during the system() call SIGINT and SIGQUIT are being ignored,
-	so `man -K' is difficult to interrupt.
-	However, ^Z still works, and can be followed by `kill %1'. */
-
+     status = 0;
      init_manpath();
      if (mandirlist)
 	for (dp = mandirlist; *dp; dp++) {
@@ -1134,6 +1170,7 @@ do_global_apropos (char *name, char *section) {
 			 command = my_xsprintf("grep %s '%Q' %S",
 				 GREPSILENT, name, *gf);
 		    res = do_system_command (command, 1);
+		    status |= res;
 		    free (command);
 		    if (res == 0) {
 			 if (print_where)
@@ -1165,6 +1202,7 @@ do_global_apropos (char *name, char *section) {
 	       }
 	  }
      }
+     return status;
 }
 
 /* Special code for Japanese (to pick jnroff instead of nroff, etc.) */
@@ -1186,25 +1224,23 @@ setlang(void) {
 /*
  * Handle the apropos option.  Cheat by using another program.
  */
-static void
+static int
 do_apropos (char *name) {
-     char *command;
+	char *command;
 
-     command = my_xsprintf("%s %S", getval("APROPOS"), name);
-     (void) do_system_command (command, 0);
-     free (command);
+	command = my_xsprintf("'%s' '%Q'", getval("APROPOS"), name);
+	return do_system_command (command, 0);
 }
 
 /*
  * Handle the whatis option.  Cheat by using another program.
  */
-static void
+static int
 do_whatis (char *name) {
-     char *command;
+	char *command;
 
-     command = my_xsprintf("%s %S", getval("WHATIS"), name);
-     (void) do_system_command (command, 0);
-     free (command);
+	command = my_xsprintf("'%s' '%Q'", getval("WHATIS"), name);
+	return do_system_command (command, 0);
 }
 
 int
@@ -1214,7 +1250,7 @@ main (int argc, char **argv) {
      char *tmp;
      char *section = 0;
 
-#ifdef __CYGWIN32__
+#ifdef __CYGWIN__
      extern int optind;
 #endif
 
@@ -1236,6 +1272,8 @@ main (int argc, char **argv) {
 	CHECK("MAN_HP_DIREXT", 128);
 	CHECK("PAGER", 128);
 	CHECK("SYSTEM", 64);
+	CHECK("BROWSER", 64);
+	CHECK("HTMLPAGER", 64);
 	/* COLUMNS, LC_ALL, LC_CTYPE, MANPATH, MANWIDTH, MAN_IRIX_CATNAMES,
 	   MAN_ICONV_PATH, MAN_ICONV_OPT, MAN_ICONV_INPUT_CHARSET,
 	   MAN_ICONV_OUTPUT_CHARSET, NLSPATH, PATH */
@@ -1266,6 +1304,18 @@ main (int argc, char **argv) {
      /* Handle ls.z (instead of ls.1.z) cat page naming from IRIX */
      if (getenv("MAN_IRIX_CATNAMES"))
 	  do_irix = 1;
+
+#if defined(_WIN32) || defined(__CYGWIN__)
+/*
+ * These run on an OS with a Microsoft file system,
+ * which does not allow ':' in file names, other than as
+ * the separator following a device designator; set a flag
+ * so to remind us to handle this nuisance.
+ *
+ * FIXME: this should be handled in `compat.h'
+ */
+     do_win32 = 1;
+#endif
 
      progname = mkprogname (argv[0]);
 
@@ -1305,11 +1355,11 @@ main (int argc, char **argv) {
 	  }
 
 	  if (global_apropos)
-	       do_global_apropos (nextarg, section);
+	       status = !do_global_apropos (nextarg, section);
 	  else if (apropos)
-	       do_apropos (nextarg);
+	       status = !do_apropos (nextarg);
 	  else if (whatis)
-	       do_whatis (nextarg);
+	       status = !do_whatis (nextarg);
 	  else {
 	       status = man (nextarg, section);
 
@@ -1321,5 +1371,5 @@ main (int argc, char **argv) {
 	       }
 	  }
      }
-     return !status;
+     return status ? EXIT_SUCCESS : EXIT_FAILURE;
 }

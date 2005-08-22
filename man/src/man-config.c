@@ -11,8 +11,14 @@
  *	FSSTND
  *  NOAUTOPATH
  *	NROFF           /usr/bin/groff -Tascii -mandoc
+ *	BROWSER		/usr/bin/lynx
+ *	HTMLPAGER	/usr/bin/lynx -dump
  *	.gz             /usr/bin/gunzip -c
  *	# Comment
+ *
+ * Allow globbing in MANPATH elements.
+ * This is useful e.g. for having MANPATH /opt/ * /man
+ * (avoid comment within comment).
  */
 
 #include "compat.h"
@@ -25,6 +31,7 @@
 #endif
 
 #include "defs.h"
+#include "glob.h"
 #include "man-config.h"
 #include "man.h"
 #include "paths.h"
@@ -129,6 +136,26 @@ adddir (const char *bp, int mandatory) {
 	  if (dlp->catdir[0])
 	       gripe (FOUND_CATDIR, dlp->catdir);
      }
+}
+
+static void
+addglobdir (const char *bp, int mandatory) {
+	const char *dir;
+
+	while (whitespace(*bp))
+		bp++;
+
+	dir = bp;
+	if (index(dir, '*') || index(dir, '?') || index(dir, '[')) {
+		char **dp = glob_filename (dir);
+
+		if (dp && dp != (char **) -1) {
+			while (*dp)
+				adddir(*dp++, mandatory);
+			return;
+		}
+	}
+	adddir(dir, mandatory);
 }
 
 static struct xp {
@@ -255,7 +282,7 @@ read_config_file (const char *cf) {
 	  if (!strncmp ("MANPATH_MAP", bp, 11))
 	       adddir (bp+11, 0);
 	  else if (!strncmp ("MANPATH", bp, 7))
-	       adddir (bp+7, 1);
+	       addglobdir (bp+7, 1);
 	  else if(!strncmp ("MANDATORY_MANPATH", bp, 17))/* backwards compatible */
 	       adddir (bp+17, 1);
 	  else if (!strncmp ("FHS", bp, 3))

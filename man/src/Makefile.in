@@ -47,6 +47,7 @@ PREFIX = ${prefix}
 
 # Compiler and installer.
 CC = @CC@
+BUILD_CC = @BUILD_CC@
 INSTALL = @INSTALL@
 
 # Platform dependent file name extensions.
@@ -107,7 +108,10 @@ man.$(OBJEXT): man.c
 msg.c gripedefs.h: $(top_srcdir)/msgs/mess.en makemsg
 	./makemsg $(top_srcdir)/msgs/mess.en gripedefs.h msg.c
 
-makemsg: makemsg.$(OBJEXT)
+# CC may be a cross compiler, but BUILD_CC must compile for
+# the machine on which we are building `man'.
+makemsg: makemsg.c
+	$(BUILD_CC) -o makemsg $(CFLAGS) $(DEFS) $(srcdir)/makemsg.c
 
 # glob.c does not have prototypes
 glob.$(OBJEXT): glob.c ndir.h
@@ -161,7 +165,7 @@ apropos: apropos.sh Makefile
 	rm -f apropos
 	sed -e 's,%apropos_or_whatis%,apropos,' \
 	    -e 's,%version%,$(package)-$(version),' \
-	    -e 's,%pager%,@pager@,' -e 's,%manpathoption%,@manpathoption@,' \
+	    -e 's,%manpathoption%,@manpathoption@,' \
 	    -e 's,%grepsilent%,@man_grepsilent@,' \
 		$(srcdir)/apropos.sh > apropos
 	chmod +x apropos
@@ -170,7 +174,7 @@ whatis: apropos.sh Makefile
 	rm -f whatis
 	sed -e 's,%apropos_or_whatis%,whatis,' \
 	    -e 's,%version%,$(package)-$(version),' \
-	    -e 's,%pager%,@pager@,' -e 's,%manpathoption%,@manpathoption@,' \
+	    -e 's,%manpathoption%,@manpathoption@,' \
 	    -e 's,%grepsilent%,@man_grepsilent@,' \
 		$(srcdir)/apropos.sh > whatis
 	chmod +x whatis
@@ -181,17 +185,17 @@ makewhatis: makewhatis.sh Makefile
 	    -e 's,%awk%,@awk@,' $(srcdir)/makewhatis.sh > makewhatis
 	chmod +x makewhatis
 
-MANCONFIG=$(PREFIX)@man_config_file@
+MANCONFIG=$(DESTDIR)$(PREFIX)@man_config_file@
 
 install: all apropos whatis makewhatis
-	mkdir -p $(PREFIX)@bindir@
-	$(INSTALL) -c @man_install_flags@ man $(PREFIX)@man@
-	$(INSTALL) -c -m 755 apropos $(PREFIX)@apropos@
-	$(INSTALL) -c -m 755 whatis $(PREFIX)@whatis@
-	$(INSTALL) -c -m 755 man2dvi $(PREFIX)@man2dvi@
-	mkdir -p $(PREFIX)@sbindir@
-	$(INSTALL) -c -m 754 makewhatis $(PREFIX)@makewhatis@
-	mkdir -p $(PREFIX)@man_config_dir@
+	mkdir -p $(DESTDIR)$(PREFIX)@bindir@
+	$(INSTALL) -c @man_install_flags@ man $(DESTDIR)$(PREFIX)@man@
+	$(INSTALL) -c -m 755 apropos $(DESTDIR)$(PREFIX)@apropos@
+	$(INSTALL) -c -m 755 whatis $(DESTDIR)$(PREFIX)@whatis@
+	$(INSTALL) -c -m 755 man2dvi $(DESTDIR)$(PREFIX)@man2dvi@
+	mkdir -p $(DESTDIR)$(PREFIX)@sbindir@
+	$(INSTALL) -c -m 754 makewhatis $(DESTDIR)$(PREFIX)@makewhatis@
+	mkdir -p $(DESTDIR)$(PREFIX)@man_config_dir@
 	if [ -f $(MANCONFIG) ]; then mv $(MANCONFIG) $(MANCONFIG).orig; fi
 	$(INSTALL) -c -m 644 man.conf $(MANCONFIG)
 

@@ -31,7 +31,7 @@ MANPAGE_SED_TRANSFORM = \
 INSTALL = @INSTALL@ -c -m 644
 
 # Where to put the manual pages.
-mandir = $(PREFIX)@mandir@$(SLANG)
+mandir = $(DESTDIR)$(PREFIX)@mandir@$(SLANG)
 
 all:	$(ALL)
 	for i in $(MAYBE8); \
@@ -51,7 +51,7 @@ install: $(ALL)
 	 fi; done
 
 clean:
-	rm -f core *.in *.@man1ext@ *.@man5ext@ *~
+	rm -f core *.in *.@man1ext@ *.@man5ext@ *.@man8ext@ *~
 
 spotless:
 

@@ -38,6 +38,9 @@ VPATH = $(srcdir)
 all:	Makefile $(config_sed) source manhtml manpages $(make_messages)
 	@echo; echo 'You can now do "make install"'
 
+# On a machine with time before distribution time
+# it may be necessary to touch all distributed files
+
 Makefile: Makefile.in configure
 	@echo "Please run configure first"
 	exit 1

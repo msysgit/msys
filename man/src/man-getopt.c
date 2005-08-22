@@ -49,9 +49,10 @@ usage (void) {
      exit(1);
 }
 
-static char short_opts[] = "C:M:P:S:acdDfFhkKm:p:s:tvVwW?";
+static char short_opts[] = "B:C:H:xM:P:S:acdfFhkKm:p:s:tvVwW?";
 
 #ifndef NOGETOPT
+#undef _GNU_SOURCE
 #define _GNU_SOURCE
 #include <getopt.h>
 
@@ -95,6 +96,12 @@ get_options_from_argvec(int argc, char **argv, char **config_file,
 	  case 'P':
 	       pager = my_strdup (optarg);
 	       break;
+	  case 'B':
+	       browser = my_strdup (optarg);
+	       break;
+	  case 'H':
+	       htmlpager = my_strdup (optarg);
+	       break;
 	  case 'S':
 	       colon_sep_section_list = my_strdup (optarg); 
 	       break;
@@ -113,8 +120,6 @@ get_options_from_argvec(int argc, char **argv, char **config_file,
 	  case 'c':
 	       nocats++;
 	       break;
-	  case 'D':
-	       debug++;
 	  case 'd':
 	       debug++;
 	       break;
@@ -191,7 +196,7 @@ get_options_from_string(const char *s) {
 	char **argvec;
 	int optindsv;
 
-	if (!s)
+	if (!s || *s == 0)
 		return;
 
 	/* In order to avoid having a list of options in two places,
@@ -234,6 +239,18 @@ get_options_from_string(const char *s) {
 	optind = optindsv;
 }
 
+static void 
+mysetenv(const char *name, const char *value) {
+#ifdef HAVE_SETENV
+    setenv(name, value, 1);
+#else
+    int len = strlen(value)+1+strlen(value)+1;
+    char *str = my_malloc(len);
+    sprintf(str, "%s=%s", name, value);
+    putenv(str);
+#endif
+}
+
 /*
  * Get options from the command line and user environment.
  * Also reads the configuration file.
@@ -259,17 +276,8 @@ man_getopt (int argc, char **argv) {
 	environment for possible use with -k or -K.
 	Ignore errors (out of memory?) */
 
-     if (pager && (global_apropos || apropos || whatis)) {
-
-#ifdef HAVE_SETENV
-	     setenv("PAGER", pager, 1);
-#else
-	     int len = 5+1+strlen(pager)+1;
-	     char *str = my_malloc(len);
-	     sprintf(str, "PAGER=%s", pager);
-	     putenv(str);
-#endif
-     }
+     if (pager && (global_apropos || apropos || whatis))
+	     mysetenv("PAGER", pager);
 
      if (pager == NULL || *pager == '\0')
 	  if ((pager = getenv ("MANPAGER")) == NULL)
@@ -278,6 +286,28 @@ man_getopt (int argc, char **argv) {
 
      if (debug)
 	  gripe (PAGER_IS, pager);
+
+     /* Ditto for BROWSER and -B */
+     if (browser && (global_apropos || apropos || whatis))
+	 mysetenv("BROWSER", browser);
+
+     if (browser == NULL || *browser == '\0')
+	 if ((browser = getenv ("BROWSER")) == NULL)
+	     browser = getval ("BROWSER");
+
+     if (debug)
+	  gripe (BROWSER_IS, browser);
+
+     /* Ditto for HTMLPAGER and -H */
+     if (htmlpager && (global_apropos || apropos || whatis))
+	 mysetenv("HTMLPAGER", htmlpager);
+
+     if (htmlpager == NULL || *htmlpager == '\0')
+	 if ((htmlpager = getenv ("HTMLPAGER")) == NULL)
+	     htmlpager = getval ("HTMLPAGER");
+
+     if (debug)
+	  gripe (HTMLPAGER_IS, htmlpager);
 
      if (do_compress && !*getval ("COMPRESS")) {
 	  if (debug)
