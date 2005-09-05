@@ -1,3 +1,34 @@
+2005-09-05  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Autoconfiscate `man-1.6' additions.
+
+	* aclocal.m4 (man_path_transform): New macro; it defines the
+	correlation between path names, and ther corresponding substitution
+	variable names.
+	(MANPATH_DEFAULT_INCLUDE, MANPATH_MAP_DEFAULT, MANPATH_MAP_ALIAS):...
+	(MANPATH_MAP_CANONICAL): Use `man_path_transform'.
+	(MAN_LANGUAGE_LIST): Use `m4_normalize' instead of `m4_bpatsubst'.
+
+	* configure.ac (MANSECT_SEARCH_ORDER): Add 1p, 3p and 0p.
+	(MANPATH_DEFAULT_INCLUDE): Add /usr/local/share/man, /usr/lib/*/man,
+	/usr/share/*/man, /opt/*/man;  remove /opt/teTeX/man,
+	/usr/lib/perl5/man, /usr/share/perl5/man, /usr/share/tcl-8.0/man,
+	/usr/share/tk-8.0/man, usr/share/tix-4.1/man, /usr/share/coas/man.
+	(MANPATH_MAP_ALIAS): Add /usr/local/man to /usr/local/share/man
+	remapping for FHS.
+	(MANPATH_MAP_DEFAULT): Minor table formatting change.
+	(MAN_FILTER_PREFERRED): Add `lynx' as BROWSER, `lynx -dump' as
+	HTMLPAGER.
+	(MAN_FILTER_ALTERNATE): Make BROWSER fallback to PAGER, HTMLPAGER
+	fallback to CAT.
+
+	* configure: Regenerated.
+
+	* src/man.conf.in (MANPATH): Remove substitution references for
+	/opt/teTeX/man, /usr/lib/perl5/man, /usr/share/perl5/man,
+	/usr/share/tcl-8.0/man, /usr/share/tk-8.0/man, usr/share/tix-4.1/man,
+	/usr/share/coas/man.
+
 2005-08-22  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Resolve conflicts from merge of `man-1.6' release.

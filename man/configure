@@ -328,7 +328,7 @@ ac_includes_default="\
 # include <unistd.h>
 #endif"
 
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS AWK CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA LN_S SET_MAKE CPP EGREP ALLOCA LIBOBJS FHS FSSTND man_config_file sections NULLDEV path__usr_man path__usr_local_man path__usr_share_man path__usr_X11R6_man path__opt_teTeX_man path__usr_lib_perl5_man path__usr_share_perl5_man path__usr_share_tcl_8_0_man path__usr_share_tk_8_0_man path__usr_share_tix_4_1_man path__usr_share_coas_man path__usr_kerberos_man map_to__usr_man path__bin path__sbin path__usr_bin path__usr_sbin map_to__usr_local_man path__usr_local_bin path__usr_local_sbin map_to__usr_X11R6_man path__usr_X11R6_bin path__usr_bin_X11 path__usr_bin_mh languages locale pager man_grepsilent cat troff nroff jnroff col pcol eqn neqn jneqn tbl vgrind refer grap pic cmp compress compress_ext gunzip bzip2 pcat zcat fcat unyabba decompress LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS AWK CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA LN_S SET_MAKE CPP EGREP ALLOCA LIBOBJS FHS FSSTND man_config_file sections NULLDEV path__usr_man path__usr_share_man path__usr_local_man path__usr_local_share_man path__usr_X11R6_man path__opt___STAR___man path__usr_lib___STAR___man path__usr_share___STAR___man path__usr_kerberos_man map_to__usr_man path__bin path__sbin path__usr_bin path__usr_sbin map_to__usr_local_man path__usr_local_bin path__usr_local_sbin map_to__usr_X11R6_man path__usr_X11R6_bin path__usr_bin_X11 path__usr_bin_mh languages locale pager browser htmlpager man_grepsilent cat troff nroff jnroff col pcol eqn neqn jneqn tbl vgrind refer grap pic cmp compress compress_ext gunzip bzip2 pcat zcat fcat unyabba decompress LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -872,13 +872,16 @@ Optional Packages:
   --with-confdir=DIR      install configuration file in DIR [PREFIX/lib]
   --with-config=NAME      NAME of configuration file [man.conf]
   --with-sections=LIST    colon separated ordered LIST of MANPAGE sections to
-                          search [1:8:2:3:4:5:6:7:9:tcl:n:l:p:o]
+                          search [1:1p:8:2:3:3p:4:5:6:7:9:0p:tcl:n:l:p:o]
   --with-languages=LIST   LIST of language packs to install [`en' only],
                           where LIST is `all', any comma separated subset of
                           `bg,cs,da,de,el,en,es,fi,fr,hr,it,ja,ko,nl,pl,pt,ro,sl',
                           or `none', to disable NLS and fall back to `en' only
   --with-localedir=DIR    message catalogue DIR [/usr/lib/locale/%N/%L]
   --with-pager=COMMAND    invoke PAGER using COMMAND [less -is]
+  --with-browser=COMMAND  invoke BROWSER using COMMAND [lynx]
+  --with-htmlpager=COMMAND
+                          invoke HTMLPAGER using COMMAND [lynx -dump]
   --with-cat=COMMAND      invoke CAT using COMMAND [cat]
   --with-troff=COMMAND    invoke TROFF using COMMAND [groff -Tps -mandoc]
   --with-nroff=COMMAND    invoke NROFF using COMMAND [nroff -Tlatin1 -mandoc]
@@ -6858,7 +6861,7 @@ if test "${with_sections+set}" = set; then
   withval="$with_sections"
   sections=${withval}
 else
-  sections=1:8:2:3:4:5:6:7:9:tcl:n:l:p:o
+  sections=1:1p:8:2:3:3p:4:5:6:7:9:0p:tcl:n:l:p:o
 fi;
 
 
@@ -6953,6 +6956,39 @@ echo "$as_me:$LINENO: result: $man_cv_path__usr_man" >&5
 echo "${ECHO_T}$man_cv_path__usr_man" >&6
  path__usr_man=${man_cv_path__usr_man}
 
+   echo "$as_me:$LINENO: checking canonical MANPATH form for /usr/share/man" >&5
+echo $ECHO_N "checking canonical MANPATH form for /usr/share/man... $ECHO_C" >&6
+if test "${man_cv_path__usr_share_man+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  ac_dir="/usr/share/man"
+ pwd -W >/dev/null 2>&1 && ac_pwd_w="pwd -W" || ac_pwd_w=pwd
+ until ac_val=`exec 2>/dev/null; cd "$ac_dir" && $ac_pwd_w`
+ do
+   ac_dir=`(dirname "$ac_dir") 2>/dev/null ||
+$as_expr X"$ac_dir" : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
+	 X"$ac_dir" : 'X\(//\)[^/]' \| \
+	 X"$ac_dir" : 'X\(//\)$' \| \
+	 X"$ac_dir" : 'X\(/\)' \| \
+	 .     : '\(.\)' 2>/dev/null ||
+echo X"$ac_dir" |
+    sed '/^X\(.*[^/]\)\/\/*[^/][^/]*\/*$/{ s//\1/; q; }
+  	  /^X\(\/\/\)[^/].*/{ s//\1/; q; }
+  	  /^X\(\/\/\)$/{ s//\1/; q; }
+  	  /^X\(\/\).*/{ s//\1/; q; }
+  	  s/.*/./; q'`
+ done
+ ac_dir=`echo "$ac_dir" | sed 's?^[./]*??'`
+ ac_val=`echo "$ac_val" | sed 's?/*$??'`
+ man_cv_path__usr_share_man=`echo "/usr/share/man" | sed "s?^[./]*$ac_dir/*?$ac_val/?"'
+   s?/*$??'`
+
+  (exec >${NULLDEV} 2>&1; cd /usr/share/man) || man_cv_path__usr_share_man="__undef__(${man_cv_path__usr_share_man})"
+fi
+echo "$as_me:$LINENO: result: $man_cv_path__usr_share_man" >&5
+echo "${ECHO_T}$man_cv_path__usr_share_man" >&6
+ path__usr_share_man=${man_cv_path__usr_share_man}
+
    echo "$as_me:$LINENO: checking canonical MANPATH form for /usr/local/man" >&5
 echo $ECHO_N "checking canonical MANPATH form for /usr/local/man... $ECHO_C" >&6
 if test "${man_cv_path__usr_local_man+set}" = set; then
@@ -6986,12 +7022,12 @@ echo "$as_me:$LINENO: result: $man_cv_path__usr_local_man" >&5
 echo "${ECHO_T}$man_cv_path__usr_local_man" >&6
  path__usr_local_man=${man_cv_path__usr_local_man}
 
-   echo "$as_me:$LINENO: checking canonical MANPATH form for /usr/share/man" >&5
-echo $ECHO_N "checking canonical MANPATH form for /usr/share/man... $ECHO_C" >&6
-if test "${man_cv_path__usr_share_man+set}" = set; then
+   echo "$as_me:$LINENO: checking canonical MANPATH form for /usr/local/share/man" >&5
+echo $ECHO_N "checking canonical MANPATH form for /usr/local/share/man... $ECHO_C" >&6
+if test "${man_cv_path__usr_local_share_man+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
 else
-  ac_dir="/usr/share/man"
+  ac_dir="/usr/local/share/man"
  pwd -W >/dev/null 2>&1 && ac_pwd_w="pwd -W" || ac_pwd_w=pwd
  until ac_val=`exec 2>/dev/null; cd "$ac_dir" && $ac_pwd_w`
  do
@@ -7010,14 +7046,14 @@ echo X"$ac_dir" |
  done
  ac_dir=`echo "$ac_dir" | sed 's?^[./]*??'`
  ac_val=`echo "$ac_val" | sed 's?/*$??'`
- man_cv_path__usr_share_man=`echo "/usr/share/man" | sed "s?^[./]*$ac_dir/*?$ac_val/?"'
+ man_cv_path__usr_local_share_man=`echo "/usr/local/share/man" | sed "s?^[./]*$ac_dir/*?$ac_val/?"'
    s?/*$??'`
 
-  (exec >${NULLDEV} 2>&1; cd /usr/share/man) || man_cv_path__usr_share_man="__undef__(${man_cv_path__usr_share_man})"
+  (exec >${NULLDEV} 2>&1; cd /usr/local/share/man) || man_cv_path__usr_local_share_man="__undef__(${man_cv_path__usr_local_share_man})"
 fi
-echo "$as_me:$LINENO: result: $man_cv_path__usr_share_man" >&5
-echo "${ECHO_T}$man_cv_path__usr_share_man" >&6
- path__usr_share_man=${man_cv_path__usr_share_man}
+echo "$as_me:$LINENO: result: $man_cv_path__usr_local_share_man" >&5
+echo "${ECHO_T}$man_cv_path__usr_local_share_man" >&6
+ path__usr_local_share_man=${man_cv_path__usr_local_share_man}
 
    echo "$as_me:$LINENO: checking canonical MANPATH form for /usr/X11R6/man" >&5
 echo $ECHO_N "checking canonical MANPATH form for /usr/X11R6/man... $ECHO_C" >&6
@@ -7057,12 +7093,12 @@ echo "${ECHO_T}$man_cv_path__usr_X11R6_man" >&6
 # (we use MANPATH_DEFAULT_INCLUDE, but OCCLUSION is specified by
 #  a leading `#' in src/man.conf.in).
 #
-   echo "$as_me:$LINENO: checking canonical MANPATH form for /opt/teTeX/man" >&5
-echo $ECHO_N "checking canonical MANPATH form for /opt/teTeX/man... $ECHO_C" >&6
-if test "${man_cv_path__opt_teTeX_man+set}" = set; then
+   echo "$as_me:$LINENO: checking canonical MANPATH form for /opt/*/man" >&5
+echo $ECHO_N "checking canonical MANPATH form for /opt/*/man... $ECHO_C" >&6
+if test "${man_cv_path__opt___STAR___man+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
 else
-  ac_dir="/opt/teTeX/man"
+  ac_dir="/opt/*/man"
  pwd -W >/dev/null 2>&1 && ac_pwd_w="pwd -W" || ac_pwd_w=pwd
  until ac_val=`exec 2>/dev/null; cd "$ac_dir" && $ac_pwd_w`
  do
@@ -7081,21 +7117,21 @@ echo X"$ac_dir" |
  done
  ac_dir=`echo "$ac_dir" | sed 's?^[./]*??'`
  ac_val=`echo "$ac_val" | sed 's?/*$??'`
- man_cv_path__opt_teTeX_man=`echo "/opt/teTeX/man" | sed "s?^[./]*$ac_dir/*?$ac_val/?"'
+ man_cv_path__opt___STAR___man=`echo "/opt/*/man" | sed "s?^[./]*$ac_dir/*?$ac_val/?"'
    s?/*$??'`
 
-  (exec >${NULLDEV} 2>&1; cd /opt/teTeX/man) || man_cv_path__opt_teTeX_man="__undef__(${man_cv_path__opt_teTeX_man})"
+  (exec >${NULLDEV} 2>&1; cd /opt/*/man) || man_cv_path__opt___STAR___man="__undef__(${man_cv_path__opt___STAR___man})"
 fi
-echo "$as_me:$LINENO: result: $man_cv_path__opt_teTeX_man" >&5
-echo "${ECHO_T}$man_cv_path__opt_teTeX_man" >&6
- path__opt_teTeX_man=${man_cv_path__opt_teTeX_man}
+echo "$as_me:$LINENO: result: $man_cv_path__opt___STAR___man" >&5
+echo "${ECHO_T}$man_cv_path__opt___STAR___man" >&6
+ path__opt___STAR___man=${man_cv_path__opt___STAR___man}
 
-   echo "$as_me:$LINENO: checking canonical MANPATH form for /usr/lib/perl5/man" >&5
-echo $ECHO_N "checking canonical MANPATH form for /usr/lib/perl5/man... $ECHO_C" >&6
-if test "${man_cv_path__usr_lib_perl5_man+set}" = set; then
+   echo "$as_me:$LINENO: checking canonical MANPATH form for /usr/lib/*/man" >&5
+echo $ECHO_N "checking canonical MANPATH form for /usr/lib/*/man... $ECHO_C" >&6
+if test "${man_cv_path__usr_lib___STAR___man+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
 else
-  ac_dir="/usr/lib/perl5/man"
+  ac_dir="/usr/lib/*/man"
  pwd -W >/dev/null 2>&1 && ac_pwd_w="pwd -W" || ac_pwd_w=pwd
  until ac_val=`exec 2>/dev/null; cd "$ac_dir" && $ac_pwd_w`
  do
@@ -7114,21 +7150,21 @@ echo X"$ac_dir" |
  done
  ac_dir=`echo "$ac_dir" | sed 's?^[./]*??'`
  ac_val=`echo "$ac_val" | sed 's?/*$??'`
- man_cv_path__usr_lib_perl5_man=`echo "/usr/lib/perl5/man" | sed "s?^[./]*$ac_dir/*?$ac_val/?"'
+ man_cv_path__usr_lib___STAR___man=`echo "/usr/lib/*/man" | sed "s?^[./]*$ac_dir/*?$ac_val/?"'
    s?/*$??'`
 
-  (exec >${NULLDEV} 2>&1; cd /usr/lib/perl5/man) || man_cv_path__usr_lib_perl5_man="__undef__(${man_cv_path__usr_lib_perl5_man})"
+  (exec >${NULLDEV} 2>&1; cd /usr/lib/*/man) || man_cv_path__usr_lib___STAR___man="__undef__(${man_cv_path__usr_lib___STAR___man})"
 fi
-echo "$as_me:$LINENO: result: $man_cv_path__usr_lib_perl5_man" >&5
-echo "${ECHO_T}$man_cv_path__usr_lib_perl5_man" >&6
- path__usr_lib_perl5_man=${man_cv_path__usr_lib_perl5_man}
+echo "$as_me:$LINENO: result: $man_cv_path__usr_lib___STAR___man" >&5
+echo "${ECHO_T}$man_cv_path__usr_lib___STAR___man" >&6
+ path__usr_lib___STAR___man=${man_cv_path__usr_lib___STAR___man}
 
-   echo "$as_me:$LINENO: checking canonical MANPATH form for /usr/share/perl5/man" >&5
-echo $ECHO_N "checking canonical MANPATH form for /usr/share/perl5/man... $ECHO_C" >&6
-if test "${man_cv_path__usr_share_perl5_man+set}" = set; then
+   echo "$as_me:$LINENO: checking canonical MANPATH form for /usr/share/*/man" >&5
+echo $ECHO_N "checking canonical MANPATH form for /usr/share/*/man... $ECHO_C" >&6
+if test "${man_cv_path__usr_share___STAR___man+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
 else
-  ac_dir="/usr/share/perl5/man"
+  ac_dir="/usr/share/*/man"
  pwd -W >/dev/null 2>&1 && ac_pwd_w="pwd -W" || ac_pwd_w=pwd
  until ac_val=`exec 2>/dev/null; cd "$ac_dir" && $ac_pwd_w`
  do
@@ -7147,146 +7183,14 @@ echo X"$ac_dir" |
  done
  ac_dir=`echo "$ac_dir" | sed 's?^[./]*??'`
  ac_val=`echo "$ac_val" | sed 's?/*$??'`
- man_cv_path__usr_share_perl5_man=`echo "/usr/share/perl5/man" | sed "s?^[./]*$ac_dir/*?$ac_val/?"'
+ man_cv_path__usr_share___STAR___man=`echo "/usr/share/*/man" | sed "s?^[./]*$ac_dir/*?$ac_val/?"'
    s?/*$??'`
 
-  (exec >${NULLDEV} 2>&1; cd /usr/share/perl5/man) || man_cv_path__usr_share_perl5_man="__undef__(${man_cv_path__usr_share_perl5_man})"
+  (exec >${NULLDEV} 2>&1; cd /usr/share/*/man) || man_cv_path__usr_share___STAR___man="__undef__(${man_cv_path__usr_share___STAR___man})"
 fi
-echo "$as_me:$LINENO: result: $man_cv_path__usr_share_perl5_man" >&5
-echo "${ECHO_T}$man_cv_path__usr_share_perl5_man" >&6
- path__usr_share_perl5_man=${man_cv_path__usr_share_perl5_man}
-
-   echo "$as_me:$LINENO: checking canonical MANPATH form for /usr/share/tcl-8.0/man" >&5
-echo $ECHO_N "checking canonical MANPATH form for /usr/share/tcl-8.0/man... $ECHO_C" >&6
-if test "${man_cv_path__usr_share_tcl_8_0_man+set}" = set; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  ac_dir="/usr/share/tcl-8.0/man"
- pwd -W >/dev/null 2>&1 && ac_pwd_w="pwd -W" || ac_pwd_w=pwd
- until ac_val=`exec 2>/dev/null; cd "$ac_dir" && $ac_pwd_w`
- do
-   ac_dir=`(dirname "$ac_dir") 2>/dev/null ||
-$as_expr X"$ac_dir" : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
-	 X"$ac_dir" : 'X\(//\)[^/]' \| \
-	 X"$ac_dir" : 'X\(//\)$' \| \
-	 X"$ac_dir" : 'X\(/\)' \| \
-	 .     : '\(.\)' 2>/dev/null ||
-echo X"$ac_dir" |
-    sed '/^X\(.*[^/]\)\/\/*[^/][^/]*\/*$/{ s//\1/; q; }
-  	  /^X\(\/\/\)[^/].*/{ s//\1/; q; }
-  	  /^X\(\/\/\)$/{ s//\1/; q; }
-  	  /^X\(\/\).*/{ s//\1/; q; }
-  	  s/.*/./; q'`
- done
- ac_dir=`echo "$ac_dir" | sed 's?^[./]*??'`
- ac_val=`echo "$ac_val" | sed 's?/*$??'`
- man_cv_path__usr_share_tcl_8_0_man=`echo "/usr/share/tcl-8.0/man" | sed "s?^[./]*$ac_dir/*?$ac_val/?"'
-   s?/*$??'`
-
-  (exec >${NULLDEV} 2>&1; cd /usr/share/tcl-8.0/man) || man_cv_path__usr_share_tcl_8_0_man="__undef__(${man_cv_path__usr_share_tcl_8_0_man})"
-fi
-echo "$as_me:$LINENO: result: $man_cv_path__usr_share_tcl_8_0_man" >&5
-echo "${ECHO_T}$man_cv_path__usr_share_tcl_8_0_man" >&6
- path__usr_share_tcl_8_0_man=${man_cv_path__usr_share_tcl_8_0_man}
-
-   echo "$as_me:$LINENO: checking canonical MANPATH form for /usr/share/tk-8.0/man" >&5
-echo $ECHO_N "checking canonical MANPATH form for /usr/share/tk-8.0/man... $ECHO_C" >&6
-if test "${man_cv_path__usr_share_tk_8_0_man+set}" = set; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  ac_dir="/usr/share/tk-8.0/man"
- pwd -W >/dev/null 2>&1 && ac_pwd_w="pwd -W" || ac_pwd_w=pwd
- until ac_val=`exec 2>/dev/null; cd "$ac_dir" && $ac_pwd_w`
- do
-   ac_dir=`(dirname "$ac_dir") 2>/dev/null ||
-$as_expr X"$ac_dir" : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
-	 X"$ac_dir" : 'X\(//\)[^/]' \| \
-	 X"$ac_dir" : 'X\(//\)$' \| \
-	 X"$ac_dir" : 'X\(/\)' \| \
-	 .     : '\(.\)' 2>/dev/null ||
-echo X"$ac_dir" |
-    sed '/^X\(.*[^/]\)\/\/*[^/][^/]*\/*$/{ s//\1/; q; }
-  	  /^X\(\/\/\)[^/].*/{ s//\1/; q; }
-  	  /^X\(\/\/\)$/{ s//\1/; q; }
-  	  /^X\(\/\).*/{ s//\1/; q; }
-  	  s/.*/./; q'`
- done
- ac_dir=`echo "$ac_dir" | sed 's?^[./]*??'`
- ac_val=`echo "$ac_val" | sed 's?/*$??'`
- man_cv_path__usr_share_tk_8_0_man=`echo "/usr/share/tk-8.0/man" | sed "s?^[./]*$ac_dir/*?$ac_val/?"'
-   s?/*$??'`
-
-  (exec >${NULLDEV} 2>&1; cd /usr/share/tk-8.0/man) || man_cv_path__usr_share_tk_8_0_man="__undef__(${man_cv_path__usr_share_tk_8_0_man})"
-fi
-echo "$as_me:$LINENO: result: $man_cv_path__usr_share_tk_8_0_man" >&5
-echo "${ECHO_T}$man_cv_path__usr_share_tk_8_0_man" >&6
- path__usr_share_tk_8_0_man=${man_cv_path__usr_share_tk_8_0_man}
-
-   echo "$as_me:$LINENO: checking canonical MANPATH form for /usr/share/tix-4.1/man" >&5
-echo $ECHO_N "checking canonical MANPATH form for /usr/share/tix-4.1/man... $ECHO_C" >&6
-if test "${man_cv_path__usr_share_tix_4_1_man+set}" = set; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  ac_dir="/usr/share/tix-4.1/man"
- pwd -W >/dev/null 2>&1 && ac_pwd_w="pwd -W" || ac_pwd_w=pwd
- until ac_val=`exec 2>/dev/null; cd "$ac_dir" && $ac_pwd_w`
- do
-   ac_dir=`(dirname "$ac_dir") 2>/dev/null ||
-$as_expr X"$ac_dir" : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
-	 X"$ac_dir" : 'X\(//\)[^/]' \| \
-	 X"$ac_dir" : 'X\(//\)$' \| \
-	 X"$ac_dir" : 'X\(/\)' \| \
-	 .     : '\(.\)' 2>/dev/null ||
-echo X"$ac_dir" |
-    sed '/^X\(.*[^/]\)\/\/*[^/][^/]*\/*$/{ s//\1/; q; }
-  	  /^X\(\/\/\)[^/].*/{ s//\1/; q; }
-  	  /^X\(\/\/\)$/{ s//\1/; q; }
-  	  /^X\(\/\).*/{ s//\1/; q; }
-  	  s/.*/./; q'`
- done
- ac_dir=`echo "$ac_dir" | sed 's?^[./]*??'`
- ac_val=`echo "$ac_val" | sed 's?/*$??'`
- man_cv_path__usr_share_tix_4_1_man=`echo "/usr/share/tix-4.1/man" | sed "s?^[./]*$ac_dir/*?$ac_val/?"'
-   s?/*$??'`
-
-  (exec >${NULLDEV} 2>&1; cd /usr/share/tix-4.1/man) || man_cv_path__usr_share_tix_4_1_man="__undef__(${man_cv_path__usr_share_tix_4_1_man})"
-fi
-echo "$as_me:$LINENO: result: $man_cv_path__usr_share_tix_4_1_man" >&5
-echo "${ECHO_T}$man_cv_path__usr_share_tix_4_1_man" >&6
- path__usr_share_tix_4_1_man=${man_cv_path__usr_share_tix_4_1_man}
-
-   echo "$as_me:$LINENO: checking canonical MANPATH form for /usr/share/coas/man" >&5
-echo $ECHO_N "checking canonical MANPATH form for /usr/share/coas/man... $ECHO_C" >&6
-if test "${man_cv_path__usr_share_coas_man+set}" = set; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  ac_dir="/usr/share/coas/man"
- pwd -W >/dev/null 2>&1 && ac_pwd_w="pwd -W" || ac_pwd_w=pwd
- until ac_val=`exec 2>/dev/null; cd "$ac_dir" && $ac_pwd_w`
- do
-   ac_dir=`(dirname "$ac_dir") 2>/dev/null ||
-$as_expr X"$ac_dir" : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
-	 X"$ac_dir" : 'X\(//\)[^/]' \| \
-	 X"$ac_dir" : 'X\(//\)$' \| \
-	 X"$ac_dir" : 'X\(/\)' \| \
-	 .     : '\(.\)' 2>/dev/null ||
-echo X"$ac_dir" |
-    sed '/^X\(.*[^/]\)\/\/*[^/][^/]*\/*$/{ s//\1/; q; }
-  	  /^X\(\/\/\)[^/].*/{ s//\1/; q; }
-  	  /^X\(\/\/\)$/{ s//\1/; q; }
-  	  /^X\(\/\).*/{ s//\1/; q; }
-  	  s/.*/./; q'`
- done
- ac_dir=`echo "$ac_dir" | sed 's?^[./]*??'`
- ac_val=`echo "$ac_val" | sed 's?/*$??'`
- man_cv_path__usr_share_coas_man=`echo "/usr/share/coas/man" | sed "s?^[./]*$ac_dir/*?$ac_val/?"'
-   s?/*$??'`
-
-  (exec >${NULLDEV} 2>&1; cd /usr/share/coas/man) || man_cv_path__usr_share_coas_man="__undef__(${man_cv_path__usr_share_coas_man})"
-fi
-echo "$as_me:$LINENO: result: $man_cv_path__usr_share_coas_man" >&5
-echo "${ECHO_T}$man_cv_path__usr_share_coas_man" >&6
- path__usr_share_coas_man=${man_cv_path__usr_share_coas_man}
+echo "$as_me:$LINENO: result: $man_cv_path__usr_share___STAR___man" >&5
+echo "${ECHO_T}$man_cv_path__usr_share___STAR___man" >&6
+ path__usr_share___STAR___man=${man_cv_path__usr_share___STAR___man}
 
    echo "$as_me:$LINENO: checking canonical MANPATH form for /usr/kerberos/man" >&5
 echo $ECHO_N "checking canonical MANPATH form for /usr/kerberos/man... $ECHO_C" >&6
@@ -7328,6 +7232,8 @@ echo "${ECHO_T}$man_cv_path__usr_kerberos_man" >&6
 #  to ensure that the aliases are resolved in the map).
 #
    test -z "$man_alias__usr_man" && test x$man_cv_FHS != xno && man_alias__usr_man="/usr/share/man"
+
+   test -z "$man_alias__usr_local_man" && test x$man_cv_FHS != xno && man_alias__usr_local_man="/usr/local/share/man"
 
 
 # Now, define the default MANPATH_MAP.
@@ -8593,7 +8499,7 @@ fi;
  locale=$man_cv_locale
 
 
-# Identify the PAGER program to be used.
+# Identify the PAGER, BROWSER and HTMLPAGER programs to be used.
 #
 
 # Check whether --with-pager or --without-pager was given.
@@ -8760,6 +8666,404 @@ fi
  pager=$ac_cv_path_pager
 
  test -n "$pager" && ac_word="$pager" || ac_word=no
+ echo "$as_me:$LINENO: result: $ac_word" >&5
+echo "${ECHO_T}$ac_word" >&6
+fi
+
+#
+
+# Check whether --with-browser or --without-browser was given.
+if test "${with_browser+set}" = set; then
+  withval="$with_browser"
+  # Extract the first word of "$withval", so it can be a program name with args.
+  set dummy $withval; ac_word=$2
+  echo "$as_me:$LINENO: checking for $ac_word" >&5
+echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
+ as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if $as_executable_p "$as_dir/$ac_word$ac_exec_ext"
+  then
+    ac_dir=""$as_dir/$ac_word$ac_exec_ext""
+ pwd -W >/dev/null 2>&1 && ac_pwd_w="pwd -W" || ac_pwd_w=pwd
+ until ac_val=`exec 2>/dev/null; cd "$ac_dir" && $ac_pwd_w`
+ do
+   ac_dir=`(dirname "$ac_dir") 2>/dev/null ||
+$as_expr X"$ac_dir" : 'X\(.*^/\)//*^/^/*/*$' \| \
+	 X"$ac_dir" : 'X\(//\)^/' \| \
+	 X"$ac_dir" : 'X\(//\)$' \| \
+	 X"$ac_dir" : 'X\(/\)' \| \
+	 .     : '\(.\)' 2>/dev/null ||
+echo X"$ac_dir" |
+    sed '/^X\(.*^/\)\/\/*^/^/*\/*$/{ s//\1/; q; }
+  	  /^X\(\/\/\)^/.*/{ s//\1/; q; }
+  	  /^X\(\/\/\)$/{ s//\1/; q; }
+  	  /^X\(\/\).*/{ s//\1/; q; }
+  	  s/.*/./; q'`
+ done
+ ac_dir=`echo "$ac_dir" | sed 's?^./*??'`
+ ac_val=`echo "$ac_val" | sed 's?/*$??'`
+ ac_cv_path_browser=`echo ""$as_dir/$ac_word$ac_exec_ext"" | sed "s?^./*$ac_dir/*?$ac_val/?"'
+   s?/*$??'`
+
+    echo "$as_me:$LINENO: found $ac_cv_path_browser" >&5
+    break 2
+  fi
+done
+done
+
+shift 2
+case ${#} in
+  0) ;;
+  *) test -n "$ac_cv_path_browser" && ac_cv_path_browser="$ac_cv_path_browser ${@}" ;;
+esac
+ browser=$ac_cv_path_browser
+
+ test -n "$browser" && ac_word="$browser" || ac_word=no
+ echo "$as_me:$LINENO: result: $ac_word" >&5
+echo "${ECHO_T}$ac_word" >&6
+else
+  # Extract the first word of "lynx", so it can be a program name with args.
+  set dummy lynx; ac_word=$2
+  echo "$as_me:$LINENO: checking for $ac_word" >&5
+echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
+ if test "${ac_cv_path_browser+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if $as_executable_p "$as_dir/$ac_word$ac_exec_ext"
+  then
+    ac_dir=""$as_dir/$ac_word$ac_exec_ext""
+ pwd -W >/dev/null 2>&1 && ac_pwd_w="pwd -W" || ac_pwd_w=pwd
+ until ac_val=`exec 2>/dev/null; cd "$ac_dir" && $ac_pwd_w`
+ do
+   ac_dir=`(dirname "$ac_dir") 2>/dev/null ||
+$as_expr X"$ac_dir" : 'X\(.*^/\)//*^/^/*/*$' \| \
+	 X"$ac_dir" : 'X\(//\)^/' \| \
+	 X"$ac_dir" : 'X\(//\)$' \| \
+	 X"$ac_dir" : 'X\(/\)' \| \
+	 .     : '\(.\)' 2>/dev/null ||
+echo X"$ac_dir" |
+    sed '/^X\(.*^/\)\/\/*^/^/*\/*$/{ s//\1/; q; }
+  	  /^X\(\/\/\)^/.*/{ s//\1/; q; }
+  	  /^X\(\/\/\)$/{ s//\1/; q; }
+  	  /^X\(\/\).*/{ s//\1/; q; }
+  	  s/.*/./; q'`
+ done
+ ac_dir=`echo "$ac_dir" | sed 's?^./*??'`
+ ac_val=`echo "$ac_val" | sed 's?/*$??'`
+ ac_cv_path_browser=`echo ""$as_dir/$ac_word$ac_exec_ext"" | sed "s?^./*$ac_dir/*?$ac_val/?"'
+   s?/*$??'`
+
+    echo "$as_me:$LINENO: found $ac_cv_path_browser" >&5
+    break 2
+  fi
+done
+done
+
+shift 2
+case ${#} in
+  0) ;;
+  *) test -n "$ac_cv_path_browser" && ac_cv_path_browser="$ac_cv_path_browser ${@}" ;;
+esac
+fi
+
+ browser=$ac_cv_path_browser
+
+ test -n "$browser" && ac_word="$browser" || ac_word=no
+ echo "$as_me:$LINENO: result: $ac_word" >&5
+echo "${ECHO_T}$ac_word" >&6
+fi;
+  if test -z "$browser"; then
+  # Extract the first word of "less -is", so it can be a program name with args.
+  set dummy less -is; ac_word=$2
+  echo "$as_me:$LINENO: checking for $ac_word" >&5
+echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
+ if test "${ac_cv_path_browser+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if $as_executable_p "$as_dir/$ac_word$ac_exec_ext"
+  then
+    ac_dir=""$as_dir/$ac_word$ac_exec_ext""
+ pwd -W >/dev/null 2>&1 && ac_pwd_w="pwd -W" || ac_pwd_w=pwd
+ until ac_val=`exec 2>/dev/null; cd "$ac_dir" && $ac_pwd_w`
+ do
+   ac_dir=`(dirname "$ac_dir") 2>/dev/null ||
+$as_expr X"$ac_dir" : 'X\(.*^/\)//*^/^/*/*$' \| \
+	 X"$ac_dir" : 'X\(//\)^/' \| \
+	 X"$ac_dir" : 'X\(//\)$' \| \
+	 X"$ac_dir" : 'X\(/\)' \| \
+	 .     : '\(.\)' 2>/dev/null ||
+echo X"$ac_dir" |
+    sed '/^X\(.*^/\)\/\/*^/^/*\/*$/{ s//\1/; q; }
+  	  /^X\(\/\/\)^/.*/{ s//\1/; q; }
+  	  /^X\(\/\/\)$/{ s//\1/; q; }
+  	  /^X\(\/\).*/{ s//\1/; q; }
+  	  s/.*/./; q'`
+ done
+ ac_dir=`echo "$ac_dir" | sed 's?^./*??'`
+ ac_val=`echo "$ac_val" | sed 's?/*$??'`
+ ac_cv_path_browser=`echo ""$as_dir/$ac_word$ac_exec_ext"" | sed "s?^./*$ac_dir/*?$ac_val/?"'
+   s?/*$??'`
+
+    echo "$as_me:$LINENO: found $ac_cv_path_browser" >&5
+    break 2
+  fi
+done
+done
+
+shift 2
+case ${#} in
+  0) ;;
+  *) test -n "$ac_cv_path_browser" && ac_cv_path_browser="$ac_cv_path_browser ${@}" ;;
+esac
+fi
+
+ browser=$ac_cv_path_browser
+
+ test -n "$browser" && ac_word="$browser" || ac_word=no
+ echo "$as_me:$LINENO: result: $ac_word" >&5
+echo "${ECHO_T}$ac_word" >&6
+fi
+
+  if test -z "$browser"; then
+  # Extract the first word of "more", so it can be a program name with args.
+  set dummy more; ac_word=$2
+  echo "$as_me:$LINENO: checking for $ac_word" >&5
+echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
+ if test "${ac_cv_path_browser+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if $as_executable_p "$as_dir/$ac_word$ac_exec_ext"
+  then
+    ac_dir=""$as_dir/$ac_word$ac_exec_ext""
+ pwd -W >/dev/null 2>&1 && ac_pwd_w="pwd -W" || ac_pwd_w=pwd
+ until ac_val=`exec 2>/dev/null; cd "$ac_dir" && $ac_pwd_w`
+ do
+   ac_dir=`(dirname "$ac_dir") 2>/dev/null ||
+$as_expr X"$ac_dir" : 'X\(.*^/\)//*^/^/*/*$' \| \
+	 X"$ac_dir" : 'X\(//\)^/' \| \
+	 X"$ac_dir" : 'X\(//\)$' \| \
+	 X"$ac_dir" : 'X\(/\)' \| \
+	 .     : '\(.\)' 2>/dev/null ||
+echo X"$ac_dir" |
+    sed '/^X\(.*^/\)\/\/*^/^/*\/*$/{ s//\1/; q; }
+  	  /^X\(\/\/\)^/.*/{ s//\1/; q; }
+  	  /^X\(\/\/\)$/{ s//\1/; q; }
+  	  /^X\(\/\).*/{ s//\1/; q; }
+  	  s/.*/./; q'`
+ done
+ ac_dir=`echo "$ac_dir" | sed 's?^./*??'`
+ ac_val=`echo "$ac_val" | sed 's?/*$??'`
+ ac_cv_path_browser=`echo ""$as_dir/$ac_word$ac_exec_ext"" | sed "s?^./*$ac_dir/*?$ac_val/?"'
+   s?/*$??'`
+
+    echo "$as_me:$LINENO: found $ac_cv_path_browser" >&5
+    break 2
+  fi
+done
+done
+
+shift 2
+case ${#} in
+  0) ;;
+  *) test -n "$ac_cv_path_browser" && ac_cv_path_browser="$ac_cv_path_browser ${@}" ;;
+esac
+fi
+
+ browser=$ac_cv_path_browser
+
+ test -n "$browser" && ac_word="$browser" || ac_word=no
+ echo "$as_me:$LINENO: result: $ac_word" >&5
+echo "${ECHO_T}$ac_word" >&6
+fi
+
+#
+
+# Check whether --with-htmlpager or --without-htmlpager was given.
+if test "${with_htmlpager+set}" = set; then
+  withval="$with_htmlpager"
+  # Extract the first word of "$withval", so it can be a program name with args.
+  set dummy $withval; ac_word=$2
+  echo "$as_me:$LINENO: checking for $ac_word" >&5
+echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
+ as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if $as_executable_p "$as_dir/$ac_word$ac_exec_ext"
+  then
+    ac_dir=""$as_dir/$ac_word$ac_exec_ext""
+ pwd -W >/dev/null 2>&1 && ac_pwd_w="pwd -W" || ac_pwd_w=pwd
+ until ac_val=`exec 2>/dev/null; cd "$ac_dir" && $ac_pwd_w`
+ do
+   ac_dir=`(dirname "$ac_dir") 2>/dev/null ||
+$as_expr X"$ac_dir" : 'X\(.*^/\)//*^/^/*/*$' \| \
+	 X"$ac_dir" : 'X\(//\)^/' \| \
+	 X"$ac_dir" : 'X\(//\)$' \| \
+	 X"$ac_dir" : 'X\(/\)' \| \
+	 .     : '\(.\)' 2>/dev/null ||
+echo X"$ac_dir" |
+    sed '/^X\(.*^/\)\/\/*^/^/*\/*$/{ s//\1/; q; }
+  	  /^X\(\/\/\)^/.*/{ s//\1/; q; }
+  	  /^X\(\/\/\)$/{ s//\1/; q; }
+  	  /^X\(\/\).*/{ s//\1/; q; }
+  	  s/.*/./; q'`
+ done
+ ac_dir=`echo "$ac_dir" | sed 's?^./*??'`
+ ac_val=`echo "$ac_val" | sed 's?/*$??'`
+ ac_cv_path_htmlpager=`echo ""$as_dir/$ac_word$ac_exec_ext"" | sed "s?^./*$ac_dir/*?$ac_val/?"'
+   s?/*$??'`
+
+    echo "$as_me:$LINENO: found $ac_cv_path_htmlpager" >&5
+    break 2
+  fi
+done
+done
+
+shift 2
+case ${#} in
+  0) ;;
+  *) test -n "$ac_cv_path_htmlpager" && ac_cv_path_htmlpager="$ac_cv_path_htmlpager ${@}" ;;
+esac
+ htmlpager=$ac_cv_path_htmlpager
+
+ test -n "$htmlpager" && ac_word="$htmlpager" || ac_word=no
+ echo "$as_me:$LINENO: result: $ac_word" >&5
+echo "${ECHO_T}$ac_word" >&6
+else
+  # Extract the first word of "lynx -dump", so it can be a program name with args.
+  set dummy lynx -dump; ac_word=$2
+  echo "$as_me:$LINENO: checking for $ac_word" >&5
+echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
+ if test "${ac_cv_path_htmlpager+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if $as_executable_p "$as_dir/$ac_word$ac_exec_ext"
+  then
+    ac_dir=""$as_dir/$ac_word$ac_exec_ext""
+ pwd -W >/dev/null 2>&1 && ac_pwd_w="pwd -W" || ac_pwd_w=pwd
+ until ac_val=`exec 2>/dev/null; cd "$ac_dir" && $ac_pwd_w`
+ do
+   ac_dir=`(dirname "$ac_dir") 2>/dev/null ||
+$as_expr X"$ac_dir" : 'X\(.*^/\)//*^/^/*/*$' \| \
+	 X"$ac_dir" : 'X\(//\)^/' \| \
+	 X"$ac_dir" : 'X\(//\)$' \| \
+	 X"$ac_dir" : 'X\(/\)' \| \
+	 .     : '\(.\)' 2>/dev/null ||
+echo X"$ac_dir" |
+    sed '/^X\(.*^/\)\/\/*^/^/*\/*$/{ s//\1/; q; }
+  	  /^X\(\/\/\)^/.*/{ s//\1/; q; }
+  	  /^X\(\/\/\)$/{ s//\1/; q; }
+  	  /^X\(\/\).*/{ s//\1/; q; }
+  	  s/.*/./; q'`
+ done
+ ac_dir=`echo "$ac_dir" | sed 's?^./*??'`
+ ac_val=`echo "$ac_val" | sed 's?/*$??'`
+ ac_cv_path_htmlpager=`echo ""$as_dir/$ac_word$ac_exec_ext"" | sed "s?^./*$ac_dir/*?$ac_val/?"'
+   s?/*$??'`
+
+    echo "$as_me:$LINENO: found $ac_cv_path_htmlpager" >&5
+    break 2
+  fi
+done
+done
+
+shift 2
+case ${#} in
+  0) ;;
+  *) test -n "$ac_cv_path_htmlpager" && ac_cv_path_htmlpager="$ac_cv_path_htmlpager ${@}" ;;
+esac
+fi
+
+ htmlpager=$ac_cv_path_htmlpager
+
+ test -n "$htmlpager" && ac_word="$htmlpager" || ac_word=no
+ echo "$as_me:$LINENO: result: $ac_word" >&5
+echo "${ECHO_T}$ac_word" >&6
+fi;
+  if test -z "$htmlpager"; then
+  # Extract the first word of "cat", so it can be a program name with args.
+  set dummy cat; ac_word=$2
+  echo "$as_me:$LINENO: checking for $ac_word" >&5
+echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
+ if test "${ac_cv_path_htmlpager+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if $as_executable_p "$as_dir/$ac_word$ac_exec_ext"
+  then
+    ac_dir=""$as_dir/$ac_word$ac_exec_ext""
+ pwd -W >/dev/null 2>&1 && ac_pwd_w="pwd -W" || ac_pwd_w=pwd
+ until ac_val=`exec 2>/dev/null; cd "$ac_dir" && $ac_pwd_w`
+ do
+   ac_dir=`(dirname "$ac_dir") 2>/dev/null ||
+$as_expr X"$ac_dir" : 'X\(.*^/\)//*^/^/*/*$' \| \
+	 X"$ac_dir" : 'X\(//\)^/' \| \
+	 X"$ac_dir" : 'X\(//\)$' \| \
+	 X"$ac_dir" : 'X\(/\)' \| \
+	 .     : '\(.\)' 2>/dev/null ||
+echo X"$ac_dir" |
+    sed '/^X\(.*^/\)\/\/*^/^/*\/*$/{ s//\1/; q; }
+  	  /^X\(\/\/\)^/.*/{ s//\1/; q; }
+  	  /^X\(\/\/\)$/{ s//\1/; q; }
+  	  /^X\(\/\).*/{ s//\1/; q; }
+  	  s/.*/./; q'`
+ done
+ ac_dir=`echo "$ac_dir" | sed 's?^./*??'`
+ ac_val=`echo "$ac_val" | sed 's?/*$??'`
+ ac_cv_path_htmlpager=`echo ""$as_dir/$ac_word$ac_exec_ext"" | sed "s?^./*$ac_dir/*?$ac_val/?"'
+   s?/*$??'`
+
+    echo "$as_me:$LINENO: found $ac_cv_path_htmlpager" >&5
+    break 2
+  fi
+done
+done
+
+shift 2
+case ${#} in
+  0) ;;
+  *) test -n "$ac_cv_path_htmlpager" && ac_cv_path_htmlpager="$ac_cv_path_htmlpager ${@}" ;;
+esac
+fi
+
+ htmlpager=$ac_cv_path_htmlpager
+
+ test -n "$htmlpager" && ac_word="$htmlpager" || ac_word=no
  echo "$as_me:$LINENO: result: $ac_word" >&5
 echo "${ECHO_T}$ac_word" >&6
 fi
@@ -12475,16 +12779,13 @@ s,@man_config_file@,$man_config_file,;t t
 s,@sections@,$sections,;t t
 s,@NULLDEV@,$NULLDEV,;t t
 s,@path__usr_man@,$path__usr_man,;t t
-s,@path__usr_local_man@,$path__usr_local_man,;t t
 s,@path__usr_share_man@,$path__usr_share_man,;t t
+s,@path__usr_local_man@,$path__usr_local_man,;t t
+s,@path__usr_local_share_man@,$path__usr_local_share_man,;t t
 s,@path__usr_X11R6_man@,$path__usr_X11R6_man,;t t
-s,@path__opt_teTeX_man@,$path__opt_teTeX_man,;t t
-s,@path__usr_lib_perl5_man@,$path__usr_lib_perl5_man,;t t
-s,@path__usr_share_perl5_man@,$path__usr_share_perl5_man,;t t
-s,@path__usr_share_tcl_8_0_man@,$path__usr_share_tcl_8_0_man,;t t
-s,@path__usr_share_tk_8_0_man@,$path__usr_share_tk_8_0_man,;t t
-s,@path__usr_share_tix_4_1_man@,$path__usr_share_tix_4_1_man,;t t
-s,@path__usr_share_coas_man@,$path__usr_share_coas_man,;t t
+s,@path__opt___STAR___man@,$path__opt___STAR___man,;t t
+s,@path__usr_lib___STAR___man@,$path__usr_lib___STAR___man,;t t
+s,@path__usr_share___STAR___man@,$path__usr_share___STAR___man,;t t
 s,@path__usr_kerberos_man@,$path__usr_kerberos_man,;t t
 s,@map_to__usr_man@,$map_to__usr_man,;t t
 s,@path__bin@,$path__bin,;t t
@@ -12501,6 +12802,8 @@ s,@path__usr_bin_mh@,$path__usr_bin_mh,;t t
 s,@languages@,$languages,;t t
 s,@locale@,$locale,;t t
 s,@pager@,$pager,;t t
+s,@browser@,$browser,;t t
+s,@htmlpager@,$htmlpager,;t t
 s,@man_grepsilent@,$man_grepsilent,;t t
 s,@cat@,$cat,;t t
 s,@troff@,$troff,;t t

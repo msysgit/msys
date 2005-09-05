@@ -89,27 +89,24 @@
 # Specify which manual sections will be supported,
 # and the order in which they will be searched.
 #
-  MANSECT_SEARCH_ORDER([1:8:2:3:4:5:6:7:9:tcl:n:l:p:o])
+  MANSECT_SEARCH_ORDER([1:1p:8:2:3:3p:4:5:6:7:9:0p:tcl:n:l:p:o])
 
 # Set up the default MANPATH entries, in the configuration file.
 # (First, the standard set, which are normally included)...
 #
   MANPATH_DEFAULT_INCLUDE([/usr/man])
-  MANPATH_DEFAULT_INCLUDE([/usr/local/man])
   MANPATH_DEFAULT_INCLUDE([/usr/share/man])
+  MANPATH_DEFAULT_INCLUDE([/usr/local/man])
+  MANPATH_DEFAULT_INCLUDE([/usr/local/share/man])
   MANPATH_DEFAULT_INCLUDE([/usr/X11R6/man])
 #
 # (followed by the optional set, which are normally commented out)...
 # (we use MANPATH_DEFAULT_INCLUDE, but OCCLUSION is specified by
 #  a leading `#' in src/man.conf.in).
 #
-  MANPATH_DEFAULT_INCLUDE([/opt/teTeX/man])
-  MANPATH_DEFAULT_INCLUDE([/usr/lib/perl5/man])
-  MANPATH_DEFAULT_INCLUDE([/usr/share/perl5/man])
-  MANPATH_DEFAULT_INCLUDE([/usr/share/tcl-8.0/man])
-  MANPATH_DEFAULT_INCLUDE([/usr/share/tk-8.0/man])
-  MANPATH_DEFAULT_INCLUDE([/usr/share/tix-4.1/man])
-  MANPATH_DEFAULT_INCLUDE([/usr/share/coas/man])
+  MANPATH_DEFAULT_INCLUDE([/opt/*/man])
+  MANPATH_DEFAULT_INCLUDE([/usr/lib/*/man])
+  MANPATH_DEFAULT_INCLUDE([/usr/share/*/man])
   MANPATH_DEFAULT_INCLUDE([/usr/kerberos/man])
 
 # Specify standard MANPATH_MAP aliases,
@@ -117,19 +114,20 @@
 # (This MUST be set up BEFORE the MANPATH_MAP is defined,
 #  to ensure that the aliases are resolved in the map).
 #
-  MANPATH_MAP_ALIAS([FHS], [/usr/man], [/usr/share/man])
+  MANPATH_MAP_ALIAS([FHS], [/usr/man],       [/usr/share/man])
+  MANPATH_MAP_ALIAS([FHS], [/usr/local/man], [/usr/local/share/man])
 
 # Now, define the default MANPATH_MAP.
 #
-  MANPATH_MAP_DEFAULT([/bin],            [/usr/man])
-  MANPATH_MAP_DEFAULT([/sbin],           [/usr/man])
-  MANPATH_MAP_DEFAULT([/usr/bin],        [/usr/man])
-  MANPATH_MAP_DEFAULT([/usr/sbin],       [/usr/man])
-  MANPATH_MAP_DEFAULT([/usr/local/bin],  [/usr/local/man])
-  MANPATH_MAP_DEFAULT([/usr/local/sbin], [/usr/local/man])
-  MANPATH_MAP_DEFAULT([/usr/X11R6/bin],  [/usr/X11R6/man])
-  MANPATH_MAP_DEFAULT([/usr/bin/X11],    [/usr/X11R6/man])
-  MANPATH_MAP_DEFAULT([/usr/bin/mh],     [/usr/man])
+  MANPATH_MAP_DEFAULT([/bin],                [/usr/man])
+  MANPATH_MAP_DEFAULT([/sbin],               [/usr/man])
+  MANPATH_MAP_DEFAULT([/usr/bin],            [/usr/man])
+  MANPATH_MAP_DEFAULT([/usr/sbin],           [/usr/man])
+  MANPATH_MAP_DEFAULT([/usr/local/bin],      [/usr/local/man])
+  MANPATH_MAP_DEFAULT([/usr/local/sbin],     [/usr/local/man])
+  MANPATH_MAP_DEFAULT([/usr/X11R6/bin],      [/usr/X11R6/man])
+  MANPATH_MAP_DEFAULT([/usr/bin/X11],        [/usr/X11R6/man])
+  MANPATH_MAP_DEFAULT([/usr/bin/mh],         [/usr/man])
 
 # Check if National Language Support is available,
 # specify which language packs are available for installation,
@@ -138,10 +136,17 @@
   MAN_NLS_LANGUAGE_SELECTION([MAN_LANGUAGES_AVAILABLE])
   MAN_NLS_LOCALE_DIRECTORY([/usr/lib/locale/%N/%L], [/usr/share/locale/%L/%N])
 
-# Identify the PAGER program to be used.
+# Identify the PAGER, BROWSER and HTMLPAGER programs to be used.
 #
-  MAN_FILTER_PREFERRED([PAGER],  [less -is])
-  MAN_FILTER_ALTERNATE([PAGER],  [more])
+  MAN_FILTER_PREFERRED([PAGER],     [less -is])
+  MAN_FILTER_ALTERNATE([PAGER],     [more])
+#
+  MAN_FILTER_PREFERRED([BROWSER],   [lynx])
+  MAN_FILTER_ALTERNATE([BROWSER],   [less -is])
+  MAN_FILTER_ALTERNATE([BROWSER],   [more])
+#
+  MAN_FILTER_PREFERRED([HTMLPAGER], [lynx -dump])
+  MAN_FILTER_ALTERNATE([HTMLPAGER], [cat])
 
 # We need to work out how to invoke `grep' silently,
 # i.e. just check for presence of an expression match, with no output,
