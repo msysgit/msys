@@ -3,15 +3,16 @@
 
 # ask "User prompt" "Default response" VariableToStoreResponse
 function ask() {
-  echo -n "$1 ($2) "
+  echo -n "$1 "
+  [ -n "$2" ] && echo -n "($2) "
   read $3
-  if [ -z "$(eval echo \${$3\})" ]
-    then
-      eval $3=\"$2\"
-  fi
+  [ -z "$(eval echo \${$3\})" ] && eval $3=\"$2\"
 }
 
 # isyes $variable
 function isyes() {
-  echo $1 | grep '[Yy][Ee][Ss]' > /dev/null
+  case $1 in
+    [Yy] | [Yy][Ee] | [Yy][Ee][Ss]) true ;;
+    *) false ;;
+  esac
 }

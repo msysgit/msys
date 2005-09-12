@@ -1,3 +1,14 @@
+2005-09-12  Keith Marshall  <keithmarshall@users.sf.net>
+
+	* lib/mingwPORT.functions (ask): Omit `()' if no default.
+	  (isyes): Accept abbreviated `yes' argument.
+	* src/Makefile (portmaker): Make it executable.
+	* src/portmaker.sh (makeport): Remove obsolete reference...
+	  (portmaker): ... and replace with this.
+	  (ARCIVEHOME): Correct misspelling...
+	  (ARCHIVEHOME): ... to this; add missing `/' in `http://...'.
+	  (PORTPATH): Eval it.
+
 2005-06-26  Earnie Boyd  <earnie@users.sf.net>
 
 	* src/version.sh: Add echo in the event the file is executed.
