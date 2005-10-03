@@ -1,3 +1,8 @@
+2005.10.03  Earnie Boyd <earnie@users.sf.net>
+
+	* fork.cc (fork_parent): Add GENERIC_READ and FILE_SHARE_READ attributes
+	for stdout.
+
 2005.07.05  Max T. Woodbury <mtew@users.sf.net>
 
 	* fhandler.cc (fhandler_disk_file::open): Fake successful open on 
