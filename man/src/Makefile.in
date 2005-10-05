@@ -47,7 +47,6 @@ PREFIX = ${prefix}
 
 # Compiler and installer.
 CC = @CC@
-BUILD_CC = @BUILD_CC@
 INSTALL = @INSTALL@
 
 # Platform dependent file name extensions.
@@ -105,13 +104,8 @@ man: $(MANOBJS) $(LIBS) $(WIN32LIBS)
 man.$(OBJEXT): man.c
 	$(CC) -c $(CWARN) $(CFLAGS) $(DEFS) $(GREPSILENT) $(srcdir)/man.c
 
-msg.c gripedefs.h: $(top_srcdir)/msgs/mess.en makemsg
-	./makemsg $(top_srcdir)/msgs/mess.en gripedefs.h msg.c
-
-# CC may be a cross compiler, but BUILD_CC must compile for
-# the machine on which we are building `man'.
-makemsg: makemsg.c
-	$(BUILD_CC) -o makemsg $(CFLAGS) $(DEFS) $(srcdir)/makemsg.c
+msg.c gripedefs.h: $(top_srcdir)/msgs/mess.en $(top_builddir)/tools/makemsg
+	$(top_builddir)/tools/makemsg $(top_srcdir)/msgs/mess.en gripedefs.h msg.c
 
 # glob.c does not have prototypes
 glob.$(OBJEXT): glob.c ndir.h
@@ -200,7 +194,7 @@ install: all apropos whatis makewhatis
 	$(INSTALL) -c -m 644 man.conf $(MANCONFIG)
 
 clean:
-	rm -f *.$(OBJEXT) *~ core man apropos whatis makewhatis makemsg
+	rm -f *.$(OBJEXT) *~ core man apropos whatis makewhatis
 	test -n "$(EXEEXT)" && rm -f *$(EXEEXT)
 	@cd win32; $(MAKE) clean
 

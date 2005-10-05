@@ -35,8 +35,11 @@ VPATH = $(srcdir)
 # make_messages = @make_messages@
 # install_messages = @make_install_messages@
 
-all:	Makefile $(config_sed) source manhtml manpages $(make_messages)
+all:	Makefile $(config_sed) tools source manhtml manpages $(make_messages)
 	@echo; echo 'You can now do "make install"'
+
+.PHONY: FORCE
+FORCE:
 
 # On a machine with time before distribution time
 # it may be necessary to touch all distributed files
@@ -63,16 +66,19 @@ msgs/Makefile: $(config_sed) msgs/Makefile.in
 
 makefiles: src/Makefile man2html/Makefile man/Makefile msgs/Makefile
 
-source:	src/Makefile
+tools:	tools/Makefile FORCE
+	cd tools; $(MAKE)
+
+source:	src/Makefile FORCE
 	cd src; $(MAKE)
 
-manhtml: man2html/Makefile
+manhtml: man2html/Makefile FORCE
 	cd man2html; $(MAKE)
 
-manpages: man/Makefile
+manpages: man/Makefile FORCE
 	cd man; $(MAKE) subdirs
 
-messages: gencat/gencat msgs/Makefile
+messages: gencat/gencat msgs/Makefile FORCE
 	cd msgs; $(MAKE)
 
 gencat/gencat:
@@ -98,6 +104,7 @@ install-done:
 
 clean: src/Makefile man/Makefile msgs/Makefile man2html/Makefile
 	cd src; $(MAKE) clean
+	cd tools; $(MAKE) clean
 	cd man2html; $(MAKE) clean
 	cd man; $(MAKE) cleansubdirs
 	cd msgs; $(MAKE) clean
@@ -106,6 +113,7 @@ clean: src/Makefile man/Makefile msgs/Makefile man2html/Makefile
 
 spotless distclean reallyclean: clean
 	cd src; $(MAKE) spotless
+	cd tools; $(MAKE) spotless
 	cd man2html; $(MAKE) spotless
 	cd man; $(MAKE) spotlesssubdirs
 	cd msgs; $(MAKE) spotless

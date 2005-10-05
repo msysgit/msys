@@ -251,26 +251,7 @@ exec 6>&1
 #
 # Initializations.
 #
-ac_dir="/usr/local"
-pwd -W >/dev/null 2>&1 && ac_pwd_w="pwd -W" || ac_pwd_w=pwd
-until ac_default_prefix=`exec 2>/dev/null; cd "$ac_dir" && $ac_pwd_w`
-do
-  ac_dir=`(dirname "$ac_dir") 2>/dev/null ||
-$as_expr X"$ac_dir" : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
-	 X"$ac_dir" : 'X\(//\)[^/]' \| \
-	 X"$ac_dir" : 'X\(//\)$' \| \
-	 X"$ac_dir" : 'X\(/\)' \| \
-	 .     : '\(.\)' 2>/dev/null ||
-echo X"$ac_dir" |
-    sed '/^X\(.*[^/]\)\/\/*[^/][^/]*\/*$/{ s//\1/; q; }
-  	  /^X\(\/\/\)[^/].*/{ s//\1/; q; }
-  	  /^X\(\/\/\)$/{ s//\1/; q; }
-  	  /^X\(\/\).*/{ s//\1/; q; }
-  	  s/.*/./; q'`
-done
-ac_dir=`echo "$ac_dir" | sed 's?^[./]*??'`
-ac_default_prefix=`echo "$ac_default_prefix" | sed 's?/*$??'`
-ac_default_prefix=`echo "/usr/local" | sed "s?^[./]*$ac_dir/*?$ac_default_prefix/?"';s?/*$??'`
+ac_default_prefix=/usr/local
 ac_config_libobj_dir=.
 cross_compiling=no
 subdirs=
@@ -328,7 +309,7 @@ ac_includes_default="\
 # include <unistd.h>
 #endif"
 
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS AWK CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA LN_S SET_MAKE CPP EGREP ALLOCA LIBOBJS FHS FSSTND man_config_file sections NULLDEV path__usr_man path__usr_share_man path__usr_local_man path__usr_local_share_man path__usr_X11R6_man path__opt___STAR___man path__usr_lib___STAR___man path__usr_share___STAR___man path__usr_kerberos_man map_to__usr_man path__bin path__sbin path__usr_bin path__usr_sbin map_to__usr_local_man path__usr_local_bin path__usr_local_sbin map_to__usr_X11R6_man path__usr_X11R6_bin path__usr_bin_X11 path__usr_bin_mh languages locale pager browser htmlpager man_grepsilent cat troff nroff jnroff col pcol eqn neqn jneqn tbl vgrind refer grap pic cmp compress compress_ext gunzip bzip2 pcat zcat fcat unyabba decompress LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CC CFLAGS LDFLAGS CPPFLAGS BUILD_CC BUILD_CFLAGS BUILD_LDFLAGS BUILD_CPPFLAGS AWK ac_ct_CC EXEEXT OBJEXT INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA LN_S SET_MAKE CPP EGREP ALLOCA LIBOBJS FHS FSSTND man_config_file sections NULLDEV path__usr_man path__usr_share_man path__usr_local_man path__usr_local_share_man path__usr_X11R6_man path__opt___STAR___man path__usr_lib___STAR___man path__usr_share___STAR___man path__usr_kerberos_man map_to__usr_man path__bin path__sbin path__usr_bin path__usr_sbin map_to__usr_local_man path__usr_local_bin path__usr_local_sbin map_to__usr_X11R6_man path__usr_X11R6_bin path__usr_bin_X11 path__usr_bin_mh languages locale pager browser htmlpager man_grepsilent cat troff nroff jnroff col pcol eqn neqn jneqn tbl vgrind refer grap pic cmp compress compress_ext gunzip bzip2 pcat zcat fcat unyabba decompress LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -785,6 +766,22 @@ ac_env_CPPFLAGS_set=${CPPFLAGS+set}
 ac_env_CPPFLAGS_value=$CPPFLAGS
 ac_cv_env_CPPFLAGS_set=${CPPFLAGS+set}
 ac_cv_env_CPPFLAGS_value=$CPPFLAGS
+ac_env_BUILD_CC_set=${BUILD_CC+set}
+ac_env_BUILD_CC_value=$BUILD_CC
+ac_cv_env_BUILD_CC_set=${BUILD_CC+set}
+ac_cv_env_BUILD_CC_value=$BUILD_CC
+ac_env_BUILD_CFLAGS_set=${BUILD_CFLAGS+set}
+ac_env_BUILD_CFLAGS_value=$BUILD_CFLAGS
+ac_cv_env_BUILD_CFLAGS_set=${BUILD_CFLAGS+set}
+ac_cv_env_BUILD_CFLAGS_value=$BUILD_CFLAGS
+ac_env_BUILD_LDFLAGS_set=${BUILD_LDFLAGS+set}
+ac_env_BUILD_LDFLAGS_value=$BUILD_LDFLAGS
+ac_cv_env_BUILD_LDFLAGS_set=${BUILD_LDFLAGS+set}
+ac_cv_env_BUILD_LDFLAGS_value=$BUILD_LDFLAGS
+ac_env_BUILD_CPPFLAGS_set=${BUILD_CPPFLAGS+set}
+ac_env_BUILD_CPPFLAGS_value=$BUILD_CPPFLAGS
+ac_cv_env_BUILD_CPPFLAGS_set=${BUILD_CPPFLAGS+set}
+ac_cv_env_BUILD_CPPFLAGS_value=$BUILD_CPPFLAGS
 ac_env_CPP_set=${CPP+set}
 ac_env_CPP_value=$CPP
 ac_cv_env_CPP_set=${CPP+set}
@@ -905,12 +902,21 @@ Optional Packages:
   --with-unyabba=COMMAND  invoke UNYABBA using COMMAND [unyabba]
 
 Some influential environment variables:
-  CC          C compiler command
-  CFLAGS      C compiler flags
-  LDFLAGS     linker flags, e.g. -L<lib dir> if you have libraries in a
-              nonstandard directory <lib dir>
-  CPPFLAGS    C/C++ preprocessor flags, e.g. -I<include dir> if you have
-              headers in a nonstandard directory <include dir>
+  CC          the C compiler for package deliverables
+  CFLAGS      C compiler flags to use with the CC compiler
+  LDFLAGS     linker flags for package deliverables, e.g. -L<lib_dir> if you
+              have libraries in a non-standard directory <lib_dir>
+  CPPFLAGS    C/C++ preprocessor flags for package deliverables, e.g.
+              -I<include_dir> if you have header files in a non-standard
+              directory <include_dir>
+  BUILD_CC    the C compiler for native code executables, if any are needed
+              when cross compiling
+  BUILD_CFLAGS
+              C compiler flags to use with the BUILD_CC compiler
+  BUILD_LDFLAGS
+              linker flags for native code executables
+  BUILD_CPPFLAGS
+              C/C++ preprocessor flags for native code
   CPP         C preprocessor
 
 Use these variables to override the choices made by `configure' or to help
@@ -1384,6 +1390,66 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
             ac_config_headers="$ac_config_headers config.h"
 
+
+# Configure a native build subsystem, for native code tools
+# which will be required when cross-compiling.
+#
+
+ ac_dir=`pwd`
+ { if $as_mkdir_p; then
+    mkdir -p tools
+  else
+    as_dir=tools
+    as_dirs=
+    while test ! -d "$as_dir"; do
+      as_dirs="$as_dir $as_dirs"
+      as_dir=`(dirname "$as_dir") 2>/dev/null ||
+$as_expr X"$as_dir" : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
+	 X"$as_dir" : 'X\(//\)[^/]' \| \
+	 X"$as_dir" : 'X\(//\)$' \| \
+	 X"$as_dir" : 'X\(/\)' \| \
+	 .     : '\(.\)' 2>/dev/null ||
+echo X"$as_dir" |
+    sed '/^X\(.*[^/]\)\/\/*[^/][^/]*\/*$/{ s//\1/; q; }
+  	  /^X\(\/\/\)[^/].*/{ s//\1/; q; }
+  	  /^X\(\/\/\)$/{ s//\1/; q; }
+  	  /^X\(\/\).*/{ s//\1/; q; }
+  	  s/.*/./; q'`
+    done
+    test ! -n "$as_dirs" || mkdir $as_dirs
+  fi || { { echo "$as_me:$LINENO: error: cannot create directory tools" >&5
+echo "$as_me: error: cannot create directory tools" >&2;}
+   { (exit 1); exit 1; }; }; }
+
+ { echo "$as_me:$LINENO: entering directory \`$ac_dir/tools'..." >&5
+echo "$as_me: entering directory \`$ac_dir/tools'..." >&6;}
+ { echo "$as_me:$LINENO: executables built here need a native code compiler," >&5
+echo "$as_me: executables built here need a native code compiler," >&6;}
+ { echo "$as_me:$LINENO: even when we are cross-compiling." >&5
+echo "$as_me: even when we are cross-compiling." >&6;}
+ ac_config_cmd=`cd $srcdir/tools; pwd`/configure
+ test -r ${ac_config_cmd}.gnu && ac_config_cmd=${ac_config_cmd}.gnu
+ test "$cache_file" = "/dev/null" || ac_config_cmd="$ac_config_cmd -C"
+ test x"$cross_compiling" = xno && ac_val=$CC || ac_val=""
+ ac_config_cmd="$ac_config_cmd CC=$BUILD_CC"
+test x"$cross_compiling" = xno && ac_val=$CFLAGS || ac_val=""
+ ac_config_cmd="$ac_config_cmd CFLAGS=$BUILD_CFLAGS"
+test x"$cross_compiling" = xno && ac_val=$LDFLAGS || ac_val=""
+ ac_config_cmd="$ac_config_cmd LDFLAGS=$BUILD_LDFLAGS"
+test x"$cross_compiling" = xno && ac_val=$CPPFLAGS || ac_val=""
+ ac_config_cmd="$ac_config_cmd CPPFLAGS=$BUILD_CPPFLAGS"
+
+ ( cd tools; $CONFIG_SHELL $ac_config_cmd ) && ac_fail=false || ac_fail=true
+ { echo "$as_me:$LINENO: leaving directory \`$ac_dir/tools'" >&5
+echo "$as_me: leaving directory \`$ac_dir/tools'" >&6;}
+ if $ac_fail
+ then
+   { { echo "$as_me:$LINENO: error: invalid configuration in \`tools' subdirectory
+See \`config.log' for more details." >&5
+echo "$as_me: error: invalid configuration in \`tools' subdirectory
+See \`config.log' for more details." >&2;}
+   { (exit 1); exit 1; }; }
+ fi
 
 # Checks for programs.
   for ac_prog in gawk mawk nawk awk
@@ -12756,11 +12822,15 @@ s,@ECHO_C@,$ECHO_C,;t t
 s,@ECHO_N@,$ECHO_N,;t t
 s,@ECHO_T@,$ECHO_T,;t t
 s,@LIBS@,$LIBS,;t t
-s,@AWK@,$AWK,;t t
 s,@CC@,$CC,;t t
 s,@CFLAGS@,$CFLAGS,;t t
 s,@LDFLAGS@,$LDFLAGS,;t t
 s,@CPPFLAGS@,$CPPFLAGS,;t t
+s,@BUILD_CC@,$BUILD_CC,;t t
+s,@BUILD_CFLAGS@,$BUILD_CFLAGS,;t t
+s,@BUILD_LDFLAGS@,$BUILD_LDFLAGS,;t t
+s,@BUILD_CPPFLAGS@,$BUILD_CPPFLAGS,;t t
+s,@AWK@,$AWK,;t t
 s,@ac_ct_CC@,$ac_ct_CC,;t t
 s,@EXEEXT@,$EXEEXT,;t t
 s,@OBJEXT@,$OBJEXT,;t t
@@ -13322,4 +13392,4 @@ if test "$no_create" != yes; then
 fi
 
 #
-# EOF: vim: ft=autoconf
+# EOF: vim: ft=config

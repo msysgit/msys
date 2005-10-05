@@ -25,6 +25,11 @@
   AC_CONFIG_SRCDIR([src/man.c])
   AC_CONFIG_HEADER([config.h])
 
+# Configure a native build subsystem, for native code tools
+# which will be required when cross-compiling.
+#
+  MAN_AC_CONFIG_NATIVE([tools])
+
 # Checks for programs.
   AC_PROG_AWK
   AC_PROG_CC
@@ -227,4 +232,4 @@
   AC_CONFIG_FILES([man2html/Makefile])
   AC_OUTPUT
 #
-# EOF: vim: ft=autoconf
+# EOF: vim: ft=config

@@ -1,3 +1,41 @@
+2005-10-05  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Automatically detect and configure for cross compiling.
+
+	* tools: New directory.
+
+	* tools/configure.ac: New file.
+
+	* tools/configure: New file; generated.
+
+	* src/makemsg.c: Remove...
+	* tools/makemsg.c: ...to here.
+	(compat.h): No longer included.
+	(config.h): Include conditionally.
+	(index rindex): Conditionally define to use strchr & strrchr.
+
+	* aclocal.m4 (MAN_AC_PROG_CC_VARS, MAN_AC_CONFIG_NATIVE):...
+	(MAN_AC_ARG_VAR_PROPAGATE): New macros.
+
+	* configure.ac (MAN_AC_CONFIG_NATIVE): Use it.
+
+	* configure: Regenerated.
+
+	* Makefile.in (tools): New target...
+	(all): ...schedule it for `make' in tools directory.
+	(clean, spotless): Add tools directory.
+	(FORCE): New PHONY target; all primary targets require it.
+
+	* src/Makefile.in (BUILD_CC): Redundant variable; removed.
+	(makemsg): Redundant target; removed.  Use version in tools directory,
+	when required to execute.
+
+	* msgs/Makefile.in (top_builddir): Defined.
+	(makemsg): Use version in tools directory.
+
+	* msgs/README (makemsg): Refer to version in tools directory,
+	not in src.
+
 2005-09-05  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Autoconfiscate `man-1.6' additions.

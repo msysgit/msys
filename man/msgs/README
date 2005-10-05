@@ -14,8 +14,8 @@ a copy of the gencat source.
 
 If you add a new message catalog, say for language da, then verify that
 the labels are used correctly by doing
-	../src/makemsg mess.en x.en.h x.en.c
-	../src/makemsg mess.da x.da.h x.da.c
+	../tools/makemsg mess.en x.en.h x.en.c
+	../tools/makemsg mess.da x.da.h x.da.c
 	diff x.en.h x.da.h
 	rm x*
 The files x.en.h and x.da.h should be identical.

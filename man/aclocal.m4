@@ -21,6 +21,93 @@
 # Process this file with autoconf to produce a configure script.
 
 
+## ================================================ ##
+## Autoconf Extensions to Support Cross Compilation ##
+## ================================================ ##
+#
+# MAN_AC_PROG_CC_VARS
+# -------------------
+# Define a custom set of C compiler control variables,
+# supporting independent settings for a native code compiler,
+# and for the primary compiler, if cross-compiling.
+#
+AC_DEFUN([MAN_AC_PROG_CC_VARS],dnl
+[AC_ARG_VAR([CC],dnl
+   [the C compiler for package deliverables])dnl
+ AC_ARG_VAR([CFLAGS],dnl
+   [C compiler flags to use with the CC compiler])dnl
+ AC_ARG_VAR([LDFLAGS],dnl
+   [linker flags for package deliverables, e.g. -L<lib_dir> if]dnl
+   [you have libraries in a non-standard directory <lib_dir>])dnl
+ AC_ARG_VAR([CPPFLAGS],dnl
+   [C/C++ preprocessor flags for package deliverables,]dnl
+   [e.g. -I<include_dir> if you have header files in a]dnl
+   [non-standard directory <include_dir>])dnl
+ AC_ARG_VAR([BUILD_CC],dnl
+   [the C compiler for native code executables,]dnl
+   [if any are needed when cross compiling])dnl
+ AC_ARG_VAR([BUILD_CFLAGS],dnl
+   [C compiler flags to use with the BUILD_CC compiler])dnl
+ AC_ARG_VAR([BUILD_LDFLAGS],dnl
+   [linker flags for native code executables])dnl
+ AC_ARG_VAR([BUILD_CPPFLAGS],dnl
+   [C/C++ preprocessor flags for native code])dnl
+])
+
+# MAN_AC_CONFIG_NATIVE( SUBDIR )
+# ------------------------------
+# Configure a subdirectory, SUBDIR, in which all executables
+# will be compiled with a native code compiler, even if the primary
+# compiler for the build is a cross-compiler.
+#
+# Propagates:
+#   BUILD_CC        to  CC
+#   BUILD_CFLAGS    to  CFLAGS
+#   BUILD_CPPFLAGS  to  CPPFLAGS
+#   BUILD_LDFLAGS   to  LDFLAGS
+#
+# for use by the native code compiler.
+#
+# Does NOT propagate any other command line settings, especially those
+# of the `prefix' family, as it is assumed there is no need to install
+# any locally compiled native tool, nor any of the `host_alias' family,
+# as these would compromise detection of the native code compiler;
+# however, it WILL use its own local `config.cache' file, if the
+# parent `configure' is invoked with caching active.
+#
+AC_DEFUN([MAN_AC_CONFIG_NATIVE],dnl
+[AC_REQUIRE([MAN_AC_PROG_CC_VARS])dnl
+ ac_dir=`pwd`
+ AS_MKDIR_P([$1])
+ AC_MSG_NOTICE([entering directory \SQ([$ac_dir/$1])...])
+ AC_MSG_NOTICE([executables built here need a native code compiler,])
+ AC_MSG_NOTICE([even when we are cross-compiling.])
+ ac_config_cmd=`cd $srcdir/$1; pwd`/configure
+ test -r ${ac_config_cmd}.gnu && ac_config_cmd=${ac_config_cmd}.gnu
+ test "$cache_file" = "/dev/null" || ac_config_cmd="$ac_config_cmd -C"
+ AC_FOREACH([VAR], [CC CFLAGS LDFLAGS CPPFLAGS],
+   [MAN_AC_ARG_VAR_PROPAGATE([VAR], [BUILD_]VAR)])
+ ( cd $1; $CONFIG_SHELL $ac_config_cmd ) && ac_fail=false || ac_fail=true
+ AC_MSG_NOTICE([leaving directory \SQ($ac_dir/$1)])
+ if $ac_fail
+ then
+   AC_MSG_FAILURE([invalid configuration in \SQ($1) subdirectory])
+ fi[]dnl
+])
+
+# MAN_AC_ARG_VAR_PROPAGATE( FROMVAR, TOVAR )
+# ------------------------------------------
+# Helper macro used only by MAN_AC_CONFIG_NATIVE...
+# Add TOVAR to the subdirectory configuration command's argument list,
+# setting equal to the value of FROMVAR, in the parent configuration,
+# for propagation to the subdirectory configuration.
+#
+AC_DEFUN([MAN_AC_ARG_VAR_PROPAGATE],dnl
+[test x"$cross_compiling" = xno && ac_val=$$1 || ac_val=""
+ ac_config_cmd="$ac_config_cmd $1=$m4_if([$2], [], [ac_val], [$2])"
+])
+
+
 ## =========================================================== ##
 ## Path Name Fixup Macros for the Win32/MSYS Build Environment ##
 ## =========================================================== ##

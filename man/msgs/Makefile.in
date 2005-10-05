@@ -1,6 +1,7 @@
+top_builddir = @top_builddir@
 
-all:	../src/makemsg gencat
-	@for i in mess.??; do ../src/makemsg -c $$i $$i.catin; \
+all:	$(top_builddir)/tools/makemsg gencat
+	@for i in mess.??; do $(top_builddir)/tools/makemsg -c $$i $$i.catin; \
 	cat $$i.codeset $$i.catin > $$i.catin2; \
 	echo "==== Making $$i.cat ====" ;\
 	./gencat $$i.cat $$i.catin2; done; \
