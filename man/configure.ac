@@ -38,6 +38,7 @@
   AC_PROG_MAKE_SET
 
 # Checks for libraries.
+  WIN32_AC_NEED_LIBS([win32/libexec.a])
 
 # Checks for header files.
   AC_HEADER_STDC

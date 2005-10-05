@@ -61,7 +61,7 @@ CWARN = -Wall -Wstrict-prototypes -Wmissing-prototypes
 CWARNNP = -Wall
 
 INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
-WIN32LIBS = ${WIN32LIBEXEC}
+WIN32LIBS = @WIN32LIBS@
 
 .c.$(OBJEXT):
 	$(CC) -c $(CWARN) $(CFLAGS) $(DEFS) $<
@@ -77,7 +77,6 @@ MANOBJS = \
   to_cat.$(OBJEXT) different.$(OBJEXT) gripes.$(OBJEXT) \
   glob.$(OBJEXT) util.$(OBJEXT) msg.$(OBJEXT)
 
-WIN32LIBEXEC = win32/libexec.a
 WIN32LIBOBJS = winposix.$(OBJEXT) wincmds.$(OBJEXT) \
   spawnlp.$(OBJEXT) spawnvp.$(OBJEXT) quotearg.$(OBJEXT)
 

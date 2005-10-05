@@ -309,7 +309,7 @@ ac_includes_default="\
 # include <unistd.h>
 #endif"
 
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CC CFLAGS LDFLAGS CPPFLAGS BUILD_CC BUILD_CFLAGS BUILD_LDFLAGS BUILD_CPPFLAGS AWK ac_ct_CC EXEEXT OBJEXT INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA LN_S SET_MAKE CPP EGREP ALLOCA LIBOBJS FHS FSSTND man_config_file sections NULLDEV path__usr_man path__usr_share_man path__usr_local_man path__usr_local_share_man path__usr_X11R6_man path__opt___STAR___man path__usr_lib___STAR___man path__usr_share___STAR___man path__usr_kerberos_man map_to__usr_man path__bin path__sbin path__usr_bin path__usr_sbin map_to__usr_local_man path__usr_local_bin path__usr_local_sbin map_to__usr_X11R6_man path__usr_X11R6_bin path__usr_bin_X11 path__usr_bin_mh languages locale pager browser htmlpager man_grepsilent cat troff nroff jnroff col pcol eqn neqn jneqn tbl vgrind refer grap pic cmp compress compress_ext gunzip bzip2 pcat zcat fcat unyabba decompress LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CC CFLAGS LDFLAGS CPPFLAGS BUILD_CC BUILD_CFLAGS BUILD_LDFLAGS BUILD_CPPFLAGS AWK ac_ct_CC EXEEXT OBJEXT INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA LN_S SET_MAKE WIN32LIBS CPP EGREP ALLOCA LIBOBJS FHS FSSTND man_config_file sections NULLDEV path__usr_man path__usr_share_man path__usr_local_man path__usr_local_share_man path__usr_X11R6_man path__opt___STAR___man path__usr_lib___STAR___man path__usr_share___STAR___man path__usr_kerberos_man map_to__usr_man path__bin path__sbin path__usr_bin path__usr_sbin map_to__usr_local_man path__usr_local_bin path__usr_local_sbin map_to__usr_X11R6_man path__usr_X11R6_bin path__usr_bin_X11 path__usr_bin_mh languages locale pager browser htmlpager man_grepsilent cat troff nroff jnroff col pcol eqn neqn jneqn tbl vgrind refer grap pic cmp compress compress_ext gunzip bzip2 pcat zcat fcat unyabba decompress LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -2569,9 +2569,65 @@ fi
 
 # Checks for libraries.
 
-# Checks for header files.
+echo "$as_me:$LINENO: checking whether Win32 support libraries must be built" >&5
+echo $ECHO_N "checking whether Win32 support libraries must be built... $ECHO_C" >&6
+ ac_ext=c
+ac_cpp='$CPP $CPPFLAGS'
+ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
-ac_ext=c
+ cat >conftest.$ac_ext <<_ACEOF
+
+#if defined(_WIN32) || defined(_MSC_VER)
+ choke me
+#endif
+
+_ACEOF
+rm -f conftest.$ac_objext
+if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
+  (eval $ac_compile) 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+	 { ac_try='test -z "$ac_c_werror_flag"
+			 || test ! -s conftest.err'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; } &&
+	 { ac_try='test -s conftest.$ac_objext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  win32_cv_native_support_required=no
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+win32_cv_native_support_required=yes
+fi
+rm -f conftest.err conftest.$ac_objext conftest.$ac_ext
+ ac_ext=c
+ac_cpp='$CPP $CPPFLAGS'
+ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_c_compiler_gnu
+
+ echo "$as_me:$LINENO: result: $win32_cv_native_support_required" >&5
+echo "${ECHO_T}$win32_cv_native_support_required" >&6
+ test x$win32_cv_native_support_required = xyes && WIN32LIBS="$WIN32LIBS win32/libexec.a"
+
+
+
+# Checks for header files.
+  ac_ext=c
 ac_cpp='$CPP $CPPFLAGS'
 ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
 ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
@@ -6944,9 +7000,9 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
  cat >conftest.$ac_ext <<_ACEOF
 
-   #if defined(_WIN32) || defined(__CYGWIN32__)
-    choke me
-   #endif
+#if defined(_WIN32) || defined(__CYGWIN32__)
+choke me
+#endif
 
 _ACEOF
 rm -f conftest.$ac_objext
@@ -12839,6 +12895,7 @@ s,@INSTALL_SCRIPT@,$INSTALL_SCRIPT,;t t
 s,@INSTALL_DATA@,$INSTALL_DATA,;t t
 s,@LN_S@,$LN_S,;t t
 s,@SET_MAKE@,$SET_MAKE,;t t
+s,@WIN32LIBS@,$WIN32LIBS,;t t
 s,@CPP@,$CPP,;t t
 s,@EGREP@,$EGREP,;t t
 s,@ALLOCA@,$ALLOCA,;t t

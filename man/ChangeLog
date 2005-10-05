@@ -1,5 +1,18 @@
 2005-10-05  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
+	Avoid building Win32 components for non-Win32 hosts.
+
+	* aclocal.m4 (WIN32_AC_NATIVE_HOST, WIN32_AC_NEED_LIBS): New macros.
+
+	* configure.ac (WIN32_AC_NEED_LIBS): Use it...
+	(win32/libexec.a): ...to specify this dependency.
+
+	* configure: Regenerated.
+
+	* src/Makefile (WIN32LIBS): Use autoconf substitution.
+
+2005-10-05  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
 	Automatically detect and configure for cross compiling.
 
 	* tools: New directory.

@@ -797,6 +797,26 @@ AC_DEFUN([MAN_SET_DEFAULT_DECOMPRESSION_FILTER],
 ## Miscellaneous Package Portability Considerations ##
 ## ================================================ ##
 #
+# WIN32_AC_NATIVE_HOST
+# --------------------
+# Check if we are compiling code for a Win32 native host,
+# so that we can include Win32 support libraries in the build.
+#
+AC_DEFUN([WIN32_AC_NATIVE_HOST],
+[AC_MSG_CHECKING([whether Win32 support libraries must be built])
+ AC_LANG_PUSH(C)
+ AC_COMPILE_IFELSE(dnl
+   [[
+#if defined(_WIN32) || defined(_MSC_VER)
+ choke me
+#endif
+   ]],
+   [win32_cv_native_support_required=no],
+   [win32_cv_native_support_required=yes])
+ AC_LANG_POP([C])
+ AC_MSG_RESULT([$win32_cv_native_support_required])dnl
+])
+
 # WIN32_AC_NULLDEV
 # ----------------
 # Select appropriate name for null device: Win32 = nul; else /dev/null.
@@ -807,17 +827,27 @@ AC_DEFUN([WIN32_AC_NULLDEV],
 [AC_MSG_CHECKING([name for NULL device])
  AC_LANG_PUSH([C])
  AC_COMPILE_IFELSE(
- [[
-   #if defined(_WIN32) || defined(__CYGWIN32__)
-    choke me
-   #endif
- ]],
- [NULLDEV=/dev/null],
- [NULLDEV=nul])
+   [[
+#if defined(_WIN32) || defined(__CYGWIN32__)
+choke me
+#endif
+   ]],
+   [NULLDEV=/dev/null],
+   [NULLDEV=nul])
  AC_LANG_POP([C])
  AC_MSG_RESULT([$NULLDEV])
  AC_SUBST([NULLDEV])
 ])  
+
+# WIN32_AC_NEED_LIBS( LIBNAME ... )
+# ---------------------------------
+# Add LIBNAME to ${WIN32LIBS}, when building for a Win32 host.
+#
+AC_DEFUN([WIN32_AC_NEED_LIBS],
+[AC_REQUIRE([WIN32_AC_NATIVE_HOST])dnl
+ test x$win32_cv_native_support_required = xyes && WIN32LIBS="$WIN32LIBS $1"
+ AC_SUBST([WIN32LIBS])
+])
 
 # MAN_GREP_SILENT
 # ---------------
