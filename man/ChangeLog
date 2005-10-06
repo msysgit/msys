@@ -1,5 +1,10 @@
 2005-10-06  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
+	* src/man.c (make_roff_command): Add note about version specific line
+	length adjustment in groff versions 1.18 through 1.19.1.
+
+2005-10-06  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
 	Make long option handling comply with autoconf standards.
 
 	* aclocal.m4 (MAN_GETOPT_LONG): New macro.

@@ -596,7 +596,10 @@ make_roff_command (const char *path, const char *file) {
 		* We should set line length and title line length.
 		* However, a .lt command here fails, only
 		*  .ev 1; .lt ...; .ev helps for my version of groff.
-		* The LL assignment is needed by the mandoc macros.
+		* (The LL assignment is needed by the mandoc macros
+                *  provided with groff versions 1.18 through 1.19.1;
+                *  neither earlier nor later versions require this,
+                *  but we keep it to support those versions).
 		*/
 	       sprintf(eos(bufh), "echo \".ll %d.%di\"; ", ll/10, ll%10);
 	       sprintf(eos(bufh), "echo \".nr LL %d.%di\"; ", ll/10, ll%10);
