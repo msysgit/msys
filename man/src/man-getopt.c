@@ -51,10 +51,10 @@ usage (void) {
 
 static char short_opts[] = "B:C:H:xM:P:S:acdfFhkKm:p:s:tvVwW?";
 
-#ifndef NOGETOPT
-#undef _GNU_SOURCE
-#define _GNU_SOURCE
-#include <getopt.h>
+#ifdef HAVE_GETOPT_H
+# undef _GNU_SOURCE
+# define _GNU_SOURCE
+# include <getopt.h>
 
 static const struct option long_opts[] = {
     { "help",       no_argument,            NULL, 'h' },
@@ -63,7 +63,7 @@ static const struct option long_opts[] = {
     { "preformat",  no_argument,            NULL, 'F' },
     { NULL, 0, NULL, 0 }
 };
-#endif
+#endif /* HAVE_GETOPT_H */
 
 /*
  * Read options, return count.
@@ -75,7 +75,7 @@ get_options_from_argvec(int argc, char **argv, char **config_file,
      int c;
      int optct = 0;
 
-#ifndef NOGETOPT
+#ifdef HAVE_GETOPT_LONG
      while ((c = getopt_long (argc, argv, short_opts, long_opts, NULL)) != -1){
 #else
      while ((c = getopt (argc, argv, short_opts)) != -1) {

@@ -1,3 +1,15 @@
+2005-10-06  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Make long option handling comply with autoconf standards.
+
+	* aclocal.m4 (MAN_GETOPT_LONG): New macro.
+	* configure.ac: Use it.
+
+	* configure, config.h.in: Regenerated.
+
+	* src/man-getopt.c (NOGETOPT): Delete references; replace with...
+	(HAVE_GETOPT_H, HAVE_GETOPT_LONG): ...these, as appropriate.
+
 2005-10-05  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Avoid building Win32 components for non-Win32 hosts.

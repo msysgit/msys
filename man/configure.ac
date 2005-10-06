@@ -70,6 +70,7 @@
   AC_FUNC_VPRINTF
   AC_CHECK_FUNCS([strchr strdup strrchr strstr])
   AC_CHECK_FUNCS([bzero getcwd memset putenv setenv])
+  MAN_GETOPT_LONG
 
 # Establish the name and location for the configuration file.
 #

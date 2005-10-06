@@ -849,6 +849,20 @@ AC_DEFUN([WIN32_AC_NEED_LIBS],
  AC_SUBST([WIN32LIBS])
 ])
 
+# MAN_GETOPT_LONG
+# ---------------
+# Check if we are building a `man' which can handle long options,
+# and set the `manpathoption' for `apropos' and `whatis' accordingly.
+#
+AC_DEFUN([MAN_GETOPT_LONG],
+[AC_CHECK_HEADERS([getopt.h])
+ AC_CHECK_FUNCS([getopt_long],
+   [manpathoption="--path"], [manpathoption="-w"])
+ AC_MSG_CHECKING([how to get the active MANPATH])
+ AC_SUBST([manpathoption])
+ AC_MSG_RESULT([man $manpathoption])dnl
+])
+
 # MAN_GREP_SILENT
 # ---------------
 # Identify how to make grep discard its output.
