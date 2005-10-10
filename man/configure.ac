@@ -31,7 +31,7 @@
   MAN_AC_CONFIG_NATIVE([tools])
 
 # Checks for programs.
-  AC_PROG_AWK
+  MAN_PROG_AWK
   AC_PROG_CC
   AC_PROG_INSTALL
   AC_PROG_LN_S

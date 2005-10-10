@@ -1,3 +1,11 @@
+2005-10-10  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	* aclocal.m4 (MAN_PROG_AWK): New macro.
+	* configure.ac (MAN_PROG_AWK): Use it...
+	(AC_PROG_AWK): ...instead of this.
+
+	* configure: Regenerated.
+
 2005-10-06  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	* src/man.c (make_roff_command): Add note about version specific line

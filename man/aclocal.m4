@@ -829,7 +829,7 @@ AC_DEFUN([WIN32_AC_NULLDEV],
  AC_COMPILE_IFELSE(
    [[
 #if defined(_WIN32) || defined(__CYGWIN32__)
-choke me
+ choke me
 #endif
    ]],
    [NULLDEV=/dev/null],
@@ -861,6 +861,25 @@ AC_DEFUN([MAN_GETOPT_LONG],
  AC_MSG_CHECKING([how to get the active MANPATH])
  AC_SUBST([manpathoption])
  AC_MSG_RESULT([man $manpathoption])dnl
+])
+
+# MAN_PROG_AWK
+# ------------
+# Identify the AWK interpreter to be used by `makewhatis',
+# allowing the user to specify his choice, using `--with-awk=PROG',
+# since the automatic choice may not suit when cross-compiling.
+#
+# In the event of the user specifying `--without-awk', then
+# `makewhatis' will be configured with a generic default of `awk',
+# so that it may find a generic `awk' in the PATH, when run.
+#
+AC_DEFUN([MAN_PROG_AWK],
+[AC_ARG_WITH([awk],
+  [AS_HELP_STRING([--with-awk=PROG],
+    [use PROG as the AWK interpreter] MAN_AS_HELP_DEFAULT([auto detect]))],
+  [ac_cv_path_awk=$withval])
+ test x$ac_cv_path_awk = xno && ac_cv_path_awk=awk
+ AC_PATH_PROGS([awk], [gawk nawk mawk awk])dnl
 ])
 
 # MAN_GREP_SILENT
