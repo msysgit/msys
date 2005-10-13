@@ -17,6 +17,8 @@ MANPAGE_SED_TRANSFORM = \
    -e s'?$(SUBST)makewhatis$(SUBST)?@sbindir@/makewhatis?' \
    -e s'?$(SUBST)man_config_file$(SUBST)?@man_config_file@?' \
    -e s'?$(SUBST)pager$(SUBST)?@pager@?' \
+   -e s'?$(SUBST)htmlpager$(SUBST)?@htmlpager@?' \
+   -e s'?$(SUBST)browser$(SUBST)?@browser@?' \
    -e s'?$(SUBST)troff$(SUBST)?@troff@?'
 
 .man.1:
