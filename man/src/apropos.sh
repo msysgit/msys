@@ -32,7 +32,16 @@ then
     exit 1
 fi
 
-manpath=`man %manpathoption% | tr : '\040'`
+# Most systems use a colon as the PATH separator character, but some,
+# (notably Microsoft's), insist on a semicolon.  Also, some users insist
+# on having spaces within the directory names in their PATH;  (a bad habit
+# promoted by Microsoft).  The following `sed' transformations will allow
+# us to handle them gracefully.
+
+path_transform='s?%?%25?g;s? ?%20?g;s?%path_separator_char%? ?g'
+path_reverse_transform='s?%20? ?g;s?%25?%?g'
+
+manpath=`man --path | sed "$path_transform"`
 
 if [ "$manpath" = "" ]
 then
@@ -65,9 +74,10 @@ do
     found=0
     for d in /var/cache/man $manpath /usr/lib
     do
-        if [ -f $d/whatis ]
+        d=`echo $d | sed "$path_reverse_transform"`
+        if [ -f "$d/whatis" ]
         then
-            if grep -"$grepopt1" "$grepopt2""$1" $d/whatis
+            if grep -"$grepopt1" "$grepopt2""$1" "$d/whatis"
             then
                 found=1
 # Some people are satisfied with a single occurrence

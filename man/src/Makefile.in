@@ -159,6 +159,7 @@ apropos: apropos.sh Makefile
 	sed -e 's,%apropos_or_whatis%,apropos,' \
 	    -e 's,%version%,$(package)-$(version),' \
 	    -e 's,%manpathoption%,@manpathoption@,' \
+	    -e 's,%path_separator_char%,@path_separator_char@,' \
 	    -e 's,%grepsilent%,@man_grepsilent@,' \
 		$(srcdir)/apropos.sh > apropos
 	chmod +x apropos
@@ -168,6 +169,7 @@ whatis: apropos.sh Makefile
 	sed -e 's,%apropos_or_whatis%,whatis,' \
 	    -e 's,%version%,$(package)-$(version),' \
 	    -e 's,%manpathoption%,@manpathoption@,' \
+	    -e 's,%path_separator_char%,@path_separator_char@,' \
 	    -e 's,%grepsilent%,@man_grepsilent@,' \
 		$(srcdir)/apropos.sh > whatis
 	chmod +x whatis

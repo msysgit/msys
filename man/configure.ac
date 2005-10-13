@@ -98,6 +98,11 @@
 #
   MANSECT_SEARCH_ORDER([1:1p:8:2:3:3p:4:5:6:7:9:0p:tcl:n:l:p:o])
 
+# Identify the character which will be used to separate individual
+# directory path names, in the MANPATH reported by `man --path'.
+#
+  MAN_PATH_SEPARATOR
+
 # Set up the default MANPATH entries, in the configuration file.
 # (First, the standard set, which are normally included)...
 #

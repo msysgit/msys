@@ -1,3 +1,17 @@
+2005-10-13  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Handle semicolon vs. colon selection for Win32 MANPATH.
+
+	* aclocal.m4 (MAN_PATH_SEPARATOR): New macro; it defines the
+	`@path_separator_char@' substitution value.
+
+	* configure.ac: Use it.
+
+	* configure: Regenerated.
+
+	* src/apropos.sh (path_separator_char): New substitution.
+	* src/Makefile.in (apropos, whatis): Use it.
+
 2005-10-10  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	* aclocal.m4 (MAN_PROG_AWK): New macro.

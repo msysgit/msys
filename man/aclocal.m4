@@ -849,6 +849,33 @@ AC_DEFUN([WIN32_AC_NEED_LIBS],
  AC_SUBST([WIN32LIBS])
 ])
 
+# MAN_PATH_SEPARATOR
+# ------------------
+# Determine if `man --path', or `man -w', will return a MANPATH
+# with individual directory paths separated by colons or semicolons,
+# as it will be built according to the logic in `src/compat.h'.
+#
+AC_DEFUN([MAN_PATH_SEPARATOR],
+[AC_REQUIRE([AC_PROG_LN_S])dnl
+ AC_MSG_CHECKING([separator character in \SQ([man --path]) output])
+ ${LN_S} ${srcdir}/src/compat.h conftest.h
+ AC_LANG_PUSH(C)
+ AC_COMPILE_IFELSE(dnl
+   [AC_LANG_PROGRAM(dnl
+     [[
+#include "conftest.h"
+     ]], [[
+#if PATH_SEPARATOR_CHAR == ';'
+ choke me
+#endif
+     ]])],
+   [path_separator_char=':'],
+   [path_separator_char=';'])
+ AC_LANG_POP([C])
+ AC_SUBST([path_separator_char])
+ AC_MSG_RESULT([$path_separator_char])dnl
+])
+
 # MAN_GETOPT_LONG
 # ---------------
 # Check if we are building a `man' which can handle long options,
