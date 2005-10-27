@@ -38,5 +38,6 @@ int fesetenv (const fenv_t * envp)
 
   else
     __asm__ ("fldenv %0;" : : "m" (*envp));
+
   return 0;
 }
