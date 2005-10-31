@@ -1,5 +1,14 @@
 2005-10-31  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
+	Configure C compiler warning options (bug fix).
+
+	* aclocal.m4 (MAN_AC_PROG_CC_OPTIONS_INITIALISE): Extraneous `)'
+	deleted; replaced by `,'.
+
+	* configure: Regenerated.
+
+2005-10-31  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
 	Configure C compiler warning options.
 
 	* aclocal.m4 (MAN_AC_PROG_CC_OPTIONS_INITIALISE):...

@@ -810,7 +810,7 @@ AC_DEFUN([MAN_AC_PROG_CC_WARN], [MAN_AC_PROG_CC_OPTIONS([CWARN], [-W], [$1])])
 # If FROMVAR is defined, and is non-NULL, then initialise VARNAME
 # to the same value.
 #
-AC_DEFUN([MAN_AC_PROG_CC_OPTIONS_INITIALISE])
+AC_DEFUN([MAN_AC_PROG_CC_OPTIONS_INITIALISE],
 [test "x$$2" = "x" || $1="$$2"])
 
 # MAN_AC_PROG_CC_OPTIONS( VARNAME, CLASS, OPTION ... )
