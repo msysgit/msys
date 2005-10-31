@@ -37,6 +37,11 @@
   AC_PROG_LN_S
   AC_PROG_MAKE_SET
 
+# Set warning options for C compiler.
+  MAN_AC_PROG_CC_OPTIONS([CWARNNP], [-W], [all])
+  MAN_AC_PROG_CC_OPTIONS_INITIALISE([CWARN], [CWARNNP])
+  MAN_AC_PROG_CC_OPTIONS([CWARN], [-W], [strict-prototypes missing-prototypes])
+
 # Checks for libraries.
   WIN32_AC_NEED_LIBS([win32/libexec.a])
 

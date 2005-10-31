@@ -57,8 +57,8 @@ pager = @pager@
 
 DEFS = @DEFS@ $(INCLUDES)
 GREPSILENT = -DGREPSILENT='"@man_grepsilent@"'
-CWARN = -Wall -Wstrict-prototypes -Wmissing-prototypes
-CWARNNP = -Wall
+CWARNNP = @CWARNNP@
+CWARN = @CWARN@
 
 INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
 WIN32LIBS = @WIN32LIBS@

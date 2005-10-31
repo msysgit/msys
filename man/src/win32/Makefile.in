@@ -35,7 +35,7 @@ DEFS     = @DEFS@
 CFLAGS   = @CFLAGS@
 CPPFLAGS = @CPPFLAGS@
 CXXFLAGS = @CXXFLAGS@
-CWARN    = -Wall -Wstrict-prototypes -Wmissing-prototypes
+CWARN    = @CWARN@
 
 INCLUDES = -I$(srcdir) -I$(top_srcdir)/src -I$(abs_top_builddir)
 

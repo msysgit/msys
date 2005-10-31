@@ -24,6 +24,7 @@ CC = @CC@
 
 CFLAGS = @CFLAGS@
 LDFLAGS = @LDFLAGS@
+CWARN = @CWARN@
 
 EXEEXT = @EXEEXT@
 OBJEXT = @OBJEXT@
@@ -41,7 +42,7 @@ DISTCLEANFILES = Makefile config.log config.cache config.status
 REALCLEANFILES = ${srcdir}/configure
 DISTCLEANDIRS = ${srcdir}/autom4te.cache
 
-CCDEFS = $(CFLAGS) $(LDFLAGS) $(DEFS) 
+CCDEFS = $(CFLAGS) $(CWARN) $(LDFLAGS) $(DEFS) 
 
 all: $(EXEFILES)
 

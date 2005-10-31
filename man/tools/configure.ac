@@ -5,8 +5,8 @@
 #
 # Copyright (C) 2005 by Keith Marshall <keithmarshall@users.sourceforge.net>
 #
-# This file is part of the `man' package; process it with `autoconf' to
-# create a `configure' script.
+# This file is part of the `man' package; process it with `autoconf -I ..'
+# to create a `configure' script.
 #
 # man is free software; you can redistribute it and/or modify it under the
 # terms of the GNU General Public License as published by the Free Software
@@ -43,6 +43,7 @@
 # top level `configure' specifies cross-compiling.
 #
   AC_PROG_CC
+  MAN_AC_PROG_CC_WARN([all strict-prototypes missing-prototypes])
 #
 # Check how to make this C compiler support the `const' keyword...
 #

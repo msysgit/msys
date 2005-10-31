@@ -1,3 +1,24 @@
+2005-10-31  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Configure C compiler warning options.
+
+	* aclocal.m4 (MAN_AC_PROG_CC_OPTIONS_INITIALISE):...
+	(MAN_AC_PROG_CC_OPTIONS, MAN_AC_PROG_CC_WARN): New macros.
+
+	* configure.ac (CWARN, CWARNNP): Define, using macros
+	MAN_AC_PROG_CC_OPTIONS_INITIALISE and MAN_AC_PROG_CC_OPTIONS.
+
+	* configure: Regenerated.
+
+	* src/Makefile.in (CWARN, CWARNNP): Let configure define them.
+	* src/win32/Makefile.in (CWARN): Let configure define it.
+	* man2html/Makefile.in (CWARN): Ditto.
+
+	* tools/configure.ac (CWARN): Use MAN_AC_PROG_CC_WARN to define.
+	* tools/configure: Regenerated.
+
+	* tools/Makefile.in (CWARN): Let tools/configure define it.
+
 2005-10-13  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	* man/Makefile.in (MANPAGE_SED_TRANSFORM): Add `browser' and

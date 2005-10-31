@@ -797,6 +797,50 @@ AC_DEFUN([MAN_SET_DEFAULT_DECOMPRESSION_FILTER],
 ## Miscellaneous Package Portability Considerations ##
 ## ================================================ ##
 #
+# MAN_AC_PROG_CC_WARN( OPTION ... )
+# ---------------------------------
+# For each specified OPTION, prefix -W, check if the C compiler accepts
+# the resultant -WOPTION as a valid argument, and if so, add it to the
+# list of warning flags specified in the CWARN substitution variable.
+# 
+AC_DEFUN([MAN_AC_PROG_CC_WARN], [MAN_AC_PROG_CC_OPTIONS([CWARN], [-W], [$1])])
+
+# MAN_AC_PROG_CC_OPTIONS_INITIALISE( VARNAME, FROMVAR )
+# -----------------------------------------------------
+# If FROMVAR is defined, and is non-NULL, then initialise VARNAME
+# to the same value.
+#
+AC_DEFUN([MAN_AC_PROG_CC_OPTIONS_INITIALISE])
+[test "x$$2" = "x" || $1="$$2"])
+
+# MAN_AC_PROG_CC_OPTIONS( VARNAME, CLASS, OPTION ... )
+# ----------------------------------------------------
+# For each specified OPTION, prefix the CLASS flag, then check if the
+# C compiler will accept the resulting CLASSOPTION flag as a valid argument,
+# and if so, add it to the space separated list specified in VARNAME.
+#
+AC_DEFUN([MAN_AC_PROG_CC_OPTIONS],
+[AC_LANG_PUSH(C)
+ popCFLAGS=$CFLAGS
+ echo 'int main(void){return 0;}' > conftest.$ac_ext
+ AC_FOREACH([OPTION], [$3],
+  [AC_MSG_CHECKING([whether $CC accepts the $2[]m4_normalize(OPTION) option])
+   CFLAGS="$popCFLAGS $$1 $2[]m4_normalize(OPTION)"
+   if (eval $ac_compile) 2>&5; then
+     AC_MSG_RESULT([yes])
+     $1=${$1+"$$1 "}"$2[]m4_normalize(OPTION)"
+   else
+     AC_MSG_RESULT([no])
+     echo 'failed program was:' >&5
+     sed 's/^/| /' conftest.$ac_ext >&5
+   fi
+  ])dnl
+ rm -f conftest*
+ AC_LANG_POP([C])
+ CFLAGS=$popCFLAGS
+ AC_SUBST([$1])dnl
+])
+
 # WIN32_AC_NATIVE_HOST
 # --------------------
 # Check if we are compiling code for a Win32 native host,
