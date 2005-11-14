@@ -280,6 +280,33 @@ AC_DEFUN([MANSECT_SEARCH_ORDER],
  AC_SUBST([sections])dnl
 ])
 
+# MANSECT_FILENAME_EXT( SECTION, SUBSTNAME, [EXTENSION] )
+# -------------------------------------------------------
+# Use EXTENSION, (SECTION if EXTENSION is undefined), as the
+# filename extension for manpage files in SECTION; pass the definition
+# to configuration output files in @SUBSTNAME@.
+#
+AC_DEFUN([MANSECT_FILENAME_EXT],
+[MAN_SECTION_FILEXT([$1], [$2], m4_if([$3], [], [$1], [$3]))dnl
+])
+
+# MAN_SECTION_FILEXT( SECTION, SUBSTNAME, EXTENSION )
+# ---------------------------------------------------
+# Helper macro used only by MANSECT_FILENAME_EXT.
+# Use EXTENSION as the filename extension for manpage files in SECTION;
+# pass the definition to configuration output files in @SUBSTNAME@.
+#
+m4_define([MAN_SECTION_FILEXT],
+[AC_MSG_CHECKING([file name extension for section $1 manpages])
+ AC_ARG_WITH([$2],
+  [AS_HELP_STRING([--with-$2=EXT],
+    [use EXT]) MAN_AS_HELP_DEFAULT([$3])[ as extension for section $1 manpage files]],
+  [AC_SUBST([$2], [$withval])],
+  [AC_SUBST([$2], [$3])dnl
+ ])
+ AC_MSG_RESULT([$$2])dnl
+])
+
 # MANPATH_DEFAULT_INCLUDE( PATHNAME )
 # -----------------------------------
 # Specify a POSIX format PATHNAME,

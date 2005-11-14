@@ -103,6 +103,13 @@
 #
   MANSECT_SEARCH_ORDER([1:1p:8:2:3:3p:4:5:6:7:9:0p:tcl:n:l:p:o])
 
+# For manpages installed by the man package itself,
+# define the MANSECT specific filename extensions to be used.
+#
+  MANSECT_FILENAME_EXT([1], [man1ext], [1])
+  MANSECT_FILENAME_EXT([5], [man5ext], [5])
+  MANSECT_FILENAME_EXT([8], [man8ext], [8])
+
 # Identify the character which will be used to separate individual
 # directory path names, in the MANPATH reported by `man --path'.
 #

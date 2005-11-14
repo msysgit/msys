@@ -309,7 +309,7 @@ ac_includes_default="\
 # include <unistd.h>
 #endif"
 
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CC CFLAGS LDFLAGS CPPFLAGS BUILD_CC BUILD_CFLAGS BUILD_LDFLAGS BUILD_CPPFLAGS awk ac_ct_CC EXEEXT OBJEXT INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA LN_S SET_MAKE CWARNNP CWARN WIN32LIBS CPP EGREP ALLOCA LIBOBJS manpathoption FHS FSSTND man_config_file sections path_separator_char NULLDEV path__usr_man path__usr_share_man path__usr_local_man path__usr_local_share_man path__usr_X11R6_man path__opt___STAR___man path__usr_lib___STAR___man path__usr_share___STAR___man path__usr_kerberos_man map_to__usr_man path__bin path__sbin path__usr_bin path__usr_sbin map_to__usr_local_man path__usr_local_bin path__usr_local_sbin map_to__usr_X11R6_man path__usr_X11R6_bin path__usr_bin_X11 path__usr_bin_mh languages locale pager browser htmlpager man_grepsilent cat troff nroff jnroff col pcol eqn neqn jneqn tbl vgrind refer grap pic cmp compress compress_ext gunzip bzip2 pcat zcat fcat unyabba decompress LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CC CFLAGS LDFLAGS CPPFLAGS BUILD_CC BUILD_CFLAGS BUILD_LDFLAGS BUILD_CPPFLAGS awk ac_ct_CC EXEEXT OBJEXT INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA LN_S SET_MAKE CWARNNP CWARN WIN32LIBS CPP EGREP ALLOCA LIBOBJS manpathoption FHS FSSTND man_config_file sections man1ext man5ext man8ext path_separator_char NULLDEV path__usr_man path__usr_share_man path__usr_local_man path__usr_local_share_man path__usr_X11R6_man path__opt___STAR___man path__usr_lib___STAR___man path__usr_share___STAR___man path__usr_kerberos_man map_to__usr_man path__bin path__sbin path__usr_bin path__usr_sbin map_to__usr_local_man path__usr_local_bin path__usr_local_sbin map_to__usr_X11R6_man path__usr_X11R6_bin path__usr_bin_X11 path__usr_bin_mh languages locale pager browser htmlpager man_grepsilent cat troff nroff jnroff col pcol eqn neqn jneqn tbl vgrind refer grap pic cmp compress compress_ext gunzip bzip2 pcat zcat fcat unyabba decompress LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -871,6 +871,9 @@ Optional Packages:
   --with-config=NAME      NAME of configuration file [man.conf]
   --with-sections=LIST    colon separated ordered LIST of MANPAGE sections to
                           search [1:1p:8:2:3:3p:4:5:6:7:9:0p:tcl:n:l:p:o]
+  --with-man1ext=EXT      use EXT [1] as extension for section 1 manpage files
+  --with-man5ext=EXT      use EXT [5] as extension for section 5 manpage files
+  --with-man8ext=EXT      use EXT [8] as extension for section 8 manpage files
   --with-languages=LIST   LIST of language packs to install [`en' only],
                           where LIST is `all', any comma separated subset of
                           `bg,cs,da,de,el,en,es,fi,fr,hr,it,ja,ko,nl,pl,pt,ro,sl',
@@ -7334,6 +7337,52 @@ else
 fi;
 
 
+# For manpages installed by the man package itself,
+# define the MANSECT specific filename extensions to be used.
+#
+  echo "$as_me:$LINENO: checking file name extension for section 1 manpages" >&5
+echo $ECHO_N "checking file name extension for section 1 manpages... $ECHO_C" >&6
+
+# Check whether --with-man1ext or --without-man1ext was given.
+if test "${with_man1ext+set}" = set; then
+  withval="$with_man1ext"
+  man1ext=$withval
+
+else
+  man1ext=1
+
+fi;
+ echo "$as_me:$LINENO: result: $man1ext" >&5
+echo "${ECHO_T}$man1ext" >&6
+  echo "$as_me:$LINENO: checking file name extension for section 5 manpages" >&5
+echo $ECHO_N "checking file name extension for section 5 manpages... $ECHO_C" >&6
+
+# Check whether --with-man5ext or --without-man5ext was given.
+if test "${with_man5ext+set}" = set; then
+  withval="$with_man5ext"
+  man5ext=$withval
+
+else
+  man5ext=5
+
+fi;
+ echo "$as_me:$LINENO: result: $man5ext" >&5
+echo "${ECHO_T}$man5ext" >&6
+  echo "$as_me:$LINENO: checking file name extension for section 8 manpages" >&5
+echo $ECHO_N "checking file name extension for section 8 manpages... $ECHO_C" >&6
+
+# Check whether --with-man8ext or --without-man8ext was given.
+if test "${with_man8ext+set}" = set; then
+  withval="$with_man8ext"
+  man8ext=$withval
+
+else
+  man8ext=8
+
+fi;
+ echo "$as_me:$LINENO: result: $man8ext" >&5
+echo "${ECHO_T}$man8ext" >&6
+
 # Identify the character which will be used to separate individual
 # directory path names, in the MANPATH reported by `man --path'.
 #
@@ -13327,6 +13376,9 @@ s,@FHS@,$FHS,;t t
 s,@FSSTND@,$FSSTND,;t t
 s,@man_config_file@,$man_config_file,;t t
 s,@sections@,$sections,;t t
+s,@man1ext@,$man1ext,;t t
+s,@man5ext@,$man5ext,;t t
+s,@man8ext@,$man8ext,;t t
 s,@path_separator_char@,$path_separator_char,;t t
 s,@NULLDEV@,$NULLDEV,;t t
 s,@path__usr_man@,$path__usr_man,;t t

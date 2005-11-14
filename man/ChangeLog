@@ -1,3 +1,14 @@
+2005-11-14  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Define filename extensions for installed manpages.
+
+	* aclocal.m4 (MANSECT_FILENAME_EXT, MAN_SECTION_FILEXT): New macros.
+
+	* configure.ac (man1ext, man5ext, man8ext): Use MANSECT_FILENAME_EXT
+	to define them.
+
+	* configure: Regenerated.
+
 2005-10-31  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Configure C compiler warning options (bug fix).
