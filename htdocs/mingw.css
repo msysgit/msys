@@ -138,6 +138,9 @@ Date: 	9:35:40 am 2005-04-04
 	padding-top: 0;
 	padding-left: 15em;
   }
+  div#RSide p {
+	padding-left: 0em;
+  }
 }
 
 /* This addition to mingw.css print the main content. */
