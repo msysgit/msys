@@ -128,13 +128,13 @@ Date: 	9:35:40 am 2005-04-04
 	width:		auto;
 	text-align:	justify;
   }
-  ul {
+  ul, dt {
 	padding-left: 	15em;
   }
-  h2 {
+  h2, h3 {
 	padding-left: 8em;
   }
-  p {
+  p, blockquote {
 	padding-top: 0;
 	padding-left: 15em;
   }

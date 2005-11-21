@@ -18,14 +18,13 @@
 
 <div id="Content">
 <h1>MinGW - Licensing Terms</h1>
-<p>
 <p>Various pieces distributed with MinGW come with its own copyright and
 license:</p>
 <dl>
 <dt><strong>Basic MinGW runtime</strong></dt>
-<dd>MinGW base runtime package is uncopyrighted and placed in the public
-domain. This basically means that you can do what you want with the code.<br>
-</dd>
+  <dd><p>MinGW base runtime package is uncopyrighted and placed in the public
+  domain. This basically means that you can do what you want with the code.</p>
+  </dd>
 <dt><strong>w32api</strong></dt>
 <dd>
   <p>
@@ -44,17 +43,15 @@ domain. This basically means that you can do what you want with the code.<br>
   </p>
   </dd>
 <dt><strong>MinGW profiling code</strong></dt>
-<dd>MinGW profiling code is distributed under the
-<a href="http://www.gnu.org/copyleft/gpl.html">GNU General Public License</a>.
-</dd>
+  <dd><p>MinGW profiling code is distributed under the
+  <a href="http://www.gnu.org/copyleft/gpl.html">GNU General Public License</a>.
+  </p></dd>
 </dl>
 
 <p>
 The development tools such as GCC, GDB, GNU Make, etc all covered by
 <a href="http://www.gnu.org/copyleft/gpl.html">GNU General Public License</a>.</p>
 
-
-</p>
 </div>
 
 <!--#include virtual="ssi/footer.html" -->

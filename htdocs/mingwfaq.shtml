@@ -349,9 +349,11 @@
 	you wish to keep your file size down use strip to remove
 	debugging information and other verbatim found in the 
 	binary.</p>
-	<code>
-         strip --strip-all SOMEBINARY.exe
-         </code>
+  <p>
+  <code>
+    strip --strip-all SOMEBINARY.exe
+  </code>
+  </p>
 
       <p><a href="#index">Back to index</a></p>
 
@@ -463,30 +465,27 @@
          and let the MSVC-compiled testmain call it. You
          should use</p>
 
-         <blockquote>
-          <code>gcc -shared -o
-          testdll.dll testdll.c \<br>
-          &nbsp;&nbsp;&nbsp;
-          -Wl,--output-def,testdll.def,--out-implib,libtestdll.a</code>
-         </blockquote> to produce
+        <blockquote>
+          <code>gcc -shared -o testdll.dll testdll.c \<br>
+          &nbsp;&nbsp;&nbsp; -Wl,--output-def,testdll.def,--out-implib,libtestdll.a</code>
+        </blockquote>
+      <p>to produce
          the DLL and DEF files. MSVC cannot use the MinGW
          library, but since you have already the DEF file
          you may easily produce one by the Microsoft
          <code>LIB</code> tool:
 
-         <blockquote>
-          <code>lib /machine:i386
-          /def:testdll.def</code>
-         </blockquote>
+        <blockquote>
+          <code>lib /machine:i386 /def:testdll.def</code>
+        </blockquote>
 
       <p>Once you have
          testdll.lib, it is trivial to produce the
          executable with MSVC:</p>
 
-         <blockquote>
-          <code>cl testmain.c
-          testdll.lib</code>
-         </blockquote> 
+        <blockquote>
+          <code>cl testmain.c testdll.lib</code>
+        </blockquote> 
 
       <p>Now for MinGW programs
          calling an MSVC DLL. We have two methods. One way
@@ -494,10 +493,10 @@
          command line <i>after</i> the main program. For
          example, after</p>
 
-         <blockquote>
-          <code>cl /LD
-          testdll.c</code>
-         </blockquote> use 
+        <blockquote>
+          <code>cl /LD testdll.c</code>
+        </blockquote>
+      <p>use 
 
          <blockquote>
           <code>gcc -o testmain
@@ -529,24 +528,24 @@
          package and filter off the first underscore by
          <code>sed</code>:</p>
 
-         <blockquote>
-          <code>pexports testdll.dll | sed "s/^_//" &gt;
-          testdll.def</code>
-         </blockquote>Then, when using
+        <blockquote>
+          <code>pexports testdll.dll | sed "s/^_//" &gt; testdll.def</code>
+        </blockquote>
+      <p>Then, when using
          <code>dlltool</code> to produce the import
          library, add `<code>-U</code>' to the command
          line: 
 
-         <blockquote>
-          <code>dlltool -U -d testdll.def -l
-          libtestdll.a</code>
-         </blockquote>And now, you can proceed in the
-         usual way: 
+        <blockquote>
+          <code>dlltool -U -d testdll.def -l libtestdll.a</code>
+        </blockquote>
+        <p>And now, you can proceed in the usual way: 
 
-         <blockquote>
-          <code>gcc -o testmain testmain.c -L.
-          -ltestdll</code>
-         </blockquote>Hooray, we got it. 
+        <blockquote>
+          <code>gcc -o testmain testmain.c -L. -ltestdll</code>
+        </blockquote>
+        
+      <p>Hooray, we got it. 
 
       <p><a href="#index">Back to index</a>
          </p>
@@ -570,8 +569,8 @@
 
             <blockquote><code>
             gcc -Wall -D_JNI_IMPLEMENTATION_ -Wl,--kill-at \<br>
-            -I/java/include -I/java/include/win32 \<br>
-            -shared -o JavaImp.dll someJavaImp.c<br>
+            &nbsp;&nbsp;-I/java/include -I/java/include/win32 \<br>
+            &nbsp;&nbsp;-shared -o JavaImp.dll someJavaImp.c<br>
             </code></blockquote>
 
             <p>In a standard command console it can be generated as follows (one continuous line):
@@ -580,8 +579,8 @@
             
             <blockquote><code>
             gcc -Wall -D_JNI_IMPLEMENTATION_ -Wl,--kill-at <br>
-            -Ic:/j2sdk1.4.1_02/include -Ic:/j2sdk1.4.1_02/include/win32 <br>
-            -shared someJavaImp.c -o JavaImp.dll
+            &nbsp;&nbsp;-Ic:/j2sdk1.4.1_02/include -Ic:/j2sdk1.4.1_02/include/win32 <br>
+            &nbsp;&nbsp;-shared someJavaImp.c -o JavaImp.dll
             </code></blockquote>
 
             <p>Where JavaImp.dll should be named whatever you refer to the library as
