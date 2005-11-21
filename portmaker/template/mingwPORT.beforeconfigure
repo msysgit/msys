@@ -1,7 +1,0 @@
-# mingwPORT.beforeconfigure
-# Required to set BUILDDIR. 
-# Optionally add other commands before executing the configure source.
-
-BUILDDIR=bld ;# Modify this variable if you need to build in the source such
-             ;# that it represents the source directory.  Something like
-	     ;# BUILDDIR=.

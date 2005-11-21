@@ -1,9 +1,0 @@
-# mingwPORT.configure
-# Required.  This is the execution of any configuration scripts before the
-# build process.
-
-if [ ! -d ${PREFIX} ]
-then
-  mkdir -p ${PREFIX}
-fi
-${SRCDIR}/configure --prefix=`cd ${PREFIX} && pwd -W`
