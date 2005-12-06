@@ -309,7 +309,7 @@ ac_includes_default="\
 # include <unistd.h>
 #endif"
 
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CC CFLAGS LDFLAGS CPPFLAGS BUILD_CC BUILD_CFLAGS BUILD_LDFLAGS BUILD_CPPFLAGS awk ac_ct_CC EXEEXT OBJEXT INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA LN_S SET_MAKE CWARNNP CWARN WIN32LIBS CPP EGREP ALLOCA LIBOBJS manpathoption FHS FSSTND man_config_file sections man1ext man5ext man8ext path_separator_char NULLDEV path__usr_man path__usr_share_man path__usr_local_man path__usr_local_share_man path__usr_X11R6_man path__opt___STAR___man path__usr_lib___STAR___man path__usr_share___STAR___man path__usr_kerberos_man map_to__usr_man path__bin path__sbin path__usr_bin path__usr_sbin map_to__usr_local_man path__usr_local_bin path__usr_local_sbin map_to__usr_X11R6_man path__usr_X11R6_bin path__usr_bin_X11 path__usr_bin_mh languages locale pager browser htmlpager man_grepsilent cat troff nroff jnroff col pcol eqn neqn jneqn tbl vgrind refer grap pic cmp compress compress_ext gunzip bzip2 pcat zcat fcat unyabba decompress LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CC CFLAGS LDFLAGS CPPFLAGS BUILD_CC BUILD_CFLAGS BUILD_LDFLAGS BUILD_CPPFLAGS man_install_flags awk ac_ct_CC EXEEXT OBJEXT INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA LN_S SET_MAKE CWARNNP CWARN WIN32LIBS CPP EGREP ALLOCA LIBOBJS manpathoption FHS FSSTND man_config_file sections man1ext man5ext man8ext path_separator_char NULLDEV path__usr_man path__usr_share_man path__usr_local_man path__usr_local_share_man path__usr_X11R6_man path__opt___STAR___man path__usr_lib___STAR___man path__usr_share___STAR___man path__usr_kerberos_man map_to__usr_man path__bin path__sbin path__usr_bin path__usr_sbin map_to__usr_local_man path__usr_local_bin path__usr_local_sbin map_to__usr_X11R6_man path__usr_X11R6_bin path__usr_bin_X11 path__usr_bin_mh languages locale pager browser htmlpager man_grepsilent cat troff nroff jnroff col pcol eqn neqn jneqn tbl vgrind refer grap pic cmp compress compress_ext gunzip bzip2 pcat zcat fcat unyabba decompress LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -858,6 +858,8 @@ if test -n "$ac_init_help"; then
 Optional Features:
   --disable-FEATURE       do not include FEATURE (same as --enable-FEATURE=no)
   --enable-FEATURE[=ARG]  include FEATURE [ARG=yes]
+  --enable-suid=USER      install man suid to USER [man]
+  --enable-sgid=GROUP     install man sgid to GROUP [man]
   --enable-fhs            implement FHS standard installation paths
   --enable-fsstnd         implement FSSTND standard installation paths
   --disable-nls           don't include National Language Support
@@ -1454,6 +1456,71 @@ echo "$as_me: error: invalid configuration in \`tools' subdirectory
 See \`config.log' for more details." >&2;}
    { (exit 1); exit 1; }; }
  fi
+
+# Establish whether man should be installed suid, sgid, or neither,
+# and set the install program flags appropriately.
+#
+# Note: MAN_SUID_ENABLE and MAN_SGID_ENABLE define the DEFAULT user
+# and group names to be assigned, if `--enable-suid' or `--enable-sgid'
+# are specified without any specific name argument;  they do NOT cause
+# these options to be activated, unless the user specifies them.
+#
+  echo "$as_me:$LINENO: checking whether man should be installed suid" >&5
+echo $ECHO_N "checking whether man should be installed suid... $ECHO_C" >&6
+ # Check whether --enable-suid or --disable-suid was given.
+if test "${enable_suid+set}" = set; then
+  enableval="$enable_suid"
+  man_user=$enableval
+else
+  man_user=no
+fi;  if test x"$man_user" = xno; then
+   echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6
+ else
+   test x"$man_user" = xyes && man_user=man
+   echo "$as_me:$LINENO: result: yes (user=$man_user)" >&5
+echo "${ECHO_T}yes (user=$man_user)" >&6
+   if test x"$man_user" = xroot; then
+     { { echo "$as_me:$LINENO: error: you should NEVER install man suid root
+See \`config.log' for more details." >&5
+echo "$as_me: error: you should NEVER install man suid root
+See \`config.log' for more details." >&2;}
+   { (exit 1); exit 1; }; }
+   fi
+ fi
+  echo "$as_me:$LINENO: checking whether man should be installed sgid" >&5
+echo $ECHO_N "checking whether man should be installed sgid... $ECHO_C" >&6
+ # Check whether --enable-sgid or --disable-sgid was given.
+if test "${enable_sgid+set}" = set; then
+  enableval="$enable_sgid"
+  man_group=$enableval
+else
+  man_group=no
+fi;  if test x"$man_group" = xno; then
+   echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6
+ else
+   test x"$man_group" = xyes && man_group=man
+   echo "$as_me:$LINENO: result: yes (group=$man_group)" >&5
+echo "${ECHO_T}yes (group=$man_group)" >&6
+   if test x"$man_group" = xroot; then
+     { { echo "$as_me:$LINENO: error: you should NEVER install man sgid root
+See \`config.log' for more details." >&5
+echo "$as_me: error: you should NEVER install man sgid root
+See \`config.log' for more details." >&2;}
+   { (exit 1); exit 1; }; }
+   fi
+ fi
+    if test x"$man_group" != xno; then
+   test x"$man_user" = xno \
+   && man_install_flags="-m 2555 -o root -g $man_group" \
+   || man_install_flags="-m 6555 -o $man_user -g $man_group"
+ elif test x"$man_user" != xno; then
+   man_install_flags="-m 4555 -o $man_user -g root"
+ else
+   man_install_flags="-m 755"
+ fi
+
 
 # Checks for programs.
 
@@ -13355,6 +13422,7 @@ s,@BUILD_CC@,$BUILD_CC,;t t
 s,@BUILD_CFLAGS@,$BUILD_CFLAGS,;t t
 s,@BUILD_LDFLAGS@,$BUILD_LDFLAGS,;t t
 s,@BUILD_CPPFLAGS@,$BUILD_CPPFLAGS,;t t
+s,@man_install_flags@,$man_install_flags,;t t
 s,@awk@,$awk,;t t
 s,@ac_ct_CC@,$ac_ct_CC,;t t
 s,@EXEEXT@,$EXEEXT,;t t

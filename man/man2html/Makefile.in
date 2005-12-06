@@ -28,52 +28,70 @@ version = @PACKAGE_VERSION@
 # (when the "make" program in use supports the VPATH capability),
 # set up the srcdir mapping to VPATH.
 srcdir = @srcdir@
-VPATH = $(srcdir)
+VPATH = ${srcdir}
 
 # Other autoconf defined path names.
+top_srcdir = @top_srcdir@
 top_builddir = @top_builddir@
+exec_prefix = @exec_prefix@
+prefix = @prefix@
+bindir = @bindir@
+mandir = @mandir@
+
+OBJEXT = @OBJEXT@
+EXEEXT = @EXEEXT@
 
 CC = @CC@
 CWARN = @CWARN@
-CFLAGS = @CFLAGS@ $(CWARN) -I$(top_builddir)/src
-OBJECTS = man2html.o cgibase.o abbrev.o strdefs.o
-bindir = $(DESTDIR)$(PREFIX)/usr/bin
-mandir = $(DESTDIR)$(PREFIX)@mandir@
-vardir = $(DESTDIR)$(PREFIX)/var
-httpdir = $(DESTDIR)$(PREFIX)/home/httpd
-cgiowner = nobody
-cgigroup = nobody
+CFLAGS = @CFLAGS@ $(CWARN) -I${top_builddir}/src
+OBJECTS = man2html.$(OBJEXT) cgibase.$(OBJEXT) abbrev.$(OBJEXT) strdefs.$(OBJEXT)
+INSTALL = @INSTALL@
 
-all: man2html hman
+LN_S = @LN_S@
 
-man2html: $(OBJECTS)
+all: man2html$(EXEEXT) hman README
+
+.PHONY: FORCE
+FORCE:
+README: FORCE
+	test -e README || $(LN_S) ${srcdir}/README $@
+
+man2html$(EXEEXT): $(OBJECTS)
 	$(CC) $(LDFLAGS) -o man2html $(OBJECTS)
 
-# man2html: $(top_builddir)/src/version.h
+# man2html: ${top_builddir}/src/version.h
 
 # This installs the man2html utility
-install: man2html
-	install -m 755 man2html $(bindir)
-	mkdir -p $(mandir)/man1
-	install -m 644 man2html.1 $(mandir)/man1/man2html.@man1ext@
+install: man2html$(EXEEXT)
+	${top_srcdir}/mkinstalldirs ${DESTDIR}${mandir}/man1
+	-test -n "${DESTDIR}" && ${top_srcdir}/mkinstalldirs ${DESTDIR}${bindir}
+	${top_srcdir}/mkinstalldirs --require ${DESTDIR}${prefix} ${DESTDIR}${bindir}
+	$(INSTALL) -m 755 man2html$(EXEEXT) ${DESTDIR}${bindir}/man2html$(EXEEXT)
+	$(INSTALL) -m 644 ${srcdir}/man2html.1 ${DESTDIR}${mandir}/man1/man2html.@man1ext@
 
 install-scripts: install-man-scripts install-glimpse-stuff install-hman
 
 # These are the scripts that allow pointing a browser at
 #   http://localhost/cgi-bin/man/man2html
 # to work.
-install-man-scripts:
-	mkdir -p $(httpdir)/cgi-bin/man
-	mkdir -p $(httpdir)/cgi-aux/man
-	install -m 755 scripts/cgi-bin/man/* $(httpdir)/cgi-bin/man
-	install -m 644 scripts/cgi-aux/man/* $(httpdir)/cgi-aux/man
-	install -d -o $(cgiowner) -g $(cgigroup) -m 775 $(vardir)/man2html
+#
+vardir = ${DESTDIR}/var
+httpdir = ${DESTDIR}/home/httpd
+cgiowner = nobody
+cgigroup = nobody
+
 # (aux was renamed to cgi-aux since aux causes problems under DOS)
+#
+install-man-scripts:
+	${top_srcdir}/mkinstalldirs ${httpdir}/cgi-bin/man ${httpdir}/cgi-aux/man
+	$(INSTALL) -m 755 ${srcdir}/scripts/cgi-bin/man/man* ${httpdir}/cgi-bin/man
+	$(INSTALL) -m 644 ${srcdir}/scripts/cgi-aux/man/man* ${httpdir}/cgi-aux/man
+	$(INSTALL) -d -o $(cgiowner) -g $(cgigroup) -m 775 ${vardir}/man2html
 
 # If you have installed glimpse, and have compressed man pages,
 # then perhaps you also want these filters.
 install-glimpse-stuff:
-	install -m 644 glimpse_filters $(vardir)/man2html/.glimpse_filters
+	$(INSTALL) -m 644 ${srcdir}/glimpse_filters ${vardir}/man2html/.glimpse_filters
 
 # In order not to have to type a long command like
 #   netscape http://localhost/cgi-bin/man/man2html?section+topic
@@ -85,11 +103,11 @@ install-glimpse-stuff:
 # you can set MANHTMLHOST if the pages are not on localhost.
 hman: hman.sh
 	rm -f hman
-	sed -e 's,%version%,$(package)-$(version),' $(srcdir)/hman.sh > hman
+	sed -e 's,%version%,$(package)-$(version),' ${srcdir}/hman.sh > hman
 
 install-hman: hman
-	install -m 555 hman $(bindir)/hman
-	install -m 644 hman.1 $(mandir)/man1/hman.@man1ext@
+	$(INSTALL) -m 555 hman ${DESTDIR}${bindir}/hman
+	$(INSTALL) -m 644 ${srcdir}/hman.1 ${DESTDIR}${mandir}/man1/hman.@man1ext@
 
 clean:
 	rm -f core hman man2html $(OBJECTS) *~

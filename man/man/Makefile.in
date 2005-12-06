@@ -9,6 +9,7 @@ MAYBE8 = makewhatis
 
 prefix = @prefix@
 exec_prefix = @exec_prefix@
+abs_top_srcdir = @abs_top_srcdir@
 srcdir = @abs_srcdir@
 VPATH = ${srcdir}
 
@@ -30,10 +31,12 @@ MANPAGE_SED_TRANSFORM = \
 .man.8:
 	sed $(MANPAGE_SED_TRANSFORM) $< > $@
 
-INSTALL = @INSTALL@ -c -m 644
+INSTALL = @INSTALL@ -m 644
 
 # Where to put the manual pages.
-mandir = $(DESTDIR)$(PREFIX)@mandir@$(SLANG)
+mandir = ${DESTDIR}@mandir@${SLANG}
+ALL_MANDIRS = ${mandir}/man1 ${mandir}/man5 ${mandir}/man8
+dest_prefix = ${DESTDIR}${prefix}
 
 all:	$(ALL)
 	for i in $(MAYBE8); \
@@ -42,14 +45,14 @@ all:	$(ALL)
 	 fi; done
 
 install: $(ALL)
-	mkdir -p $(mandir)/man1 $(mandir)/man5 $(mandir)/man8
+	${abs_top_srcdir}/mkinstalldirs --require ${dest_prefix} $(ALL_MANDIRS)
 	for i in $(MAN1); \
-	 do $(INSTALL) $$i.1 $(mandir)/man1/$$i.@man1ext@; done
+	 do $(INSTALL) $$i.1 ${mandir}/man1/$$i.@man1ext@; done
 	for i in $(MAN5); \
-	 do $(INSTALL) $$i.5 $(mandir)/man5/$$i.@man5ext@; done
+	 do $(INSTALL) $$i.5 ${mandir}/man5/$$i.@man5ext@; done
 	for i in $(MAN8); \
 	 do if test -f $$i.8; then \
-	   $(INSTALL) $$i.8 $(mandir)/man8/$$i.@man8ext@; \
+	   $(INSTALL) $$i.8 ${mandir}/man8/$$i.@man8ext@; \
 	 fi; done
 
 clean:
@@ -65,8 +68,9 @@ subdirs:
 	  else echo "==== No $$i man pages found. ===="; fi; done
 
 installsubdirs:
+	-test -n "${DESTDIR}" && ${abs_top_srcdir}/mkinstalldirs ${dest_prefix}
 	for i in @languages@; do if test -d $$i; then echo; \
-	  echo "==== Installing the `cat $$i.txt` man pages. ===="; \
+	  echo "==== Installing the `cat ${srcdir}/$$i.txt` man pages. ===="; \
 	  cd $$i; SLANG=/$$i; if test $$SLANG = /en; then SLANG= ; fi; \
 	  export SLANG; make -f ../Makefile install; cd ..; \
 	  else echo "==== No $$i man pages found. ===="; fi; done

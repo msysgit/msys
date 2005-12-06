@@ -159,6 +159,75 @@ AC_DEFUN([MSYS_AC_CANONICAL_PATH],
 ])
 
 
+## ==================================================== ##
+## Program Installation Hooks for SUID and SGID Options ##
+## ==================================================== ##
+#
+# MAN_SUID_ENABLE( [USERNAME] )
+# -----------------------------
+# Interpret `--enable-suid=USER' configure option, to make man install
+# suid to USER; if `--enable-suid' specified but USER not given on command line,
+# substitute USERNAME for USER, or fall back to USER=man, if neither given.
+#
+AC_DEFUN([MAN_SUID_ENABLE],
+[MAN_ID_ENABLE([USER], [suid], [man_user], m4_if([$1], [], [man], [$1]))dnl
+])
+
+# MAN_SGID_ENABLE( [GROUPNAME] )
+# ------------------------------
+# Interpret `--enable-sgid=GROUP' configure option, to make man install
+# sgid to GROUP; if `--enable-sgid' specified but GROUP not given on command line,
+# substitute GROUPNAME for GROUP, or fall back to GROUP=man, if neither given.
+#
+AC_DEFUN([MAN_SGID_ENABLE],
+[MAN_ID_ENABLE([GROUP], [sgid], [man_group], m4_if([$1], [], [man], [$1]))dnl
+])
+
+# MAN_ID_ENABLE( CLASS, MODE, VARNAME, IDNAME )
+# ---------------------------------------------
+# Helper macro used by MAN_SUID_ENABLE and MAN_SGID_ENABLE.
+# For CLASS=USER or CLASS=GROUP, with MODE=suid or MODE=sgid respectively,
+# interpret the `--enable-MODE' configure option, and assign VARNAME from
+# IDNAME, or user specified alternative, as appropriate.
+#
+AC_DEFUN([MAN_ID_ENABLE],
+[AC_MSG_CHECKING([whether man should be installed $2])
+ AC_ARG_ENABLE([$2],
+  [AS_HELP_STRING([--enable-$2=$1],
+    [install man $2 to $1]) MAN_AS_HELP_DEFAULT([$4])],
+  [$3=$enableval], [$3=no])dnl
+ if test x"$$3" = xno; then
+   AC_MSG_RESULT([no])
+ else
+   test x"$$3" = xyes && $3=$4
+   AC_MSG_RESULT([yes (]m4_translit([$1], [A-Z], [a-z])[=$$3)])
+   if test x"$$3" = xroot; then
+     AC_MSG_FAILURE([you should NEVER install man $2 root])
+   fi[]
+ fi[]dnl
+])
+
+# MAN_INSTALL_FLAGS
+# -----------------
+# Establish the flags to be passed to the `install' program,
+# when `make install' processes the `man' executable.
+#
+AC_DEFUN([MAN_INSTALL_FLAGS],
+[AC_REQUIRE([MAN_SUID_ENABLE])dnl
+ AC_REQUIRE([MAN_SGID_ENABLE])dnl
+ if test x"$man_group" != xno; then
+   test x"$man_user" = xno \
+   && man_install_flags="-m 2555 -o root -g $man_group" \
+   || man_install_flags="-m 6555 -o $man_user -g $man_group"
+ elif test x"$man_user" != xno; then
+   man_install_flags="-m 4555 -o $man_user -g root"
+ else
+   man_install_flags="-m 755"
+ fi
+ AC_SUBST([man_install_flags])dnl
+])
+
+
 ## ================================================================== ##
 ## Configuration File Identification and Standards Compliance Options ##
 ## ================================================================== ##

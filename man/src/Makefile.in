@@ -33,7 +33,7 @@ version = @PACKAGE_VERSION@
 # (when the "make" program in use supports the VPATH capability),
 # set up the srcdir mapping to VPATH.
 srcdir = @srcdir@
-VPATH = $(srcdir)
+VPATH = ${srcdir}
 
 # Other autoconf specified directory references.
 top_srcdir = @top_srcdir@
@@ -43,7 +43,6 @@ bindir = @bindir@
 
 prefix = @prefix@
 exec_prefix = @exec_prefix@
-PREFIX = ${prefix}
 
 # Compiler and installer.
 CC = @CC@
@@ -55,12 +54,13 @@ OBJEXT = @OBJEXT@
 
 pager = @pager@
 
+CFLAGS = @CFLAGS@
 DEFS = @DEFS@ $(INCLUDES)
 GREPSILENT = -DGREPSILENT='"@man_grepsilent@"'
 CWARNNP = @CWARNNP@
 CWARN = @CWARN@
 
-INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
+INCLUDES = -I. -I${srcdir} -I${top_builddir}
 WIN32LIBS = @WIN32LIBS@
 
 .c.$(OBJEXT):
@@ -86,7 +86,7 @@ win32/libexec.a: FORCE
 stamp.h: paths.h man.conf
 	for f in $?; \
 	  do sed \
-	      -e 's,$${prefix},${PREFIX},g' \
+	      -e 's,$${prefix},${prefix},g' \
 	      -e 's,$${bindir},${bindir},g' \
 	      -e ':loop' \
 	      -e   '/__undef__(\([^)]*\))/{' \
@@ -101,14 +101,14 @@ man: $(MANOBJS) $(LIBS) $(WIN32LIBS)
 	$(CC) $(LDFLAGS) -o man $(MANOBJS) $(WIN32LIBS) $(LIBS)
 
 man.$(OBJEXT): man.c
-	$(CC) -c $(CWARN) $(CFLAGS) $(DEFS) $(GREPSILENT) $(srcdir)/man.c
+	$(CC) -c $(CWARN) $(CFLAGS) $(DEFS) $(GREPSILENT) ${srcdir}/man.c
 
-msg.c gripedefs.h: $(top_srcdir)/msgs/mess.en $(top_builddir)/tools/makemsg
-	$(top_builddir)/tools/makemsg $(top_srcdir)/msgs/mess.en gripedefs.h msg.c
+msg.c gripedefs.h: ${top_srcdir}/msgs/mess.en ${top_builddir}/tools/makemsg
+	${top_builddir}/tools/makemsg ${top_srcdir}/msgs/mess.en gripedefs.h msg.c
 
 # glob.c does not have prototypes
 glob.$(OBJEXT): glob.c ndir.h
-	$(CC) -c $(CWARNNP) $(CFLAGS) $(DEFS) $(srcdir)/glob.c
+	$(CC) -c $(CWARNNP) $(CFLAGS) $(DEFS) ${srcdir}/glob.c
 
 man-config.$(OBJEXT) man-getopt.$(OBJEXT) man.$(OBJEXT) manpath.$(OBJEXT) \
 to_cat.$(OBJEXT): defs.h
@@ -143,15 +143,15 @@ man-getopt.$(OBJEXT): version.h
 
 msg.$(OBJEXT): msg.c
 
-gripes.$(OBJEXT): $(top_srcdir)/catopen/catopen.c
+gripes.$(OBJEXT): ${top_srcdir}/catopen/catopen.c
 
 man.conf: man.conf.in $(config_sed)
-	sed -f $(top_builddir)/config.sed $(srcdir)/man.conf.in > man.conf
+	sed -f ${top_builddir}/config.sed ${srcdir}/man.conf.in > man.conf
 
 #paths.h: paths.h.in $(config_sed)
-#	sed -f $(top_builddir)/config.sed $(srcdir)/paths.h.in > paths.h
+#	sed -f ${top_builddir}/config.sed ${srcdir}/paths.h.in > paths.h
 
-version.h: $(top_srcdir)/configure.ac Makefile
+version.h: ${top_srcdir}/configure.ac Makefile
 	echo "static char version[] = \"$(version)\";" > version.h
 
 apropos: apropos.sh Makefile
@@ -161,7 +161,7 @@ apropos: apropos.sh Makefile
 	    -e 's,%manpathoption%,@manpathoption@,' \
 	    -e 's,%path_separator_char%,@path_separator_char@,' \
 	    -e 's,%grepsilent%,@man_grepsilent@,' \
-		$(srcdir)/apropos.sh > apropos
+		${srcdir}/apropos.sh > apropos
 	chmod +x apropos
 
 whatis: apropos.sh Makefile
@@ -171,32 +171,41 @@ whatis: apropos.sh Makefile
 	    -e 's,%manpathoption%,@manpathoption@,' \
 	    -e 's,%path_separator_char%,@path_separator_char@,' \
 	    -e 's,%grepsilent%,@man_grepsilent@,' \
-		$(srcdir)/apropos.sh > whatis
+		${srcdir}/apropos.sh > whatis
 	chmod +x whatis
 
 makewhatis: makewhatis.sh Makefile
 	rm -f makewhatis
 	sed -e 's,%version%,$(package)-$(version),' \
-	    -e 's,%awk%,@awk@,' $(srcdir)/makewhatis.sh > makewhatis
+	    -e 's,%awk%,@awk@,' ${srcdir}/makewhatis.sh > makewhatis
 	chmod +x makewhatis
 
-MANCONFIG=$(DESTDIR)$(PREFIX)@man_config_file@
+# Some users like to specify `make DESTDIR=/some/path install',
+# so set up some convenience macros to support this in `install' rules ONLY.
+#
+dest_prefix = ${DESTDIR}${prefix}
+exec_destdir = ${DESTDIR}${exec_prefix}
+bin_destdir = ${DESTDIR}${bindir}
+sbin_destdir = ${DESTDIR}${sbindir}
+#
+manconfdir = `echo $(manconffile) | sed s'?/*[^/]\+/*$$??'`
+manconffile = ${DESTDIR}@man_config_file@
 
 install: all apropos whatis makewhatis
-	mkdir -p $(DESTDIR)$(PREFIX)@bindir@
-	$(INSTALL) -c @man_install_flags@ man $(DESTDIR)$(PREFIX)@man@
-	$(INSTALL) -c -m 755 apropos $(DESTDIR)$(PREFIX)@apropos@
-	$(INSTALL) -c -m 755 whatis $(DESTDIR)$(PREFIX)@whatis@
-	$(INSTALL) -c -m 755 man2dvi $(DESTDIR)$(PREFIX)@man2dvi@
-	mkdir -p $(DESTDIR)$(PREFIX)@sbindir@
-	$(INSTALL) -c -m 754 makewhatis $(DESTDIR)$(PREFIX)@makewhatis@
-	mkdir -p $(DESTDIR)$(PREFIX)@man_config_dir@
-	if [ -f $(MANCONFIG) ]; then mv $(MANCONFIG) $(MANCONFIG).orig; fi
-	$(INSTALL) -c -m 644 man.conf $(MANCONFIG)
+	-test -n "${DESTDIR}" && ${top_srcdir}/mkinstalldirs ${dest_prefix} ${exec_destdir}
+	${top_srcdir}/mkinstalldirs --require ${exec_destdir} ${bin_destdir} ${sbin_destdir}
+	$(INSTALL) @man_install_flags@ man$(EXEEXT) ${bin_destdir}/man$(EXEEXT)
+	$(INSTALL) -m 755 apropos ${bin_destdir}/apropos
+	$(INSTALL) -m 755 whatis ${bin_destdir}/whatis
+	$(INSTALL) -m 755 ${srcdir}/man2dvi ${bin_destdir}/man2dvi
+	$(INSTALL) -m 754 makewhatis ${sbin_destdir}/makewhatis
+	${top_srcdir}/mkinstalldirs --require ${dest_prefix} ${manconfdir}
+	-test -f ${manconffile} && mv ${manconffile} ${manconffile}.orig
+	$(INSTALL) -m 644 man.conf ${manconffile}
 
 clean:
 	rm -f *.$(OBJEXT) *~ core man apropos whatis makewhatis
-	test -n "$(EXEEXT)" && rm -f *$(EXEEXT)
+	-test -n "$(EXEEXT)" && rm -f *$(EXEEXT)
 	@cd win32; $(MAKE) clean
 
 spotless: clean
@@ -205,4 +214,4 @@ spotless: clean
 
 FORCE:
 
-# EOF -- vim: ft=make
+# $RCSfile: Makefile.in,v $: end of file -- vim: ft=make

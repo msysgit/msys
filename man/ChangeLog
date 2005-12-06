@@ -1,3 +1,49 @@
+2005-12-06  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Update installation rules for autoconf compatibility.
+
+	* aclocal.m4 (MAN_ID_ENABLE): New macro.
+	(MAN_SUID_ENABLE, MAN_SGID_ENABLE): New macros; they use MAN_ID_ENABLE
+	to establish suid and sgid install preferences.
+	(MAN_INSTALL_FLAGS): New macro; it passes the appropriate flags,
+	established by MAN_SUID_ENABLE and MAN_SGID_ENABLE, to `make'.
+
+	* configure.ac (MAN_SUID_ENABLE, MAN_SGID_ENABLE, MAN_INSTALL_FLAGS):
+	Use them.
+
+	* configure: Regenerated.
+
+	* mkinstalldirs: New file; adapted from GNU automake standard, with
+	support for `--require' option added.
+
+	* src/Makefile.in: Use braces for all directory name assignments.
+	(dest_prefix, bin_destdir, sbin_destdir): New definitions.
+	(install): Use them; use `mkinstalldirs'.
+	(clean): Don't fail on anticipated false test for EXEEXT.
+	(CFLAGS): Let autoconf supply defaults.
+	(RCSfile): Keyword added, in EOF tagline.
+
+	* man/Makefile.in: Use braces for all directory name assignments.
+	(abs_top_srcdir): New definition; let autoconf supply it.
+	(INSTALL): Eliminate duplicate `-c' option; (already supplied by
+	autoconf).
+	(PREFIX): Removed.
+	(dest_prefix, ALL_MANDIRS): New definitions.
+	(install, installsubdirs): Use them; use `mkinstalldirs'.
+
+	* man2html/Makefile.in: Use braces for all directory name assignments.
+	(bindir, mandir): Use autoconf supplied definitions.
+	(top_srcdir, prefix, exec_prefix, OBJEXT, EXEEXT, LN_S): New
+	definitions; let autoconf supply them.
+	(PREFIX): Removed.
+	(OBJECTS): Use OBJEXT.
+	(man2html): Add EXEEXT suffix.
+	(FORCE): New PHONY target.
+	(README): New target; copy README to builddir, if required.
+	(install, install-man-scripts, install-glimpse-stuff, install-hman):
+	Use `mkinstalldirs'; add `srcdir' references; avoid attempts to
+	install CVS directory images. 
+
 2005-11-14  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Define filename extensions for installed manpages.

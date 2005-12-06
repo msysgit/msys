@@ -30,6 +30,18 @@
 #
   MAN_AC_CONFIG_NATIVE([tools])
 
+# Establish whether man should be installed suid, sgid, or neither,
+# and set the install program flags appropriately.
+#
+# Note: MAN_SUID_ENABLE and MAN_SGID_ENABLE define the DEFAULT user
+# and group names to be assigned, if `--enable-suid' or `--enable-sgid'
+# are specified without any specific name argument;  they do NOT cause
+# these options to be activated, unless the user specifies them.
+#
+  MAN_SUID_ENABLE([man])
+  MAN_SGID_ENABLE([man])
+  MAN_INSTALL_FLAGS
+
 # Checks for programs.
   MAN_PROG_AWK
   AC_PROG_CC
