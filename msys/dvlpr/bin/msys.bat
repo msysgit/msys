@@ -1,12 +1,12 @@
 @echo off
-rem Copyright (C):  2001, 2002, 2003, 2004  Earnie Boyd
+rem Copyright (C):  2001, 2002, 2003, 2004, 2005  Earnie Boyd
 rem   mailto:earnie@users.sf.net
 rem This file is part of Minimal SYStem
 rem   http://www.mingw.org/msys.shtml
 rem
 rem File:	    msys.bat
-rem Revision:	    2.2
-rem Revision Date:  March 28th, 2004
+rem Revision:	    2.4
+rem Revision Date:  December 8th, 2005
 
 rem ember to set the "Start in:" field of the shortcut.
 rem A value similar to C:\msys\1.0\bin is what the "Start in:" field needs
@@ -34,6 +34,14 @@ if NOT EXIST %WD%msys-1.0.dll set WD=.\bin\
 
 rem ember that we get here even in command.com.
 :_WindowsNT
+
+rem Hopefully a temporary workaround for getting MSYS shell to run on x64
+rem (WoW64 cmd prompt sets PROCESSOR_ARCHITECTURE to x86)
+if not "x%PROCESSOR_ARCHITECTURE%" == "xAMD64" goto _NotX64
+set COMSPEC=%WINDIR%\SysWOW64\cmd.exe
+%COMSPEC% /c %0 %1 %2 %3 %4 %5 %6 %7 %8 %9
+goto EOF
+:_NotX64
 
 if NOT EXIST %WD%msys-1.0.dll set WD=%~dp0\bin\
 
@@ -81,7 +89,7 @@ start %WD%rxvt -backspacekey  -sl 2500 -fg %FGCOLOR% -bg %BGCOLOR% -sr -fn Cour
 exit
 
 :startsh
-if NOT EXIST %WD%\sh.exe goto notfound
+if NOT EXIST %WD%sh.exe goto notfound
 start %WD%sh --login -i
 exit
 
@@ -164,4 +172,15 @@ rem 2005.07.06  Max TE Woodbury  mailto:mtew@users.sf.net
 rem     * Fixed WD check for command.com systems.
 rem     * Minimized intermediate CMD window to reduce startup flashyness.
 rem     * If rxvt.exe cannot be found, try sh.exe.
+rem
+rem 2005.12.06  Tuomo Latto  mailto:nonperson@users.sf.net
+rem     * Added a temporary workaround for getting MSYS shell to run on x64.
+rem
+rem 2005.12.07  Keith Marshall  mailto:keithmarshall@users.sf.net
+rem     * ``EXISTS %WD%\sh.exe'' should be ``EXISTS %WD%sh.exe''; corrected.
+rem     * Modified Tuomo's patch, to avoid trashing Window settings in Win32.
+rem
+rem 2005.12.08  Tuomo Latto  mailto:nonperson@users.sf.net
+rem     * Keith's modified patch fails on x64; start did funny things.
+rem     Reworked, for correct behaviour on both platforms.
 rem

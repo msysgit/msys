@@ -1,3 +1,11 @@
+2005.12.08  Tuomo Latto  <nonperson@users.sf.net>
+
+	* bin/msys.bat: Restart in Win32 compatibility mode on x64.
+
+2005.12.08  Keith Marshall  <keithmarshall@users.sf.net>
+
+	* bin/msys.bat (startsh): Fix %WD%\sh.exe typo.
+
 2005.07.07  Earnie Boyd  <earnie@users.sf.net>
 
 	* var/msys/etc.dat (config.site): Remove.
