@@ -26,7 +26,12 @@
 # set up the srcdir mapping to VPATH.
 
 srcdir = @srcdir@
-VPATH = $(srcdir)
+VPATH = ${srcdir}
+
+LN_S = @LN_S@
+
+ZIPCMD = gzip
+ZIPEXT = .gz
 
 # Allow "configure" to choose if message catalogues will be built,
 # and subsequently installed.
@@ -102,31 +107,56 @@ install-done:
 #	@echo 'install a symlink /usr/man/whatis -> /var/catman/whatis,'
 #	@echo '(or to whatever cat page location is appropriate).'
 
+CLEANDIRS = src tools man2html man msgs gencat
+
 clean: src/Makefile man/Makefile msgs/Makefile man2html/Makefile
-	cd src; $(MAKE) clean
-	cd tools; $(MAKE) clean
-	cd man2html; $(MAKE) clean
-	cd man; $(MAKE) cleansubdirs
-	cd msgs; $(MAKE) clean
-	cd gencat; $(MAKE) clean
+	for dir in $(CLEANDIRS); \
+	  do (cd $$dir; $(MAKE) $@); \
+	  done
 	rm -f core *~
 
-spotless distclean reallyclean: clean
-	cd src; $(MAKE) spotless
-	cd tools; $(MAKE) spotless
-	cd man2html; $(MAKE) spotless
-	cd man; $(MAKE) spotlesssubdirs
-	cd msgs; $(MAKE) spotless
-	cd gencat; $(MAKE) clean
-	rm -f config.sed Makefile
+spotless distclean realclean: clean
+	for dir in $(CLEANDIRS); \
+	  do (cd $$dir; $(MAKE) $@); \
+	  done
+	rm -rf Makefile auto* *.orig *.rej
 
-DISTR = COPYING README README.HP README.RedHat README.GNU-WIN32 INSTALL \
-	Makefile.in configure src man2html man msgs gencat catopen misc
+# Distribution packaging and verification rules
 
-dist:	spotless
-	echo man-`grep "static char version" src/version.h | \
-		sed -e 's/.*"\([0-9.a-z]*\)".*/\1/'` > .fname
-	rm -rf `cat .fname`; mkdir `cat .fname`
-	cd `cat .fname`; for i in $(DISTR); do ln -s ../$$i $$i; done
-	tar chzf `cat .fname`.tar.gz `cat .fname`
-	rm -rf `cat .fname` .fname 
+distdir = @PACKAGE_NAME@-@PACKAGE_VERSION@
+DISTNAME = ${distdir}`test -n "$(BUILD)" && echo -`$(BUILD)
+DISTDIRS = src src/win32 man man/?? tools msgs catopen man2html man2html/scripts/cgi*/man gencat
+DISTCLEANDIRS = $(CLEANDIRS) src/win32
+
+.PHONY: dist distdir distcheck distpackage
+dist: distdir distpackage
+	rm -rf ${distdir}
+
+distdir:
+	rm -rf ${distdir}; mkdir ${distdir}
+	srcdir=`cd ${srcdir}; pwd`; manifest=`cd ${srcdir}; echo $(DISTDIRS)`; \
+	  cd ${distdir}; $$srcdir/mkinstalldirs $$manifest
+	for file in `cd ${srcdir}; echo *`; \
+	  do if test -f ${srcdir}/$$file; then \
+	    echo $(LN_S) ${srcdir}/$$file ${distdir}/$$file; \
+	    $(LN_S) ${srcdir}/$$file ${distdir}/$$file; \
+	    fi; \
+	  done
+	for dir in `cd ${distdir}; echo $(DISTDIRS)`; \
+	  do for file in `cd ${srcdir}/$$dir; echo *`; \
+	    do if test -f ${srcdir}/$$dir/$$file; then \
+	      echo $(LN_S) ${srcdir}/$$dir/$$file ${distdir}/$$dir/$$file; \
+	      $(LN_S) ${srcdir}/$$dir/$$file ${distdir}/$$dir/$$file; \
+	      fi; \
+	    done; \
+	  done
+	for dir in $(DISTCLEANDIRS); \
+	  do $(LN_S) ./$$dir/Makefile ${distdir}/$$dir/Makefile; \
+	  done
+	$(LN_S) ./Makefile ${distdir}/Makefile
+	cd ${distdir}; $(MAKE) srcdir=. top_srcdir=`pwd` distclean
+
+distpackage: distdir
+	tar chf - ${distdir} | $(ZIPCMD) > $(DISTNAME).tar$(ZIPEXT)
+
+# $RCSfile: Makefile.in,v $: end of file -- vim: ft=make

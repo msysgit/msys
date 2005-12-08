@@ -1,3 +1,39 @@
+2005-12-08  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Update distribution clean-up and packaging rule sets.
+
+	* Makefile.in (CLEANDIRS, DISTDIRS, DISTCLEANDIRS): New variables.
+	(clean, distclean): Rewrite all commands; loop on `CLEANDIRS'.
+	(reallyclean): Target renamed...
+	(realclean): ...to this; it remains a pseudonym for `distclean'.
+	(BUILD, DISTNAME): New variables; together they define the base name
+	for the distribution tarball.
+	(ZIPCMD, ZIPEXT): New variables; define the compression method for the
+	distribution tarball; default: `gzip' with `.gz' suffix.
+	(LN_S): New variable; defined by autoconf; required to use `ln -s'
+	command to assemble the distribution file tree.
+	(distdir): New variable; it defines the subdirectory name for...
+	(distdir): New target; make distribution file tree image directory.
+	(distpackage): New target; it packages the `distdir' file tree image.
+	(dist): Rewrite commands; use `distdir' and `distpackage'.
+	(DISTR): Redundant variable; deleted.
+	(RCSfile): Added EOF tag, and `vim' mode line.
+
+	* man/Makefile.in: Add file header, with copyright notification.
+	(clean): Original target renamed...
+	(clean-here): ...to this; it operates in one subdirectory.
+	(spotless): Original target renamed...
+	(spotless-here): ...to this; it operates in one subdirectory; have it
+	clean up `patch' reject reports and backups.
+	(clean): New target; it is a pseudonym for `cleansubdirs'.
+	(distclean realclean spotless): New targets; all are pseudonyms for
+	`spotlesssubdirs'.
+	(RCSfile): Added EOF tag, and `vim' mode line.
+
+	* gencat/Makefile.in (distclean, realclean, spotless): New targets;
+	all are pseudonyms for the same action; required to support the
+	modified `distclean' operation in the top level `Makefile.in'.
+
 2005-12-06  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Update installation rules for autoconf compatibility.

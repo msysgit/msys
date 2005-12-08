@@ -16,3 +16,5 @@ install: gencat
 clean:
 	rm -f *~ *.o gencat
 
+distclean realclean spotless: clean
+	rm -f Makefile
