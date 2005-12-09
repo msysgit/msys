@@ -40,7 +40,7 @@
 # define _P_WAIT 0
 #endif
 
-#define NO_SHELL -1
+#define  SHELL_NOT_FOUND  -1
 
 /* win32run_command_sequence(): used in place of a system() call,
  * to invoke the appropriate sequence of manpage formatting commands.
@@ -48,20 +48,42 @@
 
 int win32run_command_sequence( const char *commands )
 {
-  static char *shell = NULL;
+  int status = SHELL_NOT_FOUND;
 
-  /* We need a UNIXy shell, to execute the command pipeline.
-   * If we didn't previously identify one which we can deploy,
-   * then first check the environment for a candidate.
+  /* We may use any shell specified by the $SHELL environment variable,
+   * or try to choose one of these UNIXy shells, to execute the command...
+   */
+  
+  static char *shell = NULL;
+  static char *candidate_shells[]
+    = { "bash", "ksh", "pdksh", "zsh", "ash", "sh", "tcsh", "csh", NULL };
+  static char **candidate = candidate_shells;
+
+  /* If we didn't try previously,
+   * and we haven't yet identified a shell which we can deploy,
+   * then first check the environment for a candidate, or try the
+   * built-in list of default candidates.
    */
 
-  if( shell == NULL )
-    shell = getenv( "SHELL" );
+  if(  (candidate != NULL) && (shell == NULL)
+  &&  ((shell = getenv( "SHELL" )) == NULL)    )
+    shell = *candidate++;
 
-  if( shell )
-    return spawnlp( _P_WAIT, shell, shell, "-c", commands, NULL );
+  while(  (shell != NULL)
+  &&     ((status = spawnlp( _P_WAIT, shell, shell, "-c", commands, NULL )) < 0)
+  &&      (candidate != NULL)   )
+    shell = *candidate++;
 
-  return NO_SHELL;
+  /* Once we get to here,
+   * we either successfully passed `command' to a shell, or we ran out of
+   * possible shells to try.  Either way, disable shell candidate checking,
+   * in case we come back again, and, if we found a viable shell, return the
+   * `status' code returned by it, otherwise, just return the `status' from
+   * the final failed attempt.
+   */
+
+  candidate = NULL;
+  return status;
 }
 
-/* $Source: /srv/git/msys/cvs-mirror/man/src/win32/wincmds.c,v $: end of file */
+/* $RCSfile: wincmds.c,v $: end of file */

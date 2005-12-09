@@ -1,5 +1,11 @@
 2005-12-09  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
+	* src/win32/wincmds.c (win32_run_command_sequence): Adapt SHELL
+	identification logic, to match that used in the `spawncli' function
+	from the MinGW `execwrap' library.
+
+2005-12-09  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
 	Improve `distclean' performance and integrity.
 
 	* Makefile.in (CLEANFILES, DISTCLEANFILES): New variables.
