@@ -108,18 +108,20 @@ install-done:
 #	@echo '(or to whatever cat page location is appropriate).'
 
 CLEANDIRS = src tools man2html man msgs gencat
+DISTCLEANFILES =  Makefile auto* *.orig *.rej config.h config.[cls]*
+CLEANFILES = core *~ *.stackdump
 
 clean: src/Makefile man/Makefile msgs/Makefile man2html/Makefile
 	for dir in $(CLEANDIRS); \
 	  do (cd $$dir; $(MAKE) $@); \
 	  done
-	rm -f core *~
+	rm -f $(CLEANFILES)
 
-spotless distclean realclean: clean
+spotless distclean realclean:
 	for dir in $(CLEANDIRS); \
 	  do (cd $$dir; $(MAKE) $@); \
 	  done
-	rm -rf Makefile auto* *.orig *.rej
+	rm -rf $(CLEANFILES) $(DISTCLEANFILES)
 
 # Distribution packaging and verification rules
 

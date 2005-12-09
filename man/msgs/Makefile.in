@@ -11,10 +11,10 @@ install:
 	sh ./inst.sh "@languages@" "$(DESTDIR)@locale@"
 
 clean:
-	rm -f gencat gencat.out core *~ *.cat *.catin *.catin2
+	rm -f gencat$(EXEEXT) gencat.out core *~ *.cat *.catin *.catin2 *.stackdump
 
-spotless:
-	rm -f Makefile
+distclean realclean spotless: clean
+	rm -f Makefile *.orig *.rej
 
 # Various versions of libc use different format message catalog files
 # So we have to use the installed /usr/bin/gencat if possible.

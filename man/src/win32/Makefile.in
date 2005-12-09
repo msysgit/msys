@@ -90,10 +90,7 @@ $(WIN32_SPAWNV_WRAPPERS): execvw.c
 clean:
 	$(RM) *.$(OBJEXT) *.a
 
-distclean: clean
-	$(RM) Makefile
+distclean realclean spotless: clean
+	$(RM) Makefile *.orig *.rej
 
-realclean: distclean
-spotless: distclean
-
-# EOF -- vim: ft=make
+# $RCSfile: Makefile.in,v $: end of file -- vim: ft=make

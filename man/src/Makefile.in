@@ -203,14 +203,18 @@ install: all apropos whatis makewhatis
 	-test -f ${manconffile} && mv ${manconffile} ${manconffile}.orig
 	$(INSTALL) -m 644 man.conf ${manconffile}
 
+CLEANFILES = *.$(OBJEXT) *~ core man apropos whatis makewhatis *.stackdump
+DISTCLEANFILES = Makefile stamp.h paths.h version.h man.conf gripedefs.h msg.c mess.*.cat
+
 clean:
-	rm -f *.$(OBJEXT) *~ core man apropos whatis makewhatis
+	rm -f $(CLEANFILES)
 	-test -n "$(EXEEXT)" && rm -f *$(EXEEXT)
 	@cd win32; $(MAKE) clean
 
-spotless: clean
-	rm -f Makefile config.status stamp.h paths.h version.h man.conf
-	rm -f gripedefs.h msg.c mess.*.cat
+distclean realclean spotless:
+	rm -f $(CLEANFILES) *.orig *.rej $(DISTCLEANFILES)
+	-test -n "$(EXEEXT)" && rm -f *$(EXEEXT)
+	@cd win32; $(MAKE) distclean
 
 FORCE:
 

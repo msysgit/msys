@@ -1,3 +1,43 @@
+2005-12-09  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Improve `distclean' performance and integrity.
+
+	* Makefile.in (CLEANFILES, DISTCLEANFILES): New variables.
+	(distclean): Use both of them; remove dependence on `clean'.
+	(clean): Use `CLEANFILES'.
+
+	* src/Makefile.in (CLEANFILES, DISTCLEANFILES): New variables.
+	(clean): Use `CLEANFILES'; add `*.stackdump' to list.
+	(distclean, realclean): New targets; they are pseudonyms for...
+	(spotless): ...use `CLEANFILES' and `DISTCLEANFILES';
+	add `*.orig' and `*.rej' to list; remove dependence on `clean';
+	recurse into `src/win32' subdirectory.
+
+	* src/win32/Makefile.in (distclean, realclean, spotless): Merge;
+	add `*.orig' and `*.rej' to list of files to delete.
+	(RCSfile): Add to EOF tag line.
+
+	* gencat/Makefile.in (distclean): Add `*.orig' and `*.rej' to list of
+	files to be deleted.
+
+	* msgs/Makefile.in (clean): Add `*.stackdump' to list of files to be
+	deleted; add `EXEEXT' suffix to `gencat'.
+	(distclean, realclean): New targets; they are pseudonyms for...
+	(spotless): ...add `clean' as prerequisite; add `*.orig' and `*.rej'
+	to list of files to delete.
+
+	* man2html/Makefile.in (clean): Add `*.stackdump' to list of files to
+	be deleted; add `EXEEXT' suffix to `man2html'.
+	(distclean, realclean): New targets; they are pseudonyms for...
+	(spotless): ...add `*.orig' and `*.rej' to list of files to delete.
+
+	* tools/Makefile.in (REALCLEANFILES): Remove.
+	(realclean, spotless): Divorce from `extraclean'; merge with...
+	(distclean): ...this.
+	(extraclean, maintainer-clean): Delete all commands.
+	(DISTCLEANFILES): Add `*.orig' and `*.rej'.
+	(DISTCLEANDIRS): Select all `auto*' entities in `srcdir'.
+
 2005-12-08  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Update distribution clean-up and packaging rule sets.

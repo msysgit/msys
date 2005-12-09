@@ -110,9 +110,9 @@ install-hman: hman
 	$(INSTALL) -m 644 ${srcdir}/hman.1 ${DESTDIR}${mandir}/man1/hman.@man1ext@
 
 clean:
-	rm -f core hman man2html $(OBJECTS) *~
+	rm -f core hman man2html$(EXEEXT) $(OBJECTS) *~ *.stackdump
 
-spotless:	clean
-	rm -f Makefile
+distclean realclean spotless: clean
+	rm -f Makefile *.orig *.rej
 
 $(OBJECTS): defs.h

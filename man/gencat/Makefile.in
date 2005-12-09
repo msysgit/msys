@@ -17,4 +17,4 @@ clean:
 	rm -f *~ *.o gencat
 
 distclean realclean spotless: clean
-	rm -f Makefile
+	rm -f Makefile *.orig *.rej

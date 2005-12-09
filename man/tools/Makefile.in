@@ -38,9 +38,8 @@ DEFS = @DEFS@
 
 RM = rm -f
 CLEANFILES = *.$(OBJEXT) *~ core *.stackdump
-DISTCLEANFILES = Makefile config.log config.cache config.status
-REALCLEANFILES = ${srcdir}/configure
-DISTCLEANDIRS = ${srcdir}/autom4te.cache
+DISTCLEANFILES = Makefile config.log config.cache config.status *.orig *.rej
+DISTCLEANDIRS = ${srcdir}/auto*
 
 CCDEFS = $(CFLAGS) $(CWARN) $(LDFLAGS) $(DEFS) 
 
@@ -49,13 +48,11 @@ all: $(EXEFILES)
 clean:
 	$(RM) $(CLEANFILES) $(EXEFILES)
 
-distclean: clean
+distclean realclean spotless: clean
 	$(RM) $(DISTCLEANFILES)
 	$(RM) -r $(DISTCLEANDIRS)
 
-extraclean maintainer-clean realclean spotless: distclean
-	$(RM) $(REALCLEANFILES)
-	$(RM) -r $(REALCLEANDIRS)
+extraclean maintainer-clean: distclean
 
 makemsg$(EXEEXT): makemsg.c
 	$(CC) -o $@ $(CCDEFS) ${srcdir}/makemsg.c $(LIBS)
