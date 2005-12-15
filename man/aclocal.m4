@@ -661,7 +661,17 @@ AC_DEFUN([MAN_NLS_LANGUAGE_SELECTION],
  AC_MSG_CHECKING([which national language manpages to install])
  test x$man_languages = x && man_languages=en
  AC_SUBST([languages], [`IFS="$IFS,"; eval echo $man_languages`])
- AC_MSG_RESULT([$man_languages])dnl
+ AC_MSG_RESULT([$man_languages])
+ if test x"$man_enable_nls" = xyes
+ then
+   if test x"$man_languages" != xen
+   then
+     make_messages=messages
+     make_install_messages=install-messages
+   fi
+ fi
+ AC_SUBST([make_install_messages])
+ AC_SUBST([make_messages])dnl
 ])
 
 # MAN_LANGUAGE_LIST( LANGUAGES,... )

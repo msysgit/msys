@@ -36,9 +36,8 @@ ZIPEXT = .gz
 # Allow "configure" to choose if message catalogues will be built,
 # and subsequently installed.
 
-# (Disabled at present; uncomment to activate)...
-# make_messages = @make_messages@
-# install_messages = @make_install_messages@
+make_messages = @make_messages@
+install_messages = @make_install_messages@
 
 all:	Makefile $(config_sed) tools source manhtml manpages $(make_messages)
 	@echo; echo 'You can now do "make install"'

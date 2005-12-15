@@ -309,7 +309,7 @@ ac_includes_default="\
 # include <unistd.h>
 #endif"
 
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CC CFLAGS LDFLAGS CPPFLAGS BUILD_CC BUILD_CFLAGS BUILD_LDFLAGS BUILD_CPPFLAGS man_install_flags awk ac_ct_CC EXEEXT OBJEXT INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA LN_S SET_MAKE CWARNNP CWARN WIN32LIBS CPP EGREP ALLOCA LIBOBJS manpathoption FHS FSSTND man_config_file sections man1ext man5ext man8ext path_separator_char NULLDEV path__usr_man path__usr_share_man path__usr_local_man path__usr_local_share_man path__usr_X11R6_man path__opt___STAR___man path__usr_lib___STAR___man path__usr_share___STAR___man path__usr_kerberos_man map_to__usr_man path__bin path__sbin path__usr_bin path__usr_sbin map_to__usr_local_man path__usr_local_bin path__usr_local_sbin map_to__usr_X11R6_man path__usr_X11R6_bin path__usr_bin_X11 path__usr_bin_mh languages locale pager browser htmlpager man_grepsilent cat troff nroff jnroff col pcol eqn neqn jneqn tbl vgrind refer grap pic cmp compress compress_ext gunzip bzip2 pcat zcat fcat unyabba decompress LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CC CFLAGS LDFLAGS CPPFLAGS BUILD_CC BUILD_CFLAGS BUILD_LDFLAGS BUILD_CPPFLAGS man_install_flags awk ac_ct_CC EXEEXT OBJEXT INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA LN_S SET_MAKE CWARNNP CWARN WIN32LIBS CPP EGREP ALLOCA LIBOBJS manpathoption FHS FSSTND man_config_file sections man1ext man5ext man8ext path_separator_char NULLDEV path__usr_man path__usr_share_man path__usr_local_man path__usr_local_share_man path__usr_X11R6_man path__opt___STAR___man path__usr_lib___STAR___man path__usr_share___STAR___man path__usr_kerberos_man map_to__usr_man path__bin path__sbin path__usr_bin path__usr_sbin map_to__usr_local_man path__usr_local_bin path__usr_local_sbin map_to__usr_X11R6_man path__usr_X11R6_bin path__usr_bin_X11 path__usr_bin_mh languages make_install_messages make_messages locale pager browser htmlpager man_grepsilent cat troff nroff jnroff col pcol eqn neqn jneqn tbl vgrind refer grap pic cmp compress compress_ext gunzip bzip2 pcat zcat fcat unyabba decompress LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -9081,6 +9081,16 @@ echo $ECHO_N "checking which national language manpages to install... $ECHO_C" >
 
  echo "$as_me:$LINENO: result: $man_languages" >&5
 echo "${ECHO_T}$man_languages" >&6
+ if test x"$man_enable_nls" = xyes
+ then
+   if test x"$man_languages" != xen
+   then
+     make_messages=messages
+     make_install_messages=install-messages
+   fi
+ fi
+
+
 
 # Check whether --with-localedir or --without-localedir was given.
 if test "${with_localedir+set}" = set; then
@@ -13471,6 +13481,8 @@ s,@path__usr_X11R6_bin@,$path__usr_X11R6_bin,;t t
 s,@path__usr_bin_X11@,$path__usr_bin_X11,;t t
 s,@path__usr_bin_mh@,$path__usr_bin_mh,;t t
 s,@languages@,$languages,;t t
+s,@make_install_messages@,$make_install_messages,;t t
+s,@make_messages@,$make_messages,;t t
 s,@locale@,$locale,;t t
 s,@pager@,$pager,;t t
 s,@browser@,$browser,;t t

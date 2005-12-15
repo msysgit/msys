@@ -1,3 +1,14 @@
+2005-12-15  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Enable autoconf hooks for making message catalogues.
+
+	* aclocal.m4 (MAN_NLS_LANGUAGE_SELECTION): New AC_SUBST variables...
+	(make_messages, make_install_messages): ...defined.
+
+	* Makefile.in: Use them.
+
+	* configure: Regenerated.
+
 2005-12-09  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	* src/win32/wincmds.c (win32_run_command_sequence): Adapt SHELL
