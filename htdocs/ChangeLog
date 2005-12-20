@@ -1,3 +1,8 @@
+2005-12-20  Keith Marshall  <keithmarshall@users.sf.net>
+
+	* All files (DVLPR-BRANCH): Tag added; initiate branch for site
+	enhancements, not yet ready for pushing to live web server.
+
 2005-08-02  Earnie Boyd  <earnie@users.sf.net>
 
 	* index.shtml: Tidy. Add section for published system of choice.
