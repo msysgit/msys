@@ -29,7 +29,9 @@ CWARN = @CWARN@
 EXEEXT = @EXEEXT@
 OBJEXT = @OBJEXT@
 
-EXEFILES = makemsg$(EXEEXT)
+DEFAULT_EXEFILES = makemsg$(EXEEXT)
+GENCAT_EXEFILES = gencat$(EXEEXT)
+ALL_EXEFILES = $(DEFAULT_EXEFILES) $(GENCAT_EXEFILES)
 
 srcdir = @srcdir@
 VPATH = ${srcdir}
@@ -39,22 +41,33 @@ DEFS = @DEFS@
 RM = rm -f
 CLEANFILES = *.$(OBJEXT) *~ core *.stackdump
 DISTCLEANFILES = Makefile config.log config.cache config.status *.orig *.rej
-DISTCLEANDIRS = ${srcdir}/auto*
+MAINTAINER_CLEANFILES = ${srcdir}/auto*
 
 CCDEFS = $(CFLAGS) $(CWARN) $(LDFLAGS) $(DEFS) 
 
-all: $(EXEFILES)
+all: all-default
+all-inclusive: all-default all-gencat
+all-default: $(DEFAULT_EXEFILES)
+all-gencat: $(GENCAT_EXEFILES)
 
 clean:
-	$(RM) $(CLEANFILES) $(EXEFILES)
+	$(RM) $(CLEANFILES) $(ALL_EXEFILES)
 
 distclean realclean spotless: clean
 	$(RM) $(DISTCLEANFILES)
-	$(RM) -r $(DISTCLEANDIRS)
 
 extraclean maintainer-clean: distclean
+	$(RM) -r $(MAINTAINER_CLEANFILES)
 
 makemsg$(EXEEXT): makemsg.c
 	$(CC) -o $@ $(CCDEFS) ${srcdir}/makemsg.c $(LIBS)
+
+gencat$(EXEEXT): gencat.$(OBJEXT) genlib.$(OBJEXT)
+	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ gencat.$(OBJEXT) genlib.$(OBJEXT)
+
+gencat.$(OBJEXT): gencat.c
+genlib.$(OBJEXT): genlib.c msgcat.h
+gencat.$(OBJEXT) genlib.$(OBJEXT): gencat.h
+	$(CC) -c $(CCDEFS) ${srcdir}/$*.c
 
 # EOF

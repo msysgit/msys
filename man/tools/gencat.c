@@ -42,11 +42,15 @@ up-to-date.  Many thanks.
 
 #include <stdio.h>
 #include <sys/types.h>
-#ifdef SYSV
+#ifdef STDC_HEADERS
+#include <stdlib.h>
 #include <sys/fcntl.h>
 #include <string.h>
 #else
 #include <strings.h>
+#endif
+#ifdef HAVE_UNISTD_H
+#include <unistd.h>
 #endif
 #include <sys/file.h>
 #include <sys/stat.h>
@@ -75,27 +79,26 @@ up-to-date.  Many thanks.
  * will be in C syntax, in bar.H in C++ syntax.
  */
 
-static void writeIfChanged(
 #if defined(__STDC__) || defined(__cplusplus)
-		char *fname, int lang, int orConsts
+void usage( void );
+static void writeIfChanged( char *fname, int lang, int orConsts );
+#else
+static void writeIfChanged();
 #endif
-);
 
 void usage() {
     fprintf(stderr, "Use: gencat [-new] [-or] [-lang C|C++|ANSIC] catfile msgfile [-h <header-file>]...\n");
 }
 
-int main(
 #if defined(__STDC__) || defined(__cplusplus)
-		int argc, char *argv[])
+int main( int argc, char *argv[] )
 #else
-		argc, argv)
+int main( argc, argv )
 int argc;
 char *argv[];
 #endif
 {
     int		ofd, ifd, i;
-    FILE	*fptr;
     char	*catfile = NULL;
     char	*input = NULL;
     int		lang = MCLangC;
@@ -174,11 +177,10 @@ char *argv[];
     return 0; /* just for gcc */
 }
 
-static void writeIfChanged(
 #if defined(__STDC__) || defined(__cplusplus)
-		char *fname, int lang, int orConsts)
+static void writeIfChanged( char *fname, int lang, int orConsts )
 #else
-		fname, lang, orConsts)
+static void writeIfChanged( fname, lang, orConsts )
 char *fname;
 int lang;
 int orConsts;
@@ -188,7 +190,7 @@ int orConsts;
     char	buf[BUFSIZ], tbuf[BUFSIZ], *cptr, *tptr;
     int		fd, tfd;
     int		diff = False;
-    int		c, len, tlen;
+    int		len, tlen;
     struct stat	sbuf;
 
     /* If it doesn't exist, just create it */

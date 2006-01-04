@@ -259,8 +259,7 @@
 
   AC_CONFIG_FILES([Makefile])
   AC_CONFIG_FILES([src/Makefile src/win32/Makefile src/paths.h src/man.conf])
-  AC_CONFIG_FILES([man/Makefile gencat/Makefile msgs/Makefile])
-  AC_CONFIG_FILES([man2html/Makefile])
+  AC_CONFIG_FILES([man/Makefile msgs/Makefile man2html/Makefile])
   AC_OUTPUT
 #
 # EOF: vim: ft=config

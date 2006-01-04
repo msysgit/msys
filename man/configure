@@ -12801,9 +12801,7 @@ echo "${ECHO_T}no" >&6
 
                                           ac_config_files="$ac_config_files src/Makefile src/win32/Makefile src/paths.h src/man.conf"
 
-                                ac_config_files="$ac_config_files man/Makefile gencat/Makefile msgs/Makefile"
-
-            ac_config_files="$ac_config_files man2html/Makefile"
+                                ac_config_files="$ac_config_files man/Makefile msgs/Makefile man2html/Makefile"
 
   cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
@@ -13336,7 +13334,6 @@ do
   "src/paths.h" ) CONFIG_FILES="$CONFIG_FILES src/paths.h" ;;
   "src/man.conf" ) CONFIG_FILES="$CONFIG_FILES src/man.conf" ;;
   "man/Makefile" ) CONFIG_FILES="$CONFIG_FILES man/Makefile" ;;
-  "gencat/Makefile" ) CONFIG_FILES="$CONFIG_FILES gencat/Makefile" ;;
   "msgs/Makefile" ) CONFIG_FILES="$CONFIG_FILES msgs/Makefile" ;;
   "man2html/Makefile" ) CONFIG_FILES="$CONFIG_FILES man2html/Makefile" ;;
   "config.h" ) CONFIG_HEADERS="$CONFIG_HEADERS config.h" ;;

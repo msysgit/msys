@@ -48,24 +48,18 @@ up-to-date.  Many thanks.
 */
 
 #include <stdio.h>
-#ifdef SYSV
+#ifdef STDC_HEADERS
+#include <stdlib.h>
 #include <sys/types.h>
+#include <string.h>
+#ifdef HAVE_UNISTD_H
 #include <unistd.h>
+#endif
 
 #ifndef __linux__
 #include <memory.h>
-static int bcopy(src, dst, length)
-char *src, *dst;
-int length;
-{
-    memcpy(dst, src, length);
-}
-static int bzero(b, length)
-char *b;
-int length;
-{
-    memset(b, '\0', length);
-}
+#define bcopy(src, dst, len)  memcpy((dst), (src), (len))
+#define bzero(dst, len)       memset((dst), '\0', (len))
 #endif
 
 #endif
@@ -85,11 +79,31 @@ int length;
 static char *curline = NULL;
 static long lineno = 0;
 
+#if defined(__STDC__) || defined(__cplusplus)
+/* prototype all static functions,
+ * to placate GCC when strict/missing prototype warnings are enabled
+ */
+static void warning( char *, char * );
+static void error( char *, char * );
+static void corrupt( void );
+static void nomem( void );
+static char *my_getline( int );
+static char *token( char * );
+static char *wskip( char * );
+static char *cskip( char * );
+static char *getmsg( int, char *, char );
+static char *dupstr( char * );
+static void printS( int, char * );
+static void printL( int, long );
+static void printLX( int, long );
+static void genconst( int, int, char *, char *, long );
+#endif
+
 static void warning(cptr, msg)
 char *cptr;
 char *msg;
 {
-    fprintf(stderr, "gencat: %s on line %d\n", msg, lineno);
+    fprintf(stderr, "gencat: %s on line %ld\n", msg, lineno);
     fprintf(stderr, "%s\n", curline);
     if (cptr) {
 	char	*tptr;
@@ -117,7 +131,7 @@ static void nomem() {
 static char *my_getline(fd)
 int fd;
 {
-    static long	len = 0, curlen = BUFSIZ;
+    static long	curlen = BUFSIZ;
     static char	buf[BUFSIZ], *bptr = buf, *bend = buf;
     char	*cptr, *cend;
     long	buflen;
@@ -169,6 +183,7 @@ char *cptr;
     *tptr = '\0';
     return(tok);
 }
+
 static char *wskip(cptr)
 char *cptr;
 {
@@ -179,6 +194,7 @@ char *cptr;
     while (*cptr && isspace(*cptr)) ++cptr;
     return(cptr);
 }
+
 static char *cskip(cptr)
 char *cptr;
 {
@@ -288,8 +304,6 @@ char quote;
     return(msg);
 }
 
-
-
 static char *dupstr(ostr)
 char *ostr;
 {
@@ -340,21 +354,14 @@ long MCGetByteOrder() {
     else return MCn86ByteOrder;
 }
 
-
-void MCParse(
-#if PROTO
-		int fd)
-#else
-		fd)
+void MCParse(fd)
 int fd;
-#endif
 {
     char	*cptr, *str;
     int	setid, msgid = 0;
     char	hconst[MAXTOKEN+1];
     char	quote = 0;
-    int		i;
-    
+
     if (!cat) {
 	cat = (catT *) malloc(sizeof(catT));
 	if (!cat) nomem();
@@ -363,7 +370,7 @@ int fd;
 
     hconst[0] = '\0';
     
-    while (cptr = my_getline(fd)) {
+    while ((cptr = my_getline(fd)) != NULL) {
 	if (*cptr == '$') {
 	    ++cptr;
 	    if (strncmp(cptr, "set", 3) == 0) {
@@ -436,13 +443,8 @@ int fd;
     }
 }
 
-void MCReadCat(
-#if PROTO
-		int fd)
-#else
-		fd)
+void MCReadCat(fd)
 int fd;
-#endif
 {
     MCHeaderT	mcHead;
     MCMsgT	mcMsg;
@@ -519,6 +521,7 @@ char *str;
 {
     write(fd, str, strlen(str));
 }
+
 static void printL(fd, l)
 int fd;
 long l;
@@ -527,6 +530,7 @@ long l;
     sprintf(buf, "%ld", l);
     write(fd, buf, strlen(buf));
 }
+
 static void printLX(fd, l)
 int fd;
 long l;

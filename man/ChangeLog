@@ -1,3 +1,30 @@
+2006-01-04  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Relocate gencat sources to tools directory.
+
+	* gencat/Makefile.in: File deleted.
+	* gencat/gencat.c, gencat/genlib.c: Files moved...
+	* tools/gencat.c, tools/genlib.c: ...to here.
+	* gencat/gencat.h, gencat/msgcat.h: Files moved...
+	* tools/gencat.h, tools/msgcat.h: ...to here.
+	* gencat: Directory pruned.
+
+	* configure.ac (gencat/Makefile): Reference removed.
+	* configure: Regenerated.
+
+	* tools/Makefile.in (EXEFILES): Macro renamed...
+	(DEFAULT_EXEFILES): ...to this.
+	(all): Redefine in terms of...
+	(all-default): New target; define rules to build DEFAULT_EXEFILES.
+	(GENCAT_EXEFILES): New macro; declare `gencat' executables.
+	(all-gencat): New target; define rules to build GENCAT_EXEFILES.
+	(all-inclusive): New target; builds both all-default and all-gencat.
+
+	* tools/gencat.c, tools/genlib.c: Use autoconf compatible conditional
+	includes; avoid missing prototype warnings for static functions.
+
+	* tools/genlib.c (bzero, bcopy): Redefine as macros.
+
 2005-12-15  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Enable autoconf hooks for making message catalogues.
