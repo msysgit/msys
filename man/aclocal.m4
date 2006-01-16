@@ -521,6 +521,113 @@ AC_DEFUN([MAN_NLS_FUNCTIONS],
  [test x$ac_cv_func_setlocale = xno && man_nls_funcs=no]dnl
 ])
 
+# MAN_PROG_GENCAT
+# ---------------
+# Identify the program to be used for message catalogue generation.
+# The format of message catalogue files varies, depending on the version
+# of libc installed on the `host' system; always prefer to use a host
+# specific version of `gencat', if one is available; fall back to the
+# version provided with `man', if no such tool is available.
+#
+# Note that the user may specify `--with-gencat=PROG' to override the
+# automatic selection of a `gencat' program; as a special case,
+# `--with-gencat=provided' forces the use of the version which is
+# distributed with `man'.
+#
+AC_DEFUN([MAN_PROG_GENCAT],
+[AC_REQUIRE([WIN32_AC_NULLDEV])dnl
+ AC_REQUIRE([MAN_AC_TOOLS_DEFAULT])dnl
+ man_gencat_provided=no
+ AC_ARG_WITH([gencat],
+   AS_HELP_STRING([--with-gencat=PROG],
+     [use PROG for generation of message catalogues]),
+   [man_gencat_preferred=${withval}])
+ AC_ARG_WITH([gencat-provided],
+   AS_HELP_STRING([--with-gencat-provided],
+     [use the] SQ([gencat]) [program distributed with] SQ([man])),
+   [test x"$withval" = xno || man_gencat_provided=yes])
+ if test x"$man_gencat_provided" = xyes
+ then
+   MAN_PROG_GENCAT_PROVIDE
+ else
+   if test "${man_gencat_preferred+set}" = set
+   then
+     MAN_AC_PATH_COMMAND_OVERRIDE_CACHE([gencat], [$man_gencat_preferred])
+   else
+     MAN_AC_PATH_COMMAND([gencat], [${ac_tool_prefix}gencat])
+   fi
+   if test x"$gencat" = x
+   then
+     MAN_PROG_GENCAT_PROVIDE
+   else
+     MAN_PROG_GENCAT_VALIDATE([$gencat])
+   fi
+ fi
+ AC_SUBST([man_gencat_program], [$ac_cv_path_gencat])
+ if test -z "${ac_cv_path_gencat}"
+ then
+   man_gencat_program='${top_builddir}/tools/gencat'
+ fi[]dnl
+])
+
+# MAN_PROG_GENCAT_PROVIDE
+# -----------------------
+# Helper macro, called only by MAN_PROG_GENCAT.
+# Establish the `gencat' program provided in the `man' distribution
+# as the tool to be used for generation of message catalogues.
+#
+AC_DEFUN([MAN_PROG_GENCAT_PROVIDE],
+[man_tools_required="$man_tools_required all-gencat"
+ test -z "${ac_cv_path_gencat}" || ac_cv_path_gencat=[]dnl
+])
+
+# MAN_PROG_GENCAT_VALIDATE( PROGRAM )
+# -----------------------------------
+# Helper macro, called only by MAN_PROG_GENCAT.
+# Confirm that the auto-detected PROGRAM can correctly interpret
+# the message catalogue sources distributed with `man'; implement
+# work-around measures, in case of failure.
+#
+# Note that message catalogue formats vary, between differing libc
+# versions; we prefer to use the host specific preinstalled PROGRAM,
+# when one is available.  Normally, this PROGRAM will be simply invoked
+# by name; however, the glibc-2.0.7 version of `gencat' is known to
+# require the addition of a `--new' option, so we will attempt to
+# check if this option is needed.
+#
+# In extreme circumstances, the preinstalled PROGRAM may not work at all;
+# in such cases we substitute the version distributed with `man'; however,
+# while this should be ok with libc4 and libc5, it is unlikely to work with any
+# version of glibc.
+#
+AC_DEFUN([MAN_PROG_GENCAT_VALIDATE],
+[AC_MSG_CHECKING([whether $1 works])
+ cat <<\_ACEOF > conftest.in
+$quote "
+$set 1
+1  "test for gencat\n"
+_ACEOF
+dnl"
+ if $1 conftest.out conftest.in 2>${NULLDEV}
+ then
+   ac_val=yes
+   ac_cv_path_gencat=$1
+   ac_option=no
+ elif $1 --new conftest.out conftest.in 2>${NULLDEV}
+ then
+   ac_val=yes
+   ac_cv_path_gencat="$1 --new"
+   ac_option=yes
+ else
+   ac_val=no
+   MAN_PROG_GENCAT_PROVIDE
+   ac_option=no
+ fi
+ AC_MSG_RESULT([$ac_val])
+ AC_MSG_CHECKING([whether $1 needs] SQ([--new]) [option])
+ AC_MSG_RESULT([$ac_option])dnl
+])
+
 # MAN_NLS_PREREQUISITES
 # ---------------------
 # Check if the system provides prerequisite support for NLS;
@@ -529,6 +636,7 @@ AC_DEFUN([MAN_NLS_FUNCTIONS],
 AC_DEFUN([MAN_NLS_PREREQUISITES],
 [AC_REQUIRE([MAN_NLS_HEADERS])dnl
  AC_REQUIRE([MAN_NLS_FUNCTIONS])dnl
+ AC_REQUIRE([MAN_PROG_GENCAT])dnl
  AC_MSG_CHECKING([whether NLS support is requested])
  AC_ARG_ENABLE([nls],
    AS_HELP_STRING([--disable-nls],
@@ -711,6 +819,16 @@ m4_define([MAN_AS_HELP_APPEND], [AS_HELP_STRING([], [$*])])
 # Emit TEXT, enclosed in single quotation marks.
 #
 m4_define([SQ], [`$*'])dnl`
+
+# MAN_AC_TOOLS_DEFAULT
+# --------------------
+# Initialisation macro, to select the default set of native tools
+# which must be built.
+#
+AC_DEFUN([MAN_AC_TOOLS_DEFAULT],
+[AC_SUBST([man_tools_required], [all-default])dnl
+])
+
 
 ## ================================================ ##
 ## Specify Filter Programs for Formatting man Pages ##

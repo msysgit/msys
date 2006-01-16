@@ -1,35 +1,52 @@
+# Makefile for man -- message catalogue subdirectory.
+# Source: Makefile.in -- processed by configure, to create Makefile.
+#
+# Copyright (C) 2006, Keith D. Marshall <keithmarshall@users.sourceforge.net>
+#
+# (Based on, and replacing, an unaccredited original implementation, believed
+#  to be the work of John W. Eaton and/or Andries E. Brouwer).
+#
+# This file is part of the man package.
+#
+# man is free software; you can redistribute it and/or modify it under the
+# terms of the GNU General Public License as published by the Free Software
+# Foundation; either version 2, or (at your option) any later version.
+#
+# man is distributed in the hope that it will be useful, but WITHOUT ANY
+# WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+# FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+# details.
+#
+# You should have received a copy of the GNU General Public License along
+# with man; see the file COPYING.  If not, write to the Free Software
+# Foundation, 51 Franklin St - Fifth Floor, Boston, MA 02110-1301, USA.
+
+srcdir = @srcdir@
 top_builddir = @top_builddir@
 
-all:	$(top_builddir)/tools/makemsg gencat
-	@for i in mess.??; do $(top_builddir)/tools/makemsg -c $$i $$i.catin; \
-	cat $$i.codeset $$i.catin > $$i.catin2; \
-	echo "==== Making $$i.cat ====" ;\
-	./gencat $$i.cat $$i.catin2; done; \
-	rm -f core *.catin *.catin2
+MKMSGS = ${top_builddir}/tools/makemsg
+GENCAT = @man_gencat_program@
+
+all: stamp.cat
+
+stamp.cat: Makefile
+	rm -f *.cat
+	for i in `cd ${srcdir}; echo mess.??`; \
+	  do $(MKMSGS) -c ${srcdir}/$$i msgs.tmp; \
+	    cat ${srcdir}/$$i.codeset msgs.tmp > catin.tmp; \
+	    echo "==== Making $$i.cat ====" ;\
+	    $(GENCAT) $$i.cat catin.tmp; \
+	  done
+	rm -f core *.stackdump *.tmp
+	echo timestamp > $@
 
 install:
-	sh ./inst.sh "@languages@" "$(DESTDIR)@locale@"
+	sh ${srcdir}/inst.sh "@languages@" "$(DESTDIR)@locale@"
 
 clean:
-	rm -f gencat$(EXEEXT) gencat.out core *~ *.cat *.catin *.catin2 *.stackdump
+	rm -f *.cat *~ *.tmp *.stackdump core
 
 distclean realclean spotless: clean
 	rm -f Makefile *.orig *.rej
 
-# Various versions of libc use different format message catalog files
-# So we have to use the installed /usr/bin/gencat if possible.
-# On the other hand, /usr/bin/gencat doesnt work in glibc 2.0.7
-# The source in ../gencat is OK for libc4 and libc5, not for glibc.
-gencat:
-	if [ -f /usr/bin/gencat ]; then \
-		if gencat gencat.out gencat.in 2>/dev/null; then \
-			ln -s /usr/bin/gencat gencat; \
-		else \
-			cp gencat207fix.sh gencat; \
-		fi \
-	else \
-		ln -s ../gencat/gencat gencat; \
-		cd ../gencat; \
-		make; \
-	fi
-
+# $RCSfile: Makefile.in,v $: end of file

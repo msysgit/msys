@@ -309,7 +309,7 @@ ac_includes_default="\
 # include <unistd.h>
 #endif"
 
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CC CFLAGS LDFLAGS CPPFLAGS BUILD_CC BUILD_CFLAGS BUILD_LDFLAGS BUILD_CPPFLAGS man_install_flags awk ac_ct_CC EXEEXT OBJEXT INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA LN_S SET_MAKE CWARNNP CWARN WIN32LIBS CPP EGREP ALLOCA LIBOBJS manpathoption FHS FSSTND man_config_file sections man1ext man5ext man8ext path_separator_char NULLDEV path__usr_man path__usr_share_man path__usr_local_man path__usr_local_share_man path__usr_X11R6_man path__opt___STAR___man path__usr_lib___STAR___man path__usr_share___STAR___man path__usr_kerberos_man map_to__usr_man path__bin path__sbin path__usr_bin path__usr_sbin map_to__usr_local_man path__usr_local_bin path__usr_local_sbin map_to__usr_X11R6_man path__usr_X11R6_bin path__usr_bin_X11 path__usr_bin_mh languages make_install_messages make_messages locale pager browser htmlpager man_grepsilent cat troff nroff jnroff col pcol eqn neqn jneqn tbl vgrind refer grap pic cmp compress compress_ext gunzip bzip2 pcat zcat fcat unyabba decompress LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CC CFLAGS LDFLAGS CPPFLAGS BUILD_CC BUILD_CFLAGS BUILD_LDFLAGS BUILD_CPPFLAGS man_install_flags awk ac_ct_CC EXEEXT OBJEXT INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA LN_S SET_MAKE CWARNNP CWARN WIN32LIBS CPP EGREP ALLOCA LIBOBJS manpathoption FHS FSSTND man_config_file sections man1ext man5ext man8ext path_separator_char NULLDEV path__usr_man path__usr_share_man path__usr_local_man path__usr_local_share_man path__usr_X11R6_man path__opt___STAR___man path__usr_lib___STAR___man path__usr_share___STAR___man path__usr_kerberos_man map_to__usr_man path__bin path__sbin path__usr_bin path__usr_sbin map_to__usr_local_man path__usr_local_bin path__usr_local_sbin map_to__usr_X11R6_man path__usr_X11R6_bin path__usr_bin_X11 path__usr_bin_mh man_tools_required gencat man_gencat_program languages make_install_messages make_messages locale pager browser htmlpager man_grepsilent cat troff nroff jnroff col pcol eqn neqn jneqn tbl vgrind refer grap pic cmp compress compress_ext gunzip bzip2 pcat zcat fcat unyabba decompress LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -876,6 +876,8 @@ Optional Packages:
   --with-man1ext=EXT      use EXT [1] as extension for section 1 manpage files
   --with-man5ext=EXT      use EXT [5] as extension for section 5 manpage files
   --with-man8ext=EXT      use EXT [8] as extension for section 8 manpage files
+  --with-gencat=PROG      use PROG for generation of message catalogues
+  --with-gencat-provided  use the `gencat' program distributed with `man'
   --with-languages=LIST   LIST of language packs to install [`en' only],
                           where LIST is `all', any comma separated subset of
                           `bg,cs,da,de,el,en,es,fi,fr,hr,it,ja,ko,nl,pl,pt,ro,sl',
@@ -9015,7 +9017,178 @@ done
 
  man_nls_funcs=$ac_cv_func_nl_langinfo
  test x$ac_cv_func_setlocale = xno && man_nls_funcs=no
-  echo "$as_me:$LINENO: checking whether NLS support is requested" >&5
+man_tools_required=all-default
+
+  man_gencat_provided=no
+
+# Check whether --with-gencat or --without-gencat was given.
+if test "${with_gencat+set}" = set; then
+  withval="$with_gencat"
+  man_gencat_preferred=${withval}
+fi;
+
+# Check whether --with-gencat-provided or --without-gencat-provided was given.
+if test "${with_gencat_provided+set}" = set; then
+  withval="$with_gencat_provided"
+  test x"$withval" = xno || man_gencat_provided=yes
+fi;
+ if test x"$man_gencat_provided" = xyes
+ then
+   man_tools_required="$man_tools_required all-gencat"
+ test -z "${ac_cv_path_gencat}" || ac_cv_path_gencat=
+ else
+   if test "${man_gencat_preferred+set}" = set
+   then
+     # Extract the first word of "$man_gencat_preferred", so it can be a program name with args.
+  set dummy $man_gencat_preferred; ac_word=$2
+  echo "$as_me:$LINENO: checking for $ac_word" >&5
+echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
+ as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if $as_executable_p "$as_dir/$ac_word$ac_exec_ext"
+  then
+    ac_dir=""$as_dir/$ac_word$ac_exec_ext""
+ pwd -W >/dev/null 2>&1 && ac_pwd_w="pwd -W" || ac_pwd_w=pwd
+ until ac_val=`exec 2>/dev/null; cd "$ac_dir" && $ac_pwd_w`
+ do
+   ac_dir=`(dirname "$ac_dir") 2>/dev/null ||
+$as_expr X"$ac_dir" : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
+	 X"$ac_dir" : 'X\(//\)[^/]' \| \
+	 X"$ac_dir" : 'X\(//\)$' \| \
+	 X"$ac_dir" : 'X\(/\)' \| \
+	 .     : '\(.\)' 2>/dev/null ||
+echo X"$ac_dir" |
+    sed '/^X\(.*[^/]\)\/\/*[^/][^/]*\/*$/{ s//\1/; q; }
+  	  /^X\(\/\/\)[^/].*/{ s//\1/; q; }
+  	  /^X\(\/\/\)$/{ s//\1/; q; }
+  	  /^X\(\/\).*/{ s//\1/; q; }
+  	  s/.*/./; q'`
+ done
+ ac_dir=`echo "$ac_dir" | sed 's?^[./]*??'`
+ ac_val=`echo "$ac_val" | sed 's?/*$??'`
+ ac_cv_path_gencat=`echo ""$as_dir/$ac_word$ac_exec_ext"" | sed "s?^[./]*$ac_dir/*?$ac_val/?"'
+   s?/*$??'`
+
+    echo "$as_me:$LINENO: found $ac_cv_path_gencat" >&5
+    break 2
+  fi
+done
+done
+
+shift 2
+case ${#} in
+  0) ;;
+  *) test -n "$ac_cv_path_gencat" && ac_cv_path_gencat="$ac_cv_path_gencat ${@}" ;;
+esac
+ gencat=$ac_cv_path_gencat
+
+ test -n "$gencat" && ac_word="$gencat" || ac_word=no
+ echo "$as_me:$LINENO: result: $ac_word" >&5
+echo "${ECHO_T}$ac_word" >&6
+   else
+     # Extract the first word of "${ac_tool_prefix}gencat", so it can be a program name with args.
+  set dummy ${ac_tool_prefix}gencat; ac_word=$2
+  echo "$as_me:$LINENO: checking for $ac_word" >&5
+echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
+ if test "${ac_cv_path_gencat+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if $as_executable_p "$as_dir/$ac_word$ac_exec_ext"
+  then
+    ac_dir=""$as_dir/$ac_word$ac_exec_ext""
+ pwd -W >/dev/null 2>&1 && ac_pwd_w="pwd -W" || ac_pwd_w=pwd
+ until ac_val=`exec 2>/dev/null; cd "$ac_dir" && $ac_pwd_w`
+ do
+   ac_dir=`(dirname "$ac_dir") 2>/dev/null ||
+$as_expr X"$ac_dir" : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
+	 X"$ac_dir" : 'X\(//\)[^/]' \| \
+	 X"$ac_dir" : 'X\(//\)$' \| \
+	 X"$ac_dir" : 'X\(/\)' \| \
+	 .     : '\(.\)' 2>/dev/null ||
+echo X"$ac_dir" |
+    sed '/^X\(.*[^/]\)\/\/*[^/][^/]*\/*$/{ s//\1/; q; }
+  	  /^X\(\/\/\)[^/].*/{ s//\1/; q; }
+  	  /^X\(\/\/\)$/{ s//\1/; q; }
+  	  /^X\(\/\).*/{ s//\1/; q; }
+  	  s/.*/./; q'`
+ done
+ ac_dir=`echo "$ac_dir" | sed 's?^[./]*??'`
+ ac_val=`echo "$ac_val" | sed 's?/*$??'`
+ ac_cv_path_gencat=`echo ""$as_dir/$ac_word$ac_exec_ext"" | sed "s?^[./]*$ac_dir/*?$ac_val/?"'
+   s?/*$??'`
+
+    echo "$as_me:$LINENO: found $ac_cv_path_gencat" >&5
+    break 2
+  fi
+done
+done
+
+shift 2
+case ${#} in
+  0) ;;
+  *) test -n "$ac_cv_path_gencat" && ac_cv_path_gencat="$ac_cv_path_gencat ${@}" ;;
+esac
+fi
+
+ gencat=$ac_cv_path_gencat
+
+ test -n "$gencat" && ac_word="$gencat" || ac_word=no
+ echo "$as_me:$LINENO: result: $ac_word" >&5
+echo "${ECHO_T}$ac_word" >&6
+   fi
+   if test x"$gencat" = x
+   then
+     man_tools_required="$man_tools_required all-gencat"
+ test -z "${ac_cv_path_gencat}" || ac_cv_path_gencat=
+   else
+     echo "$as_me:$LINENO: checking whether $gencat works" >&5
+echo $ECHO_N "checking whether $gencat works... $ECHO_C" >&6
+ cat <<\_ACEOF > conftest.in
+$quote "
+$set 1
+1  "test for gencat\n"
+_ACEOF
+ if $gencat conftest.out conftest.in 2>${NULLDEV}
+ then
+   ac_val=yes
+   ac_cv_path_gencat=$gencat
+   ac_option=no
+ elif $gencat --new conftest.out conftest.in 2>${NULLDEV}
+ then
+   ac_val=yes
+   ac_cv_path_gencat="$gencat --new"
+   ac_option=yes
+ else
+   ac_val=no
+   man_tools_required="$man_tools_required all-gencat"
+ test -z "${ac_cv_path_gencat}" || ac_cv_path_gencat=
+   ac_option=no
+ fi
+ echo "$as_me:$LINENO: result: $ac_val" >&5
+echo "${ECHO_T}$ac_val" >&6
+ echo "$as_me:$LINENO: checking whether $gencat needs \`--new' option" >&5
+echo $ECHO_N "checking whether $gencat needs \`--new' option... $ECHO_C" >&6
+ echo "$as_me:$LINENO: result: $ac_option" >&5
+echo "${ECHO_T}$ac_option" >&6
+   fi
+ fi
+ man_gencat_program=$ac_cv_path_gencat
+
+ if test -z "${ac_cv_path_gencat}"
+ then
+   man_gencat_program='${top_builddir}/tools/gencat'
+ fi
+   echo "$as_me:$LINENO: checking whether NLS support is requested" >&5
 echo $ECHO_N "checking whether NLS support is requested... $ECHO_C" >&6
  # Check whether --enable-nls or --disable-nls was given.
 if test "${enable_nls+set}" = set; then
@@ -13477,6 +13650,9 @@ s,@map_to__usr_X11R6_man@,$map_to__usr_X11R6_man,;t t
 s,@path__usr_X11R6_bin@,$path__usr_X11R6_bin,;t t
 s,@path__usr_bin_X11@,$path__usr_bin_X11,;t t
 s,@path__usr_bin_mh@,$path__usr_bin_mh,;t t
+s,@man_tools_required@,$man_tools_required,;t t
+s,@gencat@,$gencat,;t t
+s,@man_gencat_program@,$man_gencat_program,;t t
 s,@languages@,$languages,;t t
 s,@make_install_messages@,$make_install_messages,;t t
 s,@make_messages@,$make_messages,;t t

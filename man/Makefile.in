@@ -71,7 +71,7 @@ msgs/Makefile: $(config_sed) msgs/Makefile.in
 makefiles: src/Makefile man2html/Makefile man/Makefile msgs/Makefile
 
 tools:	tools/Makefile FORCE
-	cd tools; $(MAKE)
+	cd tools; $(MAKE) @man_tools_required@
 
 source:	src/Makefile FORCE
 	cd src; $(MAKE)
@@ -82,11 +82,8 @@ manhtml: man2html/Makefile FORCE
 manpages: man/Makefile FORCE
 	cd man; $(MAKE) subdirs
 
-messages: gencat/gencat msgs/Makefile FORCE
+messages: msgs/Makefile FORCE
 	cd msgs; $(MAKE)
-
-gencat/gencat:
-	cd gencat; $(MAKE)
 
 install: install-core $(install_messages) install-done
 
@@ -106,7 +103,7 @@ install-done:
 #	@echo 'install a symlink /usr/man/whatis -> /var/catman/whatis,'
 #	@echo '(or to whatever cat page location is appropriate).'
 
-CLEANDIRS = src tools man2html man msgs gencat
+CLEANDIRS = src tools man2html man msgs
 DISTCLEANFILES =  Makefile auto* *.orig *.rej config.h config.[cls]*
 CLEANFILES = core *~ *.stackdump
 
@@ -126,7 +123,7 @@ spotless distclean realclean:
 
 distdir = @PACKAGE_NAME@-@PACKAGE_VERSION@
 DISTNAME = ${distdir}`test -n "$(BUILD)" && echo -`$(BUILD)
-DISTDIRS = src src/win32 man man/?? tools msgs catopen man2html man2html/scripts/cgi*/man gencat
+DISTDIRS = src src/win32 man man/?? tools msgs catopen man2html man2html/scripts/cgi*/man
 DISTCLEANDIRS = $(CLEANDIRS) src/win32
 
 .PHONY: dist distdir distcheck distpackage

@@ -1,3 +1,27 @@
+2006-01-16  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Update for building message catalogues with relocated gencat.
+
+	* aclocal.m4 (MAN_PROG_GENCAT): New macro...
+	(MAN_NLS_PREREQUISITES): ...AC_REQUIRE it.
+	(MAN_PROG_GENCAT_PROVIDE, MAN_PROG_GENCAT_VALIDATE): New macros; used
+	by MAN_PROG_GENCAT.
+	(man_tools_required): New AC_SUBST variable; defined by...
+	(MAN_AC_TOOLS_DEFAULT): New macro; AC_REQUIRED by MAN_PROG_GENCAT.
+
+	* configure: Regenerated.
+
+	* Makefile.in (gencat): Remove all references.
+	(man_tools_required): Use it to specify tools to MAKE.
+
+	* msgs/Makefile.in: Add copyright notice, etc.
+	(GENCAT, MKMSGS): Define, and...
+	(all): ...Use them; rewrite all commands; make dependent on...
+	(stamp.cat): New target.
+	(gencat): Redundant target; delete and remove all dependencies.
+
+	* msgs/gencat207fix.sh, msgs/gencat.in: Redundant files; deleted.
+
 2006-01-04  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Relocate gencat sources to tools directory.
