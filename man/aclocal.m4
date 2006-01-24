@@ -530,9 +530,9 @@ AC_DEFUN([MAN_NLS_FUNCTIONS],
 # version provided with `man', if no such tool is available.
 #
 # Note that the user may specify `--with-gencat=PROG' to override the
-# automatic selection of a `gencat' program; as a special case,
-# `--with-gencat=provided' forces the use of the version which is
-# distributed with `man'.
+# automatic selection of a `gencat' program; alternatively, as a special
+# case, the option `--with-gencat-provided' forces the use of the version
+# which is distributed with `man'.
 #
 AC_DEFUN([MAN_PROG_GENCAT],
 [AC_REQUIRE([WIN32_AC_NULLDEV])dnl
@@ -675,8 +675,11 @@ AC_DEFUN([MAN_NLS_LOCALE_DIRECTORY],
    AS_HELP_STRING([--with-localedir=DIR], [message catalogue DIR [[$1]]]),
    MAN_NLS_LOCALE_CACHE_OVERRIDE([$withval]),
    MAN_NLS_LOCALE_CACHE_INIT([$1], [$2]))
- AC_SUBST([locale], [$man_cv_locale])dnl
+ AC_SUBST([locale], [`echo "$man_cv_locale" | sed s'?%?$$?g'`])
+ AC_SUBST([locale_prefix], [`echo "$locale" | sed s'?[[\\/]]*$$.*??'`])
+ AC_SUBST([locale_path], [`AS_DIRNAME([$locale])`])dnl
 ])
+#AC_SUBST([locale_path], [`echo "$locale" | sed s'?[[\\/]]*[[^\\/]]*[[\\/]]*$??'`])dnl
 
 # MAN_NLS_LOCALE_CACHE_INIT( PREFERRED, [FALLBACK] )
 # --------------------------------------------------
@@ -691,21 +694,17 @@ AC_DEFUN([MAN_NLS_LOCALE_DIRECTORY],
 #  however, it cannot handle mixed POSIX/Win32 semantics).
 #
 AC_DEFUN([MAN_NLS_LOCALE_CACHE_INIT],
-[if test x$man_enable_nls = xyes
- then
-   AC_CACHE_CHECK([where to install message catalogues], [man_cv_locale],
-   [[ac_dir="$1$PATH_SEPARATOR$NLSPATH"
-     m4_ifvaln([$2],
-       [ac_dir=$ac_dir$PATH_SEPARATOR`echo $2 | sed s",:,$PATH_SEPARATOR,"g`])dnl
-     ac_dir="$ac_dir$PATH_SEPARATOR$1"
-     for locale in `echo $ac_dir | sed -e s', ,%20,'g -e s",$PATH_SEPARATOR, ,"g`
-     do
-       test -d `echo $locale | sed -e s'?/%[NL].*??' -e s'?%20? ?'g` && break
-     done
-     locale=`echo $locale | sed s'?%20? ?'g`
-     MSYS_AC_CANONICAL_PATH([man_cv_locale], [$locale])dnl
-   ]])
- fi[]dnl
+[AC_CACHE_CHECK([where to install message catalogues], [man_cv_locale],
+ [[ac_dir="$1$PATH_SEPARATOR$NLSPATH"
+   m4_ifvaln([$2],
+     [ac_dir=$ac_dir$PATH_SEPARATOR`echo $2 | sed s",:,$PATH_SEPARATOR,"g`])dnl
+   ac_dir="$ac_dir$PATH_SEPARATOR$1"
+   for locale in `echo $ac_dir | sed -e s', ,%20,'g -e s",$PATH_SEPARATOR, ,"g`
+   do
+     test -d `echo $locale | sed -e s'?/%[NL].*??' -e s'?%20? ?'g` && break
+   done
+   man_cv_locale=`echo $locale | sed s'?%20? ?'g`dnl
+ ]])dnl
 ])
 
 # MAN_NLS_LOCALE_CACHE_OVERRIDE( DIR )
@@ -718,7 +717,7 @@ AC_DEFUN([MAN_NLS_LOCALE_CACHE_INIT],
 #
 AC_DEFUN([MAN_NLS_LOCALE_CACHE_OVERRIDE],
 [AC_MSG_CHECKING([where to install message catalogues])
- MSYS_AC_CANONICAL_PATH([man_cv_locale], [$1])
+ man_cv_locale='$1'
  AC_MSG_RESULT([$man_cv_locale])dnl
 ])
 

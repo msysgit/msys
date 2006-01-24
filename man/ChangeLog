@@ -1,3 +1,21 @@
+2006-01-24  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Clean up `make' rules for installing message catalogues.
+
+	* aclocal.m4 (MAN_PROG_GENCAT): Improve descriptive commentary.
+	(MAN_NLS_LOCALE_CACHE_INIT): Always define `locale', even when NLS
+	support is disabled; do not canonicalise to Win32 form.
+	(MAN_NLS_LOCALE_DIRECTORY): Modified to define...
+	(locale_prefix, locale_path): ...these; new AC_SUBST variables.
+
+	* configure: Regenerated.
+
+	* msgs/Makefile.in (install): Rewrite all commands; based on...
+	(locale, locale_prefix, locale_path): New AC_SUBSTed variables.
+	(stamp.cat): Improved reporting of `make' progress.
+
+	* msgs/inst.sh: Redundant file; deleted.
+
 2006-01-16  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Update for building message catalogues with relocated gencat.

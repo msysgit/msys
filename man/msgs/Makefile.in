@@ -22,7 +22,7 @@
 # Foundation, 51 Franklin St - Fifth Floor, Boston, MA 02110-1301, USA.
 
 srcdir = @srcdir@
-top_builddir = @top_builddir@
+top_builddir = `cd @top_builddir@;pwd`
 
 MKMSGS = ${top_builddir}/tools/makemsg
 GENCAT = @man_gencat_program@
@@ -32,16 +32,38 @@ all: stamp.cat
 stamp.cat: Makefile
 	rm -f *.cat
 	for i in `cd ${srcdir}; echo mess.??`; \
-	  do $(MKMSGS) -c ${srcdir}/$$i msgs.tmp; \
+	  do echo $(MKMSGS) -c ${srcdir}/$$i msgs.tmp; \
+	    $(MKMSGS) -c ${srcdir}/$$i msgs.tmp; \
+	    echo "cat ${srcdir}/$$i.codeset msgs.tmp > catin.tmp"; \
 	    cat ${srcdir}/$$i.codeset msgs.tmp > catin.tmp; \
-	    echo "==== Making $$i.cat ====" ;\
+	    echo $(GENCAT) $$i.cat catin.tmp; \
 	    $(GENCAT) $$i.cat catin.tmp; \
 	  done
 	rm -f core *.stackdump *.tmp
 	echo timestamp > $@
 
-install:
-	sh ${srcdir}/inst.sh "@languages@" "$(DESTDIR)@locale@"
+locale = ${DESTDIR}@locale@
+locale_prefix = ${DESTDIR}@locale_prefix@
+locale_path = ${DESTDIR}@locale_path@
+languages = @languages@
+
+MKINSTALLDIRS = `cd @top_srcdir@;pwd`/mkinstalldirs
+INSTALL = @INSTALL@
+
+install: stamp.cat
+	test -z "${DESTDIR}" || $(MKINSTALLDIRS) ${locale_prefix}
+	N=man; \
+	for L in $(languages); \
+	  do if test -f mess.$$L.cat; \
+	    then \
+	      $(MKINSTALLDIRS) --require ${locale_prefix} ${locale_path}; \
+	      echo >&2 "$(INSTALL) -m 444 mess.$$L.cat ${locale}"; \
+	      $(INSTALL) -m 444 mess.$$L.cat ${locale}; \
+	    else \
+	      echo >&2 "$(INSTALL) -m 444 mess.$$L.cat ${locale}"; \
+	      echo >&2 "install: mess.$$L.cat: no message catalogue available"; \
+	    fi; \
+	  done
 
 clean:
 	rm -f *.cat *~ *.tmp *.stackdump core
