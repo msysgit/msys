@@ -1,3 +1,7 @@
+2006-02-01  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	* src/win32/Makefile.in (GCC): Make it use AC_SUBSTed `CC'.
+
 2006-01-24  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Clean up `make' rules for installing message catalogues.
