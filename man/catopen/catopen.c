@@ -6,7 +6,15 @@
 #include <fcntl.h>
 #include <nl_types.h>
 
-extern char *index (const char *, int);         /* not always in <string.h> */
+/* if we don't have the strchr() function,
+ * then we must fall back to using the older index() function,
+ * but (apparently) this isn't always prototyped in string.h
+ */
+#ifndef index
+/* i.e. NOT using strchr()
+ */
+extern char *index (const char *, int);
+#endif
 extern char *my_malloc(int);	/* in util.c */
 
 #ifndef DEFAULT_NLSPATH

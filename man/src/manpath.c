@@ -41,10 +41,20 @@
 #include <sys/stat.h>
 #endif
 
-
-/* not always in <string.h> */
-extern char *index(const char *, int);
-extern char *rindex(const char *, int);
+/* if we don't have the strchr() and strrchr() functions,
+ * then we must fall back to index() and rindex() respectively,
+ * but (apparently) these aren't always prototyped in string.h
+ */
+#ifndef index
+/* i.e. NOT using strchr()
+ */
+extern char *index (const char *, int);
+#endif
+#ifndef rindex
+/* i.e. NOT using strrchr()
+ */
+extern char *rindex (const char *, int);
+#endif
 
 #include "defs.h"
 #include "gripes.h"

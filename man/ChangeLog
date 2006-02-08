@@ -1,3 +1,11 @@
+2006-02-08  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	* src/man.c, src/manpath.c, catopen/catopen.c (index): Omit function
+	prototype when mapped to `strchr' function.
+
+	* src/man.c, src/manpath.c, src/man-config.c, src/to_cat.c (rindex):
+	Omit function prototype when mapped to `strrchr' function.
+
 2006-02-01  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	* src/win32/Makefile.in (GCC): Make it use AC_SUBSTed `CC'.
