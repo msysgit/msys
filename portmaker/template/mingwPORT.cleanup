@@ -19,7 +19,7 @@ then
    . ${CURDIR}/mingwPORT.beforerpatch ]
   fi
 
-  patch -t -R -p0 < ${CURDIR}/mingwPORT.patch
+  patch -t -R ${PATCHFLAGS} < ${CURDIR}/mingwPORT.patch
 
   if [ -f ${CURDIR}/mingwPORT.afterrpatch ]
   then

@@ -1,3 +1,15 @@
+2006-02-10  Earnie Boyd  <earnie@users.sf.net>
+
+	* Makefile: New file.
+	* config.mak: Ditto.
+	* src/portmaker.sh (CFLAGS): Add another layer of character quoting
+	to prevent the execution of the command during the make process.
+	(CXXFLAGS): Ditto.
+	* template/mingwPORT.beforepatch (PATCHFLAGS): Use a default better
+	suited for using ``diff old new''.
+	* template/mingwPORT.beforerpatch (PATCHFLAGS): Ditto.
+	* template/mingwPORT.cleanup (patch): Use PATCHFLAGS.
+
 2005-09-12  Keith Marshall  <keithmarshall@users.sf.net>
 
 	* lib/mingwPORT.functions (ask): Omit `()' if no default.
