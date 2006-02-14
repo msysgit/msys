@@ -1,3 +1,18 @@
+2006-02-14  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	* src/Makefile.in (version.h): Tidy command line quoting.
+	(clean, distclean): Tidy logic for `*$(EXEEXT)' removal, to avoid
+	ignored errors in `make'.
+	(MKINSTALLDIRS): Define.
+	(install): Use it; tidy backup logic for `man.conf', to avoid ignored
+	error in `make install'.
+
+	* man2html/Makefile.in (top_builddir): Remove definition.
+	(CFLAGS): Keep user/autoconf setting; don't augment locally.
+	(.c.o): Replace default rule, to apply local flag settings.
+	(version.h): New target; generate file locally.
+	(man2html): Make object file dependent on `version.h'.
+
 2006-02-08  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	* src/man.c, src/manpath.c, catopen/catopen.c (index): Omit function

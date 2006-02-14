@@ -152,7 +152,7 @@ man.conf: man.conf.in $(config_sed)
 #	sed -f ${top_builddir}/config.sed ${srcdir}/paths.h.in > paths.h
 
 version.h: ${top_srcdir}/configure.ac Makefile
-	echo "static char version[] = \"$(version)\";" > version.h
+	echo 'static char version[] = "$(version)";' > version.h
 
 apropos: apropos.sh Makefile
 	rm -f apropos
@@ -190,17 +190,19 @@ sbin_destdir = ${DESTDIR}${sbindir}
 #
 manconfdir = `echo $(manconffile) | sed s'?/*[^/]\+/*$$??'`
 manconffile = ${DESTDIR}@man_config_file@
+#
+MKINSTALLDIRS = ${top_srcdir}/mkinstalldirs
 
 install: all apropos whatis makewhatis
-	-test -n "${DESTDIR}" && ${top_srcdir}/mkinstalldirs ${dest_prefix} ${exec_destdir}
-	${top_srcdir}/mkinstalldirs --require ${exec_destdir} ${bin_destdir} ${sbin_destdir}
+	test -z "${DESTDIR}" || $(MKINSTALLDIRS) ${dest_prefix} ${exec_destdir}
+	$(MKINSTALLDIRS) --require ${exec_destdir} ${bin_destdir} ${sbin_destdir}
 	$(INSTALL) @man_install_flags@ man$(EXEEXT) ${bin_destdir}/man$(EXEEXT)
 	$(INSTALL) -m 755 apropos ${bin_destdir}/apropos
 	$(INSTALL) -m 755 whatis ${bin_destdir}/whatis
 	$(INSTALL) -m 755 ${srcdir}/man2dvi ${bin_destdir}/man2dvi
 	$(INSTALL) -m 754 makewhatis ${sbin_destdir}/makewhatis
-	${top_srcdir}/mkinstalldirs --require ${dest_prefix} ${manconfdir}
-	-test -f ${manconffile} && mv ${manconffile} ${manconffile}.orig
+	$(MKINSTALLDIRS) --require ${dest_prefix} ${manconfdir}
+	test ! -f ${manconffile} || mv ${manconffile} ${manconffile}.orig
 	$(INSTALL) -m 644 man.conf ${manconffile}
 
 CLEANFILES = *.$(OBJEXT) *~ core man apropos whatis makewhatis *.stackdump
@@ -208,12 +210,12 @@ DISTCLEANFILES = Makefile stamp.h paths.h version.h man.conf gripedefs.h msg.c m
 
 clean:
 	rm -f $(CLEANFILES)
-	-test -n "$(EXEEXT)" && rm -f *$(EXEEXT)
+	test -z "$(EXEEXT)" || rm -f *$(EXEEXT)
 	@cd win32; $(MAKE) clean
 
 distclean realclean spotless:
 	rm -f $(CLEANFILES) *.orig *.rej $(DISTCLEANFILES)
-	-test -n "$(EXEEXT)" && rm -f *$(EXEEXT)
+	test -z "$(EXEEXT)" || rm -f *$(EXEEXT)
 	@cd win32; $(MAKE) distclean
 
 FORCE:

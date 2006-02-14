@@ -32,7 +32,6 @@ VPATH = ${srcdir}
 
 # Other autoconf defined path names.
 top_srcdir = @top_srcdir@
-top_builddir = @top_builddir@
 exec_prefix = @exec_prefix@
 prefix = @prefix@
 bindir = @bindir@
@@ -43,9 +42,12 @@ EXEEXT = @EXEEXT@
 
 CC = @CC@
 CWARN = @CWARN@
-CFLAGS = @CFLAGS@ $(CWARN) -I${top_builddir}/src
+CFLAGS = @CFLAGS@
 OBJECTS = man2html.$(OBJEXT) cgibase.$(OBJEXT) abbrev.$(OBJEXT) strdefs.$(OBJEXT)
 INSTALL = @INSTALL@
+
+.c.o:
+	$(CC) -c $(CFLAGS) $(CWARN) -I. -o $@ $<
 
 LN_S = @LN_S@
 
@@ -59,7 +61,11 @@ README: FORCE
 man2html$(EXEEXT): $(OBJECTS)
 	$(CC) $(LDFLAGS) -o man2html $(OBJECTS)
 
-# man2html: ${top_builddir}/src/version.h
+$(OBJECTS): defs.h
+man2html.$(OBJEXT): version.h
+
+version.h: ${top_srcdir}/configure.ac Makefile
+	echo 'static char version[] = "$(version)";' > $@
 
 # This installs the man2html utility
 install: man2html$(EXEEXT)
