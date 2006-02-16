@@ -9,7 +9,7 @@
 #   Earnie Boyd     <earnie@users.sourceforge.net>
 #   Keith Marshall  <keithmarshall@users.sourceforge.net>
 #
-# $Id: mkRelease.tcl,v 1.5 2005-11-29 19:37:50 keithmarshall Exp $
+# $Id: mkRelease.tcl,v 1.6 2006-02-16 15:07:08 earnie Exp $
 #\
 exec tclsh "$0" "$@"
 
@@ -61,7 +61,12 @@ proc debugging {} {
 # Returns: nothing
 #
 proc get_current_files_page {} {
-exec wget http://sourceforge.net/project/showfiles.php?group_id=2435 -Omingw.files -nv -a mingw.files.log
+exec wget http://sourceforge.net/project/showfiles.php?group_id=2435&package_id=82721 -Omingw.current.files -nv -a mingw.files.log
+exec wget http://sourceforge.net/project/showfiles.php?group_id=2435&package_id=82723 -Omingw.candidate.files -nv -a mingw.files.log
+exec wget http://sourceforge.net/project/showfiles.php?group_id=2435&package_id=82725 -Omingw.proposed.files -nv -a mingw.files.log
+exec wget http://sourceforge.net/project/showfiles.php?group_id=2435&package_id=82724 -Omingw.snapshot.files -nv -a mingw.files.log
+exec wget http://sourceforge.net/project/showfiles.php?group_id=2435&package_id=82722 -Omingw.previous.files -nv -a mingw.files.log
+exec cat mingw.*.files > mingw.files
 exec wget http://prdownloads.sf.net/mingw/ -Omingwftp.files -nv -a mingw.files.log
 }
 
