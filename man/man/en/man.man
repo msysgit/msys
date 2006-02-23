@@ -99,7 +99,7 @@ This option overrides the
 environment variable. By default,
 .B man
 uses
-.BR @browser@ ,
+.BR "@browser@" .
 .TP
 .B \-\^H
 Specify a command that renders HTML files as text. 
@@ -108,7 +108,7 @@ This option overrides the
 environment variable. By default,
 .B man
 uses
-.BR @htmlpager@ ,
+.BR "@htmlpager@" .
 .TP
 .B \-\^S " section_list"
 List is a colon separated list of manual sections to search.
@@ -416,11 +416,15 @@ is used.
 .TP
 .B BROWSER
 The name of a browser to use for displaying HTML manual pages.  If
-it is not set, @browser@ is used.
+it is not set,
+.B "@browser@
+is used.
 .TP
 .B HTMLPAGER
 The command to use for rendering HTML manual pages as text.  If
-it is not set, @htmlpager@ is used.
+it is not set,
+.B "@htmlpager@
+is used.
 .TP
 .B LANG
 If
