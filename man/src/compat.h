@@ -43,6 +43,7 @@
 #ifdef __MINGW32__
 /*
  * This could probably be better handled by autoconf,
+ * or by rationalisation of the code for glob.c itself,
  * but, as a quick and dirty hack for now...
  *
  * On MinGW based platforms, glob.c will not currently compile,
@@ -50,6 +51,14 @@
  */
 
 # define _POSIX_SOURCE
+# define __GNU_LIBRARY__
+#endif
+#ifdef __CYGWIN__
+/*
+ * And similarly, for Cygwin...
+ * (except that here, we MUST NOT define _POSIX_SOURCE)...
+ */
+
 # define __GNU_LIBRARY__
 #endif
 

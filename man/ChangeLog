@@ -1,3 +1,8 @@
+2006-02-24  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	* src/compat.h (__GNU_LIBRARY__): Define for Cygwin;
+	we need it, as we do for MinGW.
+
 2006-02-23  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	* man/en/man.man (BROWSER, HTMLPAGER): Correct punctuation in, and use
