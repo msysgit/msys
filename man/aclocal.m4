@@ -79,7 +79,7 @@ AC_DEFUN([MAN_AC_CONFIG_NATIVE],dnl
 [AC_REQUIRE([MAN_AC_PROG_CC_VARS])dnl
  ac_dir=`pwd`
  AS_MKDIR_P([$1])
- AC_MSG_NOTICE([entering directory \SQ([$ac_dir/$1])...])
+ AC_MSG_NOTICE([entering directory \m4_sq([$ac_dir/$1])...])
  AC_MSG_NOTICE([executables built here need a native code compiler,])
  AC_MSG_NOTICE([even when we are cross-compiling.])
  ac_config_cmd=`cd $srcdir/$1; pwd`/configure
@@ -88,10 +88,10 @@ AC_DEFUN([MAN_AC_CONFIG_NATIVE],dnl
  AC_FOREACH([VAR], [CC CFLAGS LDFLAGS CPPFLAGS],
    [MAN_AC_ARG_VAR_PROPAGATE([VAR], [BUILD_]VAR)])
  ( cd $1; $CONFIG_SHELL $ac_config_cmd ) && ac_fail=false || ac_fail=true
- AC_MSG_NOTICE([leaving directory \SQ($ac_dir/$1)])
+ AC_MSG_NOTICE([leaving directory \m4_sq($ac_dir/$1)])
  if $ac_fail
  then
-   AC_MSG_FAILURE([invalid configuration in \SQ($1) subdirectory])
+   AC_MSG_FAILURE([invalid configuration in \m4_sq($1) subdirectory])
  fi[]dnl
 ])
 
@@ -105,6 +105,68 @@ AC_DEFUN([MAN_AC_CONFIG_NATIVE],dnl
 AC_DEFUN([MAN_AC_ARG_VAR_PROPAGATE],dnl
 [test x"$cross_compiling" = xno && ac_val=$$1 || ac_val=""
  ac_config_cmd="$ac_config_cmd $1=$m4_if([$2], [], [ac_val], [$2])"
+])
+
+
+## =========================================== ##
+## Some Other Useful Autoconf Extension Macros ##
+## =========================================== ##
+#
+# m4_sq( TEXT )
+# ----------
+# Emit TEXT, enclosed in single quotation marks.
+#
+m4_define([m4_sq], [`$*'])dnl`
+
+# m4_pad( WIDTH )
+# ---------------
+# Insert WIDTH space characters into the output stream;
+# (may be used to facilitate aligned indentation at left margin).
+#
+m4_define([m4_pad],[m4_if([$1],[0],,[[ ]m4_pad(m4_decr([$1]))])])
+
+# m4_chop( STRING )
+# -----------------
+# Discard the rightmost character from STRING;
+# (similar to Perl's `chop' function).
+#
+m4_define([m4_chop],[m4_substr([$1],[0],m4_decr(m4_len([$1])))])
+
+# MAN_AS_HELP_DEFAULT( TEXT,... )
+# -------------------------------
+# Emit TEXT, enclosed in brackets, for use in an AS_HELP_STRING.
+#
+m4_define([MAN_AS_HELP_DEFAULT], [@<:@$*@:>@])
+
+# MAN_AS_HELP_APPEND( DESCRIPTION )
+# ---------------------------------
+# Append an extra line of DESCRIPTION to an AS_HELP_STRING.
+#
+m4_define([MAN_AS_HELP_APPEND], [AS_HELP_STRING([], [$*])])
+
+# MAN_AC_CASE_OPTION( NAME, MINLENGTH, [MARGIN = 0] )
+# ---------------------------------------------------
+# Generate a case statement match prototype list for -NAME or --NAME,
+# as an argument comparator to identify possible command line options,
+# matching at least MINLENGTH initial characters, in the --NAME case.
+# If MARGIN is specified, indent the --NAME match prototypes by the
+# specified number of character positions to create a left margin;
+# (-NAME prototypes are placed on the first line of output, at the
+#  same indent as the macro name itself appears in the source).
+#
+m4_define([MAN_AC_CASE_OPTION],
+[[-$1 | -$1=* |\]
+MAN_AC_CASE_OPTION_EXTENDED([$1],[$2],[$3])dnl
+])
+
+# MAN_AC_CASE_OPTION_EXTENDED( NAME, MINLENGTH, [MARGIN = 0] )
+# ------------------------------------------------------------
+# An internal helper macro, to be used only by MAN_AC_CASE_OPTION;
+# arguments are as defined for MAN_AC_CASE_OPTION itself.
+#
+m4_define([MAN_AC_CASE_OPTION_EXTENDED],
+[m4_ifval([$3],m4_pad([$3]))[--$1 | --$1=*] m4_if(m4_len([$1]),[$2],[)],[m4_n([|\])])dnl
+m4_if(m4_len([$1]),[$2],,[MAN_AC_CASE_OPTION_EXTENDED(m4_chop([$1]),[$2],[$3])])dnl
 ])
 
 
@@ -254,7 +316,7 @@ AC_DEFUN([MAN_FHS_ENABLE],
 # if a previous caching run of configure had "--enable-fsstnd".
 #
 AC_DEFUN([MAN_FSSTND_ENABLE],
-[MAN_STANDARD_ENABLE([FSSTND], [fsstnd], [FHS])dnl
+[MAN_STANDARD_ENABLE([FSSTND], [fsstnd], [fhs])dnl
 ])
 
 # MAN_STANDARD_ENABLE( VARIABLE, STANDARD, [OVERRIDE] )
@@ -268,12 +330,12 @@ AC_DEFUN([MAN_STANDARD_ENABLE],
  AC_ARG_ENABLE([$2],
    AC_HELP_STRING([--enable-$2],
      [implement $1 standard installation paths]),
-   [test x${enableval} = xno && man_cv_$1=no || man_cv_$1=yes],
-   [AC_CACHE_VAL([man_cv_$1], [man_cv_$1=no])])
- m4_ifvaln([$3], [test $man_cv_$3 = no || man_cv_$1=no])dnl
- [test $man_cv_$1 = no && $1="__undef__($1)"]
+   [test x${enableval} = xno && man_cv_$2=no || man_cv_$2=yes],
+   [AC_CACHE_VAL([man_cv_$2], [man_cv_$2=no])])
+ m4_ifvaln([$3], [test $man_cv_$3 = no || man_cv_$2=no])dnl
+ [test $man_cv_$2 = no && $1="__undef__($1)"]
  AC_SUBST([$1], [${$1-"$1"}])
- AC_MSG_RESULT([$man_cv_$1])dnl
+ AC_MSG_RESULT([$man_cv_$2])dnl
 ])
 
 # MAN_CONFIG_FILE_DEFAULT( FILENAME )
@@ -286,40 +348,51 @@ AC_DEFUN([MAN_CONFIG_FILE_DEFAULT], [man_config_file_default=$1])
 # ------------------------------
 # Set the default location, where the configuration file should be installed.
 #
-AC_DEFUN([MAN_CONFDIR_DEFAULT], [man_confdir_default=$1/])
+AC_DEFUN([MAN_CONFDIR_DEFAULT], [man_confdir_default=$1])
 
 # MAN_CONFDIR
 # -----------
-# Interpret the "--with-confdir=PATH" option,
-# to establish an alternative location for installation of the
-# configuration file.
+# Interpret the "--sysconfdir=PATH" option,
+# to establish any user specified alternative location for installation
+# of the `man' configuration file; if the user didn't specify this, then
+# use the autoconf default, or an implicit alternative selected by the user,
+# if either the `--enable-fhs' or `--enable-fsstnd' option is specified.
 #
 AC_DEFUN([MAN_CONFDIR],
-[AC_ARG_WITH([confdir],
-  AS_HELP_STRING([--with-confdir=DIR],
-   [install configuration file in DIR [[PREFIX/lib]]]),
-  [man_confdir=${withval}/],
-  [man_confdir=${man_confdir_default-'${prefix}/lib/'}])
+[AC_REQUIRE([MAN_FHS_ENABLE])dnl
+ AC_REQUIRE([MAN_FSSTND_ENABLE])dnl
+ test x"$man_cv_fhs" = xyes && man_confdir_default='${prefix}/share/misc'
+ test x"$man_cv_fsstnd" = xyes && man_confdir_default='${prefix}/share/lib'
+ ac_dir=NONE
+ for ac_option in `echo $ac_configure_args`
+ do
+  case $ac_option in
+    MAN_AC_CASE_OPTION([sysconfdir],[2],[4])
+      ac_dir=${sysconfdir} ;;
+  esac
+ done
+ test x"${ac_dir}" = xNONE && ac_dir=${man_confdir_default-"$sysconfdir"}
+ sysconfdir=`echo "$ac_dir" | sed 's?[[\\/]]*$??'`
 ])
 
 # MAN_CONFIG_FILE
 # ---------------
-# Interpret the "--with-config=FILENAME" option,
+# Interpret the "--enable-config-file=FILENAME" option,
 # to specify an alternative name for the configuration file.
-# Alternatively, accept the "--with-config=PATHNAME" syntax for this option,
+# Alternatively, accept the "--enable-config-file=PATHNAME" syntax for this option,
 # to specify the fully qualified path name for the installed configuration file.
 #
 AC_DEFUN([MAN_CONFIG_FILE],
 [AC_REQUIRE([MAN_CONFDIR])dnl
- AC_ARG_WITH([config],
-  AS_HELP_STRING([--with-config=NAME],
-   [NAME of configuration file [[man.conf]]]),
-  [man_config_file=${withval}],
+AC_ARG_ENABLE([config-file],
+  AS_HELP_STRING([--enable-config-file=FILE],
+   [read default runtime configuration from FILE [[SYSCONFDIR/man.conf]]]),
+  [man_config_file=${enableval}],
   [man_config_file=${man_config_file_default-'man.conf'}])
  AC_MSG_CHECKING([where to install '${man_config_file}'])
  if test `AS_DIRNAME([${man_config_file}])` = "."
  then
-  AC_SUBST([man_config_file],[${man_confdir}${man_config_file}])
+  AC_SUBST([man_config_file],[${sysconfdir}/${man_config_file}])
  else
   AC_SUBST([man_config_file],[${man_config_file}])
  fi
@@ -342,10 +415,10 @@ AC_DEFUN([MAN_CONFIG_FILE],
 # references for any requested manpage.
 #
 AC_DEFUN([MANSECT_SEARCH_ORDER],
-[AC_ARG_WITH([sections],
- AS_HELP_STRING([--with-sections=LIST],
+[AC_ARG_ENABLE([sections],
+ AS_HELP_STRING([--enable-sections=LIST],
   [colon separated ordered LIST of MANPAGE sections to search [[$1]]]),
- [sections=${withval}], [sections=$1])
+ [sections=${enableval}], [sections=$1])
  AC_SUBST([sections])dnl
 ])
 
@@ -367,10 +440,10 @@ AC_DEFUN([MANSECT_FILENAME_EXT],
 #
 m4_define([MAN_SECTION_FILEXT],
 [AC_MSG_CHECKING([file name extension for section $1 manpages])
- AC_ARG_WITH([$2],
-  [AS_HELP_STRING([--with-$2=EXT],
-    [use EXT]) MAN_AS_HELP_DEFAULT([$3])[ as extension for section $1 manpage files]],
-  [AC_SUBST([$2], [$withval])],
+ AC_ARG_ENABLE([$2],
+  [AS_HELP_STRING([--enable-$2=EXT],
+    [use ]m4_sq([topic.EXT]) MAN_AS_HELP_DEFAULT(m4_sq([topic.$3])))[ as section $1 manpage name]],
+  [AC_SUBST([$2], [$enableval])],
   [AC_SUBST([$2], [$3])dnl
  ])
  AC_MSG_RESULT([$$2])dnl
@@ -544,7 +617,7 @@ AC_DEFUN([MAN_PROG_GENCAT],
    [man_gencat_preferred=${withval}])
  AC_ARG_WITH([gencat-provided],
    AS_HELP_STRING([--with-gencat-provided],
-     [use the] SQ([gencat]) [program distributed with] SQ([man])),
+     [use the] m4_sq([gencat]) [program distributed with] m4_sq([man])),
    [test x"$withval" = xno || man_gencat_provided=yes])
  if test x"$man_gencat_provided" = xyes
  then
@@ -624,7 +697,7 @@ dnl"
    ac_option=no
  fi
  AC_MSG_RESULT([$ac_val])
- AC_MSG_CHECKING([whether $1 needs] SQ([--new]) [option])
+ AC_MSG_CHECKING([whether $1 needs] m4_sq([--new]) [option])
  AC_MSG_RESULT([$ac_option])dnl
 ])
 
@@ -739,9 +812,9 @@ AC_DEFUN([MAN_NLS_LANGUAGE_SELECTION],
 [AC_REQUIRE([WIN32_AC_NULLDEV])dnl
  AC_REQUIRE([MAN_NLS_PREREQUISITES])dnl
  AC_MSG_CHECKING([which national language manpages are required])
- AC_ARG_WITH([languages],
+ AC_ARG_ENABLE([languages],
    MAN_LANGUAGE_HELP_STRING(MAN_LANGUAGE_LIST($1)),
-   [test x$withval = xall && languages=MAN_LANGUAGE_LIST($1) || languages=$withval],
+   [test x$enableval = xall && languages=MAN_LANGUAGE_LIST($1) || languages=$enableval],
    [languages=en])
  test x$languages = xnone && man_enable_nls=no languages=en
  if test x$man_enable_nls = xno
@@ -751,10 +824,10 @@ AC_DEFUN([MAN_NLS_LANGUAGE_SELECTION],
  AC_MSG_RESULT([$languages])
  for lang in `IFS=,; echo $languages`
  do
-   langname=`cat $srcdir/man/$lang.txt 2>$NULLDEV`
+   langname=`cat "$srcdir/man/$lang.txt" 2>$NULLDEV`
    test x$langname = x && langname=$lang || langname="$lang ($langname)"
    AC_MSG_CHECKING([whether $langname manpages are available])
-   ac_val=`exec 2>$NULLDEV; cd $srcdir/man/$lang && echo *.man || echo '*.man'`
+   ac_val=`exec 2>$NULLDEV; cd "$srcdir/man/$lang" && echo *.man || echo '*.man'`
    if test "$ac_val" = "*.man"
    then
      ac_val=no
@@ -795,29 +868,11 @@ AC_DEFUN([MAN_LANGUAGE_LIST], [m4_normalize([$*])])
 # to emit the list of available LANGUAGES in `configure --help' output.
 #
 AC_DEFUN([MAN_LANGUAGE_HELP_STRING],
-[AS_HELP_STRING([--with-languages=LIST],
-[LIST of language packs to install] MAN_AS_HELP_DEFAULT(SQ(en) only)[,])
-MAN_AS_HELP_APPEND([where LIST is SQ(all), any comma separated subset of SQ($*),])
-MAN_AS_HELP_APPEND([or SQ(none), to disable NLS and fall back to])[ SQ(en) only]dnl
+[AS_HELP_STRING([--enable-languages=LIST],
+[LIST of language packs to install] MAN_AS_HELP_DEFAULT([m4_sq(en) only])[,])
+MAN_AS_HELP_APPEND([where LIST is ]m4_sq(all)[, any comma separated subset of ]m4_sq($*)[,])
+MAN_AS_HELP_APPEND([or ]m4_sq(none)[, to disable NLS and fall back to ]m4_sq(en)[ only])dnl
 ])
-
-# MAN_AS_HELP_DEFAULT( TEXT,... )
-# -------------------------------
-# Emit TEXT, enclosed in brackets, for use in an AS_HELP_STRING.
-#
-m4_define([MAN_AS_HELP_DEFAULT], [@<:@$*@:>@])
-
-# MAN_AS_HELP_APPEND( DESCRIPTION )
-# ---------------------------------
-# Append an extra line of DESCRIPTION to an AS_HELP_STRING.
-#
-m4_define([MAN_AS_HELP_APPEND], [AS_HELP_STRING([], [$*])])
-
-# SQ( TEXT )
-# ----------
-# Emit TEXT, enclosed in single quotation marks.
-#
-m4_define([SQ], [`$*'])dnl`
 
 # MAN_AC_TOOLS_DEFAULT
 # --------------------
@@ -1124,7 +1179,7 @@ AC_DEFUN([WIN32_AC_NEED_LIBS],
 #
 AC_DEFUN([MAN_PATH_SEPARATOR],
 [AC_REQUIRE([AC_PROG_LN_S])dnl
- AC_MSG_CHECKING([separator character in \SQ([man --path]) output])
+ AC_MSG_CHECKING([separator character in \m4_sq([man --path]) output])
  ${LN_S} ${srcdir}/src/compat.h conftest.h
  AC_LANG_PUSH(C)
  AC_COMPILE_IFELSE(dnl

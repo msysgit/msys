@@ -1,3 +1,29 @@
+2006-03-20  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	* aclocal.m4: Reorganise macro grouping; comments added.
+	(SQ): Macro renamed to...
+	(m4_sq): ...this; all callers updated.
+	(m4_pad, m4_chop): New utility macros.
+	(MAN_AC_CASE_OPTION, MAN_AC_CASE_OPTION_EXTENDED): New macros.
+	(MAN_STANDARD_ENABLE): Keep cache variable name lower case, and...
+	(MAN_FSSTND_ENABLE): Adjust FHS override case to match.
+	(MAN_CONFDIR_DEFAULT): Remove trailing slash.
+	(MAN_CONFDIR): Remove support for `--with-confdir' option.
+	Instead, use `MAN_AC_CASE_OPTION'; inherit from `--sysconfdir'.
+	AC_REQUIRE `MAN_FHS_ENABLE'; override `--sysconfdir' default.
+	AC_REQUIRE `MAN_FSSTND_ENABLE'; ditto.
+	(MAN_CONFIG_FILE, MANSECT_SEARCH_ORDER, MAN_SECTION_FILEXT):...
+	(MAN_NLS_LANGUAGE_SELECTION): Do not use `AC_ARG_WITH'...
+	Prefer `AC_ARG_ENABLE', replacing...
+	`--with-config' option with `--enable-config-file';
+	`--with-sections' option with `--enable-sections';
+	`--with-man1ext' option with `--enable-man1ext';
+	`--with-man5ext' option with `--enable-man5ext';
+	`--with-man8ext' option with `--enable-man8ext';
+	`--with-languages' option with `--enable-languages'.
+
+	* configure: Regenerated.
+
 2006-02-24  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	* src/compat.h (__GNU_LIBRARY__): Define for Cygwin;

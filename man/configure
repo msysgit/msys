@@ -862,26 +862,27 @@ Optional Features:
   --enable-sgid=GROUP     install man sgid to GROUP [man]
   --enable-fhs            implement FHS standard installation paths
   --enable-fsstnd         implement FSSTND standard installation paths
+  --enable-config-file=FILE
+                          read default runtime configuration from FILE
+                          [SYSCONFDIR/man.conf]
+  --enable-sections=LIST  colon separated ordered LIST of MANPAGE sections to
+                          search [1:1p:8:2:3:3p:4:5:6:7:9:0p:tcl:n:l:p:o]
+  --enable-man1ext=EXT    use `topic.EXT' [`topic.1'] as section 1 manpage name
+  --enable-man5ext=EXT    use `topic.EXT' [`topic.5'] as section 5 manpage name
+  --enable-man8ext=EXT    use `topic.EXT' [`topic.8'] as section 8 manpage name
   --disable-nls           don't include National Language Support
+  --enable-languages=LIST LIST of language packs to install [`en' only],
+                          where LIST is `all', any comma separated subset of
+                          `bg,cs,da,de,el,en,es,fi,fr,hr,it,ja,ko,nl,pl,pt,ro,sl',
+                          or `none', to disable NLS and fall back to `en' only
   --enable-sgr            use nroff's SGR output mode, if available
 
 Optional Packages:
   --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
   --without-PACKAGE       do not use PACKAGE (same as --with-PACKAGE=no)
   --with-awk=PROG         use PROG as the AWK interpreter [auto detect]
-  --with-confdir=DIR      install configuration file in DIR [PREFIX/lib]
-  --with-config=NAME      NAME of configuration file [man.conf]
-  --with-sections=LIST    colon separated ordered LIST of MANPAGE sections to
-                          search [1:1p:8:2:3:3p:4:5:6:7:9:0p:tcl:n:l:p:o]
-  --with-man1ext=EXT      use EXT [1] as extension for section 1 manpage files
-  --with-man5ext=EXT      use EXT [5] as extension for section 5 manpage files
-  --with-man8ext=EXT      use EXT [8] as extension for section 8 manpage files
   --with-gencat=PROG      use PROG for generation of message catalogues
   --with-gencat-provided  use the `gencat' program distributed with `man'
-  --with-languages=LIST   LIST of language packs to install [`en' only],
-                          where LIST is `all', any comma separated subset of
-                          `bg,cs,da,de,el,en,es,fi,fr,hr,it,ja,ko,nl,pl,pt,ro,sl',
-                          or `none', to disable NLS and fall back to `en' only
   --with-localedir=DIR    message catalogue DIR [/usr/lib/locale/%N/%L]
   --with-pager=COMMAND    invoke PAGER using COMMAND [less -is]
   --with-browser=COMMAND  invoke BROWSER using COMMAND [lynx]
@@ -7288,58 +7289,70 @@ echo $ECHO_N "checking whether to adopt the FHS standard... $ECHO_C" >&6
  # Check whether --enable-fhs or --disable-fhs was given.
 if test "${enable_fhs+set}" = set; then
   enableval="$enable_fhs"
-  test x${enableval} = xno && man_cv_FHS=no || man_cv_FHS=yes
+  test x${enableval} = xno && man_cv_fhs=no || man_cv_fhs=yes
 else
-  if test "${man_cv_FHS+set}" = set; then
+  if test "${man_cv_fhs+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
 else
-  man_cv_FHS=no
+  man_cv_fhs=no
 fi
 
 fi;
-  test $man_cv_FHS = no && FHS="__undef__(FHS)"
+  test $man_cv_fhs = no && FHS="__undef__(FHS)"
  FHS=${FHS-"FHS"}
 
- echo "$as_me:$LINENO: result: $man_cv_FHS" >&5
-echo "${ECHO_T}$man_cv_FHS" >&6
+ echo "$as_me:$LINENO: result: $man_cv_fhs" >&5
+echo "${ECHO_T}$man_cv_fhs" >&6
   echo "$as_me:$LINENO: checking whether to adopt the FSSTND standard" >&5
 echo $ECHO_N "checking whether to adopt the FSSTND standard... $ECHO_C" >&6
  # Check whether --enable-fsstnd or --disable-fsstnd was given.
 if test "${enable_fsstnd+set}" = set; then
   enableval="$enable_fsstnd"
-  test x${enableval} = xno && man_cv_FSSTND=no || man_cv_FSSTND=yes
+  test x${enableval} = xno && man_cv_fsstnd=no || man_cv_fsstnd=yes
 else
-  if test "${man_cv_FSSTND+set}" = set; then
+  if test "${man_cv_fsstnd+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
 else
-  man_cv_FSSTND=no
+  man_cv_fsstnd=no
 fi
 
 fi;
- test $man_cv_FHS = no || man_cv_FSSTND=no
- test $man_cv_FSSTND = no && FSSTND="__undef__(FSSTND)"
+ test $man_cv_fhs = no || man_cv_fsstnd=no
+ test $man_cv_fsstnd = no && FSSTND="__undef__(FSSTND)"
  FSSTND=${FSSTND-"FSSTND"}
 
- echo "$as_me:$LINENO: result: $man_cv_FSSTND" >&5
-echo "${ECHO_T}$man_cv_FSSTND" >&6
+ echo "$as_me:$LINENO: result: $man_cv_fsstnd" >&5
+echo "${ECHO_T}$man_cv_fsstnd" >&6
 #
 # Subject to established defaults,
 # identify the appropriate configuration file name and location.
 #
+    test x"$man_cv_fhs" = xyes && man_confdir_default='${prefix}/share/misc'
+ test x"$man_cv_fsstnd" = xyes && man_confdir_default='${prefix}/share/lib'
+ ac_dir=NONE
+ for ac_option in `echo $ac_configure_args`
+ do
+  case $ac_option in
+    -sysconfdir | -sysconfdir=* |\
+    --sysconfdir | --sysconfdir=* |\
+    --sysconfdi | --sysconfdi=* |\
+    --sysconfd | --sysconfd=* |\
+    --sysconf | --sysconf=* |\
+    --syscon | --syscon=* |\
+    --sysco | --sysco=* |\
+    --sysc | --sysc=* |\
+    --sys | --sys=* |\
+    --sy | --sy=* )
+      ac_dir=${sysconfdir} ;;
+  esac
+ done
+ test x"${ac_dir}" = xNONE && ac_dir=${man_confdir_default-"$sysconfdir"}
+ sysconfdir=`echo "$ac_dir" | sed 's?[\\/]*$??'`
 
-# Check whether --with-confdir or --without-confdir was given.
-if test "${with_confdir+set}" = set; then
-  withval="$with_confdir"
-  man_confdir=${withval}/
-else
-  man_confdir=${man_confdir_default-'${prefix}/lib/'}
-fi;
-
-
-# Check whether --with-config or --without-config was given.
-if test "${with_config+set}" = set; then
-  withval="$with_config"
-  man_config_file=${withval}
+# Check whether --enable-config-file or --disable-config-file was given.
+if test "${enable_config_file+set}" = set; then
+  enableval="$enable_config_file"
+  man_config_file=${enableval}
 else
   man_config_file=${man_config_file_default-'man.conf'}
 fi;
@@ -7358,7 +7371,7 @@ echo X${man_config_file} |
   	  /^X\(\/\).*/{ s//\1/; q; }
   	  s/.*/./; q'` = "."
  then
-  man_config_file=${man_confdir}${man_config_file}
+  man_config_file=${sysconfdir}/${man_config_file}
 
  else
   man_config_file=${man_config_file}
@@ -7396,11 +7409,10 @@ echo "${ECHO_T}${man_config_file}" >&6
 # Specify which manual sections will be supported,
 # and the order in which they will be searched.
 #
-
-# Check whether --with-sections or --without-sections was given.
-if test "${with_sections+set}" = set; then
-  withval="$with_sections"
-  sections=${withval}
+  # Check whether --enable-sections or --disable-sections was given.
+if test "${enable_sections+set}" = set; then
+  enableval="$enable_sections"
+  sections=${enableval}
 else
   sections=1:1p:8:2:3:3p:4:5:6:7:9:0p:tcl:n:l:p:o
 fi;
@@ -7411,11 +7423,10 @@ fi;
 #
   echo "$as_me:$LINENO: checking file name extension for section 1 manpages" >&5
 echo $ECHO_N "checking file name extension for section 1 manpages... $ECHO_C" >&6
-
-# Check whether --with-man1ext or --without-man1ext was given.
-if test "${with_man1ext+set}" = set; then
-  withval="$with_man1ext"
-  man1ext=$withval
+ # Check whether --enable-man1ext or --disable-man1ext was given.
+if test "${enable_man1ext+set}" = set; then
+  enableval="$enable_man1ext"
+  man1ext=$enableval
 
 else
   man1ext=1
@@ -7425,11 +7436,10 @@ fi;
 echo "${ECHO_T}$man1ext" >&6
   echo "$as_me:$LINENO: checking file name extension for section 5 manpages" >&5
 echo $ECHO_N "checking file name extension for section 5 manpages... $ECHO_C" >&6
-
-# Check whether --with-man5ext or --without-man5ext was given.
-if test "${with_man5ext+set}" = set; then
-  withval="$with_man5ext"
-  man5ext=$withval
+ # Check whether --enable-man5ext or --disable-man5ext was given.
+if test "${enable_man5ext+set}" = set; then
+  enableval="$enable_man5ext"
+  man5ext=$enableval
 
 else
   man5ext=5
@@ -7439,11 +7449,10 @@ fi;
 echo "${ECHO_T}$man5ext" >&6
   echo "$as_me:$LINENO: checking file name extension for section 8 manpages" >&5
 echo $ECHO_N "checking file name extension for section 8 manpages... $ECHO_C" >&6
-
-# Check whether --with-man8ext or --without-man8ext was given.
-if test "${with_man8ext+set}" = set; then
-  withval="$with_man8ext"
-  man8ext=$withval
+ # Check whether --enable-man8ext or --disable-man8ext was given.
+if test "${enable_man8ext+set}" = set; then
+  enableval="$enable_man8ext"
+  man8ext=$enableval
 
 else
   man8ext=8
@@ -9210,11 +9219,10 @@ echo "${ECHO_T}$man_enable_nls" >&6
  fi
   echo "$as_me:$LINENO: checking which national language manpages are required" >&5
 echo $ECHO_N "checking which national language manpages are required... $ECHO_C" >&6
-
-# Check whether --with-languages or --without-languages was given.
-if test "${with_languages+set}" = set; then
-  withval="$with_languages"
-  test x$withval = xall && languages=bg,cs,da,de,el,en,es,fi,fr,hr,it,ja,ko,nl,pl,pt,ro,sl || languages=$withval
+ # Check whether --enable-languages or --disable-languages was given.
+if test "${enable_languages+set}" = set; then
+  enableval="$enable_languages"
+  test x$enableval = xall && languages=bg,cs,da,de,el,en,es,fi,fr,hr,it,ja,ko,nl,pl,pt,ro,sl || languages=$enableval
 else
   languages=en
 fi;
@@ -9231,11 +9239,11 @@ _ACEOF
 echo "${ECHO_T}$languages" >&6
  for lang in `IFS=,; echo $languages`
  do
-   langname=`cat $srcdir/man/$lang.txt 2>$NULLDEV`
+   langname=`cat "$srcdir/man/$lang.txt" 2>$NULLDEV`
    test x$langname = x && langname=$lang || langname="$lang ($langname)"
    echo "$as_me:$LINENO: checking whether $langname manpages are available" >&5
 echo $ECHO_N "checking whether $langname manpages are available... $ECHO_C" >&6
-   ac_val=`exec 2>$NULLDEV; cd $srcdir/man/$lang && echo *.man || echo '*.man'`
+   ac_val=`exec 2>$NULLDEV; cd "$srcdir/man/$lang" && echo *.man || echo '*.man'`
    if test "$ac_val" = "*.man"
    then
      ac_val=no
