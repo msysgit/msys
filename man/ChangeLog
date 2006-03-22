@@ -1,3 +1,12 @@
+2006-03-22  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Prepare `man-1.6-mingw-beta-1' release.
+
+	* configure.ac (AC_INIT): Set PACKAGE_VERSION argument.
+	* configure: Regenerated.
+
+	* All files (MAN-1-6-MINGW-BETA-1): Tag assigned.
+
 2006-03-20  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	* aclocal.m4: Reorganise macro grouping; comments added.

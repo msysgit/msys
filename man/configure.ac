@@ -1,7 +1,7 @@
 # -*- Autoconf -*-  configure.ac for man.
 
   AC_PREREQ(2.59)
-  AC_INIT(man, 1.5m3)
+  AC_INIT(man, 1.6-mingw-beta-1)
 
 # Copyright (C) 2005 by Keith Marshall <keithmarshall@users.sourceforge.net>
 #
