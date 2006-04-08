@@ -1,3 +1,11 @@
+2006-04-08  Keith Marshall  <keithmarshall@users.sf.net>
+
+	Resolve BLDDIR vs. BUILDDIR variable naming conflict;
+	reported by Anatoly Techtonik <techtonik@users.sf.net>.
+
+	* src/portmaker.sh, template/mingwPORT.ini (BLDDIR): Replace...
+	(BUILDDIR): ...with this.
+
 2006-02-10  Earnie Boyd  <earnie@users.sf.net>
 
 	* Makefile: New file.
