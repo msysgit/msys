@@ -1,27 +1,26 @@
-html {
-	font-family: verdana, arial, helvetica, sans-serif;
+body {
+	font-family: verdana, arial, helvetica, "Luxi Sans", sans-serif;
 /*	font-size: 12pt; */
 	margin: 0;
-	margin-bottom: 2em;
 	padding: 0;
-}
-body {
 	background-color: white;
 	color: #333;
+        font-size: 80%; /* Master size: change this for an effext on the whole page */
+}
+
+h1 {
+	color: #999;
+	font-size: 1.3em;
+	font-weight: 900;
 	margin: 0;
 	padding: 0;
+	text-align: center;
 }
-h1 {
-	color:#999;
-	font-size: larger;
-	font-weight:900;
-	margin: 0;
-	padding:0;
-	text-align:center;
+
+p {
+    font-size: 1em;
 }
-h2 {
-	left-margin: 10em;
-}
+
 a {
 	color:#09c;
 	font-weight:400;
@@ -34,7 +33,7 @@ a:visited {
 	color:#07a;
 }
 a:hover {
-	background-color:#0ff;
+	background-color: #cce;
 }
 table {
 	border: 1px solid #999;
@@ -46,46 +45,6 @@ tr {
 	border: 1px solid #999;
 }
 
-.dec {
-	background-color:#eee;
-	border-bottom: 1px solid black;
-	border-top: 1px solid black;
-	font-weight:600;
-	padding-bottom: 3px;
-	padding-top: 3px;
-}
-#Footer {
-	float: left;
-	font-size: .6em;
-	margin-top: 1em;
-	text-align: center;
-	width: 100%;
-}
-#Header {
-	float: left;
-	margin: 0;
-	margin-bottom: 1em;
-	padding-left: 1em;
-	width: 100%;
-}
-.sidebar {
-	background-color:#eee;
-	border: 1px dashed #999;
-	padding: 10px;
-	margin-top: 2em;
-}
-#LSide {
-	float: left;
-	margin-left: 1ex;
-	width: 11em;
-}
-#RSide {
-	float: right;
-	margin-right: 1ex;
-	overflow: hidden;
-	width: 20em;
-        font-size: .7em;
-}
 span#Label {
 	font-size: smaller;
 }
@@ -104,91 +63,81 @@ ul#Menu {
 	font-size: smaller;
 }
 
-/*
-  The below is added thanks to:
- Subject:    	 [Mingw-users] Offtopic: Website prints badly
-From: 	"Kauker, Hubert" <Hubert.Kauker@travelbasys.de>
-Date: 	9:35:40 am 2005-04-04
-*/
+/************
+  CONTAINERS
+*************/
 
-/* This addition to mingw.css shows the main content onscreen. */
-@media screen {
-  #Content {
-      	margin-left: 	14em auto; 
-	padding-left:	2em;
-      	width:		auto; 
-      	margin-right: 	1em auto;
-	padding-right:  2em;
-	text-align: 	justify;
-  }
-  body>div#Content {
-  /* Mozilla margins here */
-	margin-left: 	14em auto;
-	margin-right: 	1em auto;
-	width:		auto;
-	text-align:	justify;
-  }
-  ul, dt {
-	padding-left: 	15em;
-  }
-  h2, h3 {
-	padding-left: 8em;
-  }
-  p, blockquote {
-	padding-top: 0;
-	padding-left: 15em;
-  }
-  div#RSide p {
-	padding-left: 0em;
-  }
+#header, #footer
+{
+    background-color: #eee;
+    border-bottom: 1px solid black;
+    border-top: 1px solid black;
+    padding: 3px 5px;
+    margin-top: 10px;
 }
 
-/* This addition to mingw.css print the main content. */
-@media print {
-  #Content {
-    /* Note: the left margin is zero. */
-        padding-right: 	1em; 
-      	margin-left: 	0em; 
-	width: 		auto; 
-	margin-right: 	1em;
-	text-align: 	justify;
-  }
-  p {
-	padding-top: 0;
-	padding-left: 5em;
-  }
-  ul {
-        padding-left: 6em;
-  }
+#footer 
+{
+    clear: both;
+    margin-bottom: 10px;
 }
 
-/* This addition to mingw.css shows the left sidebar onscreen. */
-@media screen {
-  .sidebar {
-      	border-right: 	#999 1px dashed; 
-	padding-right: 	1em; 
-	margin-right:	auto;
-	border-top: 	#999 1px dashed; 
-	margin-top: 	2em; 
-	padding-left: 	1em; 
-	padding-bottom: 10px;
-	border-left: 	#999 1px dashed; 
-	padding-top: 	10px; 
-	border-bottom: 	#999 1px dashed; 
-	background-color: #eee
-  }
+
+#sidebar
+{
+    position: absolute;
+    /*float: left;*/
+    width: 160px;
+    margin: 15px;
+    padding: 15px;
+    background-color: #eee;
+    border: 1px dashed #999;
+    left: 0; /*  this makes happy IE6 */
 }
 
-/* This addition to mingw.css suppresses the left sidebar on print. */
-@media print {
-  .sidebar { 
-	display: 	none 
-  }
 #RSide {
-	float: right;
-	margin-right: 1ex;
-	overflow: hidden;
-	width: 20em;
-        font-size: .7em;
+    position: relative;
+    float: right;
+	margin: 15px 0;
+        padding: 5px;
+        right: 15px;
+/*	overflow: hidden;*/
+	width: 180px;
+        font-size: .8em;
+        background-color: #eee;
+    border: 1px dashed #999;
 }
+
+#mainContent
+{
+    margin: 15px 222px 15px 222px;
+    background-color: #eee;
+    border: 1px dashed #999;
+    padding: 10px;
+    text-align: justify;
+}
+
+#header h1
+{
+    text-align: left;
+}
+
+#footer p
+{
+    text-align: center;
+    font-size: .8em;
+}
+
+@media print {
+
+    #mainContent {
+        margin: 0;
+        border: none;
+        
+    }
+
+/* Do not print menu bars */
+    #sidebar, #RSide{ 
+        display: none;
+    }
 }
