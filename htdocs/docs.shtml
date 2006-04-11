@@ -1,26 +1,25 @@
-<html>
-<head>
-  <meta name="description"
- content="Home of MinGW -- Minimalist GNU for Windows -- project. Contains information about the MinGW runtime library and GNU/OSS development tools for MinGW.">
-  <meta name="keywords"
- content="mingw, mingw32, programming, C++, C, C/C++, libraries, software, development tools, editors, IDEs, GNU">
-	<link rel="stylesheet" type="text/css" href="mingw.css">
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+    <meta name="description" content="Home of MinGW -- Minimalist GNU for Windows -- project. Contains information about the MinGW runtime library and GNU/OSS development tools for MinGW." />
+    <meta name="keywords" content="mingw, mingw32, programming, C++, C, C/C++, libraries, software, development tools, editors, IDEs, GNU" />
+    <link rel="stylesheet" type="text/css" href="mingw.css" />
 	<title>MinGW - Documentation</title>
 </head>
 
 <body>
-<span style="visibility: hidden;">.</span>
 
 <!--#include virtual="ssi/header.html" -->
 
 <!--#include virtual="ssi/lside.html" -->
 
 
-<div id="Content">
-<h1>MinGW - Documentation</h1>
-<p>
-         <a name="index"></a>
-         <h2 align="left">Table of Contents</h2>
+<div id="mainContent">
+    <h1>MinGW - Documentation</h1>
+         <h2 id="index">Table of Contents</h2>
 	
          <ul>
             <li><a href="#installation">Installing MinGW</a></li>
@@ -30,67 +29,63 @@
             <li><a href="#etc">Tips, Howtos, Contributed Documentation, etc.</a></li>
          </ul>
          <hr />
-         <a name="installation"></a>
-         <h2 align="left">Installing MinGW</h2>
+         <h2 id="installation">Installing MinGW</h2>
          <p>
             For now, installation information can be found on the 
             <a href="download.shtml">Download</a> page.
          </p>
          <p><a href="#index">Back to index</a></p>
          <hr />
-         <a name="compilingandbuilding"></a>
-         <h2 align="left">Compiling and Building with MinGW</h2>
-         <ul>
-            <li> 
-               <h3>How to create a console application</h3></a>
-               <p>
-                  Here's an example.  The following is a code sample for a simple C program.  Cut 
-                  and paste it into a file named hello.c to try it out.
-               </p>
-               <pre>
-   #include &lt;stdio.h&gt;
+         <h2 id="compilingandbuilding">Compiling and Building with MinGW</h2>
+           
+         <h3>How to create a console application</h3>
+           <p>
+              Here's an example.  The following is a code sample for a simple C program.  Cut 
+              and paste it into a file named hello.c to try it out.
+           </p>
+           <pre>
+#include &lt;stdio.h&gt;
 
-   int main(int argc, char **argv)
-   {
-      printf ("Hello\n");
-      return (0);
-   }
-               </pre>  
-               If you want to create a console mode executable hello.exe
-               from a c file called hello.c, try the following:
-               <pre>
-   gcc -c hello.c
-               </pre>
-               This compiles hello.c into an object file, hello.o
-               <pre>
-   gcc -o hello hello.o
-               </pre>
-               This creates an executable hello.exe from hello.o. Alternatively, you can compile 
-               and link in one step using:
-               <pre>
-   gcc -o hello hello.c 
-               </pre>
-               <p>
-                  The following is a code sample for a simple C++ program.  Cut and paste it into 
-                  a file named hello.cpp to try it out.
-               </p>
-               <pre>
-   #include &lt;iostream&gt;
-   int main(int argc, char **argv)
-   {
-     std::cout &lt;&lt; "Hello" &lt;&lt; std::endl;
-     return (0);
-   }
-               </pre>
-               <p>
-                  For the C++ program, use the following to compile and link:
-               </p>
-               <pre>
-   g++ -c hello.cpp
-   g++ -o hello hello.o
-               </pre>
-            </li>
-            <li>
+int main(int argc, char **argv)
+{
+  printf ("Hello\n");
+  return (0);
+}
+           </pre>  
+           If you want to create a console mode executable hello.exe
+           from a c file called hello.c, try the following:
+           <pre>
+gcc -c hello.c
+           </pre>
+           This compiles hello.c into an object file, hello.o
+           <pre>
+gcc -o hello hello.o
+           </pre>
+           This creates an executable hello.exe from hello.o. Alternatively, you can compile 
+           and link in one step using:
+           <pre>
+gcc -o hello hello.c 
+           </pre>
+           <p>
+              The following is a code sample for a simple C++ program.  Cut and paste it into 
+              a file named hello.cpp to try it out.
+           </p>
+           <pre>
+#include &lt;iostream&gt;
+int main(int argc, char **argv)
+{
+ std::cout &lt;&lt; "Hello" &lt;&lt; std::endl;
+ return (0);
+}
+           </pre>
+           <p>
+              For the C++ program, use the following to compile and link:
+           </p>
+           <pre>
+g++ -c hello.cpp
+g++ -o hello hello.o
+           </pre>
+
                <h3>How to create a windows application?</h3>
                <p>
                   Here's an example.  The following is a code sample for a simple
@@ -135,8 +130,8 @@
    windres -o resfile.o resfile.rc
    gcc -o hello hello.o resfile.o -mwindows
                </pre>
-            </li>
-            <li>
+
+
                <h3>How to create a dll</h3>
                <p>
                   Here's an example.  Cut and paste the following into a file
@@ -192,8 +187,8 @@
                   <a href="http://www.nanotech.wisc.edu/%7Ekhan/software/gnu-win32/dllhelpers.html">
                   http://www.nanotech.wisc.edu/&#126;khan/software/gnu-win32/dllhelpers.html</a>
                </p>
-            </li>
-            <li>
+
+
                <h3>How to create a def file for a dll</h3>
                <p>
                   There are several methods that can be tried in order to 
@@ -292,6 +287,7 @@
                            </p>
                         </li>
                      </ul>
+                     </li>
                      <li>
                         <p>
                            If you don't have any of these tools on your system, you can still use nm
@@ -319,13 +315,10 @@
                         of functions following it to create your def file.
                      </li>
                   </ul>
-               </li>
-            </li>
             <p><a href="#index">Back to index</a></p>
-         </ul>
+
          <hr />
-         <a name="gnutools"></a>
-         <h2 align="left">GNU Development Tools Documentation</h2>
+         <h2 id="gnutools">GNU Development Tools Documentation</h2>
          <ul>
             <li>
                <a href="http://www.gnu.org/manual/manual.html">GNU Documentation</a> 
@@ -349,11 +342,11 @@
             <li>
 			<a href="http://mefriss1.swan.ac.uk/~jfonseca/gnu-win32/documentation/chm/index.html">Compiled HTML Help</a> (various documentation for GNU tools in MS HTML Help format, provided by José Fonseca).
             </li>
-            <p><a href="#index">Back to index</a></p>
          </ul>
+         <p><a href="#index">Back to index</a></p>
+
          <hr />
-         <a name="win32api"></a>
-         <h2 align="left">Win32 API Documentation</h2>
+         <h2 id="win32api">Win32 API Documentation</h2>
          <p>
             MinGW uses the runtime libraries distributed with the OS, but 
             the API documentation is not supplied with the OS and is not re-distributable.
@@ -380,21 +373,21 @@
                that this only contains the Windows32 API documentation, but not the
                C runtime library documentation.
             </li>
-            <p><a href="#index">Back to index</a></p>
          </ul>
+         <p><a href="#index">Back to index</a></p>
          <hr />
-         <a name="etc"></a>
-         <h2 align="left">Tips, Howtos, Contributed Documentation, etc.</h2>
+         
+         <h2 id="etc">Tips, Howtos, Contributed Documentation, etc.</h2>
+         <h3>** NOTE **</h3>
          <p>
-            <font size="+1"><b>** NOTE ** </b></font><i>
             Some of the information in this section is grossly 
             out of date, and currently here for historical purposes only.  
             In particular, more recent and relevant information about "-mno-cygwin" 
             and using MinGW within a Cygwin development environment can be found 
-            on the <a href="mingwfaq.shtml#faq-usingwithcygwin">FAQ</a> page.</i>
+            on the <a href="mingwfaq.shtml#faq-usingwithcygwin">FAQ</a> page.
          </p>
-         <ul>
-            <li><h3>Introductions and Tutorials</h3></li>
+
+            <h3>Introductions and Tutorials</h3>
             <ul>
                <li>
                   <a href="http://www.spacejack.org/games/mingw/">
@@ -407,7 +400,7 @@
                </li>
                <li> 
                   <a href="http://www12.canvas.ne.jp/peters/colin/win32/index.html">
-                  Programming Win32 with GNU C and C++</a><br>
+                  Programming Win32 with GNU C and C++</a><br />
 		  A tutorial by Coin Peters, the original author of MinGW.
                </li>
                <li> 
@@ -428,7 +421,8 @@
 	       </li>
             </ul>
             <br />
-            <li><h3>Developing Modules for Specific Software Packages</h3></li>
+            
+            <h3>Developing Modules for Specific Software Packages</h3>
             <ul>
                <li> 
                   <b>Want to build Java JNI's with GNU compilers</b>? 
@@ -459,7 +453,8 @@
                </li>
             </ul>
             <br />
-            <li><h3>Cross-compilation and Using with Other Tools</h3></li>
+            
+            <h3>Cross-compilation and Using with Other Tools</h3>
             <ul>
                <li> 
                   <b>-mno-cygwin</b>: Building Mingw executables using Cygwin.<br /> Some
@@ -475,11 +470,9 @@
                </li>
             </ul>
             <p><a href="#index">Back to index</a></p>
-         </ul>
          <hr />
 
 
-</p>
 </div>
 
 <!--#include virtual="ssi/footer.html" -->
