@@ -17,9 +17,12 @@ template_SOURCES = \
 	mingwPORT.cleanup \
 	mingwPORT.configure \
 	mingwPORT.exports \
+	mingwPORT.getopts \
+	mingwPORT.help \
 	mingwPORT.ini \
 	mingwPORT.install \
 	mingwPORT.make \
+	mingwPORT.messages \
 	mingwPORT.patch \
 	mingwPORT.question \
 	mingwPORT.sh \

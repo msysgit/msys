@@ -1,3 +1,25 @@
+2006-04-21  Keith Marshall  <keithmarshall@users.sf.net>
+
+	* lib/mingwPORT.functions: Add comments to document function usage.
+	(win32path, pref, perform, require, action, step, die): New functions.
+	(ask): Add optional `QueryMark' argument; force expansion of possible
+	shell variables specified in reply.
+
+	* src/portmaker.sh (ask): Use `QueryMark' feature.
+	
+	* template/mingwPORT.help, template/mingwPORT.messages: New files.
+	
+	* template/mingwPORT.getopts: New file.
+	(CLEAN_UP_ON_EXIT): Defined.
+	
+	* template/Makefile (template_SOURCES): Add above three new files.
+
+	* template/mingwPORT.sh (mingwPORT.functions): Use new functions.
+	(mingwPORT): New shell variable; define and use it.
+	(mingwPORT.help, mingwPORT.messages, mingwPORT.getopts): Source them.
+	(mingwPORT.site): New site customisation hook; source preferentially.
+	(CLEANUP_ON_EXIT): Eval it.
+
 2006-04-08  Keith Marshall  <keithmarshall@users.sf.net>
 
 	Resolve BLDDIR vs. BUILDDIR variable naming conflict;

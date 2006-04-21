@@ -1,0 +1,12 @@
+# mingwPORT.messages
+# Required.  Message strings used by mingwPORT.
+
+CMD=`echo $0 | sed 's?.*[\\/]??'`
+
+MSG_EARGV="unexpected argument."
+MSG_ENOOPT="unknown option:"
+MSG_EAMBIG="ambiguous option:"
+MSG_ENOENT="required file not found."
+MSG_EACCESS="cannot access file."
+
+# $RCSfile: mingwPORT.messages,v $: end of file: vim: ft=sh

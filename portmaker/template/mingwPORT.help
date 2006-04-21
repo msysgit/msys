@@ -1,0 +1,77 @@
+# mingwPORT.help
+# Required.  Display summary info, for the `--help' and `--version' options.
+
+PACKAGE=@PACKAGE_NAME@
+VERSION=@PACKAGE_VERSION@
+PORTMAKER=@PORTMAKER@
+
+pref ${mingwPORT}.ini
+
+cat << ETX
+mingwPORT installer for $PACKAGE-$VERSION
+ETX
+
+test opt${matched} = opt--version && cat << ETX
+
+mingwPORT and portmaker are free software packages.  They are distributed
+in the hope that they may be useful, but WITHOUT WARRANTY OF ANY KIND, not
+even an implied WARRANTY OF MERCHANTABILITY, nor of FITNESS FOR PURPOSE.
+
+The authors of mingwPORT and portmaker accept NO LIABILITY for DAMAGE of
+ANY KIND, resulting from the use of this software.
+
+The software package which is installed by this mingwPORT is subject to
+its own licensing terms.  Please refer to the source for the installed
+package, for details of its licensing and distribution conditions.
+
+ETX
+
+test opt${matched} = opt--help && cat << ETX
+
+Usage: ./mingwPORT.sh [--option ...]
+
+Options:
+   Processed strictly in left to right order.  Where two conflicting options
+   are specified, the last one interpreted overrides.  Each option name may
+   be abbreviated to its shortest unambiguous initial substring.
+
+   --help               Display this help summary, and exit.
+
+   --version            Display the identification notice for this
+                        mingwPORT, and exit.
+
+   --info               Display the package resources referenced while
+                        installing this mingwPORT, and exit.
+
+   --cleanup            Delete all uninstalled files created by this
+                        mingwPORT, on completion.  (This is the default).
+
+   --no-cleanup         Suppress the normal cleanup action on completion.
+
+Environment:
+   The following environment variable may be defined, and exported, to set
+   up the user's preferred behaviour for mingwPORT.
+
+   MINGWPORT            Declares any of the above options, as a space
+                        separated list, which the user would like to be
+                        passed to mingwPORT as defaults.  By default,
+                        mingwPORT behaves as if MINGWPORT="--cleanup" is
+                        exported.  Options set on the command line will
+                        override settings specified in MINGWPORT.
+
+ETX
+
+test opt${matched} = opt--info && cat << ETX
+
+Project Home URL:       $ARCHIVEHOME
+Download URL:           $DOWNLOADURI
+Download File:          $ARCHIVEFILE.$ARCHIVETYPE
+
+Installation Root:      $PREFIX
+
+ETX
+
+exit 0
+
+# mingwPORT.help: end of file
+# vim: ft=sh

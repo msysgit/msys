@@ -1,68 +1,49 @@
 #! /bin/sh
-# mingwPORT.template
-# Required but name changed to reflect package ported.
-# Used to execute commands to build the ported package.
+# mingwPORT.sh
+# Required.  Used to execute commands to build the ported package.
 
 CURDIR=`pwd`
+mingwPORT="${CURDIR}/mingwPORT"
 
-. ${CURDIR}/mingwPORT.functions
+# Load mingwPORT function library and message catalogue,
+# and parse any options specified on the command line.
 
-if [ -f ${CURDIR}/mingwPORT.ini ]
+. "$mingwPORT.functions"
+. "$mingwPORT.messages"
+. "$mingwPORT.getopts"
+
+# Initialise the target package configuration.
+
+pref "$mingwPORT.ini"
+
+# Apply any `mingwPORT.site' customisations, as specified
+# in any of the standard site configuration directories.
+
+pref "/etc/mingwPORT/mingwPORT.site"
+pref "/usr/lib/mingwPORT/mingwPORT.site"
+pref "/usr/local/lib/mingwPORT/mingwPORT.site"
+pref "$HOME/.mingwPORT/mingwPORT.site"
+
+perform action question
+
+cd ${CURDIR}
+
+pref "$mingwPORT.exports"
+
+[ -z "$SRCDIR" ] && SRCDIR=`pwd` || eval SRCDIR=\"$SRCDIR\"
+ABSSRCDIR=`cd $SRCDIR >/dev/null 2>&1; pwd`
+
+if [ -f $mingwPORT.patch ]
 then
-  . ${CURDIR}/mingwPORT.ini
+  pref $mingwPORT.beforepatch
+
+  eval sed \"${PATCHFILTER-"s/x/x/"}\" $mingwPORT.patch \
+  | patch -t -N $PATCHFLAGS 
+
+  pref $mingwPORT.afterpatch
 fi
 
-if [ -f ${CURDIR}/mingwPORT.question ]
-then
-  if [ -f ${CURDIR}/mingwPORT.beforequestion ]
-  then
-    . ${CURDIR}/mingwPORT.beforequestion
-  fi
-
-  . ${CURDIR}/mingwPORT.question
-
-  if [ -f ${CURDIR}/mingwPORT.afterquestion ]
-  then
-    . ${CURDIR}/mingwPORT.afterquestion
-  fi
-fi
-
-if [ -f ${CURDIR}/mingwPORT.exports ]
-then
-  . ${CURDIR}/mingwPORT.exports
-fi
-
-if [ -f ${CURDIR}/mingwPORT.patch ]
-then
-  if [ -f ${CURDIR}/mingwPORT.beforepatch ]
-  then
-   . ${CURDIR}/mingwPORT.beforepatch ]
-  fi
-
-  patch -t $PATCHFLAGS < ${CURDIR}/mingwPORT.patch
-
-  if [ -f ${CURDIR}/mingwPORT.afterpatch ]
-  then
-   . ${CURDIR}/mingwPORT.afterpatch ]
-  fi
-fi
-
-if [ -f ${CURDIR}/mingwPORT.beforeconfigure ]
-then
-    . ${CURDIR}/mingwPORT.beforeconfigure
-fi
-if [ -z "$BUILDDIR" ]
-then
-  BUILDDIR=bld
-fi
-
-if [ -z "$SRCDIR" ]
-then
-  SRCDIR=`pwd`
-fi
-cd $SRCDIR
-ABSSRCDIR=`pwd`
-cd $CURDIR
+[ -z "$BUILDDIR" ] && BUILDDIR=bld
 
 if [ ! -d ${BUILDDIR} ]
 then
@@ -75,39 +56,12 @@ fi
 cd ${BUILDDIR}
 ABSBUILDDIR=`pwd`
 
-. ${CURDIR}/mingwPORT.configure
-
-if [ -f ${CURDIR}/mingwPORT.afterconfigure ]
-then
-    . ${CURDIR}/mingwPORT.afterconfigure
-fi
-
-if [ -f ${CURDIR}/mingwPORT.beforemake ]
-then
-  . ${CURDIR}/mingwPORT.beforemake
-fi
-
-. ${CURDIR}/mingwPORT.make
-
-if [ -f ${CURDIR}/mingwPORT.aftermake ]
-then
-  . ${CURDIR}/mingwPORT.aftermake
-fi
-
-if [ -f ${CURDIR}/mingwPORT.beforeinsall ]
-then
-  . ${CURDIR}/mingwPORT.beforeinstall
-fi
-
-. ${CURDIR}/mingwPORT.install
-
-if [ -f ${CURDIR}/mingwPORT.afterinstall ]
-then
-  . ${CURDIR}/mingwPORT.afterinstall
-fi
+require action configure
+require action make
+require action install
 
 cd ${CURDIR}
 
-. ${CURDIR}/mingwPORT.cleanup
+eval ${CLEANUP_ON_EXIT}
 
-# end of port
+# $RCSfile: mingwPORT.sh,v $: end of file: vim: ft=sh
