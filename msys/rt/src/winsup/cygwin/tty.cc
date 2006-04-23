@@ -71,18 +71,18 @@ tty_init (void)
 /* Create session's master tty */
 
 // FIXME: create_tty_master doesn't appear to be called at all.
-#if 0
+#if 1
 void __stdcall
 create_tty_master (int ttynum)
 {
   TRACETTY;
   tty_master = (fhandler_tty_master *)
     cygheap->fdtab.build_fhandler (-1, FH_TTYM, "/dev/ttym", ttynum);
-  /*
+#if 1
   if (tty_master->init (ttynum))
     api_fatal ("Can't create master tty");
   else
-  */
+#endif
     {
       /* Log utmp entry */
       struct utmp our_utmp;
@@ -305,9 +305,10 @@ tty_list::allocate_tty (int with_console)
 
   if (with_console)
     {
-      OutputDebugString ("<with_console>");
       termios_printf ("console %x associated with tty%d", console, freetty);
-      //create_tty_master (freetty);
+#if 1
+      create_tty_master (freetty);
+#endif
     }
   else
     termios_printf ("tty%d allocated", freetty);
@@ -405,8 +406,11 @@ tty::make_pipes (fhandler_pty_master *ptym)
   DWORD pipe_mode = PIPE_NOWAIT;
   if (!SetNamedPipeHandleState (to_slave, &pipe_mode, NULL, NULL))
     termios_printf ("can't set to_slave to non-blocking mode");
+#if 0
+  // Do these help? - Not that I have found.
   SetConsoleMode (from_slave, ENABLE_PROCESSED_OUTPUT | ENABLE_PROCESSED_INPUT);
   SetConsoleMode (to_slave, ENABLE_PROCESSED_OUTPUT | ENABLE_PROCESSED_INPUT);
+#endif
   ptym->set_io_handle (from_slave);
   ptym->set_output_handle (to_slave);
   return TRUE;
