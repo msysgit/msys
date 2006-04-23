@@ -1051,6 +1051,7 @@ stat_dev (DWORD devn, int unit, unsigned long ino, struct stat *buf)
 
 suffix_info stat_suffixes[] =
 {
+  suffix_info ("", 1),
   suffix_info (".exe", 1),
   suffix_info (NULL)
 };
@@ -1102,13 +1103,13 @@ stat_worker (const char *caller, const char *name, struct stat *buf)
 	&& dtype != DRIVE_NO_ROOT_DIR
 	&& dtype != DRIVE_UNKNOWN)))
     {
-      oret = fh.open (real_path, O_RDONLY | O_BINARY | O_DIROPEN, 0);
+      oret = fh.open (real_path, O_RDONLY | O_BINARY | O_DIROPEN | O_NOSYMLINK, 0);
       /* If we couldn't open the file, try a "query open" with no permissions.
 	 This will allow us to determine *some* things about the file, at least. */
       if (!oret)
 	{
 	  fh.set_query_open (TRUE);
-	  oret = fh.open (real_path, O_RDONLY | O_BINARY | O_DIROPEN, 0);
+	  oret = fh.open (real_path, O_RDONLY | O_BINARY | O_DIROPEN | O_NOSYMLINK, 0);
 	}
       /* Check a special case here. If ntsec is ON it happens
 	 that a process creates a file using mode 000 to disallow
@@ -1120,7 +1121,7 @@ stat_worker (const char *caller, const char *name, struct stat *buf)
 	  && !attribute && uid == myself->uid && gid == myself->gid)
 	{
 	  set_file_attribute (TRUE, real_path, 0400);
-	  oret = fh.open (real_path, O_RDONLY | O_BINARY | O_DIROPEN, 0);
+	  oret = fh.open (real_path, O_RDONLY | O_BINARY | O_DIROPEN | O_NOSYMLINK, 0);
 	  set_file_attribute (TRUE, real_path.get_win32 (), 0);
 	}
       if (oret)

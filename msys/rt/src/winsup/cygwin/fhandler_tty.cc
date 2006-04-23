@@ -43,8 +43,8 @@ fhandler_tty_master::fhandler_tty_master (const char *name, int unit) :
   hThread = NULL;
 }
 
-/*
- * This appears not to be needed.
+#if 1
+ // FIXME: This appears not to be needed.
 int
 fhandler_tty_master::init (int ntty)
 {
@@ -103,7 +103,7 @@ fhandler_tty_master::init (int ntty)
 
   return 0;
 }
-*/
+#endif
 
 #ifdef DEBUGGING
 static class mutex_stack
@@ -255,6 +255,10 @@ fhandler_pty_master::hit_eof ()
 int
 fhandler_pty_master::process_slave_output (char *buf, size_t len, int pktmode_on)
 {
+  // The code for this function was refactored to remove GOTO.  Other things
+  // may have also changed in trying to resolve the PTY issue still ongoing.
+  // Should we be badly broken, I suggest starting with the the original code
+  // and refactor again to remove the GOTO.
   TRACETTY;
   size_t rlen;
   //char outbuf[OUT_BUFFER_SIZE + 1];
@@ -695,7 +699,6 @@ fhandler_tty_slave::read (void *ptr, size_t len)
 	}
       if (!PeekNamedPipe (get_handle (), NULL, 0, NULL, &CharsInPipe, NULL))
 	{
-	  OutputDebugString ("PeekNamedPipe Failed");
 	  termios_printf ("PeekNamedPipe failed, %E");
 	  _raise (SIGHUP);
 	  CharsInPipe = 0;
@@ -706,7 +709,6 @@ fhandler_tty_slave::read (void *ptr, size_t len)
 	  termios_printf ("reading %d bytes (vtime %d)", readlen, vtime);
 	  if (ReadFile (get_handle (), buf, readlen, &CharsRead, NULL) == FALSE)
 	    {
-	      OutputDebugString ("ReadFile Failed");
 	      termios_printf ("read failed, %E");
 	      _raise (SIGHUP);
 	    }

@@ -151,7 +151,9 @@ int __stdcall
 set_console_state_for_spawn ()
 {
   TRACE_IN;
-  HANDLE hconin = CreateFileA ("CONIN$", GENERIC_READ, FILE_SHARE_WRITE | FILE_FLAG_NO_BUFFERING,
+  // FIXME: Does using FILE_FLAG_NO_BUFFERING help or hurt or do nothing?
+  HANDLE hconin = CreateFileA ("CONIN$", GENERIC_READ, FILE_SHARE_WRITE,
+  //HANDLE hconin = CreateFileA ("CONIN$", GENERIC_READ, FILE_SHARE_WRITE | FILE_FLAG_NO_BUFFERING,
 			  &sec_none_nih, OPEN_EXISTING,
 			  FILE_ATTRIBUTE_NORMAL, NULL);
 
@@ -162,7 +164,9 @@ set_console_state_for_spawn ()
   if (shared_console_info != NULL)
     {
 #     define tc shared_console_info	/* ACK.  Temporarily define for use in TTYSETF macro */
-      SetConsoleMode (hconin, ENABLE_PROCESSED_INPUT);
+      // FIXME: Does *not* using ENABLE_ECHO_INPUT | ENABLE_PROCESSED_INPUT help, hurt or do nothing?
+      SetConsoleMode (hconin, ENABLE_PROCESSED_INPUT | ENABLE_ECHO_INPUT | ENABLE_PROCESSED_INPUT);
+      //SetConsoleMode (hconin, ENABLE_PROCESSED_INPUT);
       TTYSETF (RSTCONS);
 #     undef tc
     }

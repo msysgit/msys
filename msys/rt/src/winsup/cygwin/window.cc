@@ -111,10 +111,18 @@ Winmain (VOID *)
       return FALSE;
     }
 
+#if 0
+  // I don't think these are needed.
+  ShowWindow (ourhwnd, SW_SHOW);
+  UpdateWindow (ourhwnd);
+#endif
+
   /* Start the message loop. */
 
   while (GetMessage (&msg, ourhwnd, 0, 0) == TRUE)
     {
+      // FIXME: Should we use DispatchMessage instead of TranslateMessage.
+      //TranslateMessage (&msg);
       DispatchMessage (&msg);
     }
 
