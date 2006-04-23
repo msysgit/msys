@@ -41,6 +41,7 @@ details. */
 static char *envblockarg = (char *)NULL;
 static suffix_info std_suffixes[] =
 {
+  suffix_info ("", 1),
   suffix_info (".exe", 1),
   suffix_info (NULL)
 };

@@ -1,3 +1,25 @@
+2006.04.23  Earnie Boyd <earnie@users.sf.net>
+
+	* fhandler_console.cc (set_console_state_for_spawn): Add FIXME.
+	* fhandler_tty.cc (fhandler_tty_master::init): Reinstate code
+	with FIXME.
+	(fhandler_pty_master::hit_eof): Add Comment.
+	(fhandler_tty_slave::read): Remove OutputDebugString.
+	* path.cc (msys_p2w): Add explicit typing.
+	(suffix_scan::): Reinstate previous code and conditionalize
+	with NEW_SUFFIX_METHOD being defined.
+	* path.h (suffix_scan::): Ditto.
+	* spawn.cc (std_suffixes): Readd suffix_info "".
+	* syscalls.cc (stat_suffixes): Ditto.
+	(stat_worker): Add O_NOSYMLINK flag to fh.open.
+	* tty.cc (create_tty_master): Reinstate.
+	(tty_list::allocate_tty): Remove OutputDebugString. Reinstate call of
+	create_tty_master.
+	(tty::make_pipes): Remove SetConsoleMode for from_slave and to_slave
+	with comment.
+	* window.cc (Winmain): Remove ShowWindow, UpdateWindow and reinstate
+	DispatchMessage instead of TranslateMessage with FIXME comment.
+
 2005.10.03  Earnie Boyd <earnie@users.sf.net>
 
 	* fork.cc (fork_parent): Add GENERIC_READ and FILE_SHARE_READ attributes

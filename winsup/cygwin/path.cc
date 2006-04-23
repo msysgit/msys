@@ -2376,6 +2376,7 @@ symlink (const char *topath, const char *frompath)
     return res;
 }
 
+#ifdef NEW_SUFFIX_METHOD
 char *
 suffix_scan::has (const char *in_path, const suffix_info *in_suffixes)
 {
@@ -2407,6 +2408,81 @@ suffix_scan::del (void) {
   *eopath = '\0';
 }
 
+#else // *not* NEW_SUFFIX_METHOD
+char *
+suffix_scan::has (const char *in_path, const suffix_info *in_suffixes)
+{
+  TRACE_IN;
+  nextstate = SCAN_BEG;
+  suffixes = suffixes_start = in_suffixes;
+
+  char *ext_here = strrchr (in_path, '.');
+  path = in_path;
+  eopath = strchr (path, '\0');
+
+  if (!ext_here)
+    goto noext;
+
+  if (suffixes)
+    {
+      /* Check if the extension matches a known extension */
+      for (const suffix_info *ex = in_suffixes; ex->name != NULL; ex++)
+	if (strcasematch (ext_here, ex->name))
+	  {
+	    nextstate = SCAN_JUSTCHECK;
+	    suffixes = NULL;	/* Has an extension so don't scan for one. */
+	    goto done;
+	  }
+    }
+
+ noext:
+  ext_here = eopath;
+
+ done:
+  return ext_here;
+}
+
+int
+suffix_scan::next ()
+{
+  TRACE_IN;
+  if (suffixes)
+    {
+      while (suffixes && suffixes->name)
+	if (!suffixes->addon)
+	  suffixes++;
+	else
+	  {
+	    strcpy (eopath, suffixes->name);
+	    suffixes++;
+	    return 1;
+	  }
+      suffixes = NULL;
+    }
+
+  switch (nextstate)
+    {
+    case SCAN_BEG:
+      suffixes = suffixes_start;
+      if (!suffixes)
+	nextstate = SCAN_JUSTCHECK;
+      else
+	{
+	  if (!*suffixes->name)
+	    suffixes++;
+	  nextstate = SCAN_DONE;
+	}
+      return 1;
+    case SCAN_JUSTCHECK:
+      nextstate = SCAN_DONE;
+      return 1;
+    default:
+      *eopath = '\0';
+      return 0;
+    }
+}
+#endif // *not* NEW_SUFFIX_METHOD
+
 /* Check if PATH is a symlink.  PATH must be a valid Win32 path name.
 
    If PATH is a symlink, put the value of the symlink--the file to
@@ -2424,6 +2500,7 @@ suffix_scan::del (void) {
    Return -1 on error, 0 if PATH is not a symlink, or the length
    stored into BUF if PATH is a symlink.  */
 
+#ifdef NEW_SUFFIX_METHOD
 int
 symlink_info::check (char *path, const suffix_info *suffixes, unsigned opt)
 {
@@ -2471,6 +2548,57 @@ symlink_info::check (char *path, const suffix_info *suffixes, unsigned opt)
 		  0, suffix.path, contents, pflags);
   return 0;
 }
+#else // *not* NEW_SUFFIX_METHOD
+int
+symlink_info::check (char *path, const suffix_info *suffixes, unsigned opt)
+{
+  TRACE_IN;
+  HANDLE h = (HANDLE)NULL;
+  int res = 0;
+  suffix_scan suffix;
+  contents[0] = '\0';
+
+  debug_printf("path: %s", path);
+
+  is_symlink = TRUE;
+  ext_here = suffix.has (path, suffixes);
+  extn = ext_here - path;
+
+  pflags &= ~PATH_SYMLINK;
+
+  case_clash = FALSE;
+
+  while (suffix.next ())
+    {
+      error = 0;
+      fileattr = GetFileAttributesA (suffix.path);
+      if (fileattr == (DWORD) -1)
+	{
+	  /* The GetFileAttributesA call can fail for reasons that don't
+	     matter, so we just return 0.  For example, getting the
+	     attributes of \\HOST will typically fail.  */
+	  debug_printf ("GetFileAttributesA (%s) failed", suffix.path);
+	  error = geterrno_from_win_error (GetLastError (), EACCES);
+	  continue;
+	}
+
+
+      ext_tacked_on = !!*ext_here;
+
+      is_symlink = FALSE;
+      syscall_printf ("not a symlink");
+      res = 0;
+      break;
+    }
+
+  if (h != INVALID_HANDLE_VALUE)
+      CloseHandle(h);
+  syscall_printf ("%d = symlink.check (%s, %p) (%p)",
+		  res, suffix.path, contents, pflags);
+  return res;
+}
+
+#endif // *not* NEW_SUFFIX_METHOD
 
 /* Check the correct case of the last path component (given in DOS style).
    Adjust the case in this->path if pcheck_case == PCHECK_ADJUST or return
@@ -3160,7 +3288,7 @@ msys_p2w (char const * const path)
 	      retpathcpy ("\"");
 	      char *tpath = strchr(&spath[1], '"');
 	      if (tpath)
-		*tpath = NULL;
+		*tpath = (char)NULL;
 	      char *swin32_path = msys_p2w (&spath[1]);
 	      if (swin32_path == &spath[1])
 		{
@@ -3185,7 +3313,7 @@ msys_p2w (char const * const path)
 	      retpathcpy ("'");
 	      char *tpath = strchr(&spath[1], '\'');
 	      if (tpath)
-		*tpath = NULL;
+		*tpath = (char)NULL;
 	      char *swin32_path = msys_p2w (&spath[1]);
 	      if (swin32_path == &spath[1])
 		{
