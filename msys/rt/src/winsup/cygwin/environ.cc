@@ -7,6 +7,12 @@ This software is a copyrighted work licensed under the terms of the
 Cygwin license.  Please consult the file "CYGWIN_LICENSE" for
 details. */
 
+#ifndef MUNGEPREFIX
+#define MUNGEPREFIX 0 // If not zero will cause environment variable named
+		      // "prefix" to be set to its win32 absolute value by 
+		      // default.
+#endif
+
 #include "winsup.h"
 #include <errno.h>
 #include <stdlib.h>
@@ -222,8 +228,10 @@ _addenv (const char *name, const char *value, int overwrite)
   int offset;
   char *p;
 
+#if MUNGEPREFIX
   if (!strcmp (name, "prefix"))
     value = msys_p2w (value);
+#endif
   unsigned int valuelen = strlen (value);
   if ((p = my_findenv (name, &offset)))
     {				/* Already exists. */
@@ -738,8 +746,10 @@ environ_init (char **envp, int envc)
 	sawTERM = 1;
       if (*newp == 'C' && strncmp (newp, "CYGWIN=", sizeof("CYGWIN=") - 1) == 0)
 	parse_options (newp + sizeof("CYGWIN=") - 1);
+#if MUNGEPREFIX
       if (*newp == 'p' && strncmp (newp, "prefix=", 6) == 0)
 	_addenv ("prefix", newp + 6, 1);
+#endif
       if (*eq && conv_start_chars[(unsigned char)envp[i][0]])
 	posify (envp + i, *++eq ? eq : --eq);
       debug_printf ("%p: %s", envp[i], envp[i]);
