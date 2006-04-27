@@ -1,3 +1,12 @@
+2006.04.27  Earnie Boyd <earnie@users.sf.net>
+
+	* environ.cc: Add MUNGEPREFIX preprocessor variable.
+	(_addenv): Use MUNGEPREFIX to conditionally add auto conversion of the
+	"prefix" environment variable.
+	(environ_init): Ditto.
+	* fhandler.cc (fhandler_disk_file:open): Revert 2005.07.05
+	Max T. Woodbury change.
+
 2006.04.23  Earnie Boyd <earnie@users.sf.net>
 
 	* fhandler_console.cc (set_console_state_for_spawn): Add FIXME.
