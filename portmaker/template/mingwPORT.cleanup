@@ -1,14 +1,19 @@
 # mingwPORT.cleanup
 # Required.  Used to clean up after the build process.
 
-if [ $RMDIR == NORMDIR ]
+# First, expunge all temporary directories scheduled for removal.
+
+if [ -n "$RMDIR" ]
 then
-  cd ${BUILDDIR}
-  make distclean
-  cd ${CURDIR}
-else
-  rm -rf ${RMDIR}
+  for dir in $RMDIR
+  do
+    eval rm -rf \"`pathexp "$dir"`\"
+  done
 fi
+
+# If $BUILDDIR wasn't removed, restore it to "distclean" state.
+
+cd "$BUILDDIR" >/dev/null 2>&1 && make distclean
 
 cd ${CURDIR}
 

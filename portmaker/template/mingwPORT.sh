@@ -24,16 +24,19 @@ pref "/usr/lib/mingwPORT/mingwPORT.site"
 pref "/usr/local/lib/mingwPORT/mingwPORT.site"
 pref "$HOME/.mingwPORT/mingwPORT.site"
 
+# Set indicator to show we are "on track" for successful completion;
+# (failing operations may reset it, to suppress pointless messages).
+
+ONTRACK=true
+
+# Get user's configuration preferences.
+
 perform action question
 
 cd ${CURDIR}
+$ONTRACK && pref "$mingwPORT.exports"
 
-pref "$mingwPORT.exports"
-
-[ -z "$SRCDIR" ] && SRCDIR=`pwd` || eval SRCDIR=\"$SRCDIR\"
-ABSSRCDIR=`cd $SRCDIR >/dev/null 2>&1; pwd`
-
-if [ -f $mingwPORT.patch ]
+if $ONTRACK && [ -f $mingwPORT.patch ]
 then
   pref $mingwPORT.beforepatch
 
@@ -43,22 +46,18 @@ then
   pref $mingwPORT.afterpatch
 fi
 
-[ -z "$BUILDDIR" ] && BUILDDIR=bld
+BUILDDIR=`abspath "${BUILDDIR:-bld}"`
 
 if [ ! -d ${BUILDDIR} ]
 then
-  mkdir ${BUILDDIR}
-  RMDIR=${BUILDDIR}
-else
-  RMDIR='NORMDIR'
+  mkdir -p ${BUILDDIR} && RMDIR=`echo $RMDIR; pathenc "${BUILDDIR}"`
 fi
 
 cd ${BUILDDIR}
-ABSBUILDDIR=`pwd`
 
-require action configure
-require action make
-require action install
+$ONTRACK && require action configure
+$ONTRACK && require action make
+$ONTRACK && require action install
 
 cd ${CURDIR}
 

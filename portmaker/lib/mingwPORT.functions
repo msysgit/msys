@@ -28,14 +28,51 @@ isyes()
   esac
 }
 
+abspath()
+# usage: PathNameVariable=`abspath "Relative/PathName"`
+#
+# Convert the path specified in "Relative/PathName"
+# to an absolute path name, in a format appropriate to the host,
+# with included backslashes normalised to the forward slash form,
+# even if the referenced entity does not actually exist.
+{
+  local path=`echo $1 | tr '\\\\' /`
+  local prefix=$path
+
+  until test -d "$prefix"
+  do
+    prefix=`dirname $prefix`
+  done
+  echo $path | sed s'?^'"$prefix"'?'"`cd $prefix && pwd`"'?'
+}
+
 win32path()
-# usage: Win32PathName=`win32path "/MSYS/PathName"`
+# usage: Win32PathNameVariable=`win32path "/MSYS/PathName"`
 #
 # Determine the native Win32 path name equivalent for the POSIX style
 # "/MSYS/PathName";  (CAVEAT:  the specified "/MSYS/PathName" *must*
 # reference an existing *directory* on the MSYS or POSIX host).
 {
   2>/dev/null cd $1; pwd -W
+}
+
+pathenc()
+# usage: EncodedPathVariable=`pathenc "Some/Path Name/to/Encode"`
+#
+# Encode "Some/Path Name/to/Encode", which may contain spaces, in
+# a form which may be interpreted by the shell, without any argument
+# splitting occurring at the embedded spaces.
+{
+  echo $1 | sed -e s'/%/%24/'g -e s'/ /%20/'g
+}
+
+pathexp()
+# usage: pathexp "$EncodedPathVariable"
+#
+# Restore the original path name stored in "$EncodedPathVariable",
+# assuming that it has been encoded by the pathenc function.
+{
+  echo $1 | sed -e s'/%20/ /'g -e s'/%24/%/'g
 }
 
 pref()
@@ -109,6 +146,15 @@ action()
   pref "$mingwPORT.after$@"
 }
 
+complain()
+# usage: complain ModuleName "Diagnostic Message"
+#
+# Display a message of the form `mingwPORT.ModuleName: Diagnostic Message',
+# then continue mingwPORT execution.
+{
+  echo >&2 "mingwPORT.$1: $2"
+}
+
 die()
 # usage: die ModuleName "Message Saying Why"
 #
@@ -118,7 +164,7 @@ die()
 # directly from any sourced "mingwPORT.ModuleName" file, to diagnose
 # any fatal condition.
 {
-  echo >&2 "$CMD:mingwPORT.$1: $2"
+  complain "$@"
   exit 1
 }
 

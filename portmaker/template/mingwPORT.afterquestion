@@ -1,23 +1,91 @@
 # mingwPORT.afterquestion
 # Use this file to add script functionality after executing mingwPORT.question.
 
-if (isyes $DOWNLOAD)
+chkpath()
+# usage: chkpath "PathName" KeepOnCompletion [OnError]
+#
+# Required to confirm that ARCHIVEDIR and SRCDIR exist,
+# or otherwise, to give the user the opportunity to create them,
+# so we don't crash because expected directories don't exist.
+#
+# If the directory specified by "PathName" is created here,
+# then add it to the list specified in RMDIR, so it can be removed
+# again, when we are finished, unless otherwise specified by the
+# user; KeepOnCompletion is "Yes"|"No", specifying the default
+# choice offered, or "always" to keep without choice.
+#
+# Invoke the function specified by "OnError" (default=die),
+# if "PathName" does not exist and is not created.
+{
+  REPLY=''
+  test -d $1 || ask "
+Directory '$1' does not exist;
+would you like to create it now?" "Yes" REPLY
+  if isyes $REPLY
+  then 
+    mkdir -p $1 || ONTRACK=false
+    if $ONTRACK
+    then
+      echo "
+Directory '$1' has been created."
+      case $2$CLEANUP_ON_EXIT in always* | $2:*) ;; *) ask "
+Unless you choose to keep it, this directory will be deleted when this
+mingwPORT completes; if you do choose to keep it, other mingwPORTs may
+be able to use it, without requiring you to confirm this again.
+
+Would you like to keep '$1' on mingwPORT completion?" "$2" REPLY
+	isyes $REPLY || RMDIR=`echo $RMDIR; pathenc "$1"`
+	;;
+      esac
+    else
+      ${3-die} afterquestion "'$1': $MSG_NOMKDIR"
+    fi
+  elif test -n "$REPLY"
+  then
+    complain afterquestion "'$1': $MSG_NOMKDIR"
+    ${3-die} afterquestion " $MSG_REFUSED"
+  fi
+}
+
+# The installation directory must always exist,
+# and must always remain in existence after mingwPORT completion.
+
+PREFIX=`eval abspath \"$PREFIX\"`; chkpath "$PREFIX" always
+
+# We use $RMDIR to keep track of any working directories we need to create,
+# so we can remove them again later; initialise it as an empty list.
+
+RMDIR=""
+
+# The working source directory need not pre-exist, but its parent must;
+# the mingwPORT default may not do so, so give the user a chance to create it,
+# establishing its location using an absolute path.
+
+SRCDIR=`eval abspath \"$SRCDIR\"`
+SRCROOT=`dirname "$SRCDIR"`; chkpath "$SRCROOT" Yes
+
+# If the user requested an automated download,
+# then do likewise for the path in which the archive file will be placed,
+# and invoke "wget" to fetch the archive file.
+
+if isyes $DOWNLOAD
 then
-  cd $ARCHIVEPATH && wget $DOWNLOADURI/$ARCHIVEFILE
-  UNARCHIVE=yes
+  ARCHIVEPATH=`eval abspath \"$ARCHIVEPATH\"`
+  chkpath "$ARCHIVEPATH" No complain
+  cd $ARCHIVEPATH && wget $DOWNLOADURI/$ARCHIVEFILE || ONTRACK=false
+  UNARCHIVE=yes 
 fi
-if (isyes $UNARCHIVE)
-then
-  ARCHIVE=$ARCHIVEPATH/$ARCHIVEFILE
-fi
-if [ ! -z "$ARCHIVE" ]
+isyes $UNARCHIVE && ARCHIVE=$ARCHIVEPATH/$ARCHIVEFILE
+if $ONTRACK && test -n "$ARCHIVE"
 then
   case ${ARCHIVETYPE} in
-  tar.gz) TARFLAG=zxvf;;
-  tgz) TARFLAG=zxvf;;
-  tar.bz2) TARFLAG=jxvf;;
-  tbz2) TARFLAG=jxvf;;
-  zip) TARFLAG=zip;;
+    tar.gz)  TARFLAG=zxvf ;;
+    tgz)     TARFLAG=zxvf ;;
+    tar.bz2) TARFLAG=jxvf ;;
+    tbz2)    TARFLAG=jxvf ;;
+    # zip)   TARFLAG=zip  ;;
   esac
-  cd $SRCDIR/.. && tar $TARFLAG $ARCHIVE | tee ${ARCHIVE}.log
+  cd "$SRCROOT" && tar $TARFLAG "$ARCHIVE" | tee "${ARCHIVE}.log"
 fi
+
+# $RCSfile: mingwPORT.afterquestion,v $: end of file: vim: ft=sh
