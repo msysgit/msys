@@ -35,7 +35,7 @@ ${StrTok}
 !insertmacro MUI_PAGE_WELCOME
 
 
-Page custom ChooseMirrorPage
+Page custom DownLoadOrInstall
 
 !define MUI_PAGE_CUSTOMFUNCTION_PRE AbortPage
 !insertmacro MUI_PAGE_LICENSE "MinGW_LICENSE.rtf"
@@ -343,6 +343,8 @@ loop:
   Abort
 launch:
 
+  call GetInitialMirrors
+  
   StrCpy $R0 $WINDIR 1
   StrCpy $INSTDIR $R0:\MinGW
 
@@ -411,7 +413,6 @@ Finish:
 
   StrCpy $ChooseMessage "Choose the MinGW components you would like to update."
 
-  ReadINIStr $MirrorURL $INSTDIR\installed.ini "settings"  "mirror"
   ReadINIStr $Package $INSTDIR\installed.ini "settings"  "installtype"
 
   InstTypeSetText 0 ""
@@ -459,12 +460,12 @@ Function UpgradeMinGWUpdate
   ReadINIStr $R1 "$EXEDIR\mingw.ini" "mingw.ini" "Filename"
 
   DetailPrint "Downloading new version of MinGWUpdater..."
-  inetc::get $R0 "$EXEDIR\$R1" /END
+  inetc::get $R0/$R1 "$EXEDIR\$R1" /END
   Pop $R0
   StrCmp $R0 "OK" success
     ; Failure
     SetDetailsView show
-    DetailPrint "Download failed: $0"
+    DetailPrint "Download failed: $R0"
     Abort
 
   success:
@@ -576,16 +577,9 @@ var MirrorList
 var CurrentMirror
 
 ;-----------------------------------------------------------------------------------------------------------------------
-Function DownloadIfNeeded
+Function DownloadFromMirror
 ;-----------------------------------------------------------------------------------------------------------------------
-  pop $FileName  ; Filename
-  pop $section  ; section
-
-  
-  SectionGetFlags $section $0
-  IntOp $0 $0 & ${SF_SELECTED}
-  IntCmp $0 ${SF_SELECTED} +1 SkipDL
-
+  pop $FileName
   ifFileExists $EXEDIR\$FileName FileFound
 
   detailprint "downloading $Filename"
@@ -606,9 +600,8 @@ FileFound:
   pop $0
   StrCmp $0 "OK" downloadOK
 
-;parsemirror:
   sfhelper::getMirrors $EXEDIR\$FileName
-  pop $0
+  pop $MirrorList
 
   goto selectmirror
 
@@ -635,9 +628,26 @@ selectmirror:
   goto downloadFile
 
 downloadOK:
+
+FunctionEnd
+
+var Name
+
+;-----------------------------------------------------------------------------------------------------------------------
+Function DownloadIfNeeded
+;-----------------------------------------------------------------------------------------------------------------------
+  pop $Name  ; Filename
+  pop $section  ; section
+
+  
+  SectionGetFlags $section $0
+  IntOp $0 $0 & ${SF_SELECTED}
+  IntCmp $0 ${SF_SELECTED} +1 SkipDL
+
+  push $Name
+  call DownloadFromMirror
+
 SkipDL:
-
-
 FunctionEnd
 
 !define packages "previous|current|candidate"
@@ -792,7 +802,7 @@ installing:
 FunctionEnd
 
 ;-----------------------------------------------------------------------------------------------------------------------
-Function ChooseMirrorPage
+Function GetInitialMirrors
 ;-----------------------------------------------------------------------------------------------------------------------
   ; obtain list of mirrors from sourceforge by page scraping
   inetc::get  "http://prdownloads.sourceforge.net/mingw/${PRODUCT_NAME}-${PRODUCT_VERSION}.exe?download" "$EXEDIR\mirrorlist" /END
@@ -804,6 +814,12 @@ Function ChooseMirrorPage
 
   StrCpy $MirrorURL "http://$MirrorHost.dl.sourceforge.net/sourceforge/mingw"
   StrCpy $CurrentMirror 0
+
+FunctionEnd
+
+;-----------------------------------------------------------------------------------------------------------------------
+Function DownloadOrInstall
+;-----------------------------------------------------------------------------------------------------------------------
 
   IntCmp $Updating 1 update +1
 
