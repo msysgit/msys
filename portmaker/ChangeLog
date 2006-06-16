@@ -1,3 +1,57 @@
+2006-06-16  Keith Marshall  <keithmarshall@users.sf.net>
+
+	Autoconfiscate.
+
+	* src/version.sh: Deleted; replaced by...
+	* version.m4: ...this new file.
+
+	* configure.ac, aclocal.m4: New files.
+	* configure: New file; generated.
+
+	* Makefile: Renamed to...
+	* Makefile.in: ...this.
+	(config.mak): Reference removed.
+	(PREFIX, PACKAGE, VERSION): Define as autoconf substitutions.
+	(SUBDIRS): Don't need `-f Makefile' in make rule; removed.
+	  Don't pass `PREFIX', 'PACKAGE' and 'VERSION' explicitly; let
+	  configure do it implicitly.
+
+	* config.mak: Redundant file; deleted.
+
+	* src/Makefile: Renamed to...
+	* src/Makefile.in: ...this.
+	(version.sh): All references removed.
+	(portmaker): Make it depend on `Makefile' for version change;
+	  adjust make rule accordingly, and also to accommodate `VPATH'.
+	(PREFIX, PACKAGE, VERSION): Define as autoconf substitutions.
+	(srcdir, prefix, exec_prefix, bindir): Likewise.
+	(prefix): Alias to `PREFIX'.
+	(VPATH): Define.
+
+	* lib/Makefile: Renamed to...
+	* lib/Makefile.in: ...this.
+	(PREFIX, PACKAGE, VERSION): Define as autoconf substitutions.
+	(srcdir, exec_prefix, bindir): Likewise.
+	(libdir): Derive likewise.
+	(prefix): Alias to `PREFIX'.
+	(VPATH): Define.
+
+	* doc/Makefile: Renamed to...
+	* doc/Makefile.in: ...this.
+	(PREFIX, PACKAGE, VERSION): Define as autoconf substitutions.
+	(srcdir, datadir): Likewise.
+	(docdir): Derive from `datadir'.
+	(prefix): Alias to `PREFIX'.
+	(VPATH): Define.
+
+	* template/Makefile: Renamed to...
+	* template/Makefile.in: ...this.
+	(PREFIX, PACKAGE, VERSION): Define as autoconf substitutions.
+	(srcdir, datadir): Likewise.
+	(templatedir): Derive from `datadir'.
+	(prefix): Alias to `PREFIX'.
+	(VPATH): Define.
+
 2006-06-09  Keith Marshall  <keithmarshall@users.sf.net>
 
 	Add validation, and creation, of working directories, addressing

@@ -1,0 +1,23 @@
+# Top level Makefile.in for MinGW portmaker
+# Processed by `configure' to create a working Makefile.
+
+PACKAGE = @PACKAGE_NAME@
+VERSION = @PACKAGE_VERSION@
+
+PREFIX  = @prefix@
+SUBDIRS = src lib template doc
+
+all: $(SUBDIRS)
+	$(MAKE) $^ REDIRECT=$@
+
+install: $(SUBDIRS)
+	$(MAKE) $^ REDIRECT=$@
+
+clean: $(SUBDIRS)
+	$(MAKE) $^ REDIRECT=$@
+
+.PHONY: $(SUBDIRS)
+$(SUBDIRS):
+	$(MAKE) -C $@ $(REDIRECT)
+
+# $RCSfile: Makefile.in,v $: end of file

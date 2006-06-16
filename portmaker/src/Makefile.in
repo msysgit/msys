@@ -1,0 +1,39 @@
+# Makefile.in for MinGW portmaker (src subdirectory)
+# Processed by `configure' to create a working Makefile.
+
+PACKAGE = @PACKAGE_NAME@
+VERSION = @PACKAGE_VERSION@
+
+# Autoconf wants us to use ${prefix} and ${exec_prefix},
+# (as specified in the GNU Coding Standards),
+# but some users will prefer ${PREFIX},
+# so, make them match.
+
+PREFIX = @prefix@
+exec_prefix = @exec_prefix@
+prefix = ${PREFIX}
+
+srcdir = @srcdir@
+bindir = @bindir@
+VPATH  = ${srcdir}
+
+bin_PROGRAMS = portmaker
+
+portmaker_SOURCES = \
+	portmaker.sh
+
+all: $(bin_PROGRAMS)
+
+install: $(bin_PROGRAMS)
+	mkdir -p $(bindir)
+	cp -pf $^ $(bindir)
+
+clean: $(bin_PROGRAMS)
+	rm -f $^
+
+portmaker: portmaker.sh Makefile
+	sed -e "s?@VERSION@?$(VERSION)?g" -e "s?@PREFIX@?$(PREFIX)?g" \
+	  ${srcdir}/portmaker.sh > $@
+	chmod 755 $@
+
+# $RCSfile: Makefile.in,v $: end of file

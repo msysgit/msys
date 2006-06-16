@@ -1,0 +1,36 @@
+# Makefile.in for MinGW portmaker (lib subdirectory)
+# Processed by `configure' to create a working Makefile.
+
+PACKAGE = @PACKAGE_NAME@
+VERSION = @PACKAGE_VERSION@
+
+# Autoconf wants us to use ${prefix} and ${exec_prefix},
+# (as specified in the GNU Coding Standards),
+# but some users will prefer ${PREFIX},
+# so, make them match.
+
+PREFIX = @prefix@
+exec_prefix = @exec_prefix@
+prefix = ${PREFIX}
+
+srcdir = @srcdir@
+bindir = @bindir@
+VPATH  = ${srcdir}
+
+libdir = @libdir@/$(PACKAGE)-$(VERSION)
+
+libmingwPORT_SOURCES = mingwPORT.functions
+
+all: stamp-lib
+
+stamp-lib:
+	touch stamp-lib
+
+install: $(libmingwPORT_SOURCES)
+	mkdir -p $(libdir)
+	cp -p $^ $(libdir)
+
+clean:
+	rm -f stamp-lib
+
+# $RCSfile: Makefile.in,v $: end of file
