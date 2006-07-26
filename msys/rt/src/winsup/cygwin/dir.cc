@@ -83,7 +83,7 @@ opendir (const char *dirname)
   DIR *res = 0;
   struct stat statbuf;
 
-  path_conv real_dirname (dirname, PC_SYM_NOFOLLOW | PC_FULL);
+  path_conv real_dirname (dirname, PC_SYM_FOLLOW | PC_FULL);
 
   if (real_dirname.error)
     {
