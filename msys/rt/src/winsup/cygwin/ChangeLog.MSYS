@@ -1,3 +1,22 @@
+2006.07.26  Earnie Boyd <earnie@users.sf.net>
+
+	* dir.cc (opendir): Revert PC_SYM_NOFOLLOW change.
+	* fhandler.cc (fhandler_disk_file::open): Ditto.
+	* path.cc (chdir): Ditto.
+	(cygwin_conv_to_full_win32_path): Ditto.
+	(realpath): Ditto.
+	* sec_acl.cc (acl_worker): Ditto.
+	* spawn.cc (perhaps_suffix): Ditto.
+	* syscalls.cc (chown): Ditto.
+	(fchown): Ditto.
+	(stat_worker): Ditto.  Also revert nofollow change.
+	(_stat): Revert nofollow change.
+	(_lstat): Ditto.
+	(pathconf): Revert PC_SYM_NOFOLLOW change.
+	(statfs): Ditto.
+	(chroot): Ditto.
+	* winsup.h (stat_worker): Revert nofollow change.
+	
 2006.04.27  Earnie Boyd <earnie@users.sf.net>
 
 	* environ.cc: Add MUNGEPREFIX preprocessor variable.

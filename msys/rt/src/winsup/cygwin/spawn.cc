@@ -61,7 +61,7 @@ perhaps_suffix (const char *prog, path_conv &buf)
   char *ext;
 
   debug_printf ("prog '%s'", prog);
-  buf.check (prog, PC_SYM_NOFOLLOW | PC_FULL, std_suffixes);
+  buf.check (prog, PC_SYM_FOLLOW | PC_FULL, std_suffixes);
 
   if (buf.file_attributes () & FILE_ATTRIBUTE_DIRECTORY)
     ext = NULL;
