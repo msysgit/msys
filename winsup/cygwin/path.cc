@@ -2805,7 +2805,7 @@ chdir (const char *in_dir)
 
   /* Convert path.  First argument ensures that we don't check for NULL/empty/invalid
      again. */
-  path_conv path (PC_NONULLEMPTY, dir, PC_FULL | PC_SYM_NOFOLLOW);
+  path_conv path (PC_NONULLEMPTY, dir, PC_FULL | PC_SYM_FOLLOW);
   if (path.error)
     {
       set_errno (path.error);
@@ -3384,7 +3384,7 @@ int
 cygwin_conv_to_full_win32_path (const char *path, char *win32_path)
 {
   TRACE_IN;
-  path_conv p (path, PC_SYM_NOFOLLOW | PC_FULL);
+  path_conv p (path, PC_SYM_FOLLOW | PC_FULL);
   if (p.error)
     {
       set_errno (p.error);
@@ -3428,7 +3428,7 @@ realpath (const char *path, char *resolved)
   TRACE_IN;
   int err;
 
-  path_conv real_path (path, PC_SYM_NOFOLLOW | PC_FULL);
+  path_conv real_path (path, PC_SYM_FOLLOW | PC_FULL);
 
   if (real_path.error)
     err = real_path.error;
