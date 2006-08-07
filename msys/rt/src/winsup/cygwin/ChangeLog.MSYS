@@ -1,3 +1,11 @@
+2006.08.07  Earnie Boyd <earnie@users.sf.net>
+
+	* ismsys.cc (IsMsys): Add FILE_SHARE_DELETE to sharing permissions.
+	Add a missing CloseHandle.
+	* syscalls.cc (_unlink): Remove unneeded code based on current
+	information from MSDN.  Add usleep and FIXME to allow system utilities
+	and rm a better chance to interact.
+
 2006.07.26  Earnie Boyd <earnie@users.sf.net>
 
 	* dir.cc (opendir): Revert PC_SYM_NOFOLLOW change.
