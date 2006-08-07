@@ -123,32 +123,16 @@ _unlink (const char *ourname)
       goto done;
     }
 
-  /* Check for shortcut as symlink condition. */
-  if (atts & FILE_ATTRIBUTE_READONLY)
-    {
-      int len = strlen (win32_name);
-      if (len > 4 && strcasematch (win32_name + len - 4, ".lnk"))
-	SetFileAttributes (win32_name, atts & ~FILE_ATTRIBUTE_READONLY);
-    }
-
   DWORD lasterr;
   lasterr = 0;
-  for (int i = 0; i < 2; i++)
+  (void) chmod (win32_name, 0777);
+  if (DeleteFile (win32_name))
     {
-      if (DeleteFile (win32_name))
-	{
-	  syscall_printf ("DeleteFile succeeded");
-	  goto ok;
-	}
-
-      lasterr = GetLastError ();
-      if (i || lasterr != ERROR_ACCESS_DENIED || win32_name.issymlink ())
-	break;		/* Couldn't delete it. */
-
-      /* if access denied, chmod to be writable, in case it is not,
-	 and try again */
-      (void) chmod (win32_name, 0777);
+      syscall_printf ("DeleteFile succeeded");
+      goto ok;
     }
+
+  lasterr = GetLastError ();
 
   /* Windows 9x seems to report ERROR_ACCESS_DENIED rather than sharing
      violation.  So, set lasterr to ERROR_SHARING_VIOLATION in this case
@@ -157,53 +141,8 @@ _unlink (const char *ourname)
       && !win32_name.isremote ())
     lasterr = ERROR_SHARING_VIOLATION;
 
-  /* Tried to delete file by normal DeleteFile and by resetting protection
-     and then deleting.  That didn't work.
-
-     There are two possible reasons for this:  1) The file may be opened and
-     Windows is not allowing it to be deleted, or 2) We may not have permissions
-     to delete the file.
-
-     So, first assume that it may be 1) and try to remove the file using the
-     Windows FILE_FLAG_DELETE_ON_CLOSE semantics.  This seems to work only
-     spottily on Windows 9x/Me but it does seem to work reliably on NT as
-     long as the file doesn't exist on a remote drive. */
-
-  bool delete_on_close_ok;
-
-  delete_on_close_ok  = !win32_name.isremote () && iswinnt;
-
-  /* Attempt to use "delete on close" semantics to handle removing
-     a file which may be open. */
-  HANDLE h;
-  h = CreateFile (win32_name, GENERIC_READ, FILE_SHARE_READ, &sec_none_nih,
-		  OPEN_EXISTING, FILE_FLAG_DELETE_ON_CLOSE, 0);
-  if (h == INVALID_HANDLE_VALUE)
-    {
-      if (GetLastError () == ERROR_FILE_NOT_FOUND)
-	goto ok;
-    }
-  else
-    {
-      CloseHandle (h);
-      syscall_printf ("CreateFile/CloseHandle succeeded");
-      /* Everything is fine if the file has disappeared or if we know that the
-	 FILE_FLAG_DELETE_ON_CLOSE will eventually work. */
-      if (GetFileAttributes (win32_name) == (DWORD) -1 || delete_on_close_ok)
-	goto ok;	/* The file is either gone already or will eventually be
-			   deleted by the OS. */
-    }
-
-  /* FILE_FLAGS_DELETE_ON_CLOSE was a bust.  If this is a sharing
-     violation, then queue the file for deletion when the process
-     exits.  Otherwise, punt. */
-  if (lasterr != ERROR_SHARING_VIOLATION)
-    goto err;
-
   syscall_printf ("couldn't delete file, err %d", lasterr);
-
-  /* Add file to the "to be deleted" queue. */
-  cygwin_shared->delqueue.queue_file (win32_name);
+  goto err;
 
  /* Success condition. */
  ok:
@@ -216,6 +155,18 @@ _unlink (const char *ourname)
   res = -1;
 
  done:
+  /* FIXME:
+   * This usleep is required to help eliminate the nasty behaviour of the OS
+   * having the file open when during the unlink process.  The file is marked
+   * for delete on close which causes access violation when opening the file
+   * again.  The usleep is an attempt to slow down the return to the calling
+   * function because the rm program will stat the file again to determine if
+   * the ulink failed or not and raise an error.  The fix will be to cause the
+   * stat function to return a non existant file error if the file is marked
+   * for deletion and to cause the creation of a file with the same name to
+   * rename the file marked for deletion if it still exists.
+   */
+  usleep(640);
   syscall_printf ("%d = unlink (%s)", res, ourname);
   return res;
 }
