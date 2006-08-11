@@ -1,6 +1,6 @@
 /* findcmd.c -- Functions to search for commands by name. */
 
-/* Copyright (C) 1997 Free Software Foundation, Inc.
+/* Copyright (C) 1997, 2005 Free Software Foundation, Inc.
 
    This file is part of GNU Bash, the Bourne Again SHell.
 
@@ -94,7 +94,7 @@ file_status (name)
 
   r = FS_EXISTS;
 
-#if defined (AFS)
+#if defined (AFS) || __CYGWIN__
   /* We have to use access(2) to determine access because AFS does not
      support Unix file system semantics.  This may produce wrong
      answers for non-AFS files when ruid != euid.  I hate AFS. */
@@ -379,9 +379,9 @@ user_command_matches (name, flags, state)
 	  name_len = strlen (name);
 	  file_to_lose_on = (char *)NULL;
 	  dot_found_in_search = 0;
-      	  stat (".", &dotinfo);
+          stat (".", &dotinfo);
 	  path_list = get_string_value ("PATH");
-      	  path_index = 0;
+          path_index = 0;
 	}
 
       while (path_list && path_list[path_index])

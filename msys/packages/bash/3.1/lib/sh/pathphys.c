@@ -1,6 +1,6 @@
 /* pathphys.c -- Return pathname with all symlinks expanded. */
 
-/* Copyright (C) 2000 Free Software Foundation, Inc.
+/* Copyright (C) 2000, 2005 Free Software Foundation, Inc.
 
    This file is part of GNU Bash, the Bourne Again SHell.
 
@@ -35,7 +35,7 @@
 #include <stdio.h>
 #include <chartypes.h>
 #include <errno.h>
-
+#include <stdlib.h>
 #include "shell.h"
 
 #if !defined (MAXSYMLINKS)
@@ -76,6 +76,10 @@ sh_physpath (path, flags)
      char *path;
      int flags;
 {
+#if __CYGWIN__
+  /* realpath does this right without all the hassle */
+  return realpath (path, NULL);
+#else
   char tbuf[PATH_MAX+1], linkbuf[PATH_MAX+1];
   char *result, *p, *q, *qsave, *qbase, *workpath;
   int double_slash_path, linklen, nlink;
@@ -249,6 +253,7 @@ error:
     }
 
   return (result);
+#endif /* ! __CYGWIN__ */
 }
 
 char *

@@ -1,6 +1,6 @@
 /* pathcanon.c -- Canonicalize and manipulate pathnames. */
 
-/* Copyright (C) 2000 Free Software Foundation, Inc.
+/* Copyright (C) 2000, 2005 Free Software Foundation, Inc.
 
    This file is part of GNU Bash, the Bourne Again SHell.
 
@@ -194,24 +194,24 @@ sh_canonpath (path, flags)
 	    *q++ = DIRSEP;
 	  while (*p && (ISDIRSEP(*p) == 0))
 	    *q++ = *p++;
-	  /* Check here for a valid directory with _path_isdir. */
-	  if (flags & PATH_CHECKEXISTS)
-	    {
-	      char c;
-
-	      /* Make sure what we have so far corresponds to a valid
-		 path before we chop some of it off. */
-	      c = *q;
-	      *q = '\0';
-	      if (_path_isdir (result) == 0)
-		{
-		  if ((flags & PATH_NOALLOC) == 0)
-		    free (result);
-		  return ((char *)NULL);
-		}
-	      *q = c;
-	    }
 	}
+    }
+  /* Check here for a valid directory with _path_isdir. */
+  if (flags & PATH_CHECKEXISTS)
+    {
+      char c;
+
+      /* Make sure what we have so far corresponds to a valid
+	 path before we chop some of it off. */
+      c = *q;
+      *q = '\0';
+      if (_path_isdir (result) == 0)
+	{
+	  if ((flags & PATH_NOALLOC) == 0)
+	    free (result);
+	  return ((char *)NULL);
+	}
+      *q = c;
     }
 
   /* Empty string is really ``.'' or `/', depending on what we started with. */

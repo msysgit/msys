@@ -1,6 +1,6 @@
 /* shell.c -- GNU's idea of the POSIX shell specification. */
 
-/* Copyright (C) 1987-2005 Free Software Foundation, Inc.
+/* Copyright (C) 1987-2006 Free Software Foundation, Inc.
 
    This file is part of GNU Bash, the Bourne Again SHell.
 
@@ -1533,9 +1533,10 @@ set_shell_name (argv0)
      any startup files; just try to be more like /bin/sh. */
   shell_name = argv0 ? base_pathname (argv0) : PROGRAM;
 
-  if (*shell_name == '-')
+  if (argv0 && *argv0 == '-')
     {
-      shell_name++;
+      if (*shell_name == '-')
+	shell_name++;
       login_shell++;
     }
 

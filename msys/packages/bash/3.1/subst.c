@@ -4478,6 +4478,12 @@ command_substitute (string, quoted)
   pid_t pid, old_pid, old_pipeline_pgrp, old_async_pid;
   char *istring;
   int result, fildes[2], function_value, pflags, rc;
+#if __CYGWIN__
+  /* Ensure that stdin, stdout, and stderr have a valid file descriptor, so
+     that pipe doesn't end up in those slots; otherwise a hang might
+     result when leaving one end of the pipe open in the subprocess. */
+  int i, closeit[3];
+#endif /* __CYGWIN__ */
 
   istring = (char *)NULL;
 
@@ -4507,12 +4513,30 @@ command_substitute (string, quoted)
   /* Flags to pass to parse_and_execute() */
   pflags = interactive ? SEVAL_RESETLINE : 0;
 
+#if __CYGWIN__
+  /* See comments above */
+  for (i = 0; i <= 2; i++)
+    if (fcntl (i, F_GETFD, &result) != -1)
+      closeit[i] = 0;
+    else
+      {
+	open ("/dev/null", O_RDONLY);
+	closeit[i] = 1;
+      }
+#endif /* __CYGWIN__ */
+
   /* Pipe the output of executing STRING into the current shell. */
   if (pipe (fildes) < 0)
     {
       sys_error (_("cannot make pipe for command substitution"));
       goto error_exit;
     }
+
+#if __CYGWIN__
+  for (i = 0; i <= 2; i++)
+    if (closeit[i])
+      close (i);
+#endif /* __CYGWIN__ */
 
   old_pid = last_made_pid;
 #if defined (JOB_CONTROL)
@@ -4567,6 +4591,7 @@ command_substitute (string, quoted)
 	  exit (EXECUTION_FAILURE);
 	}
 
+#ifndef __CYGWIN__
       /* If standard output is closed in the parent shell
 	 (such as after `exec >&-'), file descriptor 1 will be
 	 the lowest available file descriptor, and end up in
@@ -4582,6 +4607,12 @@ command_substitute (string, quoted)
 	  (fildes[0] != fileno (stdout)) &&
 	  (fildes[0] != fileno (stderr)))
 	close (fildes[0]);
+#else /* __CYGWIN__ */
+      /* We already ensured that none of the standard file descriptors were
+	 occupied by either end of the pipe. */
+      close (fildes[1]);
+      close (fildes[0]);
+#endif /* __CYGWIN__ */
 
       /* The currently executing shell is not interactive. */
       interactive = 0;

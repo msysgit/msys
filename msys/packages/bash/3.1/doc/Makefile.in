@@ -1,6 +1,6 @@
 # This Makefile is for the Bash/documentation directory -*- text -*-.
 #
-# Copyright (C) 2003 Free Software Foundation, Inc.
+# Copyright (C) 2003, 2005 Free Software Foundation, Inc.
 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -167,7 +167,7 @@ bashref.info: $(BASHREF_FILES) $(HSUSER) $(RLUSER)
 bashref.html: $(BASHREF_FILES) $(HSUSER) $(RLUSER)
 	$(TEXI2HTML) -menu -monolithic -I $(TEXINPUTDIR) $(srcdir)/bashref.texi
 
-bash.info: bashref.info
+bash.info: $(srcdir)/bashref.info
 	${SHELL} ${INFOPOST} < $(srcdir)/bashref.info > $@ ; \
 
 bash.txt: bash.1
@@ -224,8 +224,8 @@ install: info installdirs bash.info
 	-$(INSTALL_DATA) $(srcdir)/bash.1 $(DESTDIR)$(man1dir)/bash${man1ext}
 	-$(INSTALL_DATA) $(srcdir)/bashbug.1 $(DESTDIR)$(man1dir)/bashbug${man1ext}
 # uncomment the next line to install the builtins man page
-#	-$(INSTALL_DATA) $(srcdir)/builtins.1 $(DESTDIR)$(man1dir)/bash_builtins${man1ext}
-	-$(INSTALL_DATA) $(srcdir)/bash.info $(DESTDIR)$(infodir)/bash.info
+	-$(INSTALL_DATA) $(srcdir)/builtins.1 $(DESTDIR)$(man1dir)/bash_builtins${man1ext}
+	-$(INSTALL_DATA) bash.info $(DESTDIR)$(infodir)/bash.info
 # run install-info if it is present to update the info directory
 	if $(SHELL) -c 'install-info --version' >/dev/null 2>&1; then \
 		install-info --dir-file=$(DESTDIR)$(infodir)/dir $(DESTDIR)$(infodir)/bash.info; \

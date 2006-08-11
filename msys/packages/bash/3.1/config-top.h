@@ -3,7 +3,7 @@
 /* This contains various user-settable options not under the control of
    autoconf. */
 
-/* Copyright (C) 2002 Free Software Foundation, Inc.
+/* Copyright (C) 2002, 2005 Free Software Foundation, Inc.
 
    This file is part of GNU Bash, the Bourne Again SHell.
 
@@ -84,4 +84,4 @@
 
 /* Define this if you want bash to try to check whether it's being run by
    sshd and source the .bashrc if so (like the rshd behavior). */
-/* #define SSH_SOURCE_BASHRC */
+#define SSH_SOURCE_BASHRC
