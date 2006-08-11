@@ -53,7 +53,7 @@
 #  include <unistd.h>
 #endif
 
-#if defined (__EMX__) || defined (__CYGWIN__)
+#if defined (__EMX__) || defined (__CYGWIN__) || __MSYS__
 #  undef HAVE_MMAP
 #endif
 
@@ -78,7 +78,7 @@
    on win 95/98/nt), we want to open files with O_BINARY mode so that there
    is no \n -> \r\n conversion performed.  On other systems, we don't want to
    mess around with O_BINARY at all, so we ensure that it's defined to 0. */
-#if defined (__EMX__) || defined (__CYGWIN__)
+#if defined (__EMX__) || defined (__CYGWIN__) || __MSYS__
 #  ifndef O_BINARY
 #    define O_BINARY 0
 #  endif

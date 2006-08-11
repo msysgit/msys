@@ -143,7 +143,7 @@ file_error_and_exit:
       return ((flags & FEVAL_BUILTIN) ? EXECUTION_FAILURE : -1);
     }      
 
-#if defined (__CYGWIN__) && defined (O_TEXT)
+#if (defined (__CYGWIN__) /*|| __MSYS__ DO NOT USE IN MSYS*/) && defined (O_TEXT)
   setmode (fd, O_TEXT);
 #endif
 

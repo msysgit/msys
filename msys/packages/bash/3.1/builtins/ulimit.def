@@ -527,7 +527,7 @@ set_limit (ind, newlim, mode)
 
       case RLIMIT_OPENFILES:
 #if defined (HAVE_SETDTABLESIZE)
-#  if defined (__CYGWIN__)
+#  if defined (__CYGWIN__) || __MSYS__
 	/* Grrr... Cygwin declares setdtablesize as void. */
 	setdtablesize (newlim);
 	return 0;

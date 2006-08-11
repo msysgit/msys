@@ -315,10 +315,11 @@ cd_builtin (list)
 
 $BUILTIN pwd
 $FUNCTION pwd_builtin
-$SHORT_DOC pwd [-LP]
+$SHORT_DOC pwd [-LPW]
 Print the current working directory.  With the -P option, pwd prints
 the physical directory, without any symbolic links; the -L option
-makes pwd follow symbolic links.
+makes pwd follow symbolic links; the -W option makes pwd print the Win32 value
+of the physical directory.
 $END
 
 /* Non-zero means that pwd always prints the physical directory, without
@@ -330,13 +331,13 @@ int
 pwd_builtin (list)
      WORD_LIST *list;
 {
-  char *directory;
+  char *directory, *buffer, *wbuffer;
   int opt, pflag;
 
   verbatim_pwd = no_symbolic_links;
   pflag = 0;
   reset_internal_getopt ();
-  while ((opt = internal_getopt (list, "LP")) != -1)
+  while ((opt = internal_getopt (list, "LPW")) != -1)
     {
       switch (opt)
 	{
@@ -346,6 +347,9 @@ pwd_builtin (list)
 	case 'L':
 	  verbatim_pwd = 0;
 	  break;
+	case 'W':
+	  verbatim_pwd = 2;
+	  break;
 	default:
 	  builtin_usage ();
 	  return (EXECUTION_FAILURE);
@@ -353,18 +357,32 @@ pwd_builtin (list)
     }
   list = loptend;
 
+  if (verbatim_pwd == 2) {
+    buffer = xmalloc (PATH_MAX);
+    wbuffer = xmalloc (PATH_MAX);
+    directory = getcwd (buffer, PATH_MAX);
+    cygwin_conv_to_win32_path (buffer, wbuffer);
+    {
+      char *c = wbuffer;
+      while (c = strchr (c, '\\'))
+	*c = '/';
+    }
+    free (buffer);
+    directory = wbuffer;
+  } else {
 #define tcwd the_current_working_directory
 
-  directory = tcwd ? (verbatim_pwd ? sh_physpath (tcwd, 0) : tcwd)
-		   : get_working_directory ("pwd");
+    directory = tcwd ? (verbatim_pwd ? sh_physpath (tcwd, 0) : tcwd)
+		     : get_working_directory ("pwd");
 
-  /* Try again using getcwd() if canonicalization fails (for instance, if
-     the file system has changed state underneath bash). */
-  if ((tcwd && directory == 0) ||
-      (posixly_correct && same_file (".", tcwd, (struct stat *)0, (struct stat *)0) == 0))
-    directory = resetpwd ("pwd");
+    /* Try again using getcwd() if canonicalization fails (for instance, if
+       the file system has changed state underneath bash). */
+    if ((tcwd && directory == 0) ||
+	(posixly_correct && same_file (".", tcwd, (struct stat *)0, (struct stat *)0) == 0))
+      directory = resetpwd ("pwd");
 
 #undef tcwd
+  }
 
   if (directory)
     {

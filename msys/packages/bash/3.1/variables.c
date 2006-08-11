@@ -1944,6 +1944,20 @@ bind_variable (name, value, flags)
   SHELL_VAR *v;
   VAR_CONTEXT *vc;
 
+#if defined (__MSYS__)
+  /* Remove trailing \r from value */
+  {
+    char *tpos;
+    if (value)
+    {
+      tpos = strchr (value, '\0');
+      tpos--;
+      if (*tpos == '\r')
+	*tpos = '\0';
+    }
+  }
+#endif
+
   if (shell_variables == 0)
     {
       shell_variables = global_variables = new_var_context ((char *)NULL, 0);
@@ -3071,7 +3085,7 @@ make_env_array_from_var_list (vars)
 
   for (i = 0, list_index = 0; var = vars[i]; i++)
     {
-#if defined (__CYGWIN__)
+#if defined (__CYGWIN__) || defined (__MSYS__)
       /* We don't use the exportstr stuff on Cygwin at all. */
       INVALIDATE_EXPORTSTR (var);
 #endif
@@ -3755,7 +3769,7 @@ static struct name_and_function special_vars[] = {
   { "HISTTIMEFORMAT", sv_histtimefmt },
 #endif
 
-#if defined (__CYGWIN__)
+#if defined (__CYGWIN__)/* || defined (__MSYS__) I DO NOT WANT THIS */
   { "HOME", sv_home },
 #endif
 
@@ -3984,7 +3998,8 @@ sv_winsize (name)
 
 /* Update the value of HOME in the export environment so tilde expansion will
    work on cygwin. */
-#if defined (__CYGWIN__)
+#if defined (__CYGWIN__) /*|| defined (__MSYS__) I DO NOT WANT THIS */
+void
 sv_home (name)
      char *name;
 {

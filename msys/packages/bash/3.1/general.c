@@ -554,7 +554,7 @@ make_absolute (string, dot_path)
   char *result;
 
   if (dot_path == 0 || ABSPATH(string))
-#ifdef __CYGWIN__
+#if __CYGWIN__ || __MSYS__
     {
       char pathbuf[PATH_MAX + 1];
 

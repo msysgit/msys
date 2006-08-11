@@ -630,7 +630,11 @@ snarf_hosts_from_file (filename)
   char *temp, buffer[256], name[256];
   register int i, start;
 
+#ifdef __MSYS__
+  file = fopen (filename, "rt");
+#else
   file = fopen (filename, "r");
+#endif
   if (file == 0)
     return;
 
@@ -1494,7 +1498,7 @@ command_word_completion_function (hint_text, state)
       /* If we have found a match, and it is an executable file or a
 	 directory name, return it. */
       if (match && (
-#if __CYGWIN__
+#if __CYGWIN__ || __MSYS__
                     /* executable_or_directory will do the right thing on
                        //server, but calling stat("//server") is an order
                        of magnitude slower than noting that readdir("//")
@@ -2234,7 +2238,7 @@ test_for_directory (name)
   char *fn;
 
   fn = bash_tilde_expand (name, 0);
-#if __CYGWIN__
+#if __CYGWIN__ || __MSYS__
   /* Although this leads to false positives if NAME is random, it is worth the
      speedup to assume //server is a directory rather than waiting the couple
      of seconds for stat("//server") to complete.  */

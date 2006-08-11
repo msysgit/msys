@@ -334,7 +334,7 @@ duplicate_buffered_stream (fd1, fd2)
 }
 
 /* Return 1 if a seek on FD will succeed. */
-#ifndef __CYGWIN__
+#if ! (__CYGWIN__ || __MSYS__)
 #  define fd_is_seekable(fd) (lseek ((fd), 0L, SEEK_CUR) >= 0)
 #else
 #  define fd_is_seekable(fd) 0
@@ -458,7 +458,7 @@ b_fill_buffer (bp)
       return (EOF);
     }
 
-#if defined (__CYGWIN__)
+#if defined (__CYGWIN__) || __MSYS__
   /* If on cygwin, translate \r\n to \n. */
   if (nr >= 2 && bp->b_buffer[nr - 2] == '\r' && bp->b_buffer[nr - 1] == '\n')
     {
