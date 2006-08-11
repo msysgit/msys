@@ -481,6 +481,16 @@ stat_char (filename)
   struct stat finfo;
   int character, r;
 
+#ifdef __CYGWIN__
+  /* Cygwin stat("//server") can take several seconds when the server is
+     non-responsive, all to find out it will always behave as a directory.
+     Although this shortcut may sometimes provide a false positive, it is
+     worth the speedup in time if all callers validated that FILENAME exists
+     from a (much faster) readdir rather than calling stat. */
+  if (filename[0] == '/' && filename[1] == '/' && ! strchr (&filename[2], '/'))
+    return '/';
+#endif
+
 #if defined (HAVE_LSTAT) && defined (S_ISLNK)
   r = lstat (filename, &finfo);
 #else

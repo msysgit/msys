@@ -1,6 +1,6 @@
 /* display.c -- readline redisplay facility. */
 
-/* Copyright (C) 1987-2005 Free Software Foundation, Inc.
+/* Copyright (C) 1987-2006 Free Software Foundation, Inc.
 
    This file is part of the GNU Readline Library, a library for
    reading lines of text with interactive input and history editing.
@@ -307,7 +307,10 @@ expand_prompt (pmt, lp, lip, niflp, vlp)
   if (lp)
     *lp = rl;
   if (lip)
-    *lip = last;
+    /* Hack: faking that the last character is invisible seems to work around
+       prompt display bugs.  I wish I knew what the real bug was...  */
+    *lip = r - ret;
+/*     *lip = last; */
   if (niflp)
     *niflp = invfl;
   if  (vlp)

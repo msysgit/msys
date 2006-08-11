@@ -1,6 +1,6 @@
 /* redir.c -- Functions to perform input and output redirection. */
 
-/* Copyright (C) 1997-2005 Free Software Foundation, Inc.
+/* Copyright (C) 1997-2006 Free Software Foundation, Inc.
 
    This file is part of GNU Bash, the Bourne Again SHell.
 
@@ -402,7 +402,7 @@ here_document_to_fd (redirectee, ri)
   /* In an attempt to avoid races, we close the first fd only after opening
      the second. */
   /* Make the document really temporary.  Also make it the input. */
-  fd2 = open (filename, O_RDONLY, 0600);
+  fd2 = open (filename, O_RDONLY | O_BINARY, 0600);
 
   if (fd2 < 0)
     {

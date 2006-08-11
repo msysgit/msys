@@ -2,7 +2,7 @@
  * tmpfile.c - functions to create and safely open temp files for the shell.
  */
 
-/* Copyright (C) 2000 Free Software Foundation, Inc.
+/* Copyright (C) 2000, 2006 Free Software Foundation, Inc.
 
    This file is part of GNU Bash, the Bourne Again SHell.
 
@@ -40,7 +40,7 @@
 extern int errno;
 #endif
 
-#define BASEOPENFLAGS	(O_CREAT | O_TRUNC | O_EXCL)
+#define BASEOPENFLAGS	(O_CREAT | O_TRUNC | O_EXCL | O_BINARY)
 
 #define DEFAULT_TMPDIR		"."	/* bogus default, should be changed */
 #define DEFAULT_NAMEROOT	"shtmp"

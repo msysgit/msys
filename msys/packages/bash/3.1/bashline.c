@@ -1493,7 +1493,16 @@ command_word_completion_function (hint_text, state)
 
       /* If we have found a match, and it is an executable file or a
 	 directory name, return it. */
-      if (match && executable_or_directory (val))
+      if (match && (
+#if __CYGWIN__
+                    /* executable_or_directory will do the right thing on
+                       //server, but calling stat("//server") is an order
+                       of magnitude slower than noting that readdir("//")
+                       only returns directories.  */
+                    (val[0] == '/' && val[1] == '/' && ! strchr (&val[2], '/'))
+                    ||
+#endif /* __CYGWIN__ */
+		    executable_or_directory (val)))
 	{
 	  free (val);
 	  val = "";		/* So it won't be NULL. */
@@ -2225,6 +2234,16 @@ test_for_directory (name)
   char *fn;
 
   fn = bash_tilde_expand (name, 0);
+#if __CYGWIN__
+  /* Although this leads to false positives if NAME is random, it is worth the
+     speedup to assume //server is a directory rather than waiting the couple
+     of seconds for stat("//server") to complete.  */
+  if (fn[0] == '/' && fn[1] == '/' && ! strchr (&fn[2], '/'))
+    {
+      free (fn);
+      return 1;
+    }
+#endif /* __CYGWIN__ */
   if (stat (fn, &finfo) != 0)
     {
       free (fn);
