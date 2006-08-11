@@ -76,7 +76,7 @@ sh_physpath (path, flags)
      char *path;
      int flags;
 {
-#if __CYGWIN__
+#if __CYGWIN__ /* FIXME: || __MSYS__ // realpath is causing bash to abort */
   /* realpath does this right without all the hassle */
   return realpath (path, NULL);
 #else
@@ -109,7 +109,7 @@ sh_physpath (path, flags)
 
   /* POSIX.2 says to leave a leading `//' alone.  On cygwin, we skip over any
      leading `x:' (dos drive name). */
-#if defined (__CYGWIN__)
+#if defined (__CYGWIN__) || __MSYS__
   qbase = (ISALPHA((unsigned char)workpath[0]) && workpath[1] == ':') ? workpath + 3 : workpath + 1;
 #else
   qbase = workpath + 1;
@@ -218,7 +218,7 @@ error:
 	    {
 	      q = result;
 	      /* Duplicating some code here... */
-#if defined (__CYGWIN__)
+#if defined (__CYGWIN__) || __MSYS__
 	      qbase = (ISALPHA((unsigned char)workpath[0]) && workpath[1] == ':') ? workpath + 3 : workpath + 1;
 #else
 	      qbase = workpath + 1;

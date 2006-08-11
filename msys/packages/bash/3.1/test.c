@@ -104,7 +104,7 @@ static int test_error_return;
 /* We have to use access(2) for machines running AFS, because it's
    not a Unix file system.  This may produce incorrect answers for
    non-AFS files.  I hate AFS. */
-#if defined (AFS) || __CYGWIN__
+#if defined (AFS) || __CYGWIN__ || __MSYS__
 #  define EACCESS(path, mode)	access(path, mode)
 #else
 #  define EACCESS(path, mode)	test_eaccess(path, mode)

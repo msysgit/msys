@@ -299,7 +299,7 @@ static void shell_reinitialize __P((void));
 
 static void show_shell_usage __P((FILE *, int));
 
-#ifdef __CYGWIN__
+#if __CYGWIN__ || __MSYS__
 static void
 _cygwin32_check_tmp ()
 {
@@ -363,7 +363,7 @@ main (argc, argv, env)
 
   check_dev_tty ();
 
-#ifdef __CYGWIN__
+#if __CYGWIN__ || __MSYS__
   _cygwin32_check_tmp ();
 #endif /* __CYGWIN__ */
 
@@ -1435,7 +1435,11 @@ open_shell_script (script_name)
   default_buffered_input = fd;
   SET_CLOSE_ON_EXEC (default_buffered_input);
 #else /* !BUFFERED_INPUT */
+#ifdef __MSYS__
+  default_input = fdopen (fd, "rt");
+#else
   default_input = fdopen (fd, "r");
+#endif
 
   if (default_input == 0)
     {

@@ -418,7 +418,7 @@ here_document_to_fd (redirectee, ri)
   if (unlink (filename) < 0)
     {
       r = errno;
-#if defined (__CYGWIN__)
+#if defined (__CYGWIN__) /* || __MSYS__ NOT USING in MSYS */
       /* Under CygWin 1.1.0, the unlink will fail if the file is
 	 open. This hack will allow the previous action of silently
 	 ignoring the error, but will still leave the file there. This

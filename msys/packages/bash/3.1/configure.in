@@ -87,6 +87,7 @@ sparc-linux*)	opt_bash_malloc=no ;;	# sparc running linux; requires ELF
 *-bsdi2.1|*-bsdi3.?)	opt_bash_malloc=no ; : ${CC:=shlicc2} ;; # for loadable builtins
 *-beos*)	opt_bash_malloc=no ;;	# they say it's suitable
 *-cygwin*)	opt_bash_malloc=no ;;	# Cygnus's CYGWIN environment
+*-msys*)	opt_bash_malloc=no ;;	# Cygnus's CYGWIN environment
 *-opennt*|*-interix*)	opt_bash_malloc=no ;;	# Interix, now owned by Microsoft
 esac
 
@@ -384,6 +385,10 @@ dnl Set SIGNAMES_H based on whether or not we're cross-compiling.
 
 if test "x$cross_compiling" = "xyes"; then
     case "${host}" in
+    *-msys*)
+	cross_cache=${srcdir}/cross-build/cygwin32.cache
+	SIGNAMES_H='$(srcdir)/cross-build/win32sig.h'
+	;;
     *-cygwin*)
 	cross_cache=${srcdir}/cross-build/cygwin32.cache
 	SIGNAMES_H='$(srcdir)/cross-build/win32sig.h'
@@ -507,6 +512,7 @@ if test $opt_readline = yes; then
 		# to be compiled into dynamic libraries.
 		case "$host_os" in
 		cygwin*)	TILDE_LIB= ;;
+		msys*)	TILDE_LIB= ;;
 		esac
 	else
 		RL_LIBDIR='$(dot)/$(LIBSUBDIR)/readline'
@@ -997,6 +1003,7 @@ linux*)		LOCAL_LDFLAGS=-rdynamic		 # allow dynamic loading
 *qnx*)		LOCAL_CFLAGS="-Dqnx -F -3s" LOCAL_LDFLAGS="-3s" LOCAL_LIBS="-lunix -lncurses" ;;
 powerux*)	LOCAL_LIBS="-lgen" ;;
 cygwin*)	LOCAL_CFLAGS=-DRECYCLES_PIDS ;;
+msys*)	LOCAL_CFLAGS=-DRECYCLES_PIDS ;;
 opennt*|interix*) LOCAL_CFLAGS="-DNO_MAIN_ENV_ARG -DBROKEN_DIRENT_D_INO -D_POSIX_SOURCE" ;;
 esac
 

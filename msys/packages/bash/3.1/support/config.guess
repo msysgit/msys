@@ -773,6 +773,9 @@ EOF
 	rm -f $dummy.c && rmdir $tmpdir
 	echo ${UNAME_MACHINE}-unknown-freebsd`echo ${UNAME_RELEASE}|sed -e 's/[-(].*//'`${LIBC:+-$LIBC}
 	exit 0 ;;
+    i*:MSYS*:*)
+	echo ${UNAME_MACHINE}-pc-msys
+	exit 0 ;;
     i*:CYGWIN*:*)
 	echo ${UNAME_MACHINE}-pc-cygwin
 	exit 0 ;;
@@ -796,6 +799,9 @@ EOF
 	exit 0 ;;
     i*:UWIN*:*)
 	echo ${UNAME_MACHINE}-pc-uwin
+	exit 0 ;;
+    p*:MSYS*:*)
+	echo powerpcle-unknown-msys
 	exit 0 ;;
     p*:CYGWIN*:*)
 	echo powerpcle-unknown-cygwin

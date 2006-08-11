@@ -1147,7 +1147,13 @@ yy_input_name ()
 static int
 yy_getc ()
 {
+#ifdef __MSYS__
+  int c;
+  while ((c = (*(bash_input.getter)) ()) == '\r');
+  return c;
+#else
   return (*(bash_input.getter)) ();
+#endif
 }
 
 /* Call this to unget C.  That is, to make C the next character

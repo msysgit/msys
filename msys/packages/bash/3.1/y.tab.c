@@ -2477,7 +2477,13 @@ yy_input_name ()
 static int
 yy_getc ()
 {
+#ifdef __MSYS__
+  int c;
+  while ((c = (*(bash_input.getter)) ()) == '\r');
+  return c;
+#else
   return (*(bash_input.getter)) ();
+#endif
 }
 
 /* Call this to unget C.  That is, to make C the next character
@@ -3281,6 +3287,10 @@ shell_getc (remove_quoted_newline)
 
 	  RESIZE_MALLOCED_BUFFER (shell_input_line, i, 2, shell_input_line_size, 256);
 
+#ifdef __MSYS__
+	  if (c == '\r')
+	    continue;
+#endif
 	  if (c == EOF)
 	    {
 	      if (bash_input.type == st_stream)

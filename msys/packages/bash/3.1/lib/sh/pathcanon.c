@@ -117,7 +117,7 @@ sh_canonpath (path, flags)
   if (rooted = ROOTEDPATH(path))
     {
       stub_char = DIRSEP;
-#if defined (__CYGWIN__)
+#if defined (__CYGWIN__) || __MSYS__
       base = (ISALPHA((unsigned char)result[0]) && result[1] == ':') ? result + 3 : result + 1;
 #else
       base = result + 1;
@@ -128,7 +128,7 @@ sh_canonpath (path, flags)
   else
     {
       stub_char = '.';
-#if defined (__CYGWIN__)
+#if defined (__CYGWIN__) || __MSYS__
       base = (ISALPHA((unsigned char)result[0]) && result[1] == ':') ? result + 2 : result;
 #else
       base = result;

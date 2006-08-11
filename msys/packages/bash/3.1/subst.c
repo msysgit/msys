@@ -221,6 +221,20 @@ static int skip_double_quoted __P((char *, size_t, int));
 static char *extract_delimited_string __P((char *, int *, char *, char *, char *, int));
 static char *extract_dollar_brace_string __P((char *, int *, int, int));
 
+#ifdef __MSYS__
+static inline void RemoveCR ();
+static void
+RemoveCR (string)
+  char * string;
+{
+  char *pstr;
+  if (string && (pstr = strchr (string, '\0')) && *(--pstr) == '\r')
+    *pstr = '\0';
+}
+#else
+#define RemoveCR(string) /**/
+#endif
+
 static char *pos_params __P((char *, int, int, int));
 
 static unsigned char *mb_getcharlens __P((char *, int));
@@ -4388,7 +4402,7 @@ read_comsub (fd, quoted)
   istring = (char *)NULL;
   istring_index = istring_size = bufn = 0;
 
-#ifdef __CYGWIN__
+#if __CYGWIN__ || __MSYS__
   setmode (fd, O_TEXT);		/* we don't want CR/LF, we want Unix-style */
 #endif
 
@@ -4478,7 +4492,7 @@ command_substitute (string, quoted)
   pid_t pid, old_pid, old_pipeline_pgrp, old_async_pid;
   char *istring;
   int result, fildes[2], function_value, pflags, rc;
-#if __CYGWIN__
+#if __CYGWIN__ || __MSYS__
   /* Ensure that stdin, stdout, and stderr have a valid file descriptor, so
      that pipe doesn't end up in those slots; otherwise a hang might
      result when leaving one end of the pipe open in the subprocess. */
@@ -4513,7 +4527,7 @@ command_substitute (string, quoted)
   /* Flags to pass to parse_and_execute() */
   pflags = interactive ? SEVAL_RESETLINE : 0;
 
-#if __CYGWIN__
+#if __CYGWIN__ || __MSYS__
   /* See comments above */
   for (i = 0; i <= 2; i++)
     if (fcntl (i, F_GETFD, &result) != -1)
@@ -4532,7 +4546,7 @@ command_substitute (string, quoted)
       goto error_exit;
     }
 
-#if __CYGWIN__
+#if __CYGWIN__ || __MSYS__
   for (i = 0; i <= 2; i++)
     if (closeit[i])
       close (i);
@@ -4591,7 +4605,7 @@ command_substitute (string, quoted)
 	  exit (EXECUTION_FAILURE);
 	}
 
-#ifndef __CYGWIN__
+#if ! (__CYGWIN__ || __MSYS__)
       /* If standard output is closed in the parent shell
 	 (such as after `exec >&-'), file descriptor 1 will be
 	 the lowest available file descriptor, and end up in
@@ -4697,6 +4711,7 @@ command_substitute (string, quoted)
 	give_terminal_to (pipeline_pgrp, 0);
 #endif /* JOB_CONTROL */
 
+      RemoveCR (istring);
       return (istring);
     }
 }
