@@ -1,3 +1,22 @@
+2006-08-14  Earnie Boyd  <earnie@users.sf.net>
+
+	* lib/strftime.c: Do not declare tzname if __MSYS__.
+	* Makefile.in: Regenerate.
+	* aclocal.m4: Ditto.
+	* configure: Ditto.
+	* config/config.guess: Ditto.
+	* config/config.sub: Ditto.
+	* doc/Makefile.in: Ditto.
+	* doc/diff.info: Ditto.
+	* doc/stamp-vti: Ditto.
+	* doc/version.texi: Ditto.
+	* lib/Makefile.in: Ditto.
+	* m4/Makefile.in: Ditto.
+	* m4/printf-posix.m4: Ditto.
+	* man/Makefile.in: Ditto.
+	* ms/Makefile.in: Ditto.
+	* src/Makefile.in: Ditto.
+
 2004-04-13  Paul Eggert  <eggert@twinsun.com>
 
 	* NEWS, configure.ac (AC_INIT): Version 2.8.7.
