@@ -56,7 +56,8 @@ libcoreutils_a_SOURCES += \
   printf-args.h \
   printf-parse.h \
   vasprintf.h \
-  vasnprintf.h
+  vasnprintf.h \
+  cygwin.c cygwin.h
 
 libcoreutils_a_LIBADD = $(LIBOBJS) $(ALLOCA)
 

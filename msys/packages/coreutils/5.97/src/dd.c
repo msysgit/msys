@@ -1,5 +1,5 @@
 /* dd -- convert a file while copying it.
-   Copyright (C) 85, 90, 91, 1995-2005 Free Software Foundation, Inc.
+   Copyright (C) 85, 90, 91, 1995-2006 Free Software Foundation, Inc.
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -35,6 +35,10 @@
 #include "quote.h"
 #include "xstrtol.h"
 #include "xtime.h"
+
+#if __CYGWIN__
+# include <io.h>
+#endif /* __CYGWIN__ */
 
 static void process_signals (void);
 
@@ -447,7 +451,7 @@ Each CONV symbol may be:\n\
   swab      swap every pair of input bytes\n\
   noerror   continue after read errors\n\
   sync      pad every input block with NULs to ibs-size; when used\n\
-              with block or unblock, pad with spaces rather than NULs\n\
+	      with block or unblock, pad with spaces rather than NULs\n\
   fdatasync physically write output file data before finishing\n\
   fsync     likewise, but also write metadata\n\
 "), stdout);
@@ -1316,6 +1320,13 @@ copy_with_unblock (char const *buf, size_t nread)
 static void
 set_fd_flags (int fd, int add_flags, char const *name)
 {
+#if __CYGWIN__
+  /* Cygwin does not allow fcntl to set the mode.  */
+  int mode_flags = add_flags & (O_BINARY | O_TEXT);
+  add_flags &= ~(O_BINARY | O_TEXT);
+  if (mode_flags && setmode (fd, mode_flags) == -1)
+    error (EXIT_FAILURE, errno, _("setting flags for %s"), quote (name));
+#endif /* __CYGWIN__ */
   if (add_flags)
     {
       int old_flags = fcntl (fd, F_GETFL);
@@ -1507,7 +1518,7 @@ dd_copy (void)
 	bufstart = ibuf;
 
       if (conversions_mask & C_BLOCK)
-        copy_with_block (bufstart, n_bytes_read);
+	copy_with_block (bufstart, n_bytes_read);
       else if (conversions_mask & C_UNBLOCK)
 	copy_with_unblock (bufstart, n_bytes_read);
       else
@@ -1518,7 +1529,7 @@ dd_copy (void)
   if (char_is_saved)
     {
       if (conversions_mask & C_BLOCK)
-        copy_with_block (&saved_char, 1);
+	copy_with_block (&saved_char, 1);
       else if (conversions_mask & C_UNBLOCK)
 	copy_with_unblock (&saved_char, 1);
       else
@@ -1616,6 +1627,8 @@ main (int argc, char **argv)
     }
   else
     {
+      if ((input_flags & (O_BINARY | O_TEXT)) == 0)
+	input_flags |= O_BINARY;
       if (fd_reopen (STDIN_FILENO, input_file, O_RDONLY | input_flags, 0) < 0)
 	error (EXIT_FAILURE, errno, _("opening %s"), quote (input_file));
     }
@@ -1638,6 +1651,8 @@ main (int argc, char **argv)
 	   | (conversions_mask & C_NOCREAT ? 0 : O_CREAT)
 	   | (conversions_mask & C_EXCL ? O_EXCL : 0)
 	   | (seek_records || (conversions_mask & C_NOTRUNC) ? 0 : O_TRUNC));
+      if ((output_flags & (O_BINARY | O_TEXT)) == 0)
+	output_flags |= O_BINARY;
 
       /* Open the output file with *read* access only if we might
 	 need to read to satisfy a `seek=' request.  If we can't read

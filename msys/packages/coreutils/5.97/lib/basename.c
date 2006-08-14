@@ -50,7 +50,8 @@ base_name (char const *name)
 	     the basename if no non-slashes have been found.  */
 	  if (! *p)
 	    {
-	      if (ISSLASH (*base))
+	      /* Allow for // to return //.  */
+	      if (ISSLASH (*base) && p - base > 2)
 		base = p - 1;
 	      break;
 	    }
@@ -74,6 +75,9 @@ base_len (char const *name)
 
   for (len = strlen (name);  1 < len && ISSLASH (name[len - 1]);  len--)
     continue;
+  /* Allow for // to return //.  */
+  if (len == 1 && ISSLASH (name[0]) && ISSLASH (name[1]) && ! name[2])
+    return 2;
 
   return len;
 }

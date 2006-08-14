@@ -4558,7 +4558,7 @@ c
 $ paste num2 let3
 1       a
 2       b
-        c
+@ @       c
 @end example
 
 Synopsis:
@@ -6071,6 +6071,14 @@ longer than 1000 bytes may be treated as errors.
 These options change how file names themselves are printed.
 
 @table @samp
+
+@itemx --append-exe
+@opindex --append-exe
+@cindex appending exe on cygwin
+Cygwin only: Cygwin normally performs .exe magic, where a command line
+argument typed without an .exe extension transparently refers to the
+existing file with an extension.  Specifying this option will make
+the .exe show if cygwin magic was involved.
 
 @item -b
 @itemx --escape
@@ -7714,6 +7722,21 @@ an error message on systems that do not support symbolic links.
 @opindex --verbose
 Print the name of each file before linking it.
 
+@item --disable-exe-magic
+@opindex --disable-exe-magic
+@cindex appending exe on cygwin
+Cygwin only: Cygwin normally performs .exe magic, where a command
+line argument typed without an .exe extension is subjected to
+additional system calls to see if cygwin would automatically append
+the .exe when trying to execute that file.  Sometimes, these extra
+system calls can be slow (such as when creating a symbolic link to a
+network share that is not currently up), so this option bypasses the
+magic.  Note that creating a symbolic link with contents ``foo'', even
+though only the file ``foo.exe'' exists creates a half-dangling link.
+It will work for executing the file, but will cause errors when trying
+to open the file (operations such as mv or cp must open a file to
+read its contents).
+
 @end table
 
 @exitstatus
@@ -9188,6 +9211,14 @@ Change how @command{stat} treats symbolic links.
 With this option, @command{stat} acts on the file referenced
 by each symbolic link argument.
 Without it, @command{stat} acts on any symbolic link argument directly.
+
+@itemx --append-exe
+@opindex --append-exe
+@cindex appending exe on cygwin
+Cygwin only: Cygwin normally performs .exe magic, where a command line
+argument typed without an .exe extension transparently refers to the
+existing file with an extension.  Specifying this option will make
+the .exe show if cygwin magic was involved.
 
 @item -f
 @itemx --file-system

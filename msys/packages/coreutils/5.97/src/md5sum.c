@@ -1,5 +1,5 @@
 /* Compute MD5 or SHA1 checksum of files or strings
-   Copyright (C) 1995-2005 Free Software Foundation, Inc.
+   Copyright (C) 1995-2006 Free Software Foundation, Inc.
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -253,6 +253,13 @@ split_3 (char *s, size_t s_len,
   /* All characters between the type indicator and end of line are
      significant -- that includes leading and trailing white space.  */
   *file_name = &s[i];
+#if __CYGWIN__
+  /* But on cygwin, where \r is only permitted on managed mounts (and is
+     relatively rare anyways), strip it from the line end since older
+     cygwin releases of coreutils mistakenly output md5sums in text mode.  */
+  if (s[s_len - 1] == '\r')
+    s[--s_len] = '\0';
+#endif /* __CYGWIN__ */
 
   if (escaped_filename)
     {
@@ -617,6 +624,9 @@ main (int argc, char **argv)
 
   if (optind == argc)
     argv[argc++] = "-";
+
+  if (O_BINARY && ! isatty (STDOUT_FILENO))
+    freopen (NULL, "wb", stdout);
 
   for (; optind < argc; ++optind)
     {

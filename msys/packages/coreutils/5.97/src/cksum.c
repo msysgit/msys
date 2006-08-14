@@ -1,5 +1,5 @@
 /* cksum -- calculate and print POSIX checksums and sizes of files
-   Copyright (C) 92, 1995-2005 Free Software Foundation, Inc.
+   Copyright (C) 92, 1995-2006 Free Software Foundation, Inc.
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -301,6 +301,9 @@ main (int argc, char **argv)
     usage (EXIT_FAILURE);
 
   have_read_stdin = false;
+
+  if (O_BINARY && ! isatty (STDOUT_FILENO))
+    freopen (NULL, "wb", stdout);
 
   if (optind == argc)
     ok = cksum ("-", false);

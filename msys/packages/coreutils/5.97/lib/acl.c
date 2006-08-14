@@ -49,13 +49,16 @@ file_has_acl (char const *file, struct stat const *filestat)
      of HP-UX, Solaris, and Unixware, but it simply returns 0 with
      POSIX 1003.1e (draft 17 -- abandoned), AIX, GNU/Linux, Irix, and
      Tru64.  Please see Samba's source/lib/sysacls.c file for
-     fix-related ideas.  */
+     fix-related ideas.  Cygwin returns EBUSY when the file is locked,
+     since acls can't be determined in that case, be pessimistic and
+     claim that there are acls.  */
 
 #if HAVE_ACL && defined GETACLCNT
   if (! S_ISLNK (filestat->st_mode))
     {
       int n = acl (file, GETACLCNT, 0, NULL);
-      return n < 0 ? (errno == ENOSYS ? 0 : -1) : (MIN_ACL_ENTRIES < n);
+      return n < 0 ? (errno == ENOSYS ? 0
+		      : errno == EBUSY ? 1 : -1) : (MIN_ACL_ENTRIES < n);
     }
 #endif
 

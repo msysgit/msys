@@ -51,6 +51,10 @@
 #include "xreadlink.h"
 #include "yesno.h"
 
+#if __CYGWIN__
+# include "cygwin.h"
+#endif
+
 #ifndef HAVE_FCHMOD
 # define HAVE_FCHMOD false
 #endif
@@ -160,7 +164,7 @@ copy_dir (char const *src_name_in, char const *dst_name_in, bool new_dst,
   if (name_space == NULL)
     {
       /* This diagnostic is a bit vague because savedir can fail in
-         several different ways.  */
+	 several different ways.  */
       error (0, errno, _("cannot access %s"), quote (src_name_in));
       return false;
     }
@@ -870,17 +874,17 @@ record_file (Hash_table *ht, char const *file,
    interactive prompt asking whether it's ok to overwrite DST_NAME.  */
 static bool
 abandon_move (const struct cp_options *x,
-              char const *dst_name,
-              struct stat const *dst_sb)
+	      char const *dst_name,
+	      struct stat const *dst_sb)
 {
   assert (x->move_mode);
   return (x->interactive == I_ALWAYS_NO
-          || ((x->interactive == I_ASK_USER
-               || (x->interactive == I_UNSPECIFIED
-                   && x->stdin_tty
-                   && UNWRITABLE (dst_name, dst_sb->st_mode)))
-              && (overwrite_prompt (dst_name, dst_sb), 1)
-              && ! yesno ()));
+	  || ((x->interactive == I_ASK_USER
+	       || (x->interactive == I_UNSPECIFIED
+		   && x->stdin_tty
+		   && UNWRITABLE (dst_name, dst_sb->st_mode)))
+	      && (overwrite_prompt (dst_name, dst_sb), 1)
+	      && ! yesno ()));
 }
 
 /* Copy the file SRC_NAME to the file DST_NAME.  The files may be of
@@ -958,7 +962,18 @@ copy_internal (char const *src_name, char const *dst_name,
 
   if (!new_dst)
     {
-      if (XSTAT (x, dst_name, &dst_sb) != 0)
+      int res = XSTAT (x, dst_name, &dst_sb);
+#if __CYGWIN__
+      /* stat("a") succeeds even if it was really "a.exe".  */
+      if (! res && cygwin_spelling (dst_name) != 0)
+	{
+	  /* Only DST_NAME.exe exists, but we want the non-existant
+	     DST_NAME.  */
+	  res = -1;
+	  errno = ENOENT;
+	}
+#endif /* __CYGWIN__ */
+      if (res != 0)
 	{
 	  if (errno != ENOENT)
 	    {
@@ -1305,7 +1320,7 @@ copy_internal (char const *src_name, char const *dst_name,
 	      /* Record destination dev/ino/name, so that if we are asked
 		 to overwrite that file again, we can detect it and fail.  */
 	      /* It's fine to use the _source_ stat buffer (src_sb) to get the
-	         _destination_ dev/ino, since the rename above can't have
+		 _destination_ dev/ino, since the rename above can't have
 		 changed those, and `mv' always uses lstat.
 		 We could limit it further by operating
 		 only on non-directories.  */
@@ -1413,9 +1428,9 @@ copy_internal (char const *src_name, char const *dst_name,
       struct dir_list *dir;
 
       /* If this directory has been copied before during the
-         recursion, there is a symbolic link to an ancestor
-         directory of the symbolic link.  It is impossible to
-         continue to copy this, unless we've got an infinite disk.  */
+	 recursion, there is a symbolic link to an ancestor
+	 directory of the symbolic link.  It is impossible to
+	 continue to copy this, unless we've got an infinite disk.  */
 
       if (is_ancestor (&src_sb, ancestors))
 	{
@@ -1434,7 +1449,7 @@ copy_internal (char const *src_name, char const *dst_name,
       if (new_dst || !S_ISDIR (dst_sb.st_mode))
 	{
 	  /* Create the new directory writable and searchable, so
-             we can create new entries in it.  */
+	     we can create new entries in it.  */
 
 	  if (mkdir (dst_name, (src_mode & x->umask_kill) | S_IRWXU) != 0)
 	    {
@@ -1444,8 +1459,8 @@ copy_internal (char const *src_name, char const *dst_name,
 	    }
 
 	  /* Insert the created directory's inode and device
-             numbers into the search structure, so that we can
-             avoid copying it again.  */
+	     numbers into the search structure, so that we can
+	     avoid copying it again.  */
 
 	  if (! remember_created (dst_name))
 	    goto un_backup;
@@ -1766,6 +1781,31 @@ copy (char const *src_name, char const *dst_name,
      from every caller -- but I don't want to do that.  */
   top_level_src_name = src_name;
   top_level_dst_name = dst_name;
+
+#if __CYGWIN__
+  /* Implicit .exe magic: if SRC_NAME does not have .exe, exists, and must be
+     opened by appending .exe; then add .exe to SRC_NAME, and to DST_NAME if
+     it did not already have the suffix.  */
+  {
+    char *p;
+    if (((p = strchr (src_name, '\0') - 4) <= src_name
+	 || strcasecmp (p, ".exe") != 0)
+	&& cygwin_spelling (src_name) > 0)
+      {
+	/* SRC_NAME needs ".exe" appended.  It may be the wrong case on
+	   strict case checking, and may be confused on managed mounts,
+	   but oh well.  What would be really nice is an extension to
+	   struct stat that called out the implicit suffix that was added
+	   to make stat succeed.  */
+	CYGWIN_APPEND_EXE(src_name);
+	if (*dst_name && dst_name[strlen (dst_name) - 1] != '.'
+	    && ((p = strchr (dst_name, '\0') - 4) <= dst_name
+		|| strcasecmp (p, ".exe") != 0))
+	  /* Non-empty DST_NAME needs the same treatment.  */
+	  CYGWIN_APPEND_EXE (dst_name);
+      }
+  }
+#endif /* __CYGWIN__ */
 
   return copy_internal (src_name, dst_name, nonexistent_dst, 0, NULL,
 			options, true, copy_into_self, rename_succeeded);

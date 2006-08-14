@@ -45,6 +45,10 @@
 #include "quote.h"
 #include "stat-macros.h"
 
+#if __CYGWIN__
+# include "cygwin.h"
+#endif /* __CYGWIN__ */
+
 #define WX_USR (S_IWUSR | S_IXUSR)
 
 /* Ensure that the directory ARG exists.
@@ -95,7 +99,18 @@ make_dir_parents (char const *arg,
   };
   struct ptr_list *leading_dirs = NULL;
 
-  if (stat (arg, &stats) == 0)
+  int err = stat (arg, &stats);
+#if __CYGWIN__
+  /* `mkdir -p foo' should succeed even when `foo.exe' exists.  `mkdir -p
+     d/..' should create d.  The initial stat() is only an optimization,
+     so this check can have false positives.  */
+  if (err == 0 && (strstr (arg, "..") || cygwin_spelling (arg) != 0))
+    {
+      err = -1;
+      errno = ENOENT;
+    }
+#endif /* __CYGWIN__ */
+  if (err == 0)
     {
       if (! S_ISDIR (stats.st_mode))
 	{
@@ -150,7 +165,7 @@ make_dir_parents (char const *arg,
 
       /* If we've saved the cwd and DIR is an absolute file name,
 	 we must chdir to `/' in order to enable the chdir optimization.
-         So if chdir ("/") fails, turn off the optimization.  */
+	 So if chdir ("/") fails, turn off the optimization.  */
       if (do_chdir && dir[0] == '/')
 	{
 	  /* POSIX says "//" might be special, so chdir to "//" if the

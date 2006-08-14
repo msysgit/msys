@@ -56,6 +56,13 @@
 #include "strftime.h"
 #include "xreadlink.h"
 
+#if __CYGWIN__
+# include "cygwin.h"
+/* Whether .exe should be appended to command-line args as needed.  */
+static bool append_exe = false;
+# define APPEND_EXE_OPTION 10000
+#endif
+
 #define NAMEMAX_FORMAT PRIuMAX
 
 #if HAVE_STRUCT_STATVFS_F_BASETYPE
@@ -118,6 +125,9 @@ static struct option const long_options[] = {
   {"format", required_argument, NULL, 'c'},
   {"printf", required_argument, NULL, PRINTF_OPTION},
   {"terse", no_argument, NULL, 't'},
+#if __CYGWIN__
+  {"append-exe", no_argument, NULL, APPEND_EXE_OPTION},
+#endif /* __CYGWIN__ */
   {GETOPT_HELP_OPTION_DECL},
   {GETOPT_VERSION_OPTION_DECL},
   {NULL, 0, NULL, 0}
@@ -694,6 +704,11 @@ do_statfs (char const *filename, bool terse, char const *format)
 {
   STRUCT_STATVFS statfsbuf;
 
+#if __CYGWIN__
+  if (append_exe && cygwin_spelling (filename) == 1)
+    CYGWIN_APPEND_EXE (filename);
+#endif /* __CYGWIN__ */
+
   if (STATFS (filename, &statfsbuf) != 0)
     {
       error (0, errno, _("cannot read file system information for %s"),
@@ -722,6 +737,11 @@ do_stat (char const *filename, bool follow_links, bool terse,
 	 char const *format)
 {
   struct stat statbuf;
+
+#if __CYGWIN__
+  if (append_exe && cygwin_spelling (filename) == 1)
+    CYGWIN_APPEND_EXE (filename);
+#endif /* __CYGWIN__ */
 
   if ((follow_links ? stat : lstat) (filename, &statbuf) != 0)
     {
@@ -787,6 +807,11 @@ Display file or file system status.\n\
                           If you want a newline, include \\n in FORMAT.\n\
   -t, --terse           print the information in terse form\n\
 "), stdout);
+#if __CYGWIN__
+      fputs (_("\
+      --append-exe      append .exe if cygwin magic was needed\n\
+"), stdout);
+#endif /* __CYGWIN__ */
       fputs (HELP_OPTION_DESCRIPTION, stdout);
       fputs (VERSION_OPTION_DESCRIPTION, stdout);
 
@@ -898,6 +923,12 @@ main (int argc, char *argv[])
 	case 't':
 	  terse = true;
 	  break;
+
+#if __CYGWIN__
+	case APPEND_EXE_OPTION:
+	  append_exe = true;
+	  break;
+#endif /* __CYGWIN__ */
 
 	case_GETOPT_HELP_CHAR;
 

@@ -285,6 +285,62 @@ fstype_to_string (int t)
 }
 #endif /* MOUNTED_VMOUNT */
 
+#if __CYGWIN__
+# include <windows.h>
+
+/* Cygwin specific mount point information.  Cygwin uses the Windows drive
+   name as the fs_name, and system or user as the type.  Return true if the
+   name is a share (such as \\server\name), or if Windows confirms the drive
+   is mapped to a remote share.  Modify *pfs_type (which was malloc'd) to
+   add detail to the type learned from Windows.  */
+
+static bool
+cygremote (const char *fs_name, char **pfs_type)
+{
+  bool remote = true;
+  char *base_type = *pfs_type;
+  int base_size = strlen (base_type) + 1;
+  if (isalpha(fs_name[0]) && fs_name[1] == ':')
+    {
+      const char drive[3] = { fs_name[0], ':' };
+      const char *detail;
+      switch (GetDriveType (drive))
+	{
+	case DRIVE_NO_ROOT_DIR:
+	  detail = ",nodisk";
+	  break;
+	case DRIVE_REMOVABLE:
+	  detail = ",removable";
+	  remote = false;
+	  break;
+	case DRIVE_FIXED:
+	  detail = ",fixed";
+	  remote = false;
+	  break;
+	case DRIVE_REMOTE:
+	  detail = ",remote";
+	  break;
+	case DRIVE_CDROM:
+	  detail = ",cdrom";
+	  remote = false;
+	  break;
+	case DRIVE_RAMDISK:
+	  detail = ",ramdisk";
+	  remote = false;
+	  break;
+	default:
+	  detail = ",unknown";
+	}
+      *pfs_type = strcat (xrealloc (base_type, base_size + strlen (detail)),
+			  detail);
+    }
+  else if (fs_name[0] == '\\' && fs_name[1] == '\\')
+    *pfs_type = strcat (xrealloc (base_type,
+				  base_size + strlen (",shared")), ",shared");
+  return remote;
+}
+#endif /* __CYGWIN__ */
+
 /* Return a list of the currently mounted file systems, or NULL on error.
    Add each entry to the tail of the list so that they stay in order.
    If NEED_FS_TYPE is true, ensure that the file system type fields in
@@ -346,7 +402,11 @@ read_file_system_list (bool need_fs_type)
 	me->me_type = xstrdup (mnt->mnt_type);
 	me->me_type_malloced = 1;
 	me->me_dummy = ME_DUMMY (me->me_devname, me->me_type);
+#ifndef __CYGWIN__
 	me->me_remote = ME_REMOTE (me->me_devname, me->me_type);
+#else
+      me->me_remote = cygremote (me->me_devname, &me->me_type);
+#endif
 	devopt = strstr (mnt->mnt_opts, "dev=");
 	if (devopt)
 	  me->me_dev = strtoul (devopt + 4, NULL, 16);
@@ -434,10 +494,10 @@ read_file_system_list (bool need_fs_type)
     DIR *dirp;
     struct rootdir_entry
       {
-        char *name;
-        dev_t dev;
-        ino_t ino;
-        struct rootdir_entry *next;
+	char *name;
+	dev_t dev;
+	ino_t ino;
+	struct rootdir_entry *next;
       };
     struct rootdir_entry *rootdir_list;
     struct rootdir_entry **rootdir_tail;
@@ -451,74 +511,74 @@ read_file_system_list (bool need_fs_type)
     dirp = opendir ("/");
     if (dirp)
       {
-        struct dirent *d;
+	struct dirent *d;
 
-        while ((d = readdir (dirp)) != NULL)
-          {
-            char *name;
-            struct stat statbuf;
+	while ((d = readdir (dirp)) != NULL)
+	  {
+	    char *name;
+	    struct stat statbuf;
 
-            if (strcmp (d->d_name, "..") == 0)
-              continue;
+	    if (strcmp (d->d_name, "..") == 0)
+	      continue;
 
-            if (strcmp (d->d_name, ".") == 0)
-              name = xstrdup ("/");
-            else
-              {
-                name = xmalloc (1 + strlen (d->d_name) + 1);
-                name[0] = '/';
-                strcpy (name + 1, d->d_name);
-              }
+	    if (strcmp (d->d_name, ".") == 0)
+	      name = xstrdup ("/");
+	    else
+	      {
+		name = xmalloc (1 + strlen (d->d_name) + 1);
+		name[0] = '/';
+		strcpy (name + 1, d->d_name);
+	      }
 
-            if (lstat (name, &statbuf) >= 0 && S_ISDIR (statbuf.st_mode))
-              {
+	    if (lstat (name, &statbuf) >= 0 && S_ISDIR (statbuf.st_mode))
+	      {
 		struct rootdir_entry *re = xmalloc (sizeof *re);
-                re->name = name;
-                re->dev = statbuf.st_dev;
-                re->ino = statbuf.st_ino;
+		re->name = name;
+		re->dev = statbuf.st_dev;
+		re->ino = statbuf.st_ino;
 
-                /* Add to the linked list.  */
-                *rootdir_tail = re;
-                rootdir_tail = &re->next;
-              }
-            else
-              free (name);
-          }
-        closedir (dirp);
+		/* Add to the linked list.  */
+		*rootdir_tail = re;
+		rootdir_tail = &re->next;
+	      }
+	    else
+	      free (name);
+	  }
+	closedir (dirp);
       }
     *rootdir_tail = NULL;
 
     for (pos = 0; (dev = next_dev (&pos)) >= 0; )
       if (fs_stat_dev (dev, &fi) >= 0)
-        {
-          /* Note: fi.dev == dev. */
-          struct rootdir_entry *re;
+	{
+	  /* Note: fi.dev == dev. */
+	  struct rootdir_entry *re;
 
-          for (re = rootdir_list; re; re = re->next)
-            if (re->dev == fi.dev && re->ino == fi.root)
-              break;
+	  for (re = rootdir_list; re; re = re->next)
+	    if (re->dev == fi.dev && re->ino == fi.root)
+	      break;
 
 	  me = xmalloc (sizeof *me);
-          me->me_devname = xstrdup (fi.device_name[0] != '\0' ? fi.device_name : fi.fsh_name);
-          me->me_mountdir = xstrdup (re != NULL ? re->name : fi.fsh_name);
-          me->me_type = xstrdup (fi.fsh_name);
+	  me->me_devname = xstrdup (fi.device_name[0] != '\0' ? fi.device_name : fi.fsh_name);
+	  me->me_mountdir = xstrdup (re != NULL ? re->name : fi.fsh_name);
+	  me->me_type = xstrdup (fi.fsh_name);
 	  me->me_type_malloced = 1;
-          me->me_dev = fi.dev;
-          me->me_dummy = 0;
-          me->me_remote = (fi.flags & B_FS_IS_SHARED) != 0;
+	  me->me_dev = fi.dev;
+	  me->me_dummy = 0;
+	  me->me_remote = (fi.flags & B_FS_IS_SHARED) != 0;
 
-          /* Add to the linked list. */
-          *mtail = me;
-          mtail = &me->me_next;
-        }
+	  /* Add to the linked list. */
+	  *mtail = me;
+	  mtail = &me->me_next;
+	}
     *mtail = NULL;
 
     while (rootdir_list != NULL)
       {
-        struct rootdir_entry *re = rootdir_list;
-        rootdir_list = re->next;
-        free (re->name);
-        free (re);
+	struct rootdir_entry *re = rootdir_list;
+	rootdir_list = re->next;
+	free (re->name);
+	free (re);
       }
   }
 #endif /* MOUNTED_FS_STAT_DEV */

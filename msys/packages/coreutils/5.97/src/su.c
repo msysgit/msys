@@ -1,5 +1,5 @@
 /* su for GNU.  Run a shell with substitute user and group IDs.
-   Copyright (C) 1992-2005 Free Software Foundation, Inc.
+   Copyright (C) 1992-2006 Free Software Foundation, Inc.
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -111,6 +111,13 @@
 #endif
 
 #include "error.h"
+
+#if __CYGWIN__
+# include <windows.h>
+# include <sys/cygwin.h>
+/* Use the following define to determine the Windows version */
+# define is_winnt        (GetVersion() < 0x80000000)
+#endif
 
 /* The official name of this program (e.g., no `g' prefix).  */
 #define PROGRAM_NAME "su"
@@ -261,6 +268,68 @@ correct_password (const struct passwd *pw)
 
   if (getuid () == 0 || !correct || correct[0] == '\0')
     return true;
+#if __CYGWIN__
+  /* On cygwin, any process with enough privilege can do passwordless
+     authentication.  http://cygwin.com/ml/cygwin/2006-01/msg00289.html
+     shows how to grant these privileges to an arbitrary account,
+     although this should only be done to trusted users.  */
+  if (is_winnt)
+    {
+      /* I don't know of any good way to see if the current user has
+	 privileges for passwordless login, short of attempting it to see
+	 if it was possible.  This duplicates change_identity(), but
+	 failure is not fatal (because password login may still be
+	 possible).  */
+      bool ok = true;
+      errno = 0;
+      if (initgroups (pw->pw_name, pw->pw_gid) == -1)
+	ok = false;
+      endgrent ();
+      if (setgid (pw->pw_gid))
+	ok = false;
+      if (setuid (pw->pw_uid))
+	ok = false;
+      if (ok)
+	return true;
+
+      /* I tried the following to see if I could detect a privileged user,
+	 but this does not seem to do the trick.  */
+# if 0
+      PRIVILEGE_SET *pset = xmalloc (2 * sizeof (DWORD)
+				     + 3 * sizeof (LUID_AND_ATTRIBUTES));
+      BOOL privileged;
+      HANDLE process;
+      HANDLE access;
+
+      pset->PrivilegeCount = 3;
+      pset->Control = PRIVILEGE_SET_ALL_NECESSARY;
+      if (LookupPrivilegeValue (NULL, SE_CREATE_TOKEN_NAME,
+				&pset->Privilege[0].Luid) == 0)
+	ok = false;
+      pset->Privilege[0].Attributes = SE_PRIVILEGE_ENABLED;
+      if (LookupPrivilegeValue (NULL, SE_ASSIGNPRIMARYTOKEN_NAME,
+				&pset->Privilege[1].Luid) == 0)
+	ok = false;
+      pset->Privilege[1].Attributes = SE_PRIVILEGE_ENABLED;
+      if (LookupPrivilegeValue (NULL, SE_INCREASE_QUOTA_NAME,
+				&pset->Privilege[2].Luid) == 0)
+	ok = false;
+      pset->Privilege[2].Attributes = SE_PRIVILEGE_ENABLED;
+
+      process = GetCurrentProcess ();
+      if (OpenProcessToken (process, TOKEN_QUERY, &access) == 0)
+	ok = false;
+      if (PrivilegeCheck (access, pset, &privileged) == 0)
+	ok = false;
+
+      CloseHandle (process);
+      CloseHandle (access);
+      free (pset);
+      if (ok && privileged)
+	return true;
+# endif /* 0 */
+    }
+#endif /* __CYGWIN__ */
 
   unencrypted = getpass (_("Password:"));
   if (!unencrypted)
@@ -268,6 +337,28 @@ correct_password (const struct passwd *pw)
       error (0, 0, _("getpass: cannot open /dev/tty"));
       return false;
     }
+#if __CYGWIN__
+  /* Windows NT class machines don't store password in pw->pw_passwd, but
+     do support setuid if we use the cygwin password test.
+     See http://cygwin.com/cygwin-ug-net/ntsec.html#ntsec-setuid.  */
+  if (is_winnt)
+    {
+      HANDLE token;
+      /* Try to get the access token from NT.  */
+      errno = 0;
+      token = cygwin_logon_user (pw, unencrypted);
+      if (token == INVALID_HANDLE_VALUE)
+	error (EXIT_FAIL, errno, _("incorrect password, or insufficient "
+				   "privileges to change user (see\n"
+				   "   http://cygwin.com/cygwin-ug-net/"
+				   "ntsec.html#ntsec-setuid)"));
+      /* Inform Cygwin about the new impersonation token.  Now cygwin is
+	 able to switch to that user context by setuid or seteuid calls.  */
+      cygwin_set_impersonation_token (token);
+      encrypted = correct;
+    }
+  else
+#endif /* __CYGWIN__ */
   encrypted = crypt (unencrypted, correct);
   memset (unencrypted, 0, strlen (unencrypted));
   return STREQ (encrypted, correct);

@@ -1,7 +1,7 @@
 ## Process this file with automake to produce Makefile.in -*-Makefile-*-
 
 ## Copyright (C) 1990, 1991, 1993, 1994, 1995, 1996, 1997, 1998, 1999,
-## 2000, 2001, 2002, 2003, 2004, 2005 Free Software Foundation, Inc.
+## 2000, 2001, 2002, 2003, 2004, 2005, 2006 Free Software Foundation, Inc.
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -135,7 +135,10 @@ install-exec-local: su$(EXEEXT)
 	  && chmod $(setuid_root_mode) $$TMPFILE > /dev/null 2>&1 \
 	  && can_create_suid_root_executable=yes; \
 	rm -f $$TMPFILE; \
-	if test $$can_create_suid_root_executable = yes; then \
+##	if test $$can_create_suid_root_executable = yes; then \
+## On cygwin, root does not necessarily exist, suid doesn't work (yet), and
+## su can work from any account with enough privileges.  So always install.
+	if :; then \
 	  $(INSTALL_SU); \
 	else \
 	  echo "WARNING: insufficient access; not installing su"; \

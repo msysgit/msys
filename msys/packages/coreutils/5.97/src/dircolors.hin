@@ -65,11 +65,11 @@ EXEC 01;32
 # (and any comments you want to add after a '#')
 
 # If you use DOS-style suffixes, you may want to uncomment the following:
-#.cmd 01;32 # executables (bright green)
-#.exe 01;32
-#.com 01;32
-#.btm 01;32
-#.bat 01;32
+.cmd 01;32 # executables (bright green)
+.exe 01;32
+.com 01;32
+.btm 01;32
+.bat 01;32
 
 .tar 01;31 # archives or compressed (bright red)
 .tgz 01;31

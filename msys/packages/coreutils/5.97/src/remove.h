@@ -1,6 +1,6 @@
 /* Remove directory entries.
 
-   Copyright (C) 1998, 2000, 2002, 2003, 2004 Free Software
+   Copyright (C) 1998, 2000, 2002, 2003, 2004, 2006 Free Software
    Foundation, Inc.
 
    This program is free software; you can redistribute it and/or modify
@@ -35,7 +35,7 @@ struct rm_options
 
   /* Pointer to the device and inode numbers of `/', when --recursive.
      Otherwise NULL.  */
-  struct dev_ino *root_dev_ino;
+  struct root_dev_ino *root_dev_ino;
 
   /* If nonzero, stdin is a tty.  */
   bool stdin_tty;
