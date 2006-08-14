@@ -1,0 +1,29 @@
+# -*- sh -*-
+if (FOO=FOO; unset FOO) >/dev/null 2>&1; then
+  as_unset=unset
+else
+  as_unset=false
+fi
+
+envvar_check_failed=0
+vars='
+  BLOCKSIZE
+  BLOCK_SIZE
+  DF_BLOCK_SIZE
+  DU_BLOCK_SIZE
+  LS_BLOCK_SIZE
+  SIMPLE_BACKUP_SUFFIX
+  TIME_STYLE
+  VERSION_CONTROL
+'
+for var in $vars
+do
+  $as_unset $var
+  if eval test \"\${$var+set}\" = set; then
+    echo "$0: the $var environment variable is set --" \
+      ' unset it and rerun this test' >&2
+    envvar_check_failed=1
+  fi
+done
+
+test "$envvar_check_fail" = 1 && exit 1

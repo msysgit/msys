@@ -1,0 +1,91 @@
+#! /bin/sh
+
+if test "$VERBOSE" = yes; then
+  set -x
+  ginstall --version
+fi
+
+. $srcdir/../envvar-check
+PRIV_CHECK_ARG=require-non-root . $srcdir/../priv-check
+
+dir=dir
+file=file
+
+pwd=`pwd`
+t0=`echo "$0"|sed 's,.*/,,'`.tmp; tmp=$t0/$$
+trap 'status=$?; cd $pwd; chmod -R u+rwx $t0; rm -rf $t0 && exit $status' 0
+trap '(exit $?); exit $?' 1 2 13 15
+
+framework_failure=0
+mkdir -p $tmp || framework_failure=1
+cd $tmp || framework_failure=1
+
+rm -rf $dir $file || framework_failure=1
+mkdir -p $dir || framework_failure=1
+echo foo > $file || framework_failure=1
+
+if test $framework_failure = 1; then
+  echo 'failure in testing framework'
+  exit 1
+fi
+
+fail=0
+ginstall $file $dir || fail=1
+# Make sure the source file still exists.
+test -f $file || fail=1
+# Make sure the dest file has been created.
+test -f $dir/$file || fail=1
+
+# Make sure strip works.
+dd=dd$EXEEXT
+dd2=dd2$EXEEXT
+cp $pwd/../../src/$dd . || fail=1
+cp $dd $dd2 || fail=1
+
+strip $dd2 || \
+  {
+    cat 1>&2 <<EOF
+$0: WARNING!!!
+Your strip command doesn't seem to work, so skipping
+the test of install's --strip option.
+EOF
+    exit 77
+  }
+
+# This test would fail with 3.16s when using versions of strip that
+# don't work on read-only files (the one from binutils works fine).
+ginstall -s -c -m 555 $dd $dir || fail=1
+# Make sure the source file is still around.
+test -f $dd || fail=1
+
+# Make sure that the destination file has the requested permissions.
+set X `ls -l $dir/$dd`
+shift
+test "$1" = -r-xr-xr-x || fail=1
+
+# These failed in coreutils CVS from 2004-06-25 to 2004-08-11.
+ginstall -d . || fail=1
+ginstall -d newdir || fail=1
+test -d newdir || fail=1
+ginstall -d newdir1 newdir2 newdir3 || fail=1
+test -d newdir1 || fail=1
+test -d newdir2 || fail=1
+test -d newdir3 || fail=1
+
+# This fails because mkdir-p.c's make_dir_parents fails to return to its
+# initial working directory ($abs) after creating the first argument, and
+# hence cannot do anything meaningful with the following relative-named dirs.
+abs=$pwd/$tmp
+mkdir sub && cd sub
+chmod 0 .; ginstall -d $abs/xx/yy rel/sub1 rel/sub2 2> /dev/null && fail=1
+chmod 755 $abs/sub
+
+# Ensure that the first argument-dir has been created.
+test -d $abs/xx/yy || fail=1
+
+# Make sure that the `rel' directory was not created...
+test -d $abs/sub/rel && fail=1
+# and make sure it was not created in the wrong place.
+test -d $abs/xx/rel && fail=1
+
+(exit $fail); exit $fail
