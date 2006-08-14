@@ -1,0 +1,1454 @@
+This is /devshop/msys/rt-HEAD/packages/findutils/4.3/doc/find.info,
+produced by makeinfo version 4.3 from
+/devshop/msys/rt-HEAD/packages/findutils/4.3/doc/find.texi.
+
+INFO-DIR-SECTION Basics
+START-INFO-DIR-ENTRY
+* Finding files: (find).        Operating on files matching certain criteria.
+END-INFO-DIR-ENTRY
+
+INFO-DIR-SECTION Individual utilities
+START-INFO-DIR-ENTRY
+* find: (find)Invoking find.                    Finding and acting on files.
+* locate: (find)Invoking locate.                Finding files in a database.
+* updatedb: (find)Invoking updatedb.            Building the locate database.
+* xargs: (find)Invoking xargs.                  Operating on many files.
+END-INFO-DIR-ENTRY
+
+
+File: find.info,  Node: Copying Permissions,  Next: Changing Special Permissions,  Prev: Setting Permissions,  Up: Symbolic Modes
+
+Copying Existing Permissions
+----------------------------
+
+   You can base a file's permissions on its existing permissions.  To do
+this, instead of using a series of `r', `w', or `x' letters after the
+operator, you use the letter `u', `g', or `o'.  For example, the mode
+
+     o+g
+
+adds the permissions for users who are in a file's group to the
+permissions that other users have for the file.  Thus, if the file
+started out as mode 664 (`rw-rw-r--'), the above mode would change it
+to mode 666 (`rw-rw-rw-').  If the file had started out as mode 741
+(`rwxr----x'), the above mode would change it to mode 745
+(`rwxr--r-x').  The `-' and `=' operations work analogously.
+
+
+File: find.info,  Node: Changing Special Permissions,  Next: Conditional Executability,  Prev: Copying Permissions,  Up: Symbolic Modes
+
+Changing Special Permissions
+----------------------------
+
+   In addition to changing a file's read, write, and execute
+permissions, you can change its special permissions.  *Note Mode
+Structure::, for a summary of these permissions.
+
+   To change a file's permission to set the user ID on execution, use
+`u' in the USERS part of the symbolic mode and `s' in the PERMISSIONS
+part.
+
+   To change a file's permission to set the group ID on execution, use
+`g' in the USERS part of the symbolic mode and `s' in the PERMISSIONS
+part.
+
+   To change a file's permission to set the restricted deletion flag or
+sticky bit, omit the USERS part of the symbolic mode (or use `a') and
+put `t' in the PERMISSIONS part.
+
+   For example, to add set-user-ID permission to a program, you can use
+the mode:
+
+     u+s
+
+   To remove both set-user-ID and set-group-ID permission from it, you
+can use the mode:
+
+     ug-s
+
+   To set the restricted deletion flag or sticky bit, you can use the
+mode:
+
+     +t
+
+   The combination `o+s' has no effect.  On GNU systems the
+combinations `u+t' and `g+t' have no effect, and `o+t' acts like plain
+`+t'.
+
+   The `=' operator is not very useful with special permissions; for
+example, the mode:
+
+     o=t
+
+does set the restricted deletion flag or sticky bit, but it also
+removes all read, write, and execute permissions that users not in the
+file's group might have had for it.
+
+
+File: find.info,  Node: Conditional Executability,  Next: Multiple Changes,  Prev: Changing Special Permissions,  Up: Symbolic Modes
+
+Conditional Executability
+-------------------------
+
+   There is one more special type of symbolic permission: if you use
+`X' instead of `x', execute permission is affected only if the file is
+a directory or already had execute permission.
+
+   For example, this mode:
+
+     a+X
+
+gives all users permission to search directories, or to execute files if
+anyone could execute them before.
+
+
+File: find.info,  Node: Multiple Changes,  Next: Umask and Protection,  Prev: Conditional Executability,  Up: Symbolic Modes
+
+Making Multiple Changes
+-----------------------
+
+   The format of symbolic modes is actually more complex than described
+above (*note Setting Permissions::).  It provides two ways to make
+multiple changes to files' permissions.
+
+   The first way is to specify multiple OPERATION and PERMISSIONS parts
+after a USERS part in the symbolic mode.
+
+   For example, the mode:
+
+     og+rX-w
+
+gives users other than the owner of the file read permission and, if it
+is a directory or if someone already had execute permission to it,
+gives them execute permission; and it also denies them write permission
+to the file.  It does not affect the permission that the owner of the
+file has for it.  The above mode is equivalent to the two modes:
+
+     og+rX
+     og-w
+
+   The second way to make multiple changes is to specify more than one
+simple symbolic mode, separated by commas.  For example, the mode:
+
+     a+r,go-w
+
+gives everyone permission to read the file and removes write permission
+on it for all users except its owner.  Another example:
+
+     u=rwx,g=rx,o=
+
+sets all of the non-special permissions for the file explicitly.  (It
+gives users who are not in the file's group no permission at all for
+it.)
+
+   The two methods can be combined.  The mode:
+
+     a+r,g+x-w
+
+gives all users permission to read the file, and gives users who are in
+the file's group permission to execute it, as well, but not permission
+to write to it.  The above mode could be written in several different
+ways; another is:
+
+     u+r,g+rx,o+r,g-w
+
+
+File: find.info,  Node: Umask and Protection,  Prev: Multiple Changes,  Up: Symbolic Modes
+
+The Umask and Protection
+------------------------
+
+   If the USERS part of a symbolic mode is omitted, it defaults to `a'
+(affect all users), except that any permissions that are _set_ in the
+system variable `umask' are _not affected_.  The value of `umask' can
+be set using the `umask' command.  Its default value varies from system
+to system.
+
+   Omitting the USERS part of a symbolic mode is generally not useful
+with operations other than `+'.  It is useful with `+' because it
+allows you to use `umask' as an easily customizable protection against
+giving away more permission to files than you intended to.
+
+   As an example, if `umask' has the value 2, which removes write
+permission for users who are not in the file's group, then the mode:
+
+     +w
+
+adds permission to write to the file to its owner and to other users who
+are in the file's group, but _not_ to other users.  In contrast, the
+mode:
+
+     a+w
+
+ignores `umask', and _does_ give write permission for the file to all
+users.
+
+
+File: find.info,  Node: Numeric Modes,  Prev: Symbolic Modes,  Up: File Permissions
+
+Numeric Modes
+=============
+
+   As an alternative to giving a symbolic mode, you can give an octal
+(base 8) number that represents the new mode.  This number is always
+interpreted in octal; you do not have to add a leading 0, as you do in
+C.  Mode 0055 is the same as mode 55.
+
+   A numeric mode is usually shorter than the corresponding symbolic
+mode, but it is limited in that it cannot take into account a file's
+previous permissions; it can only set them absolutely.
+
+   The permissions granted to the user, to other users in the file's
+group, and to other users not in the file's group each require three
+bits, which are represented as one octal digit.  The three special
+permissions also require one bit each, and they are as a group
+represented as another octal digit.  Here is how the bits are arranged,
+starting with the lowest valued bit:
+
+     Value in  Corresponding
+     Mode      Permission
+     
+               Other users not in the file's group:
+        1      Execute
+        2      Write
+        4      Read
+     
+               Other users in the file's group:
+       10      Execute
+       20      Write
+       40      Read
+     
+               The file's owner:
+      100      Execute
+      200      Write
+      400      Read
+     
+               Special permissions:
+     1000      Restricted deletion flag or sticky bit
+     2000      Set group ID on execution
+     4000      Set user ID on execution
+
+   For example, numeric mode 4755 corresponds to symbolic mode
+`u=rwxs,go=rx', and numeric mode 664 corresponds to symbolic mode
+`ug=rw,o=r'.  Numeric mode 0 corresponds to symbolic mode `a='.
+
+
+File: find.info,  Node: Reference,  Next: Common Tasks,  Prev: File Permissions,  Up: Top
+
+Reference
+*********
+
+   Below are summaries of the command line syntax for the programs
+discussed in this manual.
+
+* Menu:
+
+* Invoking find::
+* Invoking locate::
+* Invoking updatedb::
+* Invoking xargs::
+* Regular Expressions::
+* Environment Variables::
+
+
+File: find.info,  Node: Invoking find,  Next: Invoking locate,  Up: Reference
+
+Invoking `find'
+===============
+
+     find [-H] [-L] [-P] [FILE...] [EXPRESSION]
+
+   `find' searches the directory tree rooted at each file name FILE by
+evaluating the EXPRESSION on each file it finds in the tree.
+
+   The options `-H', `-L' or `-P' may be specified at the start of the
+command line (if none of these is specified, `-P' is assumed).  If you
+specify more than one of these options, the last one specified takes
+effect (but note that the `-follow' option is equivalent to `-L').  The
+arguments after these are a list of files or directories that should be
+searched.
+
+   This list of files to search is followed by a list of expressions
+describing the files we wish to search for.  The first part of the
+expression is recognised by the fact that it begins with `-', `(', `)',
+`,', or `!'.  Any arguments after it are the rest of the expression.
+If no files are given, the current directory is used.  If no expression
+is given, the expression `-print' is used.
+
+   `find' exits with status zero if all files matched are processed
+successfully, greater than 0 if errors occur.
+
+   Three options can precede the list of files.  They determine the way
+that symbolic links are handled.
+
+`-P'
+     Never follow symbolic links (this is the default), except in the
+     case of the `-xtype' predicate.
+
+`-L'
+     Always follow symbolic links, except in the case of the `-xtype'
+     predicate.
+
+`-H'
+     Follow symbolic links specified in the list of files to search, or
+     which are otherwise specified on the command line.
+
+   If `find' would follow a symbolic link, but cannot for any reason
+(for example, because it has insufficient permissions or the link is
+broken), it falls back on using the properties of the symbolic link
+itself.  *Note Symbolic Links:: for a more complete description of how
+symbolic links are handled.
+
+   *Note Primary Index::, for a summary of all of the tests, actions,
+and options that the expression can contain.  If the expression is
+missing, `-print' is assumed.
+
+   `find' also recognises two options for administrative use:
+
+`--help'
+     Print a summary of the command line usage and exit.
+
+`--version'
+`-version'
+     Print the version number of `find' and exit.
+
+* Menu:
+
+* Warning Messages::
+
+
+File: find.info,  Node: Warning Messages,  Up: Invoking find
+
+Warning Messages
+----------------
+
+   If there is an error on the `find' command line, an error message is
+normally issued.  However, there are some usages that are inadvisable
+but which `find' should still accept.  Under these circumstances,
+`find' may issue a warning message.  By default, warnings are enabled
+only if `find' is being run interactively (specifically, if the
+standard input is a terminal).  Warning messages can be controlled
+explicitly by the use of options on the command line:
+
+`-warn'
+     Issue warning messages where appropriate.
+
+`-nowarn'
+     Do not issue warning messages.
+
+   These options take effect at the point on the command line where they
+are specified.  Therefore if you specify `-nowarn' at the end of the
+command line, you will not see warning messages for any problems
+occurring before that.  The warning messages affected by the above
+options are triggered by:
+
+   - Use of the `-d' option which is deprecated; please use `-depth'
+     instead, since the latter is POSIX-compliant.
+
+   - Use of the `-ipath' option which is deprecated; please use
+     `-iwholename' instead.
+
+   - Specifying an option (for example `-mindepth') after a non-option
+     (for example `-type' or `-print') on the command line.
+
+   The default behaviour above is designed to work in that way so that
+existing shell scripts which use such constructs don't generate
+spurious errors, but people will be made aware of the problem.
+
+   Some warning messages are issued for less common or more serious
+problems, and consequently cannot be turned off:
+
+   - Use of an unrecognised backslash escape sequence with `-fprintf'
+
+   - Use of an unrecognised formatting directive with `-fprintf'
+
+
+File: find.info,  Node: Invoking locate,  Next: Invoking updatedb,  Prev: Invoking find,  Up: Reference
+
+Invoking `locate'
+=================
+
+     locate [OPTION...] PATTERN...
+
+   For each PATTERN given `locate' searches one or more file name
+databases returning each match of PATTERN.
+
+   For each PATTERN given `locate' searches one or more file name
+databases returning each match of PATTERN.
+
+`--all'
+`-A'
+     Print only names which match all non-option arguments, not those
+     matching one or more non-option arguments.
+
+`--basename'
+`-b'
+     The specified pattern is matched against just the last component of
+     the name of a file in the `locate' database.  This last component
+     is also called the "base name".  For example, the base name of
+     `/tmp/mystuff/foo.old.c' is `foo.old.c'.  If the pattern contains
+     metacharacters, it must match the base name exactly.  If not, it
+     must match part of the base name.
+
+`--count'
+`-c'
+     Instead of printing the matched file names, just print the total
+     number of matches found, unless `--print' (`-p') is also present.
+
+`--database=PATH'
+`-d PATH'
+     Instead of searching the default `locate' database, `locate'
+     search the file name databases in PATH, which is a colon-separated
+     list of database file names.  You can also use the environment
+     variable `LOCATE_PATH' to set the list of database files to
+     search.  The option overrides the environment variable if both are
+     used.  Empty elements in PATH (that is, a leading or trailing
+     colon, or two colons in a row) are taken to stand for the default
+     database.  A database can be supplied on stdin, using `-' as an
+     element of `path'. If more than one element of `path' is `-',
+     later instances are ignored (but a warning message is printed).
+
+`--existing'
+`-e'
+     Only print out such names which currently exist (instead of such
+     names which existed when the database was created).  Note that
+     this may slow down the program a lot, if there are many matches in
+     the database.  The way in which broken symbolic links are treated
+     is affected by the `-L', `-P' and `-H' options.  Please note that
+     it is possible for the file to be deleted after `locate' has
+     checked that it exists, but before you use it.
+
+`--non-existing'
+`-E'
+     Only print out such names which currently do not exist (instead of
+     such names which existed when the database was created).  Note that
+     this may slow down the program a lot, if there are many matches in
+     the database.  The way in which broken symbolic links are treated
+     is affected by the `-L', `-P' and `-H' options.  Please note that
+     `locate' checks that the file does not exist, but a file of the
+     same name might be created after `locate''s check but before you
+     read `locate''s output.
+
+`--follow'
+`-L'
+     If testing for the existence of files (with the `-e' or `-E'
+     options), consider broken symbolic links to be non-existing.  This
+     is the default behaviour.
+
+`--nofollow'
+`-P'
+`-H'
+     If testing for the existence of files (with the `-e' or `-E'
+     options), treat broken symbolic links as if they were existing
+     files.  The `-H' form of this option is provided purely for
+     similarity with `find'; the use of `-P' is recommended over `-H'.
+
+`--ignore-case'
+`-i'
+     Ignore case distinctions in both the pattern and the file names.
+
+`--limit=N'
+`-l N'
+     Limit the number of results printed to N.  When used with the
+     `--count' option, the value printed will never be larger than this
+     limit.
+
+`--mmap'
+`-m'
+     Accepted but does nothing.  The option is supported only to provide
+     compatibility with BSD's `locate'.
+
+`--null'
+`-0'
+     Results are separated with the ASCII NUL character rather than the
+     newline character.  To get the full benefit of the use of this
+     option, use the new `locate' database format (that is the default
+     anyway).
+
+`--print'
+`-p'
+     Print search results when they normally would not, because of the
+     presence of `--statistics' (`-S') or `--count' (`-c').
+
+`--wholename'
+`-w'
+     The specified pattern is matched against the whole name of the
+     file in the `locate' database.  If the pattern contains
+     metacharacters, it must match exactly.  If not, it must match part
+     of the whole file name.  This is the default behaviour.
+
+`--regex'
+`-r'
+     Instead of using substring or shell glob matching, the pattern
+     specified on the command line is understood to be a regular
+     expression.  GNU Emacs-style regular expressions are assumed unless
+     the `--regextype' option is also given.  File names from the
+     `locate' database are matched using the specified regular
+     expression.  If the `-i' flag is also given, matching is
+     case-insensitive.  Matches are performed against the whole path
+     name, and so by default a pathname will be matched if any part of
+     it matches the specified regular expression.  The regular
+     expression may use `^' or `$' to anchor a match at the beginning
+     or end of a pathname.
+
+`--regextype'
+     This option changes the regular expression syntax and behaviour
+     used by the `--regex' option.  *Note Regular Expressions:: for more
+     information on the regular expression dialects understood by GNU
+     findutils.
+
+`--stdio'
+`-s'
+     Accepted but does nothing.  The option is supported only to provide
+     compatibility with BSD's `locate'.
+
+`--statistics'
+`-S'
+     Print some summary information for each `locate' database.  No
+     search is performed unless non-option arguments are given.
+
+`--help'
+     Print a summary of the command line usage for `locate' and exit.
+
+`--version'
+     Print the version number of `locate' and exit.
+
+
+File: find.info,  Node: Invoking updatedb,  Next: Invoking xargs,  Prev: Invoking locate,  Up: Reference
+
+Invoking `updatedb'
+===================
+
+     updatedb [OPTION...]
+
+   `updatedb' creates and updates the database of file names used by
+`locate'.  `updatedb' generates a list of files similar to the output
+of `find' and then uses utilities for optimizing the database for
+performance.  `updatedb' is often run periodically as a `cron' job and
+configured with environment variables or command options.  Typically,
+operating systems have a shell script that "exports" configurations for
+variable definitions and uses another schell script that "sources" the
+configuration file into the environment and then executes `updatedb' in
+the environment.
+
+   `updatedb' creates and updates the database of file names used by
+`locate'.  `updatedb' generates a list of files similar to the output
+of `find' and then uses utilities for optimizing the database for
+performance.  `updatedb' is often run periodically as a `cron' job and
+configured with environment variables or command options.  Typically,
+operating systems have a shell script that "exports" configurations for
+variable definitions and uses another schell script that "sources" the
+configuration file into the environment and then executes `updatedb' in
+the environment.
+
+`--findoptions='OPTION...''
+     Global options to pass on to `find'.  The environment variable
+     `FINDOPTIONS' also sets this value.  Default is none.
+
+`--localpaths='PATH...''
+     Non-network directories to put in the database.  Default is `/'.
+
+`--netpaths='PATH...''
+     Network (NFS, AFS, RFS, etc.) directories to put in the database.
+     The environment variable `NETPATHS' also sets this value.  Default
+     is none.
+
+`--prunepaths='PATH...''
+     Directories to omit from the database, which would otherwise be
+     included.  The environment variable `PRUNEPATHS' also sets this
+     value.  Default is `/tmp /usr/tmp /var/tmp /afs'.  The paths are
+     used as regular expressions (with `find ... -regex', so you need
+     to specify these paths in the same way that `find' will encounter
+     them.  This means for example that the paths must not include
+     trailing slashes.
+
+`--prunefs='PATH...''
+     Filesystems to omit from the database, which would otherwise be
+     included.  Note that files are pruned when a filesystem is reached;
+     Any filesystem mounted under an undesired filesystem will be
+     ignored.  The environment variable `PRUNEFS' also sets this value.
+     Default is `nfs NFS proc'.
+
+`--output=DBFILE'
+     The database file to build.  Default is system-dependent, but
+     typically `/usr/local/var/locatedb'.
+
+`--localuser=USER'
+     The user to search the non-network directories as, using `su'.
+     Default is to search the non-network directories as the current
+     user.  You can also use the environment variable `LOCALUSER' to
+     set this user.
+
+`--netuser=USER'
+     The user to search network directories as, using `su'.  Default
+     `user' is `daemon'.  You can also use the environment variable
+     `NETUSER' to set this user.
+
+`--old-format'
+     Generate a `locate' database in the old format, for compatibility
+     with versions of `locate' other than GNU `locate'.  Using this
+     option means that `locate' will not be able to properly handle
+     non-ASCII characters in file names (that is, file names containing
+     characters which have the eighth bit set, such as many of the
+     characters from the ISO-8859-1 character set).
+
+`--help'
+     Print a summary of the command line usage and exit.
+
+`--version'
+     Print the version number of `updatedb' and exit.
+
+
+File: find.info,  Node: Invoking xargs,  Next: Regular Expressions,  Prev: Invoking updatedb,  Up: Reference
+
+Invoking `xargs'
+================
+
+     xargs [OPTION...] [COMMAND [INITIAL-ARGUMENTS]]
+
+   `xargs' exits with the following status:
+
+0
+     if it succeeds
+
+123
+     if any invocation of the command exited with status 1-125
+
+124
+     if the command exited with status 255
+
+125
+     if the command is killed by a signal
+
+126
+     if the command cannot be run
+
+127
+     if the command is not found
+
+1
+     if some other error occurred.
+
+   Exit codes greater than 128 are used by the shell to indicate that a
+program died due to a fatal signal.
+
+`--arg-file=INPUTFILE'
+`-a oINPUTFILE'
+     Read names from the file INPUTFILE instead of standard input.  If
+     you use this option, the standard input stream remains unchanged
+     when commands are run. Otherwise, stdin is redirected from
+     `/dev/null'.
+
+`--null'
+`-0'
+     Input file names are terminated by a null character instead of by
+     whitespace, and any quotes and backslash characters are not
+     considered special (every character is taken literally).  Disables
+     the end of file string, which is treated like any other argument.
+
+`--delimiter DELIM'
+`-d DELIM'
+     Input file names are terminated by the specified character DELIM
+     instead of by whitespace, and any quotes and backslash characters
+     are not considered special (every character is taken literally).
+     Disables the end of file string, which is treated like any other
+     argument.
+
+     The specified delimiter may be a single character, a C-style
+     character escape such as `\n', or an octal or hexadecimal escape
+     code.  Octal and hexadecimal escape codes are understood as for the
+     `printf' command.  Multibyte characters are not supported.
+
+`-E EOF-STR'
+`--eof[=EOF-STR]'
+`-e[EOF-STR]'
+     Set the end of file string to EOF-STR.  If the end of file string
+     occurs as a line of input, the rest of the input is ignored.  If
+     EOF-STR is omitted (`-e') or blank (either `-e' or `-E'), there is
+     no end of file string.  The `-e' form of this option is deprecated
+     in favour of the POSIX-compliant `-E' option, which you should use
+     instead.  As of GNU xargs version 4.2.9, the default behaviour of
+     xargs is not to have a logical end-of-file marker.  The POSIX
+     standard (IEEE Std 1003.1, 2004 Edition) allows this.
+
+`--help'
+     Print a summary of the options to `xargs' and exit.
+
+`-I REPLACE-STR'
+`--replace[=REPLACE-STR]'
+`-i[REPLACE-STR]'
+     Replace occurrences of REPLACE-STR in the initial arguments with
+     names read from standard input.  Also, unquoted blanks do not
+     terminate arguments; instead, the input is split at newlines only.
+     If REPLACE-STR is omitted (omitting it is allowed only for `-i'),
+     it defaults to `{}' (like for `find -exec').  Implies `-x' and `-l
+     1'.  The `-i' option is deprecated in favour of the `-I' option.
+
+`-L MAX-LINES'
+`--max-lines[=MAX-LINES]'
+`-l[MAX-LINES]'
+     Use at most MAX-LINES non-blank input lines per command line.  For
+     `-l', MAX-LINES defaults to 1 if omitted.  For `-L', the argument
+     is mandatory.  Trailing blanks cause an input line to be logically
+     continued on the next input line, for the purpose of counting the
+     lines.  Implies `-x'.  The `-l' form of this option is deprecated
+     in favour of the POSIX-compliant `-L' option.
+
+`--max-args=MAX-ARGS'
+`-n MAX-ARGS'
+     Use at most MAX-ARGS arguments per command line.  Fewer than
+     MAX-ARGS arguments will be used if the size (see the `-s' option)
+     is exceeded, unless the `-x' option is given, in which case
+     `xargs' will exit.
+
+`--interactive'
+`-p'
+     Prompt the user about whether to run each command line and read a
+     line from the terminal.  Only run the command line if the response
+     starts with `y' or `Y'.  Implies `-t'.
+
+`--no-run-if-empty'
+`-r'
+     If the standard input is completely empty, do not run the command.
+     By default, the command is run once even if there is no input.
+
+`--max-chars=MAX-CHARS'
+`-s MAX-CHARS'
+     Use at most MAX-CHARS characters per command line, including the
+     command, initial arguments and any terminating nulls at the ends of
+     the argument strings.
+
+`--show-limits'
+     Display the limits on the command-line length which are imposed by
+     the operating system, `xargs'' choice of buffer size and the `-s'
+     option.  Pipe the input from `/dev/null' (and perhaps specify
+     `--no-run-if-empty') if you don't want `xargs' to do anything.
+
+`--verbose'
+`-t'
+     Print the command line on the standard error output before
+     executing it.
+
+`--version'
+     Print the version number of `xargs' and exit.
+
+`--exit'
+`-x'
+     Exit if the size (see the `-s' option) is exceeded.
+
+`--max-procs=MAX-PROCS'
+`-P MAX-PROCS'
+     Run simultaneously up to MAX-PROCS processes at once; the default
+     is 1.  If MAX-PROCS is 0, `xargs' will run as many processes as
+     possible simultaneously.
+
+
+File: find.info,  Node: Regular Expressions,  Next: Environment Variables,  Prev: Invoking xargs,  Up: Reference
+
+Regular Expressions
+===================
+
+   The `-regex' and `-iregex' tests of `find' allow matching by regular
+expression, as does the `--regex' option of `locate'.  There are many
+different types of Regular Expression, but the type used by `find' and
+`locate' is the same as is used in GNU Emacs.  Both programs provide an
+option which allows you to select an alternative regular expression
+syntax; for `find' this is the `-regextype' option, and for `locate'
+this is the `--regextype' option.
+
+   These options take a single argument, which indicates the specific
+regular expression syntax and behaviour that should be used.  This
+should be one of the following:
+
+* Menu:
+
+* findutils-default regular expression syntax::
+* awk regular expression syntax::
+* egrep regular expression syntax::
+* emacs regular expression syntax::
+* gnu-awk regular expression syntax::
+* grep regular expression syntax::
+* posix-awk regular expression syntax::
+* posix-basic regular expression syntax::
+* posix-egrep regular expression syntax::
+* posix-extended regular expression syntax::
+
+
+File: find.info,  Node: findutils-default regular expression syntax,  Next: awk regular expression syntax,  Up: Regular Expressions
+
+`findutils-default' regular expression syntax
+---------------------------------------------
+
+   The character `.' matches any single character.
+
+`+'
+     indicates that the regular expression should match one or more
+     occurrences of the previous atom or regexp.
+
+`?'
+     indicates that the regular expression should match zero or one
+     occurrence of the previous atom or regexp.
+
+`\+'
+     matches a `+'
+
+`\?'
+     matches a `?'.
+
+   Bracket expressions are used to match ranges of characters.  Bracket
+expressions where the range is backward, for example `[z-a]', are
+ignored.  Within square brackets, `\' is taken literally.  Character
+classes are not supported, so for example you would need to use `[0-9]'
+instead of `[[:digit:]]'.
+
+   GNU extensions are supported:
+  1. `\w' matches a character within a word
+
+  2. `\W' matches a character which is not within a word
+
+  3. `\<' matches the beginning of a word
+
+  4. `\>' matches the end of a word
+
+  5. `\b' matches a word boundary
+
+  6. `\B' matches characters which are not a word boundary
+
+  7. `\`' matches the beginning of the whole input
+
+  8. `\'' matches the end of the whole input
+
+
+   Grouping is performed with backslashes followed by parentheses `\(',
+`\)'.  A backslash followed by a digit acts as a back-reference and
+matches the same thing as the previous grouped expression indicated by
+that number.  For example `\2' matches the second group expression.
+The order of group expressions is determined by the position of their
+opening parenthesis `\('.
+
+   The alternation operator is `\|'.
+
+   The character `^' only represents the beginning of a string when it
+appears:
+  1. At the beginning of a regular expression
+
+  2. After an open-group, signified by `\('
+
+  3. After the alternation operator `\|'
+
+
+   The character `$' only represents the end of a string when it
+appears:
+  1. At the end of a regular expression
+
+  2. Before an close-group, signified by `\)'
+
+  3. Before the alternation operator `\|'
+
+
+   `*', `+' and `?' are special at any point in a regular expression
+except:
+  1. At the beginning of a regular expression
+
+  2. After an open-group, signified by `\('
+
+  3. After the alternation operator `\|'
+
+
+   The longest possible match is returned; this applies to the regular
+expression as a whole and (subject to this constraint) to
+subexpressions within groups.
+
+
+File: find.info,  Node: awk regular expression syntax,  Next: egrep regular expression syntax,  Prev: findutils-default regular expression syntax,  Up: Regular Expressions
+
+`awk' regular expression syntax
+-------------------------------
+
+   The character `.' matches any single character except the null
+character.
+
+`+'
+     indicates that the regular expression should match one or more
+     occurrences of the previous atom or regexp.
+
+`?'
+     indicates that the regular expression should match zero or one
+     occurrence of the previous atom or regexp.
+
+`\+'
+     matches a `+'
+
+`\?'
+     matches a `?'.
+
+   Bracket expressions are used to match ranges of characters.  Bracket
+expressions where the range is backward, for example `[z-a]', are
+invalid.  Within square brackets, `\' can be used to quote the
+following character.  Character classes are not supported, so for
+example you would need to use `[0-9]' instead of `[[:digit:]]'.
+
+   GNU extensions are not supported and so `\w', `\W', `\<', `\>',
+`\b', `\B', `\`', and `\'' match `w', `W', `<', `>', `b', `B', ``', and
+`'' respectively.
+
+   Grouping is performed with parentheses `()'.  An unmatched `)'
+matches just itself.  A backslash followed by a digit matches that
+digit.
+
+   The alternation operator is `|'.
+
+   The characters `^' and `$' always represent the beginning and end of
+a string respectively, except within square brackets.  Within brackets,
+`^' can be used to invert the membership of the character class being
+specified.
+
+   `*', `+' and `?' are special at any point in a regular expression
+except:
+  1. At the beginning of a regular expression
+
+  2. After an open-group, signified by `('
+
+  3. After the alternation operator `|'
+
+
+   The longest possible match is returned; this applies to the regular
+expression as a whole and (subject to this constraint) to
+subexpressions within groups.
+
+
+File: find.info,  Node: egrep regular expression syntax,  Next: emacs regular expression syntax,  Prev: awk regular expression syntax,  Up: Regular Expressions
+
+`egrep' regular expression syntax
+---------------------------------
+
+   The character `.' matches any single character except newline.
+
+`+'
+     indicates that the regular expression should match one or more
+     occurrences of the previous atom or regexp.
+
+`?'
+     indicates that the regular expression should match zero or one
+     occurrence of the previous atom or regexp.
+
+`\+'
+     matches a `+'
+
+`\?'
+     matches a `?'.
+
+   Bracket expressions are used to match ranges of characters.  Bracket
+expressions where the range is backward, for example `[z-a]', are
+ignored.  Within square brackets, `\' is taken literally.  Character
+classes are supported; for example `[[:digit:]]' will match a single
+decimal digit.  Non-matching lists `[^...]' do not ever match newline.
+
+   GNU extensions are supported:
+  1. `\w' matches a character within a word
+
+  2. `\W' matches a character which is not within a word
+
+  3. `\<' matches the beginning of a word
+
+  4. `\>' matches the end of a word
+
+  5. `\b' matches a word boundary
+
+  6. `\B' matches characters which are not a word boundary
+
+  7. `\`' matches the beginning of the whole input
+
+  8. `\'' matches the end of the whole input
+
+
+   Grouping is performed with parentheses `()'.  A backslash followed
+by a digit acts as a back-reference and matches the same thing as the
+previous grouped expression indicated by that number.  For example `\2'
+matches the second group expression.  The order of group expressions is
+determined by the position of their opening parenthesis `('.
+
+   The alternation operator is `|'.
+
+   The characters `^' and `$' always represent the beginning and end of
+a string respectively, except within square brackets.  Within brackets,
+`^' can be used to invert the membership of the character class being
+specified.
+
+   The characters `*', `+' and `?' are special anywhere in a regular
+expression.
+
+   The longest possible match is returned; this applies to the regular
+expression as a whole and (subject to this constraint) to
+subexpressions within groups.
+
+
+File: find.info,  Node: emacs regular expression syntax,  Next: gnu-awk regular expression syntax,  Prev: egrep regular expression syntax,  Up: Regular Expressions
+
+`emacs' regular expression syntax
+---------------------------------
+
+   The character `.' matches any single character except newline.
+
+`+'
+     indicates that the regular expression should match one or more
+     occurrences of the previous atom or regexp.
+
+`?'
+     indicates that the regular expression should match zero or one
+     occurrence of the previous atom or regexp.
+
+`\+'
+     matches a `+'
+
+`\?'
+     matches a `?'.
+
+   Bracket expressions are used to match ranges of characters.  Bracket
+expressions where the range is backward, for example `[z-a]', are
+ignored.  Within square brackets, `\' is taken literally.  Character
+classes are not supported, so for example you would need to use `[0-9]'
+instead of `[[:digit:]]'.
+
+   GNU extensions are supported:
+  1. `\w' matches a character within a word
+
+  2. `\W' matches a character which is not within a word
+
+  3. `\<' matches the beginning of a word
+
+  4. `\>' matches the end of a word
+
+  5. `\b' matches a word boundary
+
+  6. `\B' matches characters which are not a word boundary
+
+  7. `\`' matches the beginning of the whole input
+
+  8. `\'' matches the end of the whole input
+
+
+   Grouping is performed with backslashes followed by parentheses `\(',
+`\)'.  A backslash followed by a digit acts as a back-reference and
+matches the same thing as the previous grouped expression indicated by
+that number.  For example `\2' matches the second group expression.
+The order of group expressions is determined by the position of their
+opening parenthesis `\('.
+
+   The alternation operator is `\|'.
+
+   The character `^' only represents the beginning of a string when it
+appears:
+  1. At the beginning of a regular expression
+
+  2. After an open-group, signified by `\('
+
+  3. After the alternation operator `\|'
+
+
+   The character `$' only represents the end of a string when it
+appears:
+  1. At the end of a regular expression
+
+  2. Before an close-group, signified by `\)'
+
+  3. Before the alternation operator `\|'
+
+
+   `*', `+' and `?' are special at any point in a regular expression
+except:
+  1. At the beginning of a regular expression
+
+  2. After an open-group, signified by `\('
+
+  3. After the alternation operator `\|'
+
+
+   The longest possible match is returned; this applies to the regular
+expression as a whole and (subject to this constraint) to
+subexpressions within groups.
+
+
+File: find.info,  Node: gnu-awk regular expression syntax,  Next: grep regular expression syntax,  Prev: emacs regular expression syntax,  Up: Regular Expressions
+
+`gnu-awk' regular expression syntax
+-----------------------------------
+
+   The character `.' matches any single character.
+
+`+'
+     indicates that the regular expression should match one or more
+     occurrences of the previous atom or regexp.
+
+`?'
+     indicates that the regular expression should match zero or one
+     occurrence of the previous atom or regexp.
+
+`\+'
+     matches a `+'
+
+`\?'
+     matches a `?'.
+
+   Bracket expressions are used to match ranges of characters.  Bracket
+expressions where the range is backward, for example `[z-a]', are
+invalid.  Within square brackets, `\' can be used to quote the
+following character.  Character classes are supported; for example
+`[[:digit:]]' will match a single decimal digit.
+
+   GNU extensions are supported:
+  1. `\w' matches a character within a word
+
+  2. `\W' matches a character which is not within a word
+
+  3. `\<' matches the beginning of a word
+
+  4. `\>' matches the end of a word
+
+  5. `\b' matches a word boundary
+
+  6. `\B' matches characters which are not a word boundary
+
+  7. `\`' matches the beginning of the whole input
+
+  8. `\'' matches the end of the whole input
+
+
+   Grouping is performed with parentheses `()'.  An unmatched `)'
+matches just itself.  A backslash followed by a digit acts as a
+back-reference and matches the same thing as the previous grouped
+expression indicated by that number.  For example `\2' matches the
+second group expression.  The order of group expressions is determined
+by the position of their opening parenthesis `('.
+
+   The alternation operator is `|'.
+
+   The characters `^' and `$' always represent the beginning and end of
+a string respectively, except within square brackets.  Within brackets,
+`^' can be used to invert the membership of the character class being
+specified.
+
+   `*', `+' and `?' are special at any point in a regular expression
+except:
+  1. At the beginning of a regular expression
+
+  2. After an open-group, signified by `('
+
+  3. After the alternation operator `|'
+
+
+   The longest possible match is returned; this applies to the regular
+expression as a whole and (subject to this constraint) to
+subexpressions within groups.
+
+
+File: find.info,  Node: grep regular expression syntax,  Next: posix-awk regular expression syntax,  Prev: gnu-awk regular expression syntax,  Up: Regular Expressions
+
+`grep' regular expression syntax
+--------------------------------
+
+   The character `.' matches any single character except newline.
+
+`\+'
+     indicates that the regular expression should match one or more
+     occurrences of the previous atom or regexp.
+
+`\?'
+     indicates that the regular expression should match zero or one
+     occurrence of the previous atom or regexp.
+
+`+ and ?'
+     match themselves.
+
+   Bracket expressions are used to match ranges of characters.  Bracket
+expressions where the range is backward, for example `[z-a]', are
+ignored.  Within square brackets, `\' is taken literally.  Character
+classes are supported; for example `[[:digit:]]' will match a single
+decimal digit.  Non-matching lists `[^...]' do not ever match newline.
+
+   GNU extensions are supported:
+  1. `\w' matches a character within a word
+
+  2. `\W' matches a character which is not within a word
+
+  3. `\<' matches the beginning of a word
+
+  4. `\>' matches the end of a word
+
+  5. `\b' matches a word boundary
+
+  6. `\B' matches characters which are not a word boundary
+
+  7. `\`' matches the beginning of the whole input
+
+  8. `\'' matches the end of the whole input
+
+
+   Grouping is performed with backslashes followed by parentheses `\(',
+`\)'.  A backslash followed by a digit acts as a back-reference and
+matches the same thing as the previous grouped expression indicated by
+that number.  For example `\2' matches the second group expression.
+The order of group expressions is determined by the position of their
+opening parenthesis `\('.
+
+   The alternation operator is `\|'.
+
+   The character `^' only represents the beginning of a string when it
+appears:
+  1. At the beginning of a regular expression
+
+  2. After an open-group, signified by `\('
+
+  3. After a newline
+
+  4. After the alternation operator `\|'
+
+
+   The character `$' only represents the end of a string when it
+appears:
+  1. At the end of a regular expression
+
+  2. Before an close-group, signified by `\)'
+
+  3. Before a newline
+
+  4. Before the alternation operator `\|'
+
+
+   `\*', `\+' and `\?' are special at any point in a regular expression
+except:
+  1. At the beginning of a regular expression
+
+  2. After an open-group, signified by `\('
+
+  3. After a newline
+
+  4. After the alternation operator `\|'
+
+
+   Intervals are specified by `\{' and `\}'.  Invalid intervals such as
+`a\{1z' are not accepted.
+
+   The longest possible match is returned; this applies to the regular
+expression as a whole and (subject to this constraint) to
+subexpressions within groups.
+
+
+File: find.info,  Node: posix-awk regular expression syntax,  Next: posix-basic regular expression syntax,  Prev: grep regular expression syntax,  Up: Regular Expressions
+
+`posix-awk' regular expression syntax
+-------------------------------------
+
+   The character `.' matches any single character except the null
+character.
+
+`+'
+     indicates that the regular expression should match one or more
+     occurrences of the previous atom or regexp.
+
+`?'
+     indicates that the regular expression should match zero or one
+     occurrence of the previous atom or regexp.
+
+`\+'
+     matches a `+'
+
+`\?'
+     matches a `?'.
+
+   Bracket expressions are used to match ranges of characters.  Bracket
+expressions where the range is backward, for example `[z-a]', are
+invalid.  Within square brackets, `\' can be used to quote the
+following character.  Character classes are supported; for example
+`[[:digit:]]' will match a single decimal digit.
+
+   GNU extensions are not supported and so `\w', `\W', `\<', `\>',
+`\b', `\B', `\`', and `\'' match `w', `W', `<', `>', `b', `B', ``', and
+`'' respectively.
+
+   Grouping is performed with parentheses `()'.  An unmatched `)'
+matches just itself.  A backslash followed by a digit acts as a
+back-reference and matches the same thing as the previous grouped
+expression indicated by that number.  For example `\2' matches the
+second group expression.  The order of group expressions is determined
+by the position of their opening parenthesis `('.
+
+   The alternation operator is `|'.
+
+   The characters `^' and `$' always represent the beginning and end of
+a string respectively, except within square brackets.  Within brackets,
+`^' can be used to invert the membership of the character class being
+specified.
+
+   `*', `+' and `?' are special at any point in a regular expression
+except the following places, where they are not allowed:
+  1. At the beginning of a regular expression
+
+  2. After an open-group, signified by `('
+
+  3. After the alternation operator `|'
+
+
+   Intervals are specified by `{' and `}'.  Invalid intervals such as
+`a{1z' are not accepted.
+
+   The longest possible match is returned; this applies to the regular
+expression as a whole and (subject to this constraint) to
+subexpressions within groups.
+
+
+File: find.info,  Node: posix-basic regular expression syntax,  Next: posix-egrep regular expression syntax,  Prev: posix-awk regular expression syntax,  Up: Regular Expressions
+
+`posix-basic' regular expression syntax
+---------------------------------------
+
+   The character `.' matches any single character except the null
+character.
+
+`\+'
+     indicates that the regular expression should match one or more
+     occurrences of the previous atom or regexp.
+
+`\?'
+     indicates that the regular expression should match zero or one
+     occurrence of the previous atom or regexp.
+
+`+ and ?'
+     match themselves.
+
+   Bracket expressions are used to match ranges of characters.  Bracket
+expressions where the range is backward, for example `[z-a]', are
+invalid.  Within square brackets, `\' is taken literally.  Character
+classes are supported; for example `[[:digit:]]' will match a single
+decimal digit.
+
+   GNU extensions are supported:
+  1. `\w' matches a character within a word
+
+  2. `\W' matches a character which is not within a word
+
+  3. `\<' matches the beginning of a word
+
+  4. `\>' matches the end of a word
+
+  5. `\b' matches a word boundary
+
+  6. `\B' matches characters which are not a word boundary
+
+  7. `\`' matches the beginning of the whole input
+
+  8. `\'' matches the end of the whole input
+
+
+   Grouping is performed with backslashes followed by parentheses `\(',
+`\)'.  A backslash followed by a digit acts as a back-reference and
+matches the same thing as the previous grouped expression indicated by
+that number.  For example `\2' matches the second group expression.
+The order of group expressions is determined by the position of their
+opening parenthesis `\('.
+
+   The alternation operator is `\|'.
+
+   The character `^' only represents the beginning of a string when it
+appears:
+  1. At the beginning of a regular expression
+
+  2. After an open-group, signified by `\('
+
+  3. After the alternation operator `\|'
+
+
+   The character `$' only represents the end of a string when it
+appears:
+  1. At the end of a regular expression
+
+  2. Before an close-group, signified by `\)'
+
+  3. Before the alternation operator `\|'
+
+
+   `\*', `\+' and `\?' are special at any point in a regular expression
+except:
+  1. At the beginning of a regular expression
+
+  2. After an open-group, signified by `\('
+
+  3. After the alternation operator `\|'
+
+
+   Intervals are specified by `\{' and `\}'.  Invalid intervals such as
+`a\{1z' are not accepted.
+
+   The longest possible match is returned; this applies to the regular
+expression as a whole and (subject to this constraint) to
+subexpressions within groups.
+
+
+File: find.info,  Node: posix-egrep regular expression syntax,  Next: posix-extended regular expression syntax,  Prev: posix-basic regular expression syntax,  Up: Regular Expressions
+
+`posix-egrep' regular expression syntax
+---------------------------------------
+
+   The character `.' matches any single character except newline.
+
+`+'
+     indicates that the regular expression should match one or more
+     occurrences of the previous atom or regexp.
+
+`?'
+     indicates that the regular expression should match zero or one
+     occurrence of the previous atom or regexp.
+
+`\+'
+     matches a `+'
+
+`\?'
+     matches a `?'.
+
+   Bracket expressions are used to match ranges of characters.  Bracket
+expressions where the range is backward, for example `[z-a]', are
+ignored.  Within square brackets, `\' is taken literally.  Character
+classes are supported; for example `[[:digit:]]' will match a single
+decimal digit.  Non-matching lists `[^...]' do not ever match newline.
+
+   GNU extensions are supported:
+  1. `\w' matches a character within a word
+
+  2. `\W' matches a character which is not within a word
+
+  3. `\<' matches the beginning of a word
+
+  4. `\>' matches the end of a word
+
+  5. `\b' matches a word boundary
+
+  6. `\B' matches characters which are not a word boundary
+
+  7. `\`' matches the beginning of the whole input
+
+  8. `\'' matches the end of the whole input
+
+
+   Grouping is performed with parentheses `()'.  A backslash followed
+by a digit acts as a back-reference and matches the same thing as the
+previous grouped expression indicated by that number.  For example `\2'
+matches the second group expression.  The order of group expressions is
+determined by the position of their opening parenthesis `('.
+
+   The alternation operator is `|'.
+
+   The characters `^' and `$' always represent the beginning and end of
+a string respectively, except within square brackets.  Within brackets,
+`^' can be used to invert the membership of the character class being
+specified.
+
+   The characters `*', `+' and `?' are special anywhere in a regular
+expression.
+
+   Intervals are specified by `{' and `}'.  Invalid intervals are
+treated as literals, for example `a{1' is treated as `a\{1'
+
+   The longest possible match is returned; this applies to the regular
+expression as a whole and (subject to this constraint) to
+subexpressions within groups.
+

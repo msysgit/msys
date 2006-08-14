@@ -1,0 +1,1423 @@
+This is /devshop/msys/rt-HEAD/packages/findutils/4.3/doc/find.info,
+produced by makeinfo version 4.3 from
+/devshop/msys/rt-HEAD/packages/findutils/4.3/doc/find.texi.
+
+INFO-DIR-SECTION Basics
+START-INFO-DIR-ENTRY
+* Finding files: (find).        Operating on files matching certain criteria.
+END-INFO-DIR-ENTRY
+
+INFO-DIR-SECTION Individual utilities
+START-INFO-DIR-ENTRY
+* find: (find)Invoking find.                    Finding and acting on files.
+* locate: (find)Invoking locate.                Finding files in a database.
+* updatedb: (find)Invoking updatedb.            Building the locate database.
+* xargs: (find)Invoking xargs.                  Operating on many files.
+END-INFO-DIR-ENTRY
+
+
+File: find.info,  Node: Print File Information,  Next: Run Commands,  Prev: Print File Name,  Up: Actions
+
+Print File Information
+======================
+
+ - Action: -ls
+     True; list the current file in `ls -dils' format on the standard
+     output.  The output looks like this:
+
+          204744   17 -rw-r--r--   1 djm      staff       17337 Nov  2  1992 ./lwall-quotes
+
+     The fields are:
+
+       1. The inode number of the file.  *Note Hard Links::, for how to
+          find files based on their inode number.
+
+       2. the number of blocks in the file.  The block counts are of 1K
+          blocks, unless the environment variable `POSIXLY_CORRECT' is
+          set, in which case 512-byte blocks are used.  *Note Size::,
+          for how to find files based on their size.
+
+       3. The file's type and permissions.  The type is shown as a dash
+          for a regular file; for other file types, a letter like for
+          `-type' is used (*note Type::).  The permissions are read,
+          write, and execute for the file's owner, its group, and other
+          users, respectively; a dash means the permission is not
+          granted.  *Note File Permissions::, for more details about
+          file permissions.  *Note Permissions::, for how to find files
+          based on their permissions.
+
+       4. The number of hard links to the file.
+
+       5. The user who owns the file.
+
+       6. The file's group.
+
+       7. The file's size in bytes.
+
+       8. The date the file was last modified.
+
+       9. The file's name.  `-ls' quotes non-printable characters in the
+          file names using C-like backslash escapes.  This may change
+          soon, as the treatment of unprintable characters is
+          harmonised for `-ls', `-fls', `-print', `-fprint', `-printf'
+          and `-fprintf'.
+
+ - Action: -fls file
+     True; like `-ls' but write to FILE like `-fprint' (*note Print
+     File Name::).  The named output file is always created, even if no
+     output is sent to it.
+
+ - Action: -printf format
+     True; print FORMAT on the standard output, interpreting `\'
+     escapes and `%' directives.  Field widths and precisions can be
+     specified as with the `printf' C function.  Format flags (like `#'
+     for example) may not work as you expect because many of the
+     fields, even numeric ones, are printed with %s.  Numeric flags
+     which are affected in this way include G, U, b, D, k and n.  This
+     difference in behaviour means though that the format flag `-' will
+     work; it forces left-alignment of the field.  Unlike `-print',
+     `-printf' does not add a newline at the end of the string.  If you
+     want a newline at the end of the string, add a `\n'.
+
+ - Action: -fprintf file format
+     True; like `-printf' but write to FILE like `-fprint' (*note Print
+     File Name::).  The output file is always created, even if no
+     output is ever sent to it.
+
+* Menu:
+
+* Escapes::
+* Format Directives::
+* Time Formats::
+
+
+File: find.info,  Node: Escapes,  Next: Format Directives,  Up: Print File Information
+
+Escapes
+-------
+
+   The escapes that `-printf' and `-fprintf' recognise are:
+
+`\a'
+     Alarm bell.
+
+`\b'
+     Backspace.
+
+`\c'
+     Stop printing from this format immediately and flush the output.
+
+`\f'
+     Form feed.
+
+`\n'
+     Newline.
+
+`\r'
+     Carriage return.
+
+`\t'
+     Horizontal tab.
+
+`\v'
+     Vertical tab.
+
+`\\'
+     A literal backslash (`\').
+
+`\0'
+     ASCII NUL.
+
+`\NNN'
+     The character whose ASCII code is NNN (octal).
+
+   A `\' character followed by any other character is treated as an
+ordinary character, so they both are printed, and a warning message is
+printed to the standard error output (because it was probably a typo).
+
+
+File: find.info,  Node: Format Directives,  Next: Time Formats,  Prev: Escapes,  Up: Print File Information
+
+Format Directives
+-----------------
+
+   `-printf' and `-fprintf' support the following format directives to
+print information about the file being processed.  The C `printf'
+function, field width and precision specifiers are supported, as
+applied to string (%s) types. That is, you can specify "minimum field
+width"."maximum field width" for each directive.  Format flags (like
+`#' for example) may not work as you expect because many of the fields,
+even numeric ones, are printed with %s.  The format flag `-' does work;
+it forces left-alignment of the field.
+
+   `%%' is a literal percent sign.  A `%' character followed by an
+unrecognised character (i.e. not a known directive or `printf' field
+width and precision specifier), is discarded (but the unrecognised
+character is printed), and a warning message is printed to the standard
+error output (because it was probably a typo).
+
+* Menu:
+
+* Name Directives::
+* Ownership Directives::
+* Size Directives::
+* Location Directives::
+* Time Directives::
+* Formatting Flags::
+
+
+File: find.info,  Node: Name Directives,  Next: Ownership Directives,  Up: Format Directives
+
+Name Directives
+...............
+
+`%p'
+     File's name (not the absolute path name, but the name of the file
+     as it was encountered by `find' - that is, as a relative path from
+     one of the starting points).
+
+`%f'
+     File's name with any leading directories removed (only the last
+     element).
+
+`%h'
+     Leading directories of file's name (all but the last element and
+     the slash before it).  If the file's name contains no slashes (for
+     example because it was named on the command line and is in the
+     current working directory), then "%h" expands to ".".  This
+     prevents "%h/%f" expanding to "/foo", which would be surprising
+     and probably not desirable.
+
+`%P'
+     File's name with the name of the command line argument under which
+     it was found removed from the beginning.
+
+`%H'
+     Command line argument under which file was found.
+
+
+File: find.info,  Node: Ownership Directives,  Next: Size Directives,  Prev: Name Directives,  Up: Format Directives
+
+Ownership Directives
+....................
+
+`%g'
+     File's group name, or numeric group ID if the group has no name.
+
+`%G'
+     File's numeric group ID.
+
+`%u'
+     File's user name, or numeric user ID if the user has no name.
+
+`%U'
+     File's numeric user ID.
+
+`%m'
+     File's permissions (in octal).  If you always want to have a
+     leading zero on the number, use the '#' format flag, for example
+     '%#m'.
+
+     The permission numbers used are the traditional Unix permission
+     numbers, which will be as expected on most systems, but if your
+     system's permission bit layout differs from the traditional Unix
+     semantics, you will see a difference between the mode as printed by
+     `%m' and the mode as it appears in `struct stat'.
+
+`%M'
+     File's permissions (in symbolic form, as for `ls').  This
+     directive is supported in findutils 4.2.5 and later.
+
+
+File: find.info,  Node: Size Directives,  Next: Location Directives,  Prev: Ownership Directives,  Up: Format Directives
+
+Size Directives
+...............
+
+`%k'
+     The amount of disk space used for this file in 1K blocks. Since
+     disk space is allocated in multiples of the filesystem block size
+     this is usually greater than %s/1024, but it can also be smaller
+     if the file is a sparse file (that is, it has "holes").
+
+`%b'
+     The amount of disk space used for this file in 512-byte blocks.
+     Since disk space is allocated in multiples of the filesystem block
+     size this is usually greater than %s/1024, but it can also be
+     smaller if the file is a sparse file (that is, it has "holes").
+
+`%s'
+     File's size in bytes.
+
+
+File: find.info,  Node: Location Directives,  Next: Time Directives,  Prev: Size Directives,  Up: Format Directives
+
+Location Directives
+...................
+
+`%d'
+     File's depth in the directory tree (depth below a file named on the
+     command line, not depth below the root directory).  Files named on
+     the command line have a depth of 0.  Subdirectories immediately
+     below them have a depth of 1, and so on.
+
+`%D'
+     The device number on which the file exists (the `st_dev' field of
+     `struct stat'), in decimal.
+
+`%F'
+     Type of the filesystem the file is on; this value can be used for
+     `-fstype' (*note Directories::).
+
+`%l'
+     Object of symbolic link (empty string if file is not a symbolic
+     link).
+
+`%i'
+     File's inode number (in decimal).
+
+`%n'
+     Number of hard links to file.
+
+`%y'
+     Type of the file as used with `-type'.  If the file is a symbolic
+     link, `l' will be printed.
+
+`%Y'
+     Type of the file as used with `-type'.  If the file is a symbolic
+     link, it is dereferenced.  If the file is a broken symbolic link,
+     `N' is printed.
+
+
+File: find.info,  Node: Time Directives,  Next: Formatting Flags,  Prev: Location Directives,  Up: Format Directives
+
+Time Directives
+...............
+
+   Some of these directives use the C `ctime' function.  Its output
+depends on the current locale, but it typically looks like
+
+     Wed Nov  2 00:42:36 1994
+
+`%a'
+     File's last access time in the format returned by the C `ctime'
+     function.
+
+`%AK'
+     File's last access time in the format specified by K (*note Time
+     Formats::).
+
+`%c'
+     File's last status change time in the format returned by the C
+     `ctime' function.
+
+`%CK'
+     File's last status change time in the format specified by K (*note
+     Time Formats::).
+
+`%t'
+     File's last modification time in the format returned by the C
+     `ctime' function.
+
+`%TK'
+     File's last modification time in the format specified by K (*note
+     Time Formats::).
+
+
+File: find.info,  Node: Time Formats,  Prev: Format Directives,  Up: Print File Information
+
+Time Formats
+------------
+
+   Below are the formats for the directives `%A', `%C', and `%T', which
+print the file's timestamps.  Some of these formats might not be
+available on all systems, due to differences in the C `strftime'
+function between systems.
+
+* Menu:
+
+* Time Components::
+* Date Components::
+* Combined Time Formats::
+
+
+File: find.info,  Node: Time Components,  Next: Date Components,  Up: Time Formats
+
+Time Components
+...............
+
+   The following format directives print single components of the time.
+
+`H'
+     hour (00..23)
+
+`I'
+     hour (01..12)
+
+`k'
+     hour ( 0..23)
+
+`l'
+     hour ( 1..12)
+
+`p'
+     locale's AM or PM
+
+`Z'
+     time zone (e.g., EDT), or nothing if no time zone is determinable
+
+`M'
+     minute (00..59)
+
+`S'
+     second (00..61)
+
+`@'
+     seconds since Jan. 1, 1970, 00:00 GMT.
+
+
+File: find.info,  Node: Date Components,  Next: Combined Time Formats,  Prev: Time Components,  Up: Time Formats
+
+Date Components
+...............
+
+   The following format directives print single components of the date.
+
+`a'
+     locale's abbreviated weekday name (Sun..Sat)
+
+`A'
+     locale's full weekday name, variable length (Sunday..Saturday)
+
+`b'
+`h'
+     locale's abbreviated month name (Jan..Dec)
+
+`B'
+     locale's full month name, variable length (January..December)
+
+`m'
+     month (01..12)
+
+`d'
+     day of month (01..31)
+
+`w'
+     day of week (0..6)
+
+`j'
+     day of year (001..366)
+
+`U'
+     week number of year with Sunday as first day of week (00..53)
+
+`W'
+     week number of year with Monday as first day of week (00..53)
+
+`Y'
+     year (1970...)
+
+`y'
+     last two digits of year (00..99)
+
+
+File: find.info,  Node: Combined Time Formats,  Prev: Date Components,  Up: Time Formats
+
+Combined Time Formats
+.....................
+
+   The following format directives print combinations of time and date
+components.
+
+`r'
+     time, 12-hour (hh:mm:ss [AP]M)
+
+`T'
+     time, 24-hour (hh:mm:ss)
+
+`X'
+     locale's time representation (H:M:S)
+
+`c'
+     locale's date and time (Sat Nov 04 12:02:33 EST 1989)
+
+`D'
+     date (mm/dd/yy)
+
+`x'
+     locale's date representation (mm/dd/yy)
+
+`+'
+     Date and time, separated by '+', for example `2004-04-28+22:22:05'.
+     The time is given in the current timezone (which may be affected by
+     setting the TZ environment variable).  This is a GNU extension.
+
+
+File: find.info,  Node: Formatting Flags,  Prev: Time Directives,  Up: Format Directives
+
+Formatting Flags
+................
+
+   The `%m' and `%d' directives support the `#', `0' and `+' flags, but
+the other directives do not, even if they print numbers.  Numeric
+directives that do not support these flags include
+
+   `G', `U', `b', `D', `k' and `n'.
+
+   All fields support the format flag `-', which makes fields
+left-aligned.  That is, if the field width is greater than the actual
+contents of the field, the requisite number of spaces are printed after
+the field content instead of before it.
+
+
+File: find.info,  Node: Run Commands,  Next: Delete Files,  Prev: Print File Information,  Up: Actions
+
+Run Commands
+============
+
+   You can use the list of file names created by `find' or `locate' as
+arguments to other commands.  In this way you can perform arbitrary
+actions on the files.
+
+* Menu:
+
+* Single File::
+* Multiple Files::
+* Querying::
+
+
+File: find.info,  Node: Single File,  Next: Multiple Files,  Up: Run Commands
+
+Single File
+-----------
+
+   Here is how to run a command on one file at a time.
+
+ - Action: -execdir command ;
+     Execute COMMAND; true if zero sftatus is returned.  `find' takes
+     all arguments after `-exec' to be part of the command until an
+     argument consisting of `;' is reached.  It replaces the string
+     `{}' by the current file name being processed everywhere it occurs
+     in the command.  Both of these constructions need to be escaped
+     (with a `\') or quoted to protect them from expansion by the
+     shell.  The command is executed in the directory in which `find'
+     was run.
+
+     For example, to compare each C header file in or below the current
+     directory with the file `/tmp/master':
+
+          find . -name '*.h' -execdir diff -u '{}' /tmp/master ';'
+
+   If you use``-execdir', you must ensure that the current directory is
+not on $PATH, because otherwise an attacker could make `find' run
+commands of their choice simply by leaving a suitably-named file in the
+right directory.  GNU find will refuse to run if you use `-execdir' and
+the current directory is in $PATH.
+
+   Another similar option, `-exec' is supported, but is less secure.
+*Note Security Considerations::, for a discussion of the security
+problems surrounding `-exec'.
+
+ - Action: -exec command ;
+     This insecure variant of the `-execdir' action is specified by
+     POSIX.  The main difference is that the command is executed in the
+     directory from which `find' was invoked, meaning that `{}' is
+     expanded to a relative path starting with the name of one of the
+     starting directories, rather than just the basename of the matched
+     file.
+
+     While some implementations of `find' replace the `{}' only where
+     it appears on its own in an argument, GNU `find' replaces `{}'
+     wherever it appears.
+
+
+File: find.info,  Node: Multiple Files,  Next: Querying,  Prev: Single File,  Up: Run Commands
+
+Multiple Files
+--------------
+
+   Sometimes you need to process files one of the time.  But usually
+this is not necessary, and, it is faster to run a command on as many
+files as possible at a time, rather than once per file.  Doing this
+saves on the time it takes to start up the command each time.
+
+   The `-execdir' and `-exec' actions have variants that build command
+lines containing as many matched files as possible.
+
+ - Action: -execdir command {} +
+     This works as for `-execdir command ;', except that the `{}' at
+     the end of the command is expanded to a list of names of matching
+     files.  This expansion is done in such a way as to avoid exceeding
+     the maximum command line length available on the system.  Only one
+     `{}' is allowed within the command, and it must appear at the end,
+     immediately before the `+'.  A `+' appearing in any position other
+     than immediately after `{}' is not considered to be special (that
+     is, it does not terminate the command).
+
+ - Action: -exec command {} +
+     This insecure variant of the `-execdir' action is specified by
+     POSIX.  The main difference is that the command is executed in the
+     directory from which `find' was invoked, meaning that `{}' is
+     expanded to a relative path starting with the name of one of the
+     starting directories, rather than just the basename of the matched
+     file.
+
+   Before `find' exits, any partially-built command lines are executed.
+This happens even if the exit was caused by the `-quit' action.
+However, some types of error (for example not being able to invoke
+`stat()' on the current directory) can cause an immediate fatal exit.
+In this situation, any partially-built command lines will not be
+invoked (this prevents possible infinite loops).
+
+   Another, but less secure, way to run a command on more than one file
+at once, is to use the `xargs' command, which is invoked like this:
+
+     xargs [OPTION...] [COMMAND [INITIAL-ARGUMENTS]]
+
+   `xargs' normally reads arguments from the standard input.  These
+arguments are delimited by blanks (which can be protected with double
+or single quotes or a backslash) or newlines.  It executes the COMMAND
+(default is `/bin/echo') one or more times with any INITIAL-ARGUMENTS
+followed by arguments read from standard input.  Blank lines on the
+standard input are ignored.
+
+   Instead of blank-delimited names, it is safer to use `find -print0'
+or `find -fprint0' and process the output by giving the `-0' or
+`--null' option to GNU `xargs', GNU `tar', GNU `cpio', or `perl'.  The
+`locate' command also has a `-0' or `--null' option which does the same
+thing.
+
+   You can use shell command substitution (backquotes) to process a list
+of arguments, like this:
+
+     grep -l sprintf `find $HOME -name '*.c' -print`
+
+   However, that method produces an error if the length of the `.c'
+file names exceeds the operating system's command line length limit.
+`xargs' avoids that problem by running the command as many times as
+necessary without exceeding the limit:
+
+     find $HOME -name '*.c' -print | xargs grep -l sprintf
+
+   However, if the command needs to have its standard input be a
+terminal (`less', for example), you have to use the shell command
+substitution method or use the `--arg-file' option of `xargs'.
+
+   The `xargs' command will process all its input, building command
+lines and executing them, unless one of the commands exits with a
+status of 255 (this will cause xargs to issue an error message and
+stop) or it reads a line contains the end of file string specified with
+the `--eof' option.
+
+* Menu:
+
+* Unsafe File Name Handling::
+* Safe File Name Handling::
+* Unusual Characters in File Names::
+* Limiting Command Size::
+* Interspersing File Names::
+
+
+File: find.info,  Node: Unsafe File Name Handling,  Next: Safe File Name Handling,  Up: Multiple Files
+
+Unsafe File Name Handling
+.........................
+
+   Because file names can contain quotes, backslashes, blank characters,
+and even newlines, it is not safe to process them using `xargs' in its
+default mode of operation.  But since most files' names do not contain
+blanks, this problem occurs only infrequently.  If you are only
+searching through files that you know have safe names, then you need
+not be concerned about it.
+
+   In many applications, if `xargs' botches processing a file because
+its name contains special characters, some data might be lost.  The
+importance of this problem depends on the importance of the data and
+whether anyone notices the loss soon enough to correct it.  However,
+here is an extreme example of the problems that using blank-delimited
+names can cause.  If the following command is run daily from `cron',
+then any user can remove any file on the system:
+
+     find / -name '#*' -atime +7 -print | xargs rm
+
+   For example, you could do something like this:
+
+     eg$ echo > '#
+     vmunix'
+
+and then `cron' would delete `/vmunix', if it ran `xargs' with `/' as
+its current directory.
+
+   To delete other files, for example `/u/joeuser/.plan', you could do
+this:
+
+     eg$ mkdir '#
+     '
+     eg$ cd '#
+     '
+     eg$ mkdir u u/joeuser u/joeuser/.plan'
+     '
+     eg$ echo > u/joeuser/.plan'
+     /#foo'
+     eg$ cd ..
+     eg$ find . -name '#*' -print | xargs echo
+     ./# ./# /u/joeuser/.plan /#foo
+
+
+File: find.info,  Node: Safe File Name Handling,  Next: Unusual Characters in File Names,  Prev: Unsafe File Name Handling,  Up: Multiple Files
+
+Safe File Name Handling
+.......................
+
+   Here is how to make `find' output file names so that they can be
+used by other programs without being mangled or misinterpreted.  You
+can process file names generated this way by giving the `-0' or
+`--null' option to GNU `xargs', GNU `tar', GNU `cpio', or `perl'.
+
+ - Action: -print0
+     True; print the entire file name on the standard output, followed
+     by a null character.
+
+ - Action: -fprint0 file
+     True; like `-print0' but write to FILE like `-fprint' (*note Print
+     File Name::).  The output file is always created.
+
+   As of findutils version 4.2.4, the `locate' program also has a
+`--null' option which does the same thing.  For similarity with
+`xargs', the short form of the option `-0' can also be used.
+
+   If you want to be able to handle file names safely but need to run
+commands which want to be connected to a terminal on their input, you
+can use the `--arg-file' option to `xargs' like this:
+
+     find / -name xyzzy -print0 > list
+     xargs --null --arg-file=list munge
+
+   The example above runs the `munge' program on all the files named
+`xyzzy' that we can find, but `munge''s input will still be the
+terminal (or whatever the shell was using as standard input).  If your
+shell has the "process substitution" feature `<(...)', you can do this
+in just one step:
+
+     xargs --null --arg-file=<(find / -name xyzzy -print0) munge
+
+
+File: find.info,  Node: Unusual Characters in File Names,  Next: Limiting Command Size,  Prev: Safe File Name Handling,  Up: Multiple Files
+
+Unusual Characters in File Names
+................................
+
+   As discussed above, you often need to be careful about how the names
+of files are handled by `find' and other programs.  If the output of
+`find' is not going to another program but instead is being shown on a
+terminal, this can still be a problem.  For example, some character
+sequences can reprogram the function keys on some terminals.  *Note
+Security Considerations::, for a discussion of other security problems
+relating to `find'.
+
+   Unusual characters are handled differently by various actions, as
+described below.
+
+`-print0'
+`-fprint0'
+     Always print the exact file name, unchanged, even if the output is
+     going to a terminal.
+
+`-ok'
+`-okdir'
+     Always print the exact file name, unchanged.  This will probably
+     change in a future release.
+
+`-ls'
+`-fls'
+     Unusual characters are always escaped.  White space, backslash, and
+     double quote characters are printed using C-style escaping (for
+     example `\f', `\"').  Other unusual characters are printed using
+     an octal escape.  Other printable characters (for `-ls' and `-fls'
+     these are the characters between octal 041 and 0176) are printed
+     as-is.
+
+`-printf'
+`-fprintf'
+     If the output is not going to a terminal, it is printed as-is.
+     Otherwise, the result depends on which directive is in use:
+
+    %D, %F, %H, %Y, %y
+          These expand to values which are not under control of files'
+          owners, and so are printed as-is.
+
+    %a, %b, %c, %d, %g, %G, %i, %k, %m, %M, %n, %s, %t, %u, %U
+          These have values which are under the control of files'
+          owners but which cannot be used to send arbitrary data to the
+          terminal, and so these are printed as-is.
+
+    %f, %h, %l, %p, %P
+          The output of these directives is quoted if the output is
+          going to a terminal.
+
+          This quoting is performed in the same way as for GNU `ls'.
+          This is not the same quoting mechanism as the one used for
+          `-ls' and `fls'.  If you are able to decide what format to
+          use for the output of `find' then it is normally better to
+          use `\0' as a terminator than to use newline, as file names
+          can contain white space and newline characters.
+
+`-print'
+`-fprint'
+     Quoting is handled in the same way as for the `%p' directive of
+     `-printf' and `-fprintf'.  If you are using `find' in a script or
+     in a situation where the matched files might have arbitrary names,
+     you should consider using `-print0' instead of `-print'.
+
+   The `locate' program quotes and escapes unusual characters in file
+names in the same way as `find''s `-print' action.
+
+   The behaviours described above may change soon, as the treatment of
+unprintable characters is harmonised for `-ls', `-fls', `-print',
+`-fprint', `-printf' and `-fprintf'.
+
+
+File: find.info,  Node: Limiting Command Size,  Next: Interspersing File Names,  Prev: Unusual Characters in File Names,  Up: Multiple Files
+
+Limiting Command Size
+.....................
+
+   `xargs' gives you control over how many arguments it passes to the
+command each time it executes it.  By default, it uses up to `ARG_MAX'
+- 2k, or 128k, whichever is smaller, characters per command.  It uses
+as many lines and arguments as fit within that limit.  The following
+options modify those values.
+
+`--no-run-if-empty'
+`-r'
+     If the standard input does not contain any nonblanks, do not run
+     the command.  By default, the command is run once even if there is
+     no input.  This option is a GNU extension.
+
+`--max-lines[=MAX-LINES]'
+`-L MAX-LINES'
+`-l[MAX-LINES]'
+     Use at most MAX-LINES nonblank input lines per command line;
+     MAX-LINES defaults to 1 if omitted; omitting the argument is not
+     allowed in the case of the `-L' option.  Trailing blanks cause an
+     input line to be logically continued on the next input line, for
+     the purpose of counting the lines.  Implies `-x'.  The preferred
+     name for this option is `-L' as this is specified by POSIX.
+
+`--max-args=MAX-ARGS'
+`-n MAX-ARGS'
+     Use at most MAX-ARGS arguments per command line.  Fewer than
+     MAX-ARGS arguments will be used if the size (see the `-s' option)
+     is exceeded, unless the `-x' option is given, in which case
+     `xargs' will exit.
+
+`--max-chars=MAX-CHARS'
+`-s MAX-CHARS'
+     Use at most MAX-CHARS characters per command line, including the
+     command initial arguments and the terminating nulls at the ends of
+     the argument strings.  If you specify a value for this option
+     which is too large or small, a warning message is printed and the
+     appropriate upper or lower limit is used instead.  You can use
+     `--show-limits' option to understand the command-line limits
+     applying to `xargs' and how this is affected by any other options.
+
+`--max-procs=MAX-PROCS'
+`-P MAX-PROCS'
+     Run up to MAX-PROCS processes at a time; the default is 1.  If
+     MAX-PROCS is 0, `xargs' will run as many processes as possible at
+     a time.  Use the `-n', `-s', or `-L' option with `-P'; otherwise
+     chances are that the command will be run only once.
+
+
+File: find.info,  Node: Interspersing File Names,  Prev: Limiting Command Size,  Up: Multiple Files
+
+Interspersing File Names
+........................
+
+   `xargs' can insert the name of the file it is processing between
+arguments you give for the command.  Unless you also give options to
+limit the command size (*note Limiting Command Size::), this mode of
+operation is equivalent to `find -exec' (*note Single File::).
+
+`--replace[=REPLACE-STR]'
+`-I REPLACE-STR'
+`-i REPLACE-STR'
+     Replace occurrences of REPLACE-STR in the initial arguments with
+     names read from the input.  Also, unquoted blanks do not terminate
+     arguments; instead, the input is split at newlines only.  For the
+     `-i' option, if REPLACE-STR is omitted for `--replace' or `-i', it
+     defaults to `{}' (like for `find -exec').  Implies `-x' and `-l
+     1'.  `-i' is deprecated in favour of `-I'. As an example, to sort
+     each file in the `bills' directory, leaving the output in that
+     file name with `.sorted' appended, you could do:
+
+          find bills -type f | xargs -I XX sort -o XX.sorted XX
+
+     The equivalent command using `find -execdir' is:
+
+          find bills -type f -execdir sort -o '{}.sorted' '{}' ';'
+
+   When you use the `-I' option, each line read from the input is
+buffered internally.  This means that there is an upper limit on the
+length of input line that xargs will accept when used with the `-I'
+option.  To work around this limitation, you can use the `-s' option to
+increase the amount of buffer space that xargs uses, and you can also
+use an extra invocation of xargs to ensure that very long lines do not
+occur.  For example:
+
+     somecommand | xargs -s 50000 echo | xargs -I '{}' -s 100000 rm '{}'
+
+   Here, the first invocation of `xargs' has no input line length limit
+because it doesn't use the `-I' option. The second invocation of
+`xargs' does have such a limit, but we have ensured that the it never
+encounters a line which is longer than it can handle.
+
+   This is not an ideal solution.  Instead, the `-I' option should not
+impose a line length limit (apart from any limit imposed by the
+operating system) and so one might consider this limitation to be a
+bug.  A better solution would be to allow `xargs -I' to automatically
+move to a larger value for the `-s' option when this is needed.
+
+   This sort of problem doesn't occur with the output of `find' because
+it emits just one filename per line.
+
+
+File: find.info,  Node: Querying,  Prev: Multiple Files,  Up: Run Commands
+
+Querying
+--------
+
+   To ask the user whether to execute a command on a single file, you
+can use the `find' primary `-okdir' instead of `-execdir', and the
+`find' primary `-ok' instead of `-exec':
+
+ - Action: -okdir command ;
+     Like `-execdir' (*note Single File::), but ask the user first (on
+     the standard input); if the response does not start with `y' or
+     `Y', do not run the command, and return false.  If the command is
+     run, its standard input is redirected from `/dev/null'.
+
+ - Action: -ok command ;
+     This insecure variant of the `-okdir' action is specified by
+     POSIX.  The main difference is that the command is executed in the
+     directory from which `find' was invoked, meaning that `{}' is
+     expanded to a relative path starting with the name of one of the
+     starting directories, rather than just the basename of the matched
+     file.  If the command is run, its standard input is redirected from
+     `/dev/null'.
+
+   When processing multiple files with a single command, to query the
+user you give `xargs' the following option.  When using this option,
+you might find it useful to control the number of files processed per
+invocation of the command (*note Limiting Command Size::).
+
+`--interactive'
+`-p'
+     Prompt the user about whether to run each command line and read a
+     line from the terminal.  Only run the command line if the response
+     starts with `y' or `Y'.  Implies `-t'.
+
+
+File: find.info,  Node: Delete Files,  Next: Adding Tests,  Prev: Run Commands,  Up: Actions
+
+Delete Files
+============
+
+ - Action: -delete
+     Delete files or directories; true if removal succeeded.  If the
+     removal failed, an error message is issued.
+
+     The use of the `-delete' action on the command line automatically
+     turns on the `-depth' option (*note find Expressions::).
+
+
+File: find.info,  Node: Adding Tests,  Prev: Delete Files,  Up: Actions
+
+Adding Tests
+============
+
+   You can test for file attributes that none of the `find' builtin
+tests check.  To do this, use `xargs' to run a program that filters a
+list of files printed by `find'.  If possible, use `find' builtin tests
+to pare down the list, so the program run by `xargs' has less work to
+do.  The tests builtin to `find' will likely run faster than tests that
+other programs perform.
+
+   For reasons of efficiency it is often useful to limit the number of
+times an external program has to be run.  For this reason, it is often
+a good idea to implement "extended" tests by using `xargs'.
+
+   For example, here is a way to print the names of all of the
+unstripped binaries in the `/usr/local' directory tree.  Builtin tests
+avoid running `file' on files that are not regular files or are not
+executable.
+
+     find /usr/local -type f -perm /a=x | xargs file |
+       grep 'not stripped' | cut -d: -f1
+
+The `cut' program removes everything after the file name from the
+output of `file'.
+
+   However, using `xargs' can present important security problems
+(*note Security Considerations::).  These can be avoided by using
+`-execdir'.  The `-execdir' action is also a useful way of putting your
+own test in the middle of a set of other tests or actions for `find'
+(for example, you might want to use `-prune').
+
+   To place a special test somewhere in the middle of a `find'
+expression, you can use `-execdir' (or, less securely, `-exec') to run
+a program that performs the test.  Because `-execdir' evaluates to the
+exit status of the executed program, you can use a program (which can
+be a shell script) that tests for a special attribute and make it exit
+with a true (zero) or false (non-zero) status.  It is a good idea to
+place such a special test _after_ the builtin tests, because it starts
+a new process which could be avoided if a builtin test evaluates to
+false.
+
+   Here is a shell script called `unstripped' that checks whether its
+argument is an unstripped binary file:
+
+     #! /bin/sh
+     file "$1" | grep -q "not stripped"
+
+   This script relies on the shell exiting with the status of the last
+command in the pipeline, in this case `grep'.  The `grep' command exits
+with a true status if it found any matches, false if not.  Here is an
+example of using the script (assuming it is in your search path).  It
+lists the stripped executables (and shell scripts) in the file `sbins'
+and the unstripped ones in `ubins'.
+
+     find /usr/local -type f -perm /a=x \
+       \( -execdir unstripped '{}' \; -fprint ubins -o -fprint sbins \)
+
+
+File: find.info,  Node: Databases,  Next: File Permissions,  Prev: Actions,  Up: Top
+
+File Name Databases
+*******************
+
+   The file name databases used by `locate' contain lists of files that
+were in particular directory trees when the databases were last
+updated.  The file name of the default database is determined when
+`locate' and `updatedb' are configured and installed.  The frequency
+with which the databases are updated and the directories for which they
+contain entries depend on how often `updatedb' is run, and with which
+arguments.
+
+   You can obtain some statistics about the databases by using `locate
+--statistics'.
+
+* Menu:
+
+* Database Locations::
+* Database Formats::
+* Newline Handling::
+
+
+File: find.info,  Node: Database Locations,  Next: Database Formats,  Up: Databases
+
+Database Locations
+==================
+
+   There can be multiple file name databases.  Users can select which
+databases `locate' searches using the `LOCATE_PATH' environment
+variable or a command line option.  The system administrator can choose
+the file name of the default database, the frequency with which the
+databases are updated, and the directories for which they contain
+entries.  File name databases are updated by running the `updatedb'
+program, typically nightly.
+
+   In networked environments, it often makes sense to build a database
+at the root of each filesystem, containing the entries for that
+filesystem.  `updatedb' is then run for each filesystem on the
+fileserver where that filesystem is on a local disk, to prevent
+thrashing the network.
+
+   *Note Invoking updatedb::, for the description of the options to
+`updatedb', which specify which directories would each database contain
+entries for.
+
+
+File: find.info,  Node: Database Formats,  Next: Newline Handling,  Prev: Database Locations,  Up: Databases
+
+Database Formats
+================
+
+   The file name databases contain lists of files that were in
+particular directory trees when the databases were last updated.  The
+file name database format changed starting with GNU `locate' version
+4.0 to allow machines with different byte orderings to share the
+databases.  The new GNU `locate' can read both the old and new database
+formats.  However, old versions of `locate' and `find' produce
+incorrect results if given a new-format database.
+
+   Support for the old database format will eventually be discontinued,
+first in `updatedb' and later in `xargs'.
+
+   If you run `locate --statistics', the resulting summary indicates
+the type of each `locate' database.
+
+* Menu:
+
+* New Database Format::
+* Sample Database::
+* Old Database Format::
+
+
+File: find.info,  Node: New Database Format,  Next: Sample Database,  Up: Database Formats
+
+New Database Format
+-------------------
+
+   `updatedb' runs a program called `frcode' to "front-compress" the
+list of file names, which reduces the database size by a factor of 4 to
+5.  Front-compression (also known as incremental encoding) works as
+follows.
+
+   The database entries are a sorted list (case-insensitively, for
+users' convenience).  Since the list is sorted, each entry is likely to
+share a prefix (initial string) with the previous entry.  Each database
+entry begins with an offset-differential count byte, which is the
+additional number of characters of prefix of the preceding entry to use
+beyond the number that the preceding entry is using of its predecessor.
+(The counts can be negative.)  Following the count is a
+null-terminated ASCII remainder--the part of the name that follows the
+shared prefix.
+
+   If the offset-differential count is larger than can be stored in a
+byte (+/-127), the byte has the value 0x80 and the count follows in a
+2-byte word, with the high byte first (network byte order).
+
+   Every database begins with a dummy entry for a file called
+`LOCATE02', which `locate' checks for to ensure that the database file
+has the correct format; it ignores the entry in doing the search.
+
+   Databases cannot be concatenated together, even if the first (dummy)
+entry is trimmed from all but the first database.  This is because the
+offset-differential count in the first entry of the second and
+following databases will be wrong.
+
+   In the output of `locate --statistics', the new database format is
+referred to as `LOCATE02'.
+
+
+File: find.info,  Node: Sample Database,  Next: Old Database Format,  Prev: New Database Format,  Up: Database Formats
+
+Sample Database
+---------------
+
+   Sample input to `frcode':
+
+     /usr/src
+     /usr/src/cmd/aardvark.c
+     /usr/src/cmd/armadillo.c
+     /usr/tmp/zoo
+
+   Length of the longest prefix of the preceding entry to share:
+
+     0 /usr/src
+     8 /cmd/aardvark.c
+     14 rmadillo.c
+     5 tmp/zoo
+
+   Output from `frcode', with trailing nulls changed to newlines and
+count bytes made printable:
+
+     0 LOCATE02
+     0 /usr/src
+     8 /cmd/aardvark.c
+     6 rmadillo.c
+     -9 tmp/zoo
+
+   (6 = 14 - 8, and -9 = 5 - 14)
+
+
+File: find.info,  Node: Old Database Format,  Prev: Sample Database,  Up: Database Formats
+
+Old Database Format
+-------------------
+
+   The old database format is used by Unix `locate' and `find' programs
+and earlier releases of the GNU ones.  `updatedb' produces this format
+if given the `--old-format' option.
+
+   `updatedb' runs programs called `bigram' and `code' to produce
+old-format databases.  The old format differs from the new one in the
+following ways.  Instead of each entry starting with an
+offset-differential count byte and ending with a null, byte values from
+0 through 28 indicate offset-differential counts from -14 through 14.
+The byte value indicating that a long offset-differential count follows
+is 0x1e (30), not 0x80.  The long counts are stored in host byte order,
+which is not necessarily network byte order, and host integer word
+size, which is usually 4 bytes.  They also represent a count 14 less
+than their value.  The database lines have no termination byte; the
+start of the next line is indicated by its first byte having a value <=
+30.
+
+   In addition, instead of starting with a dummy entry, the old database
+format starts with a 256 byte table containing the 128 most common
+bigrams in the file list.  A bigram is a pair of adjacent bytes.  Bytes
+in the database that have the high bit set are indexes (with the high
+bit cleared) into the bigram table.  The bigram and offset-differential
+count coding makes these databases 20-25% smaller than the new format,
+but makes them not 8-bit clean.  Any byte in a file name that is in the
+ranges used for the special codes is replaced in the database by a
+question mark, which not coincidentally is the shell wildcard to match
+a single character.
+
+   The old format therefore cannot faithfully store entries with
+non-ASCII characters. It therefore should not be used in
+internationalised environments.
+
+   The output of `locate --statistics' will give an incorrect count of
+the number of file names containing newlines or high-bit characters for
+old-format databases.
+
+
+File: find.info,  Node: Newline Handling,  Prev: Database Formats,  Up: Databases
+
+Newline Handling
+================
+
+   Within the database, file names are terminated with a null character.
+This is the case for both the old and the new format.
+
+   When the new database format is being used, the compression technique
+used to generate the database though relies on the ability to sort the
+list of files before they are presented to `frcode'.
+
+   If the system's sort command allows its input list of files to be
+separated with null characters via the `-z' option, this option is used
+and therefore `updatedb' and `locate' will both correctly handle file
+names containing newlines.  If the `sort' command lacks support for
+this, the list of files is delimited with the newline character,
+meaning that parts of file names containing newlines will be
+incorrectly sorted.  This can result in both incorrect matches and
+incorrect failures to match.
+
+   On the other hand, if you are using the old database format, file
+names with embedded newlines are not correctly handled.  There is no
+technical limitation which enforces this, it's just that the `bigram'
+program has not been updated to support lists of file names separated
+by nulls.
+
+   So, if you are using the new database format (this is the default)
+and your system uses GNU `sort', newlines will be correctly handled at
+all times.  Otherwise, newlines may not be correctly handled.
+
+
+File: find.info,  Node: File Permissions,  Next: Reference,  Prev: Databases,  Up: Top
+
+File Permissions
+****************
+
+   Each file has a set of "permissions" that control the kinds of
+access that users have to that file.  The permissions for a file are
+also called its "access mode".  They can be represented either in
+symbolic form or as an octal number.
+
+* Menu:
+
+* Mode Structure::              Structure of file permissions.
+* Symbolic Modes::              Mnemonic permissions representation.
+* Numeric Modes::               Permissions as octal numbers.
+
+
+File: find.info,  Node: Mode Structure,  Next: Symbolic Modes,  Up: File Permissions
+
+Structure of File Permissions
+=============================
+
+   There are three kinds of permissions that a user can have for a file:
+
+  1. permission to read the file.  For directories, this means
+     permission to list the contents of the directory.
+
+  2. permission to write to (change) the file.  For directories, this
+     means permission to create and remove files in the directory.
+
+  3. permission to execute the file (run it as a program).  For
+     directories, this means permission to access files in the
+     directory.
+
+   There are three categories of users who may have different
+permissions to perform any of the above operations on a file:
+
+  1. the file's owner;
+
+  2. other users who are in the file's group;
+
+  3. everyone else.
+
+   Files are given an owner and group when they are created.  Usually
+the owner is the current user and the group is the group of the
+directory the file is in, but this varies with the operating system, the
+file system the file is created on, and the way the file is created.
+You can change the owner and group of a file by using the `chown' and
+`chgrp' commands.
+
+   In addition to the three sets of three permissions listed above, a
+file's permissions have three special components, which affect only
+executable files (programs) and, on some systems, directories:
+
+  1. Set the process's effective user ID to that of the file upon
+     execution (called the "setuid bit").  No effect on directories.
+
+  2. Set the process's effective group ID to that of the file upon
+     execution (called the "setgid bit").  For directories on some
+     systems, put files created in the directory into the same group as
+     the directory, no matter what group the user who creates them is
+     in.
+
+  3. prevent users from removing or renaming a file in a directory
+     unless they own the file or the directory; this is called the
+     "restricted deletion flag" for the directory.  For regular files
+     on some systems, save the program's text image on the swap device
+     so it will load more quickly when run; this is called the "sticky
+     bit".
+
+   In addition to the permissions listed above, there may be file
+attributes specific to the file system, e.g: access control lists
+(ACLs), whether a file is compressed, whether a file can be modified
+(immutability), whether a file can be dumped.  These are usually set
+using programs specific to the file system.  For example:
+
+ext2
+     On GNU and GNU/Linux the file permissions ("attributes") specific
+     to the ext2 file system are set using `chattr'.
+
+FFS
+     On FreeBSD the file permissions ("flags") specific to the FFS file
+     system are set using `chrflags'.
+
+   Although a file's permission "bits" allow an operation on that file,
+that operation may still fail, because:
+
+   * the file-system-specific permissions do not permit it;
+
+   * the file system is mounted as read-only.
+
+   For example, if the immutable attribute is set on a file, it cannot
+be modified, regardless of the fact that you may have just run `chmod
+a+w FILE'.
+
+
+File: find.info,  Node: Symbolic Modes,  Next: Numeric Modes,  Prev: Mode Structure,  Up: File Permissions
+
+Symbolic Modes
+==============
+
+   "Symbolic modes" represent changes to files' permissions as
+operations on single-character symbols.  They allow you to modify either
+all or selected parts of files' permissions, optionally based on their
+previous values, and perhaps on the current `umask' as well (*note
+Umask and Protection::).
+
+   The format of symbolic modes is:
+
+     [ugoa...][+-=]PERMS...[,...]
+
+where PERMS is either zero or more letters from the set `rwxXst', or a
+single letter from the set `ugo'.
+
+   The following sections describe the operators and other details of
+symbolic modes.
+
+* Menu:
+
+* Setting Permissions::          Basic operations on permissions.
+* Copying Permissions::          Copying existing permissions.
+* Changing Special Permissions:: Special permissions.
+* Conditional Executability::    Conditionally affecting executability.
+* Multiple Changes::             Making multiple changes.
+* Umask and Protection::              The effect of the umask.
+
+
+File: find.info,  Node: Setting Permissions,  Next: Copying Permissions,  Up: Symbolic Modes
+
+Setting Permissions
+-------------------
+
+   The basic symbolic operations on a file's permissions are adding,
+removing, and setting the permission that certain users have to read,
+write, and execute the file.  These operations have the following
+format:
+
+     USERS OPERATION PERMISSIONS
+
+The spaces between the three parts above are shown for readability only;
+symbolic modes cannot contain spaces.
+
+   The USERS part tells which users' access to the file is changed.  It
+consists of one or more of the following letters (or it can be empty;
+*note Umask and Protection::, for a description of what happens then).
+When more than one of these letters is given, the order that they are
+in does not matter.
+
+`u'
+     the user who owns the file;
+
+`g'
+     other users who are in the file's group;
+
+`o'
+     all other users;
+
+`a'
+     all users; the same as `ugo'.
+
+   The OPERATION part tells how to change the affected users' access to
+the file, and is one of the following symbols:
+
+`+'
+     to add the PERMISSIONS to whatever permissions the USERS already
+     have for the file;
+
+`-'
+     to remove the PERMISSIONS from whatever permissions the USERS
+     already have for the file;
+
+`='
+     to make the PERMISSIONS the only permissions that the USERS have
+     for the file.
+
+   The PERMISSIONS part tells what kind of access to the file should be
+changed; it is normally zero or more of the following letters.  As with
+the USERS part, the order does not matter when more than one letter is
+given.  Omitting the PERMISSIONS part is useful only with the `='
+operation, where it gives the specified USERS no access at all to the
+file.
+
+`r'
+     the permission the USERS have to read the file;
+
+`w'
+     the permission the USERS have to write to the file;
+
+`x'
+     the permission the USERS have to execute the file.
+
+   For example, to give everyone permission to read and write a file,
+but not to execute it, use:
+
+     a=rw
+
+   To remove write permission for all users other than the file's
+owner, use:
+
+     go-w
+
+The above command does not affect the access that the owner of the file
+has to it, nor does it affect whether other users can read or execute
+the file.
+
+   To give everyone except a file's owner no permission to do anything
+with that file, use the mode below.  Other users could still remove the
+file, if they have write permission on the directory it is in.
+
+     go=
+
+Another way to specify the same thing is:
+
+     og-rwx
+
