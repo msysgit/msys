@@ -129,7 +129,7 @@ typedef
 #   define BZ_API(func) (WINAPI * func)
 #   define BZ_EXTERN
 #   endif
-#elif defined(__CYGWIN__)
+#elif defined(__CYGWIN__) || defined(__MSYS__)
 #   define BZLIB_IMPEXP
 #   define BZLIB_API __cdecl
 #   define BZ_API(func) BZLIB_IMPEXP BZLIB_API func
