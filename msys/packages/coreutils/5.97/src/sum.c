@@ -97,7 +97,7 @@ bsd_sum_file (const char *file, int print_name)
     {
       fp = stdin;
       have_read_stdin = true;
-      if (O_BINARY && ! isatty (STDIN_FILENO))
+      if (!__MSYS__ && O_BINARY && ! isatty (STDIN_FILENO))
 	freopen (NULL, "rb", stdin);
     }
   else
@@ -165,7 +165,7 @@ sysv_sum_file (const char *file, int print_name)
     {
       fd = STDIN_FILENO;
       have_read_stdin = true;
-      if (O_BINARY && ! isatty (STDIN_FILENO))
+      if (!__MSYS__ && O_BINARY && ! isatty (STDIN_FILENO))
 	freopen (NULL, "rb", stdin);
     }
   else

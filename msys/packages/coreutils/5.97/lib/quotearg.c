@@ -77,7 +77,7 @@
 
 #define INT_BITS (sizeof (int) * CHAR_BIT)
 
-#if __CYGWIN__
+#if __CYGWIN__ || __MSYS__
 /* Hack - let quote_n display 8-bit characters.  */
 bool quote_eight_bit = false;
 #endif /* __CYGWIN__ */
@@ -414,7 +414,7 @@ quotearg_buffer_restyled (char *buffer, size_t buffersize,
 	      {
 		m = 1;
 		printable = isprint (c) != 0;
-#if __CYGWIN__
+#if __CYGWIN__ || __MSYS__
 		/* Hack - since newlib doesn't support locales, we are stuck
 		   with 7-bit ASCII for isprint().  But all cygwin terminals
 		   can display 8-bit characters.  Therefore, pass those

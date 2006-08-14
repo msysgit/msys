@@ -104,6 +104,9 @@ main (int argc, char **argv)
     error (SETUIDGID_FAILURE, errno,
 	   _("unknown user-ID: %s"), quote (user_id));
 
+#if __MSYS__
+#define setgroups(a, b) (1)
+#endif
   if (setgroups (1, &pwd->pw_gid))
     error (SETUIDGID_FAILURE, errno, _("cannot set supplemental group"));
 

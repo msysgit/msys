@@ -56,7 +56,7 @@
 #include "strftime.h"
 #include "xreadlink.h"
 
-#if __CYGWIN__
+#if __CYGWIN__ || __MSYS__
 # include "cygwin.h"
 /* Whether .exe should be appended to command-line args as needed.  */
 static bool append_exe = false;
@@ -125,7 +125,7 @@ static struct option const long_options[] = {
   {"format", required_argument, NULL, 'c'},
   {"printf", required_argument, NULL, PRINTF_OPTION},
   {"terse", no_argument, NULL, 't'},
-#if __CYGWIN__
+#if __CYGWIN__ || __MSYS__
   {"append-exe", no_argument, NULL, APPEND_EXE_OPTION},
 #endif /* __CYGWIN__ */
   {GETOPT_HELP_OPTION_DECL},
@@ -704,7 +704,7 @@ do_statfs (char const *filename, bool terse, char const *format)
 {
   STRUCT_STATVFS statfsbuf;
 
-#if __CYGWIN__
+#if __CYGWIN__ || __MSYS__
   if (append_exe && cygwin_spelling (filename) == 1)
     CYGWIN_APPEND_EXE (filename);
 #endif /* __CYGWIN__ */
@@ -738,7 +738,7 @@ do_stat (char const *filename, bool follow_links, bool terse,
 {
   struct stat statbuf;
 
-#if __CYGWIN__
+#if __CYGWIN__ || __MSYS__
   if (append_exe && cygwin_spelling (filename) == 1)
     CYGWIN_APPEND_EXE (filename);
 #endif /* __CYGWIN__ */
@@ -807,7 +807,7 @@ Display file or file system status.\n\
                           If you want a newline, include \\n in FORMAT.\n\
   -t, --terse           print the information in terse form\n\
 "), stdout);
-#if __CYGWIN__
+#if __CYGWIN__ || __MSYS__
       fputs (_("\
       --append-exe      append .exe if cygwin magic was needed\n\
 "), stdout);
@@ -924,7 +924,7 @@ main (int argc, char *argv[])
 	  terse = true;
 	  break;
 
-#if __CYGWIN__
+#if __CYGWIN__ || __MSYS__
 	case APPEND_EXE_OPTION:
 	  append_exe = true;
 	  break;

@@ -1580,7 +1580,7 @@ squeeze_filter (char *buf, size_t size, size_t (*reader) (char *, size_t))
 static size_t
 plain_read (char *buf, size_t size)
 {
-  size_t nr = safe_read (STDIN_FILENO, buf, size);
+  size_t nr = read (0, buf, size);
   if (nr == SAFE_READ_ERROR)
     error (EXIT_FAILURE, errno, _("read error"));
   return nr;
@@ -1761,9 +1761,9 @@ main (int argc, char **argv)
   /* Use binary I/O, since `tr' is sometimes used to transliterate
      non-printable characters, or characters which are stripped away
      by text-mode reads (like CR and ^Z).  */
-  if (O_BINARY && ! isatty (STDIN_FILENO))
+  if (!__MSYS__ && O_BINARY && ! isatty (STDIN_FILENO))
     freopen (NULL, "rb", stdin);
-  if (O_BINARY && ! isatty (STDOUT_FILENO))
+  if (!__MSYS__ && O_BINARY && ! isatty (STDOUT_FILENO))
     freopen (NULL, "wb", stdout);
 
   if (squeeze_repeats && non_option_args == 1)

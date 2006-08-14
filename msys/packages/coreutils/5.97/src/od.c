@@ -910,7 +910,7 @@ open_next_file (void)
 	  input_filename = _("standard input");
 	  in_stream = stdin;
 	  have_read_stdin = true;
-	  if (O_BINARY && ! isatty (STDIN_FILENO))
+	  if (!__MSYS__ && O_BINARY && ! isatty (STDIN_FILENO))
 	    freopen (NULL, "rb", stdin);
 	}
       else

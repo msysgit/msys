@@ -1280,7 +1280,7 @@ tail_file (struct File_spec *f, uintmax_t n_units)
     {
       have_read_stdin = true;
       fd = STDIN_FILENO;
-      if (O_BINARY && ! isatty (STDIN_FILENO))
+      if (!__MSYS__ && O_BINARY && ! isatty (STDIN_FILENO))
 	freopen (NULL, "rb", stdin);
     }
   else
@@ -1672,7 +1672,7 @@ main (int argc, char **argv)
       || (header_mode == multiple_files && n_files > 1))
     print_headers = true;
 
-  if (O_BINARY && ! isatty (STDOUT_FILENO))
+  if (!__MSYS__ && O_BINARY && ! isatty (STDOUT_FILENO))
     freopen (NULL, "wb", stdout);
 
   for (i = 0; i < n_files; i++)

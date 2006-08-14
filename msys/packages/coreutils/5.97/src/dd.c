@@ -36,7 +36,7 @@
 #include "xstrtol.h"
 #include "xtime.h"
 
-#if __CYGWIN__
+#if __CYGWIN__ || __MSYS__
 # include <io.h>
 #endif /* __CYGWIN__ */
 
@@ -1320,7 +1320,7 @@ copy_with_unblock (char const *buf, size_t nread)
 static void
 set_fd_flags (int fd, int add_flags, char const *name)
 {
-#if __CYGWIN__
+#if __CYGWIN__ || __MSYS__
   /* Cygwin does not allow fcntl to set the mode.  */
   int mode_flags = add_flags & (O_BINARY | O_TEXT);
   add_flags &= ~(O_BINARY | O_TEXT);

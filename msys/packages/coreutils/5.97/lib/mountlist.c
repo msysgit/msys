@@ -285,7 +285,7 @@ fstype_to_string (int t)
 }
 #endif /* MOUNTED_VMOUNT */
 
-#if __CYGWIN__
+#if __CYGWIN__ || __MSYS__
 # include <windows.h>
 
 /* Cygwin specific mount point information.  Cygwin uses the Windows drive
@@ -402,7 +402,7 @@ read_file_system_list (bool need_fs_type)
 	me->me_type = xstrdup (mnt->mnt_type);
 	me->me_type_malloced = 1;
 	me->me_dummy = ME_DUMMY (me->me_devname, me->me_type);
-#ifndef __CYGWIN__
+#if ! (__CYGWIN__ || __MSYS__)
 	me->me_remote = ME_REMOTE (me->me_devname, me->me_type);
 #else
       me->me_remote = cygremote (me->me_devname, &me->me_type);

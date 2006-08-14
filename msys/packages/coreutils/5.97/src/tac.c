@@ -532,7 +532,7 @@ tac_file (const char *filename)
       have_read_stdin = true;
       fd = STDIN_FILENO;
       filename = _("standard input");
-      if (O_BINARY && ! isatty (STDIN_FILENO))
+      if (!__MSYS__ && O_BINARY && ! isatty (STDIN_FILENO))
 	freopen (NULL, "rb", stdin);
     }
   else
@@ -646,7 +646,7 @@ main (int argc, char **argv)
 	  ? (char const *const *) &argv[optind]
 	  : default_file_list);
 
-  if (O_BINARY && ! isatty (STDOUT_FILENO))
+  if (!__MSYS__ && O_BINARY && ! isatty (STDOUT_FILENO))
     freopen (NULL, "wb", stdout);
 
   {

@@ -45,7 +45,7 @@
 #include "quote.h"
 #include "stat-macros.h"
 
-#if __CYGWIN__
+#if __CYGWIN__ || __MSYS__
 # include "cygwin.h"
 #endif /* __CYGWIN__ */
 
@@ -100,7 +100,7 @@ make_dir_parents (char const *arg,
   struct ptr_list *leading_dirs = NULL;
 
   int err = stat (arg, &stats);
-#if __CYGWIN__
+#if __CYGWIN__ || __MSYS__
   /* `mkdir -p foo' should succeed even when `foo.exe' exists.  `mkdir -p
      d/..' should create d.  The initial stat() is only an optimization,
      so this check can have false positives.  */

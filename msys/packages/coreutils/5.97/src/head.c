@@ -838,7 +838,7 @@ head_file (const char *filename, uintmax_t n_units, bool count_lines,
       have_read_stdin = true;
       fd = STDIN_FILENO;
       filename = _("standard input");
-      if (O_BINARY && ! isatty (STDIN_FILENO))
+      if (!__MSYS__ && O_BINARY && ! isatty (STDIN_FILENO))
 	freopen (NULL, "rb", stdin);
     }
   else
@@ -1048,7 +1048,7 @@ main (int argc, char **argv)
 	       ? (char const *const *) &argv[optind]
 	       : default_file_list);
 
-  if (O_BINARY && ! isatty (STDOUT_FILENO))
+  if (!__MSYS__ && O_BINARY && ! isatty (STDOUT_FILENO))
     freopen (NULL, "wb", stdout);
 
   for (i = 0; file_list[i]; ++i)

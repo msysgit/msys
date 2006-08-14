@@ -565,7 +565,7 @@ getloadavg (double loadavg[], int nelem)
 
 # endif /* hpux && HAVE_PSTAT_GETDYNAMIC */
 
-# if !defined (LDAV_DONE) && (defined (__linux__) || defined (__CYGWIN__))
+# if !defined (LDAV_DONE) && (defined (__linux__) || defined (__CYGWIN__) || defined (__MSYS__))
 #  define LDAV_DONE
 #  undef LOAD_AVE_TYPE
 

@@ -22,7 +22,7 @@ dnl Misc type-related macros for coreutils.
 
 AC_DEFUN([gl_MACROS],
 [
-  AC_PREREQ(2.59d)
+  AC_PREREQ(2.59)
 
   GNU_PACKAGE="GNU $PACKAGE"
   AC_DEFINE_UNQUOTED(GNU_PACKAGE, "$GNU_PACKAGE",

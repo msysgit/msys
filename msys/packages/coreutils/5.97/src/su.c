@@ -112,7 +112,7 @@
 
 #include "error.h"
 
-#if __CYGWIN__
+#if __CYGWIN__ || __MSYS__
 # include <windows.h>
 # include <sys/cygwin.h>
 /* Use the following define to determine the Windows version */
@@ -268,7 +268,7 @@ correct_password (const struct passwd *pw)
 
   if (getuid () == 0 || !correct || correct[0] == '\0')
     return true;
-#if __CYGWIN__
+#if __CYGWIN__ || __MSYS__
   /* On cygwin, any process with enough privilege can do passwordless
      authentication.  http://cygwin.com/ml/cygwin/2006-01/msg00289.html
      shows how to grant these privileges to an arbitrary account,
@@ -337,7 +337,7 @@ correct_password (const struct passwd *pw)
       error (0, 0, _("getpass: cannot open /dev/tty"));
       return false;
     }
-#if __CYGWIN__
+#if __CYGWIN__ || __MSYS__
   /* Windows NT class machines don't store password in pw->pw_passwd, but
      do support setuid if we use the cygwin password test.
      See http://cygwin.com/cygwin-ug-net/ntsec.html#ntsec-setuid.  */
@@ -359,9 +359,13 @@ correct_password (const struct passwd *pw)
     }
   else
 #endif /* __CYGWIN__ */
+#ifndef __MSYS__
   encrypted = crypt (unencrypted, correct);
   memset (unencrypted, 0, strlen (unencrypted));
   return STREQ (encrypted, correct);
+#else
+  return false;
+#endif
 }
 
 /* Update `environ' for the new shell based on PW, with SHELL being

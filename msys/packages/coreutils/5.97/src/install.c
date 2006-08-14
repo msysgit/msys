@@ -39,7 +39,7 @@
 #include "utimens.h"
 #include "xstrtol.h"
 
-#if __CYGWIN__
+#if __CYGWIN__ || __MSYS__
 # include "cygwin.h"
 #endif
 
@@ -568,7 +568,7 @@ strip (char const *name)
       error (EXIT_FAILURE, errno, _("fork system call failed"));
       break;
     case 0:			/* Child. */
-#if __CYGWIN__
+#if __CYGWIN__ || __MSYS__
       {
 	/* Check for .exe here, since strip doesn't.  */
 	char *p;
