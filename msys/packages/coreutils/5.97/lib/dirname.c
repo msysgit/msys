@@ -40,8 +40,11 @@ dir_len (char const *file)
     if (! ISSLASH (file[length - 1]))
       return length;
 
-  /* But don't strip the only slash from "/".  */
-  return prefix_length + ISSLASH (file[prefix_length]);
+  /* But don't strip the only slash from "/".  Also allow //.  */
+  return (prefix_length + ISSLASH (file[prefix_length])
+	  + (ISSLASH (file[prefix_length])
+	     && ISSLASH (file[prefix_length + 1])
+	     && ! ISSLASH (file[prefix_length + 2])));
 }
 
 /* Return the leading directories part of FILE,

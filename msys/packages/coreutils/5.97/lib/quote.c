@@ -1,5 +1,6 @@
 /* quote.c - quote arguments for output
-   Copyright (C) 1998, 1999, 2000, 2001, 2003 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2000, 2001, 2003, 2006 Free Software
+   Foundation, Inc.
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -21,6 +22,7 @@
 # include <config.h>
 #endif
 
+#include "stdbool.h"
 #include "quotearg.h"
 #include "quote.h"
 
@@ -29,7 +31,17 @@
 char const *
 quote_n (int n, char const *name)
 {
+#if __CYGWIN__
+  extern bool quote_eight_bit;
+  bool save = quote_eight_bit;
+  char const *result;
+  quote_eight_bit = true;
+  result = quotearg_n_style (n, locale_quoting_style, name);
+  quote_eight_bit = save;
+  return result;
+#else /* ! __CYGWIN__ */
   return quotearg_n_style (n, locale_quoting_style, name);
+#endif /* ! __CYGWIN__ */
 }
 
 /* Return an unambiguous printable representation of NAME,

@@ -231,6 +231,18 @@ initialize_exit_failure (int status)
 # define CLOSEDIR(d) closedir (d)
 #endif
 
+enum
+{
+  NOT_AN_INODE_NUMBER = 0
+};
+
+#ifdef D_INO_IN_DIRENT
+# define D_INO(dp) ((dp)->d_ino)
+#else
+/* Some systems don't have inodes, so fake them to avoid lots of ifdefs.  */
+# define D_INO(dp) NOT_AN_INODE_NUMBER
+#endif
+
 /* Get or fake the disk device blocksize.
    Usually defined by sys/param.h (if at all).  */
 #if !defined DEV_BSIZE && defined BSIZE
@@ -590,7 +602,7 @@ enum
 #define case_GETOPT_VERSION_CHAR(Program_name, Authors)			\
   case GETOPT_VERSION_CHAR:						\
     version_etc (stdout, Program_name, GNU_PACKAGE, VERSION, Authors,	\
-                 (char *) NULL);					\
+		 (char *) NULL);					\
     exit (EXIT_SUCCESS);						\
     break;
 

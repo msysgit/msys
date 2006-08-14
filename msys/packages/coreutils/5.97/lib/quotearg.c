@@ -1,6 +1,6 @@
 /* quotearg.c - quote arguments for output
 
-   Copyright (C) 1998, 1999, 2000, 2001, 2002, 2004, 2005 Free Software
+   Copyright (C) 1998, 1999, 2000, 2001, 2002, 2004, 2005, 2006 Free Software
    Foundation, Inc.
 
    This program is free software; you can redistribute it and/or modify
@@ -76,6 +76,11 @@
 #endif
 
 #define INT_BITS (sizeof (int) * CHAR_BIT)
+
+#if __CYGWIN__
+/* Hack - let quote_n display 8-bit characters.  */
+bool quote_eight_bit = false;
+#endif /* __CYGWIN__ */
 
 struct quoting_options
 {
@@ -409,6 +414,14 @@ quotearg_buffer_restyled (char *buffer, size_t buffersize,
 	      {
 		m = 1;
 		printable = isprint (c) != 0;
+#if __CYGWIN__
+		/* Hack - since newlib doesn't support locales, we are stuck
+		   with 7-bit ASCII for isprint().  But all cygwin terminals
+		   can display 8-bit characters.  Therefore, pass those
+		   characters through as though they are printing.  */
+		if (quote_eight_bit && 0x80 <= c)
+		  printable = true;
+#endif /* __CYGWIN__ */
 	      }
 	    else
 	      {

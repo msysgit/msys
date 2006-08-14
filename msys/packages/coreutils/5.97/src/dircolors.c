@@ -1,5 +1,5 @@
 /* dircolors - output commands to set the LS_COLOR environment variable
-   Copyright (C) 1996-2005 Free Software Foundation, Inc.
+   Copyright (C) 1996-2006 Free Software Foundation, Inc.
    Copyright (C) 1994, 1995, 1997, 1998, 1999, 2000 H. Peter Anvin
 
    This program is free software; you can redistribute it and/or modify
@@ -504,8 +504,12 @@ to select a shell syntax are mutually exclusive"));
 	    }
 	  else
 	    {
+	      /* tcsh treats LS_COLORS as a magic shell variable for its
+		 builtin ls-F, but does not recognize all the categories
+		 that coreutils ls does.  Therefore, silence stderr to
+		 avoid messages like "Unknown colorls variable `su'.".  */
 	      prefix = "setenv LS_COLORS '";
-	      suffix = "'\n";
+	      suffix = "' >&/dev/null\n";
 	    }
 	  fputs (prefix, stdout);
 	  fwrite (s, 1, len, stdout);

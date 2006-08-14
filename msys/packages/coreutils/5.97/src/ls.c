@@ -129,6 +129,10 @@ int wcwidth ();
 #include "xstrtol.h"
 #include "xreadlink.h"
 
+#if __CYGWIN__
+# include "cygwin.h"
+#endif
+
 #define PROGRAM_NAME (ls_mode == LS_LS ? "ls" \
 		      : (ls_mode == LS_MULTI_COL \
 			 ? "dir" : "vdir"))
@@ -231,7 +235,8 @@ static char *make_link_name (char const *name, char const *linkname);
 static int decode_switches (int argc, char **argv);
 static bool file_ignored (char const *name);
 static uintmax_t gobble_file (char const *name, enum filetype type,
-			      bool command_line_arg, char const *dirname);
+			      ino_t inode, bool command_line_arg,
+			      char const *dirname);
 static void print_color_indicator (const char *name, mode_t mode, int linkok);
 static void put_indicator (const struct bin_str *ind);
 static void add_ignore_pattern (const char *pattern);
@@ -693,6 +698,11 @@ static char const *long_time_format[2] =
     N_("%b %e %H:%M")
   };
 
+#if __CYGWIN__
+/* Whether .exe should be appended to command-line args as needed.  */
+static bool append_exe = false;
+#endif /* __CYGWIN__ */
+
 /* The set of signals that are caught.  */
 
 static sigset_t caught_signals;
@@ -742,6 +752,9 @@ enum
   SORT_OPTION,
   TIME_OPTION,
   TIME_STYLE_OPTION
+#if __CYGWIN__
+  , APPEND_EXE_OPTION
+#endif /* __CYGWIN__ */
 };
 
 static struct option const long_options[] =
@@ -785,6 +798,9 @@ static struct option const long_options[] =
   {"color", optional_argument, NULL, COLOR_OPTION},
   {"block-size", required_argument, NULL, BLOCK_SIZE_OPTION},
   {"author", no_argument, NULL, AUTHOR_OPTION},
+#if __CYGWIN__
+  {"append-exe", no_argument, NULL, APPEND_EXE_OPTION},
+#endif /* __CYGWIN__ */
   {GETOPT_HELP_OPTION_DECL},
   {GETOPT_VERSION_OPTION_DECL},
   {NULL, 0, NULL, 0}
@@ -1157,8 +1173,8 @@ main (int argc, char **argv)
 	check_symlink_color = true;
 
       /* If the standard output is a controlling terminal, watch out
-         for signals, so that the colors can be restored to the
-         default state if "ls" is suspended or interrupted.  */
+	 for signals, so that the colors can be restored to the
+	 default state if "ls" is suspended or interrupted.  */
 
       if (0 <= tcgetpgrp (STDOUT_FILENO))
 	{
@@ -1222,9 +1238,8 @@ main (int argc, char **argv)
 
   format_needs_stat = sort_type == sort_time || sort_type == sort_size
     || format == long_format
-    || dereference == DEREF_ALWAYS
-    || print_block_size || print_inode;
-  format_needs_type = (!format_needs_stat
+    || print_block_size;
+  format_needs_type = (! format_needs_stat
 		       && (recursive || print_with_color
 			   || indicator_style != none));
 
@@ -1245,13 +1260,13 @@ main (int argc, char **argv)
   if (n_files <= 0)
     {
       if (immediate_dirs)
-	gobble_file (".", directory, true, "");
+	gobble_file (".", directory, NOT_AN_INODE_NUMBER, true, "");
       else
 	queue_directory (".", NULL, true);
     }
   else
     do
-      gobble_file (argv[i++], unknown, true, "");
+      gobble_file (argv[i++], unknown, NOT_AN_INODE_NUMBER, true, "");
     while (i < argc);
 
   if (files_index)
@@ -1694,9 +1709,9 @@ decode_switches (int argc, char **argv)
 	    format = one_per_line;
 	  break;
 
-        case AUTHOR_OPTION:
-          print_author = true;
-          break;
+	case AUTHOR_OPTION:
+	  print_author = true;
+	  break;
 
 	case HIDE_OPTION:
 	  {
@@ -1779,6 +1794,12 @@ decode_switches (int argc, char **argv)
 	  human_output_opts = human_autoscale | human_SI;
 	  file_output_block_size = output_block_size = 1;
 	  break;
+
+#if __CYGWIN__
+	case APPEND_EXE_OPTION:
+	  append_exe = true;
+	  break;
+#endif /* __CYGWIN__ */
 
 	case_GETOPT_HELP_CHAR;
 
@@ -1998,7 +2019,7 @@ get_funky_string (char **dest, const char **src, bool equals_end,
 	      num = '\v';
 	      break;
 	    case '?':		/* Delete */
-              num = 127;
+	      num = 127;
 	      break;
 	    case '_':		/* Space */
 	      num = ' ';
@@ -2343,7 +2364,8 @@ print_dir (char const *name, char const *realname, bool command_line_arg)
 		  || next->d_type == DT_SOCK)
 		type = next->d_type;
 #endif
-	      total_blocks += gobble_file (next->d_name, type, false, name);
+	      total_blocks += gobble_file (next->d_name, type, D_INO (next),
+					   false, name);
 	    }
 	}
       else if (errno != 0)
@@ -2488,11 +2510,20 @@ clear_files (void)
    Return the number of blocks that the file occupies.  */
 
 static uintmax_t
-gobble_file (char const *name, enum filetype type, bool command_line_arg,
-	     char const *dirname)
+gobble_file (char const *name, enum filetype type, ino_t inode,
+	     bool command_line_arg, char const *dirname)
 {
   uintmax_t blocks;
   struct fileinfo *f;
+
+#if __CYGWIN__
+  if (command_line_arg && append_exe && cygwin_spelling (name) == 1)
+    CYGWIN_APPEND_EXE (name);
+#endif /* __CYGWIN__ */
+
+  /* An inode value prior to gobble_file necessarily came from readdir,
+     which is not used for command line arguments.  */
+  assert (! command_line_arg || inode == NOT_AN_INODE_NUMBER);
 
   if (files_index == nfiles)
     {
@@ -2507,6 +2538,14 @@ gobble_file (char const *name, enum filetype type, bool command_line_arg,
 
   if (command_line_arg
       || format_needs_stat
+      || (print_inode
+	  && (inode == NOT_AN_INODE_NUMBER
+	      /* When dereferencing symlinks, the inode must come from
+		 stat, but readdir provides the inode of lstat.  Command
+		 line dereferences are already taken care of by the above
+		 assertion that the inode number is not yet known.  */
+	      || (dereference == DEREF_ALWAYS
+		  && (type == symbolic_link || type == unknown))))
       || (format_needs_type
 	  && (type == unknown
 
@@ -2609,8 +2648,8 @@ gobble_file (char const *name, enum filetype type, bool command_line_arg,
 	      f->linkok = true;
 
 	      /* Symbolic links to directories that are mentioned on the
-	         command line are automatically traced if not being
-	         listed as files.  */
+		 command line are automatically traced if not being
+		 listed as files.  */
 	      if (!command_line_arg || format == long_format
 		  || !S_ISDIR (linkstats.st_mode))
 		{
@@ -2634,13 +2673,6 @@ gobble_file (char const *name, enum filetype type, bool command_line_arg,
 	}
       else
 	f->filetype = normal;
-
-      {
-	char buf[INT_BUFSIZE_BOUND (uintmax_t)];
-	int len = strlen (umaxtostr (f->stat.st_ino, buf));
-	if (inode_number_width < len)
-	  inode_number_width = len;
-      }
 
       blocks = ST_NBLOCKS (f->stat);
       {
@@ -2707,11 +2739,20 @@ gobble_file (char const *name, enum filetype type, bool command_line_arg,
   else
     {
       f->filetype = type;
+      f->stat.st_ino = inode;
 #if HAVE_STRUCT_DIRENT_D_TYPE && defined DTTOIF
       f->stat.st_mode = DTTOIF (type);
 #endif
       blocks = 0;
     }
+
+  if (print_inode)
+      {
+	char buf[INT_BUFSIZE_BOUND (uintmax_t)];
+	int len = strlen (umaxtostr (f->stat.st_ino, buf));
+	if (inode_number_width < len)
+	  inode_number_width = len;
+      }
 
   f->name = xstrdup (name);
   files_index++;
@@ -4154,7 +4195,7 @@ Mandatory arguments to long options are mandatory for short options too.\n\
       --indicator-style=WORD append indicator with style WORD to entry names:\n\
                                none (default), slash (-p),\n\
                                file-type (--file-type), classify (-F)\n\
-  -i, --inode                with -l, print the index number of each file\n\
+  -i, --inode                print the index number of each file\n\
   -I, --ignore=PATTERN       do not list implied entries matching shell PATTERN\n\
   -k                         like --block-size=1K\n\
 "), stdout);
@@ -4219,6 +4260,11 @@ Mandatory arguments to long options are mandatory for short options too.\n\
   -X                         sort alphabetically by entry extension\n\
   -1                         list one file per line\n\
 "), stdout);
+#if __CYGWIN__
+      fputs (_("\
+      --append-exe           append .exe if cygwin magic was needed\n\
+"), stdout);
+#endif /* __CYGWIN__ */
       fputs (HELP_OPTION_DESCRIPTION, stdout);
       fputs (VERSION_OPTION_DESCRIPTION, stdout);
       fputs (_("\n\

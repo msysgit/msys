@@ -128,7 +128,10 @@ main (int argc, char **argv)
   name = base_name (argv[optind]);
   name[base_len (name)] = '\0';
 
-  if (argc == optind + 2)
+  /* Per POSIX, the only way the basename can start with slash is if it is
+     "/" or "//", in which case suffix stripping is skipped.  (This only
+     affects `basename // /' on platforms with a distinct //).  */
+  if (! ISSLASH (*name) && argc == optind + 2)
     remove_suffix (name, argv[optind + 1]);
 
   puts (name);

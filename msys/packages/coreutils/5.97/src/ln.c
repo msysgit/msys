@@ -1,5 +1,5 @@
 /* `ln' program to create links between files.
-   Copyright (C) 86, 89, 90, 91, 1995-2005 Free Software Foundation, Inc.
+   Copyright (C) 1986, 1989-91, 1995-2005 Free Software Foundation, Inc.
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -29,6 +29,10 @@
 #include "error.h"
 #include "quote.h"
 #include "yesno.h"
+
+#if __CYGWIN__
+# include "cygwin.h"
+#endif
 
 /* The official name of this program (e.g., no `g' prefix).  */
 #define PROGRAM_NAME "ln"
@@ -114,10 +118,18 @@ static bool hard_dir_link;
    symlink-to-dir before creating the new link.  */
 static bool dereference_dest_dir_symlinks = true;
 
+#if __CYGWIN__
+static bool bypass_cygwin_checking = false;
+# define CYGWIN_EXE_OPT_CHAR 10000
+#endif /* __CYGWIN__ */
+
 static struct option const long_options[] =
 {
   {"backup", optional_argument, NULL, 'b'},
   {"directory", no_argument, NULL, 'F'},
+#if __CYGWIN__
+  {"disable-exe-magic", no_argument, NULL, CYGWIN_EXE_OPT_CHAR},
+#endif /* __CYGWIN__ */
   {"no-dereference", no_argument, NULL, 'n'},
   {"no-target-directory", no_argument, NULL, 'T'},
   {"force", no_argument, NULL, 'f'},
@@ -166,6 +178,62 @@ do_link (const char *source, const char *dest, bool dest_is_dir)
   char *dest_backup = NULL;
   bool lstat_ok = false;
 
+#if __CYGWIN__
+  /* On cygwin, we need special handling for implicit ".exe" extensions.
+     Hard links require SOURCE to exist (so find its correct spelling),
+     while symlinks are textual and no check is technically needed.  But
+     when resolving a symlink, if the contents of the link contain the
+     wrong spelling to what actually exists, an exec*() succeeds but
+     an open() would fail, so correcting the spelling when possible
+     reduces user confusion.  */
+  if (! bypass_cygwin_checking)
+    {
+      char *p;
+      char *sym_source = NULL;
+      if (symbolic_link && *source != '/')
+	{
+	  /* Relative symbolic links are relative to dirname (DEST), not
+	     to getcwd ().  Use a helper variable with the actual filename
+	     to check, while letting SOURCE still be relative.  */
+	  if (dest_is_dir)
+	    {
+	      int dest_len = strlen (dest);
+	      sym_source = xmalloc (dest_len + strlen (source) + 2);
+	      memcpy (sym_source, dest, dest_len);
+	      if (dest[dest_len - 1] != '/')
+		strcpy (sym_source + dest_len, "/");
+	      else
+		sym_source[dest_len] = '\0';
+	      strcat (sym_source + dest_len, source);
+	    }
+	  else if ((p = strrchr (dest, '/')))
+	    {
+	      int dest_len = p - dest + 1;
+	      sym_source = xmalloc (dest_len + strlen (source) + 1);
+	      memcpy (sym_source, dest, dest_len);
+	      strcpy (sym_source + dest_len, source);
+	    }
+	}
+      if (((p = strchr (source, '\0') - 4) <= source
+	   || strcasecmp (p, ".exe") != 0)
+	  && cygwin_spelling (sym_source ? sym_source : source) > 0)
+	{
+	  /* SOURCE needs ".exe" appended to point to an existing file.  It
+	     may be the wrong case on strict case checking, and may be confused
+	     on managed mounts, but oh well.  What would be really nice is an
+	     extension to struct stat that called out the implicit suffix that
+	     was added to make stat succeed.  */
+	  CYGWIN_APPEND_EXE (source);
+	  if (! dest_is_dir && *dest && dest[strlen (dest) - 1] != '.'
+	      && ((p = strchr (dest, '\0') - 4) <= dest
+		  || strcasecmp (p, ".exe") != 0))
+	    /* DEST needs same treatment.  */
+	    CYGWIN_APPEND_EXE (dest);
+	}
+      free (sym_source);
+    }
+#endif /* __CYGWIN__ */
+
   /* Use stat here instead of lstat.
      On SVR4, link does not follow symlinks, so this check disallows
      making hard links to symlinks that point to directories.  Big deal.
@@ -205,6 +273,15 @@ do_link (const char *source, const char *dest, bool dest_is_dir)
   if (remove_existing_files || interactive || backup_type != no_backups)
     {
       lstat_ok = (lstat (dest, &dest_stats) == 0);
+#if __CYGWIN__
+      /* stat("a") succeeds even if it was really "a.exe".  */
+      if (! bypass_cygwin_checking && lstat_ok && cygwin_spelling (dest) != 0)
+	{
+	  /* Only DEST.exe exists, but we want the non-existant DEST.  */
+	  lstat_ok = false;
+	  errno = ENOENT;
+	}
+#endif /* __CYGWIN__ */
       if (!lstat_ok && errno != ENOENT)
 	{
 	  error (0, errno, _("accessing %s"), quote (dest));
@@ -361,23 +438,28 @@ Mandatory arguments to long options are mandatory for short options too.\n\
       --backup[=CONTROL]      make a backup of each existing destination file\n\
   -b                          like --backup but does not accept an argument\n\
   -d, -F, --directory         allow the superuser to attempt to hard link\n\
-                                directories (note: will probably fail due to\n\
-                                system restrictions, even for the superuser)\n\
+				directories (note: will probably fail due to\n\
+				system restrictions, even for the superuser)\n\
   -f, --force                 remove existing destination files\n\
 "), stdout);
       fputs (_("\
   -n, --no-dereference        treat destination that is a symlink to a\n\
-                                directory as if it were a normal file\n\
+				directory as if it were a normal file\n\
   -i, --interactive           prompt whether to remove destinations\n\
   -s, --symbolic              make symbolic links instead of hard links\n\
 "), stdout);
       fputs (_("\
   -S, --suffix=SUFFIX         override the usual backup suffix\n\
   -t, --target-directory=DIRECTORY  specify the DIRECTORY in which to create\n\
-                                the links\n\
+				the links\n\
   -T, --no-target-directory   treat LINK_NAME as a normal file\n\
   -v, --verbose               print name of each file before linking\n\
 "), stdout);
+#if __CYGWIN__
+      fputs (_("\
+      --disable-exe-magic     disable the cygwin magic that appends .exe\n\
+"), stdout);
+#endif /* __CYGWIN__ */
       fputs (HELP_OPTION_DESCRIPTION, stdout);
       fputs (VERSION_OPTION_DESCRIPTION, stdout);
       fputs (_("\
@@ -483,6 +565,11 @@ main (int argc, char **argv)
 	  make_backups = true;
 	  backup_suffix_string = optarg;
 	  break;
+#if __CYGWIN__
+	case CYGWIN_EXE_OPT_CHAR:
+	  bypass_cygwin_checking = true;
+	  break;
+#endif /* __CYGWIN__ */
 	case_GETOPT_HELP_CHAR;
 	case_GETOPT_VERSION_CHAR (PROGRAM_NAME, AUTHORS);
 	default:

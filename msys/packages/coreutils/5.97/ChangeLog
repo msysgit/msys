@@ -1,3 +1,153 @@
+2006-07-04  Eric Blake  <ebb9@byu.net>
+
+	Cygwin release 5.97-1.  Depends on cygwin-1.5.20-1 or later.
+	Revert the temporary hack that disabled getpwd, and switch to
+	cygport for packaging.
+
+2006-05-23  Eric Blake  <ebb9@byu.net>
+
+	Cygwin release 5.96-1. Experimental only, depends on cygwin
+	snapshot 20060329 or later.
+
+2006-04-14  Eric Blake  <ebb9@byu.net>
+
+	Cygwin release 5.94-5. Experimental only, depends on cygwin
+	snapshot 20060329 or later.
+	* src/dd.c (main): Default to binary mode.
+	* src/system.h (rpl_freopen): Remove this hack, now that cygwin
+	freopen(NULL) works.
+	* lib/quotearg.c (quote_eight_bit): New variable, so I can...
+	(quotearg_buffer_restyled): treat 8-bit	characters as printable
+	when outputting to a terminal.
+	* lib/quote.c (quote_n): Use it.
+
+2006-02-28  Eric Blake  <ebb9@byu.net>
+
+	Cygwin release 5.94-4. Experimental only, depends on cygwin
+	snapshot 20060227 or later.
+	* lib/root-dev-ino.h (struct root_dev_ino): New struct.
+	(ROOT_DEV_INO_CHECK, ROOT_DEV_INO_WARN): Also track //.
+	* lib/root-dev-ino.c (get_root_dev_ino): Also track //.
+	* src/chmod.c (root_dev_ino): Use new type.
+	(main): Ditto.
+	* src/chown-core.h (struct Chown_option): Ditto.
+	* src/chown.c (main): Ditto.
+	* src/remove.h (struct rm_options): Ditto.
+	* src/rm.c (main): Ditto.
+	* src/pwd.c (robust_getcwd): Ditto.  Also fix bug when in / or //.
+
+2006-02-25  Eric Blake  <ebb9@byu.net>
+
+	Cygwin release 5.94-3. Experimental only, depends on cygwin
+	snapshot 20060220 or later.
+	* src/pwd.c (NOT_AN_INODE_NUMBER, D_INO): Move to ...
+	* src/system.h: ... here, for use in ...
+	* src/ls.c (main): ... here.  Prefer dirent.d_ino to stat when
+	possible.
+	(gobble_file): Add inode argument.
+	(print_dir): Pass inode if available.
+	(usage): Remove inaccuracy.
+
+2006-02-23  Eric Blake  <ebb9@byu.net>
+
+	Cygwin release 5.94-2. Experimental only, depends on cygwin
+	snapshot 20060220 or later.
+
+2006-02-14  Eric Blake  <ebb9@byu.net>
+
+	Cygwin release 5.94-1.
+
+2006-01-24  Eric Blake  <ebb9@byu.net>
+
+	Cygwin release 5.93-3, depends on cygwin-1.5.19-1 or later.
+	* src/cksum.c (main): Always output binary files.
+	* src/md5sum.c (main): Likewise.
+	* src/su.c (correct_password): On NT machines, attempt
+	passwordless login first, and give better error message if
+	password check fails.  I still don't know how to distinguish
+	between insufficient privileges vs. incorrect password.
+	* src/dircolors.c (main): Silence warning from tcsh 6.14.00.
+
+2005-12-15  Eric Blake  <ebb9@byu.net>
+
+	Cygwin release 5.93-2, depends on snapshot 20051214 or later (will
+	become cygwin 1.5.19).
+
+2005-11-10  Eric Blake  <ebb9@byu.net>
+
+	Cygwin release 5.93-1, depends on snapshot 20051020 or later (will
+	become cygwin 1.5.19).
+	* lib/getaddrinfo.h: Use #if!, not #ifndef, for AC_CHECK_HEADERS.
+	* lib/mkdir-p.h: Work around cygwin name/.. bug.
+
+2005-10-20  Eric Blake  <ebb9@byu.net>
+
+	Cygwin release 5.91-1, depends on snapshot 20051020 or later (will
+	become cygwin 1.5.19).
+
+2005-10-15  Eric Blake  <ebb9@byu.net>
+
+	Cygwin release 5.90-3, depends on snapshot 20051003 or later (will
+	become cygwin 1.5.19).
+	* doc/coreutils.texi (ls invocation, stat invocation): Document
+	--append-exe.
+	* src/ls.c (usage): Ditto.
+	(gobble_file): Append .exe as needed when requested.
+	* src/stat.c (usage): Document --append-exe.
+	(do_stat, do_statfs): Append .exe as needed when requested.
+
+2005-10-08  Eric Blake  <ebb9@byu.net>
+
+	Cygwin release 5.90-2, depends on snapshot 20051003 or later (will
+	become cygwin 1.5.19).
+	* lib/mkdir-p.c (make_dir_parents): Fix bug in last patch.
+	* lib/cygwin.h (CYGWIN_APPEND_EXE): Factor into common macro.
+	* src/copy.c (copy): Use new macro.
+	* src/install.c (strip): Ditto.
+	* src/ln.c (do_link): Ditto.
+
+2005-07-13  Eric Blake  <ebb9@byu.net>
+
+	* doc/coreutils.texi (ln invocation): Document --disable-exe-magic.
+	* src/ln.c (usage): Likewise.
+	(do_link): Skip .exe magic when requested.
+
+2005-07-12  Eric Blake  <ebb9@byu.net>
+
+	* lib/basename.c (base_name, base_len): Allow for //.
+	* lib/dirname.c (dir_len): Allow for //.
+	* lib/cygwin.c (cygwin_spelling): Don't append .exe to directories.
+	Make sure .exe exists before returning 1, because otherwise
+	virtual directories such as /cygdrive have problems.
+	* src/basename.c (main): 'basename // /' must return //.
+
+2005-07-07  Eric Blake  <ebb9@byu.net>
+
+	* lib/cygwin.h: New file, defining cygwin_spelling.
+	* lib/cygwin.c: New file.
+	* lib/Makefile.am: Compile it.
+	* lib/acl.c (file_has_acl): Treat EBUSY as ACL rather than error.
+	* src/copy.c (copy_internal, copy): Use new cygwin_spelling() to
+	undo .exe magic.
+	* src/link.c (do_link): Likewise.
+	* src/install.c (strip): Likewise.
+
+2005-04-05  Eric Blake  <ebb9@byu.net>
+
+	* src/dircolors.hin: Support DOS-style suffixes.
+
+2005-01-28  Eric Blake  <ebb9@byu.net>
+
+	* lib/mountlist.c (cygremote): New function to parse Windows drive
+	types from non-standard Cygwin mount information.
+	(read_file_system_list): Use it.
+	* src/Makefile.am (PROGRAMS): Enable kill (pass
+	--program-transform-name to configure to rename it gkill).
+
+2005-01-03  Corinna Vinschen  <corinna@vinschen.de>
+
+	* src/install.c (strip): Check for .exe here since strip doesn't.
+
 2006-06-22  Jim Meyering  <jim@meyering.net>
 
 	* Version 5.97.

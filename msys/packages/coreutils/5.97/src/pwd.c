@@ -1,5 +1,5 @@
 /* pwd - print current directory
-   Copyright (C) 1994-1997, 1999-2005 Free Software Foundation, Inc.
+   Copyright (C) 1994-1997, 1999-2006 Free Software Foundation, Inc.
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -39,18 +39,6 @@ struct file_name
   size_t n_alloc;
   char *start;
 };
-
-enum
-{
-  NOT_AN_INODE_NUMBER = 0
-};
-
-#ifdef D_INO_IN_DIRENT
-# define D_INO(dp) ((dp)->d_ino)
-#else
-/* Some systems don't have inodes, so fake them to avoid lots of ifdefs.  */
-# define D_INO(dp) NOT_AN_INODE_NUMBER
-#endif
 
 /* The name this program was run with. */
 char *program_name;
@@ -274,8 +262,8 @@ static void
 robust_getcwd (struct file_name *file_name)
 {
   size_t height = 1;
-  struct dev_ino dev_ino_buf;
-  struct dev_ino *root_dev_ino = get_root_dev_ino (&dev_ino_buf);
+  struct root_dev_ino dev_ino_buf;
+  struct root_dev_ino *root_dev_ino = get_root_dev_ino (&dev_ino_buf);
   struct stat dot_sb;
 
   if (root_dev_ino == NULL)
@@ -288,14 +276,17 @@ robust_getcwd (struct file_name *file_name)
   while (1)
     {
       /* If we've reached the root, we're done.  */
-      if (SAME_INODE (dot_sb, *root_dev_ino))
+      if (ROOT_DEV_INO_CHECK (root_dev_ino, &dot_sb))
 	break;
 
       find_dir_entry (&dot_sb, file_name, height++);
     }
 
   if (file_name->start[0] == '\0')
-    file_name_prepend (file_name, "/", 1);
+    file_name_prepend (file_name, "", 0);
+  /* If we aren't in `/', we must be in `//'.  */
+  if (! SAME_INODE (root_dev_ino->single_slash, dot_sb))
+    file_name_prepend (file_name, "", 0);
 }
 
 int
