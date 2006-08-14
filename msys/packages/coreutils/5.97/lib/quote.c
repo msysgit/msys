@@ -31,7 +31,7 @@
 char const *
 quote_n (int n, char const *name)
 {
-#if __CYGWIN__
+#if __CYGWIN__ || __MSYS__
   extern bool quote_eight_bit;
   bool save = quote_eight_bit;
   char const *result;

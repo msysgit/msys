@@ -541,7 +541,7 @@ main (int argc, char **argv)
 	   quote (infile));
 
   /* Binary I/O is safer when bytecounts are used.  */
-  if (O_BINARY && ! isatty (STDIN_FILENO))
+  if (!__MSYS__ && O_BINARY && ! isatty (STDIN_FILENO))
     freopen (NULL, "rb", stdin);
 
   /* No output file is open now.  */

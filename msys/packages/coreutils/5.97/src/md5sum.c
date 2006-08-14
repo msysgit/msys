@@ -253,7 +253,7 @@ split_3 (char *s, size_t s_len,
   /* All characters between the type indicator and end of line are
      significant -- that includes leading and trailing white space.  */
   *file_name = &s[i];
-#if __CYGWIN__
+#if __CYGWIN__ || __MSYS__
   /* But on cygwin, where \r is only permitted on managed mounts (and is
      relatively rare anyways), strip it from the line end since older
      cygwin releases of coreutils mistakenly output md5sums in text mode.  */
@@ -344,7 +344,7 @@ digest_file (const char *filename, int *binary, unsigned char *bin_result,
     {
       have_read_stdin = true;
       fp = stdin;
-      if (O_BINARY && *binary)
+      if (!__MSYS__ && O_BINARY && *binary)
 	{
 	  if (*binary < 0)
 	    *binary = ! isatty (STDIN_FILENO);
@@ -625,7 +625,7 @@ main (int argc, char **argv)
   if (optind == argc)
     argv[argc++] = "-";
 
-  if (O_BINARY && ! isatty (STDOUT_FILENO))
+  if (!__MSYS__ && O_BINARY && ! isatty (STDOUT_FILENO))
     freopen (NULL, "wb", stdout);
 
   for (; optind < argc; ++optind)

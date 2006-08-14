@@ -51,7 +51,7 @@
 #include "xreadlink.h"
 #include "yesno.h"
 
-#if __CYGWIN__
+#if __CYGWIN__ || __MSYS__
 # include "cygwin.h"
 #endif
 
@@ -963,7 +963,7 @@ copy_internal (char const *src_name, char const *dst_name,
   if (!new_dst)
     {
       int res = XSTAT (x, dst_name, &dst_sb);
-#if __CYGWIN__
+#if __CYGWIN__ || __MSYS__
       /* stat("a") succeeds even if it was really "a.exe".  */
       if (! res && cygwin_spelling (dst_name) != 0)
 	{
@@ -1782,7 +1782,7 @@ copy (char const *src_name, char const *dst_name,
   top_level_src_name = src_name;
   top_level_dst_name = dst_name;
 
-#if __CYGWIN__
+#if __CYGWIN__ || __MSYS__
   /* Implicit .exe magic: if SRC_NAME does not have .exe, exists, and must be
      opened by appending .exe; then add .exe to SRC_NAME, and to DST_NAME if
      it did not already have the suffix.  */

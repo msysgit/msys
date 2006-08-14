@@ -387,10 +387,6 @@
    don't. */
 #undef HAVE_DECL_TTYNAME
 
-/* Define to 1 if you have the declaration of `tzname', and to 0 if you don't.
-   */
-#undef HAVE_DECL_TZNAME
-
 /* Define to 1 if you have the declaration of wcwidth(), and to 0 otherwise.
    */
 #undef HAVE_DECL_WCWIDTH
@@ -615,10 +611,6 @@
 
 /* Define if you have the 'long double' type. */
 #undef HAVE_LONG_DOUBLE
-
-/* Define to 1 if the type `long double' works and has more range or precision
-   than `double'. */
-#undef HAVE_LONG_DOUBLE_WIDER
 
 /* Define to 1 if you support file names longer than 14 characters. */
 #undef HAVE_LONG_FILE_NAMES
@@ -1415,7 +1407,7 @@
 
 /* If using the C implementation of alloca, define if you know the
    direction of stack growth for your system; otherwise it will be
-   automatically deduced at runtime.
+   automatically deduced at run-time.
 	STACK_DIRECTION > 0 => grows toward higher addresses
 	STACK_DIRECTION < 0 => grows toward lower addresses
 	STACK_DIRECTION = 0 => direction of growth unknown */
@@ -1661,7 +1653,7 @@
 /* Define to rpl_nanosleep if the replacement function should be used. */
 #undef nanosleep
 
-/* Define to `long int' if <sys/types.h> does not define. */
+/* Define to `long' if <sys/types.h> does not define. */
 #undef off_t
 
 /* Define to `int' if <sys/types.h> does not define. */
@@ -1728,7 +1720,7 @@
 /* Define to empty if the C compiler doesn't support this keyword. */
 #undef signed
 
-/* Define to `unsigned int' if <sys/types.h> does not define. */
+/* Define to `unsigned' if <sys/types.h> does not define. */
 #undef size_t
 
 /* Map `socklen_t' to `int' if it is missing. */

@@ -129,7 +129,7 @@ int wcwidth ();
 #include "xstrtol.h"
 #include "xreadlink.h"
 
-#if __CYGWIN__
+#if __CYGWIN__ || __MSYS__
 # include "cygwin.h"
 #endif
 
@@ -698,7 +698,7 @@ static char const *long_time_format[2] =
     N_("%b %e %H:%M")
   };
 
-#if __CYGWIN__
+#if __CYGWIN__ || __MSYS__
 /* Whether .exe should be appended to command-line args as needed.  */
 static bool append_exe = false;
 #endif /* __CYGWIN__ */
@@ -752,7 +752,7 @@ enum
   SORT_OPTION,
   TIME_OPTION,
   TIME_STYLE_OPTION
-#if __CYGWIN__
+#if __CYGWIN__ || __MSYS__
   , APPEND_EXE_OPTION
 #endif /* __CYGWIN__ */
 };
@@ -798,7 +798,7 @@ static struct option const long_options[] =
   {"color", optional_argument, NULL, COLOR_OPTION},
   {"block-size", required_argument, NULL, BLOCK_SIZE_OPTION},
   {"author", no_argument, NULL, AUTHOR_OPTION},
-#if __CYGWIN__
+#if __CYGWIN__ || __MSYS__
   {"append-exe", no_argument, NULL, APPEND_EXE_OPTION},
 #endif /* __CYGWIN__ */
   {GETOPT_HELP_OPTION_DECL},
@@ -1795,7 +1795,7 @@ decode_switches (int argc, char **argv)
 	  file_output_block_size = output_block_size = 1;
 	  break;
 
-#if __CYGWIN__
+#if __CYGWIN__ || __MSYS__
 	case APPEND_EXE_OPTION:
 	  append_exe = true;
 	  break;
@@ -2516,7 +2516,7 @@ gobble_file (char const *name, enum filetype type, ino_t inode,
   uintmax_t blocks;
   struct fileinfo *f;
 
-#if __CYGWIN__
+#if __CYGWIN__ || __MSYS__
   if (command_line_arg && append_exe && cygwin_spelling (name) == 1)
     CYGWIN_APPEND_EXE (name);
 #endif /* __CYGWIN__ */
@@ -4260,7 +4260,7 @@ Mandatory arguments to long options are mandatory for short options too.\n\
   -X                         sort alphabetically by entry extension\n\
   -1                         list one file per line\n\
 "), stdout);
-#if __CYGWIN__
+#if __CYGWIN__ || __MSYS__
       fputs (_("\
       --append-exe           append .exe if cygwin magic was needed\n\
 "), stdout);

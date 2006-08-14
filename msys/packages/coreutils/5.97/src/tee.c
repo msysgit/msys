@@ -152,9 +152,9 @@ tee_files (int nfiles, const char **files)
   for (i = nfiles; i >= 1; i--)
     files[i] = files[i - 1];
 
-  if (O_BINARY && ! isatty (STDIN_FILENO))
+  if (!__MSYS__ && O_BINARY && ! isatty (STDIN_FILENO))
     freopen (NULL, "rb", stdin);
-  if (O_BINARY && ! isatty (STDOUT_FILENO))
+  if (!__MSYS__ && O_BINARY && ! isatty (STDOUT_FILENO))
     freopen (NULL, "wb", stdout);
 
   /* In the array of NFILES + 1 descriptors, make

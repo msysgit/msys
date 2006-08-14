@@ -30,7 +30,7 @@
 #include "quote.h"
 #include "yesno.h"
 
-#if __CYGWIN__
+#if __CYGWIN__ || __MSYS__
 # include "cygwin.h"
 #endif
 
@@ -118,7 +118,7 @@ static bool hard_dir_link;
    symlink-to-dir before creating the new link.  */
 static bool dereference_dest_dir_symlinks = true;
 
-#if __CYGWIN__
+#if __CYGWIN__ || __MSYS__
 static bool bypass_cygwin_checking = false;
 # define CYGWIN_EXE_OPT_CHAR 10000
 #endif /* __CYGWIN__ */
@@ -178,7 +178,7 @@ do_link (const char *source, const char *dest, bool dest_is_dir)
   char *dest_backup = NULL;
   bool lstat_ok = false;
 
-#if __CYGWIN__
+#if __CYGWIN__ || __MSYS__
   /* On cygwin, we need special handling for implicit ".exe" extensions.
      Hard links require SOURCE to exist (so find its correct spelling),
      while symlinks are textual and no check is technically needed.  But
@@ -273,7 +273,7 @@ do_link (const char *source, const char *dest, bool dest_is_dir)
   if (remove_existing_files || interactive || backup_type != no_backups)
     {
       lstat_ok = (lstat (dest, &dest_stats) == 0);
-#if __CYGWIN__
+#if __CYGWIN__ || __MSYS__
       /* stat("a") succeeds even if it was really "a.exe".  */
       if (! bypass_cygwin_checking && lstat_ok && cygwin_spelling (dest) != 0)
 	{
@@ -455,7 +455,7 @@ Mandatory arguments to long options are mandatory for short options too.\n\
   -T, --no-target-directory   treat LINK_NAME as a normal file\n\
   -v, --verbose               print name of each file before linking\n\
 "), stdout);
-#if __CYGWIN__
+#if __CYGWIN__ || __MSYS__
       fputs (_("\
       --disable-exe-magic     disable the cygwin magic that appends .exe\n\
 "), stdout);
@@ -565,7 +565,7 @@ main (int argc, char **argv)
 	  make_backups = true;
 	  backup_suffix_string = optarg;
 	  break;
-#if __CYGWIN__
+#if __CYGWIN__ || __MSYS__
 	case CYGWIN_EXE_OPT_CHAR:
 	  bypass_cygwin_checking = true;
 	  break;

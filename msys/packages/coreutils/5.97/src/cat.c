@@ -664,7 +664,7 @@ main (int argc, char **argv)
   if (! (number | show_ends | squeeze_blank))
     {
       file_open_mode |= O_BINARY;
-      if (O_BINARY && ! isatty (STDOUT_FILENO))
+      if (!__MSYS__ && O_BINARY && ! isatty (STDOUT_FILENO))
 	freopen (NULL, "wb", stdout);
     }
 
@@ -684,7 +684,7 @@ main (int argc, char **argv)
 	{
 	  have_read_stdin = true;
 	  input_desc = STDIN_FILENO;
-	  if ((file_open_mode & O_BINARY) && ! isatty (STDIN_FILENO))
+	  if (!__MSYS__ && (file_open_mode & O_BINARY) && ! isatty (STDIN_FILENO))
 	    freopen (NULL, "rb", stdin);
 	}
       else

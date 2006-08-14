@@ -15,7 +15,7 @@ AC_DEFUN([gl_AC_DOS],
     AC_CACHE_CHECK([whether system is Windows or MSDOS], [ac_cv_win_or_dos],
       [
         AC_TRY_COMPILE([],
-        [#if !defined _WIN32 && !defined __WIN32__ && !defined __MSDOS__ && !defined __CYGWIN__
+        [#if !defined _WIN32 && !defined __WIN32__ && !defined __MSDOS__ && !defined __CYGWIN__ && !defined __MSYS__
 neither MSDOS nor Windows
 #endif],
         [ac_cv_win_or_dos=yes],

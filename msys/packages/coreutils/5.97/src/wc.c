@@ -499,7 +499,7 @@ wc_file (char const *file, struct fstatus *fstatus)
   if (! file || STREQ (file, "-"))
     {
       have_read_stdin = true;
-      if (O_BINARY && ! isatty (STDIN_FILENO))
+      if (!__MSYS__ && O_BINARY && ! isatty (STDIN_FILENO))
 	freopen (NULL, "rb", stdin);
       return wc (STDIN_FILENO, file, fstatus);
     }
