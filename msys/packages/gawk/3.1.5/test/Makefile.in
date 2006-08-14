@@ -779,7 +779,7 @@ NEED_LINT = defref noeffect nofmtch shadow uninit2 uninit3 uninit4 uninitialized
 # List of the files that appear in manual tests or are for reserve testing:
 GENTESTS_UNUSED = Makefile.in gtlnbufv.awk printfloat.awk switch2.awk
 CMP = cmp
-AWKPROG = ../gawk$(EXEEXT)
+AWKPROG = ../gawk
 all: all-am
 
 .SUFFIXES:
