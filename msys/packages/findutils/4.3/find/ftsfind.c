@@ -415,7 +415,7 @@ main (int argc, char **argv)
   struct predicate *cur_pred;
   char *predicate_name;		/* Name of predicate being parsed. */
   int end_of_leading_options = 0; /* First arg after any -H/-L etc. */
-  program_name = argv[0];
+  char *program_name = argv[0];
   const struct parser_table *entry_close, *entry_print, *entry_open;
 
 
