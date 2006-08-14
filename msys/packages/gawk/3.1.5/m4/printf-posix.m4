@@ -28,7 +28,7 @@ int main ()
 }], gt_cv_func_printf_posix=yes, gt_cv_func_printf_posix=no,
       [
         AC_EGREP_CPP(notposix, [
-#if defined __NetBSD__ || defined _MSC_VER || defined __MINGW32__ || defined __CYGWIN__
+#if defined __NetBSD__ || defined _MSC_VER || defined __MINGW32__ || defined __CYGWIN__ || defined __MSYS__
   notposix
 #endif
         ], gt_cv_func_printf_posix="guessing no",
