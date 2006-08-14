@@ -1,0 +1,965 @@
+# Catalan translation of GNU fileutils.
+# Copyright © 2002, 2003, 2004, 2005 Free Software Foundation, Inc.
+# Jordi Mallach <jordi@gnu.org>, 2002, 2003, 2004, 2005.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: findutils 4.2.26\n"
+"Report-Msgid-Bugs-To: bug-findutils@gnu.org\n"
+"POT-Creation-Date: 2005-12-12 00:21-0800\n"
+"PO-Revision-Date: 2005-11-28 20:22+0100\n"
+"Last-Translator: Jordi Mallach <jordi@gnu.org>\n"
+"Language-Team: Catalan <ca@dodds.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+#: gnulib/lib/argmatch.c:137
+#, c-format
+msgid "invalid argument %s for %s"
+msgstr "l'argument %s no és vàlid per a %s"
+
+#: gnulib/lib/argmatch.c:138
+#, c-format
+msgid "ambiguous argument %s for %s"
+msgstr "l'argument %s és ambigu per a %s"
+
+#: gnulib/lib/argmatch.c:157
+#, c-format
+msgid "Valid arguments are:"
+msgstr "Els arguments vàlids són:"
+
+#: gnulib/lib/error.c:121
+msgid "Unknown system error"
+msgstr "S'ha produït un error desconegut del sistema"
+
+#: gnulib/lib/getopt.c:551 gnulib/lib/getopt.c:570
+#, c-format
+msgid "%s: option `%s' is ambiguous\n"
+msgstr "%s: l'opció «%s» és ambigu\n"
+
+#: gnulib/lib/getopt.c:603 gnulib/lib/getopt.c:607
+#, c-format
+msgid "%s: option `--%s' doesn't allow an argument\n"
+msgstr "%s: l'opció «--%s» no accepta cap argument\n"
+
+#: gnulib/lib/getopt.c:616 gnulib/lib/getopt.c:621
+#, c-format
+msgid "%s: option `%c%s' doesn't allow an argument\n"
+msgstr "%s: l'opció «%c%s» no accepta cap argument\n"
+
+#: gnulib/lib/getopt.c:667 gnulib/lib/getopt.c:689 gnulib/lib/getopt.c:1020
+#: gnulib/lib/getopt.c:1042
+#, c-format
+msgid "%s: option `%s' requires an argument\n"
+msgstr "%s: l'opció «%s» requereix un argument\n"
+
+#: gnulib/lib/getopt.c:727 gnulib/lib/getopt.c:730
+#, c-format
+msgid "%s: unrecognized option `--%s'\n"
+msgstr ""
+"%s: opció «--%s» no reconeguda\n"
+"\n"
+
+#: gnulib/lib/getopt.c:738 gnulib/lib/getopt.c:741
+#, c-format
+msgid "%s: unrecognized option `%c%s'\n"
+msgstr "%s: opció «%c%s» no reconeguda\n"
+
+#: gnulib/lib/getopt.c:796 gnulib/lib/getopt.c:799
+#, c-format
+msgid "%s: illegal option -- %c\n"
+msgstr "%s: opció il·legal -- %c\n"
+
+#: gnulib/lib/getopt.c:805 gnulib/lib/getopt.c:808
+#, c-format
+msgid "%s: invalid option -- %c\n"
+msgstr "%s: opció no vàlida -- %c\n"
+
+#: gnulib/lib/getopt.c:863 gnulib/lib/getopt.c:882 gnulib/lib/getopt.c:1095
+#: gnulib/lib/getopt.c:1116
+#, c-format
+msgid "%s: option requires an argument -- %c\n"
+msgstr "%s: l'opció requereix un argument -- %c\n"
+
+#: gnulib/lib/getopt.c:935 gnulib/lib/getopt.c:954
+#, c-format
+msgid "%s: option `-W %s' is ambiguous\n"
+msgstr "%s: l'opció «-W %s» és ambigua\n"
+
+#: gnulib/lib/getopt.c:978 gnulib/lib/getopt.c:999
+#, c-format
+msgid "%s: option `-W %s' doesn't allow an argument\n"
+msgstr "%s: l'opció «-W %s» no accepta cap argument\n"
+
+#: gnulib/lib/human.c:486
+msgid "block size"
+msgstr "mida del bloc"
+
+#. TRANSLATORS:
+#. Get translations for open and closing quotation marks.
+#.
+#. The message catalog should translate "`" to a left
+#. quotation mark suitable for the locale, and similarly for
+#. "'".  If the catalog has no translation,
+#. locale_quoting_style quotes `like this', and
+#. clocale_quoting_style quotes "like this".
+#.
+#. For example, an American English Unicode locale should
+#. translate "`" to U+201C (LEFT DOUBLE QUOTATION MARK), and
+#. should translate "'" to U+201D (RIGHT DOUBLE QUOTATION
+#. MARK).  A British English Unicode locale should instead
+#. translate these to U+2018 (LEFT SINGLE QUOTATION MARK) and
+#. U+2019 (RIGHT SINGLE QUOTATION MARK), respectively.
+#.
+#. If you don't know what to put here, please see
+#. <http://en.wikipedia.org/wiki/Quotation_mark#Glyphs>
+#. and use glyphs suitable for your language.
+#: gnulib/lib/quotearg.c:245
+msgid "`"
+msgstr "«"
+
+#: gnulib/lib/quotearg.c:246
+msgid "'"
+msgstr "»"
+
+#: gnulib/lib/rpmatch.c:70
+msgid "^[yY]"
+msgstr "^[sS]"
+
+#: gnulib/lib/rpmatch.c:73
+msgid "^[nN]"
+msgstr "^[nN]"
+
+#: find/util.c:120
+msgid "oops -- invalid default insertion of and!"
+msgstr "oops -- inserció per defecte d'«and» no vàlida!"
+
+#: find/util.c:210
+#, c-format
+msgid "Usage: %s [-H] [-L] [-P] [path...] [expression]\n"
+msgstr "Forma d'ús: %s [-H] [-L] [-P] [camí...] [expressió]\n"
+
+#: find/find.c:197
+msgid ""
+"The environment variable FIND_BLOCK_SIZE is not supported, the only thing "
+"that affects the block size is the POSIXLY_CORRECT environment variable"
+msgstr ""
+"La variable d'entorn FIND_BLOCK_SIZE no està suportada, l'única cosa que "
+"afecta a la mida dels blocs és la variable d'entorn POSIXLY_CORRECT"
+
+#: find/find.c:279
+msgid "paths must precede expression"
+msgstr "els camins han de precedir la expressió"
+
+#: find/find.c:285
+#, c-format
+msgid "invalid predicate `%s'"
+msgstr "el predicat «%s» no és vàlid"
+
+#: find/find.c:293
+#, c-format
+msgid "missing argument to `%s'"
+msgstr "manca un argument per a «%s»"
+
+#: find/find.c:295
+#, c-format
+msgid "invalid argument `%s' to `%s'"
+msgstr "l'argument «%s» no és vàlid per a «%s»"
+
+#: find/find.c:351
+msgid "unexpected extra predicate"
+msgstr "s'ha trobat un predicat extra no esperat"
+
+#: find/find.c:403 find/find.c:406
+msgid "cannot get current directory"
+msgstr "no es pot obtenir el directori actual"
+
+#: find/find.c:584
+#, c-format
+msgid "Warning: filesystem %s has recently been unmounted."
+msgstr "Avís: el sistema de fitxers %s ha estat desmuntat fa poc."
+
+#: find/find.c:594
+#, c-format
+msgid "Warning: filesystem %s has recently been mounted."
+msgstr "Avís: el sistema de fitxers %s ha estat muntat fa poc."
+
+#: find/find.c:689
+#, c-format
+msgid ""
+"%s%s changed during execution of %s (old device number %ld, new device "
+"number %ld, filesystem type is %s) [ref %ld]"
+msgstr ""
+"%s%s ha canviat durant l'execució de %s (el número de dispositiu vell era %"
+"ld, el número del nou dispositiu és %ld, el tipus de sistema de fitxers és %"
+"s) [ref %ld]"
+
+#: find/find.c:726
+#, c-format
+msgid ""
+"%s%s changed during execution of %s (old inode number %ld, new inode number %"
+"ld, filesystem type is %s) [ref %ld]"
+msgstr ""
+"%s%s ha canviat durant l'execució de %s (el número del node-i vell era %ld, "
+"el número del node-i nou és %ld, el tipus de sistema de fitxers és %s) [ref %"
+"ld]"
+
+#: find/find.c:1263
+#, c-format
+msgid ""
+"Symbolic link `%s' is part of a loop in the directory hierarchy; we have "
+"already visited the directory to which it points."
+msgstr ""
+"L'enllaç simbòlic «%s» és part d'un bucle a la jerarquia del directori. Ja "
+"hem visitat el directori al qual apunta."
+
+#: find/find.c:1278
+#, c-format
+msgid ""
+"Filesystem loop detected; `%s' has the same device number and inode as a "
+"directory which is %d %s."
+msgstr ""
+"S'ha detectat un bucle al sistema de fitxers; «%s» té el mateix número de "
+"dispositiu i node d'idenficació que un directori que és %d %s."
+
+#: find/find.c:1282
+msgid "level higher in the filesystem hierarchy"
+msgstr "nivell més alt a la jerarquia del sistema de fitxers"
+
+#: find/find.c:1283
+msgid "levels higher in the filesystem hierarchy"
+msgstr "nivells més alt a la jerarquia del sistema de fitxers"
+
+#: find/find.c:1515
+#, c-format
+msgid "warning: not following the symbolic link %s"
+msgstr "avís: no es seguirà l'enllaç simbòlic %s"
+
+#: find/find.c:1559
+#, c-format
+msgid ""
+"WARNING: Hard link count is wrong for %s: this may be a bug in your "
+"filesystem driver.  Automatically turning on find's -noleaf option.  Earlier "
+"results may have failed to include directories that should have been "
+"searched."
+msgstr ""
+"AVÍS: el compte d'enllaços durs és incorrecte per a %s: això pot ser un "
+"error al vostre controlador del sistema de fitxers. S'està habilitant "
+"automàticament l'opció -noleaf. Els resultats anteriors poden no haver "
+"inclós directoris que s'haurien d'haver cercat."
+
+#: find/fstype.c:251
+msgid "unknown"
+msgstr "desconegut"
+
+#: find/parser.c:413
+#, c-format
+msgid ""
+"warning: you have specified the %s option after a non-option argument %s, "
+"but options are not positional (%s affects tests specified before it as well "
+"as those specified after it).  Please specify options before other "
+"arguments.\n"
+msgstr ""
+"avís: he especificat l'opció %s després d'un argument no-opció %s, però les "
+"opcions no són posicionals (%s afecta a les comprovacions especificades "
+"abans d'ella com també aquelles especificades després d'ella). Si us plau, "
+"especifiqueu les opcions abans d'altres arguments.\n"
+
+#: find/parser.c:652
+msgid ""
+"warning: the -d option is deprecated; please use -depth instead, because the "
+"latter is a POSIX-compliant feature."
+msgstr ""
+"avís: l'opció -d està desaconsellada; si us plau, utilitzeu -depth en el seu "
+"lloc, ja que aquesta és una funcionalitat que compleix amb POSIX."
+
+#: find/parser.c:822
+#, c-format
+msgid "Usage: %s [path...] [expression]\n"
+msgstr "Forma d'ús: %s [camí...] [expressió]\n"
+
+#: find/parser.c:824
+msgid ""
+"\n"
+"default path is the current directory; default expression is -print\n"
+"expression may consist of: operators, options, tests, and actions:\n"
+msgstr ""
+"\n"
+"el camí per defecte és el directori actual; l'expressió per defecte és -"
+"print\n"
+"l'expressió pot consistir d'operadors, opcions, avaluacions i accions:\n"
+
+#: find/parser.c:827
+msgid ""
+"operators (decreasing precedence; -and is implicit where no others are "
+"given):\n"
+"      ( EXPR )   ! EXPR   -not EXPR   EXPR1 -a EXPR2   EXPR1 -and EXPR2\n"
+"      EXPR1 -o EXPR2   EXPR1 -or EXPR2   EXPR1 , EXPR2\n"
+msgstr ""
+"operadors (prioritat decreixent; -and és implícit quan no es donen altres):\n"
+"      ( EXPR )   ! EXPR   -not EXPR   EXPR1 -a EXPR2   EXPR1 -and EXPR2\n"
+"      EXPR1 -o EXPR2   EXPR1 -or EXPR2   EXPR1 , EXPR2\n"
+
+#: find/parser.c:831
+msgid ""
+"positional options (always true): -daystart -follow -regextype\n"
+"\n"
+"normal options (always true, specified before other expressions):\n"
+"      -depth --help -maxdepth LEVELS -mindepth LEVELS -mount -noleaf\n"
+"      --version -xdev -ignore_readdir_race -noignore_readdir_race\n"
+msgstr ""
+"opcions posicionals (sempre vertaderes): -daystart -follow -regextype\n"
+"opcions normals (sempre vertaderes, especificades abans d'altres "
+"expressions):\n"
+"      -depth -help -maxdepth NIVELLS -mindepth NIVELLS -mount -noleaf\n"
+"      --version -xdev -ignore_readdir_race -noignore_readdir_race\n"
+
+#: find/parser.c:836
+msgid ""
+"tests (N can be +N or -N or N): -amin N -anewer FILE -atime N -cmin N\n"
+"      -cnewer FILE -ctime N -empty -false -fstype TYPE -gid N -group NAME\n"
+"      -ilname PATTERN -iname PATTERN -inum N -iwholename PATTERN -iregex "
+"PATTERN\n"
+"      -links N -lname PATTERN -mmin N -mtime N -name PATTERN -newer FILE"
+msgstr ""
+"avaluacions (N pot ser +N o -N o N): -amin N -anewer FITXER -atime N -cmin "
+"N\n"
+"      -cnewer FITXER -ctime N -empty -false -fstype TIPUS -gid N -group NOM\n"
+"      -ilname PATRÓ -iname PATRÓ -inum N -iwholename PATRÓ -iregex PATRÓ\n"
+"      -links N -lname PATRÓ -mmin N -mtime N -name PATRÓ -newer FITXER"
+
+#: find/parser.c:841
+#, fuzzy
+msgid ""
+"      -nouser -nogroup -path PATTERN -perm [+-]MODE -regex PATTERN\n"
+"      -readable -writable -executable\n"
+"      -wholename PATTERN -size N[bcwkMG] -true -type [bcdpflsD] -uid N\n"
+"      -used N -user NAME -xtype [bcdpfls]\n"
+msgstr ""
+"      -nouser -nogroup -path PATRÓ -perm [+-]MODE -regex PATRÓ\n"
+"      -wholename PATRÓ -size N[bcwkMG] -true -type [bcdpflsD] -uid N\n"
+"      -used N -user NOM -xtype [bcdpfls]\n"
+
+#: find/parser.c:846
+msgid ""
+"actions: -delete -print0 -printf FORMAT -fprintf FILE FORMAT -print \n"
+"      -fprint0 FILE -fprint FILE -ls -fls FILE -prune -quit\n"
+"      -exec COMMAND ; -exec COMMAND {} + -ok COMMAND ;\n"
+"      -execdir COMMAND ; -execdir COMMAND {} + -okdir COMMAND ;\n"
+msgstr ""
+"accions: -delete -print0 -printf FORMAT -fprintf FORMAT FITXER -print \n"
+"      -fprint0 FITXER -fprint FITXER -ls -fls FITXER -prune -quit\n"
+"      -exec ORDRE ; -exec ORDRE {} + -ok ORDRE ;\n"
+"      -execdir ORDRE ; -execdir ORDRE {} + -okdir ORDRE ;\n"
+
+#: find/parser.c:852
+msgid ""
+"Report (and track progress on fixing) bugs via the findutils bug-reporting\n"
+"page at http://savannah.gnu.org/ or, if you have no web access, by sending\n"
+"email to <bug-findutils@gnu.org>."
+msgstr ""
+"Informeu (i feu un seguiment del procés de solució) dels errors a través de "
+"la\n"
+"pàgina d'informes d'error de findutils en http://savannah.gnu.org/ o, si no\n"
+"teniu accés a la web, enviant correu a <bug-findutils@gnu.org>."
+
+#: find/parser.c:883
+msgid "sanity check of the fnmatch() library function failed."
+msgstr ""
+"la comprovació de sanitat de la funció fnmatch() de la biblioteca ha fallat."
+
+#: find/parser.c:898
+#, c-format
+msgid ""
+"warning: Unix filenames usually don't contain slashes (though pathnames "
+"do).  That means that '%s %s' will probably evaluate to false all the time "
+"on this system.  You might find the '-wholename' test more useful, or "
+"perhaps '-samefile'.  Alternatively, if you are using GNU grep, you could "
+"use 'find ... -print0 | grep -FzZ %s'."
+msgstr ""
+"avís: els noms de fitxers de Unix no contenen barres (però sí els camins). "
+"Això vol dir que «%s %s» probablement sempre avaluarà com a fals en aquest "
+"sistema. És possible que la comprovació «-wholename» siga més útil, o potser "
+"«-samefile». Alternativament, si esteu utilitzant GNU grep, podeu utilitzar "
+"«find ... -print0 | grep -FzZ %s»."
+
+#: find/parser.c:940
+msgid ""
+"warning: the predicate -ipath is deprecated; please use -iwholename instead."
+msgstr ""
+"avís: el predicat -ipath està desaconsellat; utilitzeu -iwholename en el seu "
+"lloc."
+
+#: find/parser.c:1380
+#, c-format
+msgid "invalid mode `%s'"
+msgstr "el mode «%s» no és vàlid"
+
+#: find/parser.c:1414
+#, c-format
+msgid ""
+"warning: you have specified a mode pattern %s which is equivalent to 000. "
+"The meaning of -perm /000 will soon be changed to be consistent with -perm -"
+"000; that is, at the moment it matches no files but it will soon be changed "
+"to match all files."
+msgstr ""
+
+#: find/parser.c:1567
+msgid "invalid null argument to -size"
+msgstr "l'argument nul no és vàlid per a -size"
+
+#: find/parser.c:1613
+#, c-format
+msgid "invalid -size type `%c'"
+msgstr "el tipus de -size «%c» no vàlid"
+
+#: find/parser.c:1651
+msgid ""
+"The -show-control-chars option takes a single argument which must be "
+"'literal' or 'safe'"
+msgstr ""
+
+#: find/parser.c:1797
+#, c-format
+msgid "GNU find version %s\n"
+msgstr "GNU find versió %s\n"
+
+#: find/parser.c:1798
+#, c-format
+msgid "Features enabled: "
+msgstr "Funcionalitats habilitades: "
+
+#: find/parser.c:2052
+#, c-format
+msgid "warning: unrecognized escape `\\%c'"
+msgstr "avís: seqüència d'escapament «\\%c» no reconegut"
+
+#: find/parser.c:2098
+#, c-format
+msgid "warning: unrecognized format directive `%%%c'"
+msgstr "avís: directiva de format «%%%c» no reconeguda"
+
+#: find/parser.c:2204
+#, c-format
+msgid ""
+"The current directory is included in the PATH environment variable, which is "
+"insecure in combination with the %s action of find.  Please remove the "
+"current directory from your $PATH (that is, remove \".\" or leading or "
+"trailing colons)"
+msgstr ""
+"El directori actual està inclós a la variable d'entorn PATH, el qual és "
+"insegur en combinació amb l'acció %s de find. Elimineu el directori actual "
+"del vostre $PATH (és a dir, elimineu «.» o els dos punts del principi o "
+"final)"
+
+#: find/parser.c:2301
+msgid ""
+"You may not use {} within the utility name for -execdir and -okdir, because "
+"this is a potential security problem."
+msgstr ""
+"No pdeu utilitzar {} dins del nom de la utilitat per a -execdir i -okdir, ja "
+"que això és un problema de seguretat potencial."
+
+#: find/parser.c:2324
+#, c-format
+msgid "Only one instance of {} is supported with -exec%s ... +"
+msgstr "Només es suporta una instància de {} amb -exec%s ... +"
+
+#: find/pred.c:1166
+#, c-format
+msgid "< %s ... %s > ? "
+msgstr "< %s ... %s > ?"
+
+#: find/pred.c:1585 xargs/xargs.c:1040
+msgid "cannot fork"
+msgstr "no es pot fer «fork»"
+
+# Suggerències? jm
+#: find/pred.c:1625
+#, c-format
+msgid "error waiting for %s"
+msgstr "error a l'esperar al procés %s"
+
+#: find/pred.c:1633
+#, c-format
+msgid "%s terminated by signal %d"
+msgstr "%s finalitzat pel senyal %d"
+
+#: find/tree.c:67 find/tree.c:72 find/tree.c:119 find/tree.c:158
+msgid "invalid expression"
+msgstr "expressió no vàlida"
+
+#: find/tree.c:76
+msgid ""
+"invalid expression; you have used a binary operator with nothing before it."
+msgstr ""
+"l'expressió no és vàlida; heu utilitzat un operador binari sense res davant "
+"d'ell."
+
+#: find/tree.c:80
+msgid "invalid expression; you have too many ')'"
+msgstr "l'expressió no és vàlida; teniu massa «)»"
+
+#: find/tree.c:99
+msgid ""
+"invalid expression; I was expecting to find a ')' somewhere but did not see "
+"one."
+msgstr ""
+"l'expressió no és vàlida; s'esperava un «)» en algun lloc però no s'ha "
+"trobat cap."
+
+#: find/tree.c:104 find/tree.c:326
+msgid "oops -- invalid expression type!"
+msgstr "ep -- el tipus d'expressió no és vàlid!"
+
+#: find/tree.c:173
+#, c-format
+msgid "oops -- invalid expression type (%d)!"
+msgstr "ep -- el tipus d'expressió (%d) no és vàlid!"
+
+#: find/tree.c:457
+msgid "oops -- invalid expression type in mark_stat!"
+msgstr "ep -- el tipus d'expressió no és vàlid!"
+
+#: find/tree.c:493
+msgid "oops -- invalid expression type in mark_type!"
+msgstr "ep -- el tipus d'expressió no és vàlid!"
+
+#: locate/code.c:127
+#, c-format
+msgid ""
+"Usage: %s [--version | --help]\n"
+"or     %s most_common_bigrams < file-list > locate-database\n"
+msgstr ""
+"Forma d'ús: %s [--version | --help]\n"
+"            %s biagrames_més_comuns < llista-fitxers > base-de-dades-locate\n"
+
+#: locate/code.c:131 locate/locate.c:1114 xargs/xargs.c:1251
+msgid ""
+"\n"
+"Report bugs to <bug-findutils@gnu.org>.\n"
+msgstr ""
+"\n"
+"Informeu dels errors a <bug-findutils@gnu.org>.\n"
+
+#: locate/code.c:165
+#, c-format
+msgid "GNU findutils version %s\n"
+msgstr "GNU findutils versió %s\n"
+
+#: locate/locate.c:155
+msgid "days"
+msgstr "dies"
+
+#: locate/locate.c:523
+#, c-format
+msgid "locate database `%s' is corrupt or invalid"
+msgstr "la base de dades de locate «%s» és corrupta o invàlida"
+
+#: locate/locate.c:791
+#, c-format
+msgid "Locate database size: %s bytes\n"
+msgstr "Mida de la base de dades de locate: %s octets\n"
+
+#: locate/locate.c:795
+#, c-format
+msgid "Filenames: %s "
+msgstr "Noms de fitxers: %s"
+
+#: locate/locate.c:798
+#, c-format
+msgid "with a cumulative length of %s bytes"
+msgstr "amb una longitud acumulada de %s octets"
+
+#: locate/locate.c:802
+#, c-format
+msgid ""
+"\n"
+"\tof which %s contain whitespace, "
+msgstr ""
+"\n"
+"\tdels quals %s contenen espais, "
+
+#: locate/locate.c:805
+#, c-format
+msgid ""
+"\n"
+"\t%s contain newline characters, "
+msgstr ""
+"\n"
+"\t%s contenen caràcters de retorn de carro, "
+
+#: locate/locate.c:808
+#, c-format
+msgid ""
+"\n"
+"\tand %s contain characters with the high bit set.\n"
+msgstr ""
+"\n"
+"\ti %s contenen caràcters amb el bit alt establert.\n"
+
+#: locate/locate.c:813
+#, c-format
+msgid "Compression ratio %4.2f%%\n"
+msgstr "El ràtio de compressió és %4.2f%%\n"
+
+#: locate/locate.c:861
+msgid "warning: the locate database can only be read from stdin once."
+msgstr ""
+"avís: la base de dades de locate només es pot llegir una vegada des de "
+"l'entrada estàndard."
+
+#: locate/locate.c:882
+#, c-format
+msgid "warning: database `%s' is more than %d %s old"
+msgstr "avís: la base de dades «%s» té més de %d %s"
+
+#: locate/locate.c:1059
+#, c-format
+msgid "Database %s is in the %s format.\n"
+msgstr "La base de dades %s és en el format %s.\n"
+
+#: locate/locate.c:1061
+msgid "old"
+msgstr "vella"
+
+#: locate/locate.c:1105
+#, c-format
+msgid ""
+"Usage: %s [-d path | --database=path] [-e | -E | --[non-]existing]\n"
+"      [-i | --ignore-case] [-w | --wholename] [-b | --basename] \n"
+"      [--limit=N | -l N] [-S | --statistics] [-0 | --null] [-c | --count]\n"
+"      [-P | -H | --nofollow] [-L | --follow] [-m | --mmap ] [ -s | --"
+"stdio ]\n"
+"      [-A | --all] [-p | --print] [-r | --regex ] [--regextype=TYPE]\n"
+"      [-version] [--help]\n"
+"      pattern...\n"
+msgstr ""
+"Forma d'ús: %s [-d camí | --database=camí] [-e | -E | --[non-]existing]\n"
+"            [-i | --ignore-case] [-w | --wholename] [-b | --basename]\n"
+"            [--limit=N | -l N] [-S | --statistics] [-0 | --null] [-c | --"
+"count]\n"
+"            [-P | -H | --nofollow] [-L |--follow] [-m | --mmap] [-s | --"
+"stdio]\n"
+"            [-A | --all] [-p | --print] [-r | --regex] [--regextype=TIPUS]\n"
+"            [--version] [--help]\n"
+"            patró...\n"
+
+#: locate/locate.c:1231
+#, c-format
+msgid "GNU locate version %s\n"
+msgstr "GNU locate versió %s\n"
+
+#: locate/locate.c:1270
+msgid "argument to --limit"
+msgstr "argument per a --limit"
+
+#: xargs/xargs.c:330
+#, fuzzy, c-format
+msgid "Invalid escape sequence %s in input delimiter specification."
+msgstr ""
+"La seqüència d'escapament %s és il·legal en una especificació de delimitació "
+"d'entrada."
+
+#: xargs/xargs.c:348
+#, fuzzy, c-format
+msgid ""
+"Invalid escape sequence %s in input delimiter specification; character "
+"values must not exceed %lx."
+msgstr ""
+"La seqüència d'escapament %s és il·legal en una especificació de delimitació "
+"d'entrada; els valors dels caràcters no ha d'excedir %lx."
+
+#: xargs/xargs.c:354
+#, fuzzy, c-format
+msgid ""
+"Invalid escape sequence %s in input delimiter specification; character "
+"values must not exceed %lo."
+msgstr ""
+"La seqüència d'escapament %s és il·legal en una especificació de delimitació "
+"d'entrada; els valors dels caràcters no han d'excedir %lo."
+
+#: xargs/xargs.c:363
+#, fuzzy, c-format
+msgid ""
+"Invalid escape sequence %s in input delimiter specification; trailing "
+"characters %s not recognised."
+msgstr ""
+"La seqüència d'escapament %s és il·legal en una especificació de delimitació "
+"d'entrada; no es reconeixen el caràcters finals %s."
+
+#: xargs/xargs.c:410
+#, fuzzy, c-format
+msgid ""
+"Invalid input delimiter specification %s: the delimiter must be either a "
+"single character or an escape sequence starting with \\."
+msgstr ""
+"La seqüència d'escapament %s és il·legal en una especificació de delimitació "
+"d'entrada: el delimitador ha de ser un únic caràcter o una seqüència "
+"d'escapament que comence amb \\\\."
+
+#: xargs/xargs.c:592
+#, c-format
+msgid "GNU xargs version %s\n"
+msgstr "GNU xargs versió %s\n"
+
+#: xargs/xargs.c:607
+msgid "environment is too large for exec"
+msgstr "l'entorn és massa gran per a l'execució"
+
+#: xargs/xargs.c:621
+#, c-format
+msgid "Cannot open input file `%s'"
+msgstr "No s'ha pogut obrir el fitxer d'entrada «%s»"
+
+#: xargs/xargs.c:647
+#, c-format
+msgid "Reducing arg_max (%ld) to arg_size (%ld)\n"
+msgstr "S'està reduint arg_max (%ld) a arg_size (%ld)\n"
+
+#: xargs/xargs.c:656
+#, c-format
+msgid "Your environment variables take up %ld bytes\n"
+msgstr "Les vostres variables d'entorn utilitzen %ld octets\n"
+
+#: xargs/xargs.c:659
+#, c-format
+msgid "POSIX lower and upper limits on argument length: %ld, %ld\n"
+msgstr ""
+"límits inferior i superior POSIX per a la mida dels arguments: %ld, %ld\n"
+
+#: xargs/xargs.c:663
+#, c-format
+msgid "Maximum length of command we could actually use: %ld\n"
+msgstr "La mida màxima de l'ordre que podem utilitzar: %ld\n"
+
+#: xargs/xargs.c:666
+#, c-format
+msgid "Size of command buffer we are actually using: %ld\n"
+msgstr "La mida de la memòria intermèdia que s'està utilitzant: %ld\n"
+
+#: xargs/xargs.c:789 xargs/xargs.c:870
+#, c-format
+msgid ""
+"unmatched %s quote; by default quotes are special to xargs unless you use "
+"the -0 option"
+msgstr ""
+"s'ha trobat una cometa %s no emparellada. Per defecte, les cometes són "
+"especials per a xargs a no ser que s'utilitze l'opció -O"
+
+#: xargs/xargs.c:790 xargs/xargs.c:871
+msgid "double"
+msgstr "doble"
+
+#: xargs/xargs.c:790 xargs/xargs.c:871
+msgid "single"
+msgstr "simple"
+
+#: xargs/xargs.c:888 xargs/xargs.c:945
+msgid "argument line too long"
+msgstr "línia d'arguments massa llarga"
+
+#: xargs/xargs.c:1115
+msgid "error waiting for child process"
+msgstr "error a l'esperar al procés fill"
+
+#: xargs/xargs.c:1131
+#, c-format
+msgid "%s: exited with status 255; aborting"
+msgstr "%s: ha acabat amb estat 255; avortant"
+
+#: xargs/xargs.c:1133
+#, c-format
+msgid "%s: stopped by signal %d"
+msgstr "%s: interromput pel senyal %d"
+
+#: xargs/xargs.c:1135
+#, c-format
+msgid "%s: terminated by signal %d"
+msgstr "%s: terminat pel senyal %d"
+
+#: xargs/xargs.c:1188
+#, c-format
+msgid "%s: invalid number for -%c option\n"
+msgstr "%s: número no vàlid per a l'opció -%c\n"
+
+#: xargs/xargs.c:1195
+#, c-format
+msgid "%s: value for -%c option should be >= %ld\n"
+msgstr "%s: el valor per a l'opció -%c ha de ser >= %ld\n"
+
+#: xargs/xargs.c:1209
+#, c-format
+msgid "%s: value for -%c option should be < %ld\n"
+msgstr "%s: el valor per a l'opció -%c ha de ser < %ld\n"
+
+#: xargs/xargs.c:1240
+#, c-format
+msgid ""
+"Usage: %s [-0prtx] [--interactive] [--null] [-d|--delimiter=delim]\n"
+"       [-E eof-str] [-e[eof-str]]  [--eof[=eof-str]]\n"
+"       [-L max-lines] [-l[max-lines]] [--max-lines[=max-lines]]\n"
+"       [-I replace-str] [-i[replace-str]] [--replace[=replace-str]]\n"
+"       [-n max-args] [--max-args=max-args]\n"
+"       [-s max-chars] [--max-chars=max-chars]\n"
+"       [-P max-procs]  [--max-procs=max-procs]\n"
+"       [--verbose] [--exit] [--no-run-if-empty] [--arg-file=file]\n"
+"       [--version] [--help] [command [initial-arguments]]\n"
+msgstr ""
+"Forma d'ús: %s [-0prtx] [--interactive] [--null] [-d|--deliminter=delim]\n"
+"       [-E cadena-eof] [-e[cadena-eof]] [--eof=[cadena-eof]]\n"
+"       [-L màx-línies] [-l[màx-línies] [--max-lines[=màx-línies]]\n"
+"       [-I cadena-de-reemplaçament] [-i[cadena-de-reemplaçament]]\n"
+"       [--replace=[cadena-de-reemplaçament]]\n"
+"       [-n màx-arguments] [--max-args=màx-arguments]\n"
+"       [-s màx-caràcters] [--max-chars=màx-caràcters]\n"
+"       [-P màx-processos] [--max-procs=màx-processos]\n"
+"       [--verbose] [--exit] [--no-run-if-empty] [--arg-file=fitxer]\n"
+"       [--version] [--help] [ordre [arguments-inicials]]\n"
+
+#~ msgid "Success"
+#~ msgstr "Èxit"
+
+#~ msgid "No match"
+#~ msgstr "No hi ha cap coincidència"
+
+#~ msgid "Invalid regular expression"
+#~ msgstr "Expressió regular no vàlida"
+
+#~ msgid "Invalid collation character"
+#~ msgstr "Caràcter de seqüència invàlid"
+
+#~ msgid "Invalid character class name"
+#~ msgstr "Caràcter de nom de clase no vàlid"
+
+#~ msgid "Trailing backslash"
+#~ msgstr "Barra invertida final"
+
+#~ msgid "Invalid back reference"
+#~ msgstr "Referència cap enrere no vàlida"
+
+#~ msgid "Unmatched [ or [^"
+#~ msgstr "[ o [^ no emparellat"
+
+#~ msgid "Unmatched ( or \\("
+#~ msgstr "( o \\( no emparellat"
+
+#~ msgid "Unmatched \\{"
+#~ msgstr "\\{ no emparellat"
+
+#~ msgid "Invalid content of \\{\\}"
+#~ msgstr "Contingut no vàlid de \\{\\}"
+
+#~ msgid "Invalid range end"
+#~ msgstr "Final de rang no vàlid"
+
+#~ msgid "Memory exhausted"
+#~ msgstr "Memòria exhaurida"
+
+#~ msgid "Invalid preceding regular expression"
+#~ msgstr "Expressió regular precedent no vàlida"
+
+#~ msgid "Premature end of regular expression"
+#~ msgstr "Final prematur de la expressió regular"
+
+#~ msgid "Regular expression too big"
+#~ msgstr "Expressió regular massa gran"
+
+#~ msgid "Unmatched ) or \\)"
+#~ msgstr ") o \\) no emparellat"
+
+#~ msgid "No previous regular expression"
+#~ msgstr "No hi ha cap expressió regular prèvia"
+
+#~ msgid ""
+#~ "actions: -exec COMMAND ; -fprint FILE -fprint0 FILE -fprintf FILE FORMAT\n"
+#~ "      -fls FILE -ok COMMAND ; -print -print0 -printf FORMAT -prune -ls -"
+#~ "delete\n"
+#~ "      -quit\n"
+#~ msgstr ""
+#~ "accions: -exec ORDRE ; -fprint FITXER -fprint0 FITXER -fprintf FITXER "
+#~ "FORMAT\n"
+#~ "      -fls FITXER -ok ORDRE ; -print -print0 -printf FORMAT -prune -ls -"
+#~ "delete\n"
+#~ "      -quit\n"
+
+# "Llista de predicats?" jm
+#~ msgid "Predicate List:\n"
+#~ msgstr "Llista de predicats:\n"
+
+#~ msgid "Eval Tree:\n"
+#~ msgstr "Arbre d'avaluació\n"
+
+#~ msgid "Optimized Eval Tree:\n"
+#~ msgstr "Arbre d'avaluació optimitzat:\n"
+
+#~ msgid "Optimized command line:\n"
+#~ msgstr "Línia d'ordres optimitzada:\n"
+
+# Igual que la gent d'es@li.org, ací està el dubte de si ficar
+# "memòria exhaurida", llevant el "virtual", ja que en UNIX no
+# hi ha diferència de cara a l'usuari. De moment ho deixe com
+# està en l'original, però tenen raó. jm
+#~ msgid "virtual memory exhausted"
+#~ msgstr "memòria virtual exhaurida"
+
+#~ msgid "inserting %s\n"
+#~ msgstr "s'està inserint %s\n"
+
+#~ msgid "    type: %s    %s  "
+#~ msgstr "   tipus: %s    %s  "
+
+#~ msgid "left:\n"
+#~ msgstr "esquerra:\n"
+
+#~ msgid "right:\n"
+#~ msgstr "dereta:\n"
+
+#~ msgid "[stat called here] "
+#~ msgstr "[s'ha cridat a stat aquí] "
+
+#~ msgid "[type needed here] "
+#~ msgstr "[es necessita el tipus aquí] "
+
+#~ msgid "Normalized Eval Tree:\n"
+#~ msgstr "Arbre d'avaluació normalitzat:\n"
+
+#~ msgid "error in %s: %s"
+#~ msgstr "error en %s: %s"
+
+#~ msgid ""
+#~ "warning: locate database path `%s' contains a leading colon, which is not "
+#~ "a valid database name"
+#~ msgstr ""
+#~ "avís: el camí de la base de dades de locate «%s» té dos punts al "
+#~ "principi, i això no és un nom de base de dades vàlid"
+
+#~ msgid ""
+#~ "warning: locate database path `%s' contains a trailing colon, which is "
+#~ "not a valid database name"
+#~ msgstr ""
+#~ "avís: el camí de la base de dades de locate «%s» conté dos punts al "
+#~ "final, i això no és un nom de base de dades vàlid"
+
+#~ msgid "command too long"
+#~ msgstr "ordre massa llarga"
+
+# Açò vol dir que de tots els arguments, només un no cap, no? jm
+#~ msgid "can not fit single argument within argument list size limit"
+#~ msgstr "un argument no cap en el límit de mida de la  llista d'arguments"
+
+#~ msgid "argument list too long"
+#~ msgstr "llista d'arguments massa llarga"
+
+#~ msgid "memory exhausted"
+#~ msgstr "memòria exhaurida"
+
+#~ msgid "%s changed during execution of %s"
+#~ msgstr "%s ha canviat durant l'execució de %s"
+
+#~ msgid "%s/.. changed during execution of %s"
+#~ msgstr "%s/.. ha canviat durant l'execució de %s"
+
+#~ msgid "unmatched %s quote"
+#~ msgstr "cometa %s no emparellada"
