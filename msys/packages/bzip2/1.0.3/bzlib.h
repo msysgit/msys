@@ -115,7 +115,7 @@ typedef
 #include <stdio.h>
 #endif
 
-#ifdef _WIN32
+#if defined(_WIN32) && !defined(__CYGWIN__)
 #   include <windows.h>
 #   ifdef small
       /* windows.h define small to char */
@@ -129,6 +129,11 @@ typedef
 #   define BZ_API(func) (WINAPI * func)
 #   define BZ_EXTERN
 #   endif
+#elif defined(__CYGWIN__)
+#   define BZLIB_IMPEXP
+#   define BZLIB_API __cdecl
+#   define BZ_API(func) BZLIB_IMPEXP BZLIB_API func
+#   define BZ_EXTERN extern
 #else
 #   define BZ_API(func) func
 #   define BZ_EXTERN extern
