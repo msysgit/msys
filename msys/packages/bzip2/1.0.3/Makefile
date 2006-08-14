@@ -3,7 +3,7 @@ SO_VER=1.0
 DLLVER=1
 
 # Where you want it installed when you do 'make install'
-PREFIX=/usr
+PREFIX=/msys
 prefix=$(PREFIX)
 exec_prefix=$(prefix)
 bindir=$(prefix)/bin
@@ -61,12 +61,12 @@ all: ${STATLIB} ${SHAREDLIB} bzip2$(EXE) bzip2-stat$(EXE) \
 bzip2$(EXE): bzip2.o $(SHAREDLIB)
 	$(CC) $(CFLAGS) -o $@ $< -L. -lbz2
 bzip2-stat$(EXE): bzip2.o $(STATLIB)
-	$(CC) -static $(CFLAGS) -o $@ $< -L. -lbz2
+	$(CC) $(CFLAGS) -o $@ $< -L. -lbz2
 
 bzip2recover$(EXE): bzip2recover.o
 	$(CC) $(CFLAGS) -o $@ $<
 bzip2recover-stat$(EXE): bzip2recover.o
-	$(CC) -static $(CFLAGS) -o $@ $<
+	$(CC) $(CFLAGS) -o $@ $<
 
 $(STATLIB): $(OBJS)
 	rm -f $(STATLIB)
