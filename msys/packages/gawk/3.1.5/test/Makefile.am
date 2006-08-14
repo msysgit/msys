@@ -621,7 +621,7 @@ NEED_LINT = defref noeffect nofmtch shadow uninit2 uninit3 uninit4 uninitialized
 GENTESTS_UNUSED = Makefile.in gtlnbufv.awk printfloat.awk switch2.awk
 
 CMP = cmp
-AWKPROG = ../gawk$(EXEEXT)
+AWKPROG = ../gawk
 
 # This business forces the locale to be C for running the tests,
 # unless we override it to something else for testing.
