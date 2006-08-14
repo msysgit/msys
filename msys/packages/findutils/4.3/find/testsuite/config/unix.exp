@@ -1,0 +1,151 @@
+# -*- TCL -*-
+# Test-specific TCL procedures required by DejaGNU.
+# Copyright (C) 2000 Free Software Foundation, Inc.
+
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
+# USA.
+
+# Modified by Kevin Dalley <kevind@rahul.net> from the xargs files.
+# Modified by David MacKenzie <djm@gnu.ai.mit.edu> from the gcc files
+# written by Rob Savoye <rob@cygnus.com>.
+
+
+global FIND
+# look for FIND
+if ![info exists FIND] {
+    set FIND [findfile $base_dir/../find $base_dir/../find [transform find]]
+    verbose "FIND defaulting to $FIND" 2
+}
+
+global FINDFLAGS
+if ![info exists FINDFLAGS] then {
+    set FINDFLAGS ""
+}
+
+# Called by runtest.
+# Extract and print the version number of find.
+proc find_version {} {
+    global FIND
+    global FINDFLAGS
+
+    if {[which $FIND] != 0} then {
+	set tmp [ eval exec $FIND $FINDFLAGS --version </dev/null ]
+	regexp "version.*$" $tmp version
+	if [info exists version] then {
+	    clone_output "[which $FIND] $version\n"
+	} else {
+	    warning "cannot get version from $tmp."
+	}
+    } else {
+	warning "$FIND, program does not exist"
+    }
+}
+
+# Run find and leave the output in $comp_output.
+# Called by individual test scripts.
+proc find_start { passfail options {infile ""}} {
+    global verbose
+    global FIND
+    global FINDFLAGS
+    global comp_output
+
+    if {[which $FIND] == 0} then {
+	error "$FIND, program does not exist"
+	exit 1
+    }
+
+    set fail_good [string match "f*" $passfail]
+
+    set scriptname [uplevel {info script}]
+    set testbase [file rootname $scriptname]
+    set testname [file tail $testbase]
+
+    # set compareprog "cmp"
+    set compareprog "diff -u"
+
+    set outfile "$testbase.xo"
+    if {$infile != ""} then {
+	set infile "[file dirname [file dirname $testbase]]/inputs/$infile"
+    } else {
+	set infile /dev/null
+    }
+
+    set cmd "$FIND $FINDFLAGS $options < $infile | sort > find.out"
+    send_log "$cmd\n"
+    if $verbose>1 then {
+	send_user "Spawning \"$cmd\"\n"
+    }
+
+    catch "exec $cmd" comp_output
+    if {$comp_output != ""} then {
+	send_log "$comp_output\n"
+	if $verbose>1 then {
+	    send_user "$comp_output\n"
+	}
+	if $fail_good then {
+	    pass "$testname"
+	} else {
+	    fail "$testname, $comp_output"
+	}
+	return
+    }
+
+    if [file exists $outfile] then {
+	# We use the 'sort' above to sort the output of find to ensure
+	# that the directory entries appear in a predictable order.
+	# Because in the general case the person compiling and running
+	# "make check" will have a different collating order to the
+	# maintainer, we can't guarantee that our "correct" answer
+	# is already sorted in the correct order.  To avoid trying 
+	# to figure out how to select a POSIX environment on a 
+	# random system, we just sort the data again here, using 
+	# the local user's environment.
+	exec sort < $outfile > cmp.out
+	set cmp_cmd "$compareprog find.out cmp.out"
+
+	send_log "$cmp_cmd\n"
+	catch "exec $cmp_cmd" cmpout
+	if {$cmpout != ""} then {
+	    fail "$testname, $cmpout"
+	    return
+	}
+    } else {
+	if {[file size find.out] != 0} then {
+	    fail "$testname, output should be empty"
+	    return
+	}
+    }
+    pass "$testname"
+}
+
+# Called by runtest.
+# Clean up (remove temporary files) before runtest exits.
+proc find_exit {} {
+    catch "exec rm -f find.out cmp.out"
+}
+
+proc dot_is_on_path {} {
+    global env;
+    set itemlist [ split $env(PATH) : ]
+    foreach item $itemlist {
+	if { [ string equal $item "" ] } {
+	    return 1;
+	}
+	if { [ string equal $item "." ] } {
+	    return 1;
+	}
+    }
+    return 0;
+}

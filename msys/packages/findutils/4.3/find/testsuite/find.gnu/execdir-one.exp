@@ -1,0 +1,10 @@
+# tests for -name
+if { [ dot_is_on_path ] } {
+     warning { Cannot perform test as your $PATH environment variable includes a reference to the current directory } 
+    untested { skipping this test because your $PATH variable is wrongly set }
+} else {
+    exec rm -rf tmp
+    exec mkdir tmp tmp/fred tmp/jim
+    find_start p {tmp -name fred -execdir echo \{\} \; }
+    exec rm -rf tmp
+}
