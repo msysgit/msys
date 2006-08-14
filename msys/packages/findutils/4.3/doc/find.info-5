@@ -1,0 +1,372 @@
+This is /devshop/msys/rt-HEAD/packages/findutils/4.3/doc/find.info,
+produced by makeinfo version 4.3 from
+/devshop/msys/rt-HEAD/packages/findutils/4.3/doc/find.texi.
+
+INFO-DIR-SECTION Basics
+START-INFO-DIR-ENTRY
+* Finding files: (find).        Operating on files matching certain criteria.
+END-INFO-DIR-ENTRY
+
+INFO-DIR-SECTION Individual utilities
+START-INFO-DIR-ENTRY
+* find: (find)Invoking find.                    Finding and acting on files.
+* locate: (find)Invoking locate.                Finding files in a database.
+* updatedb: (find)Invoking updatedb.            Building the locate database.
+* xargs: (find)Invoking xargs.                  Operating on many files.
+END-INFO-DIR-ENTRY
+
+
+File: find.info,  Node: Security Considerations for xargs,  Next: Security Considerations for locate,  Prev: Security Considerations for find,  Up: Security Considerations
+
+Security Considerations for `xargs'
+===================================
+
+   The description of the race conditions affecting the `-print' action
+of `find' shows that `xargs' cannot be secure if it is possible for an
+attacker to modify a filesystem after `find' has started but before
+`xargs' has completed all its actions.
+
+   However, there are other security issues that exist even if it is not
+possible for an attacker to have access to the filesystem in real time.
+Firstly, if it is possible for an attacker to create files with names
+of their choice on the filesystem, then `xargs' is insecure unless the
+`-0' option is used.  If a file with the name
+`/home/someuser/foo/bar\n/etc/passwd' exists (assume that `\n' stands
+for a newline character), then `find ... -print' can be persuaded to
+print three separate lines:
+
+     /home/someuser/foo/bar
+     
+     /etc/passwd
+
+   If it finds a blank line in the input, `xargs' will ignore it.
+Therefore, if some action is to be taken on the basis of this list of
+files, the `/etc/passwd' file would be included even if this was not
+the intent of the person running find.  There are circumstances in
+which an attacker can use this to their advantage.  The same
+consideration applies to file names containing ordinary spaces rather
+than newlines, except that of course the list of file names will no
+longer contain an "extra" newline.
+
+   This problem is an unavoidable consequence of the default behaviour
+of the `xargs' command, which is specified by the POSIX standard.  The
+only ways to avoid this problem are either to avoid all use of `xargs'
+in favour for example of `find -exec' or (where available) `find
+-execdir', or to use the `-0' option, which ensures that `xargs'
+considers file names to be separated by ASCII NUL characters rather
+than whitespace.  However, useful as this option is, the POSIX standard
+does not make it mandatory.
+
+
+File: find.info,  Node: Security Considerations for locate,  Next: Security Summary,  Prev: Security Considerations for xargs,  Up: Security Considerations
+
+Security Considerations for `locate'
+====================================
+
+   It is fairly unusual for the output of `locate' to be fed into
+another command.  However, if this were to be done, this would raise
+the same set of security issues as the use of `find ... -print'.
+Although the problems relating to whitespace in file names can be
+resolved by using `locate''s `-0' option, this still leaves the race
+condition problems associated with `find ... -print0'.  There is no way
+to avoid these problems in the case of `locate'.
+
+
+File: find.info,  Node: Security Summary,  Prev: Security Considerations for locate,  Up: Security Considerations
+
+Summary
+=======
+
+   Where untrusted parties can create files on the system, or affect the
+names of files that are created, all uses for `find', `locate' and
+`xargs' have known security problems except the following:
+
+Informational use only
+     Uses where the programs are used to prepare lists of file names
+     upon which no further action will ever be taken.
+
+`-delete'
+     Use of the `-delete' action with `find' to delete files which meet
+     specified criteria
+
+`-execdir'
+     Use of the `-execdir' action with `find' where the `PATH'
+     environment variable contains directories which contain only
+     trusted programs.
+
+
+File: find.info,  Node: Error Messages,  Next: Primary Index,  Prev: Security Considerations,  Up: Top
+
+Error Messages
+**************
+
+   This section describes some of the error messages sometimes made by
+`find', `xargs', or `locate', explains them and in some cases provides
+advice as to what you should do about this.
+
+   This manual is written in English.  The GNU findutils software
+features translations of error messages for many languages.  For this
+reason the error messages produced by the programs are made to be as
+self-explanatory as possible.  This approach avoids leaving people to
+figure out which test an English-language error message corresponds to.
+Error messages which are self-explanatory will not normally be
+mentioned in this document.  For those messages mentioned in this
+document, only the English-language version of the message will be
+listed.
+
+* Menu:
+
+* Error Messages From find::
+* Error Messages From xargs::
+* Error Messages From locate::
+* Error Messages From updatedb::
+
+
+File: find.info,  Node: Error Messages From find,  Next: Error Messages From xargs,  Up: Error Messages
+
+Error Messages From `find'
+==========================
+
+`invalid predicate `-foo''
+     This means that the `find' command line included something that
+     started with a dash or other special character.  The `find'
+     program tried to interpret this as a test, action or option, but
+     didn't recognise it.  If it was intended to be a test, check what
+     was specified against the documentation.  If, on the other hand,
+     the string is the name of a file which has been expanded from a
+     wildcard (for example because you have a `*' on the command line),
+     consider using `./*' or just `.' instead.
+
+`unexpected extra predicate'
+     This usually happens if you have an extra bracket on the command
+     line (for example `find . -print \)').
+
+`Warning: filesystem /path/foo has recently been mounted'
+`Warning: filesystem /path/foo has recently been unmounted'
+     These messages might appear when `find' moves into a directory and
+     finds that the device number and inode are different to what it
+     expected them to be.  If the directory `find' has moved into is on
+     an network filesystem (NFS), it will not issue this message,
+     because `automount' frequently mounts new filesystems on
+     directories as you move into them (that is how it knows you want
+     to use the filesystem).  So, if you do see this message, be wary --
+     `automount' may not have been responsible.  Consider the
+     possibility that someone else is manipulating the filesystem while
+     `find' is running.  Some people might do this in order to mislead
+     `find' or persuade it to look at one set of files when it thought
+     it was looking at another set.
+
+`/path/foo changed during execution of find (old device number 12345, new device number 6789, filesystem type is <whatever>) [ref XXX]'
+     This message is issued when `find' moves into a directory and ends
+     up somewhere it didn't expect to be.  This happens in one of two
+     circumstances.  Firstly, this happens when `automount' intervenes
+     on a system where `find' doesn't know how to determine what the
+     current set of mounted filesystems is.
+
+     Secondly, this can happen when the device number of a directory
+     appears to change during a change of current directory, but `find'
+     is moving up the filesystem hierarchy rather than down into it.
+     In order to prevent `find' wandering off into some unexpected part
+     of the filesystem, we stop it at this point.
+
+`Don't know how to use getmntent() to read `/etc/mtab'.  This is a bug.'
+     This message is issued when a problem similar to the above occurs
+     on a system where `find' doesn't know how to figure out the current
+     list of mount points.  Ask for help on <bug-findutils@gnu.org>.
+
+`/path/foo/bar changed during execution of find (old inode number 12345, new inode number 67893, filesystem type is <whatever>) [ref XXX]"),'
+     This message is issued when `find' moves into a directory and
+     discovers that the inode number of that directory is different
+     from the inode number that it obtained when it examined the
+     directory previously.  This usually means that while `find' was
+     deep in a directory hierarchy doing a time consuming operation,
+     somebody has moved one of the parent directories to another
+     location in the same filesystem.  This may or may not have been
+     done maliciously.  In any case, `find' stops at this point to
+     avoid traversing parts of the filesystem that it wasn't intended.
+     You can use `ls -li' or `find /path -inum 12345 -o -inum 67893' to
+     find out more about what has happened.
+
+`sanity check of the fnmatch() library function failed.'
+     Please submit a bug report.  You may well be asked questions about
+     your system, and if you compiled the `findutils' code yourself,
+     you should keep your copy of the build tree around.  The likely
+     explanation is that your system has a buggy implementation of
+     `fnmatch' that looks enough like the GNU version to fool
+     `configure', but which doesn't work properly.
+
+`cannot fork'
+     This normally happens if you use the `-exec' action or something
+     similar (`-ok' and so forth) but the system has run out of free
+     process slots.  This is either because the system is very busy and
+     the system has reached its maximum process limit, or because you
+     have a resource limit in place and you've reached it.  Check the
+     system for runaway processes (with `ps', if possible).  Some
+     process slots are normally reserved for use by `root'.
+
+`some-program terminated by signal 99'
+     Some program which was launched with `-exec' or similar was killed
+     with a fatal signal.  This is just an advisory message.
+
+
+File: find.info,  Node: Error Messages From xargs,  Next: Error Messages From locate,  Prev: Error Messages From find,  Up: Error Messages
+
+Error Messages From xargs
+=========================
+
+`environment is too large for exec'
+     This message means that you have so many environment variables set
+     (or such large values for them) that there is no room within the
+     system-imposed limits on program command line argument length to
+     invoke any program.  This is an unlikely situation and is more
+     likely result of an attempt to test the limits of `xargs', or
+     break it.  Please try unsetting some environment variables, or
+     exiting the current shell.  You can also use `xargs --show-limits'
+     to understand the relevant sizes.
+
+`can not fit single argument within argument list size limit'
+     You are using the `-I' option and `xargs' doesn't have enough
+     space to build a command line because it has read a really large
+     item and it doesn't fit.  You can probably work around this
+     problem with the `-s' option, but the default size is pretty
+     large.  This is a rare situation and is more likely an attempt to
+     test the limits of `xargs', or break it.  Otherwise, you will need
+     to try to shorten the problematic argument or not use `xargs'.
+
+`cannot fork'
+     See the description of the similar message for `find'.
+
+`<program>: exited with status 255; aborting'
+     When a command run by `xargs' exits with status 255, `xargs' is
+     supposed to stop.  If this is not what you intended, wrap the
+     program you are trying to invoke in a shell script which doesn't
+     return status 255.
+
+`<program>: terminated by signal 99'
+     See the description of the similar message for `find'.
+
+
+File: find.info,  Node: Error Messages From locate,  Next: Error Messages From updatedb,  Prev: Error Messages From xargs,  Up: Error Messages
+
+Error Messages From `locate'
+============================
+
+`warning: database `/usr/local/var/locatedb' is more than 8 days old'
+     The `locate' program relies on a database which is periodically
+     built by the `updatedb' program.  That hasn't happened in a long
+     time.  To fix this problem, run `updatedb' manually.  This can
+     often happen on systems that are generally not left on, so the
+     periodic "cron" task which normally does this doesn't get a chance
+     to run.
+
+`locate database `/usr/local/var/locatedb' is corrupt or invalid'
+     This should not happen.  Re-run `updatedb'.  If that works, but
+     `locate' still produces this error, run `locate --version' and
+     `updatedb --version'.  These should produce the same output.  If
+     not, you are using a mixed toolset; check your `$PATH' environment
+     variable and your shell aliases (if you have any).  If both
+     programs claim to be GNU versions, this is a bug; all versions of
+     these programs should interoperate without problem.  Ask for help
+     on <bug-findutils@gnu.org>.
+
+
+File: find.info,  Node: Error Messages From updatedb,  Prev: Error Messages From locate,  Up: Error Messages
+
+Error Messages From updatedb
+============================
+
+   The `updatedb' program (and the programs it invokes) do issue error
+messages, but none seem to be candidates for guidance.  If you are
+having a problem understanding one of these, ask for help on
+<bug-findutils@gnu.org>.
+
+
+File: find.info,  Node: Primary Index,  Prev: Error Messages,  Up: Top
+
+`find' Primary Index
+********************
+
+   This is a list of all of the primaries (tests, actions, and options)
+that make up `find' expressions for selecting files.  *Note find
+Expressions::, for more information on expressions.
+
+* Menu:
+
+* !:                                     Combining Primaries With Operators.
+* ():                                    Combining Primaries With Operators.
+* ,:                                     Combining Primaries With Operators.
+* -a:                                    Combining Primaries With Operators.
+* -amin:                                 Age Ranges.
+* -and:                                  Combining Primaries With Operators.
+* -anewer:                               Comparing Timestamps.
+* -atime:                                Age Ranges.
+* -cmin:                                 Age Ranges.
+* -cnewer:                               Comparing Timestamps.
+* -ctime:                                Age Ranges.
+* -d:                                    Directories.
+* -daystart:                             Age Ranges.
+* -delete:                               Delete Files.
+* -depth:                                Directories.
+* -empty:                                Size.
+* -exec <1>:                             Single File.
+* -exec:                                 Multiple Files.
+* -execdir <1>:                          Single File.
+* -execdir:                              Multiple Files.
+* -executable:                           Permissions.
+* -false:                                Combining Primaries With Operators.
+* -fls:                                  Print File Information.
+* -fprint:                               Print File Name.
+* -fprint0:                              Safe File Name Handling.
+* -fprintf:                              Print File Information.
+* -fstype:                               Filesystems.
+* -gid:                                  Owner.
+* -group:                                Owner.
+* -ignore_readdir_race:                  Directories.
+* -ilname:                               Symbolic Links.
+* -iname:                                Base Name Patterns.
+* -inum:                                 Hard Links.
+* -ipath:                                Full Name Patterns.
+* -iregex:                               Full Name Patterns.
+* -iwholename:                           Full Name Patterns.
+* -links:                                Hard Links.
+* -lname:                                Symbolic Links.
+* -ls:                                   Print File Information.
+* -maxdepth:                             Directories.
+* -mindepth:                             Directories.
+* -mmin:                                 Age Ranges.
+* -mount:                                Filesystems.
+* -mtime:                                Age Ranges.
+* -name:                                 Base Name Patterns.
+* -newer:                                Comparing Timestamps.
+* -nogroup:                              Owner.
+* -noignore_readdir_race:                Directories.
+* -noleaf:                               Directories.
+* -not:                                  Combining Primaries With Operators.
+* -nouser:                               Owner.
+* -o:                                    Combining Primaries With Operators.
+* -ok:                                   Querying.
+* -okdir:                                Querying.
+* -or:                                   Combining Primaries With Operators.
+* -path:                                 Full Name Patterns.
+* -perm:                                 Permissions.
+* -print:                                Print File Name.
+* -print0:                               Safe File Name Handling.
+* -printf:                               Print File Information.
+* -prune:                                Directories.
+* -quit:                                 Directories.
+* -readable:                             Permissions.
+* -regex:                                Full Name Patterns.
+* -regextype:                            Full Name Patterns.
+* -samefile:                             Hard Links.
+* -size:                                 Size.
+* -true:                                 Combining Primaries With Operators.
+* -type:                                 Type.
+* -uid:                                  Owner.
+* -used:                                 Comparing Timestamps.
+* -user:                                 Owner.
+* -wholename:                            Full Name Patterns.
+* -writable:                             Permissions.
+* -xdev:                                 Filesystems.
+* -xtype:                                Type.
+
+
