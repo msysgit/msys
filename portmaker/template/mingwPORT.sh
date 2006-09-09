@@ -25,9 +25,11 @@ pref "/usr/local/lib/mingwPORT/mingwPORT.site"
 pref "$HOME/.mingwPORT/mingwPORT.site"
 
 # Set indicator to show we are "on track" for successful completion;
-# (failing operations may reset it, to suppress pointless messages).
+# (failing operations may reset it, either directly or by raising SIGUSR1,
+#  to suppress further pointless processing, and provide a graceful exit).
 
 ONTRACK=true
+trap "ONTRACK=false" SIGUSR1
 
 # Get user's configuration preferences.
 

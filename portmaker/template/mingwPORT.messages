@@ -8,7 +8,10 @@ MSG_ENOOPT="unknown option:"
 MSG_EAMBIG="ambiguous option:"
 MSG_ENOENT="required file not found."
 MSG_EACCESS="cannot access file."
-MSG_NOMKDIR="directory not created."
-MSG_REFUSED="permission refused by user."
+MSG_EMKDIR="directory not created."
+MSG_EREFUSED="permission refused by user."
+MSG_EABORT="mingwPORT cannot continue."
+MSG_EFAILED="command failed; $MSG_EABORT"
+MSG_EFATAL="FATAL: $MSG_EFAILED"
 
 # $RCSfile: mingwPORT.messages,v $: end of file: vim: ft=sh

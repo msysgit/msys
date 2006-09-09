@@ -16,9 +16,9 @@ ask "ARCHIVEFILE" "$PACKAGE-$VERSION.$ARCHIVETYPE" ARCHIVEFILE \?
 ask "ARCHIVEHOME" "http://www.${PACKAGE}.org" ARCHIVEHOME \?
 ask "ARCHIVEPATH" "/tmp" ARCHIVEPATH \?
 ask "DOWNLOADURI" "http://ftp.gnu.org/gnu/$PACKAGE" DOWNLOADURI \?
-ask "SRCDIR" "\$HOME/src/${PACKAGE}-${VERSION}" SRCDIR \?
+ask "SRCDIR" '${SRCROOT-"$HOME/src"}'"/${PACKAGE}-${VERSION}" SRCDIR \?
 ask "BUILDDIR" "./bld" BUILDDIR \?
-ask "PREFIX" "/mingw" PREFIX \?
+ask "PREFIX" '${PREFIX-"/mingw"}' PREFIX \?
 ask "CFLAGS" "-O3 -s -mms-bitfields -march=\\\`uname -m\\\`" CFLAGS \?
 ask "CXXFLAGS" "\\\$CFLAGS" CXXFLAGS \?
 

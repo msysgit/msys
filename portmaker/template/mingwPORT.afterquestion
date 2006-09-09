@@ -38,12 +38,12 @@ Would you like to keep '$1' on mingwPORT completion?" "$2" REPLY
 	;;
       esac
     else
-      ${3-die} afterquestion "'$1': $MSG_NOMKDIR"
+      ${3-die} afterquestion "'$1': $MSG_EMKDIR"
     fi
   elif test -n "$REPLY"
   then
-    complain afterquestion "'$1': $MSG_NOMKDIR"
-    ${3-die} afterquestion " $MSG_REFUSED"
+    complain afterquestion "'$1': $MSG_EMKDIR"
+    ${3-die} afterquestion " $MSG_EREFUSED"
   fi
 }
 
@@ -75,6 +75,14 @@ then
   cd $ARCHIVEPATH && wget $DOWNLOADURI/$ARCHIVEFILE || ONTRACK=false
   UNARCHIVE=yes 
 fi
+
+# If required to unpack the source archive,
+# then establish the appropriate format for the `tar' command,
+# and invoke it in the designated source directory.
+#
+# Note: if `tar' fails, raise SIGUSR1 for a graceful exit,
+# because we can't set `ONTRACK=false' directly within the pipe.
+
 isyes $UNARCHIVE && ARCHIVE=$ARCHIVEPATH/$ARCHIVEFILE
 if $ONTRACK && test -n "$ARCHIVE"
 then
@@ -85,7 +93,11 @@ then
     tbz2)    TARFLAG=jxvf ;;
     # zip)   TARFLAG=zip  ;;
   esac
-  cd "$SRCROOT" && tar $TARFLAG "$ARCHIVE" | tee "${ARCHIVE}.log"
+  if cd "$SRCROOT"
+  then
+    tar $TARFLAG "$ARCHIVE" || kill -SIGUSR1 $$ | tee "$ARCHIVE.log"
+    $ONTRACK || complain afterquestion "tar: $MSG_EFATAL"
+  fi
 fi
 
 # $RCSfile: mingwPORT.afterquestion,v $: end of file: vim: ft=sh

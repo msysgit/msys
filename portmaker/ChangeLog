@@ -1,3 +1,20 @@
+2006-09-09  Keith Marshall  <keithmarshall@users.sf.net>
+
+	* src/portmaker.sh (SRCDIR, PREFIX): Modified defaults.
+	
+	* template/mingwPORT.sh (SIGUSR1): Define `trap'...
+	(ONTRACK): ...it sets this to `false'.
+
+	* template/mingwPORT.messages (MSG_NOMKDIR, MSG_REFUSED): Renamed...
+	(MSG_EMKDIR, MSG_EREFUSED): ...to these, respectively.
+	(MSG_EABORT, MSG_EFAILED, MSG_EFATAL): New messages; defined.
+
+	* template/mingwPORT.afterquestion (SIGUSR1): Raise it...
+	(ARCHIVE): ...on failure to `untar' this...
+	(MSG_EFATAL): ...failing with this.
+	(MSG_NOMKDIR, MSG_REFUSED): Update references...
+	(MSG_EMKDIR, MSG_EREFUSED): ...to use these instead.
+
 2006-06-16  Keith Marshall  <keithmarshall@users.sf.net>
 
 	Autoconfiscate.
