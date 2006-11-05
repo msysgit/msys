@@ -1,0 +1,63 @@
+.ig
+$Id: README.tmac,v 1.1 2006-11-05 23:26:37 keithmarshall Exp $
+
+A collection of trivial `nroff' macros, to assist in formatting
+README files.
+
+Copyright (C) 2006, MinGW Project  <http://www.mingw.org>
+Written by Keith Marshall <keithmarshall@users.sourceforge.net>
+
+This is free software; you can redistribute it and/or modify it under the
+terms of the GNU General Public License as published by the Free Software
+Foundation; either version 2, or (at your option) any later version.
+
+This software is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the IMPLIED WARRANTY of MERCHANTABILITY
+or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+for further details.
+
+You should have received a copy of the GNU General Public License along
+with this software; see the file COPYING.  If not, write to the Free
+Software Foundation, 51 Franklin St - Fifth Floor, Boston, MA 02110-1301,
+USA.
+..
+.\" Default layout.
+.
+.pl 9999i
+.po 1
+.ll 72
+.hy 0
+.
+.\" Register usage.
+.\"
+.\" `PD' defines line space preceding each paragraph. Assumed zero
+.\" for 1st paragraph, then reset to 1, for each subsequent paragraph;
+.\" for local variations, adjust as required prior to paragraph macro
+.\" for each adjusted paragraph.
+.
+.\" Macros.
+.
+.de TP
+.\" usage: .TP tag
+.\" Tagged paragraph, with hanging indent: first line marked with `tag',
+.\" flush left; subsequent lines indented by width of `tag', plus one
+.\" digit space.  Paragraph preceded by line space of `\n(PD'.
+.LP
+.nop \\$1
+'in  \w'\\$1\0'u
+..
+.de LP
+.\" usage: .LP
+.\" Flush left paragraph, preceded by line space of `\n(PD'.
+.QP 0
+..
+.de QP
+.\" usage: .QP n
+.\" Quoted paragraph, indented at left by `n' en-spaces; preceded by
+.\" line space of `\n(PD'.
+.in \\$1
+.if r PD .sp \\n(PD
+.nr PD 1
+.fi
+..
+.\" $RCSfile: README.tmac,v $Revision: 1.1 $: end of file

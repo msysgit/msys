@@ -1,0 +1,179 @@
+.ig
+README.in for x86-mingw32-build.sh
+$Id: README.in,v 1.1 2006-11-05 23:26:36 keithmarshall Exp $
+
+Copyright (C) 2006, MinGW Project  <http://www.mingw.org>
+Written by Keith Marshall <keithmarshall@users.sourceforge.net>
+
+x86-mingw32-build is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by the
+Free Software Foundation; either version 2, or (at your option) any later
+version.
+
+x86-mingw32-build is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the IMPLIED WARRANTY of MERCHANTABILITY
+or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+for further details.
+
+You should have received a copy of the GNU General Public License along
+with x86-mingw32-build; see the file COPYING.  If not, write to the Free
+Software Foundation, 51 Franklin St - Fifth Floor, Boston, MA 02110-1301,
+USA.
+
+Process this file with `nroff -Tascii README.in > README`,
+to generate the README file.
+..
+.so README.tmac
+.LP
+$Id: README.in,v 1.1 2006-11-05 23:26:36 keithmarshall Exp $
+.LP
+Copyright (C) 2006, MinGW Project  <http://www.mingw.org>
+.LP
+The `x86\-mingw32\-build' script will build a cross compiler suite,
+hosted on GNU/Linux or UNIX,
+and targetting the Win32 platform.
+.LP
+`x86\-mingw32\-build' is free software;
+it is distributed `as is',
+in the hope that it may be useful,
+but WITHOUT WARRANTY OF ANY KIND;
+not even an IMPLIED WARRANTY of MERCHANTABILITY,
+nor of FITNESS FOR ANY PARTICULAR PURPOSE.
+.LP
+`x86\-mingw32\-build' is distributed under the terms of the GNU
+General Public License,
+Version 2.
+You are free to copy,
+and to redistribute `x86\-mingw32\-build' under the terms of this license,
+or at your option,
+any later version thereof;
+see the files `LICENSE' and `COPYING' for further information.
+.LP
+To build a MinGW cross GCC,
+using `x86\-mingw32\-build',
+you MUST have NATIVE versions of the following tools
+installed on the machine where you will perform the build:\(em
+.TP 1)
+A C compiler.
+.TP 2)
+A `lex' compatible lexical parser generator,
+such as `lex' itself,
+or a free alternative such as `flex'.
+.TP 3)
+A `yacc' compatible grammar parser generator,
+preferrably a `yacc' replacement such as `GNU\~bison' or `byacc'.
+.TP 4)
+An `m4' macro processor,
+if it is required by either of the above.
+.LP
+The cross compiler configuration is defined in the user modifiable file,
+`x86\-mingw32\-build.sh.conf'.
+You are advised to review this file,
+to ensure that the default configuration is suited to your requirements;
+use the `assume' directive to supply initial default settings,
+and the `option' directive to extend specified lists of configuration options.
+.LP
+To invoke the build script:\(em
+.TP 1)
+Unpack the tarball,
+into a directory of your choice;
+it will create a subdirectory called `x86\-mingw32\-build\-<version>'.
+.TP 2)
+`cd' to this `x86\-mingw32\-build\-<version>' directory.
+.TP 3)
+Start the build,
+by executing the command:\(en
+.QP 4
+sh x86\-mingw32\-build.sh [\-\-options ...] [target\-spec]
+.LP
+Your choice of `target\-spec' defines the class of processor,
+and the operating system,
+for which your cross compiler will generate code;
+it also determines how your cross compiler will eventually be invoked;
+e.g.\~if you choose a canonical host triplet,
+such as `i586\-pc\-mingw32' then you would invoke `gcc',
+say to compile `foo.c',
+as:\(en
+.QP 4
+i586\-pc\-mingw32\-gcc \-c foo.c
+.LP
+generating object code suitable for deployment on an Intel Pentium class host,
+running a 32\-bit MS\-Windows operating system.
+.LP
+Do note that you cannot make an arbitrary choice for `target-spec';
+it MUST represent,
+either directly or by inference,
+a valid canonical host triplet of the form `CPU\-MAKER\-OSTYPE'.
+The minimum requirement is that you specify the `OSTYPE',
+and,
+since you are building a MinGW compiler tool chain for the Win32 platform,
+this MUST be `mingw32'.
+Typically,
+you would choose a full canonical host triplet,
+such as in the example above,
+in which the CPU is `i586',
+the MAKER is `pc',
+(indicating any generic PC of non\-specific manufacture),
+and the OSTYPE is the mandatory `mingw32';
+alternatively,
+you may prefer to use an abbreviated couplet such as `i586\-mingw32'.
+If you don't specify any `target\-spec',
+it defaults to the couplet `i386\-mingw32',
+resulting in a C compiler invoked as:\(en
+.QP 4
+i386\-mingw32\-gcc \-c foo.c
+.LP
+and similarly for the remainder of the cross tool chain,
+by prefixing `i386\-mingw32\-' to the regular name of each tool;
+such a compiler,
+and its associated tool chain,
+will generate code to run under 32\-bit MS\-Windows,
+(the host OS for the `mingw32' OSTYPE),
+on all generations of the Intel x86 CPU from i386 onwards.
+.LP
+Additionally,
+there are a number of options available,
+to modify the behaviour of `x86\-mingw32\-build';
+to see a list,
+try:\(en
+.QP 4
+sh x86\-mingw32\-build.sh \-\-help
+.LP
+By default,
+`x86\-mingw32\-build.sh' runs interactively;
+this gives you an opportunity to adjust many of the default parameters,
+which have been defined in `x86\-mingw32\-build.sh.conf'.
+If you prefer to skip the interactive dialogue,
+and simply accept all of the default parameter settings,
+you may invoke:\(en
+.QP 4
+sh x86\-mingw32\-build.sh \-\-unattended [target\-spec]
+.LP
+`x86\-mingw32\-build' will build the cross compiler from source packages,
+with versions as specified in `x86\-mingw32\-build.sh.conf';
+if the specified versions are not already present in a directory of your
+choice on the local host,
+then `x86\-mingw32\-build' will invoke `wget',
+to download those package versions.
+If run interactively,
+you will be given the opportunity to override the packace versions
+specified in `x86\-mingw32\-build.sh.conf',
+substituting any version which is already present
+in your local package directory;
+if run unattended,
+you may use the `\-\-no\-download' option to prevent downloads;
+with this option,
+`x86\-mingw32\-build' will expect to find the specified version in the
+local download directory,
+or,
+if the `\-\-use\-latest\-versions' option is specified,
+it will automatically substitute the most recent version
+which is already present in that directory.
+.LP
+If you discover any bug in `x86\-mingw32\-build',
+please report it by following the procedure described at:\(en
+.QP 4
+http://www.mingw.org/MinGWiki/index.php/ReportBugs
+.LP
+$RCSfile: README.in,v $Revision: 1.1 $: end of file
+.pl 0
