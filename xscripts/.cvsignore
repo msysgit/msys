@@ -1,0 +1,3 @@
+.cvsignore
+AUTHORS README LICENSE
+*.gz *.bz2 *.tar *~

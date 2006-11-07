@@ -1,3 +1,7 @@
+2006-11-07  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	* .cvsignore, Makefile: New files.
+
 2006-11-05  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	* xscripts: New module; imported with...
