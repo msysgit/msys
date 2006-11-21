@@ -3,7 +3,6 @@
 ; inetc     - http://nsis.sourceforge.net/Inetc_plug-in
 ;             http://forums.winamp.com/showthread.php?s=&threadid=198596&perpage=40&highlight=&pagenumber=4
 ;             http://forums.winamp.com/attachment.php?s=&postid=1831346
-; sfhelper  - http://nsis.sourceforge.net/SFhelper_Plugin
 
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "MinGW"
@@ -37,7 +36,6 @@ ${StrTok}
 
 Page custom DownLoadOrInstall
 
-!define MUI_PAGE_CUSTOMFUNCTION_PRE AbortPage
 !insertmacro MUI_PAGE_LICENSE "MinGW_LICENSE.rtf"
 
 Page custom ChoosePackage
@@ -100,9 +98,6 @@ OutFile "${PRODUCT_NAME}-${PRODUCT_VERSION}.exe"
 ShowInstDetails show
 ShowUnInstDetails show
 
-
-var MirrorHost
-var MirrorURL
 var Install
 var Package
 
@@ -208,7 +203,6 @@ Section -installComponents
   CreateDirectory $INSTDIR
   File /oname=$INSTDIR\installed.ini INIfiles\installed.ini
 
-  WriteINIStr $INSTDIR\installed.ini "settings"  "mirror" $MirrorURL
   WriteINIStr $INSTDIR\installed.ini "settings"  "installtype" $Package
 
 skipwrite:
@@ -287,12 +281,6 @@ skip_copy:
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "URLInfoAbout" "${PRODUCT_WEB_SITE}"
   WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" "Publisher" "${PRODUCT_PUBLISHER}"
 
-;  ReadRegStr $1 HKLM "System\CurrentControlSet\Control\Session Manager\Environment" "PATH"
-  ; remove it to avoid multiple paths with separate installs
-;  ${StrRep} $1 $1 "$INSTDIR\bin;" ""
-;  StrCpy $1 $INSTDIR\bin;$1
-;  WriteRegExpandStr HKLM "System\CurrentControlSet\Control\Session Manager\Environment" "PATH" $1
-;  SendMessage ${HWND_BROADCAST} ${WM_WININICHANGE} 0 "STR:Environment" /TIMEOUT=5000
 
 SkipInstall:
 
@@ -323,9 +311,9 @@ SectionEnd
 
 var mirrorINI
 
-;-----------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------
 Function .onInit
-;-----------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------
 
 ; prevent multiple instances of installer
   System::Call "kernel32::CreateMutexA(i 0, i 0, t '$(^Name)') i .r0 ?e"
@@ -343,8 +331,6 @@ loop:
   Abort
 launch:
 
-  ;call GetInitialMirrors
-  
   StrCpy $R0 $WINDIR 1
   StrCpy $INSTDIR $R0:\MinGW
 
@@ -395,7 +381,6 @@ upgradeMe:
     Call UpgradeMinGWUpdate
 Finish:
 
-  ;!insertmacro MUI_INSTALLOPTIONS_EXTRACT_AS "Dialogs\PickMirror.ini" "PickMirror.ini"
   !insertmacro MUI_INSTALLOPTIONS_EXTRACT_AS "Dialogs\ChoosePackage.ini" "ChoosePackage.ini"
 
   StrCpy $Updating 0
@@ -433,30 +418,29 @@ installing:
 
 FunctionEnd
 
-;-----------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------
 Function .onVerifyInstDir
-;-----------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------
 FunctionEnd
 
-;-----------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------
 Function un.onUninstSuccess
-;-----------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------
   HideWindow
   MessageBox MB_ICONINFORMATION|MB_OK "MinGW was successfully removed from your computer."
 FunctionEnd
 
-;-----------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------
 Function un.onInit
-;-----------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------
   MessageBox MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2 "Are you sure you want to completely remove MinGW and all of its components?" IDYES +2
   Abort
 FunctionEnd
 
 
-;-----------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------
 Function UpgradeMinGWUpdate
-;-----------------------------------------------------------------------------------------------------------------------
-  ;ReadINIStr $R0 "$EXEDIR\mingw.ini" "mingwupdate" "URL"
+;-----------------------------------------------------------------------------
   ReadINIStr $R1 "$EXEDIR\mingw.ini" "mingw.ini" "Filename"
 
   DetailPrint "Downloading new version of MinGWUpdater..."
@@ -479,9 +463,9 @@ FunctionEnd
 
 var Updates
 
-;-----------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------
 Function AbortComponents
-;-----------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------
 
   IntCmp $Updating 1 +1 ShowPage ShowPage
 
@@ -494,9 +478,9 @@ ShowPage:
 
 FunctionEnd
 
-;-----------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------
 Function AbortPage
-;-----------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------
   IntCmp $Updating 1 +1 TestInstall TestInstall
     Abort
 
@@ -510,9 +494,9 @@ FunctionEnd
 var tarball
 var component
 var section
-;-----------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------
 Function ExtractTarball
-;-----------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------
   pop $component  ; name
   pop $tarball  ; tarball
   pop $section  ; section
@@ -541,9 +525,9 @@ var InstalledVer
 var PackageSection
 var PackageFlags
 
-;-----------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------
 Function checkVersion
-;-----------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------
   pop $PackageSection
   pop $CurrentVer
   pop $InstalledVer
@@ -572,70 +556,12 @@ done:
 
 FunctionEnd
 
-var FileName
-var MirrorList
-var CurrentMirror
-
-;-----------------------------------------------------------------------------------------------------------------------
-Function DownloadFromMirror
-;-----------------------------------------------------------------------------------------------------------------------
-  pop $FileName
-  ifFileExists $EXEDIR\$FileName FileFound
-
-  detailprint "downloading $Filename"
-  goto checkmirror
-
-downloadFile:
-  inetc::get  /popup "" /resume "" "$MirrorURL/$FileName" "$EXEDIR\$FileName" /END
-  Pop $0
-  StrCmp $0 "OK" FileFound
-
-  StrCmp $0 "File Not Found (404)" nextmirror
-
-  detailprint $0
-  Abort "Could not download $MirrorURL/$FileName!"
-
-FileFound:
-  sfhelper::checkFile $EXEDIR\$FileName
-  pop $0
-  StrCmp $0 "OK" downloadOK
-
-  sfhelper::getMirrors $EXEDIR\$FileName
-  pop $MirrorList
-
-  goto selectmirror
-
-nextmirror:
-  Intop $CurrentMirror $CurrentMirror + 1
-
-checkmirror:
-  ${StrTok} $MirrorHost $MirrorList "|" $CurrentMirror 0
-  StrCmp $MirrorHost "" +1 selectmirror
-
-  ; run out of mirrors, start again
-  inetc::get  "http://prdownloads.sourceforge.net/mingw/$FileName" "$EXEDIR\mirrorlist.html" /END
-  pop $0
-
-  sfhelper::getMirrors $EXEDIR\mirrorlist.html
-  pop $MirrorList
-
-selectmirror:
-  StrCpy $CurrentMirror 0
-  ${StrTok} $MirrorHost $MirrorList "|" $CurrentMirror 0
-
-  StrCpy $MirrorURL "http://$MirrorHost.dl.sourceforge.net/sourceforge/mingw"
-  Delete $EXEDIR\$FileName
-  goto downloadFile
-
-downloadOK:
-
-FunctionEnd
-
+;-----------------------------------------------------------------------------
 var Name
 
-;-----------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------
 Function DownloadIfNeeded
-;-----------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------
   pop $Name  ; Filename
   pop $section  ; section
 
@@ -643,10 +569,6 @@ Function DownloadIfNeeded
   SectionGetFlags $section $0
   IntOp $0 $0 & ${SF_SELECTED}
   IntCmp $0 ${SF_SELECTED} +1 SkipDL
-
-  ; Mirror code now broken after SF updates
-  ;push $Name
-  ;call DownloadFromMirror
 
   inetc::get /RESUME "" "http://downloads.sourceforge.net/mingw/$Name" "$EXEDIR\$Name" /END
   Pop $0
@@ -663,9 +585,9 @@ SkipDL:
 FunctionEnd
 
 !define packages "previous|current|candidate"
-;-----------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------
 Function ChoosePackage
-;-----------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------
   IntCmp $Updating 1 updating +1
 
   !insertmacro MUI_HEADER_TEXT "Choose Package" "Please select the MinGW package you wish to install."
@@ -813,32 +735,13 @@ installing:
 
 FunctionEnd
 
-;-----------------------------------------------------------------------------------------------------------------------
-Function GetInitialMirrors
-;-----------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------
 
-  ; obtain list of mirrors from sourceforge by page scraping
-  ; no longer works after SF updates
-
-  inetc::get  "http://prdownloads.sourceforge.net/mingw/${PRODUCT_NAME}-${PRODUCT_VERSION}.exe?download" "$EXEDIR\mirrorlist" /END
-  sfhelper::getMirrors $EXEDIR\mirrorlist
-  pop $MirrorList
-
-  ; select first mirror in the list
-  ${StrTok} $MirrorHost $MirrorList "|" 0 0
-
-  StrCpy $MirrorURL "http://$MirrorHost.dl.sourceforge.net/sourceforge/mingw"
-  StrCpy $CurrentMirror 0
-
-FunctionEnd
-
-;-----------------------------------------------------------------------------------------------------------------------
 Function DownloadOrInstall
-;-----------------------------------------------------------------------------------------------------------------------
+;-----------------------------------------------------------------------------
 
   IntCmp $Updating 1 update +1
 
-  WriteINIStr $mirrorINI "Field 4" "Text" "Using sourceforge mirror - $MirrorHost.dl.sourceforge.net."
   FlushINI $mirrorINI
 
   InstallOptions::initDialog /NOUNLOAD "$mirrorINI"

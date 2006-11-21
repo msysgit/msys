@@ -1,0 +1,9 @@
+2006.11.21  Earnie Boyd  <earnie@users.sf.net>
+
+	* mingw.nsi: Remove now sfhelper comment.
+	Always show license page.
+	Remove unused variables.
+	Remove unused functions.
+	Remove commented out code.
+	Shorten extra long visual effect.
+	* Dialogs/ShowMirror.ini: Remove Field 4.
