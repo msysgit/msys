@@ -7,13 +7,13 @@
 
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "MinGW"
-!define PRODUCT_VERSION "5.0.3"
+!define PRODUCT_VERSION "5.1.0"
 !define PRODUCT_PUBLISHER "MinGW"
 !define PRODUCT_WEB_SITE "http://www.mingw.org"
 !define PRODUCT_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}"
 !define PRODUCT_UNINST_ROOT_KEY "HKLM"
 !define PRODUCT_STARTMENU_REGVAL "NSIS:StartMenuDir"
-!define BUILD "6"
+!define BUILD "7"
 
 SetCompressor lzma
 
@@ -343,7 +343,7 @@ loop:
   Abort
 launch:
 
-  call GetInitialMirrors
+  ;call GetInitialMirrors
   
   StrCpy $R0 $WINDIR 1
   StrCpy $INSTDIR $R0:\MinGW
@@ -456,11 +456,11 @@ FunctionEnd
 ;-----------------------------------------------------------------------------------------------------------------------
 Function UpgradeMinGWUpdate
 ;-----------------------------------------------------------------------------------------------------------------------
-  ReadINIStr $R0 "$EXEDIR\mingw.ini" "mingwupdate" "URL"
+  ;ReadINIStr $R0 "$EXEDIR\mingw.ini" "mingwupdate" "URL"
   ReadINIStr $R1 "$EXEDIR\mingw.ini" "mingw.ini" "Filename"
 
   DetailPrint "Downloading new version of MinGWUpdater..."
-  inetc::get $R0/$R1 "$EXEDIR\$R1" /END
+  inetc::get "http://prdownloads.sourceforge.net/mingw/$R1" "$EXEDIR\$R1" /END
   Pop $R0
   StrCmp $R0 "OK" success
     ; Failure
@@ -586,7 +586,7 @@ Function DownloadFromMirror
   goto checkmirror
 
 downloadFile:
-  inetc::get  /resume "" "$MirrorURL/$FileName" "$EXEDIR\$FileName" /END
+  inetc::get  /popup "" /resume "" "$MirrorURL/$FileName" "$EXEDIR\$FileName" /END
   Pop $0
   StrCmp $0 "OK" FileFound
 
@@ -644,8 +644,20 @@ Function DownloadIfNeeded
   IntOp $0 $0 & ${SF_SELECTED}
   IntCmp $0 ${SF_SELECTED} +1 SkipDL
 
-  push $Name
-  call DownloadFromMirror
+  ; Mirror code now broken after SF updates
+  ;push $Name
+  ;call DownloadFromMirror
+
+  inetc::get /RESUME "" "http://downloads.sourceforge.net/mingw/$Name" "$EXEDIR\$Name" /END
+  Pop $0
+  StrCmp $0 "OK" DownLoadOK
+
+  ; can we recover from this now?
+
+  detailprint $0
+  Abort "Could not download $Name!"
+
+DownLoadOK:
 
 SkipDL:
 FunctionEnd
@@ -804,7 +816,10 @@ FunctionEnd
 ;-----------------------------------------------------------------------------------------------------------------------
 Function GetInitialMirrors
 ;-----------------------------------------------------------------------------------------------------------------------
+
   ; obtain list of mirrors from sourceforge by page scraping
+  ; no longer works after SF updates
+
   inetc::get  "http://prdownloads.sourceforge.net/mingw/${PRODUCT_NAME}-${PRODUCT_VERSION}.exe?download" "$EXEDIR\mirrorlist" /END
   sfhelper::getMirrors $EXEDIR\mirrorlist
   pop $MirrorList
