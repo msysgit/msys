@@ -95,7 +95,7 @@ then
   esac
   if cd "$SRCROOT"
   then
-    tar $TARFLAG "$ARCHIVE" || kill -SIGUSR1 $$ | tee "$ARCHIVE.log"
+    { tar $TARFLAG "$ARCHIVE" || kill -SIGUSR1 $$; } | tee "$ARCHIVE.log"
     $ONTRACK || complain afterquestion "tar: $MSG_EFATAL"
   fi
 fi

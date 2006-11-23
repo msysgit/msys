@@ -1,3 +1,10 @@
+2006-11-23  Borut Razem <borut.razem@siol.net>
+
+	* template/mingwPORT.afterquestion: Add braces;
+	they are required to group `tar' and `kill' commands, to raise...
+	(SIGUSR1): ...this, on `tar' command failure, while writing...
+	($ARCHIVE.log): ...this file unconditionally.
+
 2006-09-09  Keith Marshall  <keithmarshall@users.sf.net>
 
 	* src/portmaker.sh (SRCDIR, PREFIX): Modified defaults.
