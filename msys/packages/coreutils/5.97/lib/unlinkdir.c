@@ -38,6 +38,9 @@
 bool
 cannot_unlink_dir (void)
 {
+#if __MSYS__
+  return false;
+#else
   static bool initialized;
   static bool cannot;
 
@@ -65,6 +68,7 @@ cannot_unlink_dir (void)
     }
 
   return cannot;
+#endif /* __MSYS__ */
 }
 
 #endif
