@@ -113,7 +113,7 @@ installed_su = $(DESTDIR)$(bindir)/`echo su|sed '$(transform)'`
 setuid_root_mode = a=rx,u+s
 
 INSTALL_SU = \
-  p=su; \
+  p=su$(EXEEXT); \
   echo " $(INSTALL_PROGRAM) $$p $(installed_su)"; \
   $(INSTALL_PROGRAM) $$p $(installed_su); \
   echo " chown root $(installed_su)"; \
