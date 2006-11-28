@@ -1,0 +1,10 @@
+2006.11.28  Earnie Boyd  <earnie@users.sf.net>
+
+	* ChangeLog.MSYS: New file.
+	* lib/unlinkdir.c (cannot_unlink_dir): Always return false for __MSYS__.
+	* man/Makefile.am (mapped_name): Append the value of EXEEXT.
+	* man/Makefile.in (mapped_name): Ditto.
+	* src/ln.c: Don't enable __CYGWIN__ specific coding for __MSYS__.
+	* src/remove.c (AD_pop_and_chdir): Move the check for chdir("..") above
+	AD_stack_height condition to eliminate the issue of ``rm -rf foo'' not
+	removing foo.
