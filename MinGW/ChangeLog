@@ -1,3 +1,22 @@
+2006.11.30  Earnie Boyd  <earnie@users.sf.net>
+
+	* MinGW_LICENSE.rtf: Update version.
+	* mingw.nsi (PRODUCT_VERSION): Increment.
+	(BUILD): Ditto.
+	(LogicLib.nsh): Include to help improve flow logic.
+	(packages): Set from mingw.ini file [mingw] section to aide in
+	expandability of packages without rebuild.
+	(runtime): Default to current section if selected section does not
+	define it.
+	(w32api): Ditto.
+	(binutils): Ditto.
+	(core): Ditto.
+	* inifile/mingw.ini ([mingw]: Build): Increment.
+	([mingw]: Filename): Update to match version.
+	([mingw]: packages): New variable.
+	([candidate]): Remove runtime and w32api entries.
+	* ChangeLog: Convert to UNIX line endings.
+
 2006.11.29  Earnie Boyd  <earnie@users.sf.net>
 
 	* inifiles/mingw.ini (Candidate): Re-add w32api and mingw-runtime

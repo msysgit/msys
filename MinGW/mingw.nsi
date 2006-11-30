@@ -6,13 +6,13 @@
 
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "MinGW"
-!define PRODUCT_VERSION "5.1.0"
+!define PRODUCT_VERSION "5.1.1"
 !define PRODUCT_PUBLISHER "MinGW"
 !define PRODUCT_WEB_SITE "http://www.mingw.org"
 !define PRODUCT_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}"
 !define PRODUCT_UNINST_ROOT_KEY "HKLM"
 !define PRODUCT_STARTMENU_REGVAL "NSIS:StartMenuDir"
-!define BUILD "7"
+!define BUILD "8"
 
 SetCompressor lzma
 
@@ -20,6 +20,7 @@ SetCompressor lzma
 !include "MUI.nsh"
 !include "Sections.nsh"
 !include "StrFunc.nsh"
+!include "LogicLib.nsh"
 ${StrTok}
 
 ; MUI Settings
@@ -584,11 +585,15 @@ DownLoadOK:
 SkipDL:
 FunctionEnd
 
-!define packages "previous|current|candidate"
 ;-----------------------------------------------------------------------------
 Function ChoosePackage
 ;-----------------------------------------------------------------------------
   IntCmp $Updating 1 updating +1
+
+  ReadINIStr $R0 "$EXEDIR\mingw.ini" mingw "packages"
+  ${If} $packages == ""
+    !define packages "previous|current|candidate"
+  ${EndIf}
 
   !insertmacro MUI_HEADER_TEXT "Choose Package" "Please select the MinGW package you wish to install."
   ; Display the page.
@@ -609,21 +614,33 @@ found:
 
 updating:
   ReadINIStr $R0 "$EXEDIR\mingw.ini" $Package "runtime"
+  ${If} $runtime == "" 
+    ReadINIStr $R0 "$EXEDIR\mingw.ini" current "runtime"
+  ${EndIf}
   ${StrTok} $runtime $R0 "|" 0 0
   ${StrTok} $R1 $R0 "|" 1 0
   SectionSetSize ${SecRuntime} $R1
 
   ReadINIStr $R0 "$EXEDIR\mingw.ini" $Package "w32api"
+  ${If} $w32api == ""
+    ReadINIStr $R0 "$EXEDIR\mingw.ini" current "w32api"
+  ${EndIf}
   ${StrTok} $W32API $R0 "|" 0 0
   ${StrTok} $R1 $R0 "|" 1 0
   SectionSetSize ${SecW32API} $R1
 
   ReadINIStr $R0 "$EXEDIR\mingw.ini" $Package "binutils"
+  ${If} $binutils = ""
+    ReadINIStr $R0 "$EXEDIR\mingw.ini" current "binutils"
+  ${EndIf}
   ${StrTok} $binutils $R0 "|" 0 0
   ${StrTok} $R1 $R0 "|" 1 0
   SectionSetSize ${SecBinutils} $R1
 
   ReadINIStr $R0 "$EXEDIR\mingw.ini" $Package "core"
+  ${If} $core == ""
+    ReadINIStr $R0 "$EXEDIR\mingw.ini" current "core"
+  ${EndIf}
   ${StrTok} $Core $R0 "|" 0 0
   ${StrTok} $R1 $R0 "|" 1 0
   SectionSetSize ${SecCore} $R1
