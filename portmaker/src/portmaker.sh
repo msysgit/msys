@@ -19,8 +19,8 @@ ask "DOWNLOADURI" "http://ftp.gnu.org/gnu/$PACKAGE" DOWNLOADURI \?
 ask "SRCDIR" '${SRCROOT-"$HOME/src"}'"/${PACKAGE}-${VERSION}" SRCDIR \?
 ask "BUILDDIR" "./bld" BUILDDIR \?
 ask "PREFIX" '${PREFIX-"/mingw"}' PREFIX \?
-ask "CFLAGS" "-O3 -s -mms-bitfields -march=\\\`uname -m\\\`" CFLAGS \?
-ask "CXXFLAGS" "\\\$CFLAGS" CXXFLAGS \?
+ask "CFLAGS" '-O3 -s -mms-bitfields -march=`uname -m`' CFLAGS \?
+ask "CXXFLAGS" '$CFLAGS' CXXFLAGS \?
 
 eval PORTPATH=\"${SRCDIR}/mingwPORT\"
 ask "PORTPATH" "$PORTPATH" PORTPATH \?

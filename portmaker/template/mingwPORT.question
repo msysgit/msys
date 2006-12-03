@@ -41,3 +41,4 @@ fi
 ask "Source path?" "$SRCDIR" SRCDIR
 ask "Installation directory?" $PREFIX PREFIX
 ask "CFLAGS" "$CFLAGS" CFLAGS
+ask "CXXFLAGS" "$CXXFLAGS" CXXFLAGS
