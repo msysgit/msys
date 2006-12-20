@@ -6,13 +6,13 @@
 
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "MinGW"
-!define PRODUCT_VERSION "5.1.1"
+!define PRODUCT_VERSION "5.1.2"
 !define PRODUCT_PUBLISHER "MinGW"
 !define PRODUCT_WEB_SITE "http://www.mingw.org"
 !define PRODUCT_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}"
 !define PRODUCT_UNINST_ROOT_KEY "HKLM"
 !define PRODUCT_STARTMENU_REGVAL "NSIS:StartMenuDir"
-!define BUILD "8"
+!define BUILD "9"
 
 SetCompressor lzma
 
@@ -351,8 +351,8 @@ extractINI:
 downloadINI:
   ; save the current ini file in case download fails
   Rename $EXEDIR\mingw.ini $EXEDIR\mingw.ini.old
-  ; Quietly download the latest mingw.ini file
-  inetc::get  /SILENT "" "http://www.mingw.org/mingw.ini" "$EXEDIR\mingw.ini" /END
+  ; download the latest mingw.ini file with banner message
+  inetc::get  /BANNER "Checking for updates..." "http://www.mingw.org/mingw.ini" "$EXEDIR\mingw.ini" /END
 
   Pop $R0
   StrCmp $R0 "OK" gotINI
@@ -370,10 +370,6 @@ gotINI:
     Delete $EXEDIR\mingw.ini
     Rename $EXEDIR\mingw.ini.old $EXEDIR\mingw.ini
     Goto Finish
-
-  ; Read build info from INI file
-  ReadINIStr $R0 "$EXEDIR\mingw.ini" "mingw" "Build"
-  IntCmp ${BUILD} $R0 Finish newVersion Finish
 
 newVersion:
     MessageBox MB_YESNO|MB_ICONINFORMATION|MB_DEFBUTTON1 "A newer version of the MinGW installer is available. Would you like to upgrade now?" IDYES upgradeMe IDNO Finish
@@ -571,6 +567,9 @@ Function DownloadIfNeeded
   IntOp $0 $0 & ${SF_SELECTED}
   IntCmp $0 ${SF_SELECTED} +1 SkipDL
 
+  ; check if file already exists
+  IfFileExists "$EXEDIR\$Name" SkipFile
+
   inetc::get /RESUME "" "http://downloads.sourceforge.net/mingw/$Name" "$EXEDIR\$Name" /END
   Pop $0
   StrCmp $0 "OK" DownLoadOK
@@ -580,9 +579,12 @@ Function DownloadIfNeeded
   detailprint $0
   Abort "Could not download $Name!"
 
+SkipFile:
+  DetailPrint "File already exists - skipping $Name"
+SkipDL:
+
 DownLoadOK:
 
-SkipDL:
 FunctionEnd
 
 ;-----------------------------------------------------------------------------
@@ -753,7 +755,6 @@ installing:
 FunctionEnd
 
 ;-----------------------------------------------------------------------------
-
 Function DownloadOrInstall
 ;-----------------------------------------------------------------------------
 

@@ -1,3 +1,13 @@
+2006.12.20  Dave Murphy  <wntrmute@users.sf.net>
+
+	* MinGW_LICENSE.rtf: Update version.
+	* mingw.nsi (PRODUCT_VERSION): Increment.
+	  (BUILD): Ditto.
+	  add check for already downloaded file.
+	  display banner while checking for updates.
+	  remove unused code.
+	* inifile/mingw.ini ([mingw]: Build): Increment.
+
 2006.11.30  Earnie Boyd  <earnie@users.sf.net>
 
 	* MinGW_LICENSE.rtf: Update version.
