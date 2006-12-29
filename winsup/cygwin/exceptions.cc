@@ -900,9 +900,6 @@ setup_handler (int sig, void *handler, struct sigaction& siga)
 static BOOL WINAPI
 ctrl_c_handler (DWORD type)
 {
-  if (type == CTRL_LOGOFF_EVENT)
-    return TRUE;
-
   /* Return FALSE to prevent an "End task" dialog box from appearing
      for each Cygwin process window that's open when the computer
      is shut down or console window is closed. */
@@ -911,7 +908,7 @@ ctrl_c_handler (DWORD type)
       sig_send (NULL, SIGTERM);
       return FALSE;
     }
-  if (type == CTRL_CLOSE_EVENT)
+  if (type == CTRL_CLOSE_EVENT || type == CTRL_LOGOFF_EVENT)
     {
       sig_send (NULL, SIGHUP);
       return FALSE;
