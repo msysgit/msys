@@ -1,3 +1,8 @@
+2006-12-31  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	* x86-mingw32-build.sh.conf (W32API_VERSION): Update to 3.8
+	(RUNTIME_VERSION): Update to 3.11-20061202-1
+
 2006-11-07  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	* .cvsignore, Makefile: New files.
