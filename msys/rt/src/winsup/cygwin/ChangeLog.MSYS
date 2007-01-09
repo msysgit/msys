@@ -1,3 +1,7 @@
+2007.01.09  Earnie Boyd  <earnie@users.sf.net>
+
+	* include/pthread.h (PTHREAD_RWLOCK_INITIALIZER): Give constant value.
+
 2006.12.29  Howard Chu <highlandsun@users.sf.net>
 
 	* exceptions.cc (ctrl_c_handler): Handle CTRL_LOGOFF_EVENT too,
