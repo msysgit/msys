@@ -27,6 +27,7 @@ details. */
 void
 fhandler_termios::tcinit (tty_min *this_tc, int force)
 {
+  TRACE_IN;
   /* Initial termios values */
 
   tc = this_tc;
@@ -65,6 +66,7 @@ fhandler_termios::tcinit (tty_min *this_tc, int force)
 int
 fhandler_termios::tcsetpgrp (const pid_t pgid)
 {
+  TRACE_IN;
   termios_printf ("tty %d pgid %d, sid %d, tsid %d", tc->ntty, pgid,
 		    myself->sid, tc->getsid ());
   if (myself->sid != tc->getsid ())
@@ -79,12 +81,14 @@ fhandler_termios::tcsetpgrp (const pid_t pgid)
 int
 fhandler_termios::tcgetpgrp ()
 {
+  TRACE_IN;
   return tc->pgid;
 }
 
 void
 tty_min::set_ctty (int ttynum, int flags)
 {
+  TRACE_IN;
   if ((myself->ctty < 0 || myself->ctty == ttynum) && !(flags & O_NOCTTY))
     {
       myself->ctty = ttynum;
@@ -111,6 +115,7 @@ tty_min::set_ctty (int ttynum, int flags)
 bg_check_types
 fhandler_termios::bg_check (int sig)
 {
+  TRACE_IN;
   if (!myself->pgid || tc->getpgid () == myself->pgid ||
 	myself->ctty != tc->ntty ||
 	((sig == SIGTTOU) && !(tc->ti.c_lflag & TOSTOP)))
@@ -164,6 +169,7 @@ setEIO:
 inline void
 fhandler_termios::echo_erase (int force)
 {
+  TRACE_IN;
   if (force || tc->ti.c_lflag & ECHO)
     doecho ("\b \b", 3);
 }
@@ -171,6 +177,7 @@ fhandler_termios::echo_erase (int force)
 int
 fhandler_termios::line_edit (const char *rptr, int nread, int always_accept)
 {
+  TRACE_IN;
   char c;
   int input_done = 0;
   bool sawsig = FALSE;
@@ -322,6 +329,7 @@ fhandler_termios::line_edit (const char *rptr, int nread, int always_accept)
 void
 fhandler_termios::fixup_after_fork (HANDLE parent)
 {
+  TRACE_IN;
   this->fhandler_base::fixup_after_fork (parent);
   fork_fixup (parent, get_output_handle (), "output_handle");
 }

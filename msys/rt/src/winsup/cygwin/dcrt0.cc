@@ -369,6 +369,7 @@ static int __stdcall
 globify (char *word, char **&argv, int &argc, int &argvlen)
 {
   TRACE_IN;
+  debug_printf("word: %s", word);
   if (*word != '~' && strpbrk (word, "?*[\"\'(){}") == NULL)
     return 0;
 

@@ -21,13 +21,26 @@ details. */
   #define __INSIDE_MSYS__ 1
 #endif
 
+#include "cygwin/version.h"
+
 #define HMMM(HUM) debug_printf("%s-%d: %s", "HMMM", __LINE__, (HUM))
 #if DEBUGGING
 # define FIXME debug_printf("FIXME - %s (%s): %d", __FILE__, __FUNCTION__, __LINE__)
-# define TRACE_IN debug_printf("TRACE_IN: %s, %d", __FILE__, __LINE__)
 #else
 # define FIXME
+#endif
+#if TRACING
+# define TRACE_IN {char TrcInBuf[256]; __small_sprintf(TrcInBuf, "TRACE_IN: %s, %d, %s", __FILE__, __LINE__, __PRETTY_FUNCTION__); OutputDebugString (TrcInBuf);}
+#else
 # define TRACE_IN
+#endif
+
+#if TRACETTY
+# undef TRACETTY
+# define TRACETTY {char TrcInBuf[256]; __small_sprintf(TrcInBuf, "TRACETTY: %s, %d, %s", __FILE__, __LINE__, __PRETTY_FUNCTION__); OutputDebugString (TrcInBuf);}
+#else
+# undef TRACETTY
+# define TRACETTY
 #endif
 
 #define alloca __builtin_alloca
@@ -45,6 +58,7 @@ details. */
 
 #include <sys/types.h>
 #include <sys/strace.h>
+#include <fcntl.h>
 
 extern const char case_folded_lower[];
 #define cyg_tolower(c) (case_folded_lower[(unsigned char)(c)])
@@ -283,7 +297,7 @@ extern BOOL display_title;
 extern HANDLE hMainThread;
 extern HANDLE hMainProc;
 
-extern bool IsMsys (const char *);
+extern bool IsMsys (char const * const);
 
 #define winsock2_active (wsadata.wVersion >= 512)
 #define winsock_active (wsadata.wVersion <= 512)

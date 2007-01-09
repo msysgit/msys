@@ -372,9 +372,9 @@ fork_parent (HANDLE& hParent, dll *&first_dll,
 
   /* If we don't have a console, then don't create a console for the
      child either.  */
-  HANDLE console_handle = CreateFileA ("CONOUT$", GENERIC_WRITE,
-				       FILE_SHARE_WRITE, &sec_none_nih,
-				       OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL,
+  HANDLE console_handle = CreateFileA ("CONOUT$", GENERIC_WRITE|GENERIC_READ,
+				       FILE_SHARE_READ|FILE_SHARE_WRITE, &sec_none_nih,
+				       OPEN_EXISTING, NULL,
 				       NULL);
 
   if (console_handle != INVALID_HANDLE_VALUE && console_handle != 0)

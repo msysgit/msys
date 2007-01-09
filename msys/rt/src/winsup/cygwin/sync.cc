@@ -40,6 +40,7 @@ muto::muto (int inh, const char *s) : sync (0), visits(0), waiters(-1), tid (0),
   name = s;
 }
 
+#if 0
 /* Destructor (racy?) */
 muto::~muto ()
 {
@@ -52,6 +53,7 @@ muto::~muto ()
   if (h)
     CloseHandle (h);
 }
+#endif
 
 /* Acquire the lock.  Argument is the number of milliseconds to wait for
    the lock.  Multiple visits from the same thread are allowed and should
