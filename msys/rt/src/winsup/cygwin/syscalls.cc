@@ -155,7 +155,7 @@ _unlink (const char *ourname)
   res = -1;
 
  done:
-  /* FIXME:
+  /* FIXME: SEE FIXME at top of delqueue.cc
    * This usleep is required to help eliminate the nasty behaviour of the OS
    * having the file open when during the unlink process.  The file is marked
    * for delete on close which causes access violation when opening the file
@@ -508,6 +508,18 @@ _close (int fd)
 
   syscall_printf ("%d = close (%d)", res, fd);
   MALLOC_CHECK;
+  /* FIXME: SEE FIXME at top of delqueue.cc
+   * This usleep is required to help eliminate the nasty behaviour of the OS
+   * having the file open when during the unlink process.  The file is marked
+   * for delete on close which causes access violation when opening the file
+   * again.  The usleep is an attempt to slow down the return to the calling
+   * function because the rm program will stat the file again to determine if
+   * the ulink failed or not and raise an error.  The fix will be to cause the
+   * stat function to return a non existant file error if the file is marked
+   * for deletion and to cause the creation of a file with the same name to
+   * rename the file marked for deletion if it still exists.
+   */
+  usleep(640);
   return res;
 }
 
