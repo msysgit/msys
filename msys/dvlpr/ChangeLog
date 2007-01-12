@@ -1,3 +1,9 @@
+2007.01.12  Earnie Boyd  <earnie@users.sf.net>
+
+	* doc/msys/README.rtf: Spelling and grammer corrections.
+	* doc/msys/MSYS-1.0.11-changes.rtf: Reword and rework plans.  Add
+	description of changes for Permission Denied errors.
+
 2006.02.11  Keith Marshall  <keithmarshall@users.sf.net>
 
 	* bin/which: Rewritten to:--
