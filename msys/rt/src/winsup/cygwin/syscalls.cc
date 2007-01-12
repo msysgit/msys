@@ -125,8 +125,17 @@ _unlink (const char *ourname)
 
   DWORD lasterr;
   lasterr = 0;
+  BOOL x;
+  int i;
+  i = 0;
   (void) chmod (win32_name, 0777);
-  if (DeleteFile (win32_name))
+  x = DeleteFile (win32_name);
+  while (!x && GetLastError () == ERROR_ACCESS_DENIED && i < 32)
+    {
+      usleep (128 * ++i); // Wait for file to be closed
+      x = DeleteFile (win32_name);
+    }
+  if (x)
     {
       syscall_printf ("DeleteFile succeeded");
       goto ok;
@@ -155,18 +164,6 @@ _unlink (const char *ourname)
   res = -1;
 
  done:
-  /* FIXME: SEE FIXME at top of delqueue.cc
-   * This usleep is required to help eliminate the nasty behaviour of the OS
-   * having the file open when during the unlink process.  The file is marked
-   * for delete on close which causes access violation when opening the file
-   * again.  The usleep is an attempt to slow down the return to the calling
-   * function because the rm program will stat the file again to determine if
-   * the ulink failed or not and raise an error.  The fix will be to cause the
-   * stat function to return a non existant file error if the file is marked
-   * for deletion and to cause the creation of a file with the same name to
-   * rename the file marked for deletion if it still exists.
-   */
-  usleep(640);
   syscall_printf ("%d = unlink (%s)", res, ourname);
   return res;
 }
@@ -502,24 +499,13 @@ _close (int fd)
     {
       SetResourceLock (LOCK_FD_LIST,WRITE_LOCK|READ_LOCK," close");
       res = cygheap->fdtab[fd]->close ();
+      fsync(fd);
       cygheap->fdtab.release (fd);
       ReleaseResourceLock (LOCK_FD_LIST,WRITE_LOCK|READ_LOCK," close");
     }
 
   syscall_printf ("%d = close (%d)", res, fd);
   MALLOC_CHECK;
-  /* FIXME: SEE FIXME at top of delqueue.cc
-   * This usleep is required to help eliminate the nasty behaviour of the OS
-   * having the file open when during the unlink process.  The file is marked
-   * for delete on close which causes access violation when opening the file
-   * again.  The usleep is an attempt to slow down the return to the calling
-   * function because the rm program will stat the file again to determine if
-   * the ulink failed or not and raise an error.  The fix will be to cause the
-   * stat function to return a non existant file error if the file is marked
-   * for deletion and to cause the creation of a file with the same name to
-   * rename the file marked for deletion if it still exists.
-   */
-  usleep(640);
   return res;
 }
 
@@ -1051,9 +1037,11 @@ stat_worker (const char *caller, const char *name, struct stat *buf, int nofollo
 
   memset (buf, 0, sizeof (struct stat));
 
-  if (real_path.is_device ())
-    return stat_dev (real_path.get_devn (), real_path.get_unitn (),
+  if (real_path.is_device ()) {
+    res = stat_dev (real_path.get_devn (), real_path.get_unitn (),
 		     hash_path_name (0, real_path.get_win32 ()), buf);
+    goto done;
+  }
 
   atts = real_path.file_attributes ();
 
@@ -1330,6 +1318,18 @@ _rename (const char *oldpath, const char *newpath)
 		   && GetLastError () != ERROR_FILE_EXISTS))
     goto done;
 
+  /* FIXME: SEE FIXME at top of delqueue.cc
+   * This usleep is required to help eliminate the nasty behaviour of the OS
+   * having the file open when during the unlink process.  The file is marked
+   * for delete on close which causes access violation when opening the file
+   * again.  The usleep is an attempt to slow down the return to the calling
+   * function because the rm program will stat the file again to determine if
+   * the ulink failed or not and raise an error.  The fix will be to cause the
+   * stat function to return a non existant file error if the file is marked
+   * for deletion and to cause the creation of a file with the same name to
+   * rename the file marked for deletion if it still exists.
+   */
+  usleep (640); // Wait for file to be closed.
   if (iswinnt)
     {
       if (MoveFileEx (real_old.get_win32 (), real_new.get_win32 (),
