@@ -1,3 +1,14 @@
+2007.01.12  Earnie Boyd  <earnie@users.sf.net>
+
+	* dir.cc (rmdir): Add usleep kludge for ACCESS_DENIED errors.
+	* fhandler.cc (fhandler_base:open): Ditto.
+	* dtable.cc (dtable::release): Add resource lock/unlock for.
+	* syscalls.cc (_unlink): Rework usleep kludge for speed.
+	(_close): Add fsync(fd) before releasing descriptor.
+	Remove usleep kludge because of speed.
+	(stat_worker): Remove secondary exit path.
+	(_rename): Add usleep kludge.
+	
 2007.01.09  Earnie Boyd  <earnie@users.sf.net>
 
 	* include/pthread.h (PTHREAD_RWLOCK_INITIALIZER): Give constant value.

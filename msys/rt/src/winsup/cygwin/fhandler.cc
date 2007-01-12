@@ -413,6 +413,38 @@ fhandler_base::open (int flags, mode_t mode)
 		  &sa, creation_distribution,
 		  file_attributes);
 
+  /* FIXME:
+   * When a DeleteFile happens in unlink and the file is still open it is
+   * marked for deletetion on close.  If the closing handles aren't complete
+   * the CreateFile open will if ERROR_ACCESS_DENIED.  The usleep is set to
+   * wait on the FS to catch up.  However, I am sure there must be a better
+   * method.
+   */
+  if (x == INVALID_HANDLE_VALUE && GetLastError () == ERROR_ACCESS_DENIED) {
+    usleep (1280);
+    x = CreateFileA (get_win32_name (), access, shared,
+		     &sa, creation_distribution,
+		     file_attributes,
+		     0);
+  }
+  /* Give more time if necessary */
+  if (x == INVALID_HANDLE_VALUE && GetLastError () == ERROR_ACCESS_DENIED) {
+    usleep (1280);
+    x = CreateFileA (get_win32_name (), access, shared,
+		     &sa, creation_distribution,
+		     file_attributes,
+		     0);
+  }
+  /* And one more time if necessary */
+  if (x == INVALID_HANDLE_VALUE && GetLastError () == ERROR_ACCESS_DENIED) {
+    usleep (1280);
+    x = CreateFileA (get_win32_name (), access, shared,
+		     &sa, creation_distribution,
+		     file_attributes,
+		     0);
+  }
+  /* At this point assume it is really ACCESS_DENIED. */
+
   if (x == INVALID_HANDLE_VALUE)
     {
       if (GetLastError () == ERROR_INVALID_HANDLE)

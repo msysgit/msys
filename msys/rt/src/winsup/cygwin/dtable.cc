@@ -159,6 +159,7 @@ void
 dtable::release (int fd)
 {
   TRACE_IN;
+  SetResourceLock (LOCK_FD_LIST, WRITE_LOCK|READ_LOCK, " dtable_release ");
   if (!not_open (fd))
     {
       switch (fds[fd]->get_device ())
@@ -173,6 +174,7 @@ dtable::release (int fd)
       delete fds[fd];
       fds[fd] = NULL;
     }
+  ReleaseResourceLock (LOCK_FD_LIST, WRITE_LOCK|READ_LOCK, " dtable_release ");
 }
 
 void
