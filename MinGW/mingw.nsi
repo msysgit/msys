@@ -6,13 +6,13 @@
 
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "MinGW"
-!define PRODUCT_VERSION "5.1.2"
+!define PRODUCT_VERSION "5.1.3"
 !define PRODUCT_PUBLISHER "MinGW"
 !define PRODUCT_WEB_SITE "http://www.mingw.org"
 !define PRODUCT_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}"
 !define PRODUCT_UNINST_ROOT_KEY "HKLM"
 !define PRODUCT_STARTMENU_REGVAL "NSIS:StartMenuDir"
-!define BUILD "9"
+!define BUILD "10"
 
 SetCompressor lzma
 
@@ -22,6 +22,7 @@ SetCompressor lzma
 !include "StrFunc.nsh"
 !include "LogicLib.nsh"
 ${StrTok}
+${StrRep}
 
 ; MUI Settings
 !define MUI_HEADERIMAGE
@@ -555,6 +556,7 @@ FunctionEnd
 
 ;-----------------------------------------------------------------------------
 var Name
+var DownloadName
 
 ;-----------------------------------------------------------------------------
 Function DownloadIfNeeded
@@ -570,7 +572,10 @@ Function DownloadIfNeeded
   ; check if file already exists
   IfFileExists "$EXEDIR\$Name" SkipFile
 
-  inetc::get /RESUME "" "http://downloads.sourceforge.net/mingw/$Name" "$EXEDIR\$Name" /END
+  ; replace + characters in filename to avoid translation
+  ${StrRep} $DownloadName $Name "+" "%2B"
+
+  inetc::get /RESUME "Your connection appears to have dropped out. Reconnect your dial up or check your IE proxy settings." "http://downloads.sourceforge.net/mingw/$DownloadName" "$EXEDIR\$Name" /END
   Pop $0
   StrCmp $0 "OK" DownLoadOK
 
@@ -593,13 +598,23 @@ Function ChoosePackage
   IntCmp $Updating 1 updating +1
 
   ReadINIStr $R0 "$EXEDIR\mingw.ini" mingw "packages"
-  ${If} $packages == ""
+  ${If} $R0 == ""
     !define packages "previous|current|candidate"
   ${EndIf}
 
   !insertmacro MUI_HEADER_TEXT "Choose Package" "Please select the MinGW package you wish to install."
   ; Display the page.
-  !insertmacro MUI_INSTALLOPTIONS_DISPLAY "ChoosePackage.ini"
+  !insertmacro MUI_INSTALLOPTIONS_INITDIALOG "ChoosePackage.ini"
+   Pop $R1 ;HWND (handle) of dialog
+
+   ; TODO: set focus to last selected option
+   Push "ChoosePackage.ini" ;Page .ini file where the field can be found.
+   Push $R1 ;Page handle you got when reserving the page.
+   Push 2   ;Field number to set focus.
+   Call SetFocus
+
+  !insertmacro MUI_INSTALLOPTIONS_SHOW
+
   ; Get the user entered values.
 
   StrCpy $0 1
@@ -613,10 +628,14 @@ loop:
 found:
   IntOp $0 $0 - 1
   ${StrTok} $Package ${packages} "|" $0 0
+  goto findUpdates
 
 updating:
+  MessageBox MB_ICONINFORMATION|MB_OK "Package $Package being updated."
+
+findUpdates:
   ReadINIStr $R0 "$EXEDIR\mingw.ini" $Package "runtime"
-  ${If} $runtime == "" 
+  ${If} $R0 == ""
     ReadINIStr $R0 "$EXEDIR\mingw.ini" current "runtime"
   ${EndIf}
   ${StrTok} $runtime $R0 "|" 0 0
@@ -624,7 +643,7 @@ updating:
   SectionSetSize ${SecRuntime} $R1
 
   ReadINIStr $R0 "$EXEDIR\mingw.ini" $Package "w32api"
-  ${If} $w32api == ""
+  ${If} $R0 == ""
     ReadINIStr $R0 "$EXEDIR\mingw.ini" current "w32api"
   ${EndIf}
   ${StrTok} $W32API $R0 "|" 0 0
@@ -632,7 +651,7 @@ updating:
   SectionSetSize ${SecW32API} $R1
 
   ReadINIStr $R0 "$EXEDIR\mingw.ini" $Package "binutils"
-  ${If} $binutils = ""
+  ${If} $R0 == ""
     ReadINIStr $R0 "$EXEDIR\mingw.ini" current "binutils"
   ${EndIf}
   ${StrTok} $binutils $R0 "|" 0 0
@@ -640,7 +659,7 @@ updating:
   SectionSetSize ${SecBinutils} $R1
 
   ReadINIStr $R0 "$EXEDIR\mingw.ini" $Package "core"
-  ${If} $core == ""
+  ${If} $R0 == ""
     ReadINIStr $R0 "$EXEDIR\mingw.ini" current "core"
   ${EndIf}
   ${StrTok} $Core $R0 "|" 0 0
@@ -790,3 +809,77 @@ update:
 done:
 
 FunctionEnd
+
+
+
+;----------------------------------------------------------------------------
+; Title             : Set focus to a control
+; Short Name        : SetFocus
+; Last Changed      : 22/Feb/2005
+; Code Type         : Function
+; Code Sub-Type     : One-way Input
+;----------------------------------------------------------------------------
+; Required          : InstallOptions and System plugins.
+; Description       : Sets focus to a control using InstallOptions.
+;----------------------------------------------------------------------------
+; Function Call     : Push "Page.ini"
+;                       Page .ini file where the field can be found.
+;
+;                     Push "Handle"
+;                       Page handle you got when reserving the page.
+;
+;                     Push "Number"
+;                       Field number to set focus.
+;
+;                     Call SetFocus
+;----------------------------------------------------------------------------
+; Author            : Diego Pedroso
+; Author Reg. Name  : deguix
+;----------------------------------------------------------------------------
+Function SetFocus
+;----------------------------------------------------------------------------
+  Exch $0 ; Control Number
+  Exch
+  Exch $2 ; Page Handle
+  Exch
+  Exch 2
+  Exch $3 ; Page INI File
+  Exch 2
+  Push $1
+  Push $R0
+  Push $R1
+  Push $R2
+  Push $R3
+  Push $R4
+  Push $R5
+
+  IntOp $1 $0 + 1199
+  GetDlgItem $1 $2 $1
+
+  # Send WM_SETFOCUS message
+  System::Call "user32::SetFocus(i r1, i 0x0007, i,i)i"
+
+  ReadINIStr $R0 "$3" "Field $0" "Left"
+  ReadINIStr $R1 "$3" "Field $0" "Right"
+  ReadINIStr $R3 "$3" "Field $0" "Top"
+  ReadINIStr $R4 "$3" "Field $0" "Bottom"
+  IntOp $R2 $R1 - $R0
+  IntOp $R5 $R4 - $R3
+
+  System::Call "user32::CreateCaret(i r0, i, i R2, i R5)i"
+  System::Call "user32::ShowCaret(i r0)i"
+
+  Pop $R5
+  Pop $R4
+  Pop $R3
+  Pop $R2
+  Pop $R1
+  Pop $R0
+  Pop $1
+  Pop $0
+  Pop $2
+  Pop $3
+
+FunctionEnd
+
+
