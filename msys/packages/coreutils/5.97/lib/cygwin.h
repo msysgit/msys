@@ -26,7 +26,7 @@ int cygwin_spelling (char const *);
 /* Append ".exe" to char *__NAME; __name will be evaluated more than once, and
    relies on cygwin's PATH_MAX (256) being less than the stack size.  */
 #define CYGWIN_APPEND_EXE(__name) \
-  __name = strcat (strcpy (alloca (strlen (__name) + 5), __name), ".exe")
+  __name = strcat (strcpy (malloc (strlen (__name) + 5), __name), ".exe")
 #if (__CYGWIN__ || __MSYS__) && 1024 < PATH_MAX
 # error The cygwin distribution has increased PATH_MAX; revisit this file.
 #endif

@@ -1,3 +1,11 @@
+2007.01.15  Earnie Boyd  <earnie@users.sf.net>
+
+	* doc/coreutils.info: Changes caused by make process.
+	* doc/stamp-vti: Ditto.
+	* doc/version.texi: Ditto.
+	* lib/cygwin.h (CYGWIN_APPEND_EXE): Use malloc instead of alloca to work
+	around an issue.  Yes, MSYS should be fixed.
+
 2006.11.28  Earnie Boyd  <earnie@users.sf.net>
 
 	* ChangeLog.MSYS: New file.
