@@ -1,3 +1,7 @@
+2007.01.15  Chris Sutcliffe  <ir0nh34d@users.sf.net>
+
+	* inifile/mingw.ini: Update make for all three sections.
+
 2007.01.14  Dave Murphy  <wntrmute@users.sf.net>
 
 	* MinGW_LICENSE.rtf: Update version.
