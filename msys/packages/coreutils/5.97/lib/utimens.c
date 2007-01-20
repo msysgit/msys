@@ -75,9 +75,15 @@ struct utimbuf
    Return 0 on success, -1 (setting errno) on failure.  */
 
 int
-futimens (int fd ATTRIBUTE_UNUSED,
-	  char const *file, struct timespec const timespec[2])
+futimens (int fd, char const *file,
+	  struct timespec const timespec[2])
 {
+  {
+    /* Make sure all data is flushed to disk first,
+       else a pending write could undo the effect of this call.  */
+    if (fd >= 0)
+      fsync(fd);
+  }
   /* There's currently no interface to set file timestamps with
      nanosecond resolution, so do the best we can, discarding any
      fractional part of the timestamp.  */
