@@ -1,3 +1,8 @@
+2007.03.22  Chris Sutcliffe  <ir0nh34d@users.sf.net>
+
+	* inifile/mingw.ini: Update for latest version of make, leave 3.80 as
+	previous.
+
 2007.01.18  Chris Sutcliffe  <ir0nh34d@users.sf.net>
 
 	* inifile/mingw.ini: Update binutils for current and candidate secctions.
