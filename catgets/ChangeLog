@@ -1,0 +1,6 @@
+2007-04-06  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Initial import of module catgets.
+
+	* MinGW: Vendor tag.
+	* R0: Release tag.

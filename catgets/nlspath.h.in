@@ -1,0 +1,42 @@
+#ifndef _NLSPATH_H_
+/*
+ * nlspath.h.in
+ *
+ * $Id: nlspath.h.in,v 1.1 2007-04-06 22:34:52 keithmarshall Exp $
+ *
+ * Copyright (C) 2006, Keith Marshall
+ *
+ * This header specifies the `compiled-in' default for NLSPATH.
+ *
+ * Written by Keith Marshall  <keithmarshall@users.sourceforge.net>
+ * Last modification: 07-Dec-2006
+ *
+ *
+ * This is free software.  It is provided AS IS, in the hope that it may
+ * be useful, but WITHOUT WARRANTY OF ANY KIND, not even an IMPLIED WARRANTY
+ * of MERCHANTABILITY, nor of FITNESS FOR ANY PARTICULAR PURPOSE.
+ *
+ * Permission is granted to redistribute this software, either "as is" or
+ * in modified form, under the terms of the GNU General Public License, as
+ * published by the Free Software Foundation; either version 2, or (at your
+ * option) any later version.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this software; see the file COPYING.  If not, write to the
+ * Free Software Foundation, 51 Franklin St - Fifth Floor, Boston,
+ * MA 02110-1301, USA.
+ *
+ */
+#define _NLSPATH_H_
+
+#define _prefix_   "@HOST_PREFIX@"
+#define _pathsep_  "@PATH_SEPARATOR_INTERNAL@"
+
+#define NLSPATH_SEPARATOR_CHAR  L'@PATH_SEPARATOR_INTERNAL@'
+
+#define NLSPATH_PREFERRED  _prefix_ "/share/locale/%L/%N"
+#define NLSPATH_ALTERNATE  _prefix_ "/share/locale/%L/LC_MESSAGES/%N"
+
+#define NLSPATH_DEFAULT  NLSPATH_PREFERRED _pathsep_ NLSPATH_ALTERNATE
+
+#endif /* _NLSPATH_H_: $RCSfile: nlspath.h.in,v $Revision: 1.1 $: end of file */
