@@ -11,7 +11,7 @@ cat << ETX
 mingwPORT installer for $PACKAGE-$VERSION
 ETX
 
-test opt${matched} = opt--version && cat << ETX
+test opt${match} = opt--version && cat << ETX
 
 mingwPORT and portmaker are free software packages.  They are distributed
 in the hope that they may be useful, but WITHOUT WARRANTY OF ANY KIND, not
@@ -26,7 +26,7 @@ package, for details of its licensing and distribution conditions.
 
 ETX
 
-test opt${matched} = opt--help && cat << ETX
+test opt${match} = opt--help && cat << ETX
 
 Usage: ./mingwPORT.sh [--option ...]
 
@@ -61,11 +61,11 @@ Environment:
 
 ETX
 
-test opt${matched} = opt--info && cat << ETX
+test opt${match} = opt--info && cat << ETX
 
 Project Home URL:       $ARCHIVEHOME
 Download URL:           $DOWNLOADURI
-Download File:          $ARCHIVEFILE.$ARCHIVETYPE
+Download File:          $ARCHIVEFILE
 
 Installation Root:      $PREFIX
 

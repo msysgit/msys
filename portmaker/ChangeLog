@@ -1,3 +1,9 @@
+2007-04-08  Jan Bruun Andersen  <jba-dk@users.sourceforge.net>
+
+	* template/mingwPORT.help ($matched): Undefined variable...
+	($match): ...should have been this; corrected.
+	(--info): Don't duplicate $ARCHIVETYPE after $ARCHIVEFILE.
+
 2006-12-03  Keith Marshall  <keithmarshall@users.sf.net>
 
 	* src/portmaker.sh (CFLAGS, CXXFLAGS): Adjust quoting; fixes an
