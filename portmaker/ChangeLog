@@ -1,3 +1,9 @@
+2007-04-09  Jan Bruun Andersen  <jba-dk@users.sourceforge.net>
+
+	* template/mingwPORT.question (ARCHIVEPATH): Modify prompt;
+	s/Download to path/Download directory/
+	(ARCHIVEFILE): Preserve prior definition as default.
+
 2007-04-08  Jan Bruun Andersen  <jba-dk@users.sourceforge.net>
 
 	* template/mingwPORT.help ($matched): Undefined variable...

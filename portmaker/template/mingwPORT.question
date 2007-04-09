@@ -28,13 +28,13 @@ then
 5) zip
 Select a numeric value:" "$ATN" ATN
   ask "Archive file?" "$ARCHIVEFILE" ARCHIVEFILE
-  ask "Download to path?" "/tmp" ARCHIVEPATH
+  ask "Download directory?" "/tmp" ARCHIVEPATH
 else
   ask "Unarchive file?" "Yes" UNARCHIVE
   if (isyes $UNARCHIVE)
   then
     ask "Archive file type?" $ARCHIVETYPE ARCHIVETYPE
-    ask "Archive file?" "$PACKAGE-$VERSION.$ARCHIVETYPE" ARCHIVEFILE
+    ask "Archive file?" "${ARCHIVEFILE-$PACKAGE-$VERSION.$ARCHIVETYPE}" ARCHIVEFILE
     ask "Archive file path?" "/tmp" ARCHIVEPATH
   fi
 fi
