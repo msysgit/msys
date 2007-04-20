@@ -1,7 +1,7 @@
 /*
  * mcsource.c
  *
- * $Id: mcsource.c,v 1.1 2007-04-06 22:34:51 keithmarshall Exp $
+ * $Id: mcsource.c,v 1.2 2007-04-20 22:24:03 keithmarshall Exp $
  *
  * Copyright (C) 2006, 2007, Keith Marshall
  *
@@ -738,7 +738,6 @@ struct msgdict *mc_source( const char *input )
          * which now needs to be flushed to the output queue,
          * BEFORE we proceed to the next cycle.
          */
-
         while( headroom < (xcount + ICONV_MB_LEN_MAX) )
         {
           headroom += BUFSIZ;
@@ -789,6 +788,19 @@ struct msgdict *mc_source( const char *input )
       }
     }
     dfprintf(( stderr, "\n%s:end of input; (count is now %d bytes)", input, count ));
+    /*
+     * We reached the end of the input stream.
+     * If the final record was a message definition,
+     * then the MSGTEXT parser state will still be active;
+     * this state would be cancelled immediately, at the start of the next cycle,
+     * but becuase there is no more input data, we will not start another cycle.
+     * To avoid misidentifying this case as an incomplete final message,
+     * and so displaying an erroneous warning,
+     * we clear this state now.
+     */
+    if(  (count == 0)
+    &&  ((status & (MSGTEXT | NEWLINE | CONTINUED)) == (MSGTEXT | NEWLINE))  )
+      status &= ~MSGTEXT;
   }
   /*
    * At the end of the current input file...
@@ -844,4 +856,4 @@ struct msgdict *mc_source( const char *input )
   return head;
 }
 
-/* $RCSfile: mcsource.c,v $Revision: 1.1 $: end of file */
+/* $RCSfile: mcsource.c,v $Revision: 1.2 $: end of file */

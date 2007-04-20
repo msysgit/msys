@@ -1,7 +1,7 @@
 /*
  * catopen.c
  *
- * $Id: catopen.c,v 1.1 2007-04-06 22:34:52 keithmarshall Exp $
+ * $Id: catopen.c,v 1.2 2007-04-20 22:24:02 keithmarshall Exp $
  *
  * Copyright (C) 2006, Keith Marshall
  *
@@ -52,7 +52,6 @@
 /*
  * On Win32 platforms, we don't expect LC_MESSAGES to be defined.
  * For this, and any others which don't define it, substitute LC_CTYPE.
- *
  */
 # define LC_MESSAGES  LC_CTYPE
 #endif
@@ -63,7 +62,6 @@
  * For MSVCRT based Win32 platforms,
  * we need to provide the malloc/realloc wrapper function,
  * which is prototyped in platform.h
- *
  */
 #include <errno.h>
 
@@ -88,7 +86,6 @@ int mc_validate( __const char *name )
    * has the correct magic number, and an issue (version) number
    * we can handle.
    */
-
   if( (fd = open( name, O_RDONLY | O_BINARY )) >= 0 )
   {
     MSGCAT test;
@@ -108,13 +105,11 @@ int mc_validate( __const char *name )
      * message catalogue validation was unsuccessful,
      * so release the file descriptor...
      */
-
     close( fd );
   }
 
   /* ...and fall through, returning an invalid descriptor.
    */
-
   return (int)(-1);
 }
 
@@ -125,7 +120,6 @@ int mc_pop_locale( int LC_TYPE, char *working_locale, int retval )
    * to restore the application's working locale, before returning the
    * status code specified by `retval'.
    */
-
   setlocale( LC_TYPE, working_locale );
   free( working_locale );
   return retval;
@@ -145,27 +139,23 @@ int mc_nlspath_open( __const char *msgcat, unsigned flags )
   /* Save the application's working locale, so we can restore it later;
    * ( we need to change it temporarily, because...
    */
-
   char *saved_locale = strdup( setlocale( LC_CTYPE, NULL ) );
 
   /* ...we must parse message catalogue and NLSPATH specifiers in the
    * wchar_t domain, while using the system locale, to correctly handle
    * Win32 multibyte character path names ).
    */
-
   setlocale( LC_CTYPE, "" );
   if( (step = mbtowc( &chk, (chkptr = msgcat), MB_CUR_MAX )) > 0 )
   {
     /* First, check if the given `msgcat' spec begins with a pair of
      * characters which appear to represent a Win32 drive specifier.
      */
-
     if( (chk != L'/') && (chk != L'\\') )
     {
       /* We assume that it is, when the first character is *not* a
        * directory name separator, and the second *is* a colon...
        */
-      
       chkptr += step;
       if( ((step = mbtowc( &chk, chkptr, MB_CUR_MAX )) > 0) && (chk == L':') )
 	/*
@@ -177,7 +167,6 @@ int mc_nlspath_open( __const char *msgcat, unsigned flags )
 
     /* Scan the given `msgcat' spec, checking for directory name separators...
      */
-
     while( step > 0 )
     {
       if( (chk == L'/') || (chk == L'\\') )
@@ -185,7 +174,6 @@ int mc_nlspath_open( __const char *msgcat, unsigned flags )
 	/* The `msgcat' spec includes at least one directory name separator,
 	 * so pass it back to `catopen', as an exact catalogue file reference.
 	 */
-
 	return mc_pop_locale( LC_CTYPE, saved_locale, mc_validate( msgcat ) );
       }
       step = mbtowc( &chk, (chkptr += step), MB_CUR_MAX );
@@ -196,7 +184,6 @@ int mc_nlspath_open( __const char *msgcat, unsigned flags )
      * first check the environment for the user's NLSPATH specification,
      * falling back to the built in default, if none is defined.
      */
-
     if( (nlspath = getenv( "NLSPATH" )) == NULL )
       nlspath = NLSPATH_DEFAULT;
 
@@ -205,7 +192,6 @@ int mc_nlspath_open( __const char *msgcat, unsigned flags )
      * in turn, for a valid message catalogue match; select and open the first
      * catalogue successfully matched, or bail out if no match found.
      */
-
     nlscopy = nlsname;
     headroom = sizeof( nlsname );
     do { step = mbtowc( &chk, nlspath, MB_CUR_MAX );
@@ -213,33 +199,30 @@ int mc_nlspath_open( __const char *msgcat, unsigned flags )
 	 {
 	   case L'\0':
 	   case NLSPATH_SEPARATOR_CHAR:
-
-	     /* We reached the end of the current NLSPATH template component;
+	     /*
+	      *	We reached the end of the current NLSPATH template component;
 	      * add a terminator, and attempt to validate a matching message
 	      * catalogue; return it immediately if successful.
 	      */
-
 	     if( headroom >= MB_CUR_MAX )
 	     {
 	       wctomb( nlscopy, L'\0' );
 	       if( (fd = mc_validate( mc_select( nlsname, msgcat ))) >= 0 )
 		 return fd;
 	     }
-
 	     /* Couldn't find a valid message catalogue to match the current
 	      * NLSPATH prototype; move on to the next template, if any, and
 	      * try again.
 	      */
-
 	     nlspath += step;
 	     nlscopy = nlsname;
 	     headroom = sizeof( nlsname );
 	     break;
 
 	   case L'%':
-
-	     /* Found a substitution meta-character; need to interpret it. */
-
+	     /*
+	      *	Found a substitution meta-character; need to interpret it.
+	      */
 	     nlspath += step;
 	     nlspath += (step = mbtowc( &chk, nlspath, MB_CUR_MAX ));
 	     switch( chk )
@@ -249,9 +232,7 @@ int mc_nlspath_open( __const char *msgcat, unsigned flags )
 		  * It's a literal `%' character; check we have sufficient space,
 		  * then append it to the prototype for the message catalogue name
 		  * which we are currently constructing.
-		  *
 		  */
-
 		 if( headroom >= MB_CUR_MAX )
 		 {
 		   copy_index = wctomb( nlscopy, L'%' );
@@ -266,9 +247,7 @@ int mc_nlspath_open( __const char *msgcat, unsigned flags )
 		  * This is a request to substitute the `msgcat' name, passed to
 		  * this `catopen' request, into the assembled name prototype;
 		  * again, check we have sufficient space, before proceeding.
-		  *
 		  */
-
 		 subst = msgcat;
 		 while( (copy_index = mbtowc( &chk, subst, MB_CUR_MAX )) > 0 )
 		 {
@@ -291,12 +270,10 @@ int mc_nlspath_open( __const char *msgcat, unsigned flags )
 		  * of the current locale specification, either as specified by
 		  * `LC_MESSAGES' or `LANG' definitions in the environment, if
 		  * present, otherwise for the system locale.
-		  *
 		  */
-
 		 if(  (nls_locale != NULL)
 		 ||  ((nls_locale = getenv( NLS_LOCALE_STRING )) != NULL)
-	         ||  ((nls_locale = setlocale( LC_MESSAGES, NULL )) != NULL)  )
+		 ||  ((nls_locale = setlocale( LC_MESSAGES, NULL )) != NULL)  )
 		 {
 		   wchar_t break_code = L'\0';
 		   subst = nls_locale;
@@ -331,6 +308,10 @@ int mc_nlspath_open( __const char *msgcat, unsigned flags )
 	     break;
 
 	   default:
+	     /*
+	      * Any regular character is simply copied to the constructed path,
+	      * provided there is sufficient space available.
+	      */	      
 	     if( headroom >= step )
 	     {
 	       headroom -= step;
@@ -346,7 +327,6 @@ int mc_nlspath_open( __const char *msgcat, unsigned flags )
   /* We fall through to here, if the `msgcat' spec was empty, or NULL;
    * so just return it as is, and leave `catopen' to clean up.
    */
-
   return mc_pop_locale( LC_CTYPE, saved_locale, (int)(-1) );
 }
 
@@ -362,34 +342,29 @@ void *mc_open( struct mc_tab *cdt, va_list argv )
    * catalogue file, validating it as a valid message catalogue, allocates
    * memory, and loads the entire catalogue into the allocated space.
    */
-
   char *catname = va_arg( argv, char * );
   unsigned tab_increment, flags = va_arg( argv, unsigned );
 
   /* First, check the `catopen' flags, to determine how many new descriptor
    * table slots to create, if we need to expand the table.
    */
-  
   if( (tab_increment = flags & NL_CATD_BLKSIZ_MAX) > 0 )
     cdt->grow_size = tab_increment;
 
   /* Find the first free slot, if any, in the descriptor table.
    */
-
   int retval = 0;
   while( (retval < cdt->curr_size) && (cdt->tab[ retval ].fd >= 0) )
     ++retval;
 
   /* Got an empty slot?
    */
-
   if( retval == cdt->curr_size )
   {
     /* No: we need to expand the table; this requires us to reallocate the
      * memory block, in which the table is stored, expanding it by the current
      * table increment size, bailing out on failure.
      */
-
     struct mc_descriptor *tmp = cdt->tab;
     int new_size = retval + cdt->grow_size;
     if( (tmp = mc_realloc( tmp, new_size * sizeof( struct mc_descriptor ))) == NULL )
@@ -398,7 +373,6 @@ void *mc_open( struct mc_tab *cdt, va_list argv )
     /* After successfully resizing the message catalogue descriptor table,
      * initialise each new slot...
      */
-
     cdt->tab = tmp;
     while( retval < new_size )
     {
@@ -422,14 +396,12 @@ void *mc_open( struct mc_tab *cdt, va_list argv )
    * so open the specified file, recording the file descriptor
    * within the message catalogue descriptor.
    */
-
   if( (cdt->tab[ retval ].fd = mc_nlspath_open( catname, flags )) >= 0 )
   {
     /* After successfully opening the message catalogue file,
      * we allocate the required memory for the message catalogue data buffer,
      * and load the entire contents of the file into this buffer.
      */
-
     struct stat catinfo;
     struct mc_descriptor *ref = cdt->tab + retval;
     if(  (fstat( ref->fd, &catinfo ) != 0)
@@ -438,27 +410,28 @@ void *mc_open( struct mc_tab *cdt, va_list argv )
     {
       /* If we get to here, we failed to load the message catalogue,
        * so mark the descriptor as unused, free any resources we allocated,
-       * and bail out.
+       * and fall through to bail out.
        */
-
       _mc_free_( ref );
-      return (void *)(-1);
     }
+    else
+      /*
+       * We should now have a valid, and open, message catalogue descriptor;
+       * it is actually of `nl_catd' type, but `_mctab_' requires us to return
+       * a generic `void *' pointer; we do that, leaving `catopen' to cast it
+       * to the ultimately expected `nl_catd' type.
+       */
+      return (void *) retval;
   }
 
-  /* If we did not bail out earlier,
-   * then we should now have a valid, and open, message catalogue descriptor;
-   * it is actually of `nl_catd' type, but `_mctab_' requires us to return it
-   * as a generic `void *' pointer; we do that, leaving `catopen' to cast it
-   * to the ultimately expected `nl_catd' type.
+  /* If we fall through to here, then something went wrong;
+   * there should be nothing to clean up, so just return a `failed' status.
    */
-
-  return (void *) retval;
+  return (void *)(-1);
 }
 
 /* The actual `catopen' implementation is trivial...
  */
-
 nl_catd catopen( __const char *name, int flags )
 {
   /* ...with all the hard work done by the `mc_open' call-back from `_mctab_'.
@@ -466,4 +439,4 @@ nl_catd catopen( __const char *name, int flags )
   return (nl_catd)_mctab_( mc_open, name, flags );
 }
 
-/* $RCSfile: catopen.c,v $Revision: 1.1 $: end of file */
+/* $RCSfile: catopen.c,v $Revision: 1.2 $: end of file */
