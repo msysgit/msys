@@ -1,0 +1,6 @@
+2007-04-27  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Initial import of Tor Lillqvist's port of GNU libc regex package.
+
+	* MinGW: Vendor tag assigned.
+	* r2-5: Release tag assigned.
