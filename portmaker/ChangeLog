@@ -1,3 +1,21 @@
+2007-04-27  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Miscellaneous question, patch and configure bug-fixes and enhancements
+
+	* template/mingwPORT.sh (PATCHFLAGS): Make sure its defined.
+	(PATCHFILTER): New variable; define default to pass through unchanged.
+	(SRCDIR): Make it current directory, while applying patches.
+
+	* template/mingwPORT.configure (HOSTSPEC): Honour cross compiler host
+	settings, if any, established in local mingwPORT.site file.
+	(CONFIGURE_OPTIONS): New variable; define default, and use it.
+
+	* template/mingwport.question (ARCHIVEPATH): Keep prior assignment as
+	default reply; this allows a local mingwPORT.site default assignment.
+
+	* template/mingwPORT.cleanup (PATCHFILTER, PATCHFLAGS): Use them.
+	(SRCDIR): Make it current directory, while reverting patches.
+
 2007-04-09  Jan Bruun Andersen  <jba-dk@users.sourceforge.net>
 
 	* template/mingwPORT.question (ARCHIVEPATH): Modify prompt;

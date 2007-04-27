@@ -42,8 +42,10 @@ if $ONTRACK && [ -f $mingwPORT.patch ]
 then
   pref $mingwPORT.beforepatch
 
-  eval sed \"${PATCHFILTER-"s/x/x/"}\" $mingwPORT.patch \
-  | patch -t -N $PATCHFLAGS 
+  PATCHFLAGS=${PATCHFLAGS-"-p0"}
+  PATCHFILTER=${PATCHFILTER-"s,x,x,"}
+  sed ${PATCHFILTER} $mingwPORT.patch | ( cd "${SRCDIR}" &&
+    patch -t -N $PATCHFLAGS )
 
   pref $mingwPORT.afterpatch
 fi

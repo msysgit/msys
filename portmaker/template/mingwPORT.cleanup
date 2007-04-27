@@ -24,7 +24,8 @@ then
    . ${CURDIR}/mingwPORT.beforerpatch ]
   fi
 
-  patch -t -R ${PATCHFLAGS} < ${CURDIR}/mingwPORT.patch
+  sed ${PATCHFILTER} $mingwPORT.patch | ( cd "${SRCDIR}" &&
+    patch -t -R $PATCHFLAGS )
 
   if [ -f ${CURDIR}/mingwPORT.afterrpatch ]
   then

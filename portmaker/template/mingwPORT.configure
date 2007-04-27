@@ -1,9 +1,7 @@
 # mingwPORT.configure
-# Required.  This is the execution of any configuration scripts before the
-# build process.
+# Required.  This initiates the execution of any configuration scripts
+# before the build process.
 
-if [ ! -d ${PREFIX} ]
-then
-  mkdir -p ${PREFIX}
-fi
-${SRCDIR}/configure --prefix=`cd ${PREFIX} && pwd -W`
+test -d ${PREFIX} || mkdir -p ${PREFIX}
+CONFIGURE_OPTIONS=${CONFIGURE_OPTIONS-"--prefix='`win32path ${PREFIX}`'"}
+eval ${SRCDIR}/configure ${HOSTSPEC} ${CONFIGURE_OPTIONS}
