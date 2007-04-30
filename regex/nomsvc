@@ -1,0 +1,23 @@
+#! /bin/sh
+# Stub to invoke instead of MSVC tools, when these are unavailable.
+#
+# $Id: nomsvc,v 1.1 2007-04-30 22:46:37 keithmarshall Exp $
+#
+# Written by Keith Marshall <keithmarshall@users.sourceforge.net>
+# Hereby assigned to the public domain.
+#
+# This is free software.  You may copy, modify and redistribute it as
+# you wish, without restriction of copyright.
+#
+# This software is provided "as is", in the hope that it may be useful.
+# There is NO WARRANTY OF ANY KIND, not even an IMPLIED WARRANTY of
+# MERCHANTABILITY, nor of FITNESS FOR ANY PARTICULAR PURPOSE.  The
+# author accepts NO LIABILITY for damage of any kind, however caused,
+# resulting from the use of this software.
+#
+  echo
+  echo "MSVC program '$1' not available; not building MSVC components"
+  echo "Not executing command: $@"
+  echo
+#
+# $RCSfile: nomsvc,v $Revision: 1.1 $: end of file

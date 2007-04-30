@@ -1,6 +1,33 @@
+2007-04-30  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Adaptation for distribution as MinGW contributed package.
+
+	* aclocal.m4, configure.ac, pkgid.m4: New files.
+	* configure: New file; generated.
+
+	* Makefile: Deleted; replaced by...
+	* Makefile.in: ...this; adapted from `Makefile', with...
+	(PACKAGE): New macro, renames original `THIS' macro.
+	(install, install-dll, install-dev): New installation targets.
+	(bindist, devdist, srcdist): New distribution targets.
+	(DLLVERSION): New macro; replaces hard coded DLL version tag.
+	(srcdir, VPATH): New AC_SUBSTed macros, supporting VPATH build.
+	(prefix, exec_prefix, bindir, libdir, includedir, mandir): AC_SUBSTed
+	macros, specifying installation directories.
+	(LDFLAGS): AC_SUBSTed linker flags.
+	(MSVCLIB): New macro; AC_SUBSTed to invoke or avoid use of `lib'.
+	(ZIPCMD, ZIPEXT): New macros; AC_SUBSTed to control packaging format.
+	(BINDIST_FILES, DEVDIST_FILES, SRCDIST_FILES): New macros.
+
+	* nomsvc: New helper script; invoked if MSVC `lib' not installed.
+
+	* regex.3, regex.7: New files; manpage sources copied from GNU/Linux.
+
+	* README: Add preamble, describing changes for this distribution.
+
 2007-04-27  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
-	Initial import of Tor Lillqvist's port of GNU libc regex package.
+	Initial import of Tor Lillqvist's port of GNU glibc regex package.
 
 	* MinGW: Vendor tag assigned.
 	* r2-5: Release tag assigned.

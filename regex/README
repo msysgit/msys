@@ -1,11 +1,87 @@
 This is the regex functionality from glibc 2.5 extracted into a
-separate library, for Win32.
+separate library, for Win32.  It may be built, from the sources
+provided, using the command sequence:--
+
+  ./configure [--options...] && make
+
+For a list of available configuration options, run:--
+
+  ./configure --help
+
+After building, as above, the resultant DLL, and optionally the
+associated development kit, may be installed by:--
+
+  make install
+
+while redistributable binary DLL and development library kits may
+be created by:--
+
+  make dist
+
+
+The original sources, on which this port is based, remain
+copyright of their respective authors, or of the Free Software
+Foundation Inc., as indicated in individual file headers; all are
+redistributed with permission, as granted by the GNU Lesser
+General Public License.
+
+This is free software.  It is provided AS IS, in the hope that
+it may be useful, but WITHOUT WARRANTY OF ANY KIND, not even an
+IMPLIED WARRANTY of MERCHANTABILITY, nor of FITNESS FOR ANY
+PARTICULAR PURPOSE.
+
+Permission is granted to redistribute this software, either
+"as is" or in modified form, under the terms of the GNU Lesser
+General Public License, as published by the Free Software
+Foundation; either version 2.1, or (at your option) any later
+version.
+
+You should have received a copy of the GNU Lesser General Public
+License along with this software; see the file COPYING.LIB.  If
+not, write to the Free Software Foundation, 51 Franklin St -
+Fifth Floor, Boston, MA 02110-1301, USA.
+
+The original port of this functionality was implemented by Tor
+Lillqvist; I've adapted his work, to make it somewhat more MinGW
+friendly.  I have *not* modified any of the `C' sources provided
+by Tor; nor have I changed the naming conventions he adopted for
+generated distributables.  I *have*:--
+
+1) Replaced Tor's original `Makefile' with an autoconf generated
+   configure script, and a backwardly compatible `Makefile.in';
+   this provides a more flexible build procedure, which I find
+   more convenient, when cross-compiling on a GNU/Linux host.
+
+2) Added VPATH support, for `out of tree' builds.
+
+3) Adapted the build procedure, to avoid a dependency on the `lib'
+   program from Microsoft's MSVC tool chain.  This is achieved by
+   simply declining to build an MSVC compatible import library,
+   if this tool is not present, while retaining the capability to
+   do so, if the tool *is* present.
+
+4) Added `install', `install-dll' and `install-dev' targets, to
+   support direct installation of the DLL, and its associated
+   development kit.
+
+5) Changed the default packaging format for distributables, from
+   Tor's exclusive choice of `zip', to my own preferred `tar.gz';
+   `zip' format remains available, as an option, by configuring
+   with `--enable-dist=zip'.
+
+6) Added `bindist', `devdist' and `srcdist' targets, for greater
+   flexibility in building distribution kits.
+
+The original text of Tor's README file will be found below.
+
+--Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 I call the DLL libgnurx-0.dll which hopefully should be unique. At
 least it isn't "regex.dll" which has been used by the
 gnuwin32.sourceforge.net site for *two* incompatible DLLs. (That mess,
 and the mess with their build of Henry Spencer's regex library, was
-what lead me to build my own GNU regex library. See the gnuwin32-users mailing list archives from December 2006.)
+what lead me to build my own GNU regex library. See the
+gnuwin32-users mailing list archives from December 2006.)
 
 The "-0" is so that if at some point I build a release that isn't
 binary compatible, I can then increment that and use a different name.
