@@ -1,3 +1,12 @@
+2007-05-02  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Fix bugs reported by Julien Lecomte <julien@famille-lecomte.net>
+
+	* Makefile.in (OBJECTS): Make them depend on `Makefile', to ensure
+	that they will be recompiled after any rerun of `configure'.
+	(DEVDIST_FILES): Don't duplicate `regex.h' in `lib'; it's already
+	explicitly copied to `include'.
+
 2007-04-30  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Adaptation for distribution as MinGW contributed package.

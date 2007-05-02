@@ -48,7 +48,7 @@ OBJECTS = regex.o
 MSVCLIB = @MSVCLIB@
 
 BINDIST_FILES = libgnurx-$(DLLVERSION).dll
-DEVDIST_FILES = ${srcdir}/regex.h libgnurx.dll.a libregex.a @GNURX_LIB@
+DEVDIST_FILES = libgnurx.dll.a libregex.a @GNURX_LIB@
 SRCDIST_FILES = ${srcdir}/configure ${srcdir}/configure.ac ${srcdir}/aclocal.m4 \
   ${srcdir}/pkgid.m4 ${srcdir}/Makefile.in ${srcdir}/README ${srcdir}/COPYING.LIB \
   $(SOURCES) $(wildcard ${srcdir}/*.[37]) ${srcdir}/nomsvc ${srcdir}/ChangeLog
@@ -64,7 +64,9 @@ Makefile: config.status Makefile.in
 config.status: configure
 	./config.status --recheck
 
-libgnurx-$(DLLVERSION).dll libgnurx.dll.a: $(OBJECTS) Makefile
+$(OBJECTS): Makefile
+
+libgnurx-$(DLLVERSION).dll libgnurx.dll.a: $(OBJECTS)
 	$(CC) -shared -o libgnurx-$(DLLVERSION).dll $(LDFLAGS) $(OBJECTS)
 
 libregex.a: libgnurx.dll.a
@@ -120,4 +122,4 @@ distclean: clean
 	rm -f Makefile config.status config.log
 	rm -rf autom4te.cache
 
-# $RCSfile: Makefile.in,v $Revision: 1.1 $: end of file
+# $RCSfile: Makefile.in,v $Revision: 1.2 $: end of file
