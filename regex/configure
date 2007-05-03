@@ -273,7 +273,7 @@ PACKAGE_VERSION='2.5'
 PACKAGE_STRING='MinGW libgnurx 2.5'
 PACKAGE_BUGREPORT='https://sourceforge.net/tracker/?group_id=2435&atid=102435'
 
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CC_QUALIFIED MSVCLIB ac_ct_MSVCLIB DLLVERSION ZIPCMD ZIPEXT install_dev GNURX_LIB LIBOBJS LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CC_QUALIFIED DLLVERSION ZIPCMD ZIPEXT MSVCLIB ac_ct_MSVCLIB GNURX_LIB install_dev LIBOBJS LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -803,6 +803,7 @@ Optional Features:
   --disable-FEATURE       do not include FEATURE (same as --enable-FEATURE=no)
   --enable-FEATURE[=ARG]  include FEATURE [ARG=yes]
   --enable-dist=TYPE      package distribution as TYPE tar or zip [TYPE=tar]
+  --enable-msvc-implib    enable building of MSVC compatible import libraries
   --disable-dev-install   omit development libraries with `make install'
 
 Some influential environment variables:
@@ -2238,7 +2239,39 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
  CFLAGS=$popCFLAGS
 
-  if test -n "$ac_tool_prefix"; then
+
+# Set the release version for the resultant DLL.
+#
+  DLLVERSION=0
+
+
+# User configuration options.
+#
+  ZIPCMD='tar czhf'
+
+ ZIPEXT='.tar.gz'
+
+ test "xtar" = xzip && ZIPCMD='zip -r' ZIPEXT='.zip'
+ # Check whether --enable-dist or --disable-dist was given.
+if test "${enable_dist+set}" = set; then
+  enableval="$enable_dist"
+  case $enableval in
+    tar) ;; zip) ZIPCMD='zip -r' ZIPEXT='.zip' ;;
+    *) { echo "$as_me:$LINENO: WARNING: $enableval:unsupported distribution format" >&5
+echo "$as_me: WARNING: $enableval:unsupported distribution format" >&2;}
+       { echo "$as_me:$LINENO: WARNING: reverting to tar format" >&5
+echo "$as_me: WARNING: reverting to tar format" >&2;} ;;
+   esac
+
+fi;
+  # Check whether --enable-msvc-implib or --disable-msvc-implib was given.
+if test "${enable_msvc_implib+set}" = set; then
+  enableval="$enable_msvc_implib"
+
+else
+  enable_msvc_implib=no
+fi;
+ if test -n "$ac_tool_prefix"; then
   # Extract the first word of "${ac_tool_prefix}lib", so it can be a program name with args.
 set dummy ${ac_tool_prefix}lib; ac_word=$2
 echo "$as_me:$LINENO: checking for $ac_word" >&5
@@ -2317,31 +2350,35 @@ else
   MSVCLIB="$ac_cv_prog_MSVCLIB"
 fi
 
+ if test "x$enable_msvc_implib" = xyes && test -n "$MSVCLIB"
+ then GNURX_LIB="gnurx.lib"
+ elif test "x$enable_msvc_implib" = xyes
+ then { echo "$as_me:$LINENO: WARNING: no MSVC compatible \`lib' program found in \$PATH
 
-# Set the release version for the resultant DLL.
-#
-  DLLVERSION=0
+  The MSVC \`lib' program is required to build MSVC compatible import libs.
+  Since this program does not appear to be installed on this computer, MSVC
+  compatible import libs will not be built; configuration will continue, but
+  only MinGW format import libs will be included in the resultant build.
 
+  If you wish to build a development kit which does include import libs for
+  MSVC, in addition to those for MinGW, you should ensure that MSVC has been
+  installed on this computer, and that \$PATH includes the directory in which
+  its \`lib' program is located, then run \`configure' again.
+  " >&5
+echo "$as_me: WARNING: no MSVC compatible \`lib' program found in \$PATH
 
-# User configuration options.
-#
-  ZIPCMD='tar czhf'
+  The MSVC \`lib' program is required to build MSVC compatible import libs.
+  Since this program does not appear to be installed on this computer, MSVC
+  compatible import libs will not be built; configuration will continue, but
+  only MinGW format import libs will be included in the resultant build.
 
- ZIPEXT='.tar.gz'
+  If you wish to build a development kit which does include import libs for
+  MSVC, in addition to those for MinGW, you should ensure that MSVC has been
+  installed on this computer, and that \$PATH includes the directory in which
+  its \`lib' program is located, then run \`configure' again.
+  " >&2;}
+ fi
 
- test "xtar" = xzip && ZIPCMD='zip -r' ZIPEXT='.zip'
- # Check whether --enable-dist or --disable-dist was given.
-if test "${enable_dist+set}" = set; then
-  enableval="$enable_dist"
-  case $enableval in
-    tar) ;; zip) ZIPCMD='zip -r' ZIPEXT='.zip' ;;
-    *) { echo "$as_me:$LINENO: WARNING: $enableval:unsupported distribution format" >&5
-echo "$as_me: WARNING: $enableval:unsupported distribution format" >&2;}
-       { echo "$as_me:$LINENO: WARNING: reverting to tar format" >&5
-echo "$as_me: WARNING: reverting to tar format" >&2;} ;;
-   esac
-
-fi;
   install_dev=install-dev
 
  # Check whether --enable-dev-install or --disable-dev-install was given.
@@ -2356,9 +2393,7 @@ fi;
   CC_QUALIFIED="$CC $CC_QUALIFIED"
 
   LDFLAGS='-Wl,--enable-auto-image-base -Wl,--out-implib,libgnurx.dll.a'
-  if test -n "${MSVCLIB}"
-    then LDFLAGS="$LDFLAGS -Wl,--output-def,libgnurx.def" GNURX_LIB=gnurx.lib
-    else MSVCLIB='${srcdir}/nomsvc lib'; fi
+  test -n "${GNURX_LIB}" && LDFLAGS="$LDFLAGS -Wl,--output-def,libgnurx.def"
             ac_config_files="$ac_config_files Makefile"
 
   cat >confcache <<\_ACEOF
@@ -3003,13 +3038,13 @@ s,@ac_ct_CC@,$ac_ct_CC,;t t
 s,@EXEEXT@,$EXEEXT,;t t
 s,@OBJEXT@,$OBJEXT,;t t
 s,@CC_QUALIFIED@,$CC_QUALIFIED,;t t
-s,@MSVCLIB@,$MSVCLIB,;t t
-s,@ac_ct_MSVCLIB@,$ac_ct_MSVCLIB,;t t
 s,@DLLVERSION@,$DLLVERSION,;t t
 s,@ZIPCMD@,$ZIPCMD,;t t
 s,@ZIPEXT@,$ZIPEXT,;t t
-s,@install_dev@,$install_dev,;t t
+s,@MSVCLIB@,$MSVCLIB,;t t
+s,@ac_ct_MSVCLIB@,$ac_ct_MSVCLIB,;t t
 s,@GNURX_LIB@,$GNURX_LIB,;t t
+s,@install_dev@,$install_dev,;t t
 s,@LIBOBJS@,$LIBOBJS,;t t
 s,@LTLIBOBJS@,$LTLIBOBJS,;t t
 CEOF
@@ -3276,4 +3311,4 @@ if test "$no_create" != yes; then
 fi
 
 #
-# $RCSfile: configure,v $Revision: 1.1 $: end of file
+# $RCSfile: configure,v $Revision: 1.2 $: end of file

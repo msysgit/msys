@@ -1,3 +1,21 @@
+2007-05-03  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Add `--enable-msvc-implib' configuration option.
+
+	* README (--enable-msvc-implib): Document it.
+	* aclocal.m4 (MINGW_AC_MSVC_IMPORT_LIBS): New macro; implement it.
+
+	* configure.ac (MINGW_AC_MSVC_IMPORT_LIBS): Use it to define...
+	(GNURX_LIB): ...this; no longer set explicitly.
+	* configure: Regenerated.
+
+	* Makefile.in (GNURX_LIB): Use AC_SUBST result, in place of...
+	(gnurx.lib): ...this, as a prequisite for `all' target.
+	(MSVCLIB): Define explicitly; do not use AC_SUBST result.
+
+	* nomsvc: File deleted; it is obsoleted by...
+	(MINGW_AC_MSVC_IMPORT_LIBS): ...this aclocal.m4 macro.
+
 2007-05-02  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Fix bugs reported by Julien Lecomte <julien@famille-lecomte.net>

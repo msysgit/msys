@@ -1,7 +1,7 @@
 # aclocal.m4 -*- Autoconf -*- vim: filetype=config
 # File included by autoconf, when generating a configure script.
 #
-# $Id: aclocal.m4,v 1.1 2007-04-30 22:46:36 keithmarshall Exp $
+# $Id: aclocal.m4,v 1.2 2007-05-03 22:46:08 keithmarshall Exp $
 #
 # Copyright (C) 2007, MinGW Project
 # Written by Keith Marshall <keithmarshall@users.sourceforge.net>
@@ -83,4 +83,41 @@ AC_DEFUN([MINGW_AC_DEV_INSTALL_OPTION],
   [omit development libraries with `make install']),
   [test "x$enableval" = xno && install_dev=""])dnl
 ])# MINGW_AC_DEV_INSTALL_OPTION
-# $RCSfile: aclocal.m4,v $Revision: 1.1 $: end of file
+
+# MINGW_AC_MSVC_IMPORT_LIBS( VARNAME, TARGET )
+# --------------------------------------------
+# Check for the availability of the MSVC `lib' program.
+# If it is found in $PATH, and the user has requested `--enable-msvc-implib',
+# then set the AC_SUBST variable VARNAME to TARGET, otherwise set VARNAME to
+# the null string.
+#
+# If the user has requested `--enable-msvc-implib', but MSVC `lib' cannot be
+# found, then `configure' will print a warning; this will be suppressed, if
+# `--enable-msvc-implib' has not been requested.
+#
+AC_DEFUN([MINGW_AC_MSVC_IMPORT_LIBS],
+[AC_ARG_ENABLE([msvc-implib],
+  AS_HELP_STRING([--enable-msvc-implib],
+  [enable building of MSVC compatible import libraries]),[],
+  [enable_msvc_implib=no])
+ AC_CHECK_TOOL([MSVCLIB], [lib])
+ if test "x$enable_msvc_implib" = xyes && test -n "$MSVCLIB"
+ then $1="$2"
+ elif test "x$enable_msvc_implib" = xyes
+ then AC_MSG_WARN([no MSVC compatible `lib' program found in \$PATH
+
+  The MSVC `lib' program is required to build MSVC compatible import libs.
+  Since this program does not appear to be installed on this computer, MSVC
+  compatible import libs will not be built; configuration will continue, but
+  only MinGW format import libs will be included in the resultant build.
+
+  If you wish to build a development kit which does include import libs for
+  MSVC, in addition to those for MinGW, you should ensure that MSVC has been
+  installed on this computer, and that \$PATH includes the directory in which
+  its `lib' program is located, then run `configure' again.
+  ])
+ fi
+ AC_SUBST([$1])dnl
+])# MINGW_AC_MSVC_IMPORT_LIBS
+
+# $RCSfile: aclocal.m4,v $Revision: 1.2 $: end of file

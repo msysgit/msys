@@ -1,7 +1,7 @@
 # configure.ac  -*- Autoconf -*-
 # Process this file with autoconf, to generate a configure script.
 #
-# $Id: configure.ac,v 1.1 2007-04-30 22:46:37 keithmarshall Exp $
+# $Id: configure.ac,v 1.2 2007-05-03 22:46:09 keithmarshall Exp $
 #
 # Copyright (C) 2007, MinGW Project
 # Written by Keith Marshall <keithmarshall@users.sourceforge.net>
@@ -60,7 +60,6 @@
 #
   AC_PROG_CC
   MINGW_AC_PROG_CC_OPTIONS([CC_QUALIFIED], [-m], [threads tune=pentium3])
-  AC_CHECK_TOOL([MSVCLIB], [lib])
 
 # Set the release version for the resultant DLL.
 #
@@ -69,6 +68,7 @@
 # User configuration options.
 #
   MINGW_AC_DISTRIBUTION_TYPE([tar])
+  MINGW_AC_MSVC_IMPORT_LIBS([GNURX_LIB], [gnurx.lib])
   MINGW_AC_DEV_INSTALL_OPTION
 
 # Configuration output.
@@ -76,10 +76,8 @@
   AC_SUBST([GNURX_LIB])
   AC_SUBST([CC_QUALIFIED], ["$CC $CC_QUALIFIED"])
   LDFLAGS='-Wl,--enable-auto-image-base -Wl,--out-implib,libgnurx.dll.a'
-  if test -n "${MSVCLIB}"
-    then LDFLAGS="$LDFLAGS -Wl,--output-def,libgnurx.def" GNURX_LIB=gnurx.lib
-    else MSVCLIB='${srcdir}/nomsvc lib'; fi
+  test -n "${GNURX_LIB}" && LDFLAGS="$LDFLAGS -Wl,--output-def,libgnurx.def"
   AC_CONFIG_FILES([Makefile])
   AC_OUTPUT
 #
-# $RCSfile: configure.ac,v $Revision: 1.1 $: end of file
+# $RCSfile: configure.ac,v $Revision: 1.2 $: end of file

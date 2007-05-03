@@ -56,9 +56,22 @@ generated distributables.  I *have*:--
 
 3) Adapted the build procedure, to avoid a dependency on the `lib'
    program from Microsoft's MSVC tool chain.  This is achieved by
-   simply declining to build an MSVC compatible import library,
-   if this tool is not present, while retaining the capability to
-   do so, if the tool *is* present.
+   providing an option to configure, which is disabled by default;
+   it may by activated by specifying `--enable-msvc-implib' on the
+   configure command line.  If this option is not activated, or if
+   the MSVC `lib' tool is not present, the Makefile is configured
+   without binding the rule for building an MSVC compatible import
+   library, to the default target, (although the rule is left in
+   place for explicit use).
+
+   If the `--enable-msvc-implib' option is specified, but `lib' is
+   not present, then configure will issue a warning message, and
+   will again configure the Makefile without binding this rule to
+   the default target.
+
+   Only if the `--enable-msvc-implib' option is specified, *and*
+   the `lib' tool is present, will building of an MSVC compatible
+   import library be configured as a default deliverable.
 
 4) Added `install', `install-dll' and `install-dev' targets, to
    support direct installation of the DLL, and its associated

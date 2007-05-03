@@ -45,7 +45,7 @@ LDFLAGS = @LDFLAGS@
 SOURCES = $(wildcard ${srcdir}/*.c ${srcdir}/*.h)
 OBJECTS = regex.o
 
-MSVCLIB = @MSVCLIB@
+MSVCLIB = lib
 
 BINDIST_FILES = libgnurx-$(DLLVERSION).dll
 DEVDIST_FILES = libgnurx.dll.a libregex.a @GNURX_LIB@
@@ -56,7 +56,7 @@ SRCDIST_FILES = ${srcdir}/configure ${srcdir}/configure.ac ${srcdir}/aclocal.m4 
 ZIPCMD = @ZIPCMD@
 ZIPEXT = @ZIPEXT@
 
-all: libgnurx-$(DLLVERSION).dll libgnurx.dll.a libregex.a gnurx.lib
+all: libgnurx-$(DLLVERSION).dll libgnurx.dll.a libregex.a @GNURX_LIB@
 
 Makefile: config.status Makefile.in
 	./config.status
@@ -122,4 +122,4 @@ distclean: clean
 	rm -f Makefile config.status config.log
 	rm -rf autom4te.cache
 
-# $RCSfile: Makefile.in,v $Revision: 1.2 $: end of file
+# $RCSfile: Makefile.in,v $Revision: 1.3 $: end of file
