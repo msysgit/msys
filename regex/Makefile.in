@@ -51,7 +51,7 @@ BINDIST_FILES = libgnurx-$(DLLVERSION).dll
 DEVDIST_FILES = libgnurx.dll.a libregex.a @GNURX_LIB@
 SRCDIST_FILES = ${srcdir}/configure ${srcdir}/configure.ac ${srcdir}/aclocal.m4 \
   ${srcdir}/pkgid.m4 ${srcdir}/Makefile.in ${srcdir}/README ${srcdir}/COPYING.LIB \
-  $(SOURCES) $(wildcard ${srcdir}/*.[37]) ${srcdir}/nomsvc ${srcdir}/ChangeLog
+  $(SOURCES) $(wildcard ${srcdir}/*.[37]) ${srcdir}/ChangeLog
 
 ZIPCMD = @ZIPCMD@
 ZIPEXT = @ZIPEXT@
@@ -122,4 +122,4 @@ distclean: clean
 	rm -f Makefile config.status config.log
 	rm -rf autom4te.cache
 
-# $RCSfile: Makefile.in,v $Revision: 1.3 $: end of file
+# $RCSfile: Makefile.in,v $Revision: 1.4 $: end of file
