@@ -1,5 +1,11 @@
 2007-05-07  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
+	Version 2.5.1 released on MinGW download site.
+
+	* r2-5-1: Release tag assigned.
+
+2007-05-07  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
 	Another bug reported by Julien Lecomte <julien@famille-lecomte.net>
 
 	* Makefile.in (gnurx-version.dll): Pass CFLAGS in link command.
@@ -7,6 +13,12 @@
 	* configure.ac (LDFLAGS): Append; don't override user's settings.
 	(MINGW_AC_DEFINE_PACKAGE_ID): Increment `PATCHLEVEL'.
 	* configure: Regenerated.
+
+2007-05-07  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Version 2.5 released on MinGW download site.
+
+	* r2-5-as-built: Release tag assigned.
 
 2007-05-05  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
