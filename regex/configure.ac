@@ -1,7 +1,7 @@
 # configure.ac  -*- Autoconf -*-
 # Process this file with autoconf, to generate a configure script.
 #
-# $Id: configure.ac,v 1.2 2007-05-03 22:46:09 keithmarshall Exp $
+# $Id: configure.ac,v 1.3 2007-05-07 21:05:54 keithmarshall Exp $
 #
 # Copyright (C) 2007, MinGW Project
 # Written by Keith Marshall <keithmarshall@users.sourceforge.net>
@@ -20,7 +20,7 @@
 #
 # PATCHLEVEL is optional; comment/uncomment and adjust as required.
 #
-# MINGW_AC_DEFINE_PACKAGE_ID([PATCHLEVEL],    [1])
+  MINGW_AC_DEFINE_PACKAGE_ID([PATCHLEVEL],    [1])
 #
 # DLL_VERSION is required; installed DLLs will be versioned, by
 # appending a hyphen, the specified tag value, and then the `.dll'
@@ -75,9 +75,9 @@
 #
   AC_SUBST([GNURX_LIB])
   AC_SUBST([CC_QUALIFIED], ["$CC $CC_QUALIFIED"])
-  LDFLAGS='-Wl,--enable-auto-image-base -Wl,--out-implib,libgnurx.dll.a'
+  LDFLAGS="$LDFLAGS -Wl,--enable-auto-image-base -Wl,--out-implib,libgnurx.dll.a"
   test -n "${GNURX_LIB}" && LDFLAGS="$LDFLAGS -Wl,--output-def,libgnurx.def"
   AC_CONFIG_FILES([Makefile])
   AC_OUTPUT
 #
-# $RCSfile: configure.ac,v $Revision: 1.2 $: end of file
+# $RCSfile: configure.ac,v $Revision: 1.3 $: end of file

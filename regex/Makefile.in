@@ -67,7 +67,7 @@ config.status: configure
 $(OBJECTS): Makefile
 
 libgnurx-$(DLLVERSION).dll libgnurx.dll.a: $(OBJECTS)
-	$(CC) -shared -o libgnurx-$(DLLVERSION).dll $(LDFLAGS) $(OBJECTS)
+	$(CC) $(CFLAGS) -shared -o libgnurx-$(DLLVERSION).dll $(LDFLAGS) $(OBJECTS)
 
 libregex.a: libgnurx.dll.a
 	cp -p libgnurx.dll.a $@
@@ -122,4 +122,4 @@ distclean: clean
 	rm -f Makefile config.status config.log
 	rm -rf autom4te.cache
 
-# $RCSfile: Makefile.in,v $Revision: 1.4 $: end of file
+# $RCSfile: Makefile.in,v $Revision: 1.5 $: end of file

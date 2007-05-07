@@ -1,3 +1,13 @@
+2007-05-07  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Another bug reported by Julien Lecomte <julien@famille-lecomte.net>
+
+	* Makefile.in (gnurx-version.dll): Pass CFLAGS in link command.
+
+	* configure.ac (LDFLAGS): Append; don't override user's settings.
+	(MINGW_AC_DEFINE_PACKAGE_ID): Increment `PATCHLEVEL'.
+	* configure: Regenerated.
+
 2007-05-05  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	* Makefile.in (SRCDIST_FILES): Remove reference to `nomsvc'.
