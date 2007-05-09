@@ -1,3 +1,12 @@
+2007-05-09  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Provide more robust handling of possibly incomplete LC_MESSAGES macro
+	expansions, when parsing NLSPATH.
+
+	* catopen.c (mc_check_break_code): New function.
+	(mc_nlspath_open): Use it to identify break points, when splitting
+	LC_MESSAGES string into its component parts.
+
 2007-04-20  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	* catopen.c (mc_open): Catch unopened file; return failed status.

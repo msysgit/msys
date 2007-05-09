@@ -1,7 +1,7 @@
 /*
  * catopen.c
  *
- * $Id: catopen.c,v 1.2 2007-04-20 22:24:02 keithmarshall Exp $
+ * $Id: catopen.c,v 1.3 2007-05-09 22:43:51 keithmarshall Exp $
  *
  * Copyright (C) 2006, Keith Marshall
  *
@@ -123,6 +123,33 @@ int mc_pop_locale( int LC_TYPE, char *working_locale, int retval )
   setlocale( LC_TYPE, working_locale );
   free( working_locale );
   return retval;
+}
+
+static
+int mc_check_break_code( wchar_t chk, wchar_t *break_code )
+{
+  /* Helper function, called by `mc_nlspath_open;
+   * it checks a given character against each of the
+   * contextually valid delimiters, to establish where
+   * to split the LC_MESSAGES string into components.
+   */
+  if( chk )
+  {
+    /* If we haven't run out of characters to parse...
+     */
+    while( *break_code )
+    {
+      /* Check the current character against each valid delimiter,
+       * and return the character code if a match is found.
+       */
+      if( chk == *break_code++ )
+	return (int)(chk);
+    }
+  }
+  /* Fall through on no match,
+   * returning zero, to tell `mc_nlspath_open' to keep parsing.
+   */
+  return 0;
 }
 
 static
@@ -275,24 +302,26 @@ int mc_nlspath_open( __const char *msgcat, unsigned flags )
 		 ||  ((nls_locale = getenv( NLS_LOCALE_STRING )) != NULL)
 		 ||  ((nls_locale = setlocale( LC_MESSAGES, NULL )) != NULL)  )
 		 {
-		   wchar_t break_code = L'\0';
 		   subst = nls_locale;
+		   wchar_t *break_code = L"_.@";
 
-		   if( chk == L'l' )
+		   if( chk == L'L' )
 		   {
-		     break_code = L'_';
+		     break_code += 3;
 		   }
 
 		   else if( (chk == L't') || (chk == L'c') )
 		   {
-		     break_code = (chk == L't') ? L'_' : L'.';
+		     if( chk == L'c' )
+		       ++break_code;
 		     do subst += (copy_index = mbtowc( &chk, subst, MB_CUR_MAX ));
-		     while( (copy_index > 0) && (chk != break_code) );
-		     break_code = (break_code == L'_') ? L'.' : L'\0';
+		     while( (copy_index > 0) && (chk != *break_code) );
+		     if( *++break_code == L'@' )
+		       ++break_code;
 		   }
 
 		   while( ((copy_index = mbtowc( &chk, subst, MB_CUR_MAX )) > 0)
-		   &&      (chk != break_code)    )
+		   &&     ! mc_check_break_code( chk, break_code )    )
 		   {
 		     if( headroom > copy_index )
 		     {
@@ -439,4 +468,4 @@ nl_catd catopen( __const char *name, int flags )
   return (nl_catd)_mctab_( mc_open, name, flags );
 }
 
-/* $RCSfile: catopen.c,v $Revision: 1.2 $: end of file */
+/* $RCSfile: catopen.c,v $Revision: 1.3 $: end of file */
