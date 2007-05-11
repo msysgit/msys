@@ -1,7 +1,7 @@
 /*
  * mcsource.c
  *
- * $Id: mcsource.c,v 1.2 2007-04-20 22:24:03 keithmarshall Exp $
+ * $Id: mcsource.c,v 1.3 2007-05-11 19:34:37 keithmarshall Exp $
  *
  * Copyright (C) 2006, 2007, Keith Marshall
  *
@@ -130,6 +130,25 @@ int mc_directive( int status, const char *keyword )
 }
 
 static
+char *mc_default_codeset( void )
+{
+  /* Helper function, called when the message definition file for a
+   * catalogue doesn't explicitly specify a codeset for the messages;
+   * establish the default codeset for the message catalogue, using
+   * the codeset of the LC_MESSAGES category in the present locale.
+   */
+  char *codeset;
+
+  if( (codeset = setlocale( LC_MESSAGES, "" )) == NULL )
+    codeset = setlocale( LC_MESSAGES, NULL );
+  setlocale( LC_CTYPE, codeset );
+  codeset = strdup( nl_langinfo( CODESET ));
+  setlocale( LC_CTYPE, "C" );
+
+  return codeset;
+}
+
+static
 int errout( const char *src, long linenum, const char *fmt, ... )
 {
   va_list args;
@@ -238,19 +257,12 @@ struct msgdict *mc_source( const char *input )
          * of the current message catalogue locale, so ensure that
          * we have established an appropriate codeset mapping.
          */
-
         if( codeset == NULL )
         {
 	  /* No codeset mapping is yet in place,
 	   * so default to the codeset of the system locale.
 	   */
-
-          if( (codeset = setlocale( LC_MESSAGES, "" )) == NULL )
-            codeset = setlocale( LC_MESSAGES, NULL );
-          setlocale( LC_CTYPE, codeset );
-          codeset = strdup( nl_langinfo( CODESET ));
-          setlocale( LC_CTYPE, "C" );
-          codeset = map_codeset( iconv_map, codeset, "wchar_t" );
+          codeset = map_codeset( iconv_map, mc_default_codeset(), "wchar_t" );
 	  codeset_decl_lineno = linenum;
 	  codeset_decl_src = input;
         }
@@ -259,7 +271,6 @@ struct msgdict *mc_source( const char *input )
          * multibyte character codeset specified for the message catalogue,
          * transforming to the wide character domain, for local processing.
          */
-
         p += ((skip = iconv_mbtowc( &c, p, count )) > 0) ? skip : 0;
       }
 
@@ -268,7 +279,6 @@ struct msgdict *mc_source( const char *input )
         /* We are parsing context which is defined in the POSIX,
          * or "C" locale, so read single byte character sequences.
          */
-
         c = (wchar_t)(*p++);
       }
 
@@ -755,6 +765,15 @@ struct msgdict *mc_source( const char *input )
         if( (status & (MSGTEXT | NEWLINE | CONTINUED)) == (MSGTEXT | NEWLINE) )
         {
           wchar_t terminator = L'\0';
+	  if( codeset == NULL )
+	  {
+	    /* No codeset mapping is yet in place,
+	     * so default to the codeset of the system locale.
+	     */
+	    codeset = map_codeset( iconv_map, mc_default_codeset(), "wchar_t" );
+	    codeset_decl_lineno = linenum;
+	    codeset_decl_src = input;
+	  }
           int xcount = iconv_wctomb( messages + msgloc, terminator );
           if( xcount >= 0 )
           {
@@ -856,4 +875,4 @@ struct msgdict *mc_source( const char *input )
   return head;
 }
 
-/* $RCSfile: mcsource.c,v $Revision: 1.2 $: end of file */
+/* $RCSfile: mcsource.c,v $Revision: 1.3 $: end of file */

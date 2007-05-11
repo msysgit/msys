@@ -1,3 +1,11 @@
+2007-05-11  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Avoid calling `iconv' with unintialised codeset converter.
+
+	* mcsource.c (mc_default_codeset): New static function.
+	(mc_source): Use it, before each `iconv' call, to initialise the
+	codeset converters, if `codeset' has not been assigned.
+
 2007-05-09  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Provide more robust handling of possibly incomplete LC_MESSAGES macro
