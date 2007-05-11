@@ -1,5 +1,15 @@
 2007-05-11  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
+	Avoid attempt to read input again, after EOF detected; this caused
+	strange behaviour if processing an interactive input stream.
+
+	* mcsource.c (mc_source): New local variable `input_fd'; assign it as
+	a duplicate of `fd'.  Set `fd' to -1, when EOF detected; don't do any
+	more reads, after `fd' set to this invalid value.  Call `close' on
+	`input_fd', before return.
+
+2007-05-11  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
 	Avoid calling `iconv' with unintialised codeset converter.
 
 	* mcsource.c (mc_default_codeset): New static function.

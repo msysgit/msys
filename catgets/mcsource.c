@@ -1,7 +1,7 @@
 /*
  * mcsource.c
  *
- * $Id: mcsource.c,v 1.3 2007-05-11 19:34:37 keithmarshall Exp $
+ * $Id: mcsource.c,v 1.4 2007-05-11 19:56:17 keithmarshall Exp $
  *
  * Copyright (C) 2006, 2007, Keith Marshall
  *
@@ -204,8 +204,8 @@ struct msgdict *mc_source( const char *input )
 {
 # define CODESET_DECLARED       codeset_decl_src, codeset_decl_lineno
 
-  int fd, count;
   long accumulator;
+  int fd, input_fd, count;
   char buf[BUFSIZ], keyword[64];
   char *id;
 
@@ -230,11 +230,11 @@ struct msgdict *mc_source( const char *input )
   const char *dev_stdin = "/dev/stdin";
   if( (strcmp( input, "-") == 0) || (strcmp( input, dev_stdin ) == 0) )
   {
-    fd = STDIN_FILENO;
+    input_fd = fd = STDIN_FILENO;
     input = dev_stdin;
   }
 
-  else if( (fd = open( input, O_RDONLY | O_BINARY )) < 0 )
+  else if( (input_fd = fd = open( input, O_RDONLY | O_BINARY )) < 0 )
     return NULL;
 
   dfprintf(( stderr, "\n%s:new source file\n%s:", input, input ));
@@ -242,7 +242,7 @@ struct msgdict *mc_source( const char *input )
     return NULL;
 
   msgloc = (off_t)(0);
-  while( (count = read( fd, buf, sizeof( buf ) )) > 0 )
+  while( (fd >= 0) && ((count = read( fd, buf, sizeof( buf ) )) > 0) )
   {
     char *p = buf;
     int high_water_mark = count - ( count >> 2 );
@@ -795,12 +795,15 @@ struct msgdict *mc_source( const char *input )
 	 */
 	if( (p - buf) > high_water_mark )
 	{
+	  int ref;
 	  char *copyptr;
 	  for( copyptr = buf; count; count-- )
 	    *copyptr++ = *p++;
-	  p = buf; count = copyptr - p;
+	  p = buf; ref = count = copyptr - p;
 	  dfprintf(( stderr, "\n%s:%u:input count depleted: %u byte%s remaining", input, linenum, count, count == 1 ? "" : "s" ));
-	  count += read( fd, copyptr, sizeof( buf ) - count );
+	  if( (fd >= 0)
+	  &&  (ref == (count += read( fd, copyptr, sizeof( buf ) - count )))  )
+	    fd = -1;
 	  dfprintf(( stderr, "; read new input: count adjusted to %u byte%s", count, count == 1 ? "" : "s" ));
 	  high_water_mark = count - ( count >> 2 );
 	}
@@ -872,7 +875,11 @@ struct msgdict *mc_source( const char *input )
   }
   dfputc(( L'\n', stderr ));
 
+  /* We are done with the current input source;
+   * close its file descriptor, and return the message list.
+   */
+  close( input_fd );
   return head;
 }
 
-/* $RCSfile: mcsource.c,v $Revision: 1.3 $: end of file */
+/* $RCSfile: mcsource.c,v $Revision: 1.4 $: end of file */
