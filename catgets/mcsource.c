@@ -1,7 +1,7 @@
 /*
  * mcsource.c
  *
- * $Id: mcsource.c,v 1.4 2007-05-11 19:56:17 keithmarshall Exp $
+ * $Id: mcsource.c,v 1.5 2007-05-11 22:48:17 keithmarshall Exp $
  *
  * Copyright (C) 2006, 2007, Keith Marshall
  *
@@ -9,7 +9,7 @@
  * used internally by `gencat', to compile message dictionaries.
  *
  * Written by Keith Marshall  <keithmarshall@users.sourceforge.net>
- * Last modification: 27-Mar-2007
+ * Last modification: 11-May-2007
  *
  *
  * This is free software.  It is provided AS IS, in the hope that it may
@@ -95,7 +95,6 @@ int mc_directive( int status, const char *keyword )
   /* Identify a GENCAT directive, based on a specified keyword,
    * and activate the appropriate parser attribute bits to process it.
    */
-
   static struct directives
   {
     /* Defines the dictionary of known directives,
@@ -149,8 +148,11 @@ char *mc_default_codeset( void )
 }
 
 static
-int errout( const char *src, long linenum, const char *fmt, ... )
+int mc_errout( const char *src, long linenum, const char *fmt, ... )
 {
+  /* Message dispatcher for error messages,
+   * used when `gencat_errno' is to be set to indicate `EXIT_FAILURE'.
+   */
   va_list args;
   va_start( args, fmt );
   fprintf( stderr, "%s:%ld:", src, linenum );
@@ -160,7 +162,7 @@ int errout( const char *src, long linenum, const char *fmt, ... )
 }
 
 static
-off_t wanted( int fd )
+off_t mc_workspace_wanted( int fd )
 {
   struct stat info;
 # ifndef DEBUG
@@ -175,17 +177,17 @@ off_t wanted( int fd )
 }
 
 static
-size_t add_escape( iconv_t *iconv_map, char *msgbuf, wchar_t code )
+size_t mc_add_escape( iconv_t *iconv_map, char *msgbuf, wchar_t code )
 {
 /* A trivial helper function, for encoding an escape sequence into the
  * compiled message stream.
  */
-  dfprintf(( stderr, DCODEFMT, code ));
+  dfprintf(( stderr, "add escape code: %0#4.4x", code ));
   return iconv_wctomb( msgbuf, code );
 }
 
 static
-char *update_workspace( char *buf, char *cache, unsigned int count )
+char *mc_update_workspace( char *buf, char *cache, unsigned int count )
 {
 # ifdef DEBUG
   unsigned int xcount = count;
@@ -238,7 +240,7 @@ struct msgdict *mc_source( const char *input )
     return NULL;
 
   dfprintf(( stderr, "\n%s:new source file\n%s:", input, input ));
-  if( (messages = mc_malloc( headroom = wanted( fd ))) == NULL )
+  if( (messages = mc_malloc( headroom = mc_workspace_wanted( fd ))) == NULL )
     return NULL;
 
   msgloc = (off_t)(0);
@@ -291,7 +293,6 @@ struct msgdict *mc_source( const char *input )
            * Increment the line number, reset the parser context,
            * and clear the set/message number accumulator.
            */
-
           ++linenum;
           status &= ~( DIRECTIVE | NUMERIC | CATEGORY );
           accumulator = 0;
@@ -301,7 +302,6 @@ struct msgdict *mc_source( const char *input )
             /* When this new line is NOT simply a logical continuation
              * of the previous line...
              */
-
             status &= ~MSGTEXT;
             dfprintf(( stderr, "\n\n%s:%d:new input record", input, linenum ));
             if( c == '$' )
@@ -310,7 +310,6 @@ struct msgdict *mc_source( const char *input )
                * means that this line is either a `gencat' directive,
                * or it's a comment.
                */
-
               status |= DIRECTIVE;
               id = keyword;
             }
@@ -320,7 +319,6 @@ struct msgdict *mc_source( const char *input )
               /* This is a message definition line,
                * with a the message identified by an explicit numeric key.
                */
-
               status |= NUMERIC;
               accumulator = c - L'0';
             }
@@ -333,7 +331,6 @@ struct msgdict *mc_source( const char *input )
              * then we need to include the current input character
              * as part of the message definition.
              */
-
             if( c == quote )
             {
               dfprintf(( stderr, "\n%s:%u:%s quoted context", input, linenum, (status & QUOTED) ? "end" : "begin" ));
@@ -350,7 +347,6 @@ struct msgdict *mc_source( const char *input )
           /* Now, we dealt with the new line conditions,
            * so clear the related NEWLINE and CONTINUATION flags.
            */
-
           status &= ~( NEWLINE | CONTINUED );
         }
 
@@ -360,12 +356,10 @@ struct msgdict *mc_source( const char *input )
            * which persists until a space character marks the end of the
            * directive identifying keyword.
            */
-
           if( isspace( c ) )
           {
             /* We found the keyword delimiting space ...
             */
-
             if( id == keyword )
             {
               /* But, we didn't find any keyword...
@@ -374,7 +368,6 @@ struct msgdict *mc_source( const char *input )
 	       * a codeset declaration comment, so we can't simply ignore it;
 	       * set the comment state, to parse any codeset assignment.
                */
-
 	      status = (status & ~CATEGORY) | DEFCONV;
               dfprintf(( stderr, "\n%s:%u:record type: comment", input, linenum ));
             }
@@ -419,7 +412,6 @@ struct msgdict *mc_source( const char *input )
 	       * We have identified a possible match for a directive keyword;
                * identify it, and establish its associated parser state.
                */
-
               *id = '\0';
               status = mc_directive( status, keyword );
               dfprintf(( stderr, "\n%s:%u:record type: directive: %s", input, linenum, keyword ));
@@ -432,7 +424,6 @@ struct msgdict *mc_source( const char *input )
             /* We are still parsing a potential directive keyword;
              * add the current character to the keyword parse buffer.
              */
-
             if( (id - keyword) < (sizeof( keyword ) - 1) )
               *id++ = c;
           }
@@ -442,13 +433,11 @@ struct msgdict *mc_source( const char *input )
         {
           /* We are parsing a numeric value...
           */
-
           if( isdigit( c ) )
           {
             /* ...and the current character is part of the number,
              * so add it into the accumulator.
              */
-
             accumulator = accumulator * 10 + c - L'0';
           }
 
@@ -458,16 +447,13 @@ struct msgdict *mc_source( const char *input )
              * so hand it off as a set number, or a message number,
              * and process as appropriate.
              */
-
             switch( status & CATEGORY )
             {
               case ADDSET:
                 /*
                  * Invoked by a "set" directive,
                  * open a new numbered message set within the catalogue ...
-                 *
                  */
-
                 dfprintf(( stderr, ": add set with id = %ld", accumulator ));
                 if( accumulator > setnum )
                 {
@@ -479,7 +465,6 @@ struct msgdict *mc_source( const char *input )
                    * so we can simply create a new message set with this "setnum",
                    * and reset the "msgnum", for the start of a new set.
                    */
-
                   setnum = accumulator;
                   msgnum = 0;
                 }
@@ -489,9 +474,8 @@ struct msgdict *mc_source( const char *input )
                   /* This "setnum" entry DOESN'T satisfy the ascending order rule,
                    * so complain, and bail out.
                    */
-
                   dfputc(( '\n', stderr ));
-                  gencat_errno = errout( FATAL( MSG_SETNUM_NOT_INCR ), setnum, accumulator );
+                  gencat_errno = mc_errout( FATAL( MSG_SETNUM_NOT_INCR ), setnum, accumulator );
 		  return NULL;
                 }
                 break;
@@ -500,7 +484,6 @@ struct msgdict *mc_source( const char *input )
                 /*
                  * Invoked by a "delset" directive,
                  * mark a numbered message set for deletion from the catalogue.
-		 *
                  */
                 dfprintf(( stderr, ": delete set with id = %ld", accumulator ));
 		if( (accumulator > 0) && (accumulator <= NL_SETMAX) )
@@ -511,7 +494,6 @@ struct msgdict *mc_source( const char *input )
                     /* We successfully created an empty dictionary slot,
 		     * so fill it in as a `delset' request entry.
 		     */
-
 		    this->src = input;
 		    this->lineno = linenum;
 		    this->base = NULL;
@@ -522,7 +504,6 @@ struct msgdict *mc_source( const char *input )
                       /* The catalogue currently contains no records,
                        * so simply insert this as the first one.
                        */
-
                       head = tail = this;
                       this->link = NULL;
                     }
@@ -532,7 +513,6 @@ struct msgdict *mc_source( const char *input )
                       /* We've already added some message records,
                        * so the new one must be added at the end.
                        */
-
                       this->link = tail->link;
                       tail->link = this;
                       tail = this;
@@ -549,7 +529,6 @@ struct msgdict *mc_source( const char *input )
                    * message defined in the current set; this declaration satisfies
                    * this requirement, so add a new message to the catalogue.
                    */
-
                   struct msgdict *this;
                   if( (this = mc_malloc( sizeof( struct msgdict ))) != NULL )
                   {
@@ -559,14 +538,12 @@ struct msgdict *mc_source( const char *input )
                      * first check that one has been opened; if not, we
                      * simply open the default set.
                      */
-
                     if( setnum == 0 )
                       setnum = NL_SETD;
 
                     /* We may now complete the message details in the new
                      * dictionary slot, and commit the record to the catalogue.
                      */
-
 		    this->src = input;
 		    this->base = messages;
 		    this->lineno = linenum;
@@ -578,7 +555,6 @@ struct msgdict *mc_source( const char *input )
                       /* The catalogue currently contains no records,
                        * so simply insert this as the first one.
                        */
-
                       head = tail = this;
                       this->link = NULL;
                     }
@@ -588,7 +564,6 @@ struct msgdict *mc_source( const char *input )
                       /* We've already added some message records,
                        * so the new one must be added at the end.
                        */
-
                       this->link = tail->link;
                       tail->link = this;
                       tail = this;
@@ -601,9 +576,8 @@ struct msgdict *mc_source( const char *input )
                   /* This doesn't satisfy the requirement for incrementing "msgnum",
                    * so complain, and bail out.
                    */
-
                   dfputc(( '\n', stderr ));
-                  gencat_errno = errout( FATAL( MSG_MSGNUM_NOT_INCR ), msgnum, accumulator );
+                  gencat_errno = mc_errout( FATAL( MSG_MSGNUM_NOT_INCR ), msgnum, accumulator );
 		  return NULL;
                 }
                 status |= ( MSGTEXT | ENCODED );
@@ -625,7 +599,6 @@ struct msgdict *mc_source( const char *input )
            * defining the "quote" character to be used, or "none" if no other
            * character appears before end of line.
            */
-
           quote = (c == L'\n') ? L'\0' : c;
           dfprintf(( stderr, quote ? ": assigned as %#4.4x" : ": none assigned", quote ));
           status &= ~( CATEGORY | ENCODED );
@@ -637,34 +610,32 @@ struct msgdict *mc_source( const char *input )
            * Continue scanning the current input line,
            * until we find the end-of-line marker.
            */
-
           if( c != L'\n' )
           {
             /* We haven't reached end-of-line yet...
              * Check for other characters with special significance.
              */
-
             if( status & ESCAPE )
             {
               /* The current input character was escaped...
                * Clear the ESCAPE flag, and interpret this case.
                */
-
 	      size_t len = 0;
               status &= ~ESCAPE;
+              dfprintf(( stderr, "%s:%u:", input, linenum ));
               switch ( c )
               {
                 case L'r':      /* embed a carriage return */
-		  len = add_escape( iconv_map, messages + msgloc, L'\r' );
+		  len = mc_add_escape( iconv_map, messages + msgloc, L'\r' );
                   break;
 
                 case L'n':      /* embed a newline */
-		  len = add_escape( iconv_map, messages + msgloc, L'\n' );
+		  len = mc_add_escape( iconv_map, messages + msgloc, L'\n' );
                   break;
 
                 default:        /* not a special case; just pass it through */
                   xcount += skip;
-                  dfputc(( c, stderr ));
+                  dfprintf(( stderr, "pass through escape code: %0#4.4x", c ));
               }
 	      if( len > (size_t)(0) )
 	      {
@@ -679,7 +650,6 @@ struct msgdict *mc_source( const char *input )
                * Set the parser flags, so that any cached message data is flushed,
                * and switch to ESCAPE mode, to interpret the next character.
                */
-
               status |= FLUSH | ESCAPE;
             }
 
@@ -708,19 +678,16 @@ struct msgdict *mc_source( const char *input )
            * and schedule any pending message data from this line
            * for flushing to the message collection buffer.
            */
-
           status |= NEWLINE | FLUSH;
 
           /* If "QUOTED" context remains active, at the end of this line,
            * then we have an implicit continuation, so force it.
            */
-
           if( (status & QUOTED) == QUOTED )
             status |= CONTINUED;
 
           /* Clean up the context of any pending directive processing.
            */
-
           switch( status & CATEGORY )
           {
             case DEFQUOTE:
@@ -729,7 +696,6 @@ struct msgdict *mc_source( const char *input )
                * then there was no defining character with the "quote" directive,
                * so we must disable "quote" character recognition.
                */
-
               quote = L'\0';
               dfprintf(( stderr, ": none assigned" ));
               break;
@@ -754,13 +720,14 @@ struct msgdict *mc_source( const char *input )
           dfprintf(( stderr, "<grow allocation to %u bytes>", (unsigned)(msgloc + headroom) ));
           if( (messages = realloc( messages, msgloc + headroom )) == NULL )
 	  {
-            gencat_errno = errout( FATAL( MSG_OUT_OF_MEMORY ));
+            gencat_errno = mc_errout( FATAL( MSG_OUT_OF_MEMORY ));
 	    return NULL;
 	  }
         }
         headroom -= xcount;
 	dfprintf(( stderr, "\n%s:%u:", input, linenum ));
-        msgloc = update_workspace( messages + msgloc, p - xcount - skip, xcount ) - messages;
+        msgloc = mc_update_workspace( messages + msgloc, p - xcount - skip, xcount )
+               - messages;
 	dfprintf(( stderr, "; %u byte%s free\n", headroom, headroom == 1 ? "" : "s" ));
         if( (status & (MSGTEXT | NEWLINE | CONTINUED)) == (MSGTEXT | NEWLINE) )
         {
@@ -882,4 +849,4 @@ struct msgdict *mc_source( const char *input )
   return head;
 }
 
-/* $RCSfile: mcsource.c,v $Revision: 1.4 $: end of file */
+/* $RCSfile: mcsource.c,v $Revision: 1.5 $: end of file */

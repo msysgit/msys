@@ -3,7 +3,7 @@
  * debug.h
  *
  * Written by Keith Marshall <keithmarshall@users.sourceforge.net>
- * Last modification: 02-Apr-2007
+ * Last modification: 11-May-2007
  *
  * THIS SOFTWARE IS NOT COPYRIGHTED
  *
@@ -25,7 +25,6 @@
 # define dinvoke(x)  x
 # define dfprintf(x) fprintf x
 # define dfputc(x)   fputc x
-# define DCODEFMT    "<escape: %#4.4x>"
 #else
 /*
  * ...or, to do nothing, if not building for debugging
@@ -35,4 +34,4 @@
 # define dfputc(x)
 #endif
 
-#endif /* !defined( DEBUG_H ): $RCSfile: debug.h,v $Revision: 1.1 $: end of file */
+#endif /* !defined( DEBUG_H ): $RCSfile: debug.h,v $Revision: 1.2 $: end of file */

@@ -1,5 +1,20 @@
 2007-05-11  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
+	* mcsource.c: Miscellaneous comment and layout improvements;
+	improved formatting of some debugging/tracing messages.
+	(add_escape): Static function renamed...
+	(mc_add_escape): ...to this.
+	(wanted): Static function renamed...
+	(mc_workspace_wanted): ...to this.
+	(update_workspace): Static function renamed...
+	(mc_update_workspace): ...to this.
+	(errout): Static function renamed...
+	(mc_errout): ...to this.
+
+	* include/debug.h (DCODEFMT): Redundant macro; deleted.
+
+2007-05-11  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
 	Avoid attempt to read input again, after EOF detected; this caused
 	strange behaviour if processing an interactive input stream.
 
