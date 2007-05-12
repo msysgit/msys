@@ -1,7 +1,7 @@
 /*
  * mcmerge.c
  *
- * $Id: mcmerge.c,v 1.2 2007-05-12 16:54:35 keithmarshall Exp $
+ * $Id: mcmerge.c,v 1.3 2007-05-12 22:51:10 keithmarshall Exp $
  *
  * Copyright (C) 2006, Keith Marshall
  *
@@ -39,6 +39,30 @@
 
 #include <gencat.h>
 #include <gcmsgs.h>
+
+static
+struct msgdict *mc_delset( unsigned short setnum, struct msgdict *msgset )
+{
+  /* Helper function, called by `mc_merge', to unlink message references
+   * in any set specified in a `delset' directive.
+   */
+  while( msgset && (msgset->set == setnum) )
+  {
+    /* Walk the message list, freeing the memory allocated to message
+     * entries with matching set number.
+     */
+    struct msgdict *ref = msgset;
+    msgset = msgset->link;
+    free( ref );
+  }
+  /* When done, return the address of the first message in the set,
+   * if any, following the one we just deleted; `mc_merge' will link
+   * this to succeed the predecessor, if any, of the deleted set,
+   * or otherwise, replacing the first set in the catalogue,
+   * thus implicitly unlinking the deleted messages.
+   */
+  return msgset;
+}
 
 struct msgdict *mc_merge( struct msgdict *cat, struct msgdict *input )
 {
@@ -233,10 +257,80 @@ struct msgdict *mc_merge( struct msgdict *cat, struct msgdict *input )
 
     else if( input->set && (input->base == NULL) )
     {
-      /* This is a a `delset' operation...
-       * FIXME: we don't have support for this yet!
+      /* This is a a `delset' operation; it will delete all messages
+       * currently present in the catalogue, which are assigned to the
+       * specified message set.
+       *
+       * Obviously, if the catalogue is currently empty, then this is
+       * a no-op...
        */
-      fprintf( errmsg( MSG_DEL_UNSUPPORTED ), progname, input->src, input->lineno );
+      if( cat )
+      {
+	/* ...but when we do already have some content defined, then we
+	 * must locate and delete the specified set, if it exists.
+	 */
+	if( cat->set == input->set )
+	{
+	  /* The set to be deleted is the first in the catalogue...
+	   */
+	  if( mark->set == input->set )
+	    /*
+	     * ...and the current insertion point also lies within
+	     * this set, so *both* references must be adjusted.
+	     */
+	    mark = cat = mc_delset( input->set, cat );
+
+	  else
+	    /* ...the current insertion point has already advanced
+	     * beyond the set to be deleted, so leave it unchanged,
+	     * and simply remove the entire initial message set.
+	     */
+	    cat = mc_delset( input->set, cat );
+	}
+	else
+	{
+	  /* The set to be deleted is not the first in the catalogue,
+	   * so we must locate the last message entry in the set which
+	   * immediately precedes that to be deleted; this becomes the
+	   * reference point, from which deletion commences, and to
+	   * which any following message set must be relinked.
+	   */
+	  struct msgdict *delset, *ref = cat;
+	  
+	  /* Our search for this reference entry begins at the start
+	   * of the catalogue; however, if the current insertion point
+	   * lies in a set which precedes that to be deleted, then we
+	   * may immediately jump ahead to this point.
+	   */
+	  if( mark->key < input->key )
+	    ref = mark;
+
+	  /* We now walk the message list, until we either find the
+	   * required reference point, or our search overruns the end
+	   * of the list.
+	   */
+	  while( ((delset = ref->link) != NULL) && (delset->key < input->key) )
+	    ref = delset;
+
+	  /* Now, we must check the current insertion point, to ensure
+	   * that * it does not refer to an entry we are about to delete;
+	   * if it points to a message with a set number matching that of
+	   * the set to be deleted, then we must adjust it.
+	   */
+	  if( mark->set == input->set )
+	    mark = ref;
+
+	  /* Finally, if we found entries in the set to be deleted,
+	   * then we discard them.
+	   */
+	  if( delset->set == input->set )
+	    ref->link = mc_delset( input->set, delset );
+	}
+      }
+      /* Whether or not we actually found and deleted the specified
+       * message set, (if not, we silently ignore the `delset' request),
+       * the current input record serves no further purpose.
+       */
       free( input );
     }
 
@@ -272,4 +366,4 @@ struct msgdict *mc_merge( struct msgdict *cat, struct msgdict *input )
   return cat;
 }
 
-/* $RCSfile: mcmerge.c,v $Revision: 1.2 $: end of file */
+/* $RCSfile: mcmerge.c,v $Revision: 1.3 $: end of file */

@@ -1,5 +1,15 @@
 2007-05-12  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
+	Add support for `delset' directive.
+
+	* mcmerge.c (mc_delset): New static function...
+	(mc_merge): Use it.
+
+	* include/gcmsgs.h (MSG_DEL_UNSUPPORTED): Redundant message
+	definition; deleted.
+
+2007-05-12  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
 	Add support for single message deletion.
 
 	* mcsource.c: More comment improvements.
