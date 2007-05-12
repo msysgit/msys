@@ -1,14 +1,14 @@
 /*
  * gencat.c
  *
- * $Id: gencat.c,v 1.1 2007-04-06 22:34:51 keithmarshall Exp $
+ * $Id: gencat.c,v 1.2 2007-05-12 16:54:35 keithmarshall Exp $
  *
  * Copyright (C) 2006, 2007, Keith Marshall
  *
  * This file implements the `main' function for the `gencat' program.
  *
  * Written by Keith Marshall  <keithmarshall@users.sourceforge.net>
- * Last modification: 05-Mar-2007
+ * Last modification: 12-May-2007
  *
  *
  * This is free software.  It is provided AS IS, in the hope that it may
@@ -90,7 +90,6 @@ int main( int argc, char **argv )
     /* Initialise the message list, to incorporate any messages which
      * are already contained within the specified message catalogue.
      */
-
     if( (cat = mc_load( msgcat = *++argv )) == NULL )
       switch( errno )
       {
@@ -102,13 +101,12 @@ int main( int argc, char **argv )
 	  break;
 
 	default:
-	  fprintf( errmsg( MSG_CATLOAD_FAILED ), progname, msgcat );
+	  fprintf( errmsg( MSG_BAD_CATALOGUE ), progname, msgcat );
 	  return EXIT_FAILURE;
       }
 
     /* Merge new or updated message definitions from input files.
      */
-
     while( --argc )
       cat = mc_merge( cat, mc_source( *++argv ));
 
@@ -199,7 +197,6 @@ int main( int argc, char **argv )
     /* User specified insufficient command line arguments.
      * Diagnose, and bail out.
      */
-
     fprintf( errmsg( MSG_MISSING_ARGS ), progname );
     fprintf( errmsg( MSG_GENCAT_USAGE ), progname );
     return EXIT_FAILURE;
@@ -207,4 +204,4 @@ int main( int argc, char **argv )
   return EXIT_SUCCESS;
 }
 
-/* $RCSfile: gencat.c,v $Revision: 1.1 $: end of file */
+/* $RCSfile: gencat.c,v $Revision: 1.2 $: end of file */

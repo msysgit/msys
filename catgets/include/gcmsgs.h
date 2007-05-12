@@ -6,7 +6,7 @@
  *
  * !$ Message definitions for MinGW implementation of `gencat'.
  * !$
- * !$ $Id: gcmsgs.h,v 1.1 2007-04-06 22:34:56 keithmarshall Exp $
+ * !$ $Id: gcmsgs.h,v 1.2 2007-05-12 16:54:36 keithmarshall Exp $
  * !$ Copyright (C) 2006, 2007, MinGW Project
  * !$ Written by Keith Marshall <keithmarshall@users.sourceforge.net>
  * !$
@@ -40,7 +40,8 @@
 #define MSG_GENCAT_USAGE     1, 2, "usage: %s catalogue-name input-file ...\n"
 #define MSG_OUTPUT_NOFILE    1, 3, "%s: %s: cannot create temporary output file\n"
 #define MSG_OUT_OF_MEMORY    1, 4, "%s: out of memory\n"
-#define MSG_CATLOAD_FAILED   2, 1, "%s: %s: catalogue exists, but failed to load\n"
+#define MSG_INTERNAL_ERROR   1, 5, "%s: internal error: %s\n"
+#define MSG_BAD_CATALOGUE    2, 1, "%s: %s: file is not a valid message catalogue\n"
 #define MSG_UNKNOWN_CODESET  2, 2, "%s: %s: unknown codeset descriptor\n"
 #define MSG_CODESET_CLASH    2, 3, "%s:%u: codeset `%s' conflicts with prior declaration\n"
 #define MSG_HAD_CODESET      2, 4, "%s:%u: codeset `%s' was previously declared here\n"
@@ -48,11 +49,12 @@
 #define MSG_MSGNUM_NOT_INCR  2, 6, "invalid message number: expecting > %d; got %d\n"
 #define MSG_REDEFINED        2, 7, "%s: %s:%u: redefinition of message %u in set %u\n"
 #define MSG_PREVIOUS_HERE    2, 8, "%s: %s:%u: previous definition was here\n"
-#define MSG_DEL_UNSUPPORTED  3, 1, "%s: %s:%u: deletion of message entities not yet supported\n"
+#define MSG_DEL_UNSUPPORTED  3, 1, "%s: %s:%u: `delset' operation not yet supported\n"
 #define MSG_EOF_IN_QUOTES    3, 2, "%s:%u: unexpected EOF encountered before closing quote\n"
 #define MSG_TEXT_DISCARDED   3, 3, "%s:%u: incomplete message marked for deletion\n"
 #define MSG_MISSING_NEWLINE  3, 4, "%s:%u: missing newline at end of file\n"
+#define MSG_BAD_INDEX        3, 5, "invalid reference in message index"
 /* !
  * !$ end of file
  */
-#endif /* !defined( GCMSGS_H ): $RCSfile: gcmsgs.h,v $Revision: 1.1 $: end of file */
+#endif /* !defined( GCMSGS_H ): $RCSfile: gcmsgs.h,v $Revision: 1.2 $: end of file */

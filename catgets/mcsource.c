@@ -1,7 +1,7 @@
 /*
  * mcsource.c
  *
- * $Id: mcsource.c,v 1.5 2007-05-11 22:48:17 keithmarshall Exp $
+ * $Id: mcsource.c,v 1.6 2007-05-12 16:54:35 keithmarshall Exp $
  *
  * Copyright (C) 2006, 2007, Keith Marshall
  *
@@ -9,7 +9,7 @@
  * used internally by `gencat', to compile message dictionaries.
  *
  * Written by Keith Marshall  <keithmarshall@users.sourceforge.net>
- * Last modification: 11-May-2007
+ * Last modification: 12-May-2007
  *
  *
  * This is free software.  It is provided AS IS, in the hope that it may
@@ -543,9 +543,16 @@ struct msgdict *mc_source( const char *input )
 
                     /* We may now complete the message details in the new
                      * dictionary slot, and commit the record to the catalogue.
+		     * Note that, if the message number tag in the source file
+		     * is on an otherwise empty line, and is *immediately*
+		     * followed by a newline, with no intervening space,
+		     * then this message should be deleted; we flag this
+		     * by setting `this->base = NULL'.  In all other cases,
+		     * the message is to be placed into the catalogue, so
+		     * we set 'this->base = messages'.
                      */
 		    this->src = input;
-		    this->base = messages;
+		    this->base = (c == L'\n') ? NULL : messages;
 		    this->lineno = linenum;
                     this->set = setnum;
                     this->msg = msgnum = accumulator;
@@ -573,8 +580,10 @@ struct msgdict *mc_source( const char *input )
 
                 else
                 {
-                  /* This doesn't satisfy the requirement for incrementing "msgnum",
-                   * so complain, and bail out.
+                  /* This doesn't satisfy the POSIX requirement that,
+                   * within each set, messages must appear in strictly
+                   * incrementing "msgnum" order, so complain, and
+                   * bail out.
                    */
                   dfputc(( '\n', stderr ));
                   gencat_errno = mc_errout( FATAL( MSG_MSGNUM_NOT_INCR ), msgnum, accumulator );
@@ -832,6 +841,12 @@ struct msgdict *mc_source( const char *input )
   dfprintf(( stderr, "\n\nAllocation adjusted to %u bytes\n", (unsigned)(msgloc) ));
   for( tail = head; tail != NULL; tail = tail->link )
   {
+    /* Just do this for all entries in the list!
+     * Don't assume we can optimise by quitting if we find a reference
+     * which is already mapped to the correct address; the list could
+     * have moved, and subsequently have moved back to the old address,
+     * in which case a later entry could be invalid.
+     */
     if( tail->base != NULL )
       /*
        * Update index entries *except* those with a NULL base pointer;
@@ -849,4 +864,4 @@ struct msgdict *mc_source( const char *input )
   return head;
 }
 
-/* $RCSfile: mcsource.c,v $Revision: 1.5 $: end of file */
+/* $RCSfile: mcsource.c,v $Revision: 1.6 $: end of file */

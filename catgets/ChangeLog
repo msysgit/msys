@@ -1,3 +1,29 @@
+2007-05-12  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Add support for single message deletion.
+
+	* mcsource.c: More comment improvements.
+	(mc_source): Set `this->base = NULL' on parsing a message number
+	immediately followed by `newline'; this causes the message to be
+	removed from the internal catalogue index, when the input record
+	is merged.
+
+	* mcmerge.c (mc_merge): Reorganise logic; add section to remove
+	entries with `set > 0 && msg > 0 && base == NULL'.
+	Relocate logic block for processing `delset' requests; still need
+	an implementation for this.
+	Add logic block to catch and diagnose invalid index entries.
+
+	* include/gcmsgs.h (MSG_CATLOAD_FAILED): Renamed symbolic define...
+	(MSG_BAD_CATALOGUE): ...to this.
+	(MSG_INTERNAL_ERROR, MSG_BAD_INDEX): New message defines; used by
+	`mc_merge', to diagnose invalid index entries.
+
+	* include/gencat.h (msgarg): New macro; used by `mc_merge', to
+	associate `MSG_BAD_INDEX' with `MSG_INTERNAL_ERROR'.
+
+	* gencat.c (main): Use `MSG_BAD_CATALOGUE'.
+
 2007-05-11  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	* mcsource.c: Miscellaneous comment and layout improvements;
