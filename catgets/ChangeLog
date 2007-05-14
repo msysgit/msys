@@ -1,3 +1,14 @@
+2007-05-14  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Support all escape sequences required by POSIX 1003.1.
+
+	* mcsource.c (OCTAL_SEQUENCE_DECODE): New manifest constant.
+	(HEXADECIMAL_SEQUENCE_DECODE): Ditto, but not currently used.
+	(mc_source): Interpret "\n", "\r", "\b", "\t", "\v" and "\f"
+	standard escapes, and also "\ddd" generic octal digit sequence
+	escapes, appearing in message text definitions; "\\" is also
+	implicitly handled as required.
+
 2007-05-12  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Add support for `delset' directive.

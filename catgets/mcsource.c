@@ -1,7 +1,7 @@
 /*
  * mcsource.c
  *
- * $Id: mcsource.c,v 1.6 2007-05-12 16:54:35 keithmarshall Exp $
+ * $Id: mcsource.c,v 1.7 2007-05-14 19:50:17 keithmarshall Exp $
  *
  * Copyright (C) 2006, 2007, Keith Marshall
  *
@@ -204,7 +204,7 @@ char *mc_update_workspace( char *buf, char *cache, unsigned int count )
 
 struct msgdict *mc_source( const char *input )
 {
-# define CODESET_DECLARED       codeset_decl_src, codeset_decl_lineno
+# define CODESET_DECLARED  codeset_decl_src, codeset_decl_lineno
 
   long accumulator;
   int fd, input_fd, count;
@@ -228,6 +228,20 @@ struct msgdict *mc_source( const char *input )
   static unsigned int codeset_decl_lineno = 0;
   static iconv_t iconv_map[2] = {(iconv_t)(-1), (iconv_t)(-1)};
   char *messages; off_t msgloc, headroom;
+
+  /*
+   * This `shift' state index is used to control interpretation
+   * of octal escape sequences in message text; for normal text
+   * processing, it should be set to zero.
+   */
+  unsigned shift = 0;
+  /*
+   * Other shift states supported, (they define the number of bits
+   * by which the accumulator must be shifted to the left, in order
+   * to multiply it by the associated number base), are:--
+   */
+# define OCTAL_SEQUENCE_DECODE        3
+# define HEXADECIMAL_SEQUENCE_DECODE  4
 
   const char *dev_stdin = "/dev/stdin";
   if( (strcmp( input, "-") == 0) || (strcmp( input, dev_stdin ) == 0) )
@@ -300,7 +314,7 @@ struct msgdict *mc_source( const char *input )
           if( (status & (NEWLINE | CONTINUED)) == NEWLINE )
           {
             /* When this new line is NOT simply a logical continuation
-             * of the previous line...
+             * of the previous line ...
              */
             status &= ~MSGTEXT;
             dfprintf(( stderr, "\n\n%s:%d:new input record", input, linenum ));
@@ -362,7 +376,7 @@ struct msgdict *mc_source( const char *input )
             */
             if( id == keyword )
             {
-              /* But, we didn't find any keyword...
+              /* But, we didn't find any keyword ...
                *
                * This is a comment line, but it may be the special case of
 	       * a codeset declaration comment, so we can't simply ignore it;
@@ -431,14 +445,14 @@ struct msgdict *mc_source( const char *input )
 
         else if( status & NUMERIC )
         {
-          /* We are parsing a numeric value...
-          */
+          /* We are parsing a numeric value ...
+           */
           if( isdigit( c ) )
           {
-            /* ...and the current character is part of the number,
+            /* ... and the current character is part of the number,
              * so add it into the accumulator.
              */
-            accumulator = accumulator * 10 + c - L'0';
+	    accumulator = accumulator * 10 + c - L'0';
           }
 
           else if( isspace( c ) )
@@ -616,105 +630,197 @@ struct msgdict *mc_source( const char *input )
         else if( status & MSGTEXT )
         {
           /* We are compiling a message ...
-           * Continue scanning the current input line,
-           * until we find the end-of-line marker.
-           */
-          if( c != L'\n' )
-          {
-            /* We haven't reached end-of-line yet...
-             * Check for other characters with special significance.
-             */
-            if( status & ESCAPE )
-            {
-              /* The current input character was escaped...
-               * Clear the ESCAPE flag, and interpret this case.
-               */
-	      size_t len = 0;
-              status &= ~ESCAPE;
-              dfprintf(( stderr, "%s:%u:", input, linenum ));
-              switch ( c )
-              {
-                case L'r':      /* embed a carriage return */
-		  len = mc_add_escape( iconv_map, messages + msgloc, L'\r' );
-                  break;
-
-                case L'n':      /* embed a newline */
-		  len = mc_add_escape( iconv_map, messages + msgloc, L'\n' );
-                  break;
-
-                default:        /* not a special case; just pass it through */
-                  xcount += skip;
-                  dfprintf(( stderr, "pass through escape code: %0#4.4x", c ));
-              }
-	      if( len > (size_t)(0) )
-	      {
-		headroom -= len;
-		msgloc += len;
-	      }
-            }
-
-            else if( c == L'\\' )
-            {
-              /* This is the escape character...
-               * Set the parser flags, so that any cached message data is flushed,
-               * and switch to ESCAPE mode, to interpret the next character.
-               */
-              status |= FLUSH | ESCAPE;
-            }
-
-            else if( c == quote )
-            {
-              dfprintf(( stderr, "\n%s:%u:%s quoted context", input, linenum, (status & QUOTED) ? "end" : "begin" ));
-              status = (status ^ QUOTED) | FLUSH;
-            }
-
-            else
-            {
-              xcount += skip;
-              dfputc(( c, stderr ));
-            }
-          }
-	  if( count < ICONV_MB_LEN_MAX )
+	   */
+	  if( shift )
 	  {
-	    skip = 0;
-	    status |= FLUSH;
+	    /* The current input character is either part of an
+	     * escaped octal digit sequence, or it terminates one.
+	     */
+	    size_t len = 0;
+	    switch( c )
+	    {
+	      case L'0' ... L'7':
+		/*
+		 * This is a continuation of the sequence ...
+		 */
+		accumulator = (accumulator << shift) + c - L'0';
+		break;
+
+	      default:
+		/*
+		 * This is the character immediately following
+		 * an encoded octal digit sequence ...
+		 */
+		if( (accumulator > 0) && ((len =
+		      mc_add_escape( iconv_map, messages + msgloc, accumulator ))
+		      > (size_t)(0))  )
+		      {
+			headroom -= len;
+			msgloc += len;
+		      }
+		shift = 0;
+	    }
 	  }
-        }
+	  /* Do not use `else' here; the `shift' state may have changed
+	   * since the preceding check, in which case, we may also need
+	   * to do this ...
+	   */
+	  if( shift == 0 )
+	  {
+	    /* Continue scanning the current input line,
+	     * until we find the end-of-line marker.
+	     */
+	    if( c != L'\n' )
+	    {
+	      /* We haven't reached end-of-line yet ...
+	       * Check for other characters with special significance.
+	       */
+	      if( status & ESCAPE )
+	      {
+		/* The current input character was escaped ...
+		 * Clear the ESCAPE flag, and interpret this case.
+		 */
+		size_t len = 0;
+		status &= ~ESCAPE;
+		dfprintf(( stderr, "%s:%u:", input, linenum ));
+		switch( c )
+		{
+		  /* Thus, for the standard escape sequences ...
+		   */
+		  case L'b':
+		    /*
+		     * The "\b" escape sequence is to be interpreted as
+		     * a literal backspace; encode it ...
+		     */
+		    len = mc_add_escape( iconv_map, messages + msgloc, L'\b' );
+		    break;
 
-        if( c == L'\n' )
-        {
-          /* Mark the end of the current input line,
-           * and schedule any pending message data from this line
-           * for flushing to the message collection buffer.
-           */
-          status |= NEWLINE | FLUSH;
+		  case L'r':
+		    /*
+		     * Similarly for "\r", which is to be encoded as
+		     * a carriage return ...
+		     */
+		    len = mc_add_escape( iconv_map, messages + msgloc, L'\r' );
+		    break;
 
-          /* If "QUOTED" context remains active, at the end of this line,
-           * then we have an implicit continuation, so force it.
-           */
-          if( (status & QUOTED) == QUOTED )
-            status |= CONTINUED;
+		  case L'n':
+		    /*
+		     * And for "\n", representing a newline ...
+		     */
+		    len = mc_add_escape( iconv_map, messages + msgloc, L'\n' );
+		    break;
 
-          /* Clean up the context of any pending directive processing.
-           */
-          switch( status & CATEGORY )
-          {
-            case DEFQUOTE:
-              /*
-               * If we see end of line with a DEFQUOTE pending,
-               * then there was no defining character with the "quote" directive,
-               * so we must disable "quote" character recognition.
-               */
-              quote = L'\0';
-              dfprintf(( stderr, ": none assigned" ));
-              break;
-          }
+		  case L't':
+		    /*
+		     * ... "\t", representing a horizontal tab ...
+		     */
+		    len = mc_add_escape( iconv_map, messages + msgloc, L'\t' );
+		    break;
 
-          if( (status & CONTINUED) == 0 )
-          {
-            status &= ~ENCODED;
-          }
-        }
+		  case L'v':
+		    /*
+		     * ... "\v", representing a vertical tab ...
+		     */
+		    len = mc_add_escape( iconv_map, messages + msgloc, L'\v' );
+		    break;
+
+		  case L'f':
+		    /*
+		     * ... and "\f", representing a form feed.
+		     */
+		    len = mc_add_escape( iconv_map, messages + msgloc, L'\f' );
+		    break;
+
+		  case L'0' ... L'7':
+		    /*
+		     * This is the first in a "\ddd" octal digit sequence;
+		     * initialise the accumulator, and activate the appropriate
+		     * shift state, to capture the remaining digits.
+		     */
+		    accumulator = c - L'0';
+		    shift = OCTAL_SEQUENCE_DECODE;
+		    break;
+
+		  default:
+		    /*
+		     * Anything else is not a special case; we can simply pass it
+		     * through as a regular character.  Notice that we don't need
+		     * to treat "\\" as special; this default action produces the
+		     * desired effect.
+		     */
+		    xcount += skip;
+		    dfprintf(( stderr, "pass through escape code: %0#4.4x", c ));
+		}
+		if( len > (size_t)(0) )
+		{
+		  headroom -= len;
+		  msgloc += len;
+		}
+	      }
+
+	      else if( c == L'\\' )
+	      {
+		/* This is the escape character ...
+		 * Set the parser flags, so that cached message data is flushed,
+		 * and switch to ESCAPE mode, to interpret the next character.
+		 */
+		status |= FLUSH | ESCAPE;
+	      }
+
+	      else if( c == quote )
+	      {
+		dfprintf(( stderr, "\n%s:%u:%s quoted context", input, linenum, (status & QUOTED) ? "end" : "begin" ));
+		status = (status ^ QUOTED) | FLUSH;
+	      }
+
+	      else
+	      {
+		xcount += skip;
+		dfputc(( c, stderr ));
+	      }
+	    }
+	    if( count < ICONV_MB_LEN_MAX )
+	    {
+	      skip = 0;
+	      status |= FLUSH;
+	    }
+	  }
+
+	  if( c == L'\n' )
+	  {
+	    /* Mark the end of the current input line,
+	     * and schedule any pending message data from this line
+	     * for flushing to the message collection buffer.
+	     */
+	    status |= NEWLINE | FLUSH;
+
+	    /* If "QUOTED" context remains active, at the end of this line,
+	     * then we have an implicit continuation, so force it.
+	     */
+	    if( (status & QUOTED) == QUOTED )
+	      status |= CONTINUED;
+
+	    /* Clean up the context of any pending directive processing.
+	     */
+	    switch( status & CATEGORY )
+	    {
+	      case DEFQUOTE:
+		/*
+		 * If we see end of line with a DEFQUOTE pending, then
+		 * there was no defining character with the "quote" directive,
+		 * so we must disable "quote" character recognition.
+		 */
+		quote = L'\0';
+		dfprintf(( stderr, ": none assigned" ));
+		break;
+	    }
+
+	    if( (status & CONTINUED) == 0 )
+	    {
+	      status &= ~ENCODED;
+	    }
+	  }
+	}
       }
 
       if( status & FLUSH )
@@ -801,12 +907,12 @@ struct msgdict *mc_source( const char *input )
       status &= ~MSGTEXT;
   }
   /*
-   * At the end of the current input file...
+   * At the end of the current input file ...
    * Check that the parser finished in an appropriate termination state.
    */
   if( status & QUOTED )
   {
-    /* Abnormal termination...
+    /* Abnormal termination ...
      * EOF was encountered within a quoted literal, before the closing
      * quote was found; diagnose abnormal termination state.
      */
@@ -815,7 +921,7 @@ struct msgdict *mc_source( const char *input )
 
   if( (status & NEWLINE) != NEWLINE )
   {
-    /* Abnormal termination...
+    /* Abnormal termination ...
      * The input file lacks a terminating newline; diagnose abnormal
      * termination state.
      */
@@ -824,7 +930,7 @@ struct msgdict *mc_source( const char *input )
 
   if( status & MSGTEXT )
   {
-    /* Abnormal termination...
+    /* Abnormal termination ...
      * EOF was encountered while parsing a continued message definition;
      * dignose abnormal termination state, and mark incomplete message
      * for deletion.
@@ -864,4 +970,4 @@ struct msgdict *mc_source( const char *input )
   return head;
 }
 
-/* $RCSfile: mcsource.c,v $Revision: 1.6 $: end of file */
+/* $RCSfile: mcsource.c,v $Revision: 1.7 $: end of file */
