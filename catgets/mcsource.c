@@ -1,7 +1,7 @@
 /*
  * mcsource.c
  *
- * $Id: mcsource.c,v 1.7 2007-05-14 19:50:17 keithmarshall Exp $
+ * $Id: mcsource.c,v 1.8 2007-05-14 19:55:09 keithmarshall Exp $
  *
  * Copyright (C) 2006, 2007, Keith Marshall
  *
@@ -9,7 +9,7 @@
  * used internally by `gencat', to compile message dictionaries.
  *
  * Written by Keith Marshall  <keithmarshall@users.sourceforge.net>
- * Last modification: 12-May-2007
+ * Last modification: 14-May-2007
  *
  *
  * This is free software.  It is provided AS IS, in the hope that it may
@@ -255,7 +255,10 @@ struct msgdict *mc_source( const char *input )
 
   dfprintf(( stderr, "\n%s:new source file\n%s:", input, input ));
   if( (messages = mc_malloc( headroom = mc_workspace_wanted( fd ))) == NULL )
+  {
+    close( input_fd );
     return NULL;
+  }
 
   msgloc = (off_t)(0);
   while( (fd >= 0) && ((count = read( fd, buf, sizeof( buf ) )) > 0) )
@@ -490,6 +493,7 @@ struct msgdict *mc_source( const char *input )
                    */
                   dfputc(( '\n', stderr ));
                   gencat_errno = mc_errout( FATAL( MSG_SETNUM_NOT_INCR ), setnum, accumulator );
+		  close( input_fd );
 		  return NULL;
                 }
                 break;
@@ -601,6 +605,7 @@ struct msgdict *mc_source( const char *input )
                    */
                   dfputc(( '\n', stderr ));
                   gencat_errno = mc_errout( FATAL( MSG_MSGNUM_NOT_INCR ), msgnum, accumulator );
+		  close( input_fd );
 		  return NULL;
                 }
                 status |= ( MSGTEXT | ENCODED );
@@ -836,6 +841,7 @@ struct msgdict *mc_source( const char *input )
           if( (messages = realloc( messages, msgloc + headroom )) == NULL )
 	  {
             gencat_errno = mc_errout( FATAL( MSG_OUT_OF_MEMORY ));
+	    close( input_fd );
 	    return NULL;
 	  }
         }
@@ -970,4 +976,4 @@ struct msgdict *mc_source( const char *input )
   return head;
 }
 
-/* $RCSfile: mcsource.c,v $Revision: 1.7 $: end of file */
+/* $RCSfile: mcsource.c,v $Revision: 1.8 $: end of file */

@@ -1,5 +1,10 @@
 2007-05-14  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
+	* mcsource.c (mc_source): Close `input_fd' prior to every use
+	of `return', when returning abnormally.
+
+2007-05-14  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
 	Support all escape sequences required by POSIX 1003.1.
 
 	* mcsource.c (OCTAL_SEQUENCE_DECODE): New manifest constant.
