@@ -1,3 +1,9 @@
+2007-05-17  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	* mcsource.c (mc_source): Adjust block nesting to correct logic
+	defect introduced in revision 1.7 (2007-05-14).
+	[DEBUG]: Tidy up formatting of some ugly debugging messages.
+
 2007-05-14  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	* mcsource.c (mc_source): Close `input_fd' prior to every use

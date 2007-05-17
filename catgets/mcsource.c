@@ -1,7 +1,7 @@
 /*
  * mcsource.c
  *
- * $Id: mcsource.c,v 1.8 2007-05-14 19:55:09 keithmarshall Exp $
+ * $Id: mcsource.c,v 1.9 2007-05-17 18:45:08 keithmarshall Exp $
  *
  * Copyright (C) 2006, 2007, Keith Marshall
  *
@@ -206,6 +206,8 @@ struct msgdict *mc_source( const char *input )
 {
 # define CODESET_DECLARED  codeset_decl_src, codeset_decl_lineno
 
+  dinvoke( int dtrace = 0; )
+
   long accumulator;
   int fd, input_fd, count;
   char buf[BUFSIZ], keyword[64];
@@ -357,6 +359,7 @@ struct msgdict *mc_source( const char *input )
             else
             {
               xcount += skip;
+	      dinvoke(( dtrace = dtrace ? dtrace : fprintf( stderr, "\n%s:%u:scan input: ", input, linenum ) ));
               dfputc(( c, stderr ));
             }
           }
@@ -687,7 +690,7 @@ struct msgdict *mc_source( const char *input )
 		 */
 		size_t len = 0;
 		status &= ~ESCAPE;
-		dfprintf(( stderr, "%s:%u:", input, linenum ));
+		dfprintf(( stderr, "\n%s:%u:", input, linenum ));
 		switch( c )
 		{
 		  /* Thus, for the standard escape sequences ...
@@ -781,6 +784,7 @@ struct msgdict *mc_source( const char *input )
 	      else
 	      {
 		xcount += skip;
+		dinvoke(( dtrace = dtrace ? dtrace : fprintf( stderr, "\n%s:%u:scan input: ", input, linenum ) ));
 		dfputc(( c, stderr ));
 	      }
 	    }
@@ -790,40 +794,40 @@ struct msgdict *mc_source( const char *input )
 	      status |= FLUSH;
 	    }
 	  }
+	}
 
-	  if( c == L'\n' )
+	if( c == L'\n' )
+	{
+	  /* Mark the end of the current input line,
+	   * and schedule flushing of any pending message data from this line
+	   * to the message collection buffer.
+	   */
+	  status |= NEWLINE | FLUSH;
+
+	  /* If "QUOTED" context remains active, at the end of this line,
+	   * then we have an implicit continuation, so force it.
+	   */
+	  if( (status & QUOTED) == QUOTED )
+	    status |= CONTINUED;
+
+	  /* Clean up the context of any pending directive processing.
+	   */
+	  switch( status & CATEGORY )
 	  {
-	    /* Mark the end of the current input line,
-	     * and schedule any pending message data from this line
-	     * for flushing to the message collection buffer.
-	     */
-	    status |= NEWLINE | FLUSH;
+	    case DEFQUOTE:
+	      /*
+	       * If we see end of line with a DEFQUOTE pending, then
+	       * there was no defining character with the "quote" directive,
+	       * so we must disable "quote" character recognition.
+	       */
+	      quote = L'\0';
+	      dfprintf(( stderr, ": none assigned" ));
+	      break;
+	  }
 
-	    /* If "QUOTED" context remains active, at the end of this line,
-	     * then we have an implicit continuation, so force it.
-	     */
-	    if( (status & QUOTED) == QUOTED )
-	      status |= CONTINUED;
-
-	    /* Clean up the context of any pending directive processing.
-	     */
-	    switch( status & CATEGORY )
-	    {
-	      case DEFQUOTE:
-		/*
-		 * If we see end of line with a DEFQUOTE pending, then
-		 * there was no defining character with the "quote" directive,
-		 * so we must disable "quote" character recognition.
-		 */
-		quote = L'\0';
-		dfprintf(( stderr, ": none assigned" ));
-		break;
-	    }
-
-	    if( (status & CONTINUED) == 0 )
-	    {
-	      status &= ~ENCODED;
-	    }
+	  if( (status & CONTINUED) == 0 )
+	  {
+	    status &= ~ENCODED;
 	  }
 	}
       }
@@ -834,10 +838,11 @@ struct msgdict *mc_source( const char *input )
          * which now needs to be flushed to the output queue,
          * BEFORE we proceed to the next cycle.
          */
+	dinvoke(( dtrace = 0 ));
         while( headroom < (xcount + ICONV_MB_LEN_MAX) )
         {
           headroom += BUFSIZ;
-          dfprintf(( stderr, "<grow allocation to %u bytes>", (unsigned)(msgloc + headroom) ));
+          dfprintf(( stderr, "\n%s:%u:insufficient workspace remaining; grow allocation to %u bytes", input, linenum, (unsigned)(msgloc + headroom) ));
           if( (messages = realloc( messages, msgloc + headroom )) == NULL )
 	  {
             gencat_errno = mc_errout( FATAL( MSG_OUT_OF_MEMORY ));
@@ -849,7 +854,7 @@ struct msgdict *mc_source( const char *input )
 	dfprintf(( stderr, "\n%s:%u:", input, linenum ));
         msgloc = mc_update_workspace( messages + msgloc, p - xcount - skip, xcount )
                - messages;
-	dfprintf(( stderr, "; %u byte%s free\n", headroom, headroom == 1 ? "" : "s" ));
+	dfprintf(( stderr, "; %u byte%s free", headroom, headroom == 1 ? "" : "s" ));
         if( (status & (MSGTEXT | NEWLINE | CONTINUED)) == (MSGTEXT | NEWLINE) )
         {
           wchar_t terminator = L'\0';
@@ -976,4 +981,4 @@ struct msgdict *mc_source( const char *input )
   return head;
 }
 
-/* $RCSfile: mcsource.c,v $Revision: 1.8 $: end of file */
+/* $RCSfile: mcsource.c,v $Revision: 1.9 $: end of file */
