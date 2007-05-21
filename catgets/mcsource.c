@@ -1,7 +1,7 @@
 /*
  * mcsource.c
  *
- * $Id: mcsource.c,v 1.9 2007-05-17 18:45:08 keithmarshall Exp $
+ * $Id: mcsource.c,v 1.10 2007-05-21 04:13:20 keithmarshall Exp $
  *
  * Copyright (C) 2006, 2007, Keith Marshall
  *
@@ -9,7 +9,7 @@
  * used internally by `gencat', to compile message dictionaries.
  *
  * Written by Keith Marshall  <keithmarshall@users.sourceforge.net>
- * Last modification: 14-May-2007
+ * Last modification: 21-May-2007
  *
  *
  * This is free software.  It is provided AS IS, in the hope that it may
@@ -161,7 +161,7 @@ int mc_errout( const char *src, long linenum, const char *fmt, ... )
   return EXIT_FAILURE;
 }
 
-static
+static inline
 off_t mc_workspace_wanted( int fd )
 {
   struct stat info;
@@ -176,7 +176,7 @@ off_t mc_workspace_wanted( int fd )
   return (off_t)(BUFSIZ);
 }
 
-static
+static inline
 size_t mc_add_escape( iconv_t *iconv_map, char *msgbuf, wchar_t code )
 {
 /* A trivial helper function, for encoding an escape sequence into the
@@ -186,9 +186,12 @@ size_t mc_add_escape( iconv_t *iconv_map, char *msgbuf, wchar_t code )
   return iconv_wctomb( msgbuf, code );
 }
 
-static
+static inline
 char *mc_update_workspace( char *buf, char *cache, unsigned int count )
 {
+  /* A helper function, to transfer encoded text from the input buffer
+   * to the workspace in which compiled messages are being collected.
+   */
 # ifdef DEBUG
   unsigned int xcount = count;
   char *start = buf;
@@ -230,7 +233,6 @@ struct msgdict *mc_source( const char *input )
   static unsigned int codeset_decl_lineno = 0;
   static iconv_t iconv_map[2] = {(iconv_t)(-1), (iconv_t)(-1)};
   char *messages; off_t msgloc, headroom;
-
   /*
    * This `shift' state index is used to control interpretation
    * of octal escape sequences in message text; for normal text
@@ -242,34 +244,64 @@ struct msgdict *mc_source( const char *input )
    * by which the accumulator must be shifted to the left, in order
    * to multiply it by the associated number base), are:--
    */
-# define OCTAL_SEQUENCE_DECODE        3
-# define HEXADECIMAL_SEQUENCE_DECODE  4
+#  define OCTAL_SEQUENCE_DECODE        3
+#  define HEXADECIMAL_SEQUENCE_DECODE  4
 
+  /* We use `last_char' to keep track track the character parsed
+   * in the most * recently preceding cycle.  (This is required so
+   * that we may explicitly handle CRLF line terminations, which are
+   * to be considered as a single character code; Microsoft's `O_TEXT'
+   * kludge cannot be used, because we may be running `gencat' as a
+   * cross hosted tool, on a platform which doesn't support this).
+   */
+  wchar_t last_char = L'\0';
+
+  /* Get a file descriptor for the input stream ...
+   */
   const char *dev_stdin = "/dev/stdin";
   if( (strcmp( input, "-") == 0) || (strcmp( input, dev_stdin ) == 0) )
   {
+    /* ... reading from standard input ...
+     */
     input_fd = fd = STDIN_FILENO;
     input = dev_stdin;
   }
-
+  /* ... or otherwise, from a named file ...
+   */
   else if( (input_fd = fd = open( input, O_RDONLY | O_BINARY )) < 0 )
+    /*
+     * ... which we must be able to open, else we bail out.
+     */
     return NULL;
-
   dfprintf(( stderr, "\n%s:new source file\n%s:", input, input ));
+
+  /* Allocate the workspace, in which we will collect the text of the
+   * messages to be compiled into the catalogue ...
+   */
   if( (messages = mc_malloc( headroom = mc_workspace_wanted( fd ))) == NULL )
   {
+    /* ... but release our input file descriptor, and bail out,
+     * when we can't get sufficient memory.
+     */
     close( input_fd );
     return NULL;
   }
 
+  /* Parse the input stream ...
+   */
   msgloc = (off_t)(0);
   while( (fd >= 0) && ((count = read( fd, buf, sizeof( buf ) )) > 0) )
   {
+    /* ... for as long as there is text to be read ...
+     */
     char *p = buf;
     int high_water_mark = count - ( count >> 2 );
     dfprintf(( stderr, "\n%s:%u:read %u byte%s", input, linenum, count, count == 1 ? "" : "s" ));
     while( count > 0 )
     {
+      /* ... scanning character by character,
+       * through the entire content of the input buffer.
+       */
       wchar_t c;
       int skip = 1;
       if( status & ENCODED )
@@ -306,7 +338,19 @@ struct msgdict *mc_source( const char *input )
       if( skip > 0 )
       {
         count -= skip;
-        if( status & NEWLINE )
+        if( c == '\r' )
+	  /*
+	   * The current input character is a carriage return.
+	   * This may simply be the lead byte of a CRLF line terminator
+	   * in a CRLF format input file, but we will not know this until
+	   * we examine the following input character; request a FLUSH,
+	   * so we keep the workspace consistent, and defer processing
+	   * this CR until the next cycle, (by which time, it will
+	   * have been moved into `last_char').
+	   */
+	  status |= FLUSH;
+	
+	else if( status & NEWLINE )
         {
           /* We just started parsing a new input line ...
            * Increment the line number, reset the parser context,
@@ -321,7 +365,6 @@ struct msgdict *mc_source( const char *input )
             /* When this new line is NOT simply a logical continuation
              * of the previous line ...
              */
-            status &= ~MSGTEXT;
             dfprintf(( stderr, "\n\n%s:%d:new input record", input, linenum ));
             if( c == '$' )
             {
@@ -644,7 +687,6 @@ struct msgdict *mc_source( const char *input )
 	    /* The current input character is either part of an
 	     * escaped octal digit sequence, or it terminates one.
 	     */
-	    size_t len = 0;
 	    switch( c )
 	    {
 	      case L'0' ... L'7':
@@ -659,13 +701,25 @@ struct msgdict *mc_source( const char *input )
 		 * This is the character immediately following
 		 * an encoded octal digit sequence ...
 		 */
-		if( (accumulator > 0) && ((len =
-		      mc_add_escape( iconv_map, messages + msgloc, accumulator ))
-		      > (size_t)(0))  )
-		      {
-			headroom -= len;
-			msgloc += len;
-		      }
+		if( accumulator > 0 )
+		{
+		  /* if it is a valid, non-NUL character code,
+		   * add it into the workspace ...
+		   */
+		  size_t len;
+		  dfprintf(( stderr, "\n%s:%u:", input, linenum ));
+		  len = mc_add_escape( iconv_map, messages + msgloc, accumulator );
+		  if( len > (size_t)(0) )
+		  {
+		    /* ... adjusting `headroom' and `msgloc' accordingly.
+		     */
+	    	    headroom -= len;
+    		    msgloc += len;
+		  }
+		}
+		/* Cancel the shift state which brought us to here;
+		 * its purpose has been satisfied.
+		 */
 		shift = 0;
 	    }
 	  }
@@ -683,6 +737,21 @@ struct msgdict *mc_source( const char *input )
 	      /* We haven't reached end-of-line yet ...
 	       * Check for other characters with special significance.
 	       */
+	      if( last_char == L'\r' )
+	      {
+		/* The previous character was a deferred carriage return,
+		 * but it was *not* the lead byte in a CRLF line terminator,
+		 * so we need to emit it into the message definition.
+		 */
+		dfprintf(( stderr, "\n%s:%u:", input, linenum ));
+		size_t len = mc_add_escape( iconv_map, messages + msgloc, L'\r' );
+		if( len > (size_t)(0) )
+		{
+		  headroom -= len;
+		  msgloc += len;
+		}
+	      }
+
 	      if( status & ESCAPE )
 	      {
 		/* The current input character was escaped ...
@@ -761,6 +830,9 @@ struct msgdict *mc_source( const char *input )
 		}
 		if( len > (size_t)(0) )
 		{
+		  /* Adjust the `headroom' counter, and the current `msgloc' offset,
+		   * to account for the escape code we just added to the message buffer.
+		   */
 		  headroom -= len;
 		  msgloc += len;
 		}
@@ -777,12 +849,19 @@ struct msgdict *mc_source( const char *input )
 
 	      else if( c == quote )
 	      {
+		/* This is the designated `quote' character ...
+		 * Toggle the state of the quoted context indicator flag.
+		 */
 		dfprintf(( stderr, "\n%s:%u:%s quoted context", input, linenum, (status & QUOTED) ? "end" : "begin" ));
 		status = (status ^ QUOTED) | FLUSH;
 	      }
 
 	      else
 	      {
+		/* This is just a regular character ...
+		 * Schedule it for copying it to the message buffer,
+		 * when the next FLUSH is invoked.
+		 */
 		xcount += skip;
 		dinvoke(( dtrace = dtrace ? dtrace : fprintf( stderr, "\n%s:%u:scan input: ", input, linenum ) ));
 		dfputc(( c, stderr ));
@@ -790,6 +869,14 @@ struct msgdict *mc_source( const char *input )
 	    }
 	    if( count < ICONV_MB_LEN_MAX )
 	    {
+	      /* There may not be sufficient bytes in the input queue,
+	       * to satisfy a fetch request for a potential multibyte sequence,
+	       * so request a FLUSH now, so that the buufer may be replenished.
+	       *
+	       * Note that we must reset `skip', to avoid double accounting
+	       * for content already scheduled for, but not yet copied to the
+	       * message compilation buffer.
+	       */
 	      skip = 0;
 	      status |= FLUSH;
 	    }
@@ -827,6 +914,10 @@ struct msgdict *mc_source( const char *input )
 
 	  if( (status & CONTINUED) == 0 )
 	  {
+	    /* the following input line is not marked as a continuation,
+	     * so its initial character *must* be interpreted as a member
+	     * of the POSIX Portable Character Set.
+	     */
 	    status &= ~ENCODED;
 	  }
 	}
@@ -841,22 +932,41 @@ struct msgdict *mc_source( const char *input )
 	dinvoke(( dtrace = 0 ));
         while( headroom < (xcount + ICONV_MB_LEN_MAX) )
         {
+	  /* Ensure that the workspace includes sufficient free space
+	   * to accommodate all content to be transferred, plus at least
+	   * one additional maximum length multibyte character sequence.
+	   * if not, expand it in `BUFSIZ' increments, until it does ...
+	   */
           headroom += BUFSIZ;
           dfprintf(( stderr, "\n%s:%u:insufficient workspace remaining; grow allocation to %u bytes", input, linenum, (unsigned)(msgloc + headroom) ));
           if( (messages = realloc( messages, msgloc + headroom )) == NULL )
 	  {
+	    /* ... bailing out, if the required expansion fails.
+	     */
             gencat_errno = mc_errout( FATAL( MSG_OUT_OF_MEMORY ));
 	    close( input_fd );
 	    return NULL;
 	  }
         }
+	/* Adjust the `headroom' counter, and the `msgloc' offset,
+	 * to account for the content, as it is transferred.
+	 */
         headroom -= xcount;
 	dfprintf(( stderr, "\n%s:%u:", input, linenum ));
         msgloc = mc_update_workspace( messages + msgloc, p - xcount - skip, xcount )
                - messages;
 	dfprintf(( stderr, "; %u byte%s free", headroom, headroom == 1 ? "" : "s" ));
+
         if( (status & (MSGTEXT | NEWLINE | CONTINUED)) == (MSGTEXT | NEWLINE) )
         {
+	  /* We've found the end of a message definition record in our input,
+	   * and it is not marked for continuation on the following input line;
+	   * we must terminate the associated entry in our message buffer.
+	   *
+	   * Note that we *must* create a local variable to pass the terminator
+	   * code; the `iconv_wctomb' marcro needs to pass the *address* for
+	   * this to the `iconv_wrap' function.
+	   */
           wchar_t terminator = L'\0';
 	  if( codeset == NULL )
 	  {
@@ -867,9 +977,13 @@ struct msgdict *mc_source( const char *input )
 	    codeset_decl_lineno = linenum;
 	    codeset_decl_src = input;
 	  }
-          int xcount = iconv_wctomb( messages + msgloc, terminator );
+	  /* Encode the terminator, and add it into the workspace ...
+	   */
+          xcount = iconv_wctomb( messages + msgloc, terminator );
           if( xcount >= 0 )
           {
+	    /* ... adjusting `headroom' counter and `msgloc' offset accordingly.
+	     */
             dfprintf(( stderr, "\n%s:%u:end of message; terminator added: %d byte(s)", input, linenum, xcount ));
             msgloc += xcount;
             headroom -= xcount;
@@ -879,6 +993,7 @@ struct msgdict *mc_source( const char *input )
             dfprintf(( stderr, "\n%s:%u:end of message: add terminator failed", input, linenum ));
           }
           tail->len = msgloc - tail->loc;
+	  status &= ~MSGTEXT;
         }
         status &= ~FLUSH;
         xcount = 0;
@@ -901,21 +1016,12 @@ struct msgdict *mc_source( const char *input )
 	  high_water_mark = count - ( count >> 2 );
 	}
       }
+      /* Make a note of the character code we have just parsed,
+       * for possible deferred processing in the next cycle.
+       */
+      last_char = c;
     }
     dfprintf(( stderr, "\n%s:end of input; (count is now %d bytes)", input, count ));
-    /*
-     * We reached the end of the input stream.
-     * If the final record was a message definition,
-     * then the MSGTEXT parser state will still be active;
-     * this state would be cancelled immediately, at the start of the next cycle,
-     * but becuase there is no more input data, we will not start another cycle.
-     * To avoid misidentifying this case as an incomplete final message,
-     * and so displaying an erroneous warning,
-     * we clear this state now.
-     */
-    if(  (count == 0)
-    &&  ((status & (MSGTEXT | NEWLINE | CONTINUED)) == (MSGTEXT | NEWLINE))  )
-      status &= ~MSGTEXT;
   }
   /*
    * At the end of the current input file ...
@@ -981,4 +1087,4 @@ struct msgdict *mc_source( const char *input )
   return head;
 }
 
-/* $RCSfile: mcsource.c,v $Revision: 1.9 $: end of file */
+/* $RCSfile: mcsource.c,v $Revision: 1.10 $: end of file */
