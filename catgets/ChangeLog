@@ -1,3 +1,7 @@
+2007-06-01  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	* repl/include/langinfo.h (LC_CTYPE): Include locale.h, to define.
+
 2007-05-20  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Handle CRLF line endings in source files.

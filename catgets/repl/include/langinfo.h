@@ -20,17 +20,17 @@
  *  DISCLAIMED. This includes but is not limited to warranties of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Revision: 1.1 $
+ * $Revision: 1.2 $
  * $Author: keithmarshall $
- * $Date: 2007-04-06 22:34:56 $
+ * $Date: 2007-06-01 20:33:57 $
  *
  */
 #define _LANGINFO_H_
 
-/* All the headers include this file. */
-#include <_mingw.h>
+#include <_mingw.h>     /* All MinGW headers include this.       */
 
-#include <nl_types.h>
+#include <locale.h>     /* Need this for LC_CTYPE and friends... */
+#include <nl_types.h>   /* and this for nl_item                  */
 
 #define __NL_ITEM( CATEGORY, INDEX )  ((CATEGORY << 16) | INDEX)
 
@@ -68,4 +68,4 @@ enum {
  */
 extern char __cdecl *nl_langinfo( nl_item );
 
-#endif /* _LANGINFO_H_: $RCSfile: langinfo.h,v $Revision: 1.1 $: end of file */
+#endif /* _LANGINFO_H_: $RCSfile: langinfo.h,v $Revision: 1.2 $: end of file */
