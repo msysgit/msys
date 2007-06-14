@@ -1,3 +1,23 @@
+2007-06-14  Keith Marshall  <keithmarshall@users.sf.net>
+
+	* download.shtml [DVLPR-BRANCH]: Merge Fredric Johansson's changes,
+	dated 2007-06-03, from HEAD.
+
+2007-06-03  Fredric Johansson  <johansson_fredric@hotmail.com>
+
+	* download.shtml: Remove references to obsolete file downloads;
+	direct visitors to SF download page instead.
+
+2007-06-03  Keith Marshall  <keithmarshall@users.sf.net>
+
+	* download.shtml (Proposed): Remove reference to package.
+	(Contributed): Add this, reflecting new naming convention.
+
+2005-12-20  Keith Marshall  <keithmarshall@users.sf.net>
+
+	* All files (DVLPR-BRANCH): Tag added; initiate branch for site
+	enhancements, not yet ready for pushing to live web server.
+
 2005-08-02  Earnie Boyd  <earnie@users.sf.net>
 
 	* index.shtml: Tidy. Add section for published system of choice.

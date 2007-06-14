@@ -24,7 +24,7 @@
 		    </a></h2>
 		    <ul>
 		      <li><a href="#hdr1">MinGW and MSYS Distributions</a></li>
-		      <li><a href="#hdr2">File List</a></li>
+		      <li><a href="#hdr2">Downloads</a></li>
 		      <li><a href="#hdr3">Mirror Sites</a></li>
 		      <li><a href="#hdr4">Understanding MinGW Packaging</a></li>
 		      <li><a href="#hdr5">Decompression and Unarchiving Utilities</a></li>
@@ -102,40 +102,30 @@
 		      is adequate for describing the singular package
 		      distribution but provides challenges for the project that
 		      provides an all-in-one type of package with updates
-		      distributed individually.  We have therefore provided
-		      for a dynamically updated release page of our own.  We
-		      use the FRS provided by SourceForge to load the files
-		      to one of five categories, Candidate, Current, Previous,
-		      Proposed and Snapshot.  These categories are given at
+		      distributed individually.
+		      We use the FRS provided by SourceForge to load the files
+		      to one of five categories, Candidate, Contributed, Current,
+		      Previous and Snapshot.  These categories are defined at
 		      the FRS package level.  The FRS release name is used to
-		      give the package name and the files themselves are what
-		      identify the release.  The script that creates the data
-		      below is currently being perfected.  You may see the
-		      below layout change as we perfect it.  However, we
-		      suggest that you visit this page often for the status
-		      of updates.
-                    </p>
+		      specify the package name and the files themselves are what
+		      identify the release. </p>
 
 		    <hr />
 		    <h2><a href="#Contents" name="hdr2">
-		      File List
+		      Downloads
 		    </a></h2>
-		    
-		    <p>The automated creation of ssi/release.html that displays
-		    the table below is currently functioning.  The dynamic data
-		    on from the SF site is refreshed on an hourly basis to the
-		    www.mingw.org site.  For the most up to date view of the
-		    data you need to the 
-		    <a
+		    <p>The files are currently available on the <a target="_nw"
                        href="http://sf.net/project/showfiles.php?group_id=2435">
-		    SF File Release</a> pages.
+		       Sourceforge File Release</a> page. The easiest way to install
+		       MinGW is through the mingw-installer found in the Current
+		       package set, Current-&gt;MinGW 
 		    </p> 
-                    <!--#include file="ssi/release.html"-->
                      
 		    <hr />
                     <h2><a href="#Contents" name="hdr3">
                       Mirror Sites
                     </a></h2>
+                    <p>These sites host (possibly) older releases of MinGW files:</p>
                     <ul>
                       <li>
                         <a href=
@@ -219,7 +209,8 @@
 		      wizard and want to use ./configure &amp;&amp; make then you want
 		      to install MSYS as well.  If you are an IDE wizard and
 		      have a configurable IDE then you need to determine if the
-		      IDE distributors provide MinGW for you need to download
+		      IDE distributors provide MinGW for you. If it does then 
+					the only thing you need to download
 		      from MinGW are updates to the individual packages.  You
 		      can if you want even use MinGW from the %COMSPEC% shell
 		      if you're proficient with that.
@@ -240,7 +231,9 @@
 		      If you want to download the minimal set of tar.[gz|bz2]
 		      you will need the mingw-runtime, w32api, binutils and gcc
 		      tarball packages.  You can find the current versions of
-		      these in the "Current" section above.  These will allow
+		      these in the "Current" category on the <a target="_nw"
+          href="http://sf.net/project/showfiles.php?group_id=2435">
+					Download page</a>.  These will allow
 		      you to create your win32 native packages from the command
 		      line or configurable IDE.  Other packages that you might
 		      need to round out your minimal installation are gdb and
