@@ -1,7 +1,7 @@
 /*
  * mcsource.c
  *
- * $Id: mcsource.c,v 1.10 2007-05-21 04:13:20 keithmarshall Exp $
+ * $Id: mcsource.c,v 1.11 2007-06-18 22:36:07 keithmarshall Exp $
  *
  * Copyright (C) 2006, 2007, Keith Marshall
  *
@@ -57,6 +57,7 @@
 #include <debug.h>
 
 #include <platform.h>
+#include <mcutfsig.h>
 
 #ifdef DEBUG_BUFSIZ
 # undef  BUFSIZ
@@ -205,9 +206,35 @@ char *mc_update_workspace( char *buf, char *cache, unsigned int count )
   return buf;
 }
 
+static inline
+struct msgdict *mc_discard( struct msgdict *index, char *messages )
+{
+  /* A helper function, to reclaim all memory allocated to a local
+   * message dictionary, prior to aborting compilation of the current
+   * message catalogue source file.
+   */
+  while( index )
+  {
+    /* Walk the linked list of dictionary index entries, (if any),
+     * releasing the memory block alloted to each individually.
+     */
+    struct msgdict *next = index->link;
+    free( index );
+    index = next;
+  }
+  if( messages )
+    /*
+     * All of the indexed messages are collected into a single block,
+     * which is allocated, and so must be released, separately.
+     */
+    free( messages );
+  return index;
+}
+
 struct msgdict *mc_source( const char *input )
 {
 # define CODESET_DECLARED  codeset_decl_src, codeset_decl_lineno
+# define UTF_TYPE(ORDER)   8 * input_code_size, (ORDER)
 
   dinvoke( int dtrace = 0; )
 
@@ -231,6 +258,9 @@ struct msgdict *mc_source( const char *input )
   static char *codeset = NULL;
   static const char *codeset_decl_src = NULL;
   static unsigned int codeset_decl_lineno = 0;
+
+  unsigned short input_encoding = 0, input_code_size;
+
   static iconv_t iconv_map[2] = {(iconv_t)(-1), (iconv_t)(-1)};
   char *messages; off_t msgloc, headroom;
   /*
@@ -297,6 +327,101 @@ struct msgdict *mc_source( const char *input )
     char *p = buf;
     int high_water_mark = count - ( count >> 2 );
     dfprintf(( stderr, "\n%s:%u:read %u byte%s", input, linenum, count, count == 1 ? "" : "s" ));
+
+    if( input_encoding == 0 )
+    {
+      input_encoding = mc_utf_signature( buf );
+      switch( input_code_size = input_encoding & UTF_CODE_UNIT_SIZE_MASK )
+      {
+	case 1:
+	  if( (input_encoding & UTF_WITH_BYTE_ORDER_MARK) != 0 )
+	  {
+	    /*
+	     * This is UTF-8 input encoding, affirmed by the presence of
+	     * the byte order mark, (three bytes), which we must skip.
+	     */
+	    p += 3;
+	    count -= 3;
+	  }
+	  break;
+
+	case 2:
+	case 4:
+	  if( (input_encoding & UTF_WITH_BYTE_ORDER_MARK) != 0 )
+	  {
+	    /* This is either UTF-16, or UTF-32, also affirmed by the BOM,
+	     * which occupies the first code unit, so skip it.
+	     */
+	    p += input_code_size;
+	    count -= input_code_size;
+	  }
+	  break;
+
+	default:
+	  /*
+	   * This isn't valid, for any recognisable codeset in the required
+	   * POSIX Portable Character Set input context; diagnose, clean up,
+	   * and bail out.
+	   */
+	  dfputc(( '\n', stderr ));
+	  fprintf( errmsg( MSG_UTF_UNKNOWN ), input );
+	  fprintf( errmsg( MSG_UTF_SIZE_ERROR ), input, input_code_size );
+	  free( messages );
+	  close( input_fd );
+	  return NULL;
+      }
+
+      if( input_encoding > 1 )
+      {
+	/* We've detected a UTF input encoding, which implicitly specifies
+	 * the codeset of the messages defined within this source file.
+	 */
+	char utf_byte_order = UTF_BYTE_ORDER( input_encoding );
+	sprintf( keyword, "UTF-%d%cE", 8 * input_code_size, utf_byte_order );
+
+	dfprintf(( stderr, "\n%s:", input ));
+	dinvoke( if( (input_encoding & UTF_WITH_BYTE_ORDER_MARK) != 0 ) )
+	  dfprintf(( stderr, "unicode byte order mark detected; " ));
+	dfprintf(( stderr, "encoding identified as %s", keyword ));
+
+	if( codeset != NULL ) 
+	{
+	  /* We could coalesce these two conditions into a single test,
+	   * but we choose to nest them thus, to facilitate a possible
+	   * future change, to support codeset alternation.
+	   */
+	  if( strcmp( keyword, codeset ) != 0 )
+	  {
+	    /* The detected UTF input encoding is not compatible with the
+	     * previously declared codeset of the messages in the catalogue;
+	     * diagnose, and skip this source file.
+	     */
+	    dfputc(( '\n', stderr ));
+	    fprintf( errmsg( MSG_UTF_CODESET ), input, keyword );
+	    fprintf( errmsg( MSG_HAD_CODESET ), CODESET_DECLARED, codeset );
+	    free( messages );
+	    close( input_fd );
+	    return NULL;
+	  }
+	}
+
+	else
+	{
+	  /* We don't yet have a codeset declaration; establish one implicitly,
+	   * based on the identified input encoding.
+	   */
+	  id = strdup( keyword );
+	  if( (codeset = map_codeset( iconv_map, id, "wchar_t" )) == NULL )
+	  {
+	    free( id );
+	  }
+
+	  else
+	    codeset_decl_src = input;
+	}
+      }	
+    }
+
     while( count > 0 )
     {
       /* ... scanning character by character,
@@ -325,14 +450,64 @@ struct msgdict *mc_source( const char *input )
          * transforming to the wide character domain, for local processing.
          */
         p += ((skip = iconv_mbtowc( &c, p, count )) > 0) ? skip : 0;
+
+	/* For UTF-16 or UTF-32 input encodings, the `skip' count *must*
+	 * match the codeset size, ...
+	 */
+	if( (input_code_size > 1) && (skip != input_code_size) )
+	{
+	  /* ... or we have a framing error; diagnose,
+	   * and discard this input stream.
+	   */
+	  dfputc(( '\n', stderr ));
+	  fprintf( errmsg( MSG_UTF_FRAME_ERROR ), input, linenum, codeset );
+	  return mc_discard( head, messages );
+	}
       }
 
       else
       {
         /* We are parsing context which is defined in the POSIX,
-         * or "C" locale, so read single byte character sequences.
+         * or "C" locale, so read single byte character sequences,
+	 * but stripping out any padding NULs required to fill the
+	 * input stream to a UTF-16 or UTF-32 framing boundary.
          */
+	int utf_skip = input_code_size - 1;
+	if( (utf_skip > 0) && ((input_encoding & UTF_BIG_ENDIAN) != 0) )
+	{
+	  /* Big-Endian Unicode should have padding NULs before the
+	   * POSIX `C' locale byte required.
+	   */
+	  while( (*p == '\0') && utf_skip-- && count-- )
+	    ++p;
+	  if( (utf_skip > 0) || (*p == '\0') )
+	  {
+	    /* Diagnose and bail out, if the number of padding NULs
+	     * wasn't what we expected.
+	     */
+	    dfputc(( '\n', stderr ));
+	    fprintf( errmsg( MSG_UTF_FRAME_ERROR ), input, linenum, UTF_TYPE( 'B' ));
+	    return mc_discard( head, messages );
+	  }
+	}
         c = (wchar_t)(*p++);
+	if( (utf_skip > 0) && ((input_encoding & UTF_LITTLE_ENDIAN) != 0) )
+	{
+	  /* Little-Endian Unicode should have the padding NULs after
+	   * this significant byte.
+	   */
+	  while( (*p == '\0') && utf_skip-- && count-- )
+	    ++p;
+	  if( (utf_skip > 0) || (*p == '\0') )
+	  {
+	    /* Diagnose and bail out, if the number of padding NULs
+	     * wasn't what we expected.
+	     */
+	    dfputc(( '\n', stderr ));
+	    fprintf( errmsg( MSG_UTF_FRAME_ERROR ), input, linenum, UTF_TYPE( 'L' ));
+	    return mc_discard( head, messages );
+	  }
+	}
       }
 
       if( skip > 0 )
@@ -460,12 +635,13 @@ struct msgdict *mc_source( const char *input )
 		{
 		  if( strcmp( codeset, id ) != 0 )
 		  {
+		    dfputc(( '\n', stderr ));
 		    fprintf( errmsg( MSG_CODESET_CLASH ), input, linenum, id );
 		    fprintf( errmsg( MSG_HAD_CODESET ), CODESET_DECLARED, codeset );
 		  }
 		  free( id );
 		}
-		dfprintf(( stderr, "; declare %s", keyword ));
+		dfprintf(( stderr, "\n%s:%u:declare %s", input, linenum, keyword ));
 	      }
 	    }
 
@@ -1087,4 +1263,4 @@ struct msgdict *mc_source( const char *input )
   return head;
 }
 
-/* $RCSfile: mcsource.c,v $Revision: 1.10 $: end of file */
+/* $RCSfile: mcsource.c,v $Revision: 1.11 $: end of file */

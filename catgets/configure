@@ -310,7 +310,7 @@ ac_includes_default="\
 # include <unistd.h>
 #endif"
 
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT LN_S AR ac_ct_AR INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA MAKE_DLL DLLVERSION HOST_PATH_SEPARATOR REPLACEMENT_HEADERS CPP EGREP LOCAL_HEADERS GENCAT_OBJECTS INCICONV LIBICONV LIBOBJS LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT LN_S AR ac_ct_AR INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA MAKE_DLL DLLVERSION canonical_prefix HOST_PATH_SEPARATOR REPLACEMENT_HEADERS CPP EGREP LOCAL_HEADERS GENCAT_OBJECTS INCICONV LIBICONV LIBOBJS LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -2508,9 +2508,31 @@ echo $ECHO_N "checking release version for mingw32 DLLs... $ECHO_C" >&6
  echo "$as_me:$LINENO: result: ${DLLVERSION}" >&5
 echo "${ECHO_T}${DLLVERSION}" >&6
 
-# We need to identify the appropriate PATH separator character,
-# to be used in the default NLSPATH definition.
+# We need to identify the canonical path prefix, and the appropriate
+# PATH separator character, to be used in the default NLSPATH definition.
 #
+   ac_val=$prefix; test "x$ac_val" = xNONE && ac_val=$ac_default_prefix
+ ac_dir="$ac_val"
+ pwd -W >/dev/null 2>&1 && ac_pwd_w="pwd -W" || ac_pwd_w=pwd
+ until ac_val=`exec 2>/dev/null; cd "$ac_dir" && $ac_pwd_w`
+ do
+   ac_dir=`(dirname "$ac_dir") 2>/dev/null ||
+$as_expr X"$ac_dir" : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
+	 X"$ac_dir" : 'X\(//\)[^/]' \| \
+	 X"$ac_dir" : 'X\(//\)$' \| \
+	 X"$ac_dir" : 'X\(/\)' \| \
+	 .     : '\(.\)' 2>/dev/null ||
+echo X"$ac_dir" |
+    sed '/^X\(.*[^/]\)\/\/*[^/][^/]*\/*$/{ s//\1/; q; }
+  	  /^X\(\/\/\)[^/].*/{ s//\1/; q; }
+  	  /^X\(\/\/\)$/{ s//\1/; q; }
+  	  /^X\(\/\).*/{ s//\1/; q; }
+  	  s/.*/./; q'`
+ done
+ ac_dir=`echo "$ac_dir" | sed 's?^[./]*??'`
+ ac_val=`echo "$ac_val" | sed 's?/*$??'`
+ canonical_prefix=`echo "$ac_val" | sed "s?^[./]*$ac_dir/*?$ac_val/?"'
+   s?/*$??'`
   echo "$as_me:$LINENO: checking NLSPATH separator character used at runtime" >&5
 echo $ECHO_N "checking NLSPATH separator character used at runtime... $ECHO_C" >&6
 if test "${mingw_cv_host_path_separator+set}" = set; then
@@ -4332,6 +4354,7 @@ done
    GENCAT_OBJECTS=${GENCAT_OBJECTS}' mciconv.$(OBJEXT)'
    GENCAT_OBJECTS=${GENCAT_OBJECTS}' mcsource.$(OBJEXT)'
    GENCAT_OBJECTS=${GENCAT_OBJECTS}' mcmerge.$(OBJEXT)'
+   GENCAT_OBJECTS=${GENCAT_OBJECTS}' mcutfsig.$(OBJEXT)'
 
 # We also require `iconv', always expecting it to be pre-installed; we
 # need this to check if we are using a standard `libc' implementation,
@@ -5468,6 +5491,7 @@ s,@INSTALL_SCRIPT@,$INSTALL_SCRIPT,;t t
 s,@INSTALL_DATA@,$INSTALL_DATA,;t t
 s,@MAKE_DLL@,$MAKE_DLL,;t t
 s,@DLLVERSION@,$DLLVERSION,;t t
+s,@canonical_prefix@,$canonical_prefix,;t t
 s,@HOST_PATH_SEPARATOR@,$HOST_PATH_SEPARATOR,;t t
 s,@REPLACEMENT_HEADERS@,$REPLACEMENT_HEADERS,;t t
 s,@CPP@,$CPP,;t t
@@ -5970,4 +5994,4 @@ if test "$no_create" != yes; then
 fi
 
 #
-# $RCSfile: configure,v $Revision: 1.1 $: end of file
+# $RCSfile: configure,v $Revision: 1.2 $: end of file

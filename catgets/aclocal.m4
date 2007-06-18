@@ -15,6 +15,42 @@ AC_DEFUN([MINGW_AC_WIN32_NATIVE_HOST],
 #endif]], [mingw_cv_win32_host=no], [mingw_cv_win32_host=yes]))dnl
 ])# MINGW_AC_WIN32_NATIVE_HOST
 
+# MINGW_AC_HOST_CANONICAL_PREFIX
+# ------------------------------
+# Set the AC_SUBST variable `canonical_prefix' to the canonical form
+# of `prefix', as applicable for a mingw32 host.
+#
+AC_DEFUN([MINGW_AC_HOST_CANONICAL_PREFIX],
+[AC_SUBST([canonical_prefix])dnl
+ ac_val=$prefix; test "x$ac_val" = xNONE && ac_val=$ac_default_prefix
+ MSYS_AC_CANONICAL_PATH([canonical_prefix],[$ac_val])dnl
+])# MINGW_AC_HOST_CANONICAL_PREFIX
+
+# MSYS_AC_CANONICAL_PATH( VAR, PATHNAME )
+# ---------------------------------------
+# Set VAR to the canonically resolved absolute equivalent of PATHNAME,
+# (which may be a relative path, and need not refer to any existing entity).
+#
+# On Win32-MSYS build hosts, the returned path is resolved to its true
+# native Win32 path name, (but with slashes, not backslashes).
+#
+# On any other system, it is simply the result which would be obtained
+# if PATHNAME represented an existing directory, and the pwd command was
+# executed in that directory.
+#
+AC_DEFUN([MSYS_AC_CANONICAL_PATH],
+[ac_dir="$2"
+ pwd -W >/dev/null 2>&1 && ac_pwd_w="pwd -W" || ac_pwd_w=pwd
+ until ac_val=`exec 2>/dev/null; cd "$ac_dir" && $ac_pwd_w`
+ do
+   ac_dir=`AS_DIRNAME(["$ac_dir"])`
+ done
+ ac_dir=`echo "$ac_dir" | sed 's?^[[./]]*??'`
+ ac_val=`echo "$ac_val" | sed 's?/*$[]??'`
+ $1=`echo "$2" | sed "s?^[[./]]*$ac_dir/*?$ac_val/?"'
+   s?/*$[]??'`dnl
+])# MSYS_AC_CANONICAL_PATH
+
 # MINGW_AC_CHECK_HEADER( LISTVAR, HEADER )
 # ----------------------------------------
 # Invoke AC_CHECK_HEADER, to check availability of HEADER;
@@ -152,3 +188,5 @@ AC_DEFUN([CATGETS_AC_CONFIG_VERSION_DEFINE],
 [AC_DEFINE_UNQUOTED([$1],[`IFS=.;set x $PACKAGE_VERSION;echo ${$3}`],
  [Define numerically to the catgets $2 version number])dnl
 ])# CATGETS_AC_CONFIG_VERSION_DEFINE
+
+# $RCSfile: aclocal.m4,v $Revision: 1.2 $: end of file

@@ -1,7 +1,7 @@
 # configure.ac  -*- Autoconf -*-
 # Process this file with autoconf, to generate a configure script.
 #
-# $Id: configure.ac,v 1.1 2007-04-06 22:34:52 keithmarshall Exp $
+# $Id: configure.ac,v 1.2 2007-06-18 22:36:07 keithmarshall Exp $
 #
 # Copyright (C) 2006, 2007, MinGW Project
 # Written by Keith Marshall <keithmarshall@users.sourceforge.net>
@@ -65,9 +65,10 @@
 #
   MINGW_AC_HOST_CONFIG_DLL([__MINGW_AC_PACKAGE_DLL_VERSION__])
 
-# We need to identify the appropriate PATH separator character,
-# to be used in the default NLSPATH definition.
+# We need to identify the canonical path prefix, and the appropriate
+# PATH separator character, to be used in the default NLSPATH definition.
 #
+  MINGW_AC_HOST_CANONICAL_PREFIX
   MINGW_AC_HOST_PATH_SEPARATOR([NLSPATH])
 
 # Schedule an automatic header update, if we find a `unistd.h',
@@ -108,6 +109,7 @@
   GENCAT_AC_OBJECTS_ADD([mciconv])
   GENCAT_AC_OBJECTS_ADD([mcsource])
   GENCAT_AC_OBJECTS_ADD([mcmerge])
+  GENCAT_AC_OBJECTS_ADD([mcutfsig])
 
 # We also require `iconv', always expecting it to be pre-installed; we
 # need this to check if we are using a standard `libc' implementation,
@@ -118,4 +120,4 @@
   AC_CONFIG_FILES([Makefile])
   AC_OUTPUT
 #
-# $RCSfile: configure.ac,v $Revision: 1.1 $: end of file
+# $RCSfile: configure.ac,v $Revision: 1.2 $: end of file

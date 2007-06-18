@@ -1,3 +1,37 @@
+2007-06-18  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Handle unicode input streams.
+
+	* mcutfsig.c, include/mcutfsig.h: New files; they define the
+	interface and implementation for...
+	(mc_utf_signature): ...this new function.
+
+	* mcsource.c (mc_discard): New static function.
+	(mc_source): Use it to clean up heap on abnormal termination.
+	Include `mcutfsig.h'; use `mc_utf_signature' to identify unicode
+	streams; map codeset using new local variables `input_encoding'
+	and `input_code_size'; use them with...
+	(UTF_TYPE): ...this new macro, to parse input accordingly.
+
+	* include/gcmsgs.h (MSG_HAD_CODESET): New wording.
+	(MSG_UTF_CODESET, NMSG_UTF_UNKNOWN): New message definitions.
+	(MSG_UTF_SIZE_ERROR, MSG_UTF_FRAME_ERROR): Likewise.
+
+	* Makefile.in (canonical_prefix): New macro.
+	(HEADER_TRANSFORM_SCRIPT): Use it.
+	(GENCAT_HEADERS): Add `mcutfsig.h'.
+	(GENCAT_SOURCES): Add `mcutfsig.c'.
+	(target): Macro renamed as...
+	(tool_prefix): ...this.
+	(install-progs): Updated to use it.
+	(clean): Remove all locally generated headers.
+
+	* aclocal.m4 (MINGW_AC_HOST_CANONICAL_PREFIX): New macro.
+	(MSYS_AC_CANONICAL_PATH): New macro; copied from `man' sources.
+	* configure.ac: Use them.
+	(GENCAT_AC_OBJECTS_ADD): Add `mcutfsig'.
+	* configure: Regenerated.
+
 2007-06-01  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	* repl/include/langinfo.h (LC_CTYPE): Include locale.h, to define.
