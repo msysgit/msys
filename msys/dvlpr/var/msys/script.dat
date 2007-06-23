@@ -21,4 +21,7 @@ texi2dvi
 vi 
 view 
 which
+install.exe.manifest
+install-info.exe.manifest
+patch.exe.manifest
 

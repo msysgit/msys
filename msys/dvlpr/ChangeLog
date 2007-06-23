@@ -6,6 +6,12 @@
 	(RLSSOURCEDIR): Remove.
 	(PACKAGE_NAME): New variable.
 
+	* var/msys/script.dat: Include manifest files for Vista compatibility.
+	* bin/install-info.exe.manifest: New file.
+	* bin/install.exe.manifest: New file.
+	* bin/patch.exe.manifest: New file.
+	Thanks to: Mark Bourne.
+
 2007.01.12  Earnie Boyd  <earnie@users.sf.net>
 
 	* doc/msys/README.rtf: Spelling and grammer corrections.
