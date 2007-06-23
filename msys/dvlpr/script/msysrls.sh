@@ -13,10 +13,10 @@
 
 # User changeable values section.
 HOST=msys
-PACKAGE=msys
+PACKAGE=msysCORE
 MAJORVER=1
 MINORVER=0
-PATCHVER=9
+PATCHVER=11
 STOREROOT=/store/${HOST}
 RLSROOT=/release/${HOST}/${PACKAGE}
 SNAPDATE=\-`date +%Y.%m.%d`
@@ -29,27 +29,13 @@ SUBVERSION=\-1
 VERSION=${MAJORVER}.${MINORVER}.${PATCHVER}
 SHORTVER=${MAJORVER}.${MINORVER}
 RLSDEPOT=/depot/binary/${PACKAGE}/${SHORTVER}
-RLSOUTPUTDIR="`p2w ${RLSROOT}/${VERSION}`"
-
-if [ -z "$SNAPDATE" ]
-then
-    RELEASE="Production Release${SUBVERSION}"
-elif [ "x${SNAPDATE}" == "x-rc" ]
-then
-    RELEASE="Release Candidate${SUBVERSION}"
-else
-    RELEASE="Snapshot${SNAPDATE}${SUBVERSION}"
-fi
+RLSOUTPUTDIR="${RLSROOT}/${VERSION}"
+PACKAGE_NAME=${PACKAGE}-${VERSION}${SNAPDATE}${SUBVERSION}.tar.bz2
 
 istore=${STOREROOT}/pkg
 noarchstore=${STOREROOT}/noarch
 miscstore=${STOREROOT}/misc
 datastore=${STOREROOT}/var
-
-INFOBEFOREFILE="`p2w ${RLSDEPOT}/doc/msys/MSYS-${VERSION}-changes.rtf`"
-INFOAFTERFILE="`p2w ${RLSDEPOT}/doc/msys//MSYS_WELCOME.rtf`"
-LICENSEFILE="`p2w ${RLSDEPOT}/doc/msys/MSYS_LICENSE.rtf`"
-RLSSOURCEDIR="`p2w $RLSDEPOT`"
 
 exe_LIST="`cat ${datastore}/exe.dat`"
 etc_LIST="`cat ${datastore}/etc.dat`"
@@ -133,18 +119,4 @@ then
   mkdir -p ${RLSOUTPUTDIR}
 fi
 
-cat ${noarchstore}/msys.iss.in | \
-  sed -c \
-      -e "s/@VERSION@/$VERSION/g" \
-      -e "s/@ARC@/$ARC/g" \
-      -e "s/@SNAPDATE@/$SNAPDATE/g" \
-      -e "s/@SUBVERSION@/$SUBVERSION/g" \
-      -e "s%@LICENSEFILE@%${LICENSEFILE}%g" \
-      -e "s%@INFOBEFOREFILE@%${INFOBEFOREFILE}%g" \
-      -e "s%@INFOAFTERFILE@%${INFOAFTERFILE}%g" \
-      -e "s%@RLSSOURCEDIR@%${RLSSOURCEDIR}%g" \
-      -e "s%@RLSOUTPUTDIR@%${RLSOUTPUTDIR}%g" \
-  > /tmp/msys$$.iss
-
-/c/InnoSetup2/iscc "/tmp/msys$$.iss"
-rm -f /tmp/msys$$.iss
+(cd ${RLSDEPOT} && tar -jcf ${RLSOUTPUTDIR}/${PACKAGE_NAME} *)
