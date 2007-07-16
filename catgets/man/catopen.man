@@ -1,0 +1,322 @@
+'\"
+.TH catopen @MAN3EXT@ 21-Jun-2007 MinGW "MinGW Programming Reference
+.
+.SH NAME
+.B catopen
+\- open a national language message catalogue.
+.
+.\" Copyright (C) 2007,  Keith Marshall.
+.
+.\" Permission is granted to copy, distribute and/or modify this manpage
+.\" under the terms of the GNU Free Documentation License, Version 1.2
+.\" or any later version published by the Free Software Foundation, with
+.\" no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
+.\" A copy of the license is included in the accompanying file, `FDL'.
+.
+.SH SYNOPSIS
+.BR #include
+.RB < nl_types.h >
+.LP
+.BR "nl_catd catopen" ( "const char *" \c
+.IR name ,
+.BR int
+.IR flag )
+.
+.SH AVAILABILITY
+Requires linking with the
+.B \-lcatgets
+library option.
+.
+.SH DESCRIPTION
+The
+.BR catopen ()
+function opens a national language message catalogue,
+and returns a catalogue descriptor.
+Once a message catalogue has been successfully opened,
+its descriptor remains valid until explicitly closed by calling
+.BR catclose (@MAN3EXT@),
+or until the process image is replaced by calling
+.BR exec ();
+it is
+.I never
+inherited by any child process invoked by
+.BR spawn ()
+or by
+.BR CreateProcess ().
+.
+.LP
+The
+.I name
+argument specifies the name of the facility
+to which the message catalogue relates.
+If it includes a disk drive designator,
+any
+.BR / " or any " \e
+directory/file name separator characters,
+then it is assumed to represent an actual path name
+for the message catalogue;
+otherwise the message catalogue is located by searching
+the paths specified by the
+.B NLSPATH
+environment variable,
+substituting
+.I name
+for the
+.B %N
+translation specifier.
+If no
+.B NLSPATH
+variable exists in the environment,
+or if no message catalogue matching
+.I name
+is found in any path specified by it,
+an internally defined default
+.B NLSPATH
+is searched.
+.
+.LP
+The
+.I flag
+argument specifies how
+.B NLSPATH
+should be interpreted,
+when searching for the named message catalogue;
+it may be specified as the manifest constant
+.BR NL_CAT_LOCALE ,
+defined in
+.BR nl_types.h ,
+or it should be zero.
+.
+.LP
+When searching
+.BR NLSPATH ,
+either as specified in the environment,
+or using the internal default,
+the selection of a message catalogue may depend on the
+specification for the current locale,
+as defined in the environment;
+such selection is derived from the definition of
+.BR LC_MESSAGES ,
+if the
+.I flag
+argument is given as
+.BR NL_CAT_LOCALE ,
+or from
+.B LANG
+otherwise,
+and is determined by substitution of the appropriate
+components of the respective definition for each of the following
+.B NLSPATH
+translation specifiers:\(en
+.ll -\n(INu
+.
+.RS
+.TP
+.B %l
+The language specification component
+of the locale identification string.
+.
+.TP
+.B %t
+The country/territory component
+of the locale identification string.
+.
+.TP
+.B %c
+The codeset specification component
+of the locale identification string.
+.
+.TP
+.B %L
+The entire locale identification;
+nominally equivalent to
+.BR %l_%t.%c .
+.RE
+.
+.ll +\n(INu
+.SH RETURN VALUE
+If the requested message catalogue is successfully opened,
+.BR catopen ()
+returns a unique descriptor,
+which remains associated with the catalogue for as long
+as it remains open.
+.
+.SH ERROR RETURNS
+If the requested catalogue cannot be successfully opened,
+.BR catopen ()
+returns
+.RB ( nl_catd )( -1 ),
+(which is
+.I never
+returned as a valid descriptor),
+and
+.I errno
+is set to one of the following values:\(en
+.ll -\n(INu
+.
+.RS
+.TP
+.B EACCESS
+The user is not permitted to read the message catalogue
+associated with the facility specified by
+.IR name .
+.
+.TP
+.B EMFILE
+The calling process has too many open files.
+.
+.TP
+.B ENOENT
+No message catalogue,
+associated with the facility specified by
+.IR name ,
+could be found.
+.
+.TP
+.B ENOMEM
+There is insufficient free memory available.
+.ll +\n(INu
+.RE
+.
+.SH ENVIRONMENT
+.TP
+.B NLSPATH
+Specifies a list of semicolon separated path names,
+by which a message catalogue may be identified.
+It may include any,
+or all of the following translation specifiers,
+in any combination:\(en
+.ll -\n(INu
+.
+.RS
+.TP
+.B %N
+The message catalogue facility name.
+.
+.TP
+.B %l
+The language component of the locale specification string.
+.
+.TP
+.B %t
+The territory,
+or region,
+component of the locale specification string.
+.
+.TP
+.B %c
+The codeset component of the locale specification string.
+.
+.TP
+.B %L
+The fully qualified locale specification string.
+.ll +\n(INu
+.RE
+.
+.TP
+.B LC_MESSAGES
+The locale specification string,
+used to establish the
+.B NLSPATH
+translations for
+.BR %l ,
+.BR %t ,
+.B  %c
+and
+.BR %L ,
+when the
+.I flag
+argument to
+.BR catopen ()
+is specified as
+.BR NL_CAT_LOCALE .
+.
+.TP
+.B LANG
+The locale specification string,
+used to establish the
+.B NLSPATH
+translations for
+.BR %l ,
+.BR %t ,
+.B  %c
+and
+.BR %L ,
+when the
+.I flag
+argument to
+.BR catopen ()
+is specified as zero.
+.
+.SH CONFORMING TO
+POSIX 1003.1-2001,
+but omitting the reporting of error conditions
+which are unsupported by MS\(hyWindows\*(Tm.
+.
+.SH CAVEATS AND BUGS
+When performing an
+.B NLSPATH
+search,
+the strings substituted for the
+.BR %l ,
+.BR %t ,
+.B  %c
+and
+.B  %L
+translation specifiers are copied literally from the
+.B  LC_MESSAGES
+or
+.B  LANG
+environment variables,
+as appropriate.
+If the requisite environment variable is not defined,
+then the substitution will be performed on the basis of the
+locale identification string for the system
+.B LC_CTYPE
+category,
+(since MS\(hyWindows\*(Tm does not provide native support for the
+.B LC_MESSAGES
+category),
+as returned by
+.BR setlocale (@MAN3EXT@);
+this will be the long form locale identification string,
+which is standard for MS\(hyWindows\*(Tm systems.
+If your system uses POSIX conventions for storing message catalogues,
+with national language directory names specified as ISO\(hy639 language
+or ISO\(hy3166 territory codes,
+be sure to set the requisite
+.B LC_MESSAGES
+or
+.B LANG
+environment variable accordingly.
+.
+.SH SEE ALSO
+.BR catgets (@MAN3EXT@),
+.BR catclose (@MAN3EXT@).
+.
+.SH AUTHOR
+Copyright \(co 2007, Keith Marshall
+.
+.LP
+This man page was written by Keith Marshall
+<keithmarshall@users.sourceforge.net>
+for the MinGW project.
+It relates to the MinGW specific implementation of
+.BR catgets (@MAN3EXT@).
+.
+.LP
+Permission is granted to copy and redistribute this man page,
+either
+.IR "as is" ,
+or in modified form,
+under the terms of the
+.IR "GNU Free Documentation License" ,
+Version 1.2,
+or any later version published by the
+.IR "Free Software Foundation, Inc." ,
+with no front cover texts,
+no back cover texts,
+and no invariant sections.
+Please refer to
+.I http://www.gnu.org/licenses/licenses.html#FDL
+for further information.

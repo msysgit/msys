@@ -1,0 +1,628 @@
+'\"
+.TH gencat @MAN3EXT@ 16-Jul-2007 MinGW "MinGW User Commands
+.
+.SH NAME
+.B gencat
+\- compile a national language message catalogue for use with
+.BR catgets (@MAN3EXT@).
+.
+.\" Copyright (C) 2007,  Keith Marshall.
+.
+.\" Permission is granted to copy, distribute and/or modify this manpage
+.\" under the terms of the GNU Free Documentation License, Version 1.2
+.\" or any later version published by the Free Software Foundation, with
+.\" no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
+.\" A copy of the license is included in the accompanying file, `FDL'.
+.
+.SH SYNOPSIS
+.B gencat
+.I catfile
+.I msgfile
+\&...
+.
+.SH DESCRIPTION
+.B gencat
+merges the messages defined in the input file,
+or files,
+specified by the
+.I msgfile
+argument list into the binary format national language message catalogue
+specified by
+.IR catfile .
+.
+.LP
+If
+.I catfile
+does not exist,
+it is created;
+if it is specified as
+.BR \- ,
+or as the special device name
+.BR /dev/stdout ,
+then the message catalogue is treated as non\(hyexistent,
+and it is created by writing the compiled message data to
+standard output.
+.
+.LP
+Input files in the
+.I msgfile
+list are processed in left to right order,
+as specified.
+If any file name in this
+list is specified as
+.BR \- ,
+or as the special device name
+.BR /dev/stdin ,
+then standard input is read as the corresponding
+.IR msgfile ;
+at most one
+.I msgfile
+should be specified using either of these special
+input file names,
+in any single invocation of
+.BR gencat .
+.
+.SS Message Catalogue Organisation
+Typically,
+a collection of message catalogues,
+comprising one catalogue for each national language,
+will be provided for a single
+.IR facility ,
+(where a
+.I facility
+may represent a single application,
+or a single logical group of applications).
+.
+.LP
+Within each individual catalogue,
+messages are individually numbered,
+and organised into numbered
+.IR sets ,
+such that each message is uniquely identified by
+the combination of its set and message numbers;
+these are indexed,
+to facilitate retrieval of any specific message by the
+.BR catgets (@MAN3EXT@)
+function.
+Within each multilingual collection of message catalogues,
+relating to a common
+.IR facility ,
+each specific combination of set and message numbers refers to
+the various national language translations for the same message.
+.
+.LP
+Message text is incorporated into the message catalogues
+in the form of NUL terminated strings;
+these may be defined using any codeset which may be
+appropriate for the respective national language of
+each individual message catalogue.
+.
+.SS Input File Syntax
+.B gencat
+input files define both the organisation and content
+of a message catalogue.
+They are
+.I text
+files,
+with individual lines delimited by either
+.B LF
+or
+.B CRLF
+line terminators;
+every line of input
+.I must
+be properly terminated,
+by either of these line terminators.
+.
+.LP
+Each line of input must represent one of the input record types:\(en
+.ll -4n
+.
+.RS 4n
+.TP 4n
+.IR "\fB$\fP comment" " ..."
+Lines having
+.B $
+as their first character,
+followed by one or more white space characters,
+and then any additional characters up to and
+including the line terminator,
+are considered as comments.
+They are parsed in the POSIX locale,
+(with conversion of the input encoding from
+UTF\(hy16 or UTF\(hy32 if required).
+With the execption of the special case of a
+.I codeset
+declaration,
+such comment lines are simply ignored.
+.
+.TP
+.BR "$ codeset" = \fIencoding
+This special use of a
+.B comment
+line is an extension to the POSIX standard.
+It functions as a pseudo\(hydirective,
+which provides a mechanism for specifying the codeset in which
+messages are to be defined,
+when this differs from the prevailing codeset
+of the language specified for the
+.B LC_CTYPE
+category of the locale established in the process environment.
+This feature is not supported
+when the input encoding is implicitly identified as
+UTF\(hy16 or UTF\(hy32.
+.
+.TP
+.IR \fB$ < \fBdirective "> " argument " [" comment " ...]"
+Lines having
+.B $
+as their first character,
+followed immediately by a directive keyword,
+with no intervening white space,
+are interpreted as
+.B gencat
+directives.
+The valid directives are:\(en
+.ll -4n
+.
+.RS 4n
+.TP 4n
+.IR \fB$quote " [<" char ">]"
+Identifies a single character,
+which is to be interpreted as an optional quoting character,
+while parsing subsequent message definitions.
+.
+.IP
+The optional
+.RI < char >
+argument must represent a single character;
+it is interpreted,
+possibly as a multi\(hybyte character,
+in the input encoding,
+which may be implicitly identified as
+UTF\(hy16 or UTF\(hy32,
+explicitly specified by a
+.I codeset
+pseudo\(hydirective,
+or,
+failing either of these,
+in the encoding for the
+.B LC_CTYPE
+category of the locale defined in the
+.B gencat
+process environment.
+This character may be used,
+in strict matching pairs,
+to surround sections of text within message definitions,
+so improving the visibility of trailing white space,
+or of empty message definitions,
+within the source file;
+such pairs of the quote character are
+.I not
+copied to the message definition in the message catalogue.
+.
+.IP
+If a
+.B $quote
+directive is issued,
+from which the
+.RI < char >
+argument is omitted,
+or if no
+.B $quote
+directive is specified,
+then no quoting character is available
+for use in subsequent message definitions.
+.
+.TP
+.IR \fB$set " <" setnum "> [" comment ]
+Identifies the set number,
+.IR setnum ,
+to which subsequently defined messages are to be added,
+until the next
+.B $set
+directive,
+or until the end of the source file.
+The
+.I setnum
+argument must represent a decimal integer number in the range from
+.B 1
+to the value of the manifest constant
+.BR NL_SETMAX ,
+which is defined in
+.IR nl_types.h .
+.
+.IP
+Within any single source file,
+set numbers defined by
+.B $set
+directives must be presented in strictly ascending order,
+but they need not be contiguously numbered.
+.
+.IP
+If any source file presents message definitions
+before the first of any
+.B $set
+directives,
+or if no
+.B $set
+directive is present,
+then those messages are added to
+the set identified by the manifest constant
+.BR NL_SETD ,
+which is defined in
+.IR nl_types.h .
+.
+.TP
+.IR \fB$delset " <" setnum "> [" comment ]
+Instructs
+.B gencat
+to remove all messages,
+belonging to the set identified by
+.IR setnum ,
+from an existing message catalogue.
+.RE
+.
+.TP
+.RI < \fBmsgnum "> " "message text" " ... [" \fB\e ]
+Lines commencing with a numeric
+.B msgnum
+tag introduce a new message definition.
+The
+.B msgnum
+tag must be composed of decimal digits from the POSIX portable character set,
+converted from UTF\(hy16 or UTF\(hy32 encoding as necessary,
+when either of these is used for input,
+and must represent a decimal integer number in the range from
+.B 1
+to the value of the manifest constant
+.BR NL_MSGMAX ,
+which is defined in
+.IR nl_types.h .
+It must be separated from the following
+.I message text
+by exactly one space character;
+any additional spaces,
+where present,
+are significant and are considered to be part of the defined
+.IR "message text" .
+.
+.IP
+Within any single message set,
+as presented within any single source file,
+.B msgnum
+records
+.I must
+be presented in strictly ascending numerical order of
+.BR msgnum ;
+however,
+the message numbers need not be contiguous.
+.
+.IP
+The
+.I message text
+is interpreted using the encoding of the input stream,
+which may be implicitly identified as
+UTF\(hy16 or UTF\(hy32,
+explicitly specified by a
+.I codeset
+pseudo\(hydirective,
+or,
+where neither of these is applicable,
+using the encoding for the
+.B LC_CTYPE
+category of the locale defined in the
+.B gencat
+process environment.
+.
+.IP
+Within
+.IR "message text" ,
+the following escape sequences are recognised,
+and interpreted in place,
+before copying to the message catalogue:\(en
+.ll -4n
+.
+.RS 8n
+.TP 9n
+.B \eb
+backspace.
+.
+.TP
+.B \ef
+form feed.
+.
+.TP
+.B \en
+newline.
+.
+.TP
+.B \er
+carriage return.
+.
+.TP
+.B \et
+horizontal tab.
+.
+.TP
+.B \ev
+vertical tab.
+.
+.TP
+.B \e\e
+a single literal
+.B \e
+character.
+.
+.TP
+.BR \e < ddd >
+octal digit sequence;
+the arbitrary length sequence of octal digit characters,
+.BR ddd ,
+is parsed,
+interpreted as the numeric value represented,
+and replaced by the single character associated with the corresponding
+position in the collating sequence of the input codeset.
+.ll +4n
+.RE
+.
+.IP
+In addition to the above escape sequences,
+if the
+.I last
+character of
+.IR "message text" ,
+immediately preceding the
+.B LF
+or
+.B CRLF
+line terminator,
+is an unescaped
+.B \e
+character,
+or if
+.I message text
+includes an unpaired instance of the quoting character,
+as defined by the
+.B $quote
+directive,
+then the following line is interpreted as a continuation of
+.IR "message text" .
+.
+.IP
+When followed by any character,
+other than those specified for the above escape sequences,
+or the line terminator,
+any
+.B \e
+character appearing in
+.I message text
+is ignored;
+it is not included in the collected
+.I message text
+which is to be copied to the message catalogue.
+.
+.IP
+If
+.B msgnum
+is followed by
+.I exactly
+one white space character,
+and immediately thereafter by a
+.B LF
+or a
+.B CRLF
+line terminator,
+then a zero length message will be entered into the message catalogue.
+.
+.IP
+If
+.B msgnum
+is immediately followed by a
+.B LF
+or
+.B CRLF
+line terminator,
+without intervening white space,
+then any message in the current message set,
+and with the specified message number,
+which already exists in the message catalogue,
+will be deleted.
+.
+.TP
+.IR "continuation message text" " ... [" \fB\e ]
+Any line,
+immediately following a message definition record which ends with a
+.B \e
+escaped
+.B LF
+or
+.B CRLF
+terminator,
+or which includes an unpaired quoting character,
+is parsed as a logical continuation of the message definition;
+such continuation may be extended over as many lines as required,
+by similarly escaping the line terminator
+on each continuation line but the last,
+or by deferring the matching of an unpaired quoting character
+until the last continuation line.
+.
+.IP
+When a message definition is extended over one or more continuation lines,
+the intervening line terminators are not included in the collected
+.IR "message text" .
+Thus,
+each of the following two examples:\(en
+.
+.nf
+.RS
+.IP
+$quote "
+1 Message defined \e
+with continuation line.\en
+.
+.IP
+$quote "
+1 "Message defined
+\ with continuation line.\en"
+.RE
+.IP
+is equivalent to:\(en
+.RS
+.IP
+$quote "
+1 Message defined with continuation line.\en
+.RE
+.fi
+.RE
+.ll +8n
+.
+.LP
+All
+.IR "message text" ,
+from each
+.B msgnum
+definition line and its following continuation lines,
+if any,
+is interpreted and collected into a single logical message definition.
+Each such definition is indexed by
+.B setnum
+and
+.B msgnum
+for subsequent retrieval by any application
+accessing the message catalogue by calling
+.BR catopen (@MAN3EXT@)
+and
+.BR catgets (@MAN3EXT@),
+and is stored in the message catalogue as a NUL terminated string.
+.
+.SH ENVIRONMENT
+The following environment variables may be set,
+to control the operation of
+.BR gencat :\(en
+.ll -4n
+.
+.TP 4n
+.B LC_ALL
+If set
+.B LC_ALL
+defines the language,
+territory and encoding attributes to be associated with the
+.B LC_CTYPE
+and
+.B LC_MESSAGE
+locale categories.
+.
+.TP
+.B LC_CTYPE
+If
+.B LC_ALL
+is not defined,
+the encoding attribute from the locale category defined by
+.B LC_CTYPE
+is used to establish the default codeset for the message catalogue,
+when the input encoding cannot be identified as either UTF\(hy16 or UTF\(hy32,
+and there is no
+.B codeset
+pseudo\(hydirective specified in the input stream.
+.
+.TP
+.B LC_MESSAGES
+If
+.B LC_ALL
+is not defined,
+.B LC_MESSAGES
+defines the language,
+territory and encoding attributes identifying a message catalogue,
+in which
+.BR gencat \(aqs
+own diagnostic messages are defined.
+.
+.TP
+.B NLSPATH
+Defines the search path used to locate message catalogues,
+in which
+.BR gencat \(aqs
+own diagnostic messages are defined.
+.B NLSPATH
+should be a semicolon separated list of directory paths,
+in the format required by
+.BR catopen (@MAN3EXT@).
+.
+.SH CONFORMING TO
+POSIX 1003.1-2001.
+.
+.SH CAVEATS AND BUGS
+Neither the automatic detection of UTF\(hy16 or UTF\(hy32
+input encoding formats,
+nor the use of the
+.B codeset
+pseudo\(hydirective to specify message catalogue encoding,
+is mandated by POSIX.
+While some other
+.B gencat
+implementations are known to support the
+.B codeset
+pseudo\(hydirective,
+neither of these features is guaranteed to be portable.
+.
+.LP
+Similarly,
+the use of unpaired quoting characters to extend message definitions,
+over one or more continuation lines,
+is an extension to POSIX requirements,
+and may not be portable to other
+.B gencat
+implementations.
+.
+.LP
+POSIX requires that no individual message shall be greater in length
+than the value of the manifest constant
+.BR NL_TEXTMAX ,
+which is defined in
+.IR nl_types.h ;
+this implementation does not enforce this limitation.
+.
+.LP
+POSIX stipulates that the manifest constants
+.BR NL_SETMAX ,
+.B  NL_MSGMAX
+and
+.BR NL_TEXTMAX ,
+should be defined in
+.IR limits.h ;
+this implementation defines them in
+.I nl_types.h
+instead.
+.
+.SH SEE ALSO
+.BR catopen (@MAN3EXT@),
+.BR catgets (@MAN3EXT@),
+.BR catclose (@MAN3EXT@).
+.
+.SH AUTHOR
+Copyright \(co 2007, Keith Marshall
+.
+.LP
+This man page was written by Keith Marshall
+<keithmarshall@users.sourceforge.net>
+for the MinGW project.
+It relates to the MinGW specific implementation of
+.BR catgets (@MAN3EXT@).
+.
+.LP
+Permission is granted to copy and redistribute this man page,
+either
+.IR "as is" ,
+or in modified form,
+under the terms of the
+.IR "GNU Free Documentation License" ,
+Version 1.2,
+or any later version published by the
+.IR "Free Software Foundation, Inc." ,
+with no front cover texts,
+no back cover texts,
+and no invariant sections.
+Please refer to
+.I http://www.gnu.org/licenses/licenses.html#FDL
+for further information.

@@ -1,5 +1,30 @@
 2007-07-16  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
+	Add manpage sources.
+
+	* man: New directory, containing...
+	* man/catopen.man, man/catgets.man, man/catclose.man: New files.
+	* man/gencat.man: New file.
+
+	* Makefile.in (VPATH): Add `man' source directory.
+	(MANPAGE_SOURCES): Define; it includes all new `*.man' files, as
+	itemised above, for this update.
+	(MANSECTS, MAN1EXT, MAN2EXT, MAN3EXT): Define.
+	(mansect_lookup, mansect_transform, mansect, manpage): New macros;
+	use them to define a generic rule for generating installable manpages,
+	from raw manpage source, used by...
+	(all-man): this new documentation target.
+	(all-info, all-html-doc, all-pdf, all-ps): New documentation targets;
+	none invoke any action, at present.
+	(all-doc): New collective documentation target; it invokes `all-man',
+	`all-info', `all-htmldoc', `all-pdf' and `all-ps'.
+	(all): Add `all-doc' as new prerequisite.
+	(install-man): Add prerequisites and commands for `MANPAGE_SOURCES'.
+	(DISTDIRS): Add `man'.
+	(clean): Add `*.n', `*.a' and `*.dll' as generic prototypes for `rm'.
+
+2007-07-16  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
 	* catclose.c (mc_close): Error out, if descriptor for message
 	catalogue to be closed lies outside the valid range.
 

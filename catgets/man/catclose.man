@@ -1,0 +1,89 @@
+'\"
+.TH catclose @MAN3EXT@ 21-Jun-2007 MinGW "MinGW Programming Reference
+.
+.SH NAME
+.B catclose
+\- close a national language message catalogue.
+.
+.\" Copyright (C) 2007,  Keith Marshall.
+.
+.\" Permission is granted to copy, distribute and/or modify this manpage
+.\" under the terms of the GNU Free Documentation License, Version 1.2
+.\" or any later version published by the Free Software Foundation, with
+.\" no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
+.\" A copy of the license is included in the accompanying file, `FDL'.
+.
+.SH SYNOPSIS
+.BR #include
+.RB < nl_types.h >
+.LP
+.BR "int catclose" ( nl_catd\c
+.IR catd )
+.
+.SH AVAILABILITY
+Requires linking with the
+.B \-lcatgets
+library option.
+.
+.SH DESCRIPTION
+The
+.BR catclose ()
+function closes the national language message catlogue,
+associated with the descriptor
+.I catd
+by a preceding call to
+.BR catopen (@MAN3EXT@),
+and frees all resources allocated to it.
+.
+.SH RETURN VALUE
+On successfully closing
+.IR catd ,
+.BR catclose ()
+returns zero;
+on failure it returns
+.BR -1 ,
+and
+.I errno
+is set to
+.BR EBADF .
+.
+.SH CONFORMING TO
+POSIX 1003.1-2001.
+.
+.SH CAVEATS AND BUGS
+POSIX specifies a further possible error return case,
+with
+.I errno
+set to
+.BR EINTR ;
+this case should not occur on MS\(hyWindows\*(Tm hosts.
+.
+.SH SEE ALSO
+.BR catopen (@MAN3EXT@).
+.
+.SH AUTHOR
+Copyright \(co 2007, Keith Marshall
+.
+.LP
+This man page was written by Keith Marshall
+<keithmarshall@users.sourceforge.net>
+for the MinGW project.
+It relates to the MinGW specific implementation of
+.BR catgets (@MAN3EXT@).
+.
+.LP
+Permission is granted to copy and redistribute this man page,
+either
+.IR "as is" ,
+or in modified form,
+under the terms of the
+.IR "GNU Free Documentation License" ,
+Version 1.2,
+or any later version published by the
+.IR "Free Software Foundation, Inc." ,
+with no front cover texts,
+no back cover texts,
+and no invariant sections.
+Please refer to
+.I http://www.gnu.org/licenses/licenses.html#FDL
+for further information.

@@ -1,0 +1,127 @@
+'\"
+.TH catgets @MAN3EXT@ 19-Jun-2007 MinGW "MinGW Programming Reference
+.
+.SH NAME
+.B catgets
+\- retrieve message text from a national language catalogue
+.
+.\" Copyright (C) 2007,  Keith Marshall.
+.
+.\" Permission is granted to copy, distribute and/or modify this manpage
+.\" under the terms of the GNU Free Documentation License, Version 1.2
+.\" or any later version published by the Free Software Foundation, with
+.\" no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
+.\" A copy of the license is included in the accompanying file, `FDL'.
+.
+.SH SYNOPSIS
+.BR #include
+.RB < nl_types.h >
+.LP
+.BR "char *catgets" ( nl_catd
+.IR catd ,
+.BR int
+.IR setnum ,
+.BR int
+.IR msgnum ,
+.BI "const char *" \c
+.IR msg )
+.
+.SH AVAILABILITY
+Requires linking with the
+.B \-lcatgets
+library option.
+.
+.SH DESCRIPTION
+The
+.BR catgets ()
+function searches in the national language message catalogue
+specified by
+.IR catd ,
+which must have been opened by a preceding call to
+.BR catopen (@MAN3EXT@),
+for a message in set number
+.IR setnum ,
+which is identified by the message number
+.IR msgnum .
+If found,
+.BR catgets ()
+returns the text of this message;
+the
+.I msg
+argument specifies a default message,
+which is returned if the specified message cannot be found
+in the catalogue.
+.
+.SH RETURN VALUE
+If the specified message entry is successfully located in
+the catalogue,
+.BR catgets ()
+returns a pointer to the null\-terminated string
+defining the text of the message;
+if the look\-up is unsuccessful,
+.BR catgets ()
+returns
+.IR msg .
+.
+.SH ERROR RETURNS
+None.
+.
+.SH CONFORMING TO
+POSIX 1003.1-2001.
+.
+.SH CAVEATS AND BUGS
+Text retrieved from a message catalogue is located within
+an internal buffer allocated by
+.BR catopen (@MAN3EXT@);
+it must not be modified by the calling procedure.
+.
+.LP
+The encoding format for message text is defined at the time
+the catalogue is compiled by
+.BR gencat (@MAN1EXT@).
+Nominally,
+it may be expected to conform to the
+.B LC_MESSAGES
+encoding for the active locale,
+as established by
+.BR setlocale (@MAN3EXT@);
+however,
+this cannot be easily confirmed by the function calling
+.BR catgets ().
+Therefore,
+the calling procedure should assume that
+the returned text matches the locale encoding;
+if the message catalogue is known to employ Unicode encoding,
+then the calling procedure should process the returned message
+as a Unicode string.
+.
+.SH SEE ALSO
+.BR catopen (@MAN3EXT@),
+.BR gencat (@MAN1EXT@).
+.
+.SH AUTHOR
+Copyright \(co 2007, Keith Marshall
+.
+.LP
+This man page was written by Keith Marshall
+<keithmarshall@users.sourceforge.net>
+for the MinGW project.
+It relates to the MinGW specific implementation of
+.BR catgets ().
+.
+.LP
+Permission is granted to copy and redistribute this man page,
+either
+.IR "as is" ,
+or in modified form,
+under the terms of the
+.IR "GNU Free Documentation License" ,
+Version 1.2,
+or any later version published by the
+.IR "Free Software Foundation, Inc." ,
+with no front cover texts,
+no back cover texts,
+and no invariant sections.
+Please refer to
+.I http://www.gnu.org/licenses/licenses.html#FDL
+for further information.
