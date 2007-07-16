@@ -1,7 +1,7 @@
 /*
  * catclose.c
  *
- * $Id: catclose.c,v 1.1 2007-04-06 22:34:52 keithmarshall Exp $
+ * $Id: catclose.c,v 1.2 2007-07-16 19:59:42 keithmarshall Exp $
  *
  * Copyright (C) 2006, Keith Marshall
  *
@@ -30,13 +30,33 @@
 
 #include <stdarg.h>
 #include <mctab.h>
+#include <errno.h>
 
 static
 void *mc_close( struct mc_tab *cdt, va_list argv )
 {
   /* This call-back function provides the actual `catclose' implementation.
+   * There is one entry in the `argv' vector, representing the descriptor
+   * for the catalogue which is to be closed.
    */
-  return (void *)_mc_free_( cdt->tab + va_arg( argv, int ) );
+  int catd = va_arg( argv, int );
+  if( (catd < 0) || (catd >= cdt->curr_size) )
+  {
+    /* The catalogue descriptor is simply an integer index into an array
+     * of pointers to the actual message catalogue data structures.  There
+     * are exactly cdt->curr_size elements in this descriptor array, with
+     * index values ranging from 0 .. cdt->curr_size - 1; if here, then
+     * the value of catd falls outside this range, we decline to accept
+     * it, bailing out with errno = EBADF, as specified by POSIX.
+     */
+    errno = EBADF;
+    return (void *)(-1);
+  }
+  /* If we get past this validity check, then we simply hand off the task
+   * of closing the message catalogue, and freeing its resource allocation,
+   * to the _mc_free_ function.
+   */
+  return (void *)_mc_free_( cdt->tab + catd );
 }
 
 int catclose( nl_catd catd )
@@ -46,4 +66,4 @@ int catclose( nl_catd catd )
   return (int)_mctab_( mc_close, catd );
 }
 
-/* $RCSfile: catclose.c,v $Revision: 1.1 $: end of file */
+/* $RCSfile: catclose.c,v $Revision: 1.2 $: end of file */

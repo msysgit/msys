@@ -1,3 +1,8 @@
+2007-07-16  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	* catclose.c (mc_close): Error out, if descriptor for message
+	catalogue to be closed lies outside the valid range.
+
 2007-06-18  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Handle unicode input streams.
