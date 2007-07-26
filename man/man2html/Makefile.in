@@ -17,6 +17,7 @@ man2html:	$(OBJECTS)
 
 # This installs the man2html utility
 install:	man2html
+	mkdir -p $(bindir)
 	install -m 755 man2html $(bindir)
 	mkdir -p $(mandir)/man1
 	install -m 644 man2html.1 $(mandir)/man1/man2html.@man1ext@

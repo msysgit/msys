@@ -23,17 +23,21 @@
 # 960401 - aeb: slight adaptation to work correctly with cat pages.
 # 960510 - added fixes by brennan@raven.ca.boeing.com, author of mawk.
 # 971012 - replaced "test -z" - it doesnt work on SunOS 4.1.3_U1.
-# 980710 - be more careful with TMPFILE
-# 000323 - do not change PATH, better treatment of catpages - Bryan Henderson
-# 011117 - avoid suspicious filenames
+# 980710 - be more careful with TMPFILE.
+# 000323 - do not change PATH, better treatment of catpages - Bryan Henderson.
+# 011117 - avoid suspicious filenames.
 # 030310 - find files only; fix LAPACK cruft; no /usr/man default;
 #	use /dev/stderr instead of /dev/tty; handle files with strange names;
 #	add support for chinese, hungarian, indonesian, japanese, korean,
-#	polish, russian (Thierry Vignaud);
+#	polish, russian (Thierry Vignaud).
+#
+# makewhatis 1.6: Federico Lucifredi
+# 060608 - Corrected traps.
+# 060719 - section choosing behavior to match man's (Mike frysinger).
 #
 # Note for Slackware users: "makewhatis -v -w -c" will work.
 #
-# makewhatis aeb 030801 (from %version%)
+# makewhatis flc 060719 (from @version@)
 
 program=`basename $0`
 
@@ -63,7 +67,7 @@ DEFCATPATH=$dc
 # but that leads to problems and bugs.
 
 # AWK=/usr/bin/gawk
-AWK=%awk%
+AWK=@awk@
 
 # Find a place for our temporary files. If security is not a concern, use
 #	TMPFILE=/tmp/whatis$$; TMPFILEDIR=none
@@ -73,7 +77,7 @@ AWK=%awk%
 # in case makewhatis is run as root, by creating a subdirectory of /tmp.
 
 TMPFILEDIR=/tmp/whatis.tmp.dir.$$
-rm -rf TMPFILEDIR
+rm -rf $TMPFILEDIR
 if ! mkdir -m 0700 $TMPFILEDIR; then
     echo Could not create $TMPFILEDIR
     exit 1;
@@ -82,7 +86,8 @@ TMPFILE=$TMPFILEDIR/w
 
 # make sure TMPFILEDIR is deleted if program is killed or terminates
 # (just delete this line if your shell doesnt know about trap)
-trap "rm -rf $TMPFILEDIR" 0 1 2 3 15
+trap "rm -rf $TMPFILEDIR" 0
+trap "rm -rf $TMPFILEDIR; exit 255" 1 2 3 15
 
 # default find arg: no directories, no empty files
 findarg0="-type f -size +0"
@@ -92,7 +97,15 @@ topath=manpath
 defmanpath=$DEFMANPATH
 defcatpath=
 
-sections="1 2 3 4 5 6 7 8 9 n l"
+if [ -n "$MANSECT" ]; then
+	sections=$MANSECT
+else
+	sections=`$AWK '($1 == "MANSECT") { print $2 }' @man_config_file@`
+	if [ x"$sections" = x ]; then
+		sections="@sections@"
+	fi
+fi
+sections=`echo $sections | sed -e 's/:/ /g'`
 
 for name in "$@"
 do
@@ -103,7 +116,7 @@ if [ -n "$setsections" ]; then
 fi
 case $name in
     --version|-V)
-	echo "$program from %version%"
+	echo "$program from @version@"
 	exit 0;;
     -c) topath=catpath
 	defmanpath=
@@ -119,9 +132,10 @@ case $name in
     -w) manpath=`man --path`
 	catpath=$manpath
 	continue;;
-    -*) echo "Usage: makewhatis [-u] [-v] [-w] [manpath] [-c [catpath]]"
+    -*) echo "Usage: makewhatis [-s sections] [-u] [-v] [-w] [manpath] [-c [catpath]]"
 	echo "       This will build the whatis database for the man pages"
 	echo "       found in manpath and the cat pages found in catpath."
+        echo "       -s: sections (default: $sections)"
 	echo "       -u: update database with new pages"
 	echo "       -v: verbose"
 	echo "       -w: use manpath obtained from \`man --path\`"
@@ -258,7 +272,7 @@ do
 		   $2 ~ /^N[ÉE]V/ || $2 ~ /^NAMA/ || $2 ~ /^Ì¾Á°/ ||
 		   $2 ~ /^Ì¾¾Î/ || $2 ~ /^ÀÌ¸§/ || $2 ~ /^NAZWA/ ||
 		   $2 ~ /^îáú÷áîéå/ || $2 ~ /^Ãû³Æ/ || $2 ~ /^¦WºÙ/ ||
-		   $2 ~ /^NOME/ || $2 ~ /^NAAM/)) ||
+		   $2 ~ /^NOME/ || $2 ~ /^NAAM/ || $2 ~ /^ÈÌÅ/)) ||
 		  (pages == "cat" && $1 ~ /^NAME/)) {
 		    if (!insh) {
 		      insh = 1;

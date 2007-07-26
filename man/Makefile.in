@@ -33,13 +33,13 @@ makefiles: src/Makefile man2html/Makefile man/Makefile msgs/Makefile
 source:	src/Makefile
 	cd src; $(MAKE)
 
-manhtml: man2html/Makefile
+manhtml: man2html/Makefile source
 	cd man2html; $(MAKE)
 
 manpages: man/Makefile
 	cd man; $(MAKE) subdirs
 
-%messages: gencat/gencat msgs/Makefile
+%messages: gencat/gencat msgs/Makefile source
 %	cd msgs; $(MAKE)
 
 %gencat/gencat:

@@ -39,7 +39,7 @@ usage (void) {
      exit(1);
 }
 
-static char short_opts[] = "B:C:H:xM:P:S:acdfFhkKm:p:s:tvVwW?";
+static char short_opts[] = "B:C:H:xM:P:S:acdDfFhkKm:p:s:tvVwW?";
 
 #ifndef NOGETOPT
 #undef _GNU_SOURCE
@@ -110,6 +110,8 @@ get_options_from_argvec(int argc, char **argv, char **config_file,
 	  case 'c':
 	       nocats++;
 	       break;
+	  case 'D':
+	       debug++;
 	  case 'd':
 	       debug++;
 	       break;
@@ -288,7 +290,7 @@ man_getopt (int argc, char **argv) {
      if (debug)
 	  gripe (BROWSER_IS, browser);
 
-     /* Ditto for HTMLHTMLPAGER and -D */
+     /* Ditto for HTMLHTMLPAGER and -H */
      if (htmlpager && (global_apropos || apropos || whatis))
 	 mysetenv("HTMLPAGER", htmlpager);
 

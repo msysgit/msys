@@ -48,9 +48,11 @@ up-to-date.  Many thanks.
 */
 
 #include <stdio.h>
+#include <stdlib.h>
 #ifdef SYSV
 #include <sys/types.h>
 #include <unistd.h>
+#endif
 
 #ifndef __linux__
 #include <memory.h>
@@ -66,9 +68,10 @@ int length;
 {
     memset(b, '\0', length);
 }
+#else
+#include <string.h>
 #endif
 
-#endif
 #include <sys/file.h>
 #include <ctype.h>
 #include "msgcat.h"

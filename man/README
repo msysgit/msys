@@ -11,18 +11,33 @@ In man-1.5 Richard Verhoeven's man2html was added, together with
 some scripts by Michael Hamilton. This html stuff is still alpha
 (but it works - no negative reports so far).
 
+man-1.6 and versions following were released by Federico Lucifredi (flucifredi@acm.org).
+
 In man-1.6 Eric S. Raymond's browser-handoff functionality was added, with
 future minor versions planned to cleanup internationalization and cross
-platform support (Cygwin, solaris, and perhaps Win32).
+platform support (Cygwin, solaris, and perhaps Win32). A bugfixing campaign
+is currently underway.
 
 The current maintainer is Federico Lucifredi (flucifredi@acm.org). 
 
 The current version can usually be found at 
-http://primates.ximian.com/~flucifredi/man/
-or over at http://www.people.fas.harvard.edu/~lucifred/man/ .
+http://primates.ximian.com/~flucifredi/man/ 
+a backup distribution site is located at
+http://people.fas.harvard.edu/~lucifred/man/
+releases are also posted to the Metalab site regularly.
+
+Feedback from distribution packagers is very appreciated. 
 
 There is a very different man program, also derived from
 John Eaton's original version (by Graeme W. Wilford)
 distributed under the name man_db, with version numbers
 like man_db-2.3.10.  Do not confuse the two, they are
 mutually incompatible, although they perform nearly the same job.
+
+Man versions are codenamed for Bats, starting with 1.6e. 
+
+Development releases have an 'RC-' suffix followed by the release
+candidate number. Versions released under the 'RC' label are not
+to be included in stable distributions (and indeed no one has been
+so far - do not be the first to screw up!).
+

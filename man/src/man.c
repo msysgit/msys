@@ -30,6 +30,9 @@
 #include <errno.h>
 #include <unistd.h>
 #include <locale.h>
+#ifdef TERMIOS_HEADER
+#include <sys/termios.h>
+#endif
 
 #ifndef R_OK
 #define R_OK 4

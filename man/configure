@@ -19,7 +19,7 @@
 #   configure +fhs		(follow FHS: use /var/cache/man)
 #   configure +fsstnd		(follow FSSTND: use /var/catman)
 #
-LANGUAGES="cs,da,de,el,en,es,fi,fr,hr,it,ja,ko,nl,pl,pt,ro,ru,sl"
+LANGUAGES="bg,cs,da,de,el,en,es,fi,fr,hr,it,ja,ko,nl,pl,pt,ro,ru,sl"
 LANGOPT="+lang {$LANGUAGES|all|none}"
 #
 # Some people prefer "-irs", but probably only when they have a broken setup.
@@ -227,6 +227,15 @@ main() { exit(0); strerror(0); }" > conftest.c
 eval $compile
 if test -s conftest && ./conftest 2>/dev/null; then
   DEFS="$DEFS -DSTDC_HEADERS"
+fi
+rm -f conftest conftest.c
+
+echo checking for sys/termios.h
+echo "#include <sys/termios.h>
+main() { exit(0); }" > conftest.c
+eval $compile
+if test -s conftest && ./conftest 2>/dev/null; then
+  DEFS="$DEFS -DTERMIOS_HEADER"
 fi
 rm -f conftest conftest.c
 
