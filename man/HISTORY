@@ -1,3 +1,63 @@
+man-1.6e - 'Dracula'
+
+- Sections used by makewhatis set via environment variable MANSECT, falling 
+  back to man.conf's MANSECT setting as man does (Mike Frysinger).
+- Removed use of implicit prototypes - besides being sloppy, it leads to issues
+  on 64 bit platforms (Mike frysinger, flc). 
+- Building will now honor pre-existing LDFLAGS if set (Mike Frysinger).
+- Updated Italian man pages (Giulio Daprelá).
+- Updated Spanish man pages (B. Albiñana, flc).
+- Corrected a minor bug in makewhatis' tempdir generation (flc).
+- EXPERIMENTAL: support for Plan 9 rc shell lists (Michael Haardt).
+- Overdue LSM v4 format compliance (flc).
+- Minor corrections and cleanup (flc). 
+
+man-1.6d
+
+- Fixed freeing of unallocated memory in '-K' under unsafe flag (flc).
+- Corrected a bug introduced in 1.6c makewhatis - thanks to the packagers 
+  that promptly pointed it out (flc).
+- corrected off-by-one in LANG splitting code (no security aspect) (flc).
+- added support for DESTDIR in man2html's Makefile (Claudio Fontana).
+- Fixed -D option (flc).
+- Header fix for variable header location of TIOCGWINSZ (Eugene Kotlyarov). 
+- Corrected erroneous encoding of FR locale man pages translation (flc).
+- EXEEXT and DESTDIR fixes for gencat (Volker Zell). 
+- Minor correction of CYGWIN support (Volker Zell).
+- Updated Polish message catalog and select man pages (M. Garski).
+- Minor corrections to man pages, and the German message catalog 
+  (flc, Volker Zell, others).
+- Constricted locale settings for gencat (Fedora Project).
+- Corrections to makewhatis exit codes and signal handling (flc).
+- Fixes in man2html parsing (Fedora Project).
+- Minor additional corrections (flc).
+
+man-1.6c
+
+- Corrected missing format string, but no privilege escalation was involved 
+  (flc, Ville-Skyttä).
+- pscan format string audit run - nothing further found (flc).
+- Updated Bulgarian locale man pages translation and message catalog 
+  (Alexander Shopov). 
+- makewhatis and other minor changes to support BG locale 
+  (Alexander Shopov, flc).
+- Updated Italian locale message catalog translation (flc).
+- Updated French man pages, with new man2html page (Alain Portal).
+
+man-1.6b
+
+- Additional changes for parallel Make (Octavio Ruiz).
+- New French locale man pages translation (Alain Portal).
+- New French locale message catalog translation (Alain Portal).
+- Minor changes in manual pages (Giorgos Keramidas, flc).
+- Minor corrections in the docs (flc).
+
+man-1.6a
+
+- Fixes to support parallel Make (Mike Frysinger).
+- Fixes in mess.en message catalog (Martin von Gagern).
+- Corrections and updates to the manual (flc).
+
 man-1.6
 
 - New Maintainer Federico Lucifredi (flucifredi@acm.org).
@@ -32,42 +92,3 @@ man-1.5o:
 - Fix for certain awk versions in mansec (NISHIMURA Daisuke)
 - When asked for a nonexisting page in section 1p, do not also try section 1
 
-man-1.5n:
-
-- Added "0p 1p 3p" in sections string
-- Added mess.??.codeset (with dummy content)
-- No funny Russian messages
-- man2html: handle .so with trailing whitespace
-- replace -grepsilent by >/dev/null 2>/dev/null
-
-man-1.5m:
-
-- Greek man pages and messages
-- makewhatis fix
-
-man-1.5k:
-
-- Korean and Romanian man pages and messages
-- makewhatis fixes
-- apropos fix
-- security fix
-
-man-1.5j:
-
-- a few security fixes
-- adapted configure to try awk/gawk/mawk
-- Japanese support, man pages and messages, Russian messages
-- polished makewhatis so that it handles more strange man pages
-- implemented MANDEFOPTIONS for people who always want -a
-
-man-1.5i:
-
-- added man2dvi (Tobias Begalke <tb@lst.de>)
-- polished makewhatis so that it handles more strange man pages
-- improve handling of filenames with embedded spaces
-- man -W gives same output to tty and pipe
-- man2html/scripts/cgi-bin/man/mansearch: change separator so that
-  perl function names like ExtUtils::MakeMaker(3) are handled correctly
-  (Carlos A M dos Santos <casantos@inf.ufrgs.br>)
-- make "man ./foo.3" work, when foo.3 contains ".so man2/bar.2"
-- gencat fix for Unix98 conformance (Stanislav Brabec <utx@k332.feld.cvut.cz>)

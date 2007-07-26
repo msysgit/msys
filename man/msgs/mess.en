@@ -21,10 +21,6 @@ NO_SUCH_ENTRY
 	"No manual entry for %s\n"
 PAGER_IS
 	"\nusing %s as pager\n"
-BROWSER_IS
-	"\nusing %s as browser\n"
-HTMLPAGER_IS
-	"\nusing %s to dump HTML pages as text"
 SYSTEM_FAILED
 	"Error executing formatting or display command.\n\
 System command %s exited with status %d.\n"
@@ -172,6 +168,10 @@ NO_TROFF
 	"error: no TROFF command specified in %s\n"
 NO_CAT_FOR_NONSTD_LL
 	"no cat page stored because of nonstandard line length\n"
+BROWSER_IS
+	"\nusing %s as browser\n"
+HTMLPAGER_IS
+	"\nusing %s to dump HTML pages as text\n"
 FOUND_FILE
 	"manfile_from_sec_and_dir() found %s\n"
 CALLTRACE1

@@ -1,20 +1,20 @@
 .\" @(#)man.conf
 .\" Traduction française René Cougnenc - Mai 1995
 .\"
-.TH MAN.CONF 5 "30 Mars 1994" "Manuel Linux" "Commandes utilisateur" 
+.TH MAN.CONF 5 "19 septembre 2005" "Manuel Linux" "Commandes utilisateur"
 .SH NOM
 man.conf \- fichier de configuration de la commande man
 .SH DESCRIPTION
 .LP
 Ce fichier est lu par
 .BR man (1)
-et  contient: (a)  des informations  sur la  manière de  construire le
-chemin  de recherche  des pages  de  manuel, (b)  les chemins  d'accès
-complets de divers programmes de  formatage tels nroff, eqn, tbl, etc.
-utilisés par man,  et (c) une liste des décompacteurs  à employer pour
-traiter  les  pages préformatées  selon  l'extension  de leur  nom  de
+et contient\ : (a) des informations sur la manière de construire le
+chemin de recherche des pages de manuel, (b) les chemins d'accès
+complets de divers programmes de formatage tels nroff, eqn, tbl, etc.
+utilisés par man, et (c) une liste des décompacteurs à employer pour
+traiter les pages préformatées selon l'extension de leur nom de
 fichier. Il est possible de spécifier un autre fichier que celui-ci en
-précisant:
+précisant\ :
 .LP
 .RS
 man -C man.conf_personnel ...
@@ -22,7 +22,7 @@ man -C man.conf_personnel ...
 .LP
 Les noms de commandes peuvent comporter des options.
 Les options utiles pour nroff se trouvent dans grotty(1).
-Par exemple, au lieu de la ligne par défaut:
+Par exemple, au lieu de la ligne par défaut\ :
 .LP
 .RS
 .nf
@@ -30,7 +30,7 @@ NROFF /usr/bin/groff -mandoc -Tlatin1
 .fi
 .RE
 .LP
-vous pouvez mettre:
+vous pouvez mettre\ :
 .LP
 .RS
 .nf
@@ -40,11 +40,38 @@ NROFF /usr/bin/groff -mandoc -Tlatin1 -P-u -P-b
 .LP
 afin de supprimer le soulignement et les caractères gras.
 
-Notez que l'option -Tlatin1 passée  à la commande groff est importante
-pour  nous  autres, francophones;  associée  à  un visualiseur  et  un
-terminal supportant ce  jeu de caractères (comme less  et xterm), elle
+Notez que l'option -Tlatin1 passée à la commande groff est importante
+pour nous autres, francophones\ ; associée à un visualiseur et un
+terminal supportant ce jeu de caractères (comme less et xterm), elle
 permet de conserver nos précieux accents dans les pages de manuel.
+.SH FICHIERS
+.I "@man_config_file@"
+.SH AUTEUR
+John W. Eaton est l'auteur historique de
+.BR man .
+Federico Lucifredi <flucifredi@acm.org> en assure aujourd'hui la maintenance.
 .SH "VOIR AUSSI"
-col(1), (g)eqn(1), (g)pic(1), groff(1), grotty(1), (g)refer(1), (g)tbl(1),
-less(1), man (1) et compress(1), gzip(1).
+.BR col (1),
+.BR (g)eqn (1),
+.BR (g)pic (1),
+.BR groff (1),
+.BR grotty (1),
+.BR (g)refer (1),
+.BR (g)tbl (1),
+.BR less (1),
+.BR man (1)
+et
+.BR compress (1),
+.BR gzip (1).
+
+.SH TRADUCTION
+.PP
+Ce document est une traduction réalisée par René Cougnenc en mai 1995 et mise
+à jour par Alain Portal <aportal AT univ-montp2 DOT fr> le 7 novembre 2005.
+.PP
+L'équipe de traduction a fait le maximum pour réaliser une adaptation
+française de qualité. La version anglaise la plus à jour de ce document est
+toujours consultable via la commande\ : «\ \fBLANG=en\ man\ 5\ man.conf\fR\ ».
+N'hésitez pas à signaler à l'auteur ou au traducteur, selon le cas, toute
+erreur dans cette page de manuel.
 
