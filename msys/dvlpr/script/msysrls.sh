@@ -32,6 +32,16 @@ RLSDEPOT=/depot/binary/${PACKAGE}/${SHORTVER}
 RLSOUTPUTDIR="${RLSROOT}/${VERSION}"
 PACKAGE_NAME=${PACKAGE}-${VERSION}${SNAPDATE}${SUBVERSION}.tar.bz2
 
+if [ -z "$SNAPDATE" ]
+then
+    RELEASE="Production Release${SUBVERSION}"
+elif [ "x${SNAPDATE}" == "x-rc" ]
+then
+    RELEASE="Release Candidate${SUBVERSION}"
+else
+    RELEASE="Snapshot${SNAPDATE}${SUBVERSION}"
+fi
+
 istore=${STOREROOT}/pkg
 noarchstore=${STOREROOT}/noarch
 miscstore=${STOREROOT}/misc

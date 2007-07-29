@@ -1,3 +1,7 @@
+2007.07.29  Cesar Strauss  <cestrauss@gmail.com>
+
+	* script/msysrls.sh (RELEASE): Revert removal.
+
 2007.06.23  Cesar Strauss  <cestrauss@gmail.com>
 
 	* script/msysrls.sh: Create a msysCORE tarball instead of an installer.
