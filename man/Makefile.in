@@ -123,7 +123,8 @@ spotless distclean realclean:
 
 distdir = @PACKAGE_NAME@-@PACKAGE_VERSION@
 DISTNAME = ${distdir}`test -n "$(BUILD)" && echo -`$(BUILD)
-DISTDIRS = src src/win32 man man/?? tools msgs catopen man2html man2html/scripts/cgi*/man
+DISTDIRS = src src/win32 man man/?? tools msgs misc catopen \
+  man2html man2html/scripts/cgi*/man
 DISTCLEANDIRS = $(CLEANDIRS) src/win32
 
 .PHONY: dist distdir distcheck distpackage
@@ -134,24 +135,26 @@ distdir:
 	rm -rf ${distdir}; mkdir ${distdir}
 	srcdir=`cd ${srcdir}; pwd`; manifest=`cd ${srcdir}; echo $(DISTDIRS)`; \
 	  cd ${distdir}; $$srcdir/mkinstalldirs $$manifest
-	for file in `cd ${srcdir}; echo *`; \
-	  do if test -f ${srcdir}/$$file; then \
-	    echo $(LN_S) ${srcdir}/$$file ${distdir}/$$file; \
-	    $(LN_S) ${srcdir}/$$file ${distdir}/$$file; \
+	srcdir=`cd ${srcdir}; pwd`; cd ${distdir}; \
+	for file in `cd $$srcdir; echo *`; \
+	  do if test -f $$srcdir/$$file; then \
+	    $(LN_S) $$srcdir/$$file .; \
 	    fi; \
 	  done
-	for dir in `cd ${distdir}; echo $(DISTDIRS)`; \
-	  do for file in `cd ${srcdir}/$$dir; echo *`; \
-	    do if test -f ${srcdir}/$$dir/$$file; then \
-	      echo $(LN_S) ${srcdir}/$$dir/$$file ${distdir}/$$dir/$$file; \
-	      $(LN_S) ${srcdir}/$$dir/$$file ${distdir}/$$dir/$$file; \
-	      fi; \
-	    done; \
+	srcdir=`cd ${srcdir}; pwd` distdir=`cd ${distdir}; pwd`; \
+	for dir in `cd $$distdir; echo $(DISTDIRS)`; \
+	  do cd $$distdir/$$dir; \
+	    for file in `cd $$srcdir/$$dir; echo *`; \
+	      do if test -f $$srcdir/$$dir/$$file; then \
+		  $(LN_S) $$srcdir/$$dir/$$file .; \
+		fi; \
+	      done; \
 	  done
-	for dir in $(DISTCLEANDIRS); \
-	  do $(LN_S) ./$$dir/Makefile ${distdir}/$$dir/Makefile; \
+	srcdir=`pwd` distdir=`cd ${distdir}; pwd`; \
+	for dir in . $(DISTCLEANDIRS); \
+	  do cd $$distdir/$$dir; \
+	    $(LN_S) $$srcdir/$$dir/Makefile .; \
 	  done
-	$(LN_S) ./Makefile ${distdir}/Makefile
 	cd ${distdir}; $(MAKE) srcdir=. top_srcdir=`pwd` distclean
 
 distpackage: distdir
