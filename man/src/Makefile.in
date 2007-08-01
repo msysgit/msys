@@ -55,6 +55,7 @@ OBJEXT = @OBJEXT@
 pager = @pager@
 
 CFLAGS = @CFLAGS@
+LDFLAGS = @LDFLAGS@
 DEFS = @DEFS@ $(INCLUDES)
 GREPSILENT = -DGREPSILENT='"@man_grepsilent@"'
 CWARNNP = @CWARNNP@
@@ -65,9 +66,6 @@ WIN32LIBS = @WIN32LIBS@
 
 .c.$(OBJEXT):
 	$(CC) -c $(CWARN) $(CFLAGS) $(DEFS) $<
-
-# LDFLAGS = -g
-# LDFLAGS = -s
 
 all: man man.conf apropos whatis makewhatis
 
@@ -118,7 +116,7 @@ different.$(OBJEXT) man.$(OBJEXT): different.h
 man.$(OBJEXT) manfile.$(OBJEXT): glob.h
 
 different.$(OBJEXT) gripes.$(OBJEXT) man-config.$(OBJEXT) man-getopt.$(OBJEXT) \
-man.$(OBJEXT) manpath.$(OBJEXT) util.$(OBJEXT): gripes.h gripedefs.h
+man.$(OBJEXT) manfile.$(OBJEXT) manpath.$(OBJEXT) util.$(OBJEXT): gripes.h gripedefs.h
 
 different.$(OBJEXT) man-config.$(OBJEXT) man-getopt.$(OBJEXT) \
 man.$(OBJEXT) manpath.$(OBJEXT): man-config.h
@@ -147,9 +145,6 @@ gripes.$(OBJEXT): ${top_srcdir}/catopen/catopen.c
 
 man.conf: man.conf.in $(config_sed)
 	sed -f ${top_builddir}/config.sed ${srcdir}/man.conf.in > man.conf
-
-#paths.h: paths.h.in $(config_sed)
-#	sed -f ${top_builddir}/config.sed ${srcdir}/paths.h.in > paths.h
 
 version.h: ${top_srcdir}/configure.ac Makefile
 	echo 'static char version[] = "$(version)";' > version.h

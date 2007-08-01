@@ -70,7 +70,7 @@ version.h: ${top_srcdir}/configure.ac Makefile
 # This installs the man2html utility
 install: man2html$(EXEEXT)
 	${top_srcdir}/mkinstalldirs ${DESTDIR}${mandir}/man1
-	-test -n "${DESTDIR}" && ${top_srcdir}/mkinstalldirs ${DESTDIR}${bindir}
+	test -z "${DESTDIR}" || ${top_srcdir}/mkinstalldirs ${DESTDIR}${bindir}
 	${top_srcdir}/mkinstalldirs --require ${DESTDIR}${prefix} ${DESTDIR}${bindir}
 	$(INSTALL) -m 755 man2html$(EXEEXT) ${DESTDIR}${bindir}/man2html$(EXEEXT)
 	$(INSTALL) -m 644 ${srcdir}/man2html.1 ${DESTDIR}${mandir}/man1/man2html.@man1ext@

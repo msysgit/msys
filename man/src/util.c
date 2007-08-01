@@ -108,7 +108,7 @@ get_permissions (void) {
 void
 no_privileges (void) {
      if (suid) {
-#if !defined(_WIN32) && !defined (__CYGWIN32__) && !defined (__BEOS__)
+#if !defined(_WIN32) && !defined (__CYGWIN__) && !defined (__BEOS__)
 	  setreuid(ruid, ruid);
 	  setregid(rgid, rgid);
 #endif
@@ -232,7 +232,7 @@ do_system_command (const char *command, int silent) {
       * If we're debugging, don't really execute the command
       */
      if ((debug & 1) || !strncmp(command, NOT_SAFE, strlen(NOT_SAFE)))
-	  gripe (NO_EXEC, command);
+	  fatal (NO_EXEC, command);
      else
 	  status = my_system (command);
 

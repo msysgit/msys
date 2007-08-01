@@ -76,13 +76,13 @@ tools:	tools/Makefile FORCE
 source:	src/Makefile FORCE
 	cd src; $(MAKE)
 
-manhtml: man2html/Makefile FORCE
+manhtml: man2html/Makefile source
 	cd man2html; $(MAKE)
 
 manpages: man/Makefile FORCE
 	cd man; $(MAKE) subdirs
 
-messages: msgs/Makefile FORCE
+messages: msgs/Makefile source
 	cd msgs; $(MAKE)
 
 install: install-core $(install_messages) install-done

@@ -1,3 +1,49 @@
+2007-08-01  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Resolve conflicts from man-1.6e import, for merge into trunk.
+	Retain all imported updates, except...
+
+	* All files (MAN-1-6E-MINGW-MERGED): Tag assigned.
+
+	* configure.ac (AC_INIT): Update version number.
+	(AC_CHECK_HEADERS): Add check for `sys/termios.h'.
+
+	* configure, config.h.in: Regenerated.
+
+	* Makefile.in: Keep my previous changes.
+	(manhtml, messages): Add `source' as prerequisite.
+
+	* src/Makefile.in: Keep my previous changes.
+	(LDFLAGS): Use definition established by `configure'.
+	(manfile.$OBJEXT): Add dependencies on `gripes.h' and `gripedefs.h'.
+	(paths.h): Remove obsolete build rule.
+
+	* src/man.c (TERMIOS_HEADER): New conditional include; renamed to...
+	(HAVE_SYS_TERMIOS_H): ...this, as defined by AC_CHECK_HEADERS.
+
+	* src/man-getopt.c (get_options_from_argvec): Add `-D' option.
+	(HTMLHTMLPAGER): Typo in comment; keep my previous correction...
+	(HTMLPAGER): ...to this.
+
+	* src/manpath.c (PATH_SEPARATOR_CHAR): Keep my previous change;
+	use in place of explicit ':'; add SOH as fallback.
+	(add_to_mandirlist_x): Correct expected offset for `.', in `lang[]'.
+	(manpath): New environment variable; add as preferred synonym for...
+	(MANPATH): ...this.
+
+	* src/util.c (__CYGWIN32__): Revert my previous change; use...
+	(__CYGWIN__): ...this instead, but keep my additional test for...
+	(_WIN32): ...this.
+	(NO_EXEC) [debug & 1]: Report using `fatal()' instead of `gripe()'.
+
+	* msgs/Makefile.in: Keep my previous changes.
+	(LC_ALL): Set to `en_US.UTF-8', when running `gencat'.
+
+	* man2html/Makefile.in: Keep my previous changes.
+	(install) [DESTDIR]: Invert sense of test, for `mkinstalldirs'.
+
+	* man2html/man2html.c (version.h): Keep my modified include.
+
 2007-07-26  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Import man-1.6e sources on MAN-IMPORT `vendor' branch.

@@ -54,6 +54,10 @@
 #include <locale.h>
 #endif
 
+#ifdef HAVE_SYS_TERMIOS_H
+#include <sys/termios.h>
+#endif
+
 #ifndef R_OK
 #define R_OK 4
 #endif

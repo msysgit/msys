@@ -36,8 +36,8 @@ stamp.cat: Makefile
 	    $(MKMSGS) -c ${srcdir}/$$i msgs.tmp; \
 	    echo "cat ${srcdir}/$$i.codeset msgs.tmp > catin.tmp"; \
 	    cat ${srcdir}/$$i.codeset msgs.tmp > catin.tmp; \
-	    echo $(GENCAT) $$i.cat catin.tmp; \
-	    $(GENCAT) $$i.cat catin.tmp; \
+	    echo LC_ALL=en_US.UTF-8 $(GENCAT) $$i.cat catin.tmp; \
+	    LC_ALL=en_US.UTF-8 $(GENCAT) $$i.cat catin.tmp; \
 	  done
 	rm -f core *.stackdump *.tmp
 	echo timestamp > $@

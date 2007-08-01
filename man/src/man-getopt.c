@@ -49,7 +49,7 @@ usage (void) {
      exit(1);
 }
 
-static char short_opts[] = "B:C:H:xM:P:S:acdfFhkKm:p:s:tvVwW?";
+static char short_opts[] = "B:C:H:xM:P:S:acdDfFhkKm:p:s:tvVwW?";
 
 #ifdef HAVE_GETOPT_H
 # undef _GNU_SOURCE
@@ -120,6 +120,8 @@ get_options_from_argvec(int argc, char **argv, char **config_file,
 	  case 'c':
 	       nocats++;
 	       break;
+	  case 'D':
+	       debug++;
 	  case 'd':
 	       debug++;
 	       break;

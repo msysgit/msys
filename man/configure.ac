@@ -1,7 +1,7 @@
 # -*- Autoconf -*-  configure.ac for man.
 
   AC_PREREQ(2.59)
-  AC_INIT(man, 1.6-mingw-beta-1)
+  AC_INIT(man, 1.6e-mingw-beta-1)
 
 # Copyright (C) 2005 by Keith Marshall <keithmarshall@users.sourceforge.net>
 #
@@ -62,7 +62,7 @@
   AC_FUNC_ALLOCA
   AC_HEADER_DIRENT
   AC_CHECK_HEADERS([string.h strings.h], break)
-  AC_CHECK_HEADERS([fcntl.h sys/file.h sys/ioctl.h])
+  AC_CHECK_HEADERS([fcntl.h sys/file.h sys/ioctl.h sys/termios.h])
   AC_CHECK_HEADERS([memory.h stdlib.h sys/param.h unistd.h])
   AC_CHECK_HEADERS([process.h])
   AC_HEADER_SYS_WAIT
