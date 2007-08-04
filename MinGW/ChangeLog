@@ -1,3 +1,7 @@
+2007.08.03  Chris Sutcliffe  <ir0nh34d@users.sf.net>
+
+	* inifiles/mingw.ini: Update for latest version of mingw-runtime and w32api.
+
 2007.03.26  Chris Sutcliffe  <ir0nh34d@users.sf.net>
 
 	* inifile/mingw.ini: Update for latest version of mingw-runtime and w32api.
