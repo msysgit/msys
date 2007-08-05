@@ -1,3 +1,8 @@
+2007-08-05  Cesar Strauss  <cestrauss@gmail.com>
+
+	* lib/save-cwd.c (save_cwd): Avoid use of fchdir
+	* src/remove.c (AD_pop_and_chdir): Revert the fix of 2006-11-28.
+
 2007-01-19  Cesar Strauss  <cstrauss@cea.inpe.br>
 
 	* lib/utimens.c (futimens): Add fsync(fd) at the very beginning.

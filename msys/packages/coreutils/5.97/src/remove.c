@@ -402,17 +402,17 @@ AD_pop_and_chdir (Dirstack_state *ds, char **prev_dir,
 
   assert (AD_stack_height (ds));
 
-  /* We can give a better diagnostic here, since the target is relative. */
-  if (chdir ("..") != 0)
-    {
-      error (EXIT_FAILURE, errno,
-	     _("cannot chdir from %s to .."),
-	     quote (full_filename (".")));
-    }
-
   if (1 < AD_stack_height (ds))
     {
       struct stat sb;
+
+      /* We can give a better diagnostic here, since the target is relative. */
+      if (chdir ("..") != 0)
+	{
+	  error (EXIT_FAILURE, errno,
+		 _("cannot chdir from %s to .."),
+		 quote (full_filename (".")));
+	}
 
       if (lstat (".", &sb))
 	error (EXIT_FAILURE, errno,
