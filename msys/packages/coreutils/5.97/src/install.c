@@ -449,6 +449,25 @@ install_file_in_file (const char *from, const char *to,
       error (0, errno, _("cannot stat %s"), quote (from));
       return false;
     }
+#if __MSYS__
+  /* Implicit .exe magic: if FROM does not have .exe, exists, and must be
+     opened by appending .exe; then add .exe to FROM, and to TO if
+     it did not already have the suffix.  */
+  {
+    char *p;
+    if (((p = strchr (from, '\0') - 4) <= from
+	 || strcasecmp (p, ".exe") != 0)
+	&& cygwin_spelling (from) > 0)
+      {
+	CYGWIN_APPEND_EXE(from);
+	if (*to && to[strlen (to) - 1] != '.'
+	    && ((p = strchr (to, '\0') - 4) <= to
+		|| strcasecmp (p, ".exe") != 0))
+	  /* Non-empty TO needs the same treatment.  */
+	  CYGWIN_APPEND_EXE (to);
+      }
+  }
+#endif /* __MSYS__ */
   if (! copy_file (from, to, x))
     return false;
   if (strip_files)

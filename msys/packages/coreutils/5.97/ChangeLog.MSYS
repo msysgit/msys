@@ -5,6 +5,8 @@
 
 	* lib/getcwd.c (__getcwd): Use the getcwd supplied by MSYS.
 
+	* src/install.c (install_file_in_file): Add .exe magic to install.
+
 2007-01-19  Cesar Strauss  <cstrauss@cea.inpe.br>
 
 	* lib/utimens.c (futimens): Add fsync(fd) at the very beginning.
