@@ -70,6 +70,12 @@
 int
 save_cwd (struct saved_cwd *cwd)
 {
+#if __MSYS__
+  /* Do not use open/fchdir/close on MSYS  */
+  cwd->desc = -1;
+  cwd->name = xgetcwd ();
+  return cwd->name ? 0 : -1;
+#else
   cwd->name = NULL;
 
   cwd->desc = open (".", O_RDONLY);
@@ -84,6 +90,7 @@ save_cwd (struct saved_cwd *cwd)
     }
 
   return 0;
+#endif /* __MSYS__ */
 }
 
 /* Change to recorded location, CWD, in directory hierarchy.
