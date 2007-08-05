@@ -156,7 +156,7 @@ __getcwd (char *buf, size_t size)
   size_t allocated = size;
   size_t used;
 
-#if HAVE_PARTLY_WORKING_GETCWD && !defined AT_FDCWD
+#if HAVE_PARTLY_WORKING_GETCWD && !defined AT_FDCWD || defined __MSYS__
   /* The system getcwd works, except it sometimes fails when it
      shouldn't, setting errno to ERANGE, ENAMETOOLONG, or ENOENT.  If
      AT_FDCWD is not defined, the algorithm below is O(N**2) and this
