@@ -1,7 +1,7 @@
 /*
  * catopen.c
  *
- * $Id: catopen.c,v 1.3 2007-05-09 22:43:51 keithmarshall Exp $
+ * $Id: catopen.c,v 1.4 2007-08-17 11:07:55 keithmarshall Exp $
  *
  * Copyright (C) 2006, Keith Marshall
  *
@@ -9,7 +9,7 @@
  * POSIX compatible national language message catalogues in MinGW.
  *
  * Written by Keith Marshall  <keithmarshall@users.sourceforge.net>
- * Last modification: 29-Dec-2006
+ * Last modification: 08-Aug-2007
  *
  *
  * This is free software.  It is provided AS IS, in the hope that it may
@@ -153,9 +153,37 @@ int mc_check_break_code( wchar_t chk, wchar_t *break_code )
 }
 
 static
+char *mc_nl_cat_locale_getenv( int flags )
+{
+  char *retptr;
+
+  /* Retrieve any appropriate LC_MESSAGES or LANG setting string
+   * from the process environment, for use in interpreting NLSPATH.
+   */
+  if( flags & NL_CAT_LOCALE )
+  {
+    /* When this flag is set, then we use the LC_MESSAGES setting,
+     * if any, noting that this may be overridden by LC_ALL.
+     */
+    if( (((retptr = getenv( "LC_ALL" )) != NULL) && (*retptr != '\0'))
+    ||  (((retptr = getenv( "LC_MESSAGES" )) != NULL) && (*retptr != '\0'))  )
+      return retptr;
+  }
+  /* When NL_CAT_LOCALE is not set, or if LC_MESSAGES is not defined,
+   * fall back to using the LANG specification.
+   */
+  if( ((retptr = getenv( "LANG" )) != NULL) && (*retptr != '\0') )
+    return retptr;
+
+  /* Fall through, if there is no appropriate specification
+   * in the process environment, returning NULL.
+   */
+  return NULL;
+}
+
+static
 int mc_nlspath_open( __const char *msgcat, unsigned flags )
 {
-# define NLS_LOCALE_STRING    (flags & NL_CAT_LOCALE) ? "LC_MESSAGES" : "LANG"
 # define mc_select(PREF, ALT) (mblen((PREF), MB_CUR_MAX) > 0) ? (PREF) : (ALT)
 
   int fd, step, copy_index, headroom;
@@ -299,8 +327,8 @@ int mc_nlspath_open( __const char *msgcat, unsigned flags )
 		  * present, otherwise for the system locale.
 		  */
 		 if(  (nls_locale != NULL)
-		 ||  ((nls_locale = getenv( NLS_LOCALE_STRING )) != NULL)
-		 ||  ((nls_locale = setlocale( LC_MESSAGES, NULL )) != NULL)  )
+		 ||  ((nls_locale = mc_nl_cat_locale_getenv( flags )) != NULL)
+		 ||  ((nls_locale = setlocale( LC_MESSAGES, NULL )) != NULL)    )
 		 {
 		   subst = nls_locale;
 		   wchar_t *break_code = L"_.@";
@@ -468,4 +496,4 @@ nl_catd catopen( __const char *name, int flags )
   return (nl_catd)_mctab_( mc_open, name, flags );
 }
 
-/* $RCSfile: catopen.c,v $Revision: 1.3 $: end of file */
+/* $RCSfile: catopen.c,v $Revision: 1.4 $: end of file */

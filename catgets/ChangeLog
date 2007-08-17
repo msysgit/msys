@@ -1,3 +1,13 @@
+2007-08-16  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Make `catopen' respect LC_ALL, overriding LC_MESSAGES environment
+	variable, as required by POSIX, when opening message catalogues in
+	NL_CAT_LOCALE mode.
+
+	* catopen.c (mc_nlspath_open): Use ...
+	(mc_nl_cat_locale_getenv): this new static function.
+	(NLS_LOCALE_STRING): Defunct macro; deleted.
+
 2007-07-16  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Add manpage sources.
