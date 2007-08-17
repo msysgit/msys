@@ -1,5 +1,5 @@
 '\"
-.TH gencat @MAN3EXT@ 16-Jul-2007 MinGW "MinGW User Commands
+.TH gencat @MAN1EXT@ 17-Aug-2007 MinGW "MinGW User Commands
 .
 .SH NAME
 .B gencat
