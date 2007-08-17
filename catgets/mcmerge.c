@@ -1,7 +1,7 @@
 /*
  * mcmerge.c
  *
- * $Id: mcmerge.c,v 1.3 2007-05-12 22:51:10 keithmarshall Exp $
+ * $Id: mcmerge.c,v 1.4 2007-08-17 18:18:38 keithmarshall Exp $
  *
  * Copyright (C) 2006, Keith Marshall
  *
@@ -10,7 +10,7 @@
  * any single source file into its current internal dictionary.
  *
  * Written by Keith Marshall  <keithmarshall@users.sourceforge.net>
- * Last modification: 12-May-2007
+ * Last modification: 17-Aug-2007
  *
  *
  * This is free software.  It is provided AS IS, in the hope that it may
@@ -146,7 +146,7 @@ struct msgdict *mc_merge( struct msgdict *cat, struct msgdict *input )
 	  dfprintf(( stderr, "Initialise message list at set %u message %u\n", mark->set, mark->msg ));
 	}
       }
-      else if( curr->key == input->key )
+      else if( curr && (curr->key == input->key) )
       {
 	/* The input record refers to a message which is already present
 	 * in the current message list; the operation to be performed is
@@ -221,7 +221,7 @@ struct msgdict *mc_merge( struct msgdict *cat, struct msgdict *input )
 	  mark = input;
 	}
       }
-      else
+      else if( curr )
       {
 	/* There is no existing reference with set and message numbers
 	 * matching the current input record; thus the input record must
@@ -253,6 +253,16 @@ struct msgdict *mc_merge( struct msgdict *cat, struct msgdict *input )
 	dfprintf(( stderr, "before set %u message %u\n", curr->set, curr->msg ));
 	input->link = curr;
       }
+#     ifdef DEBUG
+      else
+      {
+	/* There is no `curr' record and the input record has not been
+	 * appended; this must be a delete request, with nothing to act on,
+	 * so we simply ignore it.
+	 */
+	dfprintf(( stderr, "Ignore delete request for non-existent message\n" ));
+      }
+#     endif
     }
 
     else if( input->set && (input->base == NULL) )
@@ -366,4 +376,4 @@ struct msgdict *mc_merge( struct msgdict *cat, struct msgdict *input )
   return cat;
 }
 
-/* $RCSfile: mcmerge.c,v $Revision: 1.3 $: end of file */
+/* $RCSfile: mcmerge.c,v $Revision: 1.4 $: end of file */

@@ -1,5 +1,12 @@
 2007-08-17  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
+	Avoid a potential segmentation fault.
+
+	* mcmerge.c (mc_merge): Don't blindly inspect data fields within
+	the `curr' message record; `curr' may be NULL, so test it first.
+
+2007-08-17  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
 	* man/gencat.man (TH): Correct section; s/MAN3EXT/MAN1EXT/
 
 2007-08-16  Keith Marshall  <keithmarshall@users.sourceforge.net>
