@@ -32,5 +32,5 @@
 # I've added my yahoo account so that I can get notification of change.
 # ##########################################################################
 
-CVSROOT /cvsroot/sitedocs/CVSROOT/cvstools/syncmail %{sVv} earnie@users.sourceforge.net mingw-cvs-admin@lists.sourceforge.net
+CVSROOT /cvsroot/sitedocs/CVSROOT/cvstools/syncmail %{sVv} earnie@users.sourceforge.net mingw-cvs-owner@lists.sourceforge.net
 DEFAULT /cvsroot/sitedocs/CVSROOT/cvstools/syncmail %{sVv} mingw-cvs@lists.sourceforge.net
