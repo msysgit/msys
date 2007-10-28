@@ -19,9 +19,12 @@
     <div id="Content">
       <h1>MinGW - Minimal SYStem</h1>
 
-      <p>MSYS was created out of a long-lived desire to provide the MinGW
-      community a Minimal SYStem, with which a configure script could be
-      executed. This is finally available from the <a href=
+      <p>MSYS was conceived out of a long-lived desire to provide the MinGW
+      community with a Minimal SYStem, offering a Bourne Shell command line
+      interpreter environment, which would be capable of executing POSIX style
+      configure scripts, and of interpreting the ensuing Makefiles, in order
+      to build typical Open Source projects, while requiring minimal changes,
+      if any, to their build systems.  It is available from the <a href=
       "http://sourceforge.net/project/showfiles.php?group_id=2435">MinGW
       download area</a> on SourceForge.</p>
 

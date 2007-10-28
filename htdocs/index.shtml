@@ -28,9 +28,13 @@
       libraries combined with GNU toolsets that allow one to produce native
       Windows programs that do not rely on any 3rd-party C runtime DLLs.</p>
 
-      <p><span class="bold">MSYS:</span> A Minimal SYStem to provide
-      POSIX/Bourne configure scripts the ability to execute and create a
-      Makefile used by make.</p>
+      <p><span class="bold">MSYS:</span> A contraction of "Minimal SYStem",
+      MSYS is a POSIX-like command line interpreter system, (CLI), offered
+      as an alternative to the Windows Command Prompt, (a.k.a. cmd.exe).
+      Conceived to facilitate the execution of the POSIX style build scripts
+      commonly provided by Open Source projects, and to interpret the Makefiles
+      which they generate, its CLI interprets the Bourne Shell command language,
+      in order to execute the commands commonly invoked by such scripts.</p>
 
       <p><span class="bold">Mailing Lists:</span> We have several <a href=
       "lists.shtml">mailing lists</a> you are encouraged to join and

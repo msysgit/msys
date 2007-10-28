@@ -117,15 +117,20 @@
       <h3><a name="faq-msys">
           What is MSYS?</a></h3>
 
-      <p>MSYS or Minimal SYStem is a
-         POSIX and Bourne shell environment use with
-         MinGW. It provides a hand picked set of tools to
-         allow a typical configuration script with Bourne
-         syntax to execute. This allows most of the GNU
-         packages to create a Makefile just from executing
-         the typical configure script which can then be
-         used to build the package using the native MinGW
-         version of GCC.</p>
+      <p>MSYS, a contraction of "Minimal SYStem", is a POSIX-like
+         command line interpreter (CLI) environment, suitable as an
+         alternative to the Windows Command Prompt, (a.k.a. cmd.exe),
+         for use in situations where Bourne Shell command language is
+         preferred to the native language of Windows commands.
+         Typically used with MinGW, (but by no means restricted to
+         such use), it provides a Bourne Shell CLI, (GNU bash), a hand
+         picked selection of external POSIX commands, (primarily those
+         identified by the GNU Coding Standards, as prerequisites for
+         executing GCS conforming configure scripts), and the GNU make
+         tool.  This allows most of the GNU packages to create a Makefile,
+         simply by executing the configure script, (which is provided
+         by the package); this, in turn, can be interpreted by GNU make,
+         to build the package using the native MinGW version of GCC.</p>
 
       <p>The POSIX layer used by
          MSYS is a fork of the 1.3.3 version of
