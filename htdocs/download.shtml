@@ -1,24 +1,24 @@
-<html>
-<head>
-  <meta name="description"
- content="Home of MinGW -- Minimalist GNU for Windows -- project. Contains information about the MinGW runtime library and GNU/OSS development tools for MinGW.">
-  <meta name="keywords"
- content="mingw, mingw32, programming, C++, C, C/C++, libraries, software, development tools, editors, IDEs, GNU">
-	<link rel="stylesheet" type="text/css" href="mingw.css">
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+    <meta name="description" content="Home of MinGW -- Minimalist GNU for Windows -- project. Contains information about the MinGW runtime library and GNU/OSS development tools for MinGW." />
+    <meta name="keywords" content="mingw, mingw32, programming, C++, C, C/C++, libraries, software, development tools, editors, IDEs, GNU" />
+    <link rel="stylesheet" type="text/css" href="mingw.css" />
 	<title>MinGW - Download</title>
 </head>
 
 <body>
-<span style="visibility: hidden;">.</span>
 
 <!--#include virtual="ssi/header.html" -->
 
 <!--#include virtual="ssi/lside.html" -->
 
 
-<div id="Content">
+<div id="mainContent">
 <h1>MinGW - Download</h1>
-<p>
 		    <h2><a name="Contents">
 		      Contents
 		    </a></h2>
@@ -34,7 +34,7 @@
 		      <li><a href="#hdr9">Updating MSYS</a></li>
 		    </ul>
 
-		    <hr>
+		    <hr />
                     <h2><a href="#Contents" name="hdr1">
                       MinGW and MSYS Distributions
                     </a></h2>
@@ -93,9 +93,9 @@
                     </p>
                     <p>
                       MinGW packages available for download are hosted by
-		      <a target="_nw" href="http://www.sf.net/">SourceForge</a>.
+		      <a href="http://www.sf.net/">SourceForge</a>.
 		      SourceForge provides each project with a 
-		      <a target="_nw" href=
+		      <a href=
 		      "http://sf.net/project/showfiles.php?group_id=2435">
 		      File Release System</a> 
 		      for us to upload our releases to.  This system
@@ -110,7 +110,7 @@
 		      specify the package name and the files themselves are what
 		      identify the release. </p>
 
-		    <hr>
+		    <hr />
 		    <h2><a href="#Contents" name="hdr2">
 		      Downloads
 		    </a></h2>
@@ -121,7 +121,7 @@
 		       package set, Current-&gt;MinGW 
 		    </p> 
                      
-		    <hr>
+		    <hr />
                     <h2><a href="#Contents" name="hdr3">
                       Mirror Sites
                     </a></h2>
@@ -143,7 +143,7 @@
                       mingw-users-admin@lists.sourceforge.net</a>.
                     </p>
 
-		    <hr>
+		    <hr />
                     <h2><a href="#Contents" name="hdr4">
                       Understanding MinGW Packaging
                     </a></h2>
@@ -181,32 +181,32 @@
 		      entire package when there's an update.
 		    </p>
 
-		    <hr>
+		    <hr />
 		    <h2><a href="#Contents" name="hdr5">
 		      Decompression and Unarchiving Utilities</a></h2>
                     <p>
-                     <em><b>WinZip Caution:</b></em><br>
+                     <em><b>WinZip Caution:</b></em><br />
                       Make sure that you first <b>uncheck</b> the
                       "TAR file smart CR/LF conversion" checkbox
                       found in the Configuration -&gt; Miscellaneous
                       tab of the Options menu.
 		    </p>
 		    <p>
-		      <em><b>An Open Source Win32 style solution:</b></em><br>
-                      <a href="http://www.7-zip.org" target=
-                      "_nw">7-Zip</a> offers an open source compression and
+		      <em><b>An Open Source Win32 style solution:</b></em><br />
+                      <a href="http://www.7-zip.org">7-Zip</a>
+                      offers an open source compression and
 		      decompression utility that will compress in two formats
 		      and decompress in several formats.
 		    </p>
 
-		    <hr>
+		    <hr />
                     <h2><a href="#Contents" name="hdr6">
                       Installing MinGW
                     </a></h2>
 		    <p>
 		      How are you going to use MinGW?  That is a question you
 		      need to ask yourself.  If you are a Bourne command line
-		      wizard and want to use ./configure && make then you want
+		      wizard and want to use ./configure &amp;&amp; make then you want
 		      to install MSYS as well.  If you are an IDE wizard and
 		      have a configurable IDE then you need to determine if the
 		      IDE distributors provide MinGW for you. If it does then 
@@ -240,7 +240,7 @@
 		      mingw32-make.
 		    </p>
 
-		    <hr>
+		    <hr />
 		    <h2><a href="#Contents" name="hdr7">
 		      Updating MinGW
 		    </a></h2>
@@ -254,7 +254,7 @@
 		      the updated tarballs.
 		    </p>
 
-		    <hr>
+		    <hr />
 		    <h2><a href="#Contents" name="hdr8">
 		      Installing MSYS
 		    </a></h2>
@@ -276,7 +276,7 @@
 		      anyway as the package is dependent on it.
 		    </p>
 
-		    <hr>
+		    <hr />
 		    <h2><a href="#Contents" name="hdr9">
 		      Updating MSYS
 		    </a></h2>
@@ -295,7 +295,6 @@
 		      msys.bat file.
 		    </p>
 
-</p>
 </div>
 
 <!--#include virtual="ssi/footer.html" -->

@@ -1,24 +1,23 @@
-<html>
-<head>
-  <meta name="description"
- content="Home of MinGW -- Minimalist GNU for Windows -- project. Contains information about the MinGW runtime library and GNU/OSS development tools for MinGW.">
-  <meta name="keywords"
- content="mingw, mingw32, programming, C++, C, C/C++, libraries, software, development tools, editors, IDEs, GNU">
-	<link rel="stylesheet" type="text/css" href="mingw.css">
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+    <meta name="description" content="Home of MinGW -- Minimalist GNU for Windows -- project. Contains information about the MinGW runtime library and GNU/OSS development tools for MinGW." />
+    <meta name="keywords" content="mingw, mingw32, programming, C++, C, C/C++, libraries, software, development tools, editors, IDEs, GNU" />
+    <link rel="stylesheet" type="text/css" href="mingw.css" />
 	<title>MinGW - Mailing Lists &amp; Forums</title>
 </head>
 
 <body>
-<span style="visibility: hidden;">.</span>
-
 <!--#include virtual="ssi/header.html" -->
 
 <!--#include virtual="ssi/lside.html" -->
 
 
-<div id="Content">
+<div id="mainContent">
 <h1>MinGW - Mailing Lists &amp; Forums</h1>
-<p>
 <p>
 There are several mailing lists available for the MinGW users; the 
 searchable on-line archives provide a very useful resource.  You can either
@@ -47,7 +46,7 @@ question has not already been answered in a previous thread.
 This is the general mailing list for MinGW users.  Please search the
 <a href="http://sourceforge.net/mailarchive/forum.php?forum=mingw-users">
 <strong>archives</strong></a> before posting.
-<a href="http://search.gmane.org/search.php?query=&email=&group=gmane.comp.gnu.mingw.user&sort=date">gmane alternative search</a>
+<a href="http://search.gmane.org/search.php?query=&amp;email=&amp;group=gmane.comp.gnu.mingw.user&amp;sort=date">gmane alternative search</a>
 </p>
 
 <p>
@@ -56,7 +55,7 @@ This is the general mailing list for MinGW users.  Please search the
 This is the general mailing list for MSYS users.  Please search the
 <a href="http://sourceforge.net/mailarchive/forum.php?forum=mingw-msys">
 <strong>archives</strong></a> before posting.
-<a href="http://search.gmane.org/search.php?query=&email=&group=gmane.comp.gnu.mingw.msys&sort=date">gmane alternative search</a>
+<a href="http://search.gmane.org/search.php?query=&amp;email=&amp;group=gmane.comp.gnu.mingw.msys&amp;sort=date">gmane alternative search</a>
 </p>
 
 <p>
@@ -66,7 +65,7 @@ This is a private mailing list for MinGW developers.  You can check what
 the developers are discussing at the
 <a href="http://sourceforge.net/mailarchive/forum.php?forum=mingw-dvlpr">
 <strong>archives</strong></a>.
-<a href="http://search.gmane.org/search.php?query=&email=&group=gmane.comp.gnu.mingw.devel&sort=date">gmane alternative search</a>
+<a href="http://search.gmane.org/search.php?query=&amp;email=&amp;group=gmane.comp.gnu.mingw.devel&amp;sort=date">gmane alternative search</a>
 </p>
 
 <p>
@@ -76,7 +75,7 @@ This list is to be used to discuss patches.  You can check previous
 patches in the
 <a href="http://sourceforge.net/mailarchive/forum.php?forum=mingw-patches">
 <strong>archives</strong></a>.
-<a href="http://search.gmane.org/search.php?query=&email=&group=gmane.comp.gnu.mingw.patches&sort=date">gmane alternative search</a>
+<a href="http://search.gmane.org/search.php?query=&amp;email=&amp;group=gmane.comp.gnu.mingw.patches&amp;sort=date">gmane alternative search</a>
 </p>
 
 <p>
@@ -113,48 +112,39 @@ You are welcome to use theses forums for the benefit of discussing particulars a
 
 <ul>
 <li>
-<a href="http://sourceforge.net/forum/forum.php?forum_id=286532" 
-target="_blank">Ada</a>
+<a href="http://sourceforge.net/forum/forum.php?forum_id=286532">Ada</a>
 </li>
 
 <li>
-<a href="http://sourceforge.net/forum/forum.php?forum_id=286529" 
-target="_blank">C/C++</a>
+<a href="http://sourceforge.net/forum/forum.php?forum_id=286529">C/C++</a>
 </li>
 
 <li>
-<a href="http://sourceforge.net/forum/forum.php?forum_id=286531" 
-target="_blank">Fortran</a>
+<a href="http://sourceforge.net/forum/forum.php?forum_id=286531">Fortran</a>
 </li>
 
 <li>
-<a href="http://sourceforge.net/forum/forum.php?forum_id=286644" 
-target="_blank">HowtoPPD</a>
+<a href="http://sourceforge.net/forum/forum.php?forum_id=286644">HowtoPPD</a>
 </li>
 
 <li>
-<a href="http://sourceforge.net/forum/forum.php?forum_id=286533" 
-target="_blank">Java</a>
+<a href="http://sourceforge.net/forum/forum.php?forum_id=286533">Java</a>
 </li>
 
 <li>
-<a href="http://sourceforge.net/forum/forum.php?forum_id=286534" 
-target="_blank">Pascal</a>
+<a href="http://sourceforge.net/forum/forum.php?forum_id=286534">Pascal</a>
 </li>
 
 <li>
-<a href="http://sourceforge.net/forum/forum.php?forum_id=7134" 
-target="_blank">StupidTechiQuestions</a>
+<a href="http://sourceforge.net/forum/forum.php?forum_id=7134">StupidTechiQuestions</a>
 </li>
 
 <li>
-<a href="http://sourceforge.net/forum/forum.php?forum_id=290275" 
-target="_blank">Unix2Windows2Unix</a>
+<a href="http://sourceforge.net/forum/forum.php?forum_id=290275">Unix2Windows2Unix</a>
 </li>
 
 <li>
-<a href="http://sourceforge.net/forum/forum.php?forum_id=286641" 
-target="_blank">Windows API</a>
+<a href="http://sourceforge.net/forum/forum.php?forum_id=286641">Windows API</a>
 </li>
 </ul>
 
@@ -172,7 +162,6 @@ various lists for GCC that you can use to post compiler-specific bugs.
 The GNU binutils groups maintains a few mailing lists.
 </p>
 
-</p>
 </div>
 
 <!--#include virtual="ssi/footer.html" -->

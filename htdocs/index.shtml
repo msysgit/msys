@@ -1,26 +1,22 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-
-<html>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
-    <meta name="generator" content="HTML Tidy, see www.w3.org">
-    <meta name="description" content=
-    "Home of MinGW -- Minimalist GNU for Windows -- project. Contains information about the MinGW runtime library and GNU/OSS development tools for MinGW.">
-    <meta name="keywords" content=
-    "mingw, mingw32, programming, C++, C, C/C++, libraries, software, development tools, editors, IDEs, GNU">
-    <link rel="stylesheet" type="text/css" href="mingw.css">
-    <link rel="stylesheet" type="text/css" href="mingw_news.css">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+    <meta name="description" content="Home of MinGW -- Minimalist GNU for Windows -- project. Contains information about the MinGW runtime library and GNU/OSS development tools for MinGW." />
+    <meta name="keywords" content="mingw, mingw32, programming, C++, C, C/C++, libraries, software, development tools, editors, IDEs, GNU" />
+    <link rel="stylesheet" type="text/css" href="mingw.css" />
 
     <title>MinGW - Home</title>
   </head>
 
   <body>
-    <span style="visibility: hidden;">.</span> 
     <!--#include virtual="ssi/header.html" -->
-     <!--#include virtual="ssi/lside.html" -->
-     <!--#include virtual="news-short.html" -->
-     
+    <!--#include virtual="ssi/lside.html" -->
+    <!--#include virtual="test.html"--><!-- WAS: #include virtual="news-short.html" -->
 
-    <div id="Content">
+    <div id="mainContent">
       <h1>MinGW - Home</h1>
 
       <p><span class="bold">MinGW:</span> A collection of freely available
@@ -38,15 +34,15 @@
 
       <p><span class="bold">Mailing Lists:</span> We have several <a href=
       "lists.shtml">mailing lists</a> you are encouraged to join and
-      participate in. There is a general discussion list&nbsp;<a href=
+      participate in. There is a general discussion list <a href=
       "mailto:mingw-users@lists.sf.net">mingw-users@lists.sf.net</a> for
-      general MinGW questions and a general discussion list&nbsp;<a href=
+      general MinGW questions and a general discussion list <a href=
       "mailto:mingw-msys@lists.sf.net">mingw-msys@lists.sf.net</a> for
       questions more related to MSYS and to using the Minimal SYStem.
       Information for signup and links to the archives can be found
-      by&nbsp;<a href="lists.shtml">clicking here</a>. You may search the
+      by <a href="lists.shtml">clicking here</a>. You may search the
       archives using the "Search the archives" form found on the left side of
-      every&nbsp;<a href="http://www.mingw.org">www.mingw.org</a> page.</p>
+      every <a href="http://www.mingw.org">www.mingw.org</a> page.</p>
 
       <p><span class="bold">Packages, Release Candidates, etc.</span> We've
       moved this information to the <a href="download.shtml">Download</a> web
@@ -58,20 +54,21 @@
 
       <ul>
         <li><em class="bold">Publisher:</em> <a href=
-        "http://www.syngress.com">Syngress Publishing, Inc</a><br>
+        "http://www.syngress.com">Syngress Publishing, Inc</a><br />
          <em class="bold">Title:</em> Host Integrity Monitoring Using Osiris
-        and Samhain<br>
-         <em class="bold">Author:</em> Brian Wotring<br>
-         <em class="bold">Technical Editor:</em> Bruce Potter<br>
-         <em class="bold">ISBN:</em> 1-597490-18-0<br>
+        and Samhain<br />
+         <em class="bold">Author:</em> Brian Wotring<br />
+         <em class="bold">Technical Editor:</em> Bruce Potter<br />
+         <em class="bold">ISBN:</em> 1-597490-18-0<br />
         </li>
       </ul>
 
-      <p class="small" >For information on adding your publication to this list; send your
+      <p class="small">For information on adding your publication to this list; send your
       queries to mingw-users-admin at list dot sourceforge dot net. Make
       certain the subject of your email doesn't look like it may be SPAM or
       it may be deleted without being read.</p>
     </div>
+    <!--include virtual="news-short.html" -->
     <!--#include virtual="ssi/footer.html" -->
   </body>
 </html>

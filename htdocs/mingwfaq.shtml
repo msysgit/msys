@@ -1,25 +1,24 @@
-<html>
-<head>
-  <meta name="description"
- content="Home of MinGW -- Minimalist GNU for Windows -- project. Contains information about the MinGW runtime library and GNU/OSS development tools for MinGW.">
-  <meta name="keywords"
- content="mingw, mingw32, programming, C++, C, C/C++, libraries, software, development tools, editors, IDEs, GNU">
-	<link rel="stylesheet" type="text/css" href="mingw.css">
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+    <meta name="description" content="Home of MinGW -- Minimalist GNU for Windows -- project. Contains information about the MinGW runtime library and GNU/OSS development tools for MinGW." />
+    <meta name="keywords" content="mingw, mingw32, programming, C++, C, C/C++, libraries, software, development tools, editors, IDEs, GNU" />
+    <link rel="stylesheet" type="text/css" href="mingw.css" />
+
 	<title>MinGW - Frequently Asked Questions</title>
 </head>
 
 <body>
-<span style="visibility: hidden;">.</span>
-
 <!--#include virtual="ssi/header.html" -->
 
 <!--#include virtual="ssi/lside.html" -->
 
 
-<div id="Content">
+<div id="mainContent">
 <h1>MinGW - Frequently Asked Questions</h1>
-<p>
-
       <p>If you have any further questions, please
          refer them to the 
          <a href="mailto:mingw-users@lists.sourceforge.net">MinGW mailing list</a>
@@ -31,9 +30,7 @@
          all who have contributed to this
          FAQ.</p>
 
-      <a name="index"></a> 
-
-      <ul>
+      <ul id="index">
        <li><a href="#faq-what">What is MinGW?</a>
            </li>
        <li><a href="#faq-msys">What is MSYS?</a>
@@ -50,7 +47,7 @@
            </li>
        <li><a href="#faq-languages">What Languages Are Supported?</a>
            </li>
-       <li><a href="#faq-C++size">Why are C++ programs so large?</a>
+       <li><a href="#faq-cpp-size">Why are C++ programs so large?</a>
            </li>
        <li><a href="#faq-configure">How do I execute configure scripts?</a>
            </li>
@@ -78,7 +75,7 @@
            </li>
       </ul>
 
-<hr>
+<hr />
 
       <h3><a name="faq-what">
           What is MinGW?</a></h3>
@@ -112,7 +109,7 @@
 
       <p><a href="#index">Back to index</a></p>
 
-<hr>
+<hr />
 
       <h3><a name="faq-msys">
           What is MSYS?</a></h3>
@@ -145,7 +142,7 @@
 
       <p><a href="#index">Back to index</a></p>
 
-<hr>
+<hr />
 
       <h3><a name="faq-w32api">
           What is w32api?</a></h3>
@@ -166,7 +163,7 @@
 
       <p><a href="#index">Back to index</a></p>
 
-<hr>
+<hr />
 
       <h3><a name="faq-where">
           Where can I get MinGW?</a></h3>
@@ -208,7 +205,7 @@
 
       <p><a href="#index">Back to index</a></p>
 
-<hr>
+<hr />
 
       <h3><a name="faq-license">
           How is MinGW licensed?</a></h3>
@@ -293,7 +290,7 @@
 
       <p><a href="#index">Back to index</a></p>
 
-<hr>
+<hr />
 
       <h3><a name="faq-version">
           What is the current version?</a></h3>
@@ -304,7 +301,7 @@
 
       <p><a href="#index">Back to index</a></p>
 
-<hr>
+<hr />
 
       <h3><a name="faq-usingolderversions">
           Can I use older versions?</a></h3>
@@ -322,7 +319,7 @@
 
       <p><a href="#index">Back to index</a></p>
       
-<hr>
+<hr />
 
       <h3><a name="faq-languages">
           What Languages Are Supported?</a></h3>
@@ -339,9 +336,9 @@
 
       <p><a href="#index">Back to index</a></p>
 
-<hr>
+<hr />
 
-      <h3><a name="faq-C++size">
+      <h3><a name="faq-cpp-size">
           Why is my C++ binary so large?</a></h3>
 
       <p>C++ programs using the Standard Template Library
@@ -362,7 +359,7 @@
 
       <p><a href="#index">Back to index</a></p>
 
-<hr>
+<hr />
 
       <h3><a name="faq-configure">
           How do I execute configure scripts?</a></h3>
@@ -381,7 +378,7 @@
 
       <p><a href="#index">Back to index</a></p>
 
-<hr>
+<hr />
 
       <h3><a name="faq-usingwithmsys">
           How do I use MinGW with MSYS?</a></h3>
@@ -410,7 +407,7 @@
       <p><a href="#index">Back to index</a>
          </p>
 
-<hr>
+<hr />
 
 
       <h3><a name="faq-usingwithcygwin">
@@ -444,7 +441,7 @@
 
       <p><a href="#index">Back to index</a></p>
 
-<hr>
+<hr />
 
       <h3><a name="faq-comsupport">
           Is support provided for COM?</a></h3> 
@@ -458,7 +455,7 @@
          files.</p>
 
       <p><a href="#index">Back to index</a></p>
-      <hr>
+      <hr />
 
 
       <h3><a name="faq-msvcdll">
@@ -470,27 +467,21 @@
          and let the MSVC-compiled testmain call it. You
          should use</p>
 
-        <blockquote>
-          <code>gcc -shared -o testdll.dll testdll.c \<br>
+          <code>gcc -shared -o testdll.dll testdll.c \<br />
           &nbsp;&nbsp;&nbsp; -Wl,--output-def,testdll.def,--out-implib,libtestdll.a</code>
-        </blockquote>
       <p>to produce
          the DLL and DEF files. MSVC cannot use the MinGW
          library, but since you have already the DEF file
          you may easily produce one by the Microsoft
          <code>LIB</code> tool:
 
-        <blockquote>
-          <code>lib /machine:i386 /def:testdll.def</code>
-        </blockquote>
+          <code>lib /machine:i386 /def:testdll.def</code></p>
 
       <p>Once you have
          testdll.lib, it is trivial to produce the
          executable with MSVC:</p>
 
-        <blockquote>
           <code>cl testmain.c testdll.lib</code>
-        </blockquote> 
 
       <p>Now for MinGW programs
          calling an MSVC DLL. We have two methods. One way
@@ -498,15 +489,11 @@
          command line <i>after</i> the main program. For
          example, after</p>
 
-        <blockquote>
           <code>cl /LD testdll.c</code>
-        </blockquote>
       <p>use 
 
-         <blockquote>
           <code>gcc -o testmain
-          testmain.c testdll.lib</code>
-         </blockquote>
+          testmain.c testdll.lib</code></p>
 
       <p>The other way is to produce the .a files for GCC. For
          <code>__cdecl</code> functions (in most cases),
@@ -518,11 +505,9 @@
             here</a> 
          a version enhanced by Jose Fonseca):</p>
 
-         <blockquote>
-          <code>reimp testdll.lib</code><br>
+          <code>reimp testdll.lib</code><br />
            <code>gcc -o testmain testmain.c -L.
           -ltestdll</code>
-         </blockquote>
 
       <p>However, for <code>__stdcall</code> functions,
          the above method does not work. For MSVC will
@@ -533,29 +518,23 @@
          package and filter off the first underscore by
          <code>sed</code>:</p>
 
-        <blockquote>
           <code>pexports testdll.dll | sed "s/^_//" &gt; testdll.def</code>
-        </blockquote>
       <p>Then, when using
          <code>dlltool</code> to produce the import
          library, add `<code>-U</code>' to the command
-         line: 
+         line:</p>
 
-        <blockquote>
           <code>dlltool -U -d testdll.def -l libtestdll.a</code>
-        </blockquote>
-        <p>And now, you can proceed in the usual way: 
+        <p>And now, you can proceed in the usual way:</p>
 
-        <blockquote>
           <code>gcc -o testmain testmain.c -L. -ltestdll</code>
-        </blockquote>
         
-      <p>Hooray, we got it. 
+      <p>Hooray, we got it.</p>
 
       <p><a href="#index">Back to index</a>
          </p>
       
-<hr>
+<hr />
 
             <h3><a name="faq-jni-dll"></a>
                 How can a JNI DLL be created?</h3>
@@ -565,37 +544,37 @@
                for use later.&nbsp; If you are using MSYS add a line similiar to the 
                following in /etc/fstab and then restart MSYS:</p>
 
-            <blockquote><code>
+            <code>
             c:/j2sdk1.4.1_02&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /java
-            </code></blockquote>
+            </code>
 
             <p>In MSYS the JNI DLL can be generated using the following
                (NOTE: -Wl has an 'L' not a '1'):</p>
 
-            <blockquote><code>
-            gcc -Wall -D_JNI_IMPLEMENTATION_ -Wl,--kill-at \<br>
-            &nbsp;&nbsp;-I/java/include -I/java/include/win32 \<br>
-            &nbsp;&nbsp;-shared -o JavaImp.dll someJavaImp.c<br>
-            </code></blockquote>
+            <code>
+            gcc -Wall -D_JNI_IMPLEMENTATION_ -Wl,--kill-at \<br />
+            &nbsp;&nbsp;-I/java/include -I/java/include/win32 \<br />
+            &nbsp;&nbsp;-shared -o JavaImp.dll someJavaImp.c<br />
+            </code>
 
             <p>In a standard command console it can be generated as follows (one continuous line):
                </p>
 
             
-            <blockquote><code>
-            gcc -Wall -D_JNI_IMPLEMENTATION_ -Wl,--kill-at <br>
-            &nbsp;&nbsp;-Ic:/j2sdk1.4.1_02/include -Ic:/j2sdk1.4.1_02/include/win32 <br>
+            <code>
+            gcc -Wall -D_JNI_IMPLEMENTATION_ -Wl,--kill-at <br />
+            &nbsp;&nbsp;-Ic:/j2sdk1.4.1_02/include -Ic:/j2sdk1.4.1_02/include/win32 <br />
             &nbsp;&nbsp;-shared someJavaImp.c -o JavaImp.dll
-            </code></blockquote>
+            </code>
 
             <p>Where JavaImp.dll should be named whatever you refer to the library as
                in your .java file.&nbsp; To use the above dll you would refer to it as
                follows in your java classes code:
                </p>
 
-            <blockquote><code>
+            <code>
             System.loadLibrary( "JavaImp" );
-            </code></blockquote>
+            </code>
 
             <p>If you encounter problems ensure your CLASS_PATH and PATH are set 
                appropriately for your environment.&nbsp; Please refer to 
@@ -604,7 +583,7 @@
 
             <p><a href="#index">Back to index</a></p>
 
-<hr>
+<hr />
 
 
       <h3><a name="faq-cross">
@@ -621,7 +600,7 @@
          environment in many scenerios.</p>
 
       <p>There is a very old out-of-date 
-         <a href="http://www.nanotech.wisc.edu/%7Ekhan/software/gnu-win32/mingw-cross-howto.txt" target="_nw">mingw-cross-howto.txt</a>
+         <a href="http://www.nanotech.wisc.edu/%7Ekhan/software/gnu-win32/mingw-cross-howto.txt">mingw-cross-howto.txt</a>
          written by Mumit Khan and stored on his site you can
          use. You'll have to update the packages. This
          needs to be rewritten, any volunteers? If so,
@@ -631,7 +610,7 @@
 
       <p>A more upto date HOWTO complete with a script
          to configure it for you can be found at
-         <a href="http://www.libsdl.org/extras/win32/cross/README.txt" target="_nw">http://www.libsdl.org/extras/win32/cross/README.txt
+         <a href="http://www.libsdl.org/extras/win32/cross/README.txt">http://www.libsdl.org/extras/win32/cross/README.txt
            </a>
          .</p>
 
@@ -655,7 +634,7 @@
       </ul>
 
       <p><a href="#index">Back to index</a></p>
-      <hr>
+      <hr />
 
 
       <h3><a name="faq-mingw32-gcc.exe">
@@ -673,7 +652,7 @@
 
       <p><a href="#index">Back to index</a></p>
       
-<hr>
+<hr />
             <h3><a name="faq-Makefile">
                 What is a Makefile and how do I create one?</a></h3>
 
@@ -682,56 +661,57 @@
                Makefile should be done with tabs not spaces.&nbsp; A simple example of
                a Makefile is as follows and is invoked by typing 'make':</p>
 
-            <blockquote><code>
-            all:<br>
+            <code>
+            all:<br />
             &nbsp;&nbsp;&nbsp;&nbsp; gcc -Wall -O3 -o hello.exe hello.cpp
-            </code></blockquote>
+            </code>
 
             <p>The following is a more complex example that shows the use of variables and other features:
                </p>
 
-            <blockquote><code>
-            # this is a comment<br>
-            SRC=hello.c main.c<br>
-            OBJ=$(SRC:.c=.o)                  # replaces the .c from SRC with .o<br>
-            EXE=hello.exe<br>
-            <br>
-            CC=gcc<br>
-            CFLAGS=-Wall -O3<br>
-            LDFLAGS=-mwindows<br>
-            RM=rm<br>
-            <br>
+            <code>
+            # this is a comment<br />
+            SRC=hello.c main.c<br />
+            OBJ=$(SRC:.c=.o)                  # replaces the .c from SRC with .o<br />
+            EXE=hello.exe<br />
+            <br />
+            CC=gcc<br />
+            CFLAGS=-Wall -O3<br />
+            LDFLAGS=-mwindows<br />
+            RM=rm<br />
+            <br />
             %.o: %.c&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;       
-            # combined w/ next line will compile recently changed .c files<br>
-            &nbsp;&nbsp;&nbsp;&nbsp; $(CC) $(CFLAGS) -o $@ -c $&lt;<br>
-            <br>
-.PHONY : all&nbsp;&nbsp;&nbsp;&nbsp; # .PHONY ignores files named all<br>
-            all: $(EXE)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;                             # all is dependent on $(EXE) to be complete<br>
-           <br>
-           $(EXE): $(OBJ)&nbsp;&nbsp;                     # $(EXE) is dependent on all of the files in $(OBJ) to exist<br>
-           &nbsp;&nbsp;&nbsp;&nbsp; $(CC) $(OBJ) $(LDFLAGS) -o $@<br>
-           <br>
-           .PHONY : clean&nbsp;&nbsp;                    # .PHONY ignores files named clean<br>
-           clean:<br>
-           &nbsp;&nbsp;&nbsp; -$(RM) $(OBJ) core &nbsp;&nbsp; # '-' causes errors not to exit the process</code></blockquote><p>This Makefile can be invoked in any of the following ways:</p>
+            # combined w/ next line will compile recently changed .c files<br />
+            &nbsp;&nbsp;&nbsp;&nbsp; $(CC) $(CFLAGS) -o $@ -c $&lt;<br />
+            <br />
+.PHONY : all&nbsp;&nbsp;&nbsp;&nbsp; # .PHONY ignores files named all<br />
+            all: $(EXE)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;                             # all is dependent on $(EXE) to be complete<br />
+           <br />
+           $(EXE): $(OBJ)&nbsp;&nbsp;                     # $(EXE) is dependent on all of the files in $(OBJ) to exist<br />
+           &nbsp;&nbsp;&nbsp;&nbsp; $(CC) $(OBJ) $(LDFLAGS) -o $@<br />
+           <br />
+           .PHONY : clean&nbsp;&nbsp;                    # .PHONY ignores files named clean<br />
+           clean:<br />
+           &nbsp;&nbsp;&nbsp; -$(RM) $(OBJ) core &nbsp;&nbsp; # '-' causes errors not to exit the process</code>           
+           <p>This Makefile can be invoked in any of the following ways:</p>
 
-           <blockquote><code>
-           # for the above file will compile everything required by the all label<br>
-           make<br>
-           <br>
-           # effectively the same as the previous line<br>
-           make all<br>
-           <br>
-           # 'clean' the project of stale files<br>
-           # for this Makefile, remove hello.o, main.o and core<br>
-           make clean<br>
-           <br>
-           # clean and then build all<br>
-           make clean all<br>
-           <br>
-           # build all and then clean<br>
+           <code>
+           # for the above file will compile everything required by the all label<br />
+           make<br />
+           <br />
+           # effectively the same as the previous line<br />
+           make all<br />
+           <br />
+           # 'clean' the project of stale files<br />
+           # for this Makefile, remove hello.o, main.o and core<br />
+           make clean<br />
+           <br />
+           # clean and then build all<br />
+           make clean all<br />
+           <br />
+           # build all and then clean<br />
            make all clean
-           </code></blockquote>
+           </code>
 
            <p>For further information on Makefiles please refer to the
               <a href="http://www.gnu.org/software/make/manual/make.html">GNU make documentation</a>.
@@ -739,7 +719,7 @@
             
            <p><a href="#index">Back to index</a>
               </p>
-<hr>
+<hr />
 
 
       <h3><a name="faq-mingw32-make.exe">
@@ -761,7 +741,7 @@
          collision.</p>
 
       <p><a href="#index">Back to index</a></p>
-      <hr>
+      <hr />
 
 
       <h3><a name="faq-ridconsole">
@@ -771,7 +751,7 @@
          a -mwindows switch to the command line.</p>
 
       <p><a href="#index">Back to index</a></p>
-      <hr>
+      <hr />
 
 
       <h3><a name="faq-bugreports">
@@ -781,10 +761,8 @@
          <a href="bugs.shtml">Reporting Bugs</a> page</p>
 
       <p><a href="#index">Back to index</a></p>
-         <hr>
 
 
-</p>
 </div>
 
 <!--#include virtual="ssi/footer.html" -->

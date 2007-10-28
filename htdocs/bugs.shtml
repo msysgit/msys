@@ -1,22 +1,22 @@
-<html>
-<head>
-  <meta name="description"
- content="Home of MinGW -- Minimalist GNU for Windows -- project. Contains information about the MinGW runtime library and GNU/OSS development tools for MinGW.">
-  <meta name="keywords"
- content="mingw, mingw32, programming, C++, C, C/C++, libraries, software, development tools, editors, IDEs, GNU">
-	<link rel="stylesheet" type="text/css" href="mingw.css">
-	<title>MinGW - Reporting Bugs</title>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+    <meta name="description" content="Home of MinGW -- Minimalist GNU for Windows -- project. Contains information about the MinGW runtime library and GNU/OSS development tools for MinGW." />
+    <meta name="keywords" content="mingw, mingw32, programming, C++, C, C/C++, libraries, software, development tools, editors, IDEs, GNU" />
+    <link rel="stylesheet" type="text/css" href="mingw.css" />
+    <title>MinGW - Reporting Bugs</title>
 </head>
 
 <body>
-<span style="visibility: hidden;">.</span>
-
 <!--#include virtual="ssi/header.html" -->
 
 <!--#include virtual="ssi/lside.html" -->
 
 
-<div id="Content">
+<div id="mainContent">
 <h1>MinGW - Reporting Bugs</h1>
   <p>So you think you have found a bug and want to
   report the problem? Before reporting a bug
@@ -42,7 +42,7 @@
     <li>any other detailed information pertinent to your experience with the bug</li>
   </ul>
   <p>SourceForge gives us nice tools to keep track of your bug reports, so please
-  <a href="https://sourceforge.net/tracker/?group_id=2435&amp;atid=102435" target="_nw">follow this link to file your
+  <a href="https://sourceforge.net/tracker/?group_id=2435&amp;atid=102435">follow this link to file your
       report.</a> You will need a SourceForge
       login account. If you don't have one then
       <a href="https://sourceforge.net/account/register.php">follow
@@ -77,17 +77,17 @@
   <p><span class="bold">External Bug Reporting Lists and Guidelines</span></p>
   <ul>
     <li>
-      gcc bug reporting guidelines:<br>
+      gcc bug reporting guidelines:<br />
        <a href="http://www.gnu.org/software/gcc/bugs.html">
       http://www.gnu.org/software/gcc/bugs.html</a>
     </li>
     <li>
-      gcc mailing list archives:<br>
+      gcc mailing list archives:<br />
        <a href="http://gcc.gnu.org/lists.html">http://gcc.gnu.org/lists.html</a>
     </li>
     <li>
-      cygwin (binutils, gdb and cygwin):<br>
-       <a href="http://sources.redhat.com/lists.html">http://sources.redhat.com/lists.html</a><br>
+      cygwin (binutils, gdb and cygwin):<br />
+       <a href="http://sources.redhat.com/lists.html">http://sources.redhat.com/lists.html</a>
       </li>
   </ul>
 </div>
