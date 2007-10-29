@@ -1,5 +1,10 @@
 2007-10-28  Keith Marshall  <keithmarshall@users.sf.net>
 
+	* index.shtml (test.html): Revert #include to ...
+	(news-short.html): ... this.
+
+2007-10-28  Keith Marshall  <keithmarshall@users.sf.net>
+
 	* All files: Merge updates from DVLPR-BRANCH to HEAD.
 
 2007-10-28  Keith Marshall  <keithmarshall@users.sf.net>

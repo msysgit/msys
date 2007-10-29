@@ -14,7 +14,7 @@
   <body>
     <!--#include virtual="ssi/header.html" -->
     <!--#include virtual="ssi/lside.html" -->
-    <!--#include virtual="test.html"--><!-- WAS: #include virtual="news-short.html" -->
+    <!--#include virtual="news-short.html" -->
 
     <div id="mainContent">
       <h1>MinGW - Home</h1>
