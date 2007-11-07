@@ -1,0 +1,7 @@
+2007-11-07  Cesar Strauss  <cestrauss@gmail.com>
+
+	Fix a "buffer underflow". Thanks to Alexis Wilke for reporting and
+	for providing the fix. Closes bug #1763006
+	* subst.c (RemoveCR): Check if the string is not empty before
+	decrementing the character pointer.
+	* variables.c (bind_variable): ditto.

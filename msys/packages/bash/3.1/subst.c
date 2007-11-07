@@ -228,7 +228,7 @@ RemoveCR (string)
   char * string;
 {
   char *pstr;
-  if (string && (pstr = strchr (string, '\0')) && *(--pstr) == '\r')
+  if (string && *string && (pstr = strchr (string, '\0')) && *(--pstr) == '\r')
     *pstr = '\0';
 }
 #else
