@@ -1948,7 +1948,7 @@ bind_variable (name, value, flags)
   /* Remove trailing \r from value */
   {
     char *tpos;
-    if (value)
+    if (value && *value)
     {
       tpos = strchr (value, '\0');
       tpos--;
