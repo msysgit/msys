@@ -534,7 +534,8 @@ int
 absolute_program (string)
      const char *string;
 {
-  return ((char *)xstrchr (string, '/') != (char *)NULL);
+  return ((char *)xstrchr (string, '/') != (char *)NULL ||
+          (char *)xstrchr (string, '\\') != (char *)NULL);
 }
 
 /* **************************************************************** */
