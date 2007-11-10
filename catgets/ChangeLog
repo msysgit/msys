@@ -1,3 +1,15 @@
+2007-09-22  Charles Wilson  <cwilso11@users.sourceforge.net>
+
+	Relocate misplaced declaration statements to precede assignments or
+	function calls, within their containing scopes.
+
+	* catopen.c (mc_open): Relocate `retval' declaration, at top level.
+	(mc_nlspath_open): Relocate `break_code' declaration within enclosing
+	`if' block.
+
+	* mcsource.c (mc_source): Declare `len' before `dfprintf', within
+	enclosing `if' block.
+
 2007-08-17  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Avoid a potential segmentation fault.

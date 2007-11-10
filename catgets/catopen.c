@@ -1,7 +1,7 @@
 /*
  * catopen.c
  *
- * $Id: catopen.c,v 1.4 2007-08-17 11:07:55 keithmarshall Exp $
+ * $Id: catopen.c,v 1.5 2007-11-10 14:34:45 keithmarshall Exp $
  *
  * Copyright (C) 2006, Keith Marshall
  *
@@ -9,7 +9,7 @@
  * POSIX compatible national language message catalogues in MinGW.
  *
  * Written by Keith Marshall  <keithmarshall@users.sourceforge.net>
- * Last modification: 08-Aug-2007
+ * Last modification: 22-Sept-2007
  *
  *
  * This is free software.  It is provided AS IS, in the hope that it may
@@ -330,8 +330,8 @@ int mc_nlspath_open( __const char *msgcat, unsigned flags )
 		 ||  ((nls_locale = mc_nl_cat_locale_getenv( flags )) != NULL)
 		 ||  ((nls_locale = setlocale( LC_MESSAGES, NULL )) != NULL)    )
 		 {
-		   subst = nls_locale;
 		   wchar_t *break_code = L"_.@";
+		   subst = nls_locale;
 
 		   if( chk == L'L' )
 		   {
@@ -401,6 +401,7 @@ void *mc_open( struct mc_tab *cdt, va_list argv )
    */
   char *catname = va_arg( argv, char * );
   unsigned tab_increment, flags = va_arg( argv, unsigned );
+  int retval = 0;
 
   /* First, check the `catopen' flags, to determine how many new descriptor
    * table slots to create, if we need to expand the table.
@@ -410,7 +411,6 @@ void *mc_open( struct mc_tab *cdt, va_list argv )
 
   /* Find the first free slot, if any, in the descriptor table.
    */
-  int retval = 0;
   while( (retval < cdt->curr_size) && (cdt->tab[ retval ].fd >= 0) )
     ++retval;
 
@@ -496,4 +496,4 @@ nl_catd catopen( __const char *name, int flags )
   return (nl_catd)_mctab_( mc_open, name, flags );
 }
 
-/* $RCSfile: catopen.c,v $Revision: 1.4 $: end of file */
+/* $RCSfile: catopen.c,v $Revision: 1.5 $: end of file */

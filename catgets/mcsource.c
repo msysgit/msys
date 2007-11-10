@@ -1,7 +1,7 @@
 /*
  * mcsource.c
  *
- * $Id: mcsource.c,v 1.11 2007-06-18 22:36:07 keithmarshall Exp $
+ * $Id: mcsource.c,v 1.12 2007-11-10 14:34:45 keithmarshall Exp $
  *
  * Copyright (C) 2006, 2007, Keith Marshall
  *
@@ -9,7 +9,7 @@
  * used internally by `gencat', to compile message dictionaries.
  *
  * Written by Keith Marshall  <keithmarshall@users.sourceforge.net>
- * Last modification: 21-May-2007
+ * Last modification: 22-Sept-2007
  *
  *
  * This is free software.  It is provided AS IS, in the hope that it may
@@ -915,12 +915,14 @@ struct msgdict *mc_source( const char *input )
 	       */
 	      if( last_char == L'\r' )
 	      {
+		size_t len;
+
 		/* The previous character was a deferred carriage return,
 		 * but it was *not* the lead byte in a CRLF line terminator,
 		 * so we need to emit it into the message definition.
 		 */
 		dfprintf(( stderr, "\n%s:%u:", input, linenum ));
-		size_t len = mc_add_escape( iconv_map, messages + msgloc, L'\r' );
+		len = mc_add_escape( iconv_map, messages + msgloc, L'\r' );
 		if( len > (size_t)(0) )
 		{
 		  headroom -= len;
@@ -1263,4 +1265,4 @@ struct msgdict *mc_source( const char *input )
   return head;
 }
 
-/* $RCSfile: mcsource.c,v $Revision: 1.11 $: end of file */
+/* $RCSfile: mcsource.c,v $Revision: 1.12 $: end of file */
