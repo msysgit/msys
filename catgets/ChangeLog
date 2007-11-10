@@ -1,3 +1,10 @@
+2007-11-10  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	* Makefile.in (install-man): Require pre-existing ${prefix};
+	when ok, actually invoke command to perform the installation.
+	(install-progs, install-libs, install-headers): Be verbose;
+	echo commands as invoked within compound command blocks.
+
 2007-09-22  Charles Wilson  <cwilso11@users.sourceforge.net>
 
 	Relocate misplaced declaration statements to precede assignments or

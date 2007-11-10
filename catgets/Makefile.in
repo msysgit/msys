@@ -4,12 +4,12 @@
 PACKAGE = @PACKAGE_TARNAME@
 VERSION = @PACKAGE_VERSION@
 
-# $Id: Makefile.in,v 1.3 2007-07-16 19:59:42 keithmarshall Exp $
+# $Id: Makefile.in,v 1.4 2007-11-10 15:12:58 keithmarshall Exp $
 #
 # Copyright (C) 2006, 2007, Keith Marshall
 #
 # Written by Keith Marshall  <keithmarshall@users.sourceforge.net>
-# Last modification: 20-Jun-2007
+# Last modification: 10-Nov-2007
 #
 #
 # This is free software.  It is provided AS IS, in the hope that it may
@@ -207,34 +207,46 @@ install: install-headers install-progs install-libs
 install-progs: all
 	$(mkinstalldirs) --require ${exec_prefix} ${bindir} ${libdir}
 	for prog in $(BUILD_PROGS); do \
+	  echo $(INSTALL_PROGRAM) $$prog ${bindir}/$(tool_prefix)$$prog; \
 	  $(INSTALL_PROGRAM) $$prog ${bindir}/$(tool_prefix)$$prog; \
 	done
 	for prog in $(INSTALL_PROGS); do \
+	  echo $(INSTALL_PROGRAM) ${srcdir}/$$prog ${bindir}/$(tool_prefix)$$prog; \
 	  $(INSTALL_PROGRAM) ${srcdir}/$$prog ${bindir}/$(tool_prefix)$$prog; \
 	done
 
 install-libs: all-libs $(all-dll)
 	test -z "$(all-dll)" || for dll in $(BUILD_DLLS); do \
+	  echo $(INSTALL_DATA) $$dll ${bindir}; \
 	  $(INSTALL_DATA) $$dll ${bindir}; \
+	  echo $(INSTALL_DATA) $(DLL_IMPORT_LIBNAME) ${libdir}; \
 	  $(INSTALL_DATA) $(DLL_IMPORT_LIBNAME) ${libdir}; \
 	done
 	for lib in $(BUILD_LIBS); do \
+	  echo $(INSTALL_DATA) $$lib ${libdir}; \
 	  $(INSTALL_DATA) $$lib ${libdir}; \
 	done
 
 install-headers: $(REPLACEMENT_HEADERS)
 	$(mkinstalldirs) ${includedir}
 	test -z "$^" || for hdr in $^; do \
+	  echo $(INSTALL_DATA) $$hdr ${includedir}; \
 	  $(INSTALL_DATA) $$hdr ${includedir}; \
 	done
 
 install-doc: install-man install-info install-htmldoc install-pdf install-ps
 
 install-man: $(subst .man,.n,$(MANPAGE_SOURCES))
+	if test "${mandir}" = "${prefix}/man" \
+	|| test "${mandir}" = "${prefix}/share/man"; then \
+	  $(mkinstalldirs) --require ${prefix} ${mandir}; \
+	fi
 	for file in $^; do \
 	  pagename=`echo $$file | sed 's/\.n//'`; \
-	  section=`sed $(mansect) ${srcdir}/$$pagename.man`; \
+	  section=`sed $(mansect) ${srcdir}/man/$$pagename.man`; \
+	  $(mkinstalldirs) --require ${mandir} ${mandir}/man$$section; \
 	  echo $(INSTALL_DATA) $$file $(manpage); \
+	  $(INSTALL_DATA) $$file $(manpage); \
 	done
 
 install-info:
@@ -290,4 +302,4 @@ clean:
 distclean: clean
 	rm -rf Makefile config.h config.[ls]* autom4te.cache
 
-# $RCSfile: Makefile.in,v $Revision: 1.3 $: end of file
+# $RCSfile: Makefile.in,v $Revision: 1.4 $: end of file
