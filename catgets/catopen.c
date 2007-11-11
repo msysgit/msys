@@ -1,7 +1,7 @@
 /*
  * catopen.c
  *
- * $Id: catopen.c,v 1.5 2007-11-10 14:34:45 keithmarshall Exp $
+ * $Id: catopen.c,v 1.6 2007-11-11 17:31:31 keithmarshall Exp $
  *
  * Copyright (C) 2006, Keith Marshall
  *
@@ -9,7 +9,7 @@
  * POSIX compatible national language message catalogues in MinGW.
  *
  * Written by Keith Marshall  <keithmarshall@users.sourceforge.net>
- * Last modification: 22-Sept-2007
+ * Last modification: 10-Nov-2007
  *
  *
  * This is free software.  It is provided AS IS, in the hope that it may
@@ -31,6 +31,10 @@
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
+#endif
+
+#ifdef HAVE_WINDOWS_H
+#include <windows.h>
 #endif
 
 #include <stdlib.h>
@@ -113,7 +117,205 @@ int mc_validate( __const char *name )
   return (int)(-1);
 }
 
+#ifdef _WIN32
+/*
+ * On Win32 platforms, we need to work around the lack of any definitive
+ * standard for a file system hierarchy; to accomplish this, we need some
+ * additional helper functions, for analysing and modifying path names,
+ * performing all operations in the wide character domain.
+ */
+#define mc_is_dirsep(C)  (((C) == L'/') || ((C) == L'\\'))
+
+static inline
+size_t mc_dirname_strip( wchar_t *path, size_t len )
+{
+  /* Local inline helper to discard trailing dirname separators
+   * from the end of a path name in the wide character domain.
+   */
+  while( (len > 0) && mc_is_dirsep( path[len] ) )
+    path[len--] = L'\0';
+  return len;
+}
+
+static inline
+size_t mc_dirname_len( wchar_t *path, size_t len )
+{
+  /* Local inline helper to establish the length of the `dirname'
+   * component of a path name in the wide character domain.
+   */
+  len = mc_dirname_strip( path, len );
+  while( (len > 0) && ! mc_is_dirsep( path[len] ) )
+    --len;
+  return len;
+}
+
+static inline
+size_t mc_mbstowcs( wchar_t *buf, size_t len, const char *mbs )
+{
+  /* Inline helper to convert path names from the multibyte character
+   * domain defined by the system code page, to the wide character domain.
+   */
+  return MultiByteToWideChar( CP_ACP, 0, mbs, (size_t)(-1), buf, len );
+}
+
+static inline
+size_t mc_wcstombs( char *buf, size_t len, const wchar_t *wcs )
+{
+  /* Inline helper to convert path names from the wide character domain
+   * to the multibyte character domain defined by the system code page.
+   */
+  return WideCharToMultiByte( CP_ACP, 0, wcs, (size_t)(-1), buf, len, NULL, NULL );
+}
+
 static
+int mc_validate_mapped( __const char *name )
+{
+  /* Wrapper function for calls to `mc_validate', on Win32 hosts.
+   * We assume that, for an application installed into a directory
+   * designated by `${prefix}', that its message catalogues will be
+   * in `${prefix}/name'; thus, for any `name' argument which is in
+   * the form of a POSIX absolute path name, (i.e. it begins with a
+   * dirname separator as its first character), we deduce `${prefix}'
+   * from the path name of the executable file, and we prefix it to
+   * the `name' argument, before passing this modified argument to
+   * `mc_validate', for consideration as a possible location for
+   * the message catalogue to be opened.
+   */
+  static char *mapped_name = NULL;
+  static size_t root_len = (size_t)(-1);
+
+  wchar_t chk;
+
+  if( name == NULL )
+  {
+    /* No catalogue path name to map;
+     * we may assume that this is a request to...
+     */
+    if( mapped_name != NULL )
+    {
+      /* ...release temporary resources, allocated while
+       * mapping catalogue paths into the file system space
+       * in which the calling application is installed.
+       */
+      free( mapped_name );
+      mapped_name = NULL;
+      root_len = (size_t)(-1);
+    }
+    /* If this was not a deliberate request to free resources,
+     * then an error has occurred, so return accordingly.
+     */
+    return (int)(-1);
+  }
+
+  /* If we get to here,
+   * then we have a message catalogue to locate...
+   */
+  if( (mbtowc( &chk, name, MB_CUR_MAX ) > 0) && ! mc_is_dirsep( chk ) )
+    /*
+     * The message catalogue path specified in this request is
+     * not absolute, as a POSIX path, so handle it literally.
+     */
+    return mc_validate( name );
+
+  /* ...and if here, then the path is specified by an
+   * absolute POSIX style path name...
+   */
+  if( mapped_name == NULL )
+  {
+    /* ...but we don't yet know the Win32 path name for the effective
+     * root directory in our emulated POSIX file system hierarchy; we
+     * must deduce this from the path name of the calling executable.
+     */
+    size_t path_len = strlen( name ) + 1;
+    wchar_t chroot[ root_len = mc_mbstowcs( NULL, 0, _pgmptr ) ];
+    (void) mc_mbstowcs( chroot, root_len, _pgmptr );
+
+    /* Discard the executable file name, from the end of this path name.
+     */
+    root_len = mc_dirname_len( chroot, root_len - 1 );
+    if( mc_is_dirsep( chroot[ root_len ] ) )
+    {
+      size_t offset;
+
+      /* When we have distinct dirname and basename components, then we
+       * discard the basename, and also any newly exposed trailing dirname
+       * separator characters.
+       */
+      root_len = mc_dirname_len( chroot, root_len );
+
+      /* Check if the leaf directory name is `bin' or `sbin'...
+       * The executable may be installed as `${prefix}/bin/appname.exe',
+       * or as `${prefix}/sbin/appname.exe'; thus, to identify `${prefix}',
+       * we must prune away this final directory name, and its preceeding
+       * dirname separator(s), in addition to the executable name, which
+       * we've already discarded.
+       */
+      offset = root_len + 1;
+      if( (chroot[ offset ] == L's') || (chroot[ offset ] == L'S') )
+	++offset;
+      if( _wcsicmp( chroot + offset, L"bin" ) == 0 )
+	(void) mc_dirname_strip( chroot, root_len );
+    }
+
+    /* Transform this name back to the multibyte character domain,
+     * computing the resultant length of the application root prefix;
+     * allocate memory to accommodate it, with the message catalogue
+     * path name concatenated, and populate it.
+     */
+    root_len = mc_wcstombs( NULL, 0, chroot ) - 1;
+    mapped_name = mc_realloc( mapped_name, root_len + path_len );
+    (void) mc_wcstombs( mapped_name, root_len + 1, chroot );
+    (void) memcpy( mapped_name + root_len, name, path_len );
+  }
+
+  else
+  {
+    /* We had already identified the application's root prefix,
+     * during a previous search, so now we simply adjust the memory
+     * allocation, and insert the new message catalogue path name,
+     * at the appropriate offset.
+     */
+    size_t path_len = strlen( name ) + 1;
+    mapped_name = mc_realloc( mapped_name, root_len + path_len );
+    (void) memcpy( mapped_name + root_len, name, path_len );
+  }
+
+  /* However we arrived at the mapped message catalogue path name,
+   * we hand it off for validation.
+   */
+  return mc_validate( mapped_name );
+}
+
+/* Throughout the remainder of this module,
+ * redirect references to `mc_validate' through `mc_validate_mapped'.
+ */
+#define mc_validate( name )  mc_validate_mapped( name )
+
+static inline
+nl_catd mc_resolved( nl_catd fd )
+{
+  /* A simple wrapper function, which allows `catopen' to release
+   * the memory temporarily allocated by `mc_validate_mapped', when
+   * searching for message catalogues on Win32 file systems.
+   */
+  (void) mc_validate_mapped( NULL );
+  return fd;
+}
+
+#else
+/*
+ * On non-Win32 platforms, there are no file system hierarchy issues
+ * to be resolved, so `mc_resolved' may simply evaluate its argument,
+ * and transparently leave the result inline.
+ */
+#define mc_resolved( expr )  expr
+
+/* On these platforms, we accept only '/' as the dirname separator.
+ */
+#define mc_is_dirsep(C)  ((C) == L'/')
+#endif
+
+static inline
 int mc_pop_locale( int LC_TYPE, char *working_locale, int retval )
 {
   /* This convenience function is used by `mc_nlspath_open', (below),
@@ -206,7 +408,7 @@ int mc_nlspath_open( __const char *msgcat, unsigned flags )
     /* First, check if the given `msgcat' spec begins with a pair of
      * characters which appear to represent a Win32 drive specifier.
      */
-    if( (chk != L'/') && (chk != L'\\') )
+    if( ! mc_is_dirsep( chk ) )
     {
       /* We assume that it is, when the first character is *not* a
        * directory name separator, and the second *is* a colon...
@@ -224,7 +426,7 @@ int mc_nlspath_open( __const char *msgcat, unsigned flags )
      */
     while( step > 0 )
     {
-      if( (chk == L'/') || (chk == L'\\') )
+      if( mc_is_dirsep( chk ) )
       {
 	/* The `msgcat' spec includes at least one directory name separator,
 	 * so pass it back to `catopen', as an exact catalogue file reference.
@@ -493,7 +695,7 @@ nl_catd catopen( __const char *name, int flags )
 {
   /* ...with all the hard work done by the `mc_open' call-back from `_mctab_'.
    */
-  return (nl_catd)_mctab_( mc_open, name, flags );
+  return mc_resolved( (nl_catd)_mctab_( mc_open, name, flags ) );
 }
 
-/* $RCSfile: catopen.c,v $Revision: 1.5 $: end of file */
+/* $RCSfile: catopen.c,v $Revision: 1.6 $: end of file */

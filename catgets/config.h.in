@@ -6,6 +6,9 @@
 /* Define numerically to the catgets minor version number */
 #undef CATGETS_VERSION_MINOR
 
+/* Define to 1 if you have the `basename' function. */
+#undef HAVE_BASENAME
+
 /* Define to 1 if you have the <iconv.h> header file. */
 #undef HAVE_ICONV_H
 
@@ -20,9 +23,6 @@
 
 /* Define to 1 if you have the `nl_langinfo' function. */
 #undef HAVE_NL_LANGINFO
-
-/* Define to 1 if you have the <nl_types.h> header file. */
-#undef HAVE_NL_TYPES_H
 
 /* Define to 1 if you have the <stdint.h> header file. */
 #undef HAVE_STDINT_H
@@ -44,6 +44,12 @@
 
 /* Define to 1 if you have the <unistd.h> header file. */
 #undef HAVE_UNISTD_H
+
+/* Define to 1 if you have the <windows.h> header file. */
+#undef HAVE_WINDOWS_H
+
+/* Define to 1 if you have the `_mingw_setlocale' function. */
+#undef HAVE__MINGW_SETLOCALE
 
 /* Define to `const' if iconv declaration requires const. */
 #undef ICONV_CONST

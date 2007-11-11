@@ -1,7 +1,7 @@
 # configure.ac  -*- Autoconf -*-
 # Process this file with autoconf, to generate a configure script.
 #
-# $Id: configure.ac,v 1.2 2007-06-18 22:36:07 keithmarshall Exp $
+# $Id: configure.ac,v 1.3 2007-11-11 17:31:32 keithmarshall Exp $
 #
 # Copyright (C) 2006, 2007, MinGW Project
 # Written by Keith Marshall <keithmarshall@users.sourceforge.net>
@@ -90,8 +90,11 @@
   MINGW_AC_CHECK_HEADER([REPLACEMENT_HEADERS], [nl_types.h])
   MINGW_AC_CHECK_HEADER([REPLACEMENT_HEADERS], [langinfo.h])
 
-# For a native Win32 build, we need the MinGW locale extensions.
+# Building for a native Win32 host, we need the `windows.h' header,
+# (which is not required for a cross-hosted tool chain build), and
+# also the MinGW locale extensions.
 #
+  AC_CHECK_HEADERS([windows.h])
   MINGW_AC_LC_EXTENSIONS([LOCAL_HEADERS])
 
 # Object modules required to build the `gencat' executable.
@@ -120,4 +123,4 @@
   AC_CONFIG_FILES([Makefile])
   AC_OUTPUT
 #
-# $RCSfile: configure.ac,v $Revision: 1.2 $: end of file
+# $RCSfile: configure.ac,v $Revision: 1.3 $: end of file

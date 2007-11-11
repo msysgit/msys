@@ -1,3 +1,29 @@
+2007-11-11  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	* catgets.c [HAVE_WINDOWS_H]: Include windows.h.
+	(mc_is_dirsep): New macro...
+	(mc_nlspath_open): Use it.
+	[_WIN32] (mc_dirname_strip, mc_dirname_len): New inline functions.
+	[_WIN32] (mc_mbstowcs, mc_wcstombs): New inline functions; these
+	abstract the nastiness of the Win32 MultiByteToWideChar API.
+	[_WIN32] (mc_validate_mapped): New static function; use it as a
+	wrapper around mc_validate(), to map POSIX style message catalogue
+	path names into the installation tree of the calling application.
+	(mc_resolve) [_WIN32]: New inline function...
+	(mc_resolve) [!_WIN32]: New `do nothing' macro...
+	(catopen): Use it to clean up temporary resources, allocated for the
+	Win32 case, where mc_validate() is wrapped by mc_validate_mapped().
+	(mc_pop_locale): Make it inline.
+
+	* nlspath.h.in (mc_MK_NLSPATH): New macro; use it to...
+	(APP_NLSPATH, SYS_NLSPATH): Construct these new defines, from...
+	(APP_NLSPATH_PREFERRED, APP_NLSPATH_ALTERNATE): These new defines...
+	(SYS_NLSPATH_PREFERRED, SYS_NLSPATH_ALTERNATE): and these likewise.
+	(NLSPATH_DEFAULT): Redefined, based on APP_NLSPATH and SYS_NLSPATH.
+
+	* configure.ac (AC_CHECK_HEADERS): Include windows.h.
+	* configure, config.h.in: Regenerated.
+
 2007-11-10  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	* Makefile.in (install-man): Require pre-existing ${prefix};

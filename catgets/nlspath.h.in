@@ -2,14 +2,14 @@
 /*
  * nlspath.h.in
  *
- * $Id: nlspath.h.in,v 1.1 2007-04-06 22:34:52 keithmarshall Exp $
+ * $Id: nlspath.h.in,v 1.2 2007-11-11 17:31:32 keithmarshall Exp $
  *
  * Copyright (C) 2006, Keith Marshall
  *
  * This header specifies the `compiled-in' default for NLSPATH.
  *
  * Written by Keith Marshall  <keithmarshall@users.sourceforge.net>
- * Last modification: 07-Dec-2006
+ * Last modification: 02-Nov-2007
  *
  *
  * This is free software.  It is provided AS IS, in the hope that it may
@@ -29,14 +29,37 @@
  */
 #define _NLSPATH_H_
 
-#define _prefix_   "@HOST_PREFIX@"
-#define _pathsep_  "@PATH_SEPARATOR_INTERNAL@"
+#define _prefix_                "@HOST_PREFIX@"
+#define _pathsep_               "@PATH_SEPARATOR_INTERNAL@"
 
 #define NLSPATH_SEPARATOR_CHAR  L'@PATH_SEPARATOR_INTERNAL@'
 
-#define NLSPATH_PREFERRED  _prefix_ "/share/locale/%L/%N"
-#define NLSPATH_ALTERNATE  _prefix_ "/share/locale/%L/LC_MESSAGES/%N"
+#define APP_NLSPATH_PREFERRED   "/share/locale/%L/%N"
+#define APP_NLSPATH_ALTERNATE   "/share/locale/%L/LC_MESSAGES/%N"
 
-#define NLSPATH_DEFAULT  NLSPATH_PREFERRED _pathsep_ NLSPATH_ALTERNATE
+#define SYS_NLSPATH_PREFERRED   _prefix_ APP_NLSPATH_PREFERRED
+#define SYS_NLSPATH_ALTERNATE   _prefix_ APP_NLSPATH_ALTERNATE
 
-#endif /* _NLSPATH_H_: $RCSfile: nlspath.h.in,v $Revision: 1.1 $: end of file */
+#define mc_MK_NLSPATH(TAG)      TAG##_PREFERRED _pathsep_ TAG##_ALTERNATE
+
+#ifdef  _WIN32
+/*
+ * On Win32 hosts, we establish a default NLSPATH which will first
+ * search in the calling application's installation tree, falling back
+ * to a system default, only if that search is unproductive.
+ */
+#define APP_NLSPATH             mc_MK_NLSPATH( APP_NLSPATH )
+#define SYS_NLSPATH             mc_MK_NLSPATH( SYS_NLSPATH )
+
+#define NLSPATH_DEFAULT         APP_NLSPATH _pathsep_ SYS_NLSPATH
+
+#else
+/*
+ * On non-Win32 hosts, we assume that applications will install their
+ * message catalogues into the system path, so here is no need for an
+ * application specific local tree search.
+ */
+#define NLSPATH_DEFAULT         mc_MK_NLSPATH( SYS_NLSPATH )
+#endif
+
+#endif /* _NLSPATH_H_: $RCSfile: nlspath.h.in,v $Revision: 1.2 $: end of file */
