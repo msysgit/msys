@@ -1691,6 +1691,7 @@ void license ( void )
     "   \n",
     BZ2_bzlibVersion()
    );
+   exit ( 0 );
 }
 
 
