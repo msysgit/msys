@@ -48,7 +48,7 @@ OBJS= blocksort.o  \
       decompress.o \
       bzlib.o
 
-SHAREDLIB=cygbz2-${DLLVER}.dll
+SHAREDLIB=msys-bz2-${DLLVER}.dll
 STATLIB=libbz2.a
 IMPLIB=libbz2.dll.a
 SHAREDDEF=libbz2.def
