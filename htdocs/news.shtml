@@ -16,7 +16,7 @@
 <!--#include virtual="ssi/lside.html" -->
 
 
-<div id="Content">
+<div id="mainContent">
 <h1>MinGW - News</h1>
 <p>
 <!--#include virtual="news-long.html"-->

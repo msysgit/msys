@@ -1,3 +1,8 @@
+2007-12-01  Earnie Boyd <earnie@users.sf.net>
+
+	* news.shtml: Correct div id from Content to mainContent.
+	Thanks to lode_leroy, atid=102435&aid=1835015&group_id=2435.
+
 2007-10-28  Keith Marshall  <keithmarshall@users.sf.net>
 
 	* index.shtml (test.html): Revert #include to ...
