@@ -1,5 +1,14 @@
 2007-08-01  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
+	Correct a potential buffer overrun and memory leak.
+
+	* src/man-getopt.c (mysetenv) [!HAVE_SETENV]: Correct size of buffer
+	allocated for constructing argument to `putenv'; was 2*strlen(name)+2;
+	should be strlen(name)+strlen(value)+2.  Free this buffer after use,
+	if `putenv' makes a distinct copy.
+
+2007-08-01  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
 	* Makefile.in (DISTDIRS): Add `misc'.
 	(distdir): `cd' to destination directory, before running `ln -s'.
 

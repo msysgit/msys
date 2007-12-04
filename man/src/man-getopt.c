@@ -246,10 +246,12 @@ mysetenv(const char *name, const char *value) {
 #ifdef HAVE_SETENV
     setenv(name, value, 1);
 #else
-    int len = strlen(value)+1+strlen(value)+1;
-    char *str = my_malloc(len);
+    int len = strlen(name) + 1;
+    char *str = my_malloc(len + strlen(value) + 1);
     sprintf(str, "%s=%s", name, value);
     putenv(str);
+    if(getenv(name) != (str + len))
+      free(str);
 #endif
 }
 
