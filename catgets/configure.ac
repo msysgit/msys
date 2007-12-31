@@ -1,7 +1,7 @@
 # configure.ac  -*- Autoconf -*-
 # Process this file with autoconf, to generate a configure script.
 #
-# $Id: configure.ac,v 1.3 2007-11-11 17:31:32 keithmarshall Exp $
+# $Id: configure.ac,v 1.4 2007-12-31 17:09:50 keithmarshall Exp $
 #
 # Copyright (C) 2006, 2007, MinGW Project
 # Written by Keith Marshall <keithmarshall@users.sourceforge.net>
@@ -47,6 +47,10 @@
 #
   AC_PREREQ([2.59])
   AC_INIT(__MINGW_AC_PACKAGE_IDENTIFICATION__)
+
+# Initialise for possible building as a cross-hosted tool kit.
+#
+  CATGETS_AC_CONFIG_TARGET
 
 # Set up to use `config.h', with included package version tags.
 #
@@ -123,4 +127,4 @@
   AC_CONFIG_FILES([Makefile])
   AC_OUTPUT
 #
-# $RCSfile: configure.ac,v $Revision: 1.3 $: end of file
+# $RCSfile: configure.ac,v $Revision: 1.4 $: end of file

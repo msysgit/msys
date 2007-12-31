@@ -1,3 +1,25 @@
+2007-12-31  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Support direct building as a cross-hosted development kit.
+
+	* aclocal.m4 (CATGETS_AC_CONFIG_TARGET): New macro.
+	* configure.ac: Use it.
+	* configure: Regenerated.
+
+	* Makefile.in (all-targets): New macro; defined by configure...
+	(MAKE_TARGETS): ...by means of this substitution variable...
+	(all-native, all-cross-hosted): ...these new macros; define them.
+	(all): Use it; also require...
+	(all-cross-hosted-libs): ...this new target, built recursively...
+	(cross-build): ...via this new target.
+	(clean, distclean): Clean it...
+	(distclean-cross-hosted): ...supported by this new target.
+	(FORCE): New pseudo-target, to FORCE it.
+	(manpage): Add `man_prefix' placeholder macro.
+	(install-all-native, install-all-cross-hosted): New targets.
+	(install): Use them.
+	(install-bin): New target.
+
 2007-11-11  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	* catgets.c [HAVE_WINDOWS_H]: Include windows.h.

@@ -310,7 +310,7 @@ ac_includes_default="\
 # include <unistd.h>
 #endif"
 
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT LN_S AR ac_ct_AR INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA MAKE_DLL DLLVERSION canonical_prefix HOST_PATH_SEPARATOR REPLACEMENT_HEADERS CPP EGREP LOCAL_HEADERS GENCAT_OBJECTS INCICONV LIBICONV LIBOBJS LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS MAKE_TARGETS CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT LN_S AR ac_ct_AR INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA MAKE_DLL DLLVERSION canonical_prefix HOST_PATH_SEPARATOR REPLACEMENT_HEADERS CPP EGREP LOCAL_HEADERS GENCAT_OBJECTS INCICONV LIBICONV LIBOBJS LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -1308,6 +1308,58 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
 
 
+
+# Initialise for possible building as a cross-hosted tool kit.
+#
+  MAKE_TARGETS=all-native
+
+ if test -n "$target_alias" && test x"$target_alias" != x"$host_alias"
+ then (
+  case $srcdir in
+   .*) ac_command="$SHELL ../$srcdir/$as_me" ;;
+    *) ac_command="$SHELL `cd $srcdir && pwd`/$as_me" ;;
+  esac
+  test -d cross-build || mkdir cross-build; cd cross-build; ac_dir=`pwd`
+  { echo "$as_me:$LINENO: entering directory \`$ac_dir'" >&5
+echo "$as_me: entering directory \`$ac_dir'" >&6;}
+  { echo "$as_me:$LINENO: configuring component build for target \`$target_alias'" >&5
+echo "$as_me: configuring component build for target \`$target_alias'" >&6;}
+  if test -z "$build_alias"
+  then
+   build_alias=`uname -m 2>/dev/null || echo unknown`
+   build_alias=$build_alias-`uname -s 2>/dev/null || echo unknown`
+   build_alias=`echo "$build_alias" | tr $as_cr_LETTERS $as_cr_letters`
+  fi
+  eval $ac_command `eval set x $ac_configure_args; shift
+   ac_opt="" ac_dashdash=""
+   for ac_arg
+   do
+    ac_optarg_needed=no
+    case $ac_dashdash$ac_opt$ac_arg in
+     --) ac_dashdash=yes
+      ;;
+     -build | --build | --buil | --bui | --bu |\
+     -target | --target | --targe | --targ | --tar | --ta | --t |\
+     -host | --host | --hos | --ho )
+      ac_optarg_needed=yes
+      ;;
+     build_alias=* | host_alias=* | target_alias=* |\
+     -build=* | --build=* | --buil=* | --bui=* | --bu=* |\
+     -host=* | --host=* | --hos=* | --ho=* )
+      ;;
+     -target=* | --target=* |\
+     --targe=* | --targ=* | --tar=* | --ta=* | --t=* )
+      echo "'--build=$build_alias' '--host=$target_alias'"
+      ;;
+     *) echo "'$ac_arg'"
+      ;;
+    esac
+    test $ac_optarg_needed = yes && ac_opt="$ac_arg=" || ac_opt=""
+   done`
+  { echo "$as_me:$LINENO: leaving directory \`$ac_dir'" >&5
+echo "$as_me: leaving directory \`$ac_dir'" >&6;} )
+  MAKE_TARGETS=all-cross-hosted
+ fi
 
 # Set up to use `config.h', with included package version tags.
 #
@@ -5628,6 +5680,7 @@ s,@ECHO_C@,$ECHO_C,;t t
 s,@ECHO_N@,$ECHO_N,;t t
 s,@ECHO_T@,$ECHO_T,;t t
 s,@LIBS@,$LIBS,;t t
+s,@MAKE_TARGETS@,$MAKE_TARGETS,;t t
 s,@CC@,$CC,;t t
 s,@CFLAGS@,$CFLAGS,;t t
 s,@LDFLAGS@,$LDFLAGS,;t t
@@ -6146,4 +6199,4 @@ if test "$no_create" != yes; then
 fi
 
 #
-# $RCSfile: configure,v $Revision: 1.3 $: end of file
+# $RCSfile: configure,v $Revision: 1.4 $: end of file

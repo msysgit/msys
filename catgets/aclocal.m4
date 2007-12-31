@@ -154,6 +154,60 @@ AC_DEFUN([MINGW_AC_LC_EXTENSIONS],
  AC_SUBST([$1])dnl
 ])# MINGW_AC_LC_EXTENSIONS
 
+# CATGETS_AC_CONFIG_TARGET
+# ------------------------
+# Check if building a locally hosted tool chain, targetting a foreign
+# Win32 runtime host; if this is the case, configure a cross-hosted build
+# in directory `cross-build', where the target libraries will be built.
+#
+AC_DEFUN([CATGETS_AC_CONFIG_TARGET],
+[AC_SUBST([MAKE_TARGETS], [all-native])
+ if test -n "$target_alias" && test x"$target_alias" != x"$host_alias"
+ then (
+  case $srcdir in
+   .*) ac_command="$SHELL ../$srcdir/$as_me" ;;
+    *) ac_command="$SHELL `cd $srcdir && pwd`/$as_me" ;;
+  esac
+  test -d cross-build || mkdir cross-build; cd cross-build; ac_dir=`pwd`
+  AC_MSG_NOTICE([entering directory `$ac_dir'])
+  AC_MSG_NOTICE([configuring component build for target `$target_alias'])
+  if test -z "$build_alias"
+  then
+   build_alias=`uname -m 2>/dev/null || echo unknown`
+   build_alias=$build_alias-`uname -s 2>/dev/null || echo unknown`
+   build_alias=`echo "$build_alias" | tr $as_cr_LETTERS $as_cr_letters`
+  fi
+  eval $ac_command `eval set x $ac_configure_args; shift
+   ac_opt="" ac_dashdash=""
+   for ac_arg
+   do
+    ac_optarg_needed=no
+    case $ac_dashdash$ac_opt$ac_arg in
+     --) ac_dashdash=yes
+      ;;
+     -build | --build | --buil | --bui | --bu |\
+     -target | --target | --targe | --targ | --tar | --ta | --t |\
+     -host | --host | --hos | --ho )
+      ac_optarg_needed=yes
+      ;;
+     build_alias=* | host_alias=* | target_alias=* |\
+     -build=* | --build=* | --buil=* | --bui=* | --bu=* |\
+     -host=* | --host=* | --hos=* | --ho=* )
+      ;;
+     -target=* | --target=* |\
+     --targe=* | --targ=* | --tar=* | --ta=* | --t=* )
+      echo "'--build=$build_alias' '--host=$target_alias'"
+      ;;
+     *) echo "'$ac_arg'"
+      ;;
+    esac
+    test $ac_optarg_needed = yes && ac_opt="$ac_arg=" || ac_opt=""
+   done`
+  AC_MSG_NOTICE([leaving directory `$ac_dir']) )
+  MAKE_TARGETS=all-cross-hosted
+ fi[]dnl
+])# CATGETS_AC_CONFIG_TARGET
+
 AC_DEFUN([GENCAT_AC_OBJECTS_INIT],
 [GENCAT_OBJECTS=${GENCAT_OBJECTS-'gencat.$(OBJEXT)'}
  AC_SUBST([GENCAT_OBJECTS])dnl
@@ -189,4 +243,4 @@ AC_DEFUN([CATGETS_AC_CONFIG_VERSION_DEFINE],
  [Define numerically to the catgets $2 version number])dnl
 ])# CATGETS_AC_CONFIG_VERSION_DEFINE
 
-# $RCSfile: aclocal.m4,v $Revision: 1.2 $: end of file
+# $RCSfile: aclocal.m4,v $Revision: 1.3 $: end of file
