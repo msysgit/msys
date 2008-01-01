@@ -1,3 +1,27 @@
+2008-01-01  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Establish package structure for distribution.
+
+	* README, FDL: New files.
+
+	* Makefile.in (scriptdir, docdir): New macros; define them.
+	(DISTDOC_SOURCES): New macro; define to include ChangeLog, README
+	and FDL as distributed files.
+	(OTHER_SOURCES): Include DISTDOC_SOURCES.
+	(INSTALL_PROGS): Macro renamed to...
+	(DEV_SCRIPTS): ...this.
+	(MISC_SOURCES): Update accordingly.
+	(INSTALL_SCRIPT): New macro; define per autoconf substitution.
+	(install-bin-progs, install-scripts): New make targets.
+	(install-progs): Use them.
+	(DISTNAME): Add SNAPSHOT placeholder macro.
+	(bindist-tag, devdist-tag): New macros; define them.
+	(bindist-docs-install): New target.
+	(devdist-headers-install): New target.
+	(devdist-docs-install, devdist-extra-docs-install): New targets.
+	(devdist): New target; use them.
+	(dist): Build it.
+
 2007-12-31  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Support direct building as a cross-hosted development kit.

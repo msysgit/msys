@@ -4,12 +4,12 @@
 PACKAGE = @PACKAGE_TARNAME@
 VERSION = @PACKAGE_VERSION@
 
-# $Id: Makefile.in,v 1.5 2007-12-31 17:09:50 keithmarshall Exp $
+# $Id: Makefile.in,v 1.6 2008-01-01 18:45:09 keithmarshall Exp $
 #
-# Copyright (C) 2006, 2007, Keith Marshall
+# Copyright (C) 2006, 2007, 2008, Keith Marshall
 #
 # Written by Keith Marshall  <keithmarshall@users.sourceforge.net>
-# Last modification: 13-Nov-2007
+# Last modification: 01-Jan-2008
 #
 #
 # This is free software.  It is provided AS IS, in the hope that it may
@@ -36,7 +36,9 @@ canonical_prefix = @canonical_prefix@
 
 bindir = @bindir@
 libdir = @libdir@
+scriptdir = @datadir@/$(PACKAGE)/scripts
 includedir = @includedir@
+docdir = @datadir@/doc/$(PACKAGE)
 mandir = @mandir@
 
 CC = @CC@
@@ -91,9 +93,10 @@ GENCAT_HEADERS  = gencat.h gcmsgs.h mcutfsig.h
 GENCAT_SOURCES  = gencat.c mcload.c mcsource.c mciconv.c mcmerge.c mcutfsig.c
 GENCAT_OBJECTS  = @GENCAT_OBJECTS@
 
-OTHER_SOURCES   = COPYING ChangeLog mkinstalldirs install-sh $(MISC_SOURCES)
-MISC_SOURCES	= $(CONFIG_HEADERS) $(CONFIG_SOURCES) $(INSTALL_PROGS)
+OTHER_SOURCES   = $(DISTDOC_SOURCES) mkinstalldirs install-sh $(MISC_SOURCES)
+MISC_SOURCES	= $(CONFIG_HEADERS) $(CONFIG_SOURCES) $(DEV_SCRIPTS)
 
+DISTDOC_SOURCES = ChangeLog COPYING FDL README
 MANPAGE_SOURCES	= catopen.man catgets.man catclose.man gencat.man
 
 # MANSECTS specifies the set of *standard* man section identifiers, to
@@ -130,7 +133,7 @@ BUILD_LIBS	= libcatgets.a
 BUILD_DLLS	= catgets$(DLLVERSION).dll
 DLLVERSION	= @DLLVERSION@
 
-INSTALL_PROGS	= gendefs.awk
+DEV_SCRIPTS	= gendefs.awk
 
 # Generic rule, replacing the built-in default, to create an object file
 # from a C source file...
@@ -202,6 +205,7 @@ tool_prefix = @target_alias@`test -n "@target_alias@" && echo "-"`
 
 INSTALL = @INSTALL@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
+INSTALL_SCRIPT = @INSTALL_SCRIPT@
 INSTALL_DATA = @INSTALL_DATA@
 
 DLL_IMPORT_LIBNAME = lib`echo "$$dll" | sed 's?$(DLLVERSION).dll?.dll.a?'`
@@ -213,21 +217,34 @@ install-all-native: install-progs install-headers install-libs
 install-all-cross-hosted: install-progs
 	cd cross-build; $(MAKE) install-headers install-libs
 
-install-bin install-progs: all
-	$(mkinstalldirs) --require ${exec_prefix} ${bindir} ${libdir}
-	for prog in $(BUILD_PROGS); do \
-	  echo $(INSTALL_PROGRAM) $$prog ${bindir}/$(tool_prefix)$$prog; \
-	  $(INSTALL_PROGRAM) $$prog ${bindir}/$(tool_prefix)$$prog; \
-	done
-	for prog in $(INSTALL_PROGS); do \
-	  echo $(INSTALL_PROGRAM) ${srcdir}/$$prog ${bindir}/$(tool_prefix)$$prog; \
-	  $(INSTALL_PROGRAM) ${srcdir}/$$prog ${bindir}/$(tool_prefix)$$prog; \
+install-progs: install-bin-progs install-scripts
+
+install-bin-progs: $(BUILD_PROGS)
+	$(mkinstalldirs) --require ${exec_prefix} ${bindir}
+	for prog in $^; do \
+	  progname=`IFS='\\/'; set x $$prog; eval echo '$$'$$#`; \
+	  echo $(INSTALL_PROGRAM) $$prog ${bindir}/$(tool_prefix)$$progname; \
+	  $(INSTALL_PROGRAM) $$prog ${bindir}/$(tool_prefix)$$progname; \
 	done
 
-install-libs: all-libs $(all-dll)
+install-scripts: $(DEV_SCRIPTS)
+	$(mkinstalldirs) --require ${prefix} ${scriptdir}
+	for script in $^; do \
+	  prog=`IFS='\\/'; set x $$script; eval echo '$$'$$#`; \
+	  echo $(INSTALL_SCRIPT) $$script ${scriptdir}/$(tool_prefix)$$prog; \
+	  $(INSTALL_SCRIPT) $$script ${scriptdir}/$(tool_prefix)$$prog; \
+	done
+
+install-dll: $(all-dll)
+	$(mkinstalldirs) --require ${exec_prefix} ${bindir}
 	test -z "$(all-dll)" || for dll in $(BUILD_DLLS); do \
 	  echo $(INSTALL_DATA) $$dll ${bindir}; \
 	  $(INSTALL_DATA) $$dll ${bindir}; \
+	done
+
+install-libs: all-libs $(all-dll)
+	$(mkinstalldirs) --require ${exec_prefix} ${bindir} ${libdir}
+	test -z "$(all-dll)" || for dll in $(BUILD_DLLS); do \
 	  echo $(INSTALL_DATA) $(DLL_IMPORT_LIBNAME) ${libdir}; \
 	  $(INSTALL_DATA) $(DLL_IMPORT_LIBNAME) ${libdir}; \
 	done
@@ -268,12 +285,15 @@ install-ps:
 ##  Distribution  ##
 ## ============== ##
 
-dist: srcdist bindist
+dist: srcdist bindist devdist
 dist_srcdir = @abs_top_srcdir@
 
 DISTDIRS = include m4 repl repl/include man
 DISTFILES = $(GENCAT_SOURCES) $(CATGETS_SOURCES) $(OTHER_SOURCES)
-DISTNAME = $(PACKAGE)-$(VERSION)
+DISTNAME = $(PACKAGE)-$(VERSION)$(SNAPSHOT)
+
+bindist-tag = bin
+devdist-tag = dev
 
 ZIP = gzip -c
 ZIPTYPE = tar.gz
@@ -293,11 +313,37 @@ srcdist:
 	tar chf - $(DISTNAME) | $(ZIP) > $(DISTNAME)-src.$(ZIPTYPE)
 	rm -rf $(DISTNAME)
 
-bindist: all
+bindist devdist: all
 	rm -rf tmp; mkdir tmp
-	$(MAKE) prefix=`pwd`/tmp install-progs install-libs install-doc
-	cd tmp && tar chf - * | $(ZIP) > ../$(DISTNAME)-bin.$(ZIPTYPE)
+	$(MAKE) prefix=`pwd`/tmp $@-install
+	cd tmp && tar chf - * | $(ZIP) > ../$(DISTNAME)-$($@-tag).$(ZIPTYPE)
 	rm -rf tmp
+
+bindist-install: bindist-docs-install install-dll
+devdist-install: devdist-docs-install devdist-headers-install
+devdist-install: install-progs install-libs install-doc
+
+bindist-docs-install: README COPYING
+	$(mkinstalldirs) ${docdir}
+	for file in $^; do \
+	  echo $(INSTALL_DATA) $$file ${docdir}; \
+	  $(INSTALL_DATA) $$file ${docdir}; \
+	done
+
+devdist-docs-install: bindist-docs-install devdist-extra-docs-install
+
+devdist-extra-docs-install: FDL
+	for file in $^; do \
+	  echo $(INSTALL_DATA) $$file ${docdir}; \
+	  $(INSTALL_DATA) $$file ${docdir}; \
+	done
+
+devdist-headers-install: nl_types.h langinfo.h
+	$(mkinstalldirs) ${includedir}
+	for file in $^; do \
+	  echo $(INSTALL_DATA) $$file ${includedir}; \
+	  $(INSTALL_DATA) $$file ${includedir}; \
+	done
 
 
 ## ========== ##
@@ -315,4 +361,4 @@ distclean: distclean-cross-hosted clean
 distclean-cross-hosted: FORCE
 	rm -rf cross-build
 
-# $RCSfile: Makefile.in,v $Revision: 1.5 $: end of file
+# $RCSfile: Makefile.in,v $Revision: 1.6 $: end of file
