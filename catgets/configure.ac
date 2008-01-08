@@ -1,9 +1,9 @@
 # configure.ac  -*- Autoconf -*-
 # Process this file with autoconf, to generate a configure script.
 #
-# $Id: configure.ac,v 1.4 2007-12-31 17:09:50 keithmarshall Exp $
+# $Id: configure.ac,v 1.5 2008-01-08 19:51:55 keithmarshall Exp $
 #
-# Copyright (C) 2006, 2007, MinGW Project
+# Copyright (C) 2006, 2007, 2008, MinGW Project
 # Written by Keith Marshall <keithmarshall@users.sourceforge.net>
 #
 # Package identification.
@@ -62,6 +62,7 @@
   AC_PROG_CC
   AC_PROG_LN_S
   AC_CHECK_TOOL([AR], [ar], [ar])
+  AC_PATH_PROG([AWK_INTERPRETER], [awk], [/bin/awk])
   AC_PROG_INSTALL
 
 # Check if Win32 DLLs should be built,
@@ -102,12 +103,13 @@
   MINGW_AC_LC_EXTENSIONS([LOCAL_HEADERS])
 
 # Object modules required to build the `gencat' executable.
-# We need `mkstemp', `nl_langinfo' and `basename'; if these are
-# already available in system libraries, just use the provided
-# implementations, otherwise we must supply them.
+# We need `mkstemp', `nl_langinfo', `getopt_long_only' and `basename';
+# if these are already available in system libraries, just use the
+# provided implementations, otherwise we must supply them.
 #
   GENCAT_AC_FUNC_MKSTEMP
   GENCAT_AC_FUNC_NL_LANGINFO
+  GENCAT_AC_FUNC_GETOPT_LONG_ONLY
   GENCAT_AC_FUNC_BASENAME
 #
 # The remainder are always provided by this package.
@@ -127,4 +129,4 @@
   AC_CONFIG_FILES([Makefile])
   AC_OUTPUT
 #
-# $RCSfile: configure.ac,v $Revision: 1.4 $: end of file
+# $RCSfile: configure.ac,v $Revision: 1.5 $: end of file

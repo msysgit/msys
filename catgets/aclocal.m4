@@ -1,5 +1,16 @@
 # aclocal.m4 -*- Autoconf -*- vim: filetype=config
 #
+# $Id: aclocal.m4,v 1.4 2008-01-08 19:51:54 keithmarshall Exp $
+#
+# Copyright (C) 2006, 2007, 2008, MinGW Project
+# Written by Keith Marshall <keithmarshall@users.sourceforge.net>
+#
+# This is aclocal.m4 for the MinGW `catgets' package.
+#
+# This is free software; it is provided `as is', in the hope that it may
+# be useful, but WITHOUT WARRANTY OF ANY KIND, not even an implied warranty
+# of MERCHANTABILITY, nor of FITNESS FOR ANY PARTICULAR PURPOSE.
+#
 m4_include([m4/pkgid.m4])
 m4_include([m4/iconv.m4])
 
@@ -208,39 +219,106 @@ AC_DEFUN([CATGETS_AC_CONFIG_TARGET],
  fi[]dnl
 ])# CATGETS_AC_CONFIG_TARGET
 
+# GENCAT_AC_OBJECTS_INIT
+# ----------------------
+# Initialise the list of object files to be compiled,
+# as prerequisites for building the `gencat' executable.
+#
 AC_DEFUN([GENCAT_AC_OBJECTS_INIT],
 [GENCAT_OBJECTS=${GENCAT_OBJECTS-'gencat.$(OBJEXT)'}
  AC_SUBST([GENCAT_OBJECTS])dnl
 ])# GENCAT_AC_OBJECTS_INIT
 
+# GENCAT_AC_OBJECTS_ADD( OBJECT_FILE_NAME )
+# -----------------------------------------
+# Add OBJECT_FILE_NAME to the list of object files to be compiled,
+# as prerequisites for building the `gencat' executable.
+#
 AC_DEFUN([GENCAT_AC_OBJECTS_ADD],
 [AC_REQUIRE([GENCAT_AC_OBJECTS_INIT])dnl
  GENCAT_OBJECTS=${GENCAT_OBJECTS}' $1.$(OBJEXT)'dnl
 ])# GENCAT_AC_OBJECTS_ADD
 
+# GENCAT_AC_FUNC_BASENAME
+# -----------------------
+# Check if the standard C library provides the `basename' function;
+# if not, add `basename.$(OBJEXT)' to the list of prerequisite objects
+# to be compiled, to ensure that a replacement is made available from
+# package local sources.
+#
 AC_DEFUN([GENCAT_AC_FUNC_BASENAME],
 [AC_REQUIRE([GENCAT_AC_OBJECTS_INIT])dnl
  AC_CHECK_FUNCS([basename],[],GENCAT_AC_OBJECTS_ADD([basename]))dnl
 ])# GENCAT_AC_FUNC_BASENAME
 
+# GENCAT_AC_FUNC_MKSTEMP
+# ----------------------
+# Check if the standard C library provides the `mkstemp' function;
+# if not, add `mkstemp.$(OBJEXT)' to the list of prerequisite objects
+# to be compiled, to ensure that a replacement is made available from
+# package local sources.
+#
 AC_DEFUN([GENCAT_AC_FUNC_MKSTEMP],
 [AC_REQUIRE([GENCAT_AC_OBJECTS_INIT])dnl
  AC_CHECK_FUNCS([mkstemp],[],GENCAT_AC_OBJECTS_ADD([mkstemp]))dnl
 ])# GENCAT_AC_FUNC_MKSTEMP
 
+# GENCAT_AC_FUNC_GETOPT_LONG_ONLY
+# -------------------------------
+# Check if the standard C library provides the `getopt_long_only'
+# function; if not, add `getopt.$(OBJEXT)' to the list of prerequisite
+# objects to be compiled, to ensure that a replacement is made available
+# from package local sources.
+#
+AC_DEFUN([GENCAT_AC_FUNC_GETOPT_LONG_ONLY],
+[AC_REQUIRE([GENCAT_AC_OBJECTS_INIT])dnl
+ AC_CHECK_FUNCS([getopt_long_only],[],GENCAT_AC_OBJECTS_ADD_GETOPT)dnl
+])# GENCAT_AC_FUNC_GETOPT_LONG_ONLY
+
+# GENCAT_AC_OBJECTS_ADD_GETOPT
+# ----------------------------
+# Helper macro invoked by GENCAT_AC_FUNC_GETOPT_LONG_ONLY,
+# to add `getopt.$(OBJECT)' to the list of prerequisite objects
+# to be compiled; it also ensures that a compatible version of
+# `getopt.h' is used, by adding a compatible package local
+# version to the LOCAL_HEADERS list.
+#
+AC_DEFUN([GENCAT_AC_OBJECTS_ADD_GETOPT],
+[AC_SUBST([LOCAL_HEADERS],["getopt.h ${LOCAL_HEADERS}"])
+ GENCAT_AC_OBJECTS_ADD([getopt])dnl
+])# GENCAT_AC_OBJECTS_ADD_GETOPT
+
+# GENCAT_AC_FUNC_LANGINFO
+# -----------------------
+# Check if the standard C library provides the `nl_langinfo' function;
+# if not, add `langinfo.$(OBJEXT)' to the list of prerequisite objects
+# to be compiled, to ensure that a replacement is made available from
+# package local sources.
+#
 AC_DEFUN([GENCAT_AC_FUNC_NL_LANGINFO],
 [AC_REQUIRE([GENCAT_AC_OBJECTS_INIT])dnl
  AC_CHECK_FUNCS([nl_langinfo],[],GENCAT_AC_OBJECTS_ADD([langinfo]))dnl
 ])# GENCAT_AC_FUNC_NL_LANGINFO
 
+# CATGETS_AC_CONFIG_VERSION
+# -------------------------
+# Propagate the `catgets' version number into object code,
+# via manifest definitions in `config.h'.
+#
 AC_DEFUN([CATGETS_AC_CONFIG_VERSION],
 [CATGETS_AC_CONFIG_VERSION_DEFINE([CATGETS_VERSION_MAJOR],[major],[2])dnl
  CATGETS_AC_CONFIG_VERSION_DEFINE([CATGETS_VERSION_MINOR],[minor],[3])dnl
 ])# CATGETS_AC_CONFIG_VERSION
 
+# CATGETS_AC_CONFIG_VERSION_DEFINE
+# --------------------------------
+# Helper macro invoked by CATGETS_AC_CONFIG_VERSION,
+# to place manifest definitions of the `catgets' major and minor
+# version numbers into `config.h'.
+#
 AC_DEFUN([CATGETS_AC_CONFIG_VERSION_DEFINE],
 [AC_DEFINE_UNQUOTED([$1],[`IFS=.;set x $PACKAGE_VERSION;echo ${$3}`],
  [Define numerically to the catgets $2 version number])dnl
 ])# CATGETS_AC_CONFIG_VERSION_DEFINE
 
-# $RCSfile: aclocal.m4,v $Revision: 1.3 $: end of file
+# $RCSfile: aclocal.m4,v $Revision: 1.4 $: end of file

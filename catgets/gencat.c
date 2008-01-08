@@ -1,14 +1,14 @@
 /*
  * gencat.c
  *
- * $Id: gencat.c,v 1.2 2007-05-12 16:54:35 keithmarshall Exp $
+ * $Id: gencat.c,v 1.3 2008-01-08 19:51:56 keithmarshall Exp $
  *
- * Copyright (C) 2006, 2007, Keith Marshall
+ * Copyright (C) 2006, 2007, 2008, Keith Marshall
  *
  * This file implements the `main' function for the `gencat' program.
  *
  * Written by Keith Marshall  <keithmarshall@users.sourceforge.net>
- * Last modification: 12-May-2007
+ * Last modification: 08-Jan-2008
  *
  *
  * This is free software.  It is provided AS IS, in the hope that it may
@@ -26,6 +26,14 @@
  * MA 02110-1301, USA.
  *
  */
+#define PROGRAM_IDENTITY	progname, PACKAGE_VERSION
+
+#define AUTHOR_IDENTITY		"Keith Marshall"
+#define AUTHOR_ATTRIBUTION	AUTHOR_IDENTITY" for the MinGW Project"
+
+#define COPYRIGHT_YEARS		"2006, 2007, 2008"
+#define COPYRIGHT_HOLDER	COPYRIGHT_YEARS, AUTHOR_IDENTITY
+#define COPYRIGHT_NOTICE	MSG_COPYRIGHT_NOTICE, COPYRIGHT_HOLDER
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -34,10 +42,12 @@
 #include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdarg.h>
 #include <string.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include <getopt.h>
 #include <libgen.h>
 #include <errno.h>
 
@@ -54,12 +64,60 @@ char *progname, *invoked;
 int gencat_errno = 0;
 nl_catd gencat_messages;
 
+/* Option control flags, for printing of program identification banners,
+ * as required for `help', `version' and copyright notifications.
+ */
+#define print_top_banner	0x08
+#define print_nl_duplicate	0x04
+
+/* Standard arguments, to include in a program identification banner.
+ */
+#define top_banner_text PROGRAM_IDENTITY, AUTHOR_ATTRIBUTION
+
+static
+void banner_printf( int opts, int set, int msg, const char *fmt, ... )
+{
+  /* A helper function, for printing banner notifications.
+   */
+  va_list args;
+  const char *nl_fmt = catgets( gencat_messages, set, msg, NULL );
+
+  if( opts & print_top_banner )
+    printf( catgets( gencat_messages, MSG_PROGRAM_BANNER ), top_banner_text );
+
+  va_start( args, fmt );
+  if( (nl_fmt == NULL) || ((opts & print_nl_duplicate) != 0) )
+    /*
+     * A national language translation has been provided, but the
+     * English version must also be displayed, or there is no available
+     * translation, so we just print the English text anyway.
+     */
+    vprintf( fmt, args );
+
+  if( nl_fmt != NULL )
+    /*
+     * When we found a national language translation, we print it.
+     */
+    vprintf( nl_fmt, args );
+  va_end( args );
+}
+
 int main( int argc, char **argv )
 {
+  struct option options[] =
+  {
+    /* The options understood by this version of `gencat';
+     * all are long form, to be evaluated by getopt_long_only().
+     */
+    { "help",    no_argument, NULL, 'h' },
+    { "version", no_argument, NULL, 'v' },
+    {  NULL,     0,           NULL,  0  }
+  };
+
   char *msgcat;
   char *outfile = NULL;
 
-  int mc, numsets, setnum, msgcount;
+  int opt, mc, numsets, setnum, msgcount;
   off_t offset, msg_index_offset;
 
   char tmpcat[] = "mcXXXXXX";
@@ -83,14 +141,51 @@ int main( int argc, char **argv )
   progname = basename( invoked = *argv );
   gencat_messages = catopen( "gencat", NL_CAT_LOCALE );
 
+  if( (*argv = strdup( progname )) != NULL )
+  {
+    /* Set up the form of the program name to display in diagnostics;
+     * exclude the path component, and discard any `.exe' suffix.
+     */
+    int ext = strlen( *argv ) - 4;
+    if( (ext > 0) && (strcasecmp( *argv + ext, ".exe" ) == 0) )
+      *(*argv + ext) = '\0';
+    progname = *argv;
+  }
+  else
+    /* Something went wrong...
+     * retain the basename from the original program path name,
+     * as the effective program name.
+     */
+    *argv = progname;
+
+  /* Evaluate any options, specified on the command line.
+   */
+  while( (opt = getopt_long_only( argc, argv, "vh", options, NULL )) != -1 )
+    switch( opt )
+    {
+      case 'h':
+	/*
+	 * This is a request to display a help message.
+	 */
+	banner_printf( print_top_banner, MSG_GENCAT_SYNOPSIS, *argv );
+	exit( EXIT_SUCCESS );
+
+      case 'v':
+	/*
+	 * And this is for display of version and copyright info.
+	 */
+	banner_printf( print_top_banner + print_nl_duplicate, COPYRIGHT_NOTICE );
+	exit( EXIT_SUCCESS );
+    }
+
   cat_index.id = tag;
 
-  if( --argc > 1 )
+  if( (argc -= optind) > 1 )
   {
     /* Initialise the message list, to incorporate any messages which
      * are already contained within the specified message catalogue.
      */
-    if( (cat = mc_load( msgcat = *++argv )) == NULL )
+    if( (cat = mc_load( msgcat = *(argv += optind) )) == NULL )
       switch( errno )
       {
 	case ENOENT:
@@ -110,23 +205,39 @@ int main( int argc, char **argv )
     while( --argc )
       cat = mc_merge( cat, mc_source( *++argv ));
 
+    /* Walk the resultant in-memory linked message list, counting...
+     */
     msgcount = numsets = setnum = 0;
     for( curr = cat; curr != NULL; curr = curr->link )
     {
+      /* the number of individual messages defined...
+       */
       ++msgcount;
       if( curr->set > setnum )
       {
+	/* and the number of distinct message sets,
+	 * to which they are allocated.
+	 */
 	++numsets;
 	setnum = curr->set;
       }
     }
     dfprintf(( stderr, "%u messages in %u sets\n", msgcount, numsets ));
+
+    /* Compute the required image size for the message catalogue index,
+     * and allocate memory in which to construct it...
+     */
     offset = ( numsets + msgcount ) * sizeof( struct key );
     if( (set_index = mc_malloc( offset )) == NULL )
     {
+      /* bailing out, if insufficient memory.
+       */
       fprintf( errmsg( MSG_OUT_OF_MEMORY ), progname );
       return( EXIT_FAILURE );
     }
+    /* Locate the start of the message index entries,
+     * within the composite set and message index image.
+     */
     msg_index = set_index + numsets;
 
     /* Create a temporary output file,
@@ -141,67 +252,134 @@ int main( int argc, char **argv )
       return EXIT_FAILURE;
     }
 
+    /* Write out the standard message catalogue header record,
+     * then seek beyond the space required for the index image,
+     * to commence writing out the message data.
+     */
     write( mc, &cat_index, sizeof( MSGCAT ) );
     offset = lseek( mc, offset, SEEK_CUR );
-    setnum = 0;
+
+    /* Compute the offset, ON DISK, for the start of the message
+     * index, within the composite set and message index image, in
+     * terms of its physical byte count from start of file.
+     */
     msg_index_offset = sizeof( MSGCAT ) + numsets * sizeof( struct key );
+
+    /* Forcing a set number transition into the first message set...
+     */
+    setnum = 0;
+    /*
+     * Walk the in-memory linked message list again...
+     */
     for( curr = cat; curr != NULL; curr = curr->link )
     {
+      /* adding a new set index entry, on each set number transition...
+       */
       if( curr->set > setnum )
       {
+	/* incorporating the applicable set number,
+	 * and the ON-DISK byte offset for the index entry
+	 * associated with its first included message.
+	 */
 	set_index->setnum = setnum = curr->set;
 	(set_index++)->offset = msg_index_offset;
       }
+      /* Adjust the cumulative computed value of the ON-DISK
+       * message index offset, to account for each message traversed...
+       */
       msg_index_offset += sizeof( struct key );
+      /*
+       * while incorporating the appropriate message number,
+       * and message data offset, into the in-memory image of
+       * the message index.
+       */
       msg_index->msgnum = curr->msg;
       (msg_index++)->offset = offset;
-
+      /*
+       * and write out the message data, to the catalogue file,
+       * updating `offset' to track where the data for the NEXT message,
+       * if any, is to be written.
+       */
       offset += write( mc, curr->base + curr->loc, curr->len );
     }
 
-    set_index = msg_index - numsets - msgcount;
+    /* Rewind the catalogue, to the start of the reserved index space...
+     */
     lseek( mc, sizeof( MSGCAT ), SEEK_SET );
+    /*
+     * Locate the start of the in-memory image of the index, once more,
+     * and copy it into the generated message catalogue.
+     */
+    set_index = msg_index - numsets - msgcount;
     write( mc, set_index, (numsets + msgcount) * sizeof( struct key ) );
 
+    /* Check message catalogue generation status...
+     */
     if( gencat_errno == 0 )
     {
+      /* Completed without error...
+       */
       if( outfile == NULL )
+	/*
+	 * Always true, at present...
+	 * (this is here to accommodate a possible future implementation
+	 *  of an `--output-file=NAME' option, to facilitate including an
+	 *  existing message catalogue into a new, and differently named,
+	 *  derivative message catalogue).
+	 */
 	outfile = msgcat;
 
       if( strcmp( outfile, "-" ) == 0 )
       {
+	/* This is emitting the message catalogue content to the standard
+	 * output stream; rewind the temporary catalogue file, read back,
+	 * and then rewrite its content to the stdout stream.
+	 */
 	int count;
 	char buf[ BUFSIZ ];
 	lseek( mc, (off_t)(0), SEEK_SET );
 	while( (count = read( mc, buf, BUFSIZ )) > 0 )
 	  write( STDOUT_FILENO, buf, count );
+
+	/* When done, close and delete the temporary file.
+	 */
 	close( mc );
 	remove( tmpcat );
       }
       else
       {
+	/* This is saving the message catalogue as a permanent disk file,
+	 * overwriting any previously existing version; this is achieved by
+	 * simply renaming the temporary file, and setting its attributes
+	 * appropriately.
+	 */
 	close( mc );
 	rename( tmpcat, outfile );
 	chmod( outfile, 0644 );
       }
     }
     else
-    {
+    { /* An error occurred...
+       * The temporary file is likely to be corrupt,
+       * so simply discard it, and report failure.
+       */
       close( mc );
       remove( tmpcat );
+      return EXIT_FAILURE;
     }
   }
 
   else
-  {
-    /* User specified insufficient command line arguments.
+  { /* User specified insufficient command line arguments.
      * Diagnose, and bail out.
      */
     fprintf( errmsg( MSG_MISSING_ARGS ), progname );
     fprintf( errmsg( MSG_GENCAT_USAGE ), progname );
     return EXIT_FAILURE;
   }
+  /* On successful completion, report it.
+   */
   return EXIT_SUCCESS;
 }
 
-/* $RCSfile: gencat.c,v $Revision: 1.2 $: end of file */
+/* $RCSfile: gencat.c,v $Revision: 1.3 $: end of file */

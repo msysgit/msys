@@ -1,3 +1,58 @@
+2008-01-08  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Add `-help' and `-version' options for `gencat'.
+
+	* repl/getopt.c: New file; it provides a replacement for the
+	`libmingwex.a' implementation of the `getopt' object module, with...
+	(getopt_long_only): New function; implement it.
+
+	* repl/include/getopt.h: New file; it provides a replacement header
+	for use with the above replacement getopt.c implementation.
+
+	* gencat.c: Add more comments; update copyright notice for new year.
+	(PROGRAM_IDENTITY): New manifest definition.
+	(AUTHOR_IDENTITY, AUTHOR_ATTRIBUTION): Ditto.
+	(COPYRIGHT_YEARS, COPYRIGHT_HOLDER, COPYRIGHT_NOTICE): Ditto.
+	(stdarg.h, getopt.h): Include.
+	(banner_printf): New static function.
+	(main): Add `options' defining structure; filter `argv' through it,
+	using `getopt_long_only' function.
+
+	* include/gcmsgs.h: Update copyright notice for new year.
+	Renumber existing message sets, making initial space to insert...
+	(MSG_PROGRAM_BANNER): New message definition; allocate exclusively to
+	message set #1, for display by both `-help' and `-version' options.
+	(MSG_COPYRIGHT_NOTICE): New message definition; allocate exclusively
+	to message set #2, for display by `-version' option.
+	(MSG_GENCAT_SYNOPSIS): New message definition; allocate exclusively to
+	message set #3, for display by `-help' option.
+	Add additional comments; document message set allocations.
+
+	* gendefs.awk (MULTILINE): New control variable; use it to implement
+	handling for multiline message definitions.
+	
+	* Makefile.in (DEV_SCRIPTS): Renamed again, to...
+	(DISTDEV_SCRIPTS): ...this; it specifies the distributable scripts.
+	(EXECDEV_SCRIPTS): Define; it specifies executable variants of these.
+	(all-targets): Include EXECDEV_SCRIPTS, to ensure they are built.
+	(install-scripts): Ditto, to install them.
+	(AWK_INTERPRETER): New autoconf substitution; use it to define a
+	generic pattern rule, for generating EXECDEV_SCRIPTS from awk scripts
+	specified in DISTDEV_SCRIPTS.
+
+	* aclocal.m4: Add copyright notice, and other macro specific comments.
+	(GENCAT_AC_FUNC_GETOPT_LONG_ONLY): New macro; it checks for presence
+	of the getopt_long_only() function, in the standard C libraries.
+	(GENCAT_AC_OBJECTS_ADD_GETOPT): New macro; it is invoked if needed, by
+	GENCAT_AC_FUNC_GETOPT_LONG_ONLY, to schedule building of a replacement
+	getopt function module, providing getopt_long_only().
+
+	* configure.ac: Update copyright notice, for new year.
+	(AWK_INTERPRETER): New AC_SUBST variable; defined by AC_PATH_PROG.
+	(GENCAT_AC_FUNC_GETOPT_LONG_ONLY): Invoke.
+
+	* configure: Regenerated.
+
 2008-01-01  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Establish package structure for distribution.
