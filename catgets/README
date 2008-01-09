@@ -1,10 +1,10 @@
 MinGW catgets README
-$Id: README,v 1.1 2008-01-01 18:45:09 keithmarshall Exp $
+$Id: README,v 1.2 2008-01-09 22:13:58 keithmarshall Exp $
 
-Copyright (C) 2007, Keith Marshall
+Copyright (C) 2007, 2008, Keith Marshall
 
 Written by Keith Marshall  <keithmarshall@users.sourceforge.net>
-Last modification: 20-Dec-2007
+Last modification: 09-Jan-2008
 
 This package provides a native Win32 implementation of the POSIX National
 Language Support API, conforming generally to IEEE standard 1003.1-2001,
@@ -15,7 +15,7 @@ import library for dynamic linking, with supporting nl_types.h header file,
 delivering Win32 implementations of the catopen(), catgets() and catclose()
 functions, as required by the POSIX National Language Support API; this is
 accompanied by a suitable, standards conformant `gencat' utility program,
-which is used to generate the message catalogue files, which are bound to
+which is used to generate the message catalogue files for deployment with
 user applications making use of these library functions.
 
 The MinGW catgets package is free software  It is provided AS IS, in the
@@ -52,6 +52,19 @@ full text of this README file is included with each):--
    root of the MinGW tree, and client applications should be linked with
    the `-lcatgets' option, specified *after* the dependent object modules,
    on the linking command line.
+
+   Note that this development kit is specifically intended for native use
+   on a Win32 platform.  To deploy it, you must also have libiconv-2.dll,
+   installed in a directory named in your $PATH; you may build this from
+   the mingwPORT, as noted in the following section, `Prerequisites for
+   Building from Source', or you may download a precompiled version from
+   the `MSYS Supplementary Tools' collection, on the MinGW download page
+   on Sourceforge.
+
+   If you wish to develop `catgets' dependent MinGW applications, using
+   a cross-compiler suite hosted on a non-Win32 platform, then you can
+   not use this development kit; you should install the requisite tools
+   as described in the later section, `Building for Cross-Hosted Use'.
 
 3) mingw-catgets-<version>-src.tar.gz
 
@@ -220,8 +233,7 @@ chain, (which is identified by the prefix `i586-mingw32'):--
    been initiated in the cross-build subdirectory...
 
        cd cross-build
-       make
-       make bindist
+       make && make bindist devdist
 
 
 Linking MinGW Applications to use Message Catalogues

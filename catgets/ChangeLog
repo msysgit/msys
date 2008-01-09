@@ -1,5 +1,12 @@
 2008-01-09  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
+	* README: Some minor wording improvements.
+	Update copyright notice to include new year.
+	Add additional notes regarding deployment of the pre-compiled
+	development kit.
+
+2008-01-09  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
 	Retain `.exe' file name extension, if present, in program identity
 	banner displayed by `-help' and `-version' options.
 
