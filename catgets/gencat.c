@@ -1,7 +1,7 @@
 /*
  * gencat.c
  *
- * $Id: gencat.c,v 1.3 2008-01-08 19:51:56 keithmarshall Exp $
+ * $Id: gencat.c,v 1.4 2008-01-09 21:55:55 keithmarshall Exp $
  *
  * Copyright (C) 2006, 2007, 2008, Keith Marshall
  *
@@ -182,10 +182,16 @@ int main( int argc, char **argv )
 
   if( (argc -= optind) > 1 )
   {
+    /* Establish the message catalogue name, recognising `/dev/stdout'
+     * as an alias for `-', representing the standard output stream.
+     */
+    if( strcasecmp( (msgcat = *(argv += optind)), "/dev/stdout" ) == 0 )
+      msgcat = "-";
+
     /* Initialise the message list, to incorporate any messages which
      * are already contained within the specified message catalogue.
      */
-    if( (cat = mc_load( msgcat = *(argv += optind) )) == NULL )
+    if( (cat = mc_load( msgcat )) == NULL )
       switch( errno )
       {
 	case ENOENT:
@@ -382,4 +388,4 @@ int main( int argc, char **argv )
   return EXIT_SUCCESS;
 }
 
-/* $RCSfile: gencat.c,v $Revision: 1.3 $: end of file */
+/* $RCSfile: gencat.c,v $Revision: 1.4 $: end of file */
