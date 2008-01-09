@@ -1,13 +1,21 @@
 2008-01-09  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
+	Retain `.exe' file name extension, if present, in program identity
+	banner displayed by `-help' and `-version' options.
+
+	* gencat.c (progname): Delay reassignment to `*argv', with `.exe'
+	extension stripped, until after parsing option arguments.
+
+2008-01-09  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
 	Support `/dev/stdin' and '/dev/stdout', specified as command line
 	arguments, as case-insensitive aliases for `-', representing the
 	standard input and standard output streams respectively.
 
 	* gencat.c (msgcat): Assign from first non-option command line
-	argument; replace with "-", if strcasecmp matches "/dev/stdout".
+	argument; replace with "-", if strcasecmp() matches "/dev/stdout".
 
-	* mcsource.c (input): Use strcasecmp instead of strcmp, to check for
+	* mcsource.c (input): Use strcasecmp() instead of strcmp, to check for
 	match to "/dev/stdin".
 
 2008-01-08  Keith Marshall  <keithmarshall@users.sourceforge.net>
