@@ -1,3 +1,10 @@
+2008-01-10  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	* gencat.c: Delay writing the catalogue header until *after* the
+	message data has been fully committed; store the ultimate catalogue
+	size in the header record, then rewind to write header and index
+	records sequentially.
+
 2008-01-09  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	* README: Some minor wording improvements.

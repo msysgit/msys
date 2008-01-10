@@ -1,7 +1,7 @@
 /*
  * gencat.c
  *
- * $Id: gencat.c,v 1.5 2008-01-09 22:04:08 keithmarshall Exp $
+ * $Id: gencat.c,v 1.6 2008-01-10 22:47:42 keithmarshall Exp $
  *
  * Copyright (C) 2006, 2007, 2008, Keith Marshall
  *
@@ -258,12 +258,11 @@ int main( int argc, char **argv )
       return EXIT_FAILURE;
     }
 
-    /* Write out the standard message catalogue header record,
-     * then seek beyond the space required for the index image,
-     * to commence writing out the message data.
+    /* Seek forward in the temporary output file,
+     * to reserve space into which we will later write the message
+     * catalogue header record, and the message index.
      */
-    write( mc, &cat_index, sizeof( MSGCAT ) );
-    offset = lseek( mc, offset, SEEK_CUR );
+    offset = lseek( mc, sizeof( MSGCAT ) + offset, SEEK_SET );
 
     /* Compute the offset, ON DISK, for the start of the message
      * index, within the composite set and message index image, in
@@ -309,12 +308,18 @@ int main( int argc, char **argv )
       offset += write( mc, curr->base + curr->loc, curr->len );
     }
 
-    /* Rewind the catalogue, to the start of the reserved index space...
+    /* Store the effective data size of the catalogue into the header.
      */
-    lseek( mc, sizeof( MSGCAT ), SEEK_SET );
-    /*
-     * Locate the start of the in-memory image of the index, once more,
-     * and copy it into the generated message catalogue.
+    cat_index.mc.extent = offset;
+
+    /* Rewind, and write out the message catalogue header record,
+     * at the start of the file space reserved previously.
+     */
+    lseek( mc, 0L, SEEK_SET );
+    write( mc, &cat_index, sizeof( MSGCAT ) );
+
+    /* Locate the start of the in-memory image of the index, once more,
+     * and copy it into the remaining reserved space in the output file.
      */
     set_index = msg_index - numsets - msgcount;
     write( mc, set_index, (numsets + msgcount) * sizeof( struct key ) );
@@ -388,4 +393,4 @@ int main( int argc, char **argv )
   return EXIT_SUCCESS;
 }
 
-/* $RCSfile: gencat.c,v $Revision: 1.5 $: end of file */
+/* $RCSfile: gencat.c,v $Revision: 1.6 $: end of file */
