@@ -1,3 +1,11 @@
+2008-01-11  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Make replacement `getopt' function module more GNU compatible.
+
+	* repl/getopt.c (optind): Initialise to one; POSIX requires this.
+	(getopt_parse): Handle changed initial value for `optind'; allow
+	caller to reset the parser, by setting `optind = 0'.
+
 2008-01-10  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	* gencat.c: Delay writing the catalogue header until *after* the

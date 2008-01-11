@@ -1,7 +1,7 @@
 /* 
  * getopt.c
  *
- * $Id: getopt.c,v 1.1 2008-01-08 19:51:59 keithmarshall Exp $
+ * $Id: getopt.c,v 1.2 2008-01-11 23:38:46 keithmarshall Exp $
  *
  * Implementation of the `getopt', `getopt_long' and `getopt_long_only'
  * APIs, for inclusion in the MinGW runtime library.
@@ -9,7 +9,7 @@
  * This file is part of the MinGW32 package set.
  *
  * Contributed by Keith Marshall <keithmarshall@users.sourceforge.net>
- * Last modification: 27-Dec-2007
+ * Last modification: 11-Jan-2008
  *
  * THIS SOFTWARE IS NOT COPYRIGHTED
  *
@@ -21,9 +21,9 @@
  * DISCLAIMED. This includes but is not limited to warranties of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  *
- * $Revision: 1.1 $
+ * $Revision: 1.2 $
  * $Author: keithmarshall $
- * $Date: 2008-01-08 19:51:59 $
+ * $Date: 2008-01-11 23:38:46 $
  *
  */
 
@@ -49,7 +49,7 @@ extern char __declspec(dllimport) *__progname;
 
 /* Initialise the public variables. */
 
-int optind = 0;				/* index for first non-option arg     */
+int optind = 1;				/* index for first non-option arg     */
 int opterr = 1;				/* enable built-in error messages     */
 
 char *optarg = NULL;			/* pointer to current option argument */
@@ -305,6 +305,19 @@ int getopt_parse( int mode, getopt_std_args, ... )
   static int argind = 0;
   static const CHAR *nextchar = NULL;
   static int optmark = 0;
+
+  if( (argind == 0) || (optind == 0) )
+  {
+    /* POSIX wants `optind' to have an initial value of one, but we want
+     * it to be initialised to zero, when we are called for the first time,
+     * (as indicated by `argind' having a value of zero).  We also want to
+     * allow the caller to reset the `getopt' parser, causing it to scan
+     * the arguments again, (or to scan a new set of arguments); this
+     * may be achieved by the caller resetting `optind' to zero.
+     */
+    optmark = optind = argind = 0;
+    nextchar = NULL;
+  }
 
   if( nextchar && *nextchar )
   {
@@ -633,4 +646,4 @@ __weak_alias( getopt_long, _getopt_long )
 __weak_alias( getopt_long_only, _getopt_long_only )
 #endif
 
-/* $RCSfile: getopt.c,v $Revision: 1.1 $: end of file */
+/* $RCSfile: getopt.c,v $Revision: 1.2 $: end of file */
