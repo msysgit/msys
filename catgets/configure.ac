@@ -1,7 +1,7 @@
 # configure.ac  -*- Autoconf -*-
 # Process this file with autoconf, to generate a configure script.
 #
-# $Id: configure.ac,v 1.5 2008-01-08 19:51:55 keithmarshall Exp $
+# $Id: configure.ac,v 1.6 2008-01-12 18:27:34 keithmarshall Exp $
 #
 # Copyright (C) 2006, 2007, 2008, MinGW Project
 # Written by Keith Marshall <keithmarshall@users.sourceforge.net>
@@ -15,12 +15,12 @@
 #                            Tag              Value
 #                            ---------------  ---------
   MINGW_AC_DEFINE_PACKAGE_ID([BASENAME],      [catgets])
-  MINGW_AC_DEFINE_PACKAGE_ID([VERSION_MAJOR], [0])
-  MINGW_AC_DEFINE_PACKAGE_ID([VERSION_MINOR], [1])
+  MINGW_AC_DEFINE_PACKAGE_ID([VERSION_MAJOR], [1])
+  MINGW_AC_DEFINE_PACKAGE_ID([VERSION_MINOR], [0])
 #
 # PATCHLEVEL is optional; comment/uncomment and adjust as required.
 #
-# MINGW_AC_DEFINE_PACKAGE_ID([PATCHLEVEL],    [3])
+# MINGW_AC_DEFINE_PACKAGE_ID([PATCHLEVEL],    [0])
 #
 # DLL_VERSION is required; installed DLLs will be versioned, by
 # appending a hyphen, the specified tag value, and then the `.dll'
@@ -129,4 +129,4 @@
   AC_CONFIG_FILES([Makefile])
   AC_OUTPUT
 #
-# $RCSfile: configure.ac,v $Revision: 1.5 $: end of file
+# $RCSfile: configure.ac,v $Revision: 1.6 $: end of file

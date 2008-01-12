@@ -1,5 +1,16 @@
 2008-01-12  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
+	MinGW-catgets version 1.0 released.
+
+	* configure.ac (VERSION_MAJOR, VERSION_MINOR): Updated.
+	(PATCHLEVEL): Reset to zero; commented out.
+
+	* configure: Regenerated.
+
+	* All files (RELEASE_1_0): CVS tag assigned.
+
+2008-01-12  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
 	* gencat.c: Force an abort, with appropriate diagnostic, on parsing an
 	unrecognised command line option.
 
