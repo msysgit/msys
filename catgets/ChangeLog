@@ -1,3 +1,8 @@
+2008-01-12  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	* gencat.c: Force an abort, with appropriate diagnostic, on parsing an
+	unrecognised command line option.
+
 2008-01-11  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Make replacement `getopt' function module more GNU compatible.

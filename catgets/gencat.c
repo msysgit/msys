@@ -1,14 +1,14 @@
 /*
  * gencat.c
  *
- * $Id: gencat.c,v 1.6 2008-01-10 22:47:42 keithmarshall Exp $
+ * $Id: gencat.c,v 1.7 2008-01-12 18:01:42 keithmarshall Exp $
  *
  * Copyright (C) 2006, 2007, 2008, Keith Marshall
  *
  * This file implements the `main' function for the `gencat' program.
  *
  * Written by Keith Marshall  <keithmarshall@users.sourceforge.net>
- * Last modification: 09-Jan-2008
+ * Last modification: 12-Jan-2008
  *
  *
  * This is free software.  It is provided AS IS, in the hope that it may
@@ -175,12 +175,20 @@ int main( int argc, char **argv )
 	 */
 	banner_printf( print_top_banner + print_nl_duplicate, COPYRIGHT_NOTICE );
 	exit( EXIT_SUCCESS );
+
+      case '?':
+	/*
+	 * This means the user specified an unrecognised option...
+	 * continue parsing, to catch other possible errors, but flag it,
+	 * so we can bail out before processing any message catalogue.
+	 */
+	gencat_errno = opt;
     }
 
   progname = *argv;
   cat_index.id = tag;
 
-  if( (argc -= optind) > 1 )
+  if( ((argc -= optind) > 1) && (gencat_errno == 0) )
   {
     /* Establish the message catalogue name, recognising `/dev/stdout'
      * as an alias for `-', representing the standard output stream.
@@ -381,10 +389,18 @@ int main( int argc, char **argv )
   }
 
   else
-  { /* User specified insufficient command line arguments.
-     * Diagnose, and bail out.
+  { /* An error was detected, while parsing the command line...
      */
-    fprintf( errmsg( MSG_MISSING_ARGS ), progname );
+    if( argc < 2 )
+      /*
+       * User specified insufficient command line arguments.
+       */
+      fprintf( errmsg( MSG_MISSING_ARGS ), progname );
+
+    /* In any case, (it may have been an unrecognised option,
+     * which was previously diagnosed), display the usage summary,
+     * and bail out.
+     */
     fprintf( errmsg( MSG_GENCAT_USAGE ), progname );
     return EXIT_FAILURE;
   }
@@ -393,4 +409,4 @@ int main( int argc, char **argv )
   return EXIT_SUCCESS;
 }
 
-/* $RCSfile: gencat.c,v $Revision: 1.6 $: end of file */
+/* $RCSfile: gencat.c,v $Revision: 1.7 $: end of file */
