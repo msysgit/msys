@@ -1,5 +1,5 @@
-# x86-mingw32-build.sh.batch -- vim: filetype=sh
-# $Id: x86-mingw32-build.sh.batch,v 1.1 2006-11-05 23:26:40 keithmarshall Exp $
+# x86-mingw32-build.sh.batch -*- sh -*- -- vim: filetype=sh
+# $Id: x86-mingw32-build.sh.batch,v 1.2 2008-01-13 18:16:53 mgdde Exp $
 #
 # Unattended mode setup for x86-mingw32-build.sh cross compiler build.
 #
@@ -90,4 +90,4 @@ esac
 . $script.detail > $script.log
 . $script.detail
 
-# $RCSfile: x86-mingw32-build.sh.batch,v $Revision: 1.1 $: end of file
+# $RCSfile: x86-mingw32-build.sh.batch,v $Revision: 1.2 $: end of file

@@ -1,5 +1,5 @@
-# x86-mingw32-build.sh.help -- vim: filetype=sh
-# $Id: x86-mingw32-build.sh.help,v 1.1 2006-11-05 23:26:55 keithmarshall Exp $
+# x86-mingw32-build.sh.help -*- sh -*- -- vim: filetype=sh
+# $Id: x86-mingw32-build.sh.help,v 1.2 2008-01-13 18:16:53 mgdde Exp $
 #
 # Help text definitions for x86-mingw32-build.sh script.
 #
@@ -125,4 +125,4 @@ case $match in
 esac
 exit 0
 
-# $RCSfile: x86-mingw32-build.sh.help,v $Revision: 1.1 $: end of file
+# $RCSfile: x86-mingw32-build.sh.help,v $Revision: 1.2 $: end of file

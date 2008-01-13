@@ -1,6 +1,6 @@
 #!/bin/sh
-# x86-mingw32-build.sh.version -- vim: filetype=sh
-# $Id: x86-mingw32-build.sh.version,v 1.1 2006-11-05 23:26:57 keithmarshall Exp $
+# x86-mingw32-build.sh.version -*- sh -*- -- vim: filetype=sh
+# $Id: x86-mingw32-build.sh.version,v 1.2 2008-01-13 18:16:53 mgdde Exp $
 #
 # Version identification for x86-mingw32-build.sh script.
 #
@@ -66,4 +66,4 @@ extend PACKAGE_VERSION . "$PACKAGE_VERSION_PATCH"
 extend PACKAGE_VERSION - "$SNAPSHOT"
 $echo && echo $PACKAGE_VERSION
 
-# $RCSfile: x86-mingw32-build.sh.version,v $Revision: 1.1 $: end of file
+# $RCSfile: x86-mingw32-build.sh.version,v $Revision: 1.2 $: end of file

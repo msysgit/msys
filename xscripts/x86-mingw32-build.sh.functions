@@ -1,5 +1,5 @@
-# x86-mingw32-build.sh.functions -- vim: filetype=sh
-# $Id: x86-mingw32-build.sh.functions,v 1.1 2006-11-05 23:26:52 keithmarshall Exp $
+# x86-mingw32-build.sh.functions -*- sh -*- -- vim: filetype=sh
+# $Id: x86-mingw32-build.sh.functions,v 1.2 2008-01-13 18:16:53 mgdde Exp $
 #
 # Define functions used by the mingw32 cross-compiler build script.
 #
@@ -410,4 +410,4 @@ die()
   test -n "$2" && echo "$2"; exit ${1-127}
 }
 
-# $RCSfile: x86-mingw32-build.sh.functions,v $Revision: 1.1 $: end of file
+# $RCSfile: x86-mingw32-build.sh.functions,v $Revision: 1.2 $: end of file

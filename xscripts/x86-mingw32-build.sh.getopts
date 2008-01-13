@@ -1,5 +1,5 @@
-# x86-mingw32-build.sh.getopts -- vim: filetype=sh
-# $Id: x86-mingw32-build.sh.getopts,v 1.1 2006-11-05 23:26:53 keithmarshall Exp $
+# x86-mingw32-build.sh.getopts -*- sh -*- -- vim: filetype=sh
+# $Id: x86-mingw32-build.sh.getopts,v 1.2 2008-01-13 18:16:53 mgdde Exp $
 #
 # Interpret command line arguments given to the x86-mingw32-build script.
 #
@@ -96,4 +96,4 @@ do
 done
 eval set x $new_argv; shift
 
-# $RCSfile: x86-mingw32-build.sh.getopts,v $Revision: 1.1 $: end of file
+# $RCSfile: x86-mingw32-build.sh.getopts,v $Revision: 1.2 $: end of file

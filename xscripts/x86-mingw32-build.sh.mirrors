@@ -1,5 +1,5 @@
-# x86-mingw32-build.sh.mirrors -- vim: filetype=sh
-# $Id: x86-mingw32-build.sh.mirrors,v 1.1 2006-11-05 23:26:56 keithmarshall Exp $
+# x86-mingw32-build.sh.mirrors -*- sh -*- -- vim: filetype=sh
+# $Id: x86-mingw32-build.sh.mirrors,v 1.2 2008-01-13 18:16:53 mgdde Exp $
 #
 # Identify a SourceForge Mirror Site, from which to download packages.
 #
@@ -65,4 +65,4 @@ else
   ALLOW_DOWNLOADS=NO
 fi
 
-# $RCSfile: x86-mingw32-build.sh.mirrors,v $Revision: 1.1 $: end of file
+# $RCSfile: x86-mingw32-build.sh.mirrors,v $Revision: 1.2 $: end of file

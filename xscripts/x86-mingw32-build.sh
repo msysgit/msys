@@ -1,6 +1,6 @@
 #!/bin/sh
-# x86-mingw32-build.sh -- vim: filetype=sh
-# $Id: x86-mingw32-build.sh,v 1.2 2008-01-13 18:01:44 mgdde Exp $
+# x86-mingw32-build.sh -*- sh -*- -- vim: filetype=sh
+# $Id: x86-mingw32-build.sh,v 1.3 2008-01-13 18:16:53 mgdde Exp $
 #
 # Script to guide the user through the build of a GNU/Linux hosted
 # MinGW cross-compiler for Win32.
@@ -170,4 +170,4 @@ cd "$WORKING_DIR/.."; eval $RUN $CLEAN_SLATE_ON_EXIT
 echo "done."
 exit 0
 
-# $RCSfile: x86-mingw32-build.sh,v $Revision: 1.2 $: end of file
+# $RCSfile: x86-mingw32-build.sh,v $Revision: 1.3 $: end of file
