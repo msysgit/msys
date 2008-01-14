@@ -1,3 +1,22 @@
+2008-01-13  Michael Gerdau  <mgdde@users.sourceforge.net>
+
+	* x86-mingw32-build.sh (COMPONENT): Added support for gdc
+
+	* x86-mingw32-build.sh.dialogue (BUILD_COMPONENTS): Added support
+	for gdc
+
+	* x86-mingw32-build.sh.conf (W32API_VERSION): Update to 3.11
+	(RUNTIME_VERSION): Update to 3.14
+	(BINUTILS_VERSION): Update to 2.18.50-20080109
+	(GDC_VERSION): Newly added as 0.24
+
+	* x86-mingw32-build.sh, x86-mingw32-build.sh.batch,
+	x86-mingw32-build.sh.conf, x86-mingw32-build.sh.detail,
+	x86-mingw32-build.sh.dialogue, x86-mingw32-build.sh.function,
+	x86-mingw32-build.sh.getopts, x86-mingw32-build.sh.help,
+	x86-mingw32-build.sh.mirrors, x86-mingw32-build.sh.version: Added
+	filetype tag for emacs
+
 2006-12-31  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	* x86-mingw32-build.sh.conf (W32API_VERSION): Update to 3.8
