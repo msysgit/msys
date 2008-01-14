@@ -1,5 +1,0 @@
-2004-03-16  Earnie Boyd  <earnie@users.sf.net>
-
-	* ChangeLog.MSYS: New file.
-	* config.guess: Update for MSYS.
-	* config.sub: Ditto.

@@ -1,4 +1,0 @@
-#define VERSION "2.7.2"
-#define VSTRING "20702"
-#define DATE	"21 DECEMBER 1999"
-#define LSMDATE	"21DEC99"

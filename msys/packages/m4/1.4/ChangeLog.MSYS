@@ -1,8 +1,0 @@
-2002.05.29  Luke Dunstan  <infidel@users.sf.net>
-
-	* src/freeze.c (reload_frozen_state): Skip \r characters at end of
-	lines if __MSYS__.
-
-2002.05.13  Earnie Boyd  <earnie@users.sf.net>
-
-	* src/m4.c: Include <signal.h> rather than <sys/signal.h> if __MSYS__.
