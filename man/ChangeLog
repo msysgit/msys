@@ -1,3 +1,25 @@
+2008-02-10  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Correct some cross-compilation anomalies.
+	Add catopen/catgets support for MinGW builds.
+
+	* configure.ac (AR): Use AC_PATH_TOOL to select host specific tool.
+
+	* aclocal.m4 (catopen, catgets): Use AC_SEARCH_LIBS to locate them.
+	(MAN_PROG_GENCAT): Don't canonicalise the `gencat' path name for the
+	host file system; use AC_PATH_TOOL, to select a host specific variant
+	to run on the build system.
+
+	* configure: Regenerated.
+
+	* src/Makefile.in (LIBS): Define; use AC_SUBST value.
+	(man): Add missing $(EXEEXT); don't depend on $(LIBS); create as $@.
+	(all, CLEANFILES): Correct `man' reference; use `man$(EXEEXT)'.
+
+	* src/win32/Makefile.in (AR): Define; use AC_SUBST value.
+
+	* man2html/Makefile.in (man2html): Create as $@.
+
 2007-08-01  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Correct a potential buffer overrun and memory leak.

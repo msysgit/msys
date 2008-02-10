@@ -26,6 +26,7 @@ top_srcdir = @top_srcdir@
 VPATH = ${srcdir}:${top_srcdir}:${top_srcdir}/src/win32
 abs_top_builddir = @abs_top_builddir@
 
+AR  = @AR@
 GCC = @CC@ $(CPPFLAGS) $(CWARN) $(CFLAGS) $(DEFS) $(INCLUDES)
 
 OBJEXT = @OBJEXT@

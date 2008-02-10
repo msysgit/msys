@@ -45,6 +45,7 @@
 # Checks for programs.
   MAN_PROG_AWK
   AC_PROG_CC
+  AC_CHECK_TOOL([AR], [ar], [ar])
   AC_PROG_INSTALL
   AC_PROG_LN_S
   AC_PROG_MAKE_SET

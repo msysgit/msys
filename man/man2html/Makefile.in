@@ -59,7 +59,7 @@ README: FORCE
 	test -e README || $(LN_S) ${srcdir}/README $@
 
 man2html$(EXEEXT): $(OBJECTS)
-	$(CC) $(LDFLAGS) -o man2html $(OBJECTS)
+	$(CC) $(LDFLAGS) -o $@ $(OBJECTS)
 
 $(OBJECTS): defs.h
 man2html.$(OBJEXT): version.h

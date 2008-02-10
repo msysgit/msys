@@ -64,10 +64,12 @@ CWARN = @CWARN@
 INCLUDES = -I. -I${srcdir} -I${top_builddir}
 WIN32LIBS = @WIN32LIBS@
 
+LIBS = @LIBS@
+
 .c.$(OBJEXT):
 	$(CC) -c $(CWARN) $(CFLAGS) $(DEFS) $<
 
-all: man man.conf apropos whatis makewhatis
+all: man$(EXEEXT) man.conf apropos whatis makewhatis
 
 MANOBJS = \
   man.$(OBJEXT) manfile.$(OBJEXT) manpath.$(OBJEXT) \
@@ -95,8 +97,8 @@ stamp.h: paths.h man.conf
 	  done
 	echo timestamp > $@
 
-man: $(MANOBJS) $(LIBS) $(WIN32LIBS)
-	$(CC) $(LDFLAGS) -o man $(MANOBJS) $(WIN32LIBS) $(LIBS)
+man$(EXEEXT): $(MANOBJS) $(WIN32LIBS)
+	$(CC) $(LDFLAGS) -o $@ $(MANOBJS) $(WIN32LIBS) $(LIBS)
 
 man.$(OBJEXT): man.c
 	$(CC) -c $(CWARN) $(CFLAGS) $(DEFS) $(GREPSILENT) ${srcdir}/man.c
@@ -200,7 +202,7 @@ install: all apropos whatis makewhatis
 	test ! -f ${manconffile} || mv ${manconffile} ${manconffile}.orig
 	$(INSTALL) -m 644 man.conf ${manconffile}
 
-CLEANFILES = *.$(OBJEXT) *~ core man apropos whatis makewhatis *.stackdump
+CLEANFILES = *.$(OBJEXT) *~ core man$(EXEEXT) apropos whatis makewhatis *.stackdump
 DISTCLEANFILES = Makefile stamp.h paths.h version.h man.conf gripedefs.h msg.c mess.*.cat
 
 clean:

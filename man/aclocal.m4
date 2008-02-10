@@ -587,11 +587,17 @@ AC_DEFUN([MAN_NLS_HEADERS],
 # MAN_NLS_FUNCTIONS
 # -----------------
 # Confirm that all functions needed to support NLS are available.
+# (Note that on Win32 -- and possibly on other platforms too -- we need
+#  to link with an external library for `catopen' and `catgets', so we
+#  use AC_SEARCH_LIBS to resolve that dependency first).
 #
 AC_DEFUN([MAN_NLS_FUNCTIONS],
-[AC_CHECK_FUNCS([nl_langinfo setlocale])
+[AC_SEARCH_LIBS([catopen], [catgets])
+ AC_CHECK_FUNCS([nl_langinfo setlocale catopen catgets])
  [man_nls_funcs=$ac_cv_func_nl_langinfo]
- [test x$ac_cv_func_setlocale = xno && man_nls_funcs=no]dnl
+ m4_foreach([func], [setlocale, catopen, catgets],
+ [test [x$ac_cv_func_]func[ = xno && man_nls_funcs=no
+ ]])dnl
 ])
 
 # MAN_PROG_GENCAT
@@ -627,7 +633,7 @@ AC_DEFUN([MAN_PROG_GENCAT],
    then
      MAN_AC_PATH_COMMAND_OVERRIDE_CACHE([gencat], [$man_gencat_preferred])
    else
-     MAN_AC_PATH_COMMAND([gencat], [${ac_tool_prefix}gencat])
+     AC_PATH_TOOL([gencat], [gencat], [no])
    fi
    if test x"$gencat" = x
    then
