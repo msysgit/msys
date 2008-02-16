@@ -1,3 +1,19 @@
+2008-02-16  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	MinGW-catgets version 1.0.1 released.
+	Source update only: correct `make install' defect.
+
+	* All files (RELEASE_1_0_1): CVS tag assigned.
+
+	* configure.ac (PATCHLEVEL): Reactivate and increment.
+	* configure: Regenerated.
+
+	* Makefile.in (EXECDEV_SCRIPTS): Don't explicitly include...
+	(all-targets): ...in this, but add to...
+	(all-scripts): ...this new target, included by...
+	(all-native): ...this.
+	(clean): Include EXECDEV_SCRIPTS.
+
 2008-01-12  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	MinGW-catgets version 1.0 released.
