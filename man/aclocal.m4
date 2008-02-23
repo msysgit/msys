@@ -237,7 +237,7 @@ AC_DEFUN([MSYS_AC_CANONICAL_PREFIX],
 # user specified `prefix' and `exec_prefix' values to canonical form.
 #
 AC_DEFUN([MSYS_AC_PREFIX_CANONICALISE],
-[if test "x${$1} != "xNONE"
+[if test "x${$1}" != "xNONE"
  then
    MSYS_AC_CANONICAL_PATH([$1], [${$1}])
  fi[]dnl

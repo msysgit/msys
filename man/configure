@@ -1425,7 +1425,7 @@ echo X"$ac_dir" |
  ac_default_prefix=`echo "${ac_default_prefix}" | sed "s?^[./]*$ac_dir/*?$ac_val/?"'
    s?/*$??'`
 
- if test "x${exec_prefix} != "xNONE"
+ if test "x${exec_prefix}" != "xNONE"
  then
    ac_dir="${exec_prefix}"
  pwd -W >/dev/null 2>&1 && ac_pwd_w="pwd -W" || ac_pwd_w=pwd
@@ -1450,7 +1450,7 @@ echo X"$ac_dir" |
    s?/*$??'`
 
  fi
- if test "x${prefix} != "xNONE"
+ if test "x${prefix}" != "xNONE"
  then
    ac_dir="${prefix}"
  pwd -W >/dev/null 2>&1 && ac_pwd_w="pwd -W" || ac_pwd_w=pwd

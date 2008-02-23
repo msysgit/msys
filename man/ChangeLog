@@ -1,5 +1,12 @@
 2008-02-23  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
+	Bug fix for missing quote in `test', arising from previous commit.
+
+	* aclocal.m4 (MSYS_AC_PREFIX_CANONICALISE): Add missing quote.
+	* configure: Regenerated.
+
+2008-02-23  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
 	Canonicalise `prefix' and `exec_prefix' specifications for
 	building on Win32, using MSYS.
 
