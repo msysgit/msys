@@ -25,6 +25,11 @@
   AC_CONFIG_SRCDIR([src/man.c])
   AC_CONFIG_HEADER([config.h])
 
+# Ensure the `prefix' variables are in canonical Win32 format,
+# when building under MSYS.
+#
+  MSYS_AC_CANONICAL_PREFIX
+
 # Configure a native build subsystem, for native code tools
 # which will be required when cross-compiling.
 #

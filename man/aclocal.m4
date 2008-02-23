@@ -220,6 +220,29 @@ AC_DEFUN([MSYS_AC_CANONICAL_PATH],
    s?/*$[]??'`
 ])
 
+# MSYS_AC_CANONICAL_PREFIX
+# ------------------------
+# Ensure that configure's prefix variables are canonicalised for
+# the Win32 file system namespace, when building under MSYS.
+#
+AC_DEFUN([MSYS_AC_CANONICAL_PREFIX],
+[MSYS_AC_PREFIX_DEFAULT([${ac_default_prefix}])
+ MSYS_AC_PREFIX_CANONICALISE([exec_prefix])
+ MSYS_AC_PREFIX_CANONICALISE([prefix])dnl
+])
+
+# MSYS_AC_PREFIX_CANONICALISE( VARNAME )
+# --------------------------------------
+# Helper macro, invoked by MSYS_AC_PREFIX_CANONICALISE, to convert
+# user specified `prefix' and `exec_prefix' values to canonical form.
+#
+AC_DEFUN([MSYS_AC_PREFIX_CANONICALISE],
+[if test "x${$1} != "xNONE"
+ then
+   MSYS_AC_CANONICAL_PATH([$1], [${$1}])
+ fi[]dnl
+])
+
 
 ## ==================================================== ##
 ## Program Installation Hooks for SUID and SGID Options ##

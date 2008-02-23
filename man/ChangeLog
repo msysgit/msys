@@ -1,3 +1,14 @@
+2008-02-23  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Canonicalise `prefix' and `exec_prefix' specifications for
+	building on Win32, using MSYS.
+
+	* aclocal.m4 (MSYS_AC_PREFIX_CANONICALISE): New helper macro...
+	(MSYS_AC_CANONICAL_PREFIX): New macro; uses it.
+
+	* configure.ac (MSYS_AC_CANONICAL_PREFIX): Invoke it.
+	* configure: Regenerated.
+
 2008-02-10  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Correct some cross-compilation anomalies.
