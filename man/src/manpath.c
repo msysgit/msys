@@ -205,7 +205,7 @@ add_to_list (char *dir, char *lang, int perrs) {
      if (! IS_ABSOLUTE_PATH (dir)) {
 	  if (!getcwd(cwd, sizeof(cwd)))
 	       return; /* cwd not readable, or pathname very long */
-	  if (! IS_ABSOLUTE_PATH (cwd))
+	  if (! IS_ABSOLUTE_PATH( POSIX_STYLE_PATH( cwd )))
 	       return; /* strange.. */
 	  if (strlen(dir) + strlen(lang) + strlen(cwd) + 3 > sizeof(cwd))
 	       return;

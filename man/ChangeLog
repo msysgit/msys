@@ -1,3 +1,43 @@
+2008-02-25  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Improved Win32 path name handling and `man.conf' location.
+
+	* src/win32/wincmds.c (win32run_command_sequence): Function renamed...
+	(win32_run_command_sequence): ...to this.
+
+	* src/win32/winposix.c (win32path_transform): Function renamed...
+	(win32_path_transform): ...and reimplemented as this; the transform is
+	now performed in the wide character domain, to avoid misidentification
+	of `\`, occurring as a trail byte in a muiltbyte character sequence.
+	(win32path_is_absolute): Function renamed and reimplemented...
+	(win32_path_is_absolute): ...as this; also now uses the wide character
+	domain, but no longer implicitly normalises `\' in the path argument,
+	so caller must now explicitly call `win32_path_transform' if needed.
+	(win32_map_posix_path_name): New function.
+	(win32_mbsconv, win32_mbsconv_len): New `static inline' functions.
+	(win32_wcsconv, win32_wcsconv_len): New `static inline' functions.
+	(is_dirsep): New `static inline' function.
+	(wcs_normalised_path): New `static' function.
+	(approot_len): New `static inline' function.
+	(win32_application_root_length): New `static inline' function.
+	(dirname_len, dirname_strip): New `static inline' functions.
+	(win32_application_root): New `static' function.
+
+	* src/compat.h: Address `src/win32' function updates...
+	(IS_ABSOLUTE_PATH) [_WIN32]: Use `win32_path_is_absolute'.
+	(RUN_COMMAND_SEQUENCE) [_WIN32]: Use `win32_run_command_sequence'.
+	(MAP_POSIX_PATH_NAME) [_WIN32]: Define; use `win32_map_posix_path_name'.
+	(MAP_POSIX_PATH_NAME) [!_WIN32]: Define; substitute its own argument.
+	(POSIX_STYLE_PATH) [_WIN32]: Use `win32_path_transform'.
+
+	* src/manpath.c (add_to_list): Use `POSIX_STYLE_PATH' to normalise the
+	effective path name, when evaluating the current working directory.
+
+	* src/man-config.c (default_config_files) [_WIN32]: Add alternative
+	path names, to map application relative config file locations.
+	(read_config_file): Use `MAP_POSIX_PATH_NAME' to resolve possible
+	locations for the config file.
+
 2008-02-23  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Bug fix for missing quote in `test', arising from previous commit.

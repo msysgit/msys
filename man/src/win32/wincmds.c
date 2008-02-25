@@ -2,7 +2,7 @@
  *   Written by Keith Marshall (keithmarshall@users.sourceforge.net)
  *
  * Provides:
- *   int win32run_command_sequence( char *command );
+ *   int win32_run_command_sequence( char *command );
  *
  *     This function may be used in place of a system() function call,
  *     on Win32 platforms; it uses a UNIXy shell, if one is available,
@@ -42,11 +42,11 @@
 
 #define  SHELL_NOT_FOUND  -1
 
-/* win32run_command_sequence(): used in place of a system() call,
+/* win32_run_command_sequence(): used in place of a system() call,
  * to invoke the appropriate sequence of manpage formatting commands.
  */
 
-int win32run_command_sequence( const char *commands )
+int win32_run_command_sequence( const char *commands )
 {
   int status = SHELL_NOT_FOUND;
 

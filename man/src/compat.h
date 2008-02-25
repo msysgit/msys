@@ -3,7 +3,8 @@
  * File: compat.h
  * Centralised platform dependency handling for man's C compilation units.
  *
- * Copyright (C) 2005, Keith D. Marshall <keithmarshall@users.sourceforge.net>
+ * Copyright (C) 2005, 2008,
+ *   Keith D. Marshall <keithmarshall@users.sourceforge.net>
  *
  * This file is part of the man package.
  *
@@ -32,7 +33,6 @@
 /* Always prefer strchr() over index(), and strrchr() over rindex(),
  * if we have them.
  */
-
 #ifdef HAVE_STRCHR
 # define index  strchr
 #endif
@@ -49,7 +49,6 @@
  * On MinGW based platforms, glob.c will not currently compile,
  * unless we define...
  */
-
 # define _POSIX_SOURCE
 # define __GNU_LIBRARY__
 #endif
@@ -58,7 +57,6 @@
  * And similarly, for Cygwin...
  * (except that here, we MUST NOT define _POSIX_SOURCE)...
  */
-
 # define __GNU_LIBRARY__
 #endif
 
@@ -75,21 +73,21 @@
  * to use "/" instead of "\" in path names; however, we must
  * still use ";" as the path separator.
  */
+#define PATH_SEPARATOR_CHAR    ';'
+#define POSIX_STYLE_PATH(p)    win32_path_transform((p))
+#define MAP_POSIX_PATH_NAME(p) win32_map_posix_path_name((p))
 
-#define PATH_SEPARATOR_CHAR ';'
-#define POSIX_STYLE_PATH(p) win32path_transform(p)
-
-extern char *win32path_transform(const char *);
+extern char *win32_path_transform(const char *);
+extern const char *win32_map_posix_path_name(const char *);
 
 /*
  * Because we are forcing the use of "/" as a directory separator,
  * we don't need to check for leading "\" as an absolute path indicator,
  * but we *do* still need to allow for a drive designator.
  */
+#define IS_ABSOLUTE_PATH(p) win32_path_is_absolute((p))
 
-#define IS_ABSOLUTE_PATH(p) win32path_is_absolute((p))
-
-extern int win32path_is_absolute(const char *);
+extern int win32_path_is_absolute(const char *);
 
 /*
  * Win32 User Identification
@@ -98,7 +96,6 @@ extern int win32path_is_absolute(const char *);
  * Win32 user model is not consistent with POSIX,
  * so, when we care, just pretend we are running as root...
  */
-
 #define getuid()   0
 #define geteuid()  0
 #define getgid()   0
@@ -112,13 +109,12 @@ extern int win32path_is_absolute(const char *);
  * formatted command line to the system() function.  On Win32, this
  * implies the use of cmd.exe to run the pipeline, which is a POSIX
  * format command line, and will, therefore, fail; instead we use a
- * replacement function, win32run_command_sequence(), which spawns
+ * replacement function, win32_run_command_sequence(), which spawns
  * a UNIXy shell, to execute the command sequence.
  */
+#define RUN_COMMAND_SEQUENCE(cmds)  win32_run_command_sequence((cmds))
 
-#define RUN_COMMAND_SEQUENCE(cmds)  win32run_command_sequence (cmds)
-
-extern int win32run_command_sequence (const char *);
+extern int win32_run_command_sequence(const char *);
 
 
 #else /* !_WIN32 */
@@ -130,14 +126,13 @@ extern int win32run_command_sequence (const char *);
  * we don't need any Win32 normalisation of the DIR separator,
  * and we keep to the standard ":" as the path separator.
  */
-
-#define PATH_SEPARATOR_CHAR ':'
-#define POSIX_STYLE_PATH(p)  p
+#define PATH_SEPARATOR_CHAR	':'
+#define POSIX_STYLE_PATH(p)	(p)
+#define MAP_POSIX_PATH_NAME(p)	(p)
 
 /*
  * POSIX mandates that absolute path names begin with a "/".
  */
-
 #define IS_ABSOLUTE_PATH(p)  (*(p) == '/')
 
 /*
@@ -146,8 +141,7 @@ extern int win32run_command_sequence (const char *);
  *
  * This is achieved by using a simple system() function call.
  */
-
-#define RUN_COMMAND_SEQUENCE(cmds)  system (cmds)
+#define RUN_COMMAND_SEQUENCE(cmds)  system((cmds))
 #endif /* !_WIN32 */
 
 #endif /* COMPAT_H */

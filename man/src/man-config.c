@@ -227,16 +227,46 @@ get_expander (const char *file) {
 const char *configuration_file = "[no configuration file]";
 
 char *default_config_files[] = {
-     CONFIG_FILE,		/* compiled-in default */
-     "/etc/man.conf", "/etc/man.config",
-     "/usr/lib/man.conf", "/usr/lib/man.config",
-     "/usr/share/misc/man.conf", "/usr/share/misc/man.config"
+/*
+ *   Some conventional path names to try, when attempting
+ *   to open the `man' configuration file, starting with...
+ */
+     CONFIG_FILE,		/* ...the compiled-in default */
+/*
+ *   Failing that, the traditional location would be in the
+ *   /etc directory, with either of the standard file names...
+ */
+     "/etc/man.conf",		   "/etc/man.config",
+
+#    ifdef _WIN32
+/*   Otherwise the standard locations would be in the /usr tree,
+ *   but some Woe32 shells, (e.g. MSYS), treat this as a virtual
+ *   directory, and it disappears from the mapped path name, so
+ *   leaving the possible standard paths as...
+ */
+     "/lib/man.conf",		   "/lib/man.config",
+     "/share/misc/man.conf",	   "/share/misc/man.config",
+#    endif
+/*
+ *   However, these alternative standard locations are normally
+ *   defined by the fully qualified absolute path names...
+ */
+     "/usr/lib/man.conf",	   "/usr/lib/man.config",
+     "/usr/share/misc/man.conf",   "/usr/share/misc/man.config"
 };
 
 #define SIZE(x) (sizeof(x)/sizeof((x)[0]))
 
 void
 read_config_file (const char *cf) {
+/*
+ * Open, read and interpret the `man' configuration file.
+ * Note that we always return (void) MAP_POSIX_PATH_NAME (NULL);
+ * on most platforms, this has no effect, but is required on
+ * Woe32, to free memory allocated by the path name mapping
+ * function, used to identify the equivalent Woe32 paths
+ * for the conventional POSIX config file path names.
+ */
      char *bp;
      char *p;
      char buf[BUFSIZE];
@@ -250,19 +280,22 @@ read_config_file (const char *cf) {
 	       return;
 	  }
      } else {
-	  /* Try some things - unfortunately we cannot lookup
-	     the config file to use in the config file :-). */
+	  /* No explicit config file specified by the user.
+	   * Unfortunately we cannot look up the path name for
+	   * the config file, in the config file itself; :-)
+	   * therefore try the conventional locations.
+	   */
 	  int i;
 
-	  for(i=0; i < SIZE(default_config_files); i++) {
-	       cf = default_config_files[i];
+	  for(i=0; i < SIZE (default_config_files); i++) {
+	       cf = MAP_POSIX_PATH_NAME (default_config_files[i]);
 	       if ((config = fopen (cf, "r")) != NULL)
 		    break;
 	  }
 
 	  if (config == NULL) {
 	       gripe (CONFIG_OPEN_ERROR, CONFIG_FILE);
-	       return;
+	       return (void) MAP_POSIX_PATH_NAME (NULL);
 	  }
      }
 
@@ -278,7 +311,7 @@ read_config_file (const char *cf) {
 	  if (!*p) {
 	       gripe (LINE_TOO_LONG);
 	       gripe (BAD_CONFIG_FILE, cf);
-	       return;
+	       return (void) MAP_POSIX_PATH_NAME (NULL);
 	  }
 	  while (p > bp && whitespace(p[-1]))
 	       p--;
@@ -306,5 +339,5 @@ read_config_file (const char *cf) {
 	  else
 	       addval (bp);
      }
+     return (void) MAP_POSIX_PATH_NAME (NULL);
 }
-
