@@ -1,5 +1,12 @@
 2008-02-27  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
+	Correct defect in french language message catalogue source.
+
+	* msgs/mess.fr (USAGE4): Message definition was prematurely terminated
+	by extraneous quote; replaced by escaped newline.
+
+2008-02-27  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
 	Define message catalogue installation path relative to `localedir'.
 
 	* aclocal.m4 (MAN_NLS_LOCALE_CACHE_INIT): Don't single quote

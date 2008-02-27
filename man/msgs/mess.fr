@@ -130,7 +130,7 @@ USAGE4
   D : comme -d, mais afficher aussi les pages\n\
   f : équivalent à whatis(1)\n\
   h : afficher ce message d'aide\n\
-  k : équivalent à apropos(1)\n"
+  k : équivalent à apropos(1)\n\
   K : rechercher une chaîne dans toutes les pages\n"
 USAGE5
 	"  t : utilise troff pour le formatage des pages\n"
