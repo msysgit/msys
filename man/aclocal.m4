@@ -777,11 +777,11 @@ AC_DEFUN([MAN_NLS_LOCALE_DIRECTORY],
    AS_HELP_STRING([--with-localedir=DIR], [message catalogue DIR [[$1]]]),
    MAN_NLS_LOCALE_CACHE_OVERRIDE([$withval]),
    MAN_NLS_LOCALE_CACHE_INIT([$1], [$2]))
- AC_SUBST([locale], [`echo "$man_cv_locale" | sed s'?%?$$?g'`])
- AC_SUBST([locale_prefix], [`echo "$locale" | sed s'?[[\\/]]*$$.*??'`])
- AC_SUBST([locale_path], [`AS_DIRNAME([$locale])`])dnl
+ nl_catdir=`echo "$man_cv_locale" | sed 's?[[^%]]*\(%.*\)?\1?;s?%?$$?g'`
+ AC_SUBST([localedir], [`echo "$man_cv_locale" | sed s'?[[\\/]]*%.*??'`])
+ AC_SUBST([nl_catfile], [`echo "$nl_catdir" | sed s'?^.*[[\\/]]??'`])
+ AC_SUBST([nl_catdir], [`AS_DIRNAME([$nl_catdir])`])dnl
 ])
-#AC_SUBST([locale_path], [`echo "$locale" | sed s'?[[\\/]]*[[^\\/]]*[[\\/]]*$??'`])dnl
 
 # MAN_NLS_LOCALE_CACHE_INIT( PREFERRED, [FALLBACK] )
 # --------------------------------------------------
@@ -819,7 +819,7 @@ AC_DEFUN([MAN_NLS_LOCALE_CACHE_INIT],
 #
 AC_DEFUN([MAN_NLS_LOCALE_CACHE_OVERRIDE],
 [AC_MSG_CHECKING([where to install message catalogues])
- man_cv_locale='$1'
+ man_cv_locale="$1"
  AC_MSG_RESULT([$man_cv_locale])dnl
 ])
 

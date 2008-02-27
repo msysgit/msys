@@ -42,25 +42,25 @@ stamp.cat: Makefile
 	rm -f core *.stackdump *.tmp
 	echo timestamp > $@
 
-locale = ${DESTDIR}@locale@
-locale_prefix = ${DESTDIR}@locale_prefix@
-locale_path = ${DESTDIR}@locale_path@
+nl_catdir = ${localedir}/@nl_catdir@
+nl_catfile = ${nl_catdir}/@nl_catfile@
+localedir = ${DESTDIR}@localedir@
 languages = @languages@
 
 MKINSTALLDIRS = `cd @top_srcdir@;pwd`/mkinstalldirs
 INSTALL = @INSTALL@
 
 install: stamp.cat
-	test -z "${DESTDIR}" || $(MKINSTALLDIRS) ${locale_prefix}
+	test -z "${DESTDIR}" || $(MKINSTALLDIRS) ${localedir}
 	N=man; \
 	for L in $(languages); \
 	  do if test -f mess.$$L.cat; \
 	    then \
-	      $(MKINSTALLDIRS) --require ${locale_prefix} ${locale_path}; \
-	      echo >&2 "$(INSTALL) -m 444 mess.$$L.cat ${locale}"; \
-	      $(INSTALL) -m 444 mess.$$L.cat ${locale}; \
+	      $(MKINSTALLDIRS) --require ${localedir} ${nl_catdir}; \
+	      echo >&2 "$(INSTALL) -m 444 mess.$$L.cat ${nl_catfile}"; \
+	      $(INSTALL) -m 444 mess.$$L.cat ${nl_catfile}; \
 	    else \
-	      echo >&2 "$(INSTALL) -m 444 mess.$$L.cat ${locale}"; \
+	      echo >&2 "$(INSTALL) -m 444 mess.$$L.cat ${nl_catfile}"; \
 	      echo >&2 "install: mess.$$L.cat: no message catalogue available"; \
 	    fi; \
 	  done

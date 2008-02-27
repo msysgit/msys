@@ -309,7 +309,7 @@ ac_includes_default="\
 # include <unistd.h>
 #endif"
 
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CC CFLAGS LDFLAGS CPPFLAGS BUILD_CC BUILD_CFLAGS BUILD_LDFLAGS BUILD_CPPFLAGS man_install_flags awk ac_ct_CC EXEEXT OBJEXT AR ac_ct_AR INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA LN_S SET_MAKE CWARNNP CWARN WIN32LIBS CPP EGREP ALLOCA LIBOBJS manpathoption FHS FSSTND man_config_file sections man1ext man5ext man8ext path_separator_char NULLDEV path__usr_man path__usr_share_man path__usr_local_man path__usr_local_share_man path__usr_X11R6_man path__opt___STAR___man path__usr_lib___STAR___man path__usr_share___STAR___man path__usr_kerberos_man map_to__usr_man path__bin path__sbin path__usr_bin path__usr_sbin map_to__usr_local_man path__usr_local_bin path__usr_local_sbin map_to__usr_X11R6_man path__usr_X11R6_bin path__usr_bin_X11 path__usr_bin_mh man_tools_required gencat ac_pt_gencat man_gencat_program languages make_install_messages make_messages locale locale_prefix locale_path pager browser htmlpager man_grepsilent cat troff nroff jnroff col pcol eqn neqn jneqn tbl vgrind refer grap pic cmp compress compress_ext gunzip bzip2 pcat zcat fcat unyabba decompress LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CC CFLAGS LDFLAGS CPPFLAGS BUILD_CC BUILD_CFLAGS BUILD_LDFLAGS BUILD_CPPFLAGS man_install_flags awk ac_ct_CC EXEEXT OBJEXT AR ac_ct_AR INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA LN_S SET_MAKE CWARNNP CWARN WIN32LIBS CPP EGREP ALLOCA LIBOBJS manpathoption FHS FSSTND man_config_file sections man1ext man5ext man8ext path_separator_char NULLDEV path__usr_man path__usr_share_man path__usr_local_man path__usr_local_share_man path__usr_X11R6_man path__opt___STAR___man path__usr_lib___STAR___man path__usr_share___STAR___man path__usr_kerberos_man map_to__usr_man path__bin path__sbin path__usr_bin path__usr_sbin map_to__usr_local_man path__usr_local_bin path__usr_local_sbin map_to__usr_X11R6_man path__usr_X11R6_bin path__usr_bin_X11 path__usr_bin_mh man_tools_required gencat ac_pt_gencat man_gencat_program languages make_install_messages make_messages localedir nl_catfile nl_catdir pager browser htmlpager man_grepsilent cat troff nroff jnroff col pcol eqn neqn jneqn tbl vgrind refer grap pic cmp compress compress_ext gunzip bzip2 pcat zcat fcat unyabba decompress LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -9599,7 +9599,7 @@ if test "${with_localedir+set}" = set; then
   withval="$with_localedir"
   echo "$as_me:$LINENO: checking where to install message catalogues" >&5
 echo $ECHO_N "checking where to install message catalogues... $ECHO_C" >&6
- man_cv_locale='$withval'
+ man_cv_locale="$withval"
  echo "$as_me:$LINENO: result: $man_cv_locale" >&5
 echo "${ECHO_T}$man_cv_locale" >&6
 else
@@ -9620,17 +9620,18 @@ fi
 echo "$as_me:$LINENO: result: $man_cv_locale" >&5
 echo "${ECHO_T}$man_cv_locale" >&6
 fi;
- locale=`echo "$man_cv_locale" | sed s'?%?$$?g'`
+ nl_catdir=`echo "$man_cv_locale" | sed 's?[^%]*\(%.*\)?\1?;s?%?$$?g'`
+ localedir=`echo "$man_cv_locale" | sed s'?[\\/]*%.*??'`
 
- locale_prefix=`echo "$locale" | sed s'?[\\/]*$$.*??'`
+ nl_catfile=`echo "$nl_catdir" | sed s'?^.*[\\/]??'`
 
- locale_path=`(dirname $locale) 2>/dev/null ||
-$as_expr X$locale : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
-	 X$locale : 'X\(//\)[^/]' \| \
-	 X$locale : 'X\(//\)$' \| \
-	 X$locale : 'X\(/\)' \| \
+ nl_catdir=`(dirname $nl_catdir) 2>/dev/null ||
+$as_expr X$nl_catdir : 'X\(.*[^/]\)//*[^/][^/]*/*$' \| \
+	 X$nl_catdir : 'X\(//\)[^/]' \| \
+	 X$nl_catdir : 'X\(//\)$' \| \
+	 X$nl_catdir : 'X\(/\)' \| \
 	 .     : '\(.\)' 2>/dev/null ||
-echo X$locale |
+echo X$nl_catdir |
     sed '/^X\(.*[^/]\)\/\/*[^/][^/]*\/*$/{ s//\1/; q; }
   	  /^X\(\/\/\)[^/].*/{ s//\1/; q; }
   	  /^X\(\/\/\)$/{ s//\1/; q; }
@@ -13957,9 +13958,9 @@ s,@man_gencat_program@,$man_gencat_program,;t t
 s,@languages@,$languages,;t t
 s,@make_install_messages@,$make_install_messages,;t t
 s,@make_messages@,$make_messages,;t t
-s,@locale@,$locale,;t t
-s,@locale_prefix@,$locale_prefix,;t t
-s,@locale_path@,$locale_path,;t t
+s,@localedir@,$localedir,;t t
+s,@nl_catfile@,$nl_catfile,;t t
+s,@nl_catdir@,$nl_catdir,;t t
 s,@pager@,$pager,;t t
 s,@browser@,$browser,;t t
 s,@htmlpager@,$htmlpager,;t t

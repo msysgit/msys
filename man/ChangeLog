@@ -1,3 +1,20 @@
+2008-02-27  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Define message catalogue installation path relative to `localedir'.
+
+	* aclocal.m4 (MAN_NLS_LOCALE_CACHE_INIT): Don't single quote
+	assignment for `man_cv_locale'; double quote it instead to allow
+	expansion of shell variable `${withval}'.
+	(MAN_NLS_LOCALE_DIRECTORY): Remove these...
+	(locale, locale_path, locale_prefix): ...disused AC_SUBST variables;
+	replace them with these...
+	(nl_catfile, nl_catdir, localedir): ...new alternatives.
+
+	* configure: Regenerated.
+
+	* msgs/Makefile.in (install): Use these...
+	(nl_catfile, nl_catdir, localedir): ...new AC_SUBST variables.
+
 2008-02-25  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Improved Win32 path name handling and `man.conf' location.
