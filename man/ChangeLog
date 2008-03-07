@@ -1,3 +1,11 @@
+2008-03-08  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Honour dependencies on message catalogue source files.
+
+	* msgs/Makefile.in (all): Don't depend on anything; recurse to build
+	catalogues for each and every provided source file, as required.
+	(stamp.cat): Removed; intermediate target, no longer required.
+
 2008-02-27  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Correct defect in french language message catalogue source.

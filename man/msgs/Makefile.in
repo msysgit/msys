@@ -23,24 +23,24 @@
 
 srcdir = @srcdir@
 top_builddir = `cd @top_builddir@;pwd`
+VPATH = ${srcdir}
 
 MKMSGS = ${top_builddir}/tools/makemsg
 GENCAT = @man_gencat_program@
 
-all: stamp.cat
+all:
+	files=""; \
+	for file in `cd ${srcdir}; echo mess.*`; do \
+	  case $$file in *.codeset);; *) files="$$files $$file.cat";; esac; \
+	done; \
+	$(MAKE) $$files
 
-stamp.cat: Makefile
-	rm -f *.cat
-	for i in `cd ${srcdir}; echo mess.??`; \
-	  do echo $(MKMSGS) -c ${srcdir}/$$i msgs.tmp; \
-	    $(MKMSGS) -c ${srcdir}/$$i msgs.tmp; \
-	    echo "cat ${srcdir}/$$i.codeset msgs.tmp > catin.tmp"; \
-	    cat ${srcdir}/$$i.codeset msgs.tmp > catin.tmp; \
-	    echo LC_ALL=en_US.UTF-8 $(GENCAT) $$i.cat catin.tmp; \
-	    LC_ALL=en_US.UTF-8 $(GENCAT) $$i.cat catin.tmp; \
-	  done
+mess.%.cat: mess.%
+	$(MKMSGS) -c $< msgs.tmp
+	test -f $<.codeset && cat $<.codeset msgs.tmp > catin.tmp \
+	  || mv msgs.tmp catin.tmp
+	LC_ALL=en_US.UTF-8 $(GENCAT) $@ catin.tmp
 	rm -f core *.stackdump *.tmp
-	echo timestamp > $@
 
 nl_catdir = ${localedir}/@nl_catdir@
 nl_catfile = ${nl_catdir}/@nl_catfile@
