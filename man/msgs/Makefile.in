@@ -50,7 +50,19 @@ languages = @languages@
 MKINSTALLDIRS = `cd @top_srcdir@;pwd`/mkinstalldirs
 INSTALL = @INSTALL@
 
-install: stamp.cat
+install:
+	languages="" prereqs=""; \
+	for L in $(languages); \
+	  do if test -f ${srcdir}/mess.$$L; \
+	    then \
+	      languages="$$languages $$L" prereqs="$$prereqs mess.$$L.cat"; \
+	    else \
+	      echo >&2 "install: $$L: no message catalogue available"; \
+	    fi; \
+	  done; \
+	$(MAKE) languages="$$languages" prereqs="$$prereqs" install-recursive
+
+install-recursive: $(prereqs)
 	test -z "${DESTDIR}" || $(MKINSTALLDIRS) ${localedir}
 	N=man; \
 	for L in $(languages); \

@@ -1,3 +1,11 @@
+2008-03-17  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	* msgs/Makefile (install): Remove residual dependency on deleted
+	target `stamp.h'; recursively install all message catalogues which
+	match those national languages specified in `$(languages)', to capture
+	dependencies on their respective gencat sources, using...
+	(install-recursive): ...this new target.
+
 2008-03-08  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Honour dependencies on message catalogue source files.
