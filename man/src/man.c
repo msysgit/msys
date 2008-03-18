@@ -99,7 +99,6 @@ char *colon_sep_section_list;
 char *roff_directive;
 char *dohp = 0;
 int do_irix;
-int do_win32;
 int apropos;
 int whatis;
 int nocats;			/* set by -c option: do not use cat page */
@@ -1102,8 +1101,6 @@ man (const char *name, const char *section) {
 	  flags |= DO_HP;
      if (do_irix)
 	  flags |= DO_IRIX;
-     if (do_win32)
-	  flags |= DO_WIN32;
 
      mp = manfile(name, section, flags, section_list, mandirlist,
 		  convert_to_cat);
@@ -1323,18 +1320,6 @@ main (int argc, char **argv) {
      /* Handle ls.z (instead of ls.1.z) cat page naming from IRIX */
      if (getenv("MAN_IRIX_CATNAMES"))
 	  do_irix = 1;
-
-#if defined(_WIN32) || defined(__CYGWIN__)
-/*
- * These run on an OS with a Microsoft file system,
- * which does not allow ':' in file names, other than as
- * the separator following a device designator; set a flag
- * so to remind us to handle this nuisance.
- *
- * FIXME: this should be handled in `compat.h'
- */
-     do_win32 = 1;
-#endif
 
      progname = mkprogname (argv[0]);
 

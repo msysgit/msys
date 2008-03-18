@@ -1,3 +1,18 @@
+2008-03-18  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Clean up DO_WIN32 file system specific processing ugliness.
+
+	* src/compat.h (HAVE_WIN32_FILE_SYSTEM): New manifest constant.
+	[_WIN32, __CYGWIN__]: Define it as `1'; otherwise as `0'.
+
+	* src/manfile.c (HAVE_WIN32_FILE_SYSTEM): Use it.
+	(do_win32, DO_WIN32): No longer required; delete all references.
+	(compat.h): Include.
+
+	* src/manfile.h (DO_WIN32): Remove definition.
+
+	* src/man.c (do_win32, DO_WIN32): Delete all references.
+
 2008-03-17  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	* msgs/Makefile (install): Remove residual dependency on deleted

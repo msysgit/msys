@@ -3,6 +3,8 @@
  *
  * Used both by man and man2html - be careful with printing!
  */
+#include "compat.h"
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <ctype.h>
@@ -304,7 +306,21 @@ manfile(const char *name, const char *section, int flags,
      standards = (flags & (FHS | FSSTND | DO_HP | DO_IRIX));
      to_cat_filename = tocat;
 
-     if (name && (flags & DO_WIN32)) { /* Convert : sequences to a ? */
+     /* Anomalously, Perl wants to uses `::' sequences within its
+      * manpage names; on Win32 this isn't allowed, so the manpage
+      * names have to be changed to conform to the file system's
+      * accepted naming conventions.  We will still allow users
+      * to request pages using the Perl conventions, and we map
+      * the name to the prevailing file system convention.
+      */
+     if (HAVE_WIN32_FILE_SYSTEM && name) {
+        /*
+	 * If we do have a Win32 file system, then this block
+	 * of code will convert `::' sequences to `?'; otherwise,
+	 * HAVE_WIN32_FILE_SYSTEM will be the manifest constant
+	 * zero, so the compiler can optimise this dead block
+	 * of code away.
+	 */
 	  char *n = my_malloc(strlen(name) + 1);
 	  const char *p = name;
 	  char *q = n;

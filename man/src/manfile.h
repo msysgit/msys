@@ -27,9 +27,6 @@ struct manpage {
 /* Sun uses both man and sman, where sman contains XML */
 #define DO_SUN		0x0800	/* unused today */
 
-/* NTFS cannot handle : in filenames */
-#define DO_WIN32	0x1000	/* turn :: into ? */
-
 extern struct manpage *
 manfile(const char *name, const char *section, int flags,
         char **sectionlist, char **manpath,

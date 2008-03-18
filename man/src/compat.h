@@ -58,6 +58,11 @@
  * (except that here, we MUST NOT define _POSIX_SOURCE)...
  */
 # define __GNU_LIBRARY__
+
+/* Cygwin also requires us to honour the file naming conventions
+ * of the Win32 file system.
+ */
+#define HAVE_WIN32_FILE_SYSTEM  1
 #endif
 
 #ifdef _WIN32
@@ -68,7 +73,11 @@
  * Win32 Path Name Handling
  * ------------------------
  *
- * Silently correct the misdemeanours of Win32, and its
+ * Here, we must also honour the Win32 file system conventions.
+ */
+#define HAVE_WIN32_FILE_SYSTEM  1
+
+/* Silently correct the misdemeanours of Win32, and its
  * "dyed in the wool" users who refuse to believe that it is ok
  * to use "/" instead of "\" in path names; however, we must
  * still use ";" as the path separator.
@@ -143,5 +152,16 @@ extern int win32_run_command_sequence(const char *);
  */
 #define RUN_COMMAND_SEQUENCE(cmds)  system((cmds))
 #endif /* !_WIN32 */
+
+#ifndef HAVE_WIN32_FILE_SYSTEM
+/*
+ * The code base will use this as a flag, to indicate when
+ * Win32 file system semantics prevail; if we didn't set this
+ * above, to indicate that such a file system is present, then
+ * we must ensure that it is a valid symbol, resolving as a
+ * `false' status flag.
+ */
+#define HAVE_WIN32_FILE_SYSTEM  0
+#endif
 
 #endif /* COMPAT_H */
