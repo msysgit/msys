@@ -1,8 +1,9 @@
 # Makefile for man -- message catalogue subdirectory.
 # Source: Makefile.in -- processed by configure, to create Makefile.
 #
-# Copyright (C) 2006, Keith D. Marshall <keithmarshall@users.sourceforge.net>
+# Copyright (C) 2006, 2007, 2008, Keith Marshall
 #
+# Written by Keith Marshall <keithmarshall@users.sourceforge.net>
 # (Based on, and replacing, an unaccredited original implementation, believed
 #  to be the work of John W. Eaton and/or Andries E. Brouwer).
 #
@@ -25,6 +26,13 @@ srcdir = @srcdir@
 top_builddir = `cd @top_builddir@;pwd`
 VPATH = ${srcdir}
 
+# We don't explicitly refer to these, but a user's configuration may specify
+# `localedir' in terms of either one of them; these definitions are included
+# to facilitate such usage.
+#
+prefix = @prefix@
+exec_prefix = @exec_prefix@
+
 MKMSGS = ${top_builddir}/tools/makemsg
 GENCAT = @man_gencat_program@
 
@@ -38,7 +46,7 @@ all:
 mess.%.cat: mess.%
 	$(MKMSGS) -c $< msgs.tmp
 	test -f $<.codeset && cat $<.codeset msgs.tmp > catin.tmp \
-	  || mv msgs.tmp catin.tmp
+	  || echo '$$ codeset=UTF-8' | cat - msgs.tmp > catin.tmp
 	LC_ALL=en_US.UTF-8 $(GENCAT) $@ catin.tmp
 	rm -f core *.stackdump *.tmp
 

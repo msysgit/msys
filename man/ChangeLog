@@ -1,3 +1,12 @@
+2008-03-19  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Honour `prefix' or `exec_prefix' substitutions in `localdir';
+	Assume UTF-8 as default codeset for NLS message catalogues.
+
+	* msgs/Makefile.in (prefix, exec_prefix): Define; AC_SUBST values.
+	(mess.%.cat): Use UTF-8 for `mess.%' sources which lack a `codeset'
+	pseudo-directive, by supplying one automatically.
+
 2008-03-18  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Clean up DO_WIN32 file system specific processing ugliness.
@@ -15,7 +24,7 @@
 
 2008-03-17  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
-	* msgs/Makefile (install): Remove residual dependency on deleted
+	* msgs/Makefile.in (install): Remove residual dependency on deleted
 	target `stamp.h'; recursively install all message catalogues which
 	match those national languages specified in `$(languages)', to capture
 	dependencies on their respective gencat sources, using...
