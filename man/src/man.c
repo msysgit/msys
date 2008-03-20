@@ -19,6 +19,7 @@
  * man -K: aeb, Jul 1995
  * Split off of manfile for man2html, aeb, New Year's Eve 1997
  * Portability enhancements - kdm, June 2005
+ * Remove `do_win32' rubbish - kdm, March 2008
  */
 #include "compat.h"
 
@@ -1296,6 +1297,22 @@ main (int argc, char **argv) {
      }
 #endif
 
+
+/* For internationalisation, we expect to be able to identify an
+ * ISO-639 two character language code from the LC_ALL, LC_MESSAGES
+ * or, (as a final fallback), from the LANG environment variables,
+ * or failing that, from a call to `setlocale'.  On Win32, typically,
+ * NONE of these variables will be set, and the native `setlocale'
+ * implementation doesn't give us the ISO-639 format we require;
+ * to work around this, the following macro, defined in compat.h,
+ * uses an alternative Win32 API to get the ISO-639 code for the
+ * user's default locale, saving it in the LANG environment variable,
+ * for us to use later; (the user may override this, by explicitly
+ * setting LANG first).  On platforms other than Win32, (and even
+ * on Win32 with Cygwin emulation of POSIX), this macro normally
+ * does nothing, (but see compat.h for possible exceptions).
+ */
+     set_iso639_default("LANG");
 
 /* #ifndef __FreeBSD__  */
 /* Slaven Rezif: FreeBSD-2.2-SNAP does not recognize LC_MESSAGES. */

@@ -125,6 +125,14 @@ extern int win32_path_is_absolute(const char *);
 
 extern int win32_run_command_sequence(const char *);
 
+/*
+ * Establishing the ISO-639 language code, for selection of national
+ * language man pages, and message catalogues.
+ */
+#define set_iso639_default(VAR)  win32_iso639_default((VAR))
+
+extern void win32_iso639_default(const char *);
+
 
 #else /* !_WIN32 */
 /*
@@ -162,6 +170,15 @@ extern int win32_run_command_sequence(const char *);
  * `false' status flag.
  */
 #define HAVE_WIN32_FILE_SYSTEM  0
+#endif
+
+#ifndef set_iso639_default
+/*
+ * On most platforms, we don't need any special provision to
+ * establish the ISO-639 language code associated with the user's
+ * locale; it is implicit within the native locale implementation.
+ */
+#define set_iso639_default(VAR)  /* do nothing */
 #endif
 
 #endif /* COMPAT_H */

@@ -1,3 +1,18 @@
+2008-03-20  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Map default user locale on Win32 to ISO-639 language code.
+
+	* src/win32/winlang.c: New file.
+	(win32_iso639_default): New function; implement it.
+
+	* src/compat.h (set_iso639_default): New macro; define it to...
+	[_WIN32]: Invoke `win32_iso639_default'; else do nothing.
+	(win32_iso639_default): Declare prototype.
+
+	* src/man.c (main): Deploy `set_iso639_default' macro.
+
+	* src/Makefile.in (WIN32LIBOBJS): Add `winlang.o'.
+
 2008-03-19  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Honour `prefix' or `exec_prefix' substitutions in `localdir';
