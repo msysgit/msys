@@ -1,3 +1,11 @@
+2008-03-22  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	* aclocal.m4 (NULLDEV): Don't use as redirection target for configure
+	script; it should be used only within generated code, which may not be
+	able to use /dev/null at runtime; e.g. Win32 needs `nul' instead.
+
+	* configure: Regenerated.
+
 2008-03-20  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Map default user locale on Win32 to ISO-639 language code.

@@ -1,7 +1,8 @@
 # aclocal.m4 for `man'
 # ====================
 #
-# Copyright (C) 2005 by Keith Marshall <keithmarshall@users.sourceforge.net>
+# Copyright (C) 2005, 2006, 2007, 2008 by Keith Marshall
+#   <keithmarshall@users.sourceforge.net>
 #
 # This file is part of the man package.
 #
@@ -490,10 +491,9 @@ AC_DEFUN([MANPATH_DEFAULT_INCLUDE],
 # (DO NOT invoke this macro directly).
 #
 AC_DEFUN([MANPATH_DEFAULT_SUBST],
-[AC_REQUIRE([WIN32_AC_NULLDEV])dnl
- AC_CACHE_CHECK([canonical MANPATH form for $2],
+[AC_CACHE_CHECK([canonical MANPATH form for $2],
   [man_cv_$1], [MSYS_AC_CANONICAL_PATH([man_cv_$1], [$2])
-  [(exec >${NULLDEV} 2>&1; cd $2) || man_cv_$1="__undef__(${man_cv_$1})"]dnl
+  [(exec >/dev/null 2>&1; cd $2) || man_cv_$1="__undef__(${man_cv_$1})"]dnl
  ])
  AC_SUBST([$1], [${man_cv_$1}])dnl
 ])
@@ -586,9 +586,8 @@ AC_DEFUN([MANPATH_MAP_DEFINE],
 # (DO NOT invoke this macro directly).
 #
 AC_DEFUN([MANPATH_MAP_CACHE_ASSIGN],
-[AC_REQUIRE([WIN32_AC_NULLDEV])dnl
- MSYS_AC_CANONICAL_PATH([$1], [$$2])
- (exec >${NULLDEV} 2>&1; cd $$2) || $1="__undef__($$1)"dnl
+[MSYS_AC_CANONICAL_PATH([$1], [$$2])
+ (exec >/dev/null 2>&1; cd $$2) || $1="__undef__($$1)"dnl
 ])
 
 
@@ -637,8 +636,7 @@ AC_DEFUN([MAN_NLS_FUNCTIONS],
 # which is distributed with `man'.
 #
 AC_DEFUN([MAN_PROG_GENCAT],
-[AC_REQUIRE([WIN32_AC_NULLDEV])dnl
- AC_REQUIRE([MAN_AC_TOOLS_DEFAULT])dnl
+[AC_REQUIRE([MAN_AC_TOOLS_DEFAULT])dnl
  man_gencat_provided=no
  AC_ARG_WITH([gencat],
    AS_HELP_STRING([--with-gencat=PROG],
@@ -710,12 +708,12 @@ $set 1
 1  "test for gencat\n"
 _ACEOF
 dnl"
- if $1 conftest.out conftest.in 2>${NULLDEV}
+ if $1 conftest.out conftest.in 2>/dev/null
  then
    ac_val=yes
    ac_cv_path_gencat=$1
    ac_option=no
- elif $1 --new conftest.out conftest.in 2>${NULLDEV}
+ elif $1 --new conftest.out conftest.in 2>/dev/null
  then
    ac_val=yes
    ac_cv_path_gencat="$1 --new"
@@ -838,8 +836,7 @@ AC_DEFUN([MAN_LANGUAGES_AVAILABLE],
 # and select the language pack(s) to install, from those AVAILABLE.
 #
 AC_DEFUN([MAN_NLS_LANGUAGE_SELECTION],
-[AC_REQUIRE([WIN32_AC_NULLDEV])dnl
- AC_REQUIRE([MAN_NLS_PREREQUISITES])dnl
+[AC_REQUIRE([MAN_NLS_PREREQUISITES])dnl
  AC_MSG_CHECKING([which national language manpages are required])
  AC_ARG_ENABLE([languages],
    MAN_LANGUAGE_HELP_STRING(MAN_LANGUAGE_LIST($1)),
@@ -853,10 +850,10 @@ AC_DEFUN([MAN_NLS_LANGUAGE_SELECTION],
  AC_MSG_RESULT([$languages])
  for lang in `IFS=,; echo $languages`
  do
-   langname=`cat "$srcdir/man/$lang.txt" 2>$NULLDEV`
+   langname=`cat "$srcdir/man/$lang.txt" 2>/dev/null`
    test x$langname = x && langname=$lang || langname="$lang ($langname)"
    AC_MSG_CHECKING([whether $langname manpages are available])
-   ac_val=`exec 2>$NULLDEV; cd "$srcdir/man/$lang" && echo *.man || echo '*.man'`
+   ac_val=`exec 2>/dev/null; cd "$srcdir/man/$lang" && echo *.man || echo '*.man'`
    if test "$ac_val" = "*.man"
    then
      ac_val=no
@@ -1285,8 +1282,7 @@ AC_DEFUN([MAN_GREP_SILENT],
 # modify the "nroff" substitution variable as required.
 #
 AC_DEFUN([MAN_DISABLE_NROFF_SGR],
-[AC_REQUIRE([WIN32_AC_NULLDEV])dnl
- if test "x$nroff" != xno
+[if test "x$nroff" != xno
  then
    AC_MSG_CHECKING([whether nroff requires suppression of SGR output])
    AC_ARG_ENABLE([sgr],
@@ -1298,7 +1294,7 @@ AC_DEFUN([MAN_DISABLE_NROFF_SGR],
    if test x$man_sgr_check = xyes
    then
      AC_MSG_CHECKING([whether installed nroff supports SGR output])
-     man_sgr_check=`(echo .TH; echo .SH TEST) | $nroff 2>$NULLDEV`
+     man_sgr_check=`(echo .TH; echo .SH TEST) | $nroff 2>/dev/null`
      case $man_sgr_check in
        [*0m*) man_sgr_check=yes ;;]
        [*)    man_sgr_check=no  ;;]
@@ -1313,7 +1309,7 @@ AC_DEFUN([MAN_DISABLE_NROFF_SGR],
      do
        if test "$man_sgr_check" = unknown
        then
-	 case `(echo .TH; echo .SH TEST) | $nroff $ac_val 2>$NULLDEV \
+	 case `(echo .TH; echo .SH TEST) | $nroff $ac_val 2>/dev/null \
 	 || echo 0m` in
 	   [*0m*) ;;]
 	   [*) man_sgr_check="$nroff $ac_val" ;;]

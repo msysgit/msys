@@ -309,7 +309,7 @@ ac_includes_default="\
 # include <unistd.h>
 #endif"
 
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CC CFLAGS LDFLAGS CPPFLAGS BUILD_CC BUILD_CFLAGS BUILD_LDFLAGS BUILD_CPPFLAGS man_install_flags awk ac_ct_CC EXEEXT OBJEXT AR ac_ct_AR INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA LN_S SET_MAKE CWARNNP CWARN WIN32LIBS CPP EGREP ALLOCA LIBOBJS manpathoption FHS FSSTND man_config_file sections man1ext man5ext man8ext path_separator_char NULLDEV path__usr_man path__usr_share_man path__usr_local_man path__usr_local_share_man path__usr_X11R6_man path__opt___STAR___man path__usr_lib___STAR___man path__usr_share___STAR___man path__usr_kerberos_man map_to__usr_man path__bin path__sbin path__usr_bin path__usr_sbin map_to__usr_local_man path__usr_local_bin path__usr_local_sbin map_to__usr_X11R6_man path__usr_X11R6_bin path__usr_bin_X11 path__usr_bin_mh man_tools_required gencat ac_pt_gencat man_gencat_program languages make_install_messages make_messages localedir nl_catfile nl_catdir pager browser htmlpager man_grepsilent cat troff nroff jnroff col pcol eqn neqn jneqn tbl vgrind refer grap pic cmp compress compress_ext gunzip bzip2 pcat zcat fcat unyabba decompress LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CC CFLAGS LDFLAGS CPPFLAGS BUILD_CC BUILD_CFLAGS BUILD_LDFLAGS BUILD_CPPFLAGS man_install_flags awk ac_ct_CC EXEEXT OBJEXT AR ac_ct_AR INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA LN_S SET_MAKE CWARNNP CWARN WIN32LIBS CPP EGREP ALLOCA LIBOBJS manpathoption FHS FSSTND man_config_file sections man1ext man5ext man8ext path_separator_char path__usr_man path__usr_share_man path__usr_local_man path__usr_local_share_man path__usr_X11R6_man path__opt___STAR___man path__usr_lib___STAR___man path__usr_share___STAR___man path__usr_kerberos_man map_to__usr_man path__bin path__sbin path__usr_bin path__usr_sbin map_to__usr_local_man path__usr_local_bin path__usr_local_sbin map_to__usr_X11R6_man path__usr_X11R6_bin path__usr_bin_X11 path__usr_bin_mh man_tools_required gencat ac_pt_gencat man_gencat_program languages make_install_messages make_messages localedir nl_catfile nl_catdir pager browser htmlpager NULLDEV man_grepsilent cat troff nroff jnroff col pcol eqn neqn jneqn tbl vgrind refer grap pic cmp compress compress_ext gunzip bzip2 pcat zcat fcat unyabba decompress LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -7694,62 +7694,7 @@ echo "${ECHO_T}$path_separator_char" >&6
 # Set up the default MANPATH entries, in the configuration file.
 # (First, the standard set, which are normally included)...
 #
-  echo "$as_me:$LINENO: checking name for NULL device" >&5
-echo $ECHO_N "checking name for NULL device... $ECHO_C" >&6
- ac_ext=c
-ac_cpp='$CPP $CPPFLAGS'
-ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
-ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
-ac_compiler_gnu=$ac_cv_c_compiler_gnu
-
- cat >conftest.$ac_ext <<_ACEOF
-
-#if defined(_WIN32) || defined(__CYGWIN32__)
- choke me
-#endif
-
-_ACEOF
-rm -f conftest.$ac_objext
-if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
-  (eval $ac_compile) 2>conftest.er1
-  ac_status=$?
-  grep -v '^ *+' conftest.er1 >conftest.err
-  rm -f conftest.er1
-  cat conftest.err >&5
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-	 { ac_try='test -z "$ac_c_werror_flag"
-			 || test ! -s conftest.err'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; } &&
-	 { ac_try='test -s conftest.$ac_objext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  NULLDEV=/dev/null
-else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-NULLDEV=nul
-fi
-rm -f conftest.err conftest.$ac_objext conftest.$ac_ext
- ac_ext=c
-ac_cpp='$CPP $CPPFLAGS'
-ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
-ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
-ac_compiler_gnu=$ac_cv_c_compiler_gnu
-
- echo "$as_me:$LINENO: result: $NULLDEV" >&5
-echo "${ECHO_T}$NULLDEV" >&6
-
-
- echo "$as_me:$LINENO: checking canonical MANPATH form for /usr/man" >&5
+  echo "$as_me:$LINENO: checking canonical MANPATH form for /usr/man" >&5
 echo $ECHO_N "checking canonical MANPATH form for /usr/man... $ECHO_C" >&6
 if test "${man_cv_path__usr_man+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
@@ -7776,13 +7721,13 @@ echo X"$ac_dir" |
  man_cv_path__usr_man=`echo "/usr/man" | sed "s?^[./]*$ac_dir/*?$ac_val/?"'
    s?/*$??'`
 
-  (exec >${NULLDEV} 2>&1; cd /usr/man) || man_cv_path__usr_man="__undef__(${man_cv_path__usr_man})"
+  (exec >/dev/null 2>&1; cd /usr/man) || man_cv_path__usr_man="__undef__(${man_cv_path__usr_man})"
 fi
 echo "$as_me:$LINENO: result: $man_cv_path__usr_man" >&5
 echo "${ECHO_T}$man_cv_path__usr_man" >&6
  path__usr_man=${man_cv_path__usr_man}
 
-   echo "$as_me:$LINENO: checking canonical MANPATH form for /usr/share/man" >&5
+  echo "$as_me:$LINENO: checking canonical MANPATH form for /usr/share/man" >&5
 echo $ECHO_N "checking canonical MANPATH form for /usr/share/man... $ECHO_C" >&6
 if test "${man_cv_path__usr_share_man+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
@@ -7809,13 +7754,13 @@ echo X"$ac_dir" |
  man_cv_path__usr_share_man=`echo "/usr/share/man" | sed "s?^[./]*$ac_dir/*?$ac_val/?"'
    s?/*$??'`
 
-  (exec >${NULLDEV} 2>&1; cd /usr/share/man) || man_cv_path__usr_share_man="__undef__(${man_cv_path__usr_share_man})"
+  (exec >/dev/null 2>&1; cd /usr/share/man) || man_cv_path__usr_share_man="__undef__(${man_cv_path__usr_share_man})"
 fi
 echo "$as_me:$LINENO: result: $man_cv_path__usr_share_man" >&5
 echo "${ECHO_T}$man_cv_path__usr_share_man" >&6
  path__usr_share_man=${man_cv_path__usr_share_man}
 
-   echo "$as_me:$LINENO: checking canonical MANPATH form for /usr/local/man" >&5
+  echo "$as_me:$LINENO: checking canonical MANPATH form for /usr/local/man" >&5
 echo $ECHO_N "checking canonical MANPATH form for /usr/local/man... $ECHO_C" >&6
 if test "${man_cv_path__usr_local_man+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
@@ -7842,13 +7787,13 @@ echo X"$ac_dir" |
  man_cv_path__usr_local_man=`echo "/usr/local/man" | sed "s?^[./]*$ac_dir/*?$ac_val/?"'
    s?/*$??'`
 
-  (exec >${NULLDEV} 2>&1; cd /usr/local/man) || man_cv_path__usr_local_man="__undef__(${man_cv_path__usr_local_man})"
+  (exec >/dev/null 2>&1; cd /usr/local/man) || man_cv_path__usr_local_man="__undef__(${man_cv_path__usr_local_man})"
 fi
 echo "$as_me:$LINENO: result: $man_cv_path__usr_local_man" >&5
 echo "${ECHO_T}$man_cv_path__usr_local_man" >&6
  path__usr_local_man=${man_cv_path__usr_local_man}
 
-   echo "$as_me:$LINENO: checking canonical MANPATH form for /usr/local/share/man" >&5
+  echo "$as_me:$LINENO: checking canonical MANPATH form for /usr/local/share/man" >&5
 echo $ECHO_N "checking canonical MANPATH form for /usr/local/share/man... $ECHO_C" >&6
 if test "${man_cv_path__usr_local_share_man+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
@@ -7875,13 +7820,13 @@ echo X"$ac_dir" |
  man_cv_path__usr_local_share_man=`echo "/usr/local/share/man" | sed "s?^[./]*$ac_dir/*?$ac_val/?"'
    s?/*$??'`
 
-  (exec >${NULLDEV} 2>&1; cd /usr/local/share/man) || man_cv_path__usr_local_share_man="__undef__(${man_cv_path__usr_local_share_man})"
+  (exec >/dev/null 2>&1; cd /usr/local/share/man) || man_cv_path__usr_local_share_man="__undef__(${man_cv_path__usr_local_share_man})"
 fi
 echo "$as_me:$LINENO: result: $man_cv_path__usr_local_share_man" >&5
 echo "${ECHO_T}$man_cv_path__usr_local_share_man" >&6
  path__usr_local_share_man=${man_cv_path__usr_local_share_man}
 
-   echo "$as_me:$LINENO: checking canonical MANPATH form for /usr/X11R6/man" >&5
+  echo "$as_me:$LINENO: checking canonical MANPATH form for /usr/X11R6/man" >&5
 echo $ECHO_N "checking canonical MANPATH form for /usr/X11R6/man... $ECHO_C" >&6
 if test "${man_cv_path__usr_X11R6_man+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
@@ -7908,7 +7853,7 @@ echo X"$ac_dir" |
  man_cv_path__usr_X11R6_man=`echo "/usr/X11R6/man" | sed "s?^[./]*$ac_dir/*?$ac_val/?"'
    s?/*$??'`
 
-  (exec >${NULLDEV} 2>&1; cd /usr/X11R6/man) || man_cv_path__usr_X11R6_man="__undef__(${man_cv_path__usr_X11R6_man})"
+  (exec >/dev/null 2>&1; cd /usr/X11R6/man) || man_cv_path__usr_X11R6_man="__undef__(${man_cv_path__usr_X11R6_man})"
 fi
 echo "$as_me:$LINENO: result: $man_cv_path__usr_X11R6_man" >&5
 echo "${ECHO_T}$man_cv_path__usr_X11R6_man" >&6
@@ -7919,7 +7864,7 @@ echo "${ECHO_T}$man_cv_path__usr_X11R6_man" >&6
 # (we use MANPATH_DEFAULT_INCLUDE, but OCCLUSION is specified by
 #  a leading `#' in src/man.conf.in).
 #
-   echo "$as_me:$LINENO: checking canonical MANPATH form for /opt/*/man" >&5
+  echo "$as_me:$LINENO: checking canonical MANPATH form for /opt/*/man" >&5
 echo $ECHO_N "checking canonical MANPATH form for /opt/*/man... $ECHO_C" >&6
 if test "${man_cv_path__opt___STAR___man+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
@@ -7946,13 +7891,13 @@ echo X"$ac_dir" |
  man_cv_path__opt___STAR___man=`echo "/opt/*/man" | sed "s?^[./]*$ac_dir/*?$ac_val/?"'
    s?/*$??'`
 
-  (exec >${NULLDEV} 2>&1; cd /opt/*/man) || man_cv_path__opt___STAR___man="__undef__(${man_cv_path__opt___STAR___man})"
+  (exec >/dev/null 2>&1; cd /opt/*/man) || man_cv_path__opt___STAR___man="__undef__(${man_cv_path__opt___STAR___man})"
 fi
 echo "$as_me:$LINENO: result: $man_cv_path__opt___STAR___man" >&5
 echo "${ECHO_T}$man_cv_path__opt___STAR___man" >&6
  path__opt___STAR___man=${man_cv_path__opt___STAR___man}
 
-   echo "$as_me:$LINENO: checking canonical MANPATH form for /usr/lib/*/man" >&5
+  echo "$as_me:$LINENO: checking canonical MANPATH form for /usr/lib/*/man" >&5
 echo $ECHO_N "checking canonical MANPATH form for /usr/lib/*/man... $ECHO_C" >&6
 if test "${man_cv_path__usr_lib___STAR___man+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
@@ -7979,13 +7924,13 @@ echo X"$ac_dir" |
  man_cv_path__usr_lib___STAR___man=`echo "/usr/lib/*/man" | sed "s?^[./]*$ac_dir/*?$ac_val/?"'
    s?/*$??'`
 
-  (exec >${NULLDEV} 2>&1; cd /usr/lib/*/man) || man_cv_path__usr_lib___STAR___man="__undef__(${man_cv_path__usr_lib___STAR___man})"
+  (exec >/dev/null 2>&1; cd /usr/lib/*/man) || man_cv_path__usr_lib___STAR___man="__undef__(${man_cv_path__usr_lib___STAR___man})"
 fi
 echo "$as_me:$LINENO: result: $man_cv_path__usr_lib___STAR___man" >&5
 echo "${ECHO_T}$man_cv_path__usr_lib___STAR___man" >&6
  path__usr_lib___STAR___man=${man_cv_path__usr_lib___STAR___man}
 
-   echo "$as_me:$LINENO: checking canonical MANPATH form for /usr/share/*/man" >&5
+  echo "$as_me:$LINENO: checking canonical MANPATH form for /usr/share/*/man" >&5
 echo $ECHO_N "checking canonical MANPATH form for /usr/share/*/man... $ECHO_C" >&6
 if test "${man_cv_path__usr_share___STAR___man+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
@@ -8012,13 +7957,13 @@ echo X"$ac_dir" |
  man_cv_path__usr_share___STAR___man=`echo "/usr/share/*/man" | sed "s?^[./]*$ac_dir/*?$ac_val/?"'
    s?/*$??'`
 
-  (exec >${NULLDEV} 2>&1; cd /usr/share/*/man) || man_cv_path__usr_share___STAR___man="__undef__(${man_cv_path__usr_share___STAR___man})"
+  (exec >/dev/null 2>&1; cd /usr/share/*/man) || man_cv_path__usr_share___STAR___man="__undef__(${man_cv_path__usr_share___STAR___man})"
 fi
 echo "$as_me:$LINENO: result: $man_cv_path__usr_share___STAR___man" >&5
 echo "${ECHO_T}$man_cv_path__usr_share___STAR___man" >&6
  path__usr_share___STAR___man=${man_cv_path__usr_share___STAR___man}
 
-   echo "$as_me:$LINENO: checking canonical MANPATH form for /usr/kerberos/man" >&5
+  echo "$as_me:$LINENO: checking canonical MANPATH form for /usr/kerberos/man" >&5
 echo $ECHO_N "checking canonical MANPATH form for /usr/kerberos/man... $ECHO_C" >&6
 if test "${man_cv_path__usr_kerberos_man+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
@@ -8045,7 +7990,7 @@ echo X"$ac_dir" |
  man_cv_path__usr_kerberos_man=`echo "/usr/kerberos/man" | sed "s?^[./]*$ac_dir/*?$ac_val/?"'
    s?/*$??'`
 
-  (exec >${NULLDEV} 2>&1; cd /usr/kerberos/man) || man_cv_path__usr_kerberos_man="__undef__(${man_cv_path__usr_kerberos_man})"
+  (exec >/dev/null 2>&1; cd /usr/kerberos/man) || man_cv_path__usr_kerberos_man="__undef__(${man_cv_path__usr_kerberos_man})"
 fi
 echo "$as_me:$LINENO: result: $man_cv_path__usr_kerberos_man" >&5
 echo "${ECHO_T}$man_cv_path__usr_kerberos_man" >&6
@@ -8102,7 +8047,7 @@ echo $ECHO_N "checking canonical MANPATH_MAP for $man_cv_path__bin... $ECHO_C" >
    if test "${man_cv_map_to__usr_man+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
 else
-   ac_dir="$man_alias__usr_man"
+  ac_dir="$man_alias__usr_man"
  pwd -W >/dev/null 2>&1 && ac_pwd_w="pwd -W" || ac_pwd_w=pwd
  until ac_val=`exec 2>/dev/null; cd "$ac_dir" && $ac_pwd_w`
  do
@@ -8124,11 +8069,11 @@ echo X"$ac_dir" |
  man_cv_map_to__usr_man=`echo "$man_alias__usr_man" | sed "s?^./*$ac_dir/*?$ac_val/?"'
    s?/*$??'`
 
- (exec >${NULLDEV} 2>&1; cd $man_alias__usr_man) || man_cv_map_to__usr_man="__undef__($man_cv_map_to__usr_man)"
+ (exec >/dev/null 2>&1; cd $man_alias__usr_man) || man_cv_map_to__usr_man="__undef__($man_cv_map_to__usr_man)"
 fi
 
  else
-    ac_dir="$man_alias__usr_man"
+   ac_dir="$man_alias__usr_man"
  pwd -W >/dev/null 2>&1 && ac_pwd_w="pwd -W" || ac_pwd_w=pwd
  until ac_val=`exec 2>/dev/null; cd "$ac_dir" && $ac_pwd_w`
  do
@@ -8150,7 +8095,7 @@ echo X"$ac_dir" |
  man_cv_map_to__usr_man=`echo "$man_alias__usr_man" | sed "s?^[./]*$ac_dir/*?$ac_val/?"'
    s?/*$??'`
 
- (exec >${NULLDEV} 2>&1; cd $man_alias__usr_man) || man_cv_map_to__usr_man="__undef__($man_cv_map_to__usr_man)"
+ (exec >/dev/null 2>&1; cd $man_alias__usr_man) || man_cv_map_to__usr_man="__undef__($man_cv_map_to__usr_man)"
    man_cv_alias__usr_man="$man_alias__usr_man"
  fi
  map_to__usr_man=$man_cv_map_to__usr_man
@@ -8197,7 +8142,7 @@ echo $ECHO_N "checking canonical MANPATH_MAP for $man_cv_path__sbin... $ECHO_C" 
    if test "${man_cv_map_to__usr_man+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
 else
-   ac_dir="$man_alias__usr_man"
+  ac_dir="$man_alias__usr_man"
  pwd -W >/dev/null 2>&1 && ac_pwd_w="pwd -W" || ac_pwd_w=pwd
  until ac_val=`exec 2>/dev/null; cd "$ac_dir" && $ac_pwd_w`
  do
@@ -8219,11 +8164,11 @@ echo X"$ac_dir" |
  man_cv_map_to__usr_man=`echo "$man_alias__usr_man" | sed "s?^./*$ac_dir/*?$ac_val/?"'
    s?/*$??'`
 
- (exec >${NULLDEV} 2>&1; cd $man_alias__usr_man) || man_cv_map_to__usr_man="__undef__($man_cv_map_to__usr_man)"
+ (exec >/dev/null 2>&1; cd $man_alias__usr_man) || man_cv_map_to__usr_man="__undef__($man_cv_map_to__usr_man)"
 fi
 
  else
-    ac_dir="$man_alias__usr_man"
+   ac_dir="$man_alias__usr_man"
  pwd -W >/dev/null 2>&1 && ac_pwd_w="pwd -W" || ac_pwd_w=pwd
  until ac_val=`exec 2>/dev/null; cd "$ac_dir" && $ac_pwd_w`
  do
@@ -8245,7 +8190,7 @@ echo X"$ac_dir" |
  man_cv_map_to__usr_man=`echo "$man_alias__usr_man" | sed "s?^[./]*$ac_dir/*?$ac_val/?"'
    s?/*$??'`
 
- (exec >${NULLDEV} 2>&1; cd $man_alias__usr_man) || man_cv_map_to__usr_man="__undef__($man_cv_map_to__usr_man)"
+ (exec >/dev/null 2>&1; cd $man_alias__usr_man) || man_cv_map_to__usr_man="__undef__($man_cv_map_to__usr_man)"
    man_cv_alias__usr_man="$man_alias__usr_man"
  fi
  map_to__usr_man=$man_cv_map_to__usr_man
@@ -8292,7 +8237,7 @@ echo $ECHO_N "checking canonical MANPATH_MAP for $man_cv_path__usr_bin... $ECHO_
    if test "${man_cv_map_to__usr_man+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
 else
-   ac_dir="$man_alias__usr_man"
+  ac_dir="$man_alias__usr_man"
  pwd -W >/dev/null 2>&1 && ac_pwd_w="pwd -W" || ac_pwd_w=pwd
  until ac_val=`exec 2>/dev/null; cd "$ac_dir" && $ac_pwd_w`
  do
@@ -8314,11 +8259,11 @@ echo X"$ac_dir" |
  man_cv_map_to__usr_man=`echo "$man_alias__usr_man" | sed "s?^./*$ac_dir/*?$ac_val/?"'
    s?/*$??'`
 
- (exec >${NULLDEV} 2>&1; cd $man_alias__usr_man) || man_cv_map_to__usr_man="__undef__($man_cv_map_to__usr_man)"
+ (exec >/dev/null 2>&1; cd $man_alias__usr_man) || man_cv_map_to__usr_man="__undef__($man_cv_map_to__usr_man)"
 fi
 
  else
-    ac_dir="$man_alias__usr_man"
+   ac_dir="$man_alias__usr_man"
  pwd -W >/dev/null 2>&1 && ac_pwd_w="pwd -W" || ac_pwd_w=pwd
  until ac_val=`exec 2>/dev/null; cd "$ac_dir" && $ac_pwd_w`
  do
@@ -8340,7 +8285,7 @@ echo X"$ac_dir" |
  man_cv_map_to__usr_man=`echo "$man_alias__usr_man" | sed "s?^[./]*$ac_dir/*?$ac_val/?"'
    s?/*$??'`
 
- (exec >${NULLDEV} 2>&1; cd $man_alias__usr_man) || man_cv_map_to__usr_man="__undef__($man_cv_map_to__usr_man)"
+ (exec >/dev/null 2>&1; cd $man_alias__usr_man) || man_cv_map_to__usr_man="__undef__($man_cv_map_to__usr_man)"
    man_cv_alias__usr_man="$man_alias__usr_man"
  fi
  map_to__usr_man=$man_cv_map_to__usr_man
@@ -8387,7 +8332,7 @@ echo $ECHO_N "checking canonical MANPATH_MAP for $man_cv_path__usr_sbin... $ECHO
    if test "${man_cv_map_to__usr_man+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
 else
-   ac_dir="$man_alias__usr_man"
+  ac_dir="$man_alias__usr_man"
  pwd -W >/dev/null 2>&1 && ac_pwd_w="pwd -W" || ac_pwd_w=pwd
  until ac_val=`exec 2>/dev/null; cd "$ac_dir" && $ac_pwd_w`
  do
@@ -8409,11 +8354,11 @@ echo X"$ac_dir" |
  man_cv_map_to__usr_man=`echo "$man_alias__usr_man" | sed "s?^./*$ac_dir/*?$ac_val/?"'
    s?/*$??'`
 
- (exec >${NULLDEV} 2>&1; cd $man_alias__usr_man) || man_cv_map_to__usr_man="__undef__($man_cv_map_to__usr_man)"
+ (exec >/dev/null 2>&1; cd $man_alias__usr_man) || man_cv_map_to__usr_man="__undef__($man_cv_map_to__usr_man)"
 fi
 
  else
-    ac_dir="$man_alias__usr_man"
+   ac_dir="$man_alias__usr_man"
  pwd -W >/dev/null 2>&1 && ac_pwd_w="pwd -W" || ac_pwd_w=pwd
  until ac_val=`exec 2>/dev/null; cd "$ac_dir" && $ac_pwd_w`
  do
@@ -8435,7 +8380,7 @@ echo X"$ac_dir" |
  man_cv_map_to__usr_man=`echo "$man_alias__usr_man" | sed "s?^[./]*$ac_dir/*?$ac_val/?"'
    s?/*$??'`
 
- (exec >${NULLDEV} 2>&1; cd $man_alias__usr_man) || man_cv_map_to__usr_man="__undef__($man_cv_map_to__usr_man)"
+ (exec >/dev/null 2>&1; cd $man_alias__usr_man) || man_cv_map_to__usr_man="__undef__($man_cv_map_to__usr_man)"
    man_cv_alias__usr_man="$man_alias__usr_man"
  fi
  map_to__usr_man=$man_cv_map_to__usr_man
@@ -8482,7 +8427,7 @@ echo $ECHO_N "checking canonical MANPATH_MAP for $man_cv_path__usr_local_bin... 
    if test "${man_cv_map_to__usr_local_man+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
 else
-   ac_dir="$man_alias__usr_local_man"
+  ac_dir="$man_alias__usr_local_man"
  pwd -W >/dev/null 2>&1 && ac_pwd_w="pwd -W" || ac_pwd_w=pwd
  until ac_val=`exec 2>/dev/null; cd "$ac_dir" && $ac_pwd_w`
  do
@@ -8504,11 +8449,11 @@ echo X"$ac_dir" |
  man_cv_map_to__usr_local_man=`echo "$man_alias__usr_local_man" | sed "s?^./*$ac_dir/*?$ac_val/?"'
    s?/*$??'`
 
- (exec >${NULLDEV} 2>&1; cd $man_alias__usr_local_man) || man_cv_map_to__usr_local_man="__undef__($man_cv_map_to__usr_local_man)"
+ (exec >/dev/null 2>&1; cd $man_alias__usr_local_man) || man_cv_map_to__usr_local_man="__undef__($man_cv_map_to__usr_local_man)"
 fi
 
  else
-    ac_dir="$man_alias__usr_local_man"
+   ac_dir="$man_alias__usr_local_man"
  pwd -W >/dev/null 2>&1 && ac_pwd_w="pwd -W" || ac_pwd_w=pwd
  until ac_val=`exec 2>/dev/null; cd "$ac_dir" && $ac_pwd_w`
  do
@@ -8530,7 +8475,7 @@ echo X"$ac_dir" |
  man_cv_map_to__usr_local_man=`echo "$man_alias__usr_local_man" | sed "s?^[./]*$ac_dir/*?$ac_val/?"'
    s?/*$??'`
 
- (exec >${NULLDEV} 2>&1; cd $man_alias__usr_local_man) || man_cv_map_to__usr_local_man="__undef__($man_cv_map_to__usr_local_man)"
+ (exec >/dev/null 2>&1; cd $man_alias__usr_local_man) || man_cv_map_to__usr_local_man="__undef__($man_cv_map_to__usr_local_man)"
    man_cv_alias__usr_local_man="$man_alias__usr_local_man"
  fi
  map_to__usr_local_man=$man_cv_map_to__usr_local_man
@@ -8577,7 +8522,7 @@ echo $ECHO_N "checking canonical MANPATH_MAP for $man_cv_path__usr_local_sbin...
    if test "${man_cv_map_to__usr_local_man+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
 else
-   ac_dir="$man_alias__usr_local_man"
+  ac_dir="$man_alias__usr_local_man"
  pwd -W >/dev/null 2>&1 && ac_pwd_w="pwd -W" || ac_pwd_w=pwd
  until ac_val=`exec 2>/dev/null; cd "$ac_dir" && $ac_pwd_w`
  do
@@ -8599,11 +8544,11 @@ echo X"$ac_dir" |
  man_cv_map_to__usr_local_man=`echo "$man_alias__usr_local_man" | sed "s?^./*$ac_dir/*?$ac_val/?"'
    s?/*$??'`
 
- (exec >${NULLDEV} 2>&1; cd $man_alias__usr_local_man) || man_cv_map_to__usr_local_man="__undef__($man_cv_map_to__usr_local_man)"
+ (exec >/dev/null 2>&1; cd $man_alias__usr_local_man) || man_cv_map_to__usr_local_man="__undef__($man_cv_map_to__usr_local_man)"
 fi
 
  else
-    ac_dir="$man_alias__usr_local_man"
+   ac_dir="$man_alias__usr_local_man"
  pwd -W >/dev/null 2>&1 && ac_pwd_w="pwd -W" || ac_pwd_w=pwd
  until ac_val=`exec 2>/dev/null; cd "$ac_dir" && $ac_pwd_w`
  do
@@ -8625,7 +8570,7 @@ echo X"$ac_dir" |
  man_cv_map_to__usr_local_man=`echo "$man_alias__usr_local_man" | sed "s?^[./]*$ac_dir/*?$ac_val/?"'
    s?/*$??'`
 
- (exec >${NULLDEV} 2>&1; cd $man_alias__usr_local_man) || man_cv_map_to__usr_local_man="__undef__($man_cv_map_to__usr_local_man)"
+ (exec >/dev/null 2>&1; cd $man_alias__usr_local_man) || man_cv_map_to__usr_local_man="__undef__($man_cv_map_to__usr_local_man)"
    man_cv_alias__usr_local_man="$man_alias__usr_local_man"
  fi
  map_to__usr_local_man=$man_cv_map_to__usr_local_man
@@ -8672,7 +8617,7 @@ echo $ECHO_N "checking canonical MANPATH_MAP for $man_cv_path__usr_X11R6_bin... 
    if test "${man_cv_map_to__usr_X11R6_man+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
 else
-   ac_dir="$man_alias__usr_X11R6_man"
+  ac_dir="$man_alias__usr_X11R6_man"
  pwd -W >/dev/null 2>&1 && ac_pwd_w="pwd -W" || ac_pwd_w=pwd
  until ac_val=`exec 2>/dev/null; cd "$ac_dir" && $ac_pwd_w`
  do
@@ -8694,11 +8639,11 @@ echo X"$ac_dir" |
  man_cv_map_to__usr_X11R6_man=`echo "$man_alias__usr_X11R6_man" | sed "s?^./*$ac_dir/*?$ac_val/?"'
    s?/*$??'`
 
- (exec >${NULLDEV} 2>&1; cd $man_alias__usr_X11R6_man) || man_cv_map_to__usr_X11R6_man="__undef__($man_cv_map_to__usr_X11R6_man)"
+ (exec >/dev/null 2>&1; cd $man_alias__usr_X11R6_man) || man_cv_map_to__usr_X11R6_man="__undef__($man_cv_map_to__usr_X11R6_man)"
 fi
 
  else
-    ac_dir="$man_alias__usr_X11R6_man"
+   ac_dir="$man_alias__usr_X11R6_man"
  pwd -W >/dev/null 2>&1 && ac_pwd_w="pwd -W" || ac_pwd_w=pwd
  until ac_val=`exec 2>/dev/null; cd "$ac_dir" && $ac_pwd_w`
  do
@@ -8720,7 +8665,7 @@ echo X"$ac_dir" |
  man_cv_map_to__usr_X11R6_man=`echo "$man_alias__usr_X11R6_man" | sed "s?^[./]*$ac_dir/*?$ac_val/?"'
    s?/*$??'`
 
- (exec >${NULLDEV} 2>&1; cd $man_alias__usr_X11R6_man) || man_cv_map_to__usr_X11R6_man="__undef__($man_cv_map_to__usr_X11R6_man)"
+ (exec >/dev/null 2>&1; cd $man_alias__usr_X11R6_man) || man_cv_map_to__usr_X11R6_man="__undef__($man_cv_map_to__usr_X11R6_man)"
    man_cv_alias__usr_X11R6_man="$man_alias__usr_X11R6_man"
  fi
  map_to__usr_X11R6_man=$man_cv_map_to__usr_X11R6_man
@@ -8767,7 +8712,7 @@ echo $ECHO_N "checking canonical MANPATH_MAP for $man_cv_path__usr_bin_X11... $E
    if test "${man_cv_map_to__usr_X11R6_man+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
 else
-   ac_dir="$man_alias__usr_X11R6_man"
+  ac_dir="$man_alias__usr_X11R6_man"
  pwd -W >/dev/null 2>&1 && ac_pwd_w="pwd -W" || ac_pwd_w=pwd
  until ac_val=`exec 2>/dev/null; cd "$ac_dir" && $ac_pwd_w`
  do
@@ -8789,11 +8734,11 @@ echo X"$ac_dir" |
  man_cv_map_to__usr_X11R6_man=`echo "$man_alias__usr_X11R6_man" | sed "s?^./*$ac_dir/*?$ac_val/?"'
    s?/*$??'`
 
- (exec >${NULLDEV} 2>&1; cd $man_alias__usr_X11R6_man) || man_cv_map_to__usr_X11R6_man="__undef__($man_cv_map_to__usr_X11R6_man)"
+ (exec >/dev/null 2>&1; cd $man_alias__usr_X11R6_man) || man_cv_map_to__usr_X11R6_man="__undef__($man_cv_map_to__usr_X11R6_man)"
 fi
 
  else
-    ac_dir="$man_alias__usr_X11R6_man"
+   ac_dir="$man_alias__usr_X11R6_man"
  pwd -W >/dev/null 2>&1 && ac_pwd_w="pwd -W" || ac_pwd_w=pwd
  until ac_val=`exec 2>/dev/null; cd "$ac_dir" && $ac_pwd_w`
  do
@@ -8815,7 +8760,7 @@ echo X"$ac_dir" |
  man_cv_map_to__usr_X11R6_man=`echo "$man_alias__usr_X11R6_man" | sed "s?^[./]*$ac_dir/*?$ac_val/?"'
    s?/*$??'`
 
- (exec >${NULLDEV} 2>&1; cd $man_alias__usr_X11R6_man) || man_cv_map_to__usr_X11R6_man="__undef__($man_cv_map_to__usr_X11R6_man)"
+ (exec >/dev/null 2>&1; cd $man_alias__usr_X11R6_man) || man_cv_map_to__usr_X11R6_man="__undef__($man_cv_map_to__usr_X11R6_man)"
    man_cv_alias__usr_X11R6_man="$man_alias__usr_X11R6_man"
  fi
  map_to__usr_X11R6_man=$man_cv_map_to__usr_X11R6_man
@@ -8862,7 +8807,7 @@ echo $ECHO_N "checking canonical MANPATH_MAP for $man_cv_path__usr_bin_mh... $EC
    if test "${man_cv_map_to__usr_man+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
 else
-   ac_dir="$man_alias__usr_man"
+  ac_dir="$man_alias__usr_man"
  pwd -W >/dev/null 2>&1 && ac_pwd_w="pwd -W" || ac_pwd_w=pwd
  until ac_val=`exec 2>/dev/null; cd "$ac_dir" && $ac_pwd_w`
  do
@@ -8884,11 +8829,11 @@ echo X"$ac_dir" |
  man_cv_map_to__usr_man=`echo "$man_alias__usr_man" | sed "s?^./*$ac_dir/*?$ac_val/?"'
    s?/*$??'`
 
- (exec >${NULLDEV} 2>&1; cd $man_alias__usr_man) || man_cv_map_to__usr_man="__undef__($man_cv_map_to__usr_man)"
+ (exec >/dev/null 2>&1; cd $man_alias__usr_man) || man_cv_map_to__usr_man="__undef__($man_cv_map_to__usr_man)"
 fi
 
  else
-    ac_dir="$man_alias__usr_man"
+   ac_dir="$man_alias__usr_man"
  pwd -W >/dev/null 2>&1 && ac_pwd_w="pwd -W" || ac_pwd_w=pwd
  until ac_val=`exec 2>/dev/null; cd "$ac_dir" && $ac_pwd_w`
  do
@@ -8910,7 +8855,7 @@ echo X"$ac_dir" |
  man_cv_map_to__usr_man=`echo "$man_alias__usr_man" | sed "s?^[./]*$ac_dir/*?$ac_val/?"'
    s?/*$??'`
 
- (exec >${NULLDEV} 2>&1; cd $man_alias__usr_man) || man_cv_map_to__usr_man="__undef__($man_cv_map_to__usr_man)"
+ (exec >/dev/null 2>&1; cd $man_alias__usr_man) || man_cv_map_to__usr_man="__undef__($man_cv_map_to__usr_man)"
    man_cv_alias__usr_man="$man_alias__usr_man"
  fi
  map_to__usr_man=$man_cv_map_to__usr_man
@@ -9316,7 +9261,7 @@ done
 
 man_tools_required=all-default
 
-  man_gencat_provided=no
+ man_gencat_provided=no
 
 # Check whether --with-gencat or --without-gencat was given.
 if test "${with_gencat+set}" = set; then
@@ -9488,12 +9433,12 @@ $quote "
 $set 1
 1  "test for gencat\n"
 _ACEOF
- if $gencat conftest.out conftest.in 2>${NULLDEV}
+ if $gencat conftest.out conftest.in 2>/dev/null
  then
    ac_val=yes
    ac_cv_path_gencat=$gencat
    ac_option=no
- elif $gencat --new conftest.out conftest.in 2>${NULLDEV}
+ elif $gencat --new conftest.out conftest.in 2>/dev/null
  then
    ac_val=yes
    ac_cv_path_gencat="$gencat --new"
@@ -9538,7 +9483,7 @@ echo $ECHO_N "checking whether NLS support is available... $ECHO_C" >&6
    echo "$as_me:$LINENO: result: $man_enable_nls" >&5
 echo "${ECHO_T}$man_enable_nls" >&6
  fi
-  echo "$as_me:$LINENO: checking which national language manpages are required" >&5
+ echo "$as_me:$LINENO: checking which national language manpages are required" >&5
 echo $ECHO_N "checking which national language manpages are required... $ECHO_C" >&6
  # Check whether --enable-languages or --disable-languages was given.
 if test "${enable_languages+set}" = set; then
@@ -9560,11 +9505,11 @@ _ACEOF
 echo "${ECHO_T}$languages" >&6
  for lang in `IFS=,; echo $languages`
  do
-   langname=`cat "$srcdir/man/$lang.txt" 2>$NULLDEV`
+   langname=`cat "$srcdir/man/$lang.txt" 2>/dev/null`
    test x$langname = x && langname=$lang || langname="$lang ($langname)"
    echo "$as_me:$LINENO: checking whether $langname manpages are available" >&5
 echo $ECHO_N "checking whether $langname manpages are available... $ECHO_C" >&6
-   ac_val=`exec 2>$NULLDEV; cd "$srcdir/man/$lang" && echo *.man || echo '*.man'`
+   ac_val=`exec 2>/dev/null; cd "$srcdir/man/$lang" && echo *.man || echo '*.man'`
    if test "$ac_val" = "*.man"
    then
      ac_val=no
@@ -10213,7 +10158,62 @@ fi
 # i.e. just check for presence of an expression match, with no output,
 # and without displaying any error messages.
 #
-   echo "$as_me:$LINENO: checking how to run grep silently" >&5
+  echo "$as_me:$LINENO: checking name for NULL device" >&5
+echo $ECHO_N "checking name for NULL device... $ECHO_C" >&6
+ ac_ext=c
+ac_cpp='$CPP $CPPFLAGS'
+ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_c_compiler_gnu
+
+ cat >conftest.$ac_ext <<_ACEOF
+
+#if defined(_WIN32) || defined(__CYGWIN32__)
+ choke me
+#endif
+
+_ACEOF
+rm -f conftest.$ac_objext
+if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
+  (eval $ac_compile) 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+	 { ac_try='test -z "$ac_c_werror_flag"
+			 || test ! -s conftest.err'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; } &&
+	 { ac_try='test -s conftest.$ac_objext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  NULLDEV=/dev/null
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+NULLDEV=nul
+fi
+rm -f conftest.err conftest.$ac_objext conftest.$ac_ext
+ ac_ext=c
+ac_cpp='$CPP $CPPFLAGS'
+ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_c_compiler_gnu
+
+ echo "$as_me:$LINENO: result: $NULLDEV" >&5
+echo "${ECHO_T}$NULLDEV" >&6
+
+
+ echo "$as_me:$LINENO: checking how to run grep silently" >&5
 echo $ECHO_N "checking how to run grep silently... $ECHO_C" >&6
  man_grepsilent=">$NULLDEV 2>&1"
  if test x$cross_compiling = xno; then
@@ -10621,7 +10621,7 @@ fi
  echo "$as_me:$LINENO: result: $ac_word" >&5
 echo "${ECHO_T}$ac_word" >&6
 fi;
-   if test "x$nroff" != xno
+  if test "x$nroff" != xno
  then
    echo "$as_me:$LINENO: checking whether nroff requires suppression of SGR output" >&5
 echo $ECHO_N "checking whether nroff requires suppression of SGR output... $ECHO_C" >&6
@@ -10641,7 +10641,7 @@ echo "${ECHO_T}$man_sgr_check" >&6
    then
      echo "$as_me:$LINENO: checking whether installed nroff supports SGR output" >&5
 echo $ECHO_N "checking whether installed nroff supports SGR output... $ECHO_C" >&6
-     man_sgr_check=`(echo .TH; echo .SH TEST) | $nroff 2>$NULLDEV`
+     man_sgr_check=`(echo .TH; echo .SH TEST) | $nroff 2>/dev/null`
      case $man_sgr_check in
        *0m*) man_sgr_check=yes ;;
        *)    man_sgr_check=no  ;;
@@ -10658,7 +10658,7 @@ echo $ECHO_N "checking how to suppress nroff's SGR output... $ECHO_C" >&6
      do
        if test "$man_sgr_check" = unknown
        then
-	 case `(echo .TH; echo .SH TEST) | $nroff $ac_val 2>$NULLDEV \
+	 case `(echo .TH; echo .SH TEST) | $nroff $ac_val 2>/dev/null \
 	 || echo 0m` in
 	   *0m*) ;;
 	   *) man_sgr_check="$nroff $ac_val" ;;
@@ -13929,7 +13929,6 @@ s,@man1ext@,$man1ext,;t t
 s,@man5ext@,$man5ext,;t t
 s,@man8ext@,$man8ext,;t t
 s,@path_separator_char@,$path_separator_char,;t t
-s,@NULLDEV@,$NULLDEV,;t t
 s,@path__usr_man@,$path__usr_man,;t t
 s,@path__usr_share_man@,$path__usr_share_man,;t t
 s,@path__usr_local_man@,$path__usr_local_man,;t t
@@ -13964,6 +13963,7 @@ s,@nl_catdir@,$nl_catdir,;t t
 s,@pager@,$pager,;t t
 s,@browser@,$browser,;t t
 s,@htmlpager@,$htmlpager,;t t
+s,@NULLDEV@,$NULLDEV,;t t
 s,@man_grepsilent@,$man_grepsilent,;t t
 s,@cat@,$cat,;t t
 s,@troff@,$troff,;t t
