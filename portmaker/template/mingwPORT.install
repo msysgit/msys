@@ -1,4 +1,0 @@
-# mingwPORT.install
-# Required.  Used to install the package.
-
-make install

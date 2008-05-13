@@ -1,9 +1,0 @@
-#!/bin/sh
-# Test that carriage returns in command braces are ignored
-
-: ${srcdir=.}
-../makeinfo $srcdir/xref-cr.txi || exit 1
-
-../makeinfo --no-split --html $srcdir/xref-cr.txi -o xref-cr.html || exit 1
-
-rm -f xref-cr*.html xref-cr.info
