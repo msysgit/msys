@@ -1,7 +1,0 @@
-
-2001.07.27  Earnie Boyd  <earnie@sourceforge.net>
-
-	* ChangeLog.Cygwin: Renamed original ChangeLog.
-	* ChangeLog: New file.
-	* configure.in (SRCDIR): Add utils/.
-	* utils/: New directory.

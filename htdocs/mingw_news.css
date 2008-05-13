@@ -1,8 +1,0 @@
-#Content {
-/* IE margins here */
-	margin-right: 19em;
-}
-body>div#Content {
-/* Mozilla margins here */
-	margin-right: 21em;
-}
