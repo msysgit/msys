@@ -1,3 +1,0 @@
-:set cp
-:map dotest /^STARTTESTj:set ff=unix:.,/ENDTEST/-1w! Xdotest:set ff&nj0:bdel Xdotest:so! Xdotestdotest
-dotest
