@@ -1,3 +1,7 @@
+2008.05.14  Chris Sutcliffe  <ir0nh34d@users.sf.net>
+
+	* mingw.ini: Update to latest mingw32-make and binutils.
+
 2008.05.12  Cesar Strauss  <cestrauss@gmail.com>
 
 	Disallow recursive deletion of files when uninstalling.
