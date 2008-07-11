@@ -1,3 +1,12 @@
+2008.05.11  Cesar Strauss  <cestrauss@gmail.com>
+
+	Improve the fchdir and opendir implementations.
+	* fhandler.cc (normalize_posix_path): declare extern.
+	(fhandler_base::set_name): Store the full path in the file handle.
+	* path.cc (fchdir): Remove code to store the full path in handle.
+	* dir.cc (opendir): Avoid using native paths when calling our "open"
+	implementation.
+
 2007.11.01  Cesar Strauss  <cestrauss@gmail.com>
 
 	Avoid a space at the end of command-line.
