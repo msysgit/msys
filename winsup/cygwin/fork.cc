@@ -428,7 +428,7 @@ fork_parent (HANDLE& hParent, dll *&first_dll,
   ProtectHandle (subproc_ready);
   ProtectHandle (forker_finished);
 
-  init_child_info (PROC_FORK1, &ch, 1, subproc_ready);
+  init_child_info (PROC_FORK1, &ch, sizeof(ch), 1, subproc_ready);
 
   ch.forker_finished = forker_finished;
 
@@ -436,7 +436,7 @@ fork_parent (HANDLE& hParent, dll *&first_dll,
 
   si.cb = sizeof (STARTUPINFO);
   si.lpReserved2 = (LPBYTE)&ch;
-  si.cbReserved2 = sizeof(ch);
+  si.cbReserved2 = sizeof(ch) - 4; // Do not count the filler bytes
 
   /* Remove impersonation */
   if (cygheap->user.impersonated && cygheap->user.token != INVALID_HANDLE_VALUE)

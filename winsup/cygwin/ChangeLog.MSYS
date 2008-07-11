@@ -1,3 +1,23 @@
+2007.07.28  Cesar Strauss  <cestrauss@gmail.com>
+
+	Work around a bug in Vista 64 which failed to copy the child_info
+	structure properly. Thanks to: Oscar Bonilla, jdrasch and madwizard.
+	Closes bug #1674783 and patch #1729798.
+
+	* autoload.cc (IsWow64Process): Add auto-load function.
+	* child_info.h (child_info::msv_count): Rename from "zero".
+	(child_info_spawn::filler): Add filler bytes.
+	(child_info_fork::filler): Ditto.
+	(init_child_info): Add new parameter.
+	* dcrt0.cc (_dll_crt0): Remove "zero" check.
+	(set_os_type): Detect Vista WOW64.
+	* sigproc.cc (init_child_info): Add new parameter.
+	Initialize msv_count.
+	* fork.cc (fork_parent): Adjust cbReserved2 not to take the filler
+	bytes into account. Pass the structure size to init_child_info.
+	* spawn.cc (spawn_guts): Ditto
+	* winsup.h (isVistaWOW64): Add new flag.
+
 2007.01.12  Earnie Boyd  <earnie@users.sf.net>
 
 	* dir.cc (rmdir): Add usleep kludge for ACCESS_DENIED errors.
