@@ -523,6 +523,11 @@ spawn_guts (HANDLE hToken, const char * prog_arg, const char *const *argv,
 	  char *p = NULL; // Temporary use pointer.
 	  const char *a; // Pointer to newargv element.
 
+	  if (i)
+	    {
+	      one_line.add (" ", 1);
+	      MALLOC_CHECK;
+	    }
 	  newargv.dup_maybe (i);
 	  a = i ? newargv[i] : (char *) real_path;
 	  HMMM(a);
@@ -563,8 +568,6 @@ spawn_guts (HANDLE hToken, const char * prog_arg, const char *const *argv,
 		one_line.add (a);
 	      one_line.add ("\"", 1);
 	    }
-	  MALLOC_CHECK;
-	  one_line.add (" ", 1);
 	  MALLOC_CHECK;
 	}
 #if 0
