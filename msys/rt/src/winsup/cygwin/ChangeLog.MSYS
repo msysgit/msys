@@ -1,3 +1,22 @@
+2008.08.07  Cesar Strauss  <cestrauss@gmail.com>
+
+	* regexp/regexp.c (debug_printf): Remove definition.
+	(regcomp): Avoid output of debug info.
+	(reg): Ditto.
+	(regbranch): Ditto.
+	(regpiece): Ditto.
+	(regatom): Ditto.
+	(regnode): Ditto.
+	(regc): Ditto.
+	(reginsert): Ditto.
+	(regtail): Ditto.
+	(regoptail): Ditto.
+	(regexec): Ditto.
+	(regtry): Ditto.
+	(regmatch): Ditto.
+	(regrepeat): Ditto.
+	(regnext): Ditto.
+
 2008.05.11  Cesar Strauss  <cestrauss@gmail.com>
 
 	Improve the fchdir and opendir implementations.
