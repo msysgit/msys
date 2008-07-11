@@ -26,6 +26,8 @@ details. */
 #include "shared_info.h"
 #include "host_dependent.h"
 
+extern int normalize_posix_path (const char *, char *);
+
 static NO_COPY int CHUNK_SIZE = 1024; /* Used for crlf conversions */
 
 static NO_COPY char fhandler_disk_dummy_name[] = "some disk file";
@@ -174,7 +176,10 @@ fhandler_base::set_name (const char *unix_path, const char *win32_path, int unit
   if (unix_path == NULL || !*unix_path)
     return;
 
-  unix_path_name = cstrdup (unix_path);
+  char norm_unix_path[MAX_PATH];
+  (void) normalize_posix_path (unix_path, norm_unix_path);
+  
+  unix_path_name = cstrdup (norm_unix_path);
   if (unix_path_name == NULL)
     {
       system_printf ("fatal error. strdup failed");
