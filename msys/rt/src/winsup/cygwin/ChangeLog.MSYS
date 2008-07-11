@@ -1,3 +1,9 @@
+2007.11.01  Cesar Strauss  <cestrauss@gmail.com>
+
+	Avoid a space at the end of command-line.
+	* spawn.cc (spawn_guts): Add the space before each command-line
+	argument, not after.
+
 2007.07.28  Cesar Strauss  <cestrauss@gmail.com>
 
 	Work around a bug in Vista 64 which failed to copy the child_info
