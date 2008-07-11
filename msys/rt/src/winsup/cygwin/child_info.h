@@ -29,7 +29,7 @@ enum
 class child_info
 {
 public:
-  DWORD zero[1];	// must be zeroed
+  DWORD msv_count;	// zeroed on < W2K3, set to pseudo-count on Vista 64
   DWORD cb;		// size of this record
   DWORD type;		// type of record
   int cygpid;		// cygwin pid of child process
@@ -53,6 +53,7 @@ public:
   jmp_buf jmp;		// where child will jump to
   void *stacktop;	// location of top of parent stack
   void *stackbottom;	// location of bottom of parent stack
+  char filler[4];	// struct is copied in chunks of 5 bytes on Vista 64
 };
 
 class fhandler_base;
@@ -74,6 +75,7 @@ class child_info_spawn: public child_info
 public:
   cygheap_exec_info *moreinfo;
   HANDLE hexec_proc;
+  char filler[4];	// struct is copied in chunks of 5 bytes on Vista 64
 
   child_info_spawn (): moreinfo (NULL) {}
   ~child_info_spawn ()
@@ -96,6 +98,6 @@ public:
   }
 };
 
-void __stdcall init_child_info (DWORD, child_info *, int, HANDLE);
+void __stdcall init_child_info (DWORD, child_info *, unsigned, int, HANDLE);
 
 extern child_info_fork *child_proc_info;

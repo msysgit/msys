@@ -345,7 +345,7 @@ spawn_guts (HANDLE hToken, const char * prog_arg, const char *const *argv,
 
   child_info_spawn ciresrv;
   si.lpReserved2 = (LPBYTE) &ciresrv;
-  si.cbReserved2 = sizeof (ciresrv);
+  si.cbReserved2 = sizeof (ciresrv) - 4; // Do not count the filler bytes
 
   DWORD chtype;
   if (mode != _P_OVERLAY && mode != _P_VFORK)
@@ -362,7 +362,7 @@ spawn_guts (HANDLE hToken, const char * prog_arg, const char *const *argv,
       ProtectHandle (spr);
     }
 
-  init_child_info (chtype, &ciresrv, (mode == _P_OVERLAY) ? myself->pid : 1, spr);
+  init_child_info (chtype, &ciresrv, sizeof(ciresrv), (mode == _P_OVERLAY) ? myself->pid : 1, spr);
   if (!DuplicateHandle (hMainProc, hMainProc, hMainProc, &ciresrv.parent, 0, 1,
 			DUPLICATE_SAME_ACCESS))
      {

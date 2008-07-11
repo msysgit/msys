@@ -95,6 +95,7 @@ extern "C" DWORD WINAPI GetLastError (void);
 enum os_type {winNT = 1, win95, win98, winME, win32s, unknown};
 extern os_type os_being_run;
 extern bool iswinnt;
+extern bool isVistaWOW64;
 
 enum codepage_type {ansi_cp, oem_cp};
 extern codepage_type current_codepage;
