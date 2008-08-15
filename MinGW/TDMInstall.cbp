@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="TDMInstall" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="ctemplate">
+				<Option output="ctemplate" prefix_auto="1" extension_auto="1" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Option use_console_runner="0" />
+			</Target>
+			<Target title="tdminstall-dll">
+				<Option output="plugins\tdminstall" prefix_auto="1" extension_auto="1" />
+				<Option type="3" />
+				<Option compiler="gcc" />
+				<Option host_application="tdm-mingw-setup.exe" />
+				<Compiler>
+					<Add option="-Os" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<VirtualTargets>
+			<Add alias="All" targets="ctemplate;tdminstall-dll;" />
+		</VirtualTargets>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add directory="." />
+			<Add directory="zlib" />
+			<Add directory="bzip2" />
+		</Compiler>
+		<Linker>
+			<Add library="gdi32" />
+			<Add library="comctl32" />
+		</Linker>
+		<Unit filename="7z\7zCrc.c">
+			<Option compilerVar="CC" />
+			<Option target="tdminstall-dll" />
+		</Unit>
+		<Unit filename="7z\Alloc.c">
+			<Option compilerVar="CC" />
+			<Option target="tdminstall-dll" />
+		</Unit>
+		<Unit filename="7z\Alloc.h">
+			<Option target="tdminstall-dll" />
+		</Unit>
+		<Unit filename="7z\Archive\7z\7zAlloc.c">
+			<Option compilerVar="CC" />
+			<Option target="tdminstall-dll" />
+		</Unit>
+		<Unit filename="7z\Archive\7z\7zAlloc.h">
+			<Option target="tdminstall-dll" />
+		</Unit>
+		<Unit filename="7z\Archive\7z\7zBuffer.c">
+			<Option compilerVar="CC" />
+			<Option target="tdminstall-dll" />
+		</Unit>
+		<Unit filename="7z\Archive\7z\7zBuffer.h">
+			<Option target="tdminstall-dll" />
+		</Unit>
+		<Unit filename="7z\Archive\7z\7zDecode.c">
+			<Option compilerVar="CC" />
+			<Option target="tdminstall-dll" />
+		</Unit>
+		<Unit filename="7z\Archive\7z\7zDecode.h">
+			<Option target="tdminstall-dll" />
+		</Unit>
+		<Unit filename="7z\Archive\7z\7zExtract.c">
+			<Option compilerVar="CC" />
+			<Option target="tdminstall-dll" />
+		</Unit>
+		<Unit filename="7z\Archive\7z\7zExtract.h">
+			<Option target="tdminstall-dll" />
+		</Unit>
+		<Unit filename="7z\Archive\7z\7zHeader.c">
+			<Option compilerVar="CC" />
+			<Option target="tdminstall-dll" />
+		</Unit>
+		<Unit filename="7z\Archive\7z\7zHeader.h">
+			<Option target="tdminstall-dll" />
+		</Unit>
+		<Unit filename="7z\Archive\7z\7zIn.c">
+			<Option compilerVar="CC" />
+			<Option target="tdminstall-dll" />
+		</Unit>
+		<Unit filename="7z\Archive\7z\7zItem.c">
+			<Option compilerVar="CC" />
+			<Option target="tdminstall-dll" />
+		</Unit>
+		<Unit filename="7z\Archive\7z\7zItem.h">
+			<Option target="tdminstall-dll" />
+		</Unit>
+		<Unit filename="7z\Compress\Branch\BranchX86.c">
+			<Option compilerVar="CC" />
+			<Option target="tdminstall-dll" />
+		</Unit>
+		<Unit filename="7z\Compress\Branch\BranchX86.h">
+			<Option target="tdminstall-dll" />
+		</Unit>
+		<Unit filename="7z\Compress\Branch\BranchX86_2.c">
+			<Option compilerVar="CC" />
+			<Option target="tdminstall-dll" />
+		</Unit>
+		<Unit filename="7z\Compress\Branch\BranchX86_2.h">
+			<Option target="tdminstall-dll" />
+		</Unit>
+		<Unit filename="7z\Compress\Lzma\LzmaDecode.c">
+			<Option compilerVar="CC" />
+			<Option target="tdminstall-dll" />
+		</Unit>
+		<Unit filename="7z\Compress\Lzma\LzmaDecode.h">
+			<Option target="tdminstall-dll" />
+		</Unit>
+		<Unit filename="7z\LGPL.txt">
+			<Option target="tdminstall-dll" />
+		</Unit>
+		<Unit filename="7z\MODIFIED_LZMA.txt">
+			<Option target="tdminstall-dll" />
+		</Unit>
+		<Unit filename="Makefile">
+			<Option target="tdminstall-dll" />
+		</Unit>
+		<Unit filename="README.TDMInstall.txt">
+			<Option target="tdminstall-dll" />
+		</Unit>
+		<Unit filename="archive.cpp">
+			<Option target="tdminstall-dll" />
+		</Unit>
+		<Unit filename="archive_7z.cpp">
+			<Option target="tdminstall-dll" />
+		</Unit>
+		<Unit filename="archive_base.c">
+			<Option compilerVar="CC" />
+			<Option target="tdminstall-dll" />
+		</Unit>
+		<Unit filename="archive_base.h">
+			<Option target="tdminstall-dll" />
+		</Unit>
+		<Unit filename="archive_zip.cpp">
+			<Option compilerVar="CC" />
+			<Option target="tdminstall-dll" />
+		</Unit>
+		<Unit filename="boost\LICENSE_1_0.txt">
+			<Option target="tdminstall-dll" />
+		</Unit>
+		<Unit filename="boost\MODIFIED_BOOST.txt">
+			<Option target="tdminstall-dll" />
+		</Unit>
+		<Unit filename="bzip2\LICENSE">
+			<Option target="tdminstall-dll" />
+		</Unit>
+		<Unit filename="bzip2\MODIFIED_BZIP2.txt">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="bzip2\README">
+			<Option target="tdminstall-dll" />
+		</Unit>
+		<Unit filename="bzip2\bzlib.c">
+			<Option compilerVar="CC" />
+			<Option target="tdminstall-dll" />
+		</Unit>
+		<Unit filename="bzip2\bzlib.h">
+			<Option target="tdminstall-dll" />
+		</Unit>
+		<Unit filename="bzip2\crctable.c">
+			<Option compilerVar="CC" />
+			<Option target="tdminstall-dll" />
+		</Unit>
+		<Unit filename="bzip2\decompress.c">
+			<Option compilerVar="CC" />
+			<Option target="tdminstall-dll" />
+		</Unit>
+		<Unit filename="bzip2\huffman.c">
+			<Option compilerVar="CC" />
+			<Option target="tdminstall-dll" />
+		</Unit>
+		<Unit filename="bzip2\randtable.c">
+			<Option compilerVar="CC" />
+			<Option target="tdminstall-dll" />
+		</Unit>
+		<Unit filename="componentstree.cpp">
+			<Option target="tdminstall-dll" />
+		</Unit>
+		<Unit filename="componentstree.hpp">
+			<Option target="tdminstall-dll" />
+		</Unit>
+		<Unit filename="config.h">
+			<Option target="tdminstall-dll" />
+		</Unit>
+		<Unit filename="ctemplate.cpp">
+			<Option target="ctemplate" />
+		</Unit>
+		<Unit filename="inner-manifest.txt">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="install_manifest.cpp">
+			<Option target="tdminstall-dll" />
+		</Unit>
+		<Unit filename="install_manifest.hpp">
+			<Option target="tdminstall-dll" />
+		</Unit>
+		<Unit filename="main.nsh">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="multiread.c">
+			<Option compilerVar="CC" />
+			<Option target="tdminstall-dll" />
+		</Unit>
+		<Unit filename="multiread.h">
+			<Option target="tdminstall-dll" />
+		</Unit>
+		<Unit filename="nsis_interface.cpp">
+			<Option target="tdminstall-dll" />
+		</Unit>
+		<Unit filename="nsis_interface.hpp">
+			<Option target="tdminstall-dll" />
+		</Unit>
+		<Unit filename="plugins\README-plugins.txt">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="ref.hpp">
+			<Option target="tdminstall-dll" />
+		</Unit>
+		<Unit filename="setup_full.nsi">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="setup_webdl.nsi" />
+		<Unit filename="smart_ptr.hpp">
+			<Option target="tdminstall-dll" />
+		</Unit>
+		<Unit filename="tdminst_res.h">
+			<Option target="tdminstall-dll" />
+		</Unit>
+		<Unit filename="tdminst_res.rc">
+			<Option compilerVar="WINDRES" />
+			<Option target="tdminstall-dll" />
+		</Unit>
+		<Unit filename="tdminstall.cpp">
+			<Option target="tdminstall-dll" />
+		</Unit>
+		<Unit filename="tinystr.cpp" />
+		<Unit filename="tinystr.h" />
+		<Unit filename="tinyxml.cpp" />
+		<Unit filename="tinyxml.h" />
+		<Unit filename="tinyxmlerror.cpp" />
+		<Unit filename="tinyxmlparser.cpp" />
+		<Unit filename="untgz.c">
+			<Option compilerVar="CC" />
+			<Option target="tdminstall-dll" />
+		</Unit>
+		<Unit filename="zlib\MODIFIED_ZLIB.txt">
+			<Option target="tdminstall-dll" />
+		</Unit>
+		<Unit filename="zlib\adler32.c">
+			<Option compilerVar="CC" />
+			<Option target="tdminstall-dll" />
+		</Unit>
+		<Unit filename="zlib\contrib\minizip\ioapi.c">
+			<Option compilerVar="CC" />
+			<Option target="tdminstall-dll" />
+		</Unit>
+		<Unit filename="zlib\contrib\minizip\ioapi.h">
+			<Option target="tdminstall-dll" />
+		</Unit>
+		<Unit filename="zlib\contrib\minizip\unzip.c">
+			<Option compilerVar="CC" />
+			<Option target="tdminstall-dll" />
+		</Unit>
+		<Unit filename="zlib\contrib\minizip\unzip.h">
+			<Option target="tdminstall-dll" />
+		</Unit>
+		<Unit filename="zlib\crc32.c">
+			<Option compilerVar="CC" />
+			<Option target="tdminstall-dll" />
+		</Unit>
+		<Unit filename="zlib\crc32.h">
+			<Option target="tdminstall-dll" />
+		</Unit>
+		<Unit filename="zlib\deflate.c">
+			<Option compilerVar="CC" />
+			<Option target="tdminstall-dll" />
+		</Unit>
+		<Unit filename="zlib\deflate.h">
+			<Option target="tdminstall-dll" />
+		</Unit>
+		<Unit filename="zlib\gzio.c">
+			<Option compilerVar="CC" />
+			<Option target="tdminstall-dll" />
+		</Unit>
+		<Unit filename="zlib\inffast.c">
+			<Option compilerVar="CC" />
+			<Option target="tdminstall-dll" />
+		</Unit>
+		<Unit filename="zlib\inffast.h">
+			<Option target="tdminstall-dll" />
+		</Unit>
+		<Unit filename="zlib\inffixed.h">
+			<Option target="tdminstall-dll" />
+		</Unit>
+		<Unit filename="zlib\inflate.c">
+			<Option compilerVar="CC" />
+			<Option target="tdminstall-dll" />
+		</Unit>
+		<Unit filename="zlib\inflate.h">
+			<Option target="tdminstall-dll" />
+		</Unit>
+		<Unit filename="zlib\inftrees.c">
+			<Option compilerVar="CC" />
+			<Option target="tdminstall-dll" />
+		</Unit>
+		<Unit filename="zlib\inftrees.h">
+			<Option target="tdminstall-dll" />
+		</Unit>
+		<Unit filename="zlib\trees.c">
+			<Option compilerVar="CC" />
+			<Option target="tdminstall-dll" />
+		</Unit>
+		<Unit filename="zlib\trees.h">
+			<Option target="tdminstall-dll" />
+		</Unit>
+		<Unit filename="zlib\zconf.h">
+			<Option target="tdminstall-dll" />
+		</Unit>
+		<Unit filename="zlib\zlib.h">
+			<Option target="tdminstall-dll" />
+		</Unit>
+		<Unit filename="zlib\zutil.c">
+			<Option compilerVar="CC" />
+			<Option target="tdminstall-dll" />
+		</Unit>
+		<Unit filename="zlib\zutil.h">
+			<Option target="tdminstall-dll" />
+		</Unit>
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
