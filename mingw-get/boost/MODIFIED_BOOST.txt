@@ -1,0 +1,9 @@
+MODIFIED BOOST
+
+This directory contains a modified version of the Boost library.
+
+This modified version is distributed under the terms of the license contained in
+the file LICENSE_1_0.txt.
+
+A number of files present in the original Boost release have not been
+redistributed.

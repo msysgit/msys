@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="mingw-get" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin\Debug\mingw-get" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj\Debug\" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="bin\Release\mingw-get" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj\Release\" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-Os" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-pipe" />
+			<Add option="-mthreads" />
+			<Add option="-D_WIN32_IE=0x0400" />
+			<Add option="-DCURL_STATICLIB" />
+			<Add directory="$(#curl.include)" />
+			<Add directory="." />
+		</Compiler>
+		<Linker>
+			<Add library="curl" />
+			<Add library="z" />
+			<Add library="shfolder" />
+			<Add library="shell32" />
+			<Add library="gdi32" />
+			<Add library="user32" />
+			<Add library="kernel32" />
+			<Add library="comctl32" />
+			<Add library="ole32" />
+			<Add library="wsock32" />
+			<Add library="wldap32" />
+			<Add directory="$(#curl.lib)" />
+			<Add directory="$(#zlib)" />
+		</Linker>
+		<Unit filename="TODO.txt" />
+		<Unit filename="curl_init.cpp" />
+		<Unit filename="download.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="inst_manager.cpp" />
+		<Unit filename="inst_manager.hpp" />
+		<Unit filename="instselect.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="main.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="mainwnd.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="mingw-get.manifest" />
+		<Unit filename="multiuser.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="multiuser.h" />
+		<Unit filename="package.cpp" />
+		<Unit filename="package.hpp" />
+		<Unit filename="previnstalls.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="ref.hpp" />
+		<Unit filename="resource.h" />
+		<Unit filename="resource.rc">
+			<Option compilerVar="WINDRES" />
+		</Unit>
+		<Unit filename="tinyxml\MODIFIED_TINYXML.txt" />
+		<Unit filename="tinyxml\tinystr.cpp" />
+		<Unit filename="tinyxml\tinystr.h" />
+		<Unit filename="tinyxml\tinyxml.cpp" />
+		<Unit filename="tinyxml\tinyxml.h" />
+		<Unit filename="tinyxml\tinyxmlerror.cpp" />
+		<Unit filename="tinyxml\tinyxmlparser.cpp" />
+		<Unit filename="tracked_install.cpp" />
+		<Unit filename="tracked_install.hpp" />
+		<Unit filename="ui.hpp" />
+		<Unit filename="ui_windowed.cpp" />
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
