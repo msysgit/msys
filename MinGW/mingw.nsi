@@ -6,13 +6,13 @@
 
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "MinGW"
-!define PRODUCT_VERSION "5.1.3"
+!define PRODUCT_VERSION "5.1.4"
 !define PRODUCT_PUBLISHER "MinGW"
 !define PRODUCT_WEB_SITE "http://www.mingw.org"
 !define PRODUCT_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}"
 !define PRODUCT_UNINST_ROOT_KEY "HKLM"
 !define PRODUCT_STARTMENU_REGVAL "NSIS:StartMenuDir"
-!define BUILD "10"
+!define BUILD "11"
 
 SetCompressor lzma
 
@@ -84,6 +84,12 @@ var FINISH_TEXT
 
 ; Uninstaller pages
 !insertmacro MUI_UNPAGE_INSTFILES
+
+!define MUI_FINISHPAGE_TEXT \
+"MinGW was successfully removed from your computer. \r\n\r\n\
+However, some files may still remain. Please check $INSTDIR \
+for files that you wish to keep, move or delete."
+!insertmacro MUI_UNPAGE_FINISH
 
 ; Language files
 !insertmacro MUI_LANGUAGE "English"
@@ -260,7 +266,8 @@ skipwrite:
 
   Strcpy $R1 "${PRODUCT_NAME}-${PRODUCT_VERSION}.exe"
 
-  Delete "$INSTDIR\${PRODUCT_NAME}*.*"
+  Delete "$INSTDIR\${PRODUCT_NAME}*.exe"
+  Delete "$INSTDIR\${PRODUCT_NAME}*.ini"
   StrCmp $EXEDIR $INSTDIR skip_copy
 
   CopyFiles $EXEDIR\$R1 $INSTDIR\$R1
@@ -293,7 +300,12 @@ Section Uninstall
   !insertmacro MUI_STARTMENU_GETFOLDER "Application" $ICONS_GROUP
 
   RMDir /r "$SMPROGRAMS\$ICONS_GROUP"
-  RMDir /r $INSTDIR
+  Delete "$INSTDIR\${PRODUCT_NAME}*.exe"
+  Delete "$INSTDIR\${PRODUCT_NAME}*.ini"
+  Delete "$INSTDIR\MinGW.url"
+  Delete "$INSTDIR\installed.ini"
+  Delete "$INSTDIR\uninst.exe"
+  RMDir "$INSTDIR"
 
   DeleteRegKey ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}"
 
@@ -419,13 +431,6 @@ FunctionEnd
 ;-----------------------------------------------------------------------------
 Function .onVerifyInstDir
 ;-----------------------------------------------------------------------------
-FunctionEnd
-
-;-----------------------------------------------------------------------------
-Function un.onUninstSuccess
-;-----------------------------------------------------------------------------
-  HideWindow
-  MessageBox MB_ICONINFORMATION|MB_OK "MinGW was successfully removed from your computer."
 FunctionEnd
 
 ;-----------------------------------------------------------------------------
@@ -575,7 +580,9 @@ Function DownloadIfNeeded
   ; replace + characters in filename to avoid translation
   ${StrRep} $DownloadName $Name "+" "%2B"
 
-  inetc::get /RESUME "Your connection appears to have dropped out. Reconnect your dial up or check your IE proxy settings." "http://downloads.sourceforge.net/mingw/$DownloadName" "$EXEDIR\$Name" /END
+  DetailPrint "Downloading $Name"
+
+  inetc::get /POPUP /CAPTION "Downloading $Name" /RESUME "Your connection appears to have dropped out. Reconnect your dial up or check your IE proxy settings." "http://downloads.sourceforge.net/mingw/$DownloadName" "$EXEDIR\$Name" /END
   Pop $0
   StrCmp $0 "OK" DownLoadOK
 

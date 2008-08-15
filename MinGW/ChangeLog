@@ -1,3 +1,38 @@
+2008.05.14  Chris Sutcliffe  <ir0nh34d@users.sf.net>
+
+	* mingw.ini: Update to latest mingw32-make and binutils.
+
+2008.05.12  Cesar Strauss  <cestrauss@gmail.com>
+
+	Disallow recursive deletion of files when uninstalling.
+	* mingw.nsi (Uninstall): Only remove the files we really know about.
+	Add finish page to the uninstaller, warning that some files may still remain.
+	(-installComponents): Remove only mingw*.exe and mingw*.ini from $INSTDIR.
+	(DownloadIfNeeded): Use a dettached download window to avoid the overlap
+	with the detail area.
+	(PRODUCT_VERSION): Increment.
+	* MinGW_LICENSE.rtf: Increment version to 5.1.4.
+	* inifile/mingw.ini ([mingw]: Build): Increment.
+	([mingw]: Filename): Update to match version.
+	([current],[candidate]): Update for the latest gcc release.
+
+2008.02.04  Chris Sutcliffe  <ir0nh34d@users.sf.net>
+
+	* inifiles/mingw.ini: Update for latest version of mingw-runtime and w32api.
+
+2007.08.03  Chris Sutcliffe  <ir0nh34d@users.sf.net>
+
+	* inifiles/mingw.ini: Update for latest version of mingw-runtime and w32api.
+
+2007.03.26  Chris Sutcliffe  <ir0nh34d@users.sf.net>
+
+	* inifile/mingw.ini: Update for latest version of mingw-runtime and w32api.
+
+2007.03.22  Chris Sutcliffe  <ir0nh34d@users.sf.net>
+
+	* inifile/mingw.ini: Update for latest version of make, leave 3.80 as
+	previous.
+
 2007.01.18  Chris Sutcliffe  <ir0nh34d@users.sf.net>
 
 	* inifile/mingw.ini: Update binutils for current and candidate secctions.
