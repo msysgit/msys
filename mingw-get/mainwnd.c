@@ -1,6 +1,7 @@
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
+#include <windowsx.h>
 #include <commctrl.h>
 #include <malloc.h>
 #include <ole2.h>
@@ -12,11 +13,6 @@ static float g_horz_grip_prop = 0.5f;
 static HACCEL g_haccel;
 static HINSTANCE g_instance = 0;
 
-static const char* state_items[] = {
-	"Installed",
-	"Not Installed",
-	0
-};
 
 static void InsertColumn(HWND hlv, const char* txt, int index, int fmt)
 {
@@ -57,6 +53,8 @@ static void TransToClient(HWND hwnd, RECT* rc)
 
 void SelectInst(HINSTANCE, HWND);
 const char* PackageGetSubItemText(LPARAM, int);
+void UI_NotifyCategoryChange(int);
+void UI_SortListView(int);
 
 static BOOL CALLBACK MainWndProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
@@ -128,16 +126,34 @@ static BOOL CALLBACK MainWndProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM 
 		case IDI_FILE_CHANGEINST:
 			SelectInst(g_instance, hwndDlg);
 			return TRUE;
+		case IDC_CATLIST:
+			if (HIWORD(wParam) == LBN_SELCHANGE)
+			{
+				UI_NotifyCategoryChange(ListBox_GetCurSel((HWND)lParam));
+				return TRUE;
+			}
+			break;
 		}
 		break;
 
 	case WM_NOTIFY:
-		if (((LPNMHDR)lParam)->code == LVN_GETDISPINFO)
+		switch (((LPNMHDR)lParam)->idFrom)
 		{
-			((NMLVDISPINFO*)lParam)->item.pszText =
-			 (char*)PackageGetSubItemText(((NMLVDISPINFO*)lParam)->item.lParam,
-			  ((NMLVDISPINFO*)lParam)->item.iSubItem);
-			return 0;
+		case IDC_COMPLIST:
+			switch (((LPNMHDR)lParam)->code)
+			{
+			case LVN_GETDISPINFO:
+				{
+					((NMLVDISPINFO*)lParam)->item.pszText =
+					 (char*)PackageGetSubItemText(((NMLVDISPINFO*)lParam)->item.lParam,
+					  ((NMLVDISPINFO*)lParam)->item.iSubItem);
+				}
+				return 0;
+			case LVN_COLUMNCLICK:
+				UI_SortListView(((LPNMLISTVIEW)lParam)->iSubItem);
+				return 0;
+			}
+			break;
 		}
 		break;
 

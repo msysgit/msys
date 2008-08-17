@@ -269,6 +269,6 @@ extern "C" void SelectInst
 		return;
 	}
 	char title[1024];
-	snprintf(title, 1024, "mingwpkg: %s", g_inst_loc);
+	snprintf(title, 1024, "mingw-get: %s", g_inst_loc);
 	SetWindowText(hparent, title);
 }

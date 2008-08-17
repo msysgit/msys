@@ -10,7 +10,8 @@
 
 char InstManager::sm_lasterror[2048] = {0};
 std::string InstManager::sm_inst_loc;
-InstManager::IDPackageMap InstManager::sm_all_packages;
+std::vector< std::string > InstManager::sm_categories;
+InstManager::IDPackageMap InstManager::sm_id_packages;
 
 
 const char* InstManager::GetError()
@@ -56,7 +57,7 @@ bool InstManager::Load(const std::string& inst_loc, bool create)
 	 || sm_inst_loc[sm_inst_loc.length() - 1] == '/')
 		sm_inst_loc.erase(sm_inst_loc.length() - 1);
 
-	sm_all_packages.clear();
+	ClearPackages();
 
 	ChangeSet::Ref changes(new ChangeSet);
 	do
@@ -105,6 +106,30 @@ void InstManager::Save()
 }
 
 
+int InstManager::NumCategories()
+{
+	return sm_categories.size();
+}
+
+
+const char* InstManager::GetCategory(int cat)
+{
+	return sm_categories[cat].c_str();
+}
+
+
+InstManager::PackageIter InstManager::Packages_Begin()
+{
+	return sm_id_packages.begin();
+}
+
+
+InstManager::PackageIter InstManager::Packages_End()
+{
+	return sm_id_packages.end();
+}
+
+
 void InstManager::SetError(const char* fmt, ...)
 {
 	va_list ap;
@@ -130,7 +155,6 @@ bool InstManager::LoadManifest(const std::string& mfile)
 		SetError("Couldn't load '%s' as XML", mfile.c_str());
 		return false;
 	}
-	int cat = 0;
 	int newpkgct = 0;
 	for (TiXmlElement* cat_el =
 	  doc.RootElement()->FirstChildElement("Category");
@@ -140,6 +164,7 @@ bool InstManager::LoadManifest(const std::string& mfile)
 		const char* name = NonEmptyAttribute(cat_el, "name");
 		if (!name)
 			continue;
+		sm_categories.push_back(name);
 		for (TiXmlElement* package_el =
 		  cat_el->FirstChildElement("Package");
 		 package_el;
@@ -148,16 +173,30 @@ bool InstManager::LoadManifest(const std::string& mfile)
 			const char* id = NonEmptyAttribute(package_el, "id");
 			if (!id)
 				continue;
-			IDPackageMap::iterator found = sm_all_packages.find(id);
-			if (found != sm_all_packages.end())
+			IDPackageMap::iterator found = sm_id_packages.find(id);
+			if (found != sm_id_packages.end())
 				continue;
 			++newpkgct;
-			Package::Ref newpkg(new Package(id, cat, package_el));
-			sm_all_packages.insert(std::make_pair(std::string(id), newpkg));
+			Package::Ref newpkg(
+			 new Package(id, sm_categories.size() - 1, package_el)
+			 );
+			InsertPackage(newpkg);
 		}
-		++cat;
 	}
 	if (newpkgct > 0)
 		UI::NotifyNewPackages();
 	return true;
+}
+
+
+void InstManager::ClearPackages()
+{
+	sm_categories.clear();
+	sm_id_packages.clear();
+}
+
+
+void InstManager::InsertPackage(Package::Ref ins)
+{
+	sm_id_packages.insert(std::make_pair(ins->m_id, ins));
 }

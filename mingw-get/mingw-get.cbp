@@ -94,6 +94,9 @@
 		<Unit filename="tracked_install.hpp" />
 		<Unit filename="ui.hpp" />
 		<Unit filename="ui_windowed.cpp" />
+		<Unit filename="versioning.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Extensions>
 			<code_completion />
 			<debugger />
