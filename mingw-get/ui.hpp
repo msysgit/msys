@@ -11,7 +11,9 @@ class Package;
 class UI
 {
 public:
-	static void NotifyNewPackages();
+	static void ResetLists();
+	static void NotifyNewCategory(const char* name);
+	static void NotifyNewPackage(const Package& pkg);
 };
 
 

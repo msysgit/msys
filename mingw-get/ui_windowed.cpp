@@ -35,11 +35,12 @@ static void LVAddPackage(const Package& pkg)
 {
 	HWND hlist = GetDlgItem(g_hmainwnd, IDC_COMPLIST);
 	LVITEM lvi;
-	lvi.mask = LVIF_TEXT | LVIF_PARAM;
+	lvi.mask = LVIF_TEXT | LVIF_PARAM | LVIF_IMAGE;
 	lvi.iItem = INT_MAX;
 	lvi.iSubItem = 0;
 	char emptystr = 0;
 	lvi.pszText = &emptystr;
+	lvi.iImage = 1;
 	lvi.lParam = reinterpret_cast< LPARAM >(&pkg);
 	lvi.iItem = ListView_InsertItem(hlist, &lvi);
 	lvi.pszText = LPSTR_TEXTCALLBACK;
@@ -48,18 +49,27 @@ static void LVAddPackage(const Package& pkg)
 		lvi.iSubItem = i;
 		ListView_SetItem(hlist, &lvi);
 	}
+	if (lvi.iItem == 0)
+	{
+		ListView_SetItemState(GetDlgItem(g_hmainwnd, IDC_COMPLIST), 0,
+		 LVIS_SELECTED | LVIS_FOCUSED, LVIS_SELECTED | LVIS_FOCUSED);
+	}
 }
 
 
 extern "C" void UI_NotifyCategoryChange(int sel)
 {
 	ListView_DeleteAllItems(GetDlgItem(g_hmainwnd, IDC_COMPLIST));
+	bool have_item = false;
 	if (sel == 0)
 	{
 		for (InstManager::PackageIter it = InstManager::Packages_Begin();
 		 it != InstManager::Packages_End();
 		 ++it)
+		{
 			LVAddPackage(*(it->second));
+			have_item = true;
+		}
 	}
 	else
 	{
@@ -67,10 +77,33 @@ extern "C" void UI_NotifyCategoryChange(int sel)
 		 it != InstManager::Packages_End();
 		 ++it)
 		{
-			if (it->second->m_category == sel - 1)
+			if (it->second->m_categories.count(sel - 1) > 0)
+			{
 				LVAddPackage(*(it->second));
+				have_item = true;
+			}
 		}
 	}
+	if (have_item)
+	{
+		ListView_SetItemState(GetDlgItem(g_hmainwnd, IDC_COMPLIST), 0,
+		 LVIS_SELECTED | LVIS_FOCUSED, LVIS_SELECTED | LVIS_FOCUSED);
+	}
+	else
+		Edit_SetText(GetDlgItem(g_hmainwnd, IDC_FULLDESC), "");
+}
+
+
+void DescWnd_SetDescription(const std::string&);
+
+extern "C" void UI_OnListViewSelect(int sel)
+{
+	LVITEM lvitem;
+	lvitem.iItem = sel;
+	lvitem.mask = LVIF_PARAM;
+	ListView_GetItem(GetDlgItem(g_hmainwnd, IDC_COMPLIST), &lvitem);
+	Edit_SetText(GetDlgItem(g_hmainwnd, IDC_FULLDESC),
+	 reinterpret_cast< Package* >(lvitem.lParam)->m_description.c_str());
 }
 
 
@@ -98,16 +131,19 @@ int CALLBACK LVSortCompare(LPARAM lp1, LPARAM lp2, LPARAM lpsort)
 		ret = strcmp(reinterpret_cast< Package* >(lp1)->m_id.c_str(),
 		 reinterpret_cast< Package* >(lp2)->m_id.c_str());
 		break;
+	case 2:
+		ret = VersionCompare(
+		 reinterpret_cast< Package* >(lp1)->m_installed_version.c_str(),
+		 reinterpret_cast< Package* >(lp2)->m_installed_version.c_str()
+		 );
+		break;
 	case 3:
 		ret = VersionCompare(
-		 reinterpret_cast< Package* >(lp1)->m_latest_version.c_str(),
-		 reinterpret_cast< Package* >(lp2)->m_latest_version.c_str()
+		 reinterpret_cast< Package* >(lp1)->m_stable_version.c_str(),
+		 reinterpret_cast< Package* >(lp2)->m_stable_version.c_str()
 		 );
 		break;
 	};
-	//Ensure an exact reverse sort
-	if (ret == 0 && st->m_reverse == -1)
-		return 1;
 	return ret * st->m_reverse;
 };
 
@@ -127,21 +163,24 @@ extern "C" void UI_SortListView(int column)
 }
 
 
-void UI::NotifyNewPackages()
+void UI::ResetLists()
 {
 	int ct = ListBox_GetCount(GetDlgItem(g_hmainwnd, IDC_CATLIST));
 	for (; ct > 1; --ct)
 		ListBox_DeleteString(GetDlgItem(g_hmainwnd, IDC_CATLIST), ct - 1);
 	ListView_DeleteAllItems(GetDlgItem(g_hmainwnd, IDC_COMPLIST));
+}
 
-	for (ct = 0; ct < InstManager::NumCategories(); ++ct)
-	{
-		ListBox_AddString(GetDlgItem(g_hmainwnd, IDC_CATLIST),
-		 InstManager::GetCategory(ct));
-	}
 
-	for (InstManager::PackageIter it = InstManager::Packages_Begin();
-	 it != InstManager::Packages_End();
-	 ++it)
-		LVAddPackage(*(it->second));
+void UI::NotifyNewCategory(const char* name)
+{
+	ListBox_AddString(GetDlgItem(g_hmainwnd, IDC_CATLIST), name);
+}
+
+
+void UI::NotifyNewPackage(const Package& pkg)
+{
+	int sel = ListBox_GetCurSel(GetDlgItem(g_hmainwnd, IDC_CATLIST));
+	if (sel <= 0 || pkg.m_categories.count(sel - 1) > 0)
+		LVAddPackage(pkg);
 }

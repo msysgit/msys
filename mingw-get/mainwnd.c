@@ -8,26 +8,41 @@
 #include "resource.h"
 
 
+#define ID_SHOW_STABLE 10001
+#define ID_SHOW_UNSTABLE 10002
+
+
 static int g_vert_grip_x = 150;
 static float g_horz_grip_prop = 0.5f;
 static HACCEL g_haccel;
 static HINSTANCE g_instance = 0;
 
 
-static void InsertColumn(HWND hlv, const char* txt, int index, int fmt)
+static void InsertColumn
+ (HWND hlv,
+  const char* txt,
+  int index,
+  int fmt,
+  int width)
 {
 	int tlen = strlen(txt);
 	if (tlen >= 200)
 		return;
 	char* tcopy = malloc(tlen + 1);
 	strcpy(tcopy, txt);
-	SIZE sz;
-	if (!GetTextExtentPoint32(GetDC(hlv), tcopy, tlen, &sz))
-		return;
 	LVCOLUMN lvc;
 	lvc.mask = LVCF_FMT | LVCF_WIDTH | LVCF_TEXT;
 	lvc.fmt = fmt;
-	lvc.cx = sz.cx + 15;
+	if (width > 0)
+		lvc.cx = width;
+	else
+	{
+		SIZE sz;
+		if (GetTextExtentPoint32(GetDC(hlv), tcopy, tlen, &sz))
+			lvc.cx = sz.cx + 15;
+		else
+			lvc.cx = 100;
+	}
 	lvc.pszText = tcopy;
 	lvc.cchTextMax = tlen;
 	ListView_InsertColumn(hlv, index, &lvc);
@@ -52,9 +67,14 @@ static void TransToClient(HWND hwnd, RECT* rc)
 
 
 void SelectInst(HINSTANCE, HWND);
-const char* PackageGetSubItemText(LPARAM, int);
+const char* Pkg_GetSubItemText(LPARAM, int);
 void UI_NotifyCategoryChange(int);
 void UI_SortListView(int);
+void UI_OnListViewSelect(int);
+void DescWnd_SetHWND(HWND);
+int Pkg_UnstableShown(LPARAM);
+void Pkg_SetUnstableShown(LPARAM, int);
+void InstMgr_SetAllPkgsShowUnstable(int);
 
 static BOOL CALLBACK MainWndProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
@@ -102,12 +122,24 @@ static BOOL CALLBACK MainWndProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM 
 			HWND hlv = GetDlgItem(hwndDlg, IDC_COMPLIST);
 			ListView_SetExtendedListViewStyle(hlv,
 			 LVS_EX_FULLROWSELECT | LVS_EX_HEADERDRAGDROP);
-			InsertColumn(hlv, "S", 0, LVCFMT_LEFT);
-			InsertColumn(hlv, "Package", 1, LVCFMT_LEFT);
-			InsertColumn(hlv, "Installed Version", 2, LVCFMT_LEFT);
-			InsertColumn(hlv, "Latest Version", 3, LVCFMT_LEFT);
-			InsertColumn(hlv, "Size", 4, LVCFMT_RIGHT);
-			InsertColumn(hlv, "Description", 5, LVCFMT_LEFT);
+			HIMAGELIST il =
+			 ImageList_Create(16, 16, ILC_COLOR32 | ILC_MASK, 10, 0);
+			HBITMAP buttonsbmp =
+			 LoadBitmap(g_instance, MAKEINTRESOURCE(IDB_STATES));
+			ImageList_AddMasked(il, buttonsbmp, RGB(255, 0, 255));
+			DeleteObject(buttonsbmp);
+			(void)ListView_SetImageList(hlv, il, LVSIL_SMALL);
+			SIZE sz;
+			sz.cx = 100;
+			HDC lvdc = GetDC(hlv);
+			GetTextExtentPoint32(lvdc, "sample string", 13, &sz);
+			ReleaseDC(hlv, lvdc);
+			InsertColumn(hlv, "S", 0, LVCFMT_LEFT, 0);
+			InsertColumn(hlv, "Package", 1, LVCFMT_LEFT, sz.cx);
+			InsertColumn(hlv, "Installed Version", 2, LVCFMT_LEFT, 0);
+			InsertColumn(hlv, "Latest Version", 3, LVCFMT_LEFT, 0);
+			InsertColumn(hlv, "Size (DL)", 4, LVCFMT_RIGHT, 0);
+			InsertColumn(hlv, "Description", 5, LVCFMT_LEFT, sz.cx);
 		}
 		return TRUE;
 
@@ -119,12 +151,30 @@ static BOOL CALLBACK MainWndProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM 
 	case WM_COMMAND:
 		switch(LOWORD(wParam))
 		{
-		case IDI_FILE_EXIT:
+		case IDM_FILE_EXIT:
 			DestroyWindow(hwndDlg);
 			PostQuitMessage(0);
 			return TRUE;
-		case IDI_FILE_CHANGEINST:
+		case IDM_FILE_CHANGEINST:
 			SelectInst(g_instance, hwndDlg);
+			return TRUE;
+		case IDM_VIEW_SHOWSTABLE:
+			InstMgr_SetAllPkgsShowUnstable(0);
+			if (ListView_GetItemCount(GetDlgItem(hwndDlg, IDC_COMPLIST)) > 0)
+			{
+				ListView_RedrawItems(GetDlgItem(hwndDlg, IDC_COMPLIST), 0,
+				 ListView_GetItemCount(GetDlgItem(hwndDlg, IDC_COMPLIST)) - 1);
+				UpdateWindow(GetDlgItem(hwndDlg, IDC_COMPLIST));
+			}
+			return TRUE;
+		case IDM_VIEW_SHOWUNSTABLE:
+			InstMgr_SetAllPkgsShowUnstable(1);
+			if (ListView_GetItemCount(GetDlgItem(hwndDlg, IDC_COMPLIST)) > 0)
+			{
+				ListView_RedrawItems(GetDlgItem(hwndDlg, IDC_COMPLIST), 0,
+				 ListView_GetItemCount(GetDlgItem(hwndDlg, IDC_COMPLIST)) - 1);
+				UpdateWindow(GetDlgItem(hwndDlg, IDC_COMPLIST));
+			}
 			return TRUE;
 		case IDC_CATLIST:
 			if (HIWORD(wParam) == LBN_SELCHANGE)
@@ -137,6 +187,32 @@ static BOOL CALLBACK MainWndProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM 
 		break;
 
 	case WM_NOTIFY:
+		if (((LPNMHDR)lParam)->code == NM_RCLICK &&
+		 ((LPNMHDR)lParam)->hwndFrom ==
+		  ListView_GetHeader(GetDlgItem(hwndDlg, IDC_COMPLIST)))
+		{
+			DWORD dwpos = GetMessagePos();
+			HD_HITTESTINFO hdhti;
+			hdhti.pt.x = GET_X_LPARAM(dwpos);
+			hdhti.pt.y = GET_Y_LPARAM(dwpos);
+			ScreenToClient(((LPNMHDR)lParam)->hwndFrom, &hdhti.pt);
+			int hit = SendMessage(((LPNMHDR)lParam)->hwndFrom, HDM_HITTEST, 0,
+			 (LPARAM)&hdhti);
+			if ((hdhti.flags & HHT_ONHEADER) && hit == 3)
+			{
+				HMENU menu = CreatePopupMenu();
+				AppendMenu(menu, MF_STRING, IDM_VIEW_SHOWSTABLE,
+				 "Show only &stable versions\tCtrl+Shift+S");
+				AppendMenu(menu, MF_STRING, IDM_VIEW_SHOWUNSTABLE,
+				 "Show &unstable versions\tCtrl+Shift+U");
+				TrackPopupMenuEx(menu,
+				 TPM_LEFTALIGN | TPM_TOPALIGN | TPM_RIGHTBUTTON,
+				 GET_X_LPARAM(dwpos), GET_Y_LPARAM(dwpos), hwndDlg, 0);
+				DestroyMenu(menu);
+				return 0;
+			}
+			break;
+		}
 		switch (((LPNMHDR)lParam)->idFrom)
 		{
 		case IDC_COMPLIST:
@@ -145,13 +221,106 @@ static BOOL CALLBACK MainWndProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM 
 			case LVN_GETDISPINFO:
 				{
 					((NMLVDISPINFO*)lParam)->item.pszText =
-					 (char*)PackageGetSubItemText(((NMLVDISPINFO*)lParam)->item.lParam,
+					 (char*)Pkg_GetSubItemText(((NMLVDISPINFO*)lParam)->item.lParam,
 					  ((NMLVDISPINFO*)lParam)->item.iSubItem);
 				}
 				return 0;
 			case LVN_COLUMNCLICK:
 				UI_SortListView(((LPNMLISTVIEW)lParam)->iSubItem);
 				return 0;
+			case LVN_ITEMCHANGED:
+				if ((((LPNMLISTVIEW)lParam)->uChanged & LVIF_STATE)
+				 && (((LPNMLISTVIEW)lParam)->uNewState & LVIS_SELECTED))
+					UI_OnListViewSelect(((LPNMLISTVIEW)lParam)->iItem);
+				return 0;
+			case NM_RCLICK:
+				{
+					DWORD dwpos = GetMessagePos();
+					LVHITTESTINFO lvhti;
+					lvhti.pt.x = GET_X_LPARAM(dwpos);
+					lvhti.pt.y = GET_Y_LPARAM(dwpos);
+					ScreenToClient(((LPNMHDR)lParam)->hwndFrom, &lvhti.pt);
+					int hit = ListView_HitTest(((LPNMHDR)lParam)->hwndFrom,
+					 &lvhti);
+					if (hit >= 0)
+					{
+						HMENU menu = CreatePopupMenu();
+						LVITEM lvitem;
+						lvitem.iItem = hit;
+						lvitem.mask = LVIF_PARAM;
+						ListView_GetItem(((LPNMHDR)lParam)->hwndFrom, &lvitem);
+						if (Pkg_UnstableShown(lvitem.lParam))
+						{
+							AppendMenu(menu, MF_STRING, ID_SHOW_STABLE,
+							 "Show &stable version");
+						}
+						else
+						{
+							AppendMenu(menu, MF_STRING, ID_SHOW_UNSTABLE,
+							 "Show &unstable version");
+						}
+						int ret = TrackPopupMenuEx(menu,
+						 TPM_LEFTALIGN | TPM_TOPALIGN | TPM_NONOTIFY |
+						  TPM_RETURNCMD | TPM_RIGHTBUTTON,
+						 GET_X_LPARAM(dwpos), GET_Y_LPARAM(dwpos),
+						 ((LPNMHDR)lParam)->hwndFrom, 0);
+						switch (ret)
+						{
+						case ID_SHOW_STABLE:
+							Pkg_SetUnstableShown(lvitem.lParam, 0);
+							ListView_RedrawItems(((LPNMHDR)lParam)->hwndFrom,
+							 hit, hit);
+							UpdateWindow(((LPNMHDR)lParam)->hwndFrom);
+							break;
+						case ID_SHOW_UNSTABLE:
+							Pkg_SetUnstableShown(lvitem.lParam, 1);
+							ListView_RedrawItems(((LPNMHDR)lParam)->hwndFrom,
+							 hit, hit);
+							UpdateWindow(((LPNMHDR)lParam)->hwndFrom);
+							break;
+						}
+						DestroyMenu(menu);
+					}
+				}
+				return 0;
+			case NM_CUSTOMDRAW:
+				{
+					static COLORREF old_color;
+					LRESULT ret = CDRF_DODEFAULT;
+					switch (((LPNMCUSTOMDRAW)lParam)->dwDrawStage)
+					{
+					case CDDS_PREPAINT:
+						ret = CDRF_NOTIFYITEMDRAW;
+						break;
+					case CDDS_ITEMPREPAINT:
+						if (Pkg_UnstableShown(
+						 ((LPNMCUSTOMDRAW)lParam)->lItemlParam
+						 ))
+						{
+							old_color = ((LPNMLVCUSTOMDRAW)lParam)->clrText;
+							((LPNMLVCUSTOMDRAW)lParam)->clrText =
+							 RGB(255, 128, 0);
+							HFONT hFont =
+							 (HFONT)SendMessage(((LPNMHDR)lParam)->hwndFrom,
+							  WM_GETFONT, 0, 0);
+							LOGFONT lf = {0};
+							GetObject(hFont, sizeof(LOGFONT), &lf);
+							lf.lfWeight |= FW_BOLD;
+							HFONT hFontBold = CreateFontIndirect(&lf);
+							SelectObject(((LPNMCUSTOMDRAW)lParam)->hdc,
+							 hFontBold);
+							ret = CDRF_NEWFONT | CDRF_NOTIFYPOSTPAINT;
+						}
+						else
+							ret = CDRF_DODEFAULT;
+						break;
+					case CDDS_ITEMPOSTPAINT:
+						((LPNMLVCUSTOMDRAW)lParam)->clrText = old_color;
+						ret = CDRF_DODEFAULT;
+					}
+					SetWindowLong(hwndDlg, DWL_MSGRESULT, ret);
+					return TRUE;
+				}
 			}
 			break;
 		}
@@ -210,16 +379,6 @@ static BOOL CALLBACK MainWndProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM 
 }
 
 
-static LRESULT CALLBACK DescWndProc
- (HWND hwnd,
-  UINT uMsg,
-  WPARAM wParam,
-  LPARAM lParam)
-{
-	return DefWindowProc(hwnd, uMsg, wParam, lParam);
-}
-
-
 static int ProcessQueuedMessages(HWND wnd)
 {
 	MSG msg;
@@ -243,26 +402,14 @@ static int ProcessQueuedMessages(HWND wnd)
 }
 
 
+int DescWnd_RegisterClass(HINSTANCE);
+
 HWND CreateMainWnd(HINSTANCE hInstance)
 {
 	g_instance = hInstance;
 
 	InitCommonControls();
 	OleInitialize(0);
-
-	WNDCLASS wc;
-	wc.style = CS_OWNDC;
-	wc.lpfnWndProc = DescWndProc;
-	wc.cbClsExtra = 0;
-	wc.cbWndExtra = 0;
-	wc.hInstance = hInstance;
-	wc.hIcon = 0;
-	wc.hCursor = 0;
-	wc.hbrBackground = (HBRUSH)COLOR_BACKGROUND;
-	wc.lpszMenuName = 0;
-	wc.lpszClassName = FULLDESCCLASSNAME;
-	if (!RegisterClass(&wc))
-		return 0;
 
 	g_haccel = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDA_MAINACCEL));
 

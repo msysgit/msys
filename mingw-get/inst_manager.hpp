@@ -26,6 +26,7 @@ public:
 
 	static int NumCategories();
 	static const char* GetCategory(int cat);
+	static int CategoryIndex(const char* cat_id);
 
 	typedef std::map< std::string, RefType< Package >::Ref >::const_iterator
 	 PackageIter;
@@ -40,9 +41,11 @@ private:
 
 	static char sm_lasterror[];
 	static std::string sm_inst_loc;
-	static std::vector< std::string > sm_categories;
-	typedef std::map< std::string, RefType< Package >::Ref > IDPackageMap;
-	static IDPackageMap sm_id_packages;
+	static std::vector< std::string > sm_index_categories;
+	typedef std::map< std::string, int > StringIntMap;
+	static StringIntMap sm_id_categories;
+	typedef std::map< std::string, RefType< Package >::Ref > StringPackageMap;
+	static StringPackageMap sm_id_packages;
 };
 
 
