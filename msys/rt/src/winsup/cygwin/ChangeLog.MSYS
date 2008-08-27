@@ -1,3 +1,8 @@
+2008.08.21  Cesar Strauss  <cestrauss@gmail.com>
+
+	* fhandler.cc (fhandler_disk_file::open): Store the full Windows
+	path in the file handle, so generated inode numbers are consistent.
+
 2008.08.07  Cesar Strauss  <cestrauss@gmail.com>
 
 	* regexp/regexp.c (debug_printf): Remove definition.
