@@ -415,9 +415,9 @@ main (int argc, char **argv)
   struct predicate *cur_pred;
   char *predicate_name;		/* Name of predicate being parsed. */
   int end_of_leading_options = 0; /* First arg after any -H/-L etc. */
-  char *program_name = argv[0];
   const struct parser_table *entry_close, *entry_print, *entry_open;
 
+  program_name = argv[0];
 
   /* We call check_nofollow() before setlocale() because the numbers 
    * for which we check (in the results of uname) definitiely have "."
