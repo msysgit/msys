@@ -793,7 +793,8 @@ fts_build (register FTS *sp, int type)
 	 */
 	cderrno = 0;
 	if (nlinks || type == BREAD) {
-		if (fts_safe_changedir(sp, cur, dirfd(dirp), NULL)) {
+		int dir_fd = dirfd(dirp);
+		if (dir_fd < 0 || fts_safe_changedir(sp, cur, dir_fd, NULL)) {
 			if (nlinks && type == BREAD)
 				cur->fts_errno = errno;
 			cur->fts_flags |= FTS_DONTCHDIR;
