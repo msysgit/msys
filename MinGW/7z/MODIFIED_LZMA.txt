@@ -1,0 +1,14 @@
+MODIFIED LZMA
+
+This directory contains a modified version of the LZMA SDK by Igor Pavlov.
+
+This modified version is distributed under the terms of the GNU LGPL (Lesser
+General Public License) v2.1; please see LGPL.txt for details.
+
+A number of files present in the original SDK download have not been
+redistributed.
+
+The following files were modified:
+ * Archive/7z/7zIn.c
+ * Archive/7z/7zItem.h
+See these files' headings for further details.
