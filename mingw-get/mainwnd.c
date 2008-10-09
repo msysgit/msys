@@ -6,16 +6,54 @@
 #include <malloc.h>
 #include <ole2.h>
 #include "resource.h"
-
-
-#define ID_SHOW_STABLE 10001
-#define ID_SHOW_UNSTABLE 10002
+#include "pkg_const.h"
 
 
 static int g_vert_grip_x = 150;
 static float g_horz_grip_prop = 0.5f;
 static HACCEL g_haccel;
 static HINSTANCE g_instance = 0;
+
+
+void TransToClient(HWND hwnd, RECT* rc)
+{
+	POINT p;
+	p.x = rc->left;
+	p.y = rc->top;
+	ScreenToClient(hwnd, &p);
+	rc->left = p.x;
+	rc->top = p.y;
+	p.x = rc->right;
+	p.y = rc->bottom;
+	ScreenToClient(hwnd, &p);
+	rc->right = p.x;
+	rc->bottom = p.y;
+}
+
+
+void NewVertSashPos(int pos, HWND mainwnd)
+{
+	g_vert_grip_x = pos;
+	RECT rc;
+	GetClientRect(mainwnd, &rc);
+	SendMessage(mainwnd, WM_SIZE, SIZE_RESTORED,
+	 MAKELPARAM(rc.right - rc.left, rc.bottom - rc.top));
+}
+
+
+void NewHorzSashPos(int pos, HWND mainwnd)
+{
+	RECT tbrc, statrc, rc;
+	GetWindowRect(GetDlgItem(mainwnd, IDC_MAINTOOLBAR), &tbrc);
+	TransToClient(mainwnd, &tbrc);
+	GetWindowRect(GetDlgItem(mainwnd, IDC_STATBAR), &statrc);
+	TransToClient(mainwnd, &statrc);
+	GetClientRect(mainwnd, &rc);
+	g_horz_grip_prop = (float)(pos - (tbrc.bottom - tbrc.top) - 6) /
+	 ((rc.bottom - rc.top) - (tbrc.bottom - tbrc.top) - (statrc.bottom - statrc.top) - 6);
+	SendMessage(mainwnd, WM_SIZE, SIZE_RESTORED,
+	 MAKELPARAM(rc.right - rc.left, rc.bottom - rc.top));
+}
 
 
 static void InsertColumn
@@ -50,31 +88,17 @@ static void InsertColumn
 }
 
 
-static void TransToClient(HWND hwnd, RECT* rc)
-{
-	POINT p;
-	p.x = rc->left;
-	p.y = rc->top;
-	ScreenToClient(hwnd, &p);
-	rc->left = p.x;
-	rc->top = p.y;
-	p.x = rc->right;
-	p.y = rc->bottom;
-	ScreenToClient(hwnd, &p);
-	rc->right = p.x;
-	rc->bottom = p.y;
-}
-
-
 void SelectInst(HINSTANCE, HWND);
 const char* Pkg_GetSubItemText(LPARAM, int);
 void UI_NotifyCategoryChange(int);
 void UI_SortListView(int);
 void UI_OnListViewSelect(int);
 void DescWnd_SetHWND(HWND);
-int Pkg_UnstableShown(LPARAM);
-void Pkg_SetUnstableShown(LPARAM, int);
-void InstMgr_SetAllPkgsShowUnstable(int);
+void UI_OnStateCycle(int);
+const char* Pkg_GetInstalledVersion(LPARAM);
+int Pkg_GetSelectedAction(LPARAM);
+void Pkg_SelectAction(LPARAM, int);
+int Pkg_GetStateImage(LPARAM);
 
 static BOOL CALLBACK MainWndProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
@@ -90,17 +114,19 @@ static BOOL CALLBACK MainWndProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM 
 			old_cli_height = rc.bottom;
 
 			HWND htb = GetDlgItem(hwndDlg, IDC_MAINTOOLBAR);
-			HIMAGELIST hImageList = ImageList_Create(16, 16,
-			 ILC_COLOR16 | ILC_MASK, 3, 0);
-			SendMessage(htb, TB_SETIMAGELIST, (WPARAM)0, (LPARAM)hImageList);
-			SendMessage(htb, TB_LOADIMAGES, (WPARAM)IDB_STD_SMALL_COLOR,
-			 (LPARAM)HINST_COMMCTRL);
+			HIMAGELIST il =
+			 ImageList_Create(24, 24, ILC_COLOR32 | ILC_MASK, 6, 0);
+			HBITMAP tbbuttons =
+			 LoadBitmap(g_instance, MAKEINTRESOURCE(IDB_TBBUTTONS));
+			ImageList_AddMasked(il, tbbuttons, RGB(255, 0, 255));
+			DeleteObject(tbbuttons);
+			SendMessage(htb, TB_SETIMAGELIST, (WPARAM)0, (LPARAM)il);
 			TBBUTTON tbButtons[3] = {
-			 { MAKELONG(STD_FILENEW, 0), -1, TBSTATE_ENABLED, 
+			 { 0, -1, TBSTATE_ENABLED, 
 			  TBSTYLE_BUTTON|TBSTYLE_AUTOSIZE, {0}, 0, (INT_PTR)"Update Lists" },
-			 { MAKELONG(STD_FILEOPEN, 0), -1, TBSTATE_ENABLED, 
+			 { 1, -1, TBSTATE_ENABLED, 
 			  TBSTYLE_BUTTON|TBSTYLE_AUTOSIZE, {0}, 0, (INT_PTR)"Mark All Upgrades"},
-			 { MAKELONG(STD_FILESAVE, 0), -1, 0, 
+			 { 2, -1, 0, 
 			  TBSTYLE_BUTTON|TBSTYLE_AUTOSIZE, {0}, 0, (INT_PTR)"Apply"}
 			};
 			SendMessage(htb, TB_BUTTONSTRUCTSIZE,
@@ -113,6 +139,7 @@ static BOOL CALLBACK MainWndProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM 
 			HWND hcb = GetDlgItem(hwndDlg, IDC_CATTYPE);
 			SendMessage(hcb, CB_ADDSTRING, 0, (LPARAM)"Category");
 			SendMessage(hcb, CB_ADDSTRING, 0, (LPARAM)"State");
+			SendMessage(hcb, CB_ADDSTRING, 0, (LPARAM)"Release Status");
 			SendMessage(hcb, CB_SETCURSEL, 0, 0);
 
 			HWND hcl = GetDlgItem(hwndDlg, IDC_CATLIST);
@@ -122,8 +149,7 @@ static BOOL CALLBACK MainWndProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM 
 			HWND hlv = GetDlgItem(hwndDlg, IDC_COMPLIST);
 			ListView_SetExtendedListViewStyle(hlv,
 			 LVS_EX_FULLROWSELECT | LVS_EX_HEADERDRAGDROP);
-			HIMAGELIST il =
-			 ImageList_Create(16, 16, ILC_COLOR32 | ILC_MASK, 10, 0);
+			il = ImageList_Create(16, 16, ILC_COLOR32 | ILC_MASK, 10, 0);
 			HBITMAP buttonsbmp =
 			 LoadBitmap(g_instance, MAKEINTRESOURCE(IDB_STATES));
 			ImageList_AddMasked(il, buttonsbmp, RGB(255, 0, 255));
@@ -134,12 +160,22 @@ static BOOL CALLBACK MainWndProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM 
 			HDC lvdc = GetDC(hlv);
 			GetTextExtentPoint32(lvdc, "sample string", 13, &sz);
 			ReleaseDC(hlv, lvdc);
-			InsertColumn(hlv, "S", 0, LVCFMT_LEFT, 0);
+			InsertColumn(hlv, "", 0, LVCFMT_LEFT, 25);
 			InsertColumn(hlv, "Package", 1, LVCFMT_LEFT, sz.cx);
 			InsertColumn(hlv, "Installed Version", 2, LVCFMT_LEFT, 0);
 			InsertColumn(hlv, "Latest Version", 3, LVCFMT_LEFT, 0);
-			InsertColumn(hlv, "Size (DL)", 4, LVCFMT_RIGHT, 0);
-			InsertColumn(hlv, "Description", 5, LVCFMT_LEFT, sz.cx);
+			InsertColumn(hlv, "Size", 4, LVCFMT_RIGHT, 0);
+			InsertColumn(hlv, "Description", 5, LVCFMT_LEFT, sz.cx * 1.8);
+
+			HFONT hFont = (HFONT)SendMessage(hwndDlg, WM_GETFONT, 0, 0);
+			LOGFONT lf = {0};
+			GetObject(hFont, sizeof(LOGFONT), &lf);
+			lf.lfWeight |= FW_BOLD;
+			lf.lfHeight += 2;
+			HFONT hFontTitle = CreateFontIndirect(&lf);
+			SendMessage(GetDlgItem(hwndDlg, IDC_DESCTITLE), WM_SETFONT,
+			 (WPARAM)hFontTitle, MAKELPARAM(FALSE, 0));
+			DeleteObject(hFontTitle);
 		}
 		return TRUE;
 
@@ -158,24 +194,6 @@ static BOOL CALLBACK MainWndProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM 
 		case IDM_FILE_CHANGEINST:
 			SelectInst(g_instance, hwndDlg);
 			return TRUE;
-		case IDM_VIEW_SHOWSTABLE:
-			InstMgr_SetAllPkgsShowUnstable(0);
-			if (ListView_GetItemCount(GetDlgItem(hwndDlg, IDC_COMPLIST)) > 0)
-			{
-				ListView_RedrawItems(GetDlgItem(hwndDlg, IDC_COMPLIST), 0,
-				 ListView_GetItemCount(GetDlgItem(hwndDlg, IDC_COMPLIST)) - 1);
-				UpdateWindow(GetDlgItem(hwndDlg, IDC_COMPLIST));
-			}
-			return TRUE;
-		case IDM_VIEW_SHOWUNSTABLE:
-			InstMgr_SetAllPkgsShowUnstable(1);
-			if (ListView_GetItemCount(GetDlgItem(hwndDlg, IDC_COMPLIST)) > 0)
-			{
-				ListView_RedrawItems(GetDlgItem(hwndDlg, IDC_COMPLIST), 0,
-				 ListView_GetItemCount(GetDlgItem(hwndDlg, IDC_COMPLIST)) - 1);
-				UpdateWindow(GetDlgItem(hwndDlg, IDC_COMPLIST));
-			}
-			return TRUE;
 		case IDC_CATLIST:
 			if (HIWORD(wParam) == LBN_SELCHANGE)
 			{
@@ -187,32 +205,6 @@ static BOOL CALLBACK MainWndProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM 
 		break;
 
 	case WM_NOTIFY:
-		if (((LPNMHDR)lParam)->code == NM_RCLICK &&
-		 ((LPNMHDR)lParam)->hwndFrom ==
-		  ListView_GetHeader(GetDlgItem(hwndDlg, IDC_COMPLIST)))
-		{
-			DWORD dwpos = GetMessagePos();
-			HD_HITTESTINFO hdhti;
-			hdhti.pt.x = GET_X_LPARAM(dwpos);
-			hdhti.pt.y = GET_Y_LPARAM(dwpos);
-			ScreenToClient(((LPNMHDR)lParam)->hwndFrom, &hdhti.pt);
-			int hit = SendMessage(((LPNMHDR)lParam)->hwndFrom, HDM_HITTEST, 0,
-			 (LPARAM)&hdhti);
-			if ((hdhti.flags & HHT_ONHEADER) && hit == 3)
-			{
-				HMENU menu = CreatePopupMenu();
-				AppendMenu(menu, MF_STRING, IDM_VIEW_SHOWSTABLE,
-				 "Show only &stable versions\tCtrl+Shift+S");
-				AppendMenu(menu, MF_STRING, IDM_VIEW_SHOWUNSTABLE,
-				 "Show &unstable versions\tCtrl+Shift+U");
-				TrackPopupMenuEx(menu,
-				 TPM_LEFTALIGN | TPM_TOPALIGN | TPM_RIGHTBUTTON,
-				 GET_X_LPARAM(dwpos), GET_Y_LPARAM(dwpos), hwndDlg, 0);
-				DestroyMenu(menu);
-				return 0;
-			}
-			break;
-		}
 		switch (((LPNMHDR)lParam)->idFrom)
 		{
 		case IDC_COMPLIST:
@@ -233,6 +225,21 @@ static BOOL CALLBACK MainWndProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM 
 				 && (((LPNMLISTVIEW)lParam)->uNewState & LVIS_SELECTED))
 					UI_OnListViewSelect(((LPNMLISTVIEW)lParam)->iItem);
 				return 0;
+			case NM_CLICK:
+				{
+					DWORD dwpos = GetMessagePos();
+					LVHITTESTINFO lvhti;
+					memset(&lvhti, 0, sizeof(lvhti));
+					lvhti.pt.x = GET_X_LPARAM(dwpos);
+					lvhti.pt.y = GET_Y_LPARAM(dwpos);
+					ScreenToClient(((LPNMHDR)lParam)->hwndFrom, &lvhti.pt);
+					ListView_HitTest(((LPNMHDR)lParam)->hwndFrom, &lvhti);
+					if ((lvhti.flags & LVHT_ONITEMICON)
+					 && !(lvhti.flags & LVHT_ONITEMLABEL)
+					 && lvhti.iItem >= 0)
+						UI_OnStateCycle(lvhti.iItem);
+				}
+				return 0;
 			case NM_RCLICK:
 				{
 					DWORD dwpos = GetMessagePos();
@@ -247,80 +254,51 @@ static BOOL CALLBACK MainWndProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM 
 						HMENU menu = CreatePopupMenu();
 						LVITEM lvitem;
 						lvitem.iItem = hit;
+						lvitem.iSubItem = 0;
 						lvitem.mask = LVIF_PARAM;
 						ListView_GetItem(((LPNMHDR)lParam)->hwndFrom, &lvitem);
-						if (Pkg_UnstableShown(lvitem.lParam))
-						{
-							AppendMenu(menu, MF_STRING, ID_SHOW_STABLE,
-							 "Show &stable version");
-						}
+						const char* instv =
+						 Pkg_GetInstalledVersion(lvitem.lParam);
+						if (instv)
+							AppendMenu(menu, MF_SEPARATOR, -1, 0);
 						else
 						{
-							AppendMenu(menu, MF_STRING, ID_SHOW_UNSTABLE,
-							 "Show &unstable version");
+							int act = Pkg_GetSelectedAction(lvitem.lParam);
+							if (act != ACT_NO_CHANGE)
+							{
+								AppendMenu(menu, MF_STRING,
+								 10000 + ACT_NO_CHANGE,
+								 "&Deselect this package");
+							}
+							if (act != ACT_INSTALL_VERSION)
+							{
+								AppendMenu(menu, MF_STRING,
+								 10000 + ACT_INSTALL_VERSION,
+								 "&Select this package");
+							}
 						}
 						int ret = TrackPopupMenuEx(menu,
 						 TPM_LEFTALIGN | TPM_TOPALIGN | TPM_NONOTIFY |
 						  TPM_RETURNCMD | TPM_RIGHTBUTTON,
 						 GET_X_LPARAM(dwpos), GET_Y_LPARAM(dwpos),
 						 ((LPNMHDR)lParam)->hwndFrom, 0);
+						DestroyMenu(menu);
 						switch (ret)
 						{
-						case ID_SHOW_STABLE:
-							Pkg_SetUnstableShown(lvitem.lParam, 0);
-							ListView_RedrawItems(((LPNMHDR)lParam)->hwndFrom,
-							 hit, hit);
-							UpdateWindow(((LPNMHDR)lParam)->hwndFrom);
+						case 10000 + ACT_INSTALL_VERSION:
+							Pkg_SelectAction(lvitem.lParam,
+							 ACT_INSTALL_VERSION);
 							break;
-						case ID_SHOW_UNSTABLE:
-							Pkg_SetUnstableShown(lvitem.lParam, 1);
-							ListView_RedrawItems(((LPNMHDR)lParam)->hwndFrom,
-							 hit, hit);
-							UpdateWindow(((LPNMHDR)lParam)->hwndFrom);
+						case 10000 + ACT_NO_CHANGE:
+							Pkg_SelectAction(lvitem.lParam, ACT_NO_CHANGE);
 							break;
 						}
-						DestroyMenu(menu);
+						lvitem.mask = LVIF_IMAGE;
+						lvitem.iImage = Pkg_GetStateImage(lvitem.lParam);
+						ListView_SetItem(((LPNMHDR)lParam)->hwndFrom, &lvitem);
 					}
 				}
 				return 0;
-			case NM_CUSTOMDRAW:
-				{
-					static COLORREF old_color;
-					LRESULT ret = CDRF_DODEFAULT;
-					switch (((LPNMCUSTOMDRAW)lParam)->dwDrawStage)
-					{
-					case CDDS_PREPAINT:
-						ret = CDRF_NOTIFYITEMDRAW;
-						break;
-					case CDDS_ITEMPREPAINT:
-						if (Pkg_UnstableShown(
-						 ((LPNMCUSTOMDRAW)lParam)->lItemlParam
-						 ))
-						{
-							old_color = ((LPNMLVCUSTOMDRAW)lParam)->clrText;
-							((LPNMLVCUSTOMDRAW)lParam)->clrText =
-							 RGB(255, 128, 0);
-							HFONT hFont =
-							 (HFONT)SendMessage(((LPNMHDR)lParam)->hwndFrom,
-							  WM_GETFONT, 0, 0);
-							LOGFONT lf = {0};
-							GetObject(hFont, sizeof(LOGFONT), &lf);
-							lf.lfWeight |= FW_BOLD;
-							HFONT hFontBold = CreateFontIndirect(&lf);
-							SelectObject(((LPNMCUSTOMDRAW)lParam)->hdc,
-							 hFontBold);
-							ret = CDRF_NEWFONT | CDRF_NOTIFYPOSTPAINT;
-						}
-						else
-							ret = CDRF_DODEFAULT;
-						break;
-					case CDDS_ITEMPOSTPAINT:
-						((LPNMLVCUSTOMDRAW)lParam)->clrText = old_color;
-						ret = CDRF_DODEFAULT;
-					}
-					SetWindowLong(hwndDlg, DWL_MSGRESULT, ret);
-					return TRUE;
-				}
 			}
 			break;
 		}
@@ -331,22 +309,18 @@ static BOOL CALLBACK MainWndProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM 
 			int cli_width = LOWORD(lParam);
 			int cli_height = HIWORD(lParam);
 
-			RECT tbrc, statrc, ctyperc, rc;
+			RECT tbrc, statrc, ctyperc, instvrc, vtirc, rc;
 
 			GetWindowRect(GetDlgItem(hwndDlg, IDC_MAINTOOLBAR), &tbrc);
 			TransToClient(hwndDlg, &tbrc);
-			MoveWindow(GetDlgItem(hwndDlg, IDC_MAINTOOLBAR),
-			 tbrc.left, tbrc.top, cli_width - tbrc.left * 2,
-			 tbrc.bottom - tbrc.top, TRUE);
 
 			GetWindowRect(GetDlgItem(hwndDlg, IDC_STATBAR), &statrc);
 			TransToClient(hwndDlg, &statrc);
-			MoveWindow(GetDlgItem(hwndDlg, IDC_STATBAR),
-			 statrc.left, cli_height - (statrc.bottom - statrc.top),
-			 cli_width - statrc.left * 2,
-			 statrc.bottom - statrc.top, TRUE);
 
 			int t = tbrc.bottom + 6;
+
+			MoveWindow(GetDlgItem(hwndDlg, IDC_VERTSASH), g_vert_grip_x, t,
+			 8, cli_height - (statrc.bottom - statrc.top) - t, TRUE);
 
 			GetWindowRect(GetDlgItem(hwndDlg, IDC_CATTYPE), &ctyperc);
 			TransToClient(hwndDlg, &ctyperc);
@@ -360,17 +334,63 @@ static BOOL CALLBACK MainWndProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM 
 			 rc.left, t + (ctyperc.bottom - ctyperc.top) + 2,
 			 g_vert_grip_x,
 			 cli_height - t - (ctyperc.bottom - ctyperc.top) -
-			  (statrc.bottom - statrc.top) - 4, TRUE);
+			  (statrc.bottom - statrc.top) - 2, TRUE);
 
 			int h = (cli_height - t - (statrc.bottom - statrc.top)) *
 			 g_horz_grip_prop;
 
 			MoveWindow(GetDlgItem(hwndDlg, IDC_COMPLIST),
-			 g_vert_grip_x + 8, t, cli_width - g_vert_grip_x - 10, h, TRUE);
+			 g_vert_grip_x + 8, t, cli_width - g_vert_grip_x - 8, h, TRUE);
+			InvalidateRect(GetDlgItem(hwndDlg, IDC_COMPLIST), 0, TRUE);
+			UpdateWindow(GetDlgItem(hwndDlg, IDC_COMPLIST));
 
-			MoveWindow(GetDlgItem(hwndDlg, IDC_FULLDESC),
-			 g_vert_grip_x + 8, t + h + 8, cli_width - g_vert_grip_x - 10,
-			 cli_height - t - h - (statrc.bottom - statrc.top) - 10, TRUE);
+			MoveWindow(GetDlgItem(hwndDlg, IDC_HORZSASH), g_vert_grip_x + 8,
+			 t + h, cli_width - g_vert_grip_x - 8, 8, TRUE);
+
+			GetWindowRect(GetDlgItem(hwndDlg, IDC_INSTVERSION), &instvrc);
+			TransToClient(hwndDlg, &instvrc);
+			MoveWindow(GetDlgItem(hwndDlg, IDC_INSTVERSION),
+			 cli_width - (instvrc.right - instvrc.left), t + h + 10,
+			 (instvrc.right - instvrc.left), instvrc.bottom - instvrc.top,
+			 TRUE);
+			InvalidateRect(GetDlgItem(hwndDlg, IDC_INSTVERSION), 0, TRUE);
+			UpdateWindow(GetDlgItem(hwndDlg, IDC_INSTVERSION));
+
+			GetWindowRect(GetDlgItem(hwndDlg, IDC_VTITEXT), &vtirc);
+			TransToClient(hwndDlg, &vtirc);
+			MoveWindow(GetDlgItem(hwndDlg, IDC_VTITEXT),
+			 cli_width - (instvrc.right - instvrc.left) - (vtirc.right - vtirc.left) - 2,
+			 t + h + 14, vtirc.right - vtirc.left, vtirc.bottom - vtirc.top,
+			 TRUE);
+			InvalidateRect(GetDlgItem(hwndDlg, IDC_VTITEXT), 0, TRUE);
+			UpdateWindow(GetDlgItem(hwndDlg, IDC_VTITEXT));
+
+			GetWindowRect(GetDlgItem(hwndDlg, IDC_DESCTITLE), &rc);
+			TransToClient(hwndDlg, &rc);
+			MoveWindow(GetDlgItem(hwndDlg, IDC_DESCTITLE), g_vert_grip_x + 10,
+			 t + h + 8 + (instvrc.bottom - instvrc.top) - (rc.bottom - rc.top),
+			 cli_width - g_vert_grip_x - (instvrc.right - instvrc.left) - (vtirc.right - vtirc.left) - 14,
+			 rc.bottom - rc.top, TRUE);
+			InvalidateRect(GetDlgItem(hwndDlg, IDC_DESCTITLE), 0, TRUE);
+			UpdateWindow(GetDlgItem(hwndDlg, IDC_DESCTITLE));
+
+			MoveWindow(GetDlgItem(hwndDlg, IDC_FULLDESC), g_vert_grip_x + 8,
+			 t + h + (instvrc.bottom - instvrc.top) + 10,
+			 cli_width - g_vert_grip_x - 8,
+			 cli_height - t - h - (instvrc.bottom - instvrc.top) - (statrc.bottom - statrc.top) - 10,
+			 TRUE);
+
+			MoveWindow(GetDlgItem(hwndDlg, IDC_MAINTOOLBAR),
+			 tbrc.left, tbrc.top, cli_width - tbrc.left * 2,
+			 tbrc.bottom - tbrc.top, TRUE);
+			InvalidateRect(GetDlgItem(hwndDlg, IDC_MAINTOOLBAR), 0, TRUE);
+			UpdateWindow(GetDlgItem(hwndDlg, IDC_MAINTOOLBAR));
+			MoveWindow(GetDlgItem(hwndDlg, IDC_STATBAR),
+			 statrc.left, cli_height - (statrc.bottom - statrc.top),
+			 cli_width - statrc.left * 2,
+			 statrc.bottom - statrc.top, TRUE);
+			InvalidateRect(GetDlgItem(hwndDlg, IDC_STATBAR), 0, TRUE);
+			UpdateWindow(GetDlgItem(hwndDlg, IDC_STATBAR));
 		}
 		return 0;
 	}
@@ -402,7 +422,7 @@ static int ProcessQueuedMessages(HWND wnd)
 }
 
 
-int DescWnd_RegisterClass(HINSTANCE);
+int SashWnd_RegisterClasses(HINSTANCE);
 
 HWND CreateMainWnd(HINSTANCE hInstance)
 {
@@ -410,6 +430,9 @@ HWND CreateMainWnd(HINSTANCE hInstance)
 
 	InitCommonControls();
 	OleInitialize(0);
+
+	if (!SashWnd_RegisterClasses(hInstance))
+		return 0;
 
 	g_haccel = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDA_MAINACCEL));
 

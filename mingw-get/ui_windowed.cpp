@@ -9,7 +9,8 @@
 #include <list>
 #include "resource.h"
 #include "package.hpp"
-#include "inst_manager.hpp"
+#include "pkg_index.hpp"
+#include "pkg_const.h"
 
 
 static HWND g_hmainwnd = 0;
@@ -18,12 +19,15 @@ static HWND g_hmainwnd = 0;
 extern "C" HWND CreateMainWnd(HINSTANCE);
 extern "C" int MainMessageLoop(HWND);
 extern "C" void SelectInst(HINSTANCE, HWND);
+std::string GetBinDir();
 
 extern "C" int UI_Windowed(HINSTANCE hinstance)
 {
 	g_hmainwnd = CreateMainWnd(hinstance);
 	if (!g_hmainwnd)
 		return 1;
+
+	PkgIndex::LoadManifest(GetBinDir() + "\\mingw_avail.mft");
 
 	SelectInst(hinstance, g_hmainwnd);
 
@@ -40,9 +44,10 @@ static void LVAddPackage(const Package& pkg)
 	lvi.iSubItem = 0;
 	char emptystr = 0;
 	lvi.pszText = &emptystr;
-	lvi.iImage = 1;
+	lvi.iImage = pkg.GetStateImage();
 	lvi.lParam = reinterpret_cast< LPARAM >(&pkg);
 	lvi.iItem = ListView_InsertItem(hlist, &lvi);
+	lvi.mask = LVIF_TEXT;
 	lvi.pszText = LPSTR_TEXTCALLBACK;
 	for (int i = 1; i <= 5; ++i)
 	{
@@ -63,23 +68,23 @@ extern "C" void UI_NotifyCategoryChange(int sel)
 	bool have_item = false;
 	if (sel == 0)
 	{
-		for (InstManager::PackageIter it = InstManager::Packages_Begin();
-		 it != InstManager::Packages_End();
+		for (PkgIndex::PackageIter it = PkgIndex::Packages_Begin();
+		 it != PkgIndex::Packages_End();
 		 ++it)
 		{
-			LVAddPackage(*(it->second));
+			LVAddPackage(**it);
 			have_item = true;
 		}
 	}
 	else
 	{
-		for (InstManager::PackageIter it = InstManager::Packages_Begin();
-		 it != InstManager::Packages_End();
+		for (PkgIndex::PackageIter it = PkgIndex::Packages_Begin();
+		 it != PkgIndex::Packages_End();
 		 ++it)
 		{
-			if (it->second->m_categories.count(sel - 1) > 0)
+			if ((*it)->m_categories.count(sel - 1) > 0)
 			{
-				LVAddPackage(*(it->second));
+				LVAddPackage(**it);
 				have_item = true;
 			}
 		}
@@ -90,7 +95,12 @@ extern "C" void UI_NotifyCategoryChange(int sel)
 		 LVIS_SELECTED | LVIS_FOCUSED, LVIS_SELECTED | LVIS_FOCUSED);
 	}
 	else
+	{
+		Static_SetText(GetDlgItem(g_hmainwnd, IDC_DESCTITLE), "");
 		Edit_SetText(GetDlgItem(g_hmainwnd, IDC_FULLDESC), "");
+		ComboBox_ResetContent(GetDlgItem(g_hmainwnd, IDC_INSTVERSION));
+		EnableWindow(GetDlgItem(g_hmainwnd, IDC_INSTVERSION), FALSE);
+	}
 }
 
 
@@ -100,10 +110,69 @@ extern "C" void UI_OnListViewSelect(int sel)
 {
 	LVITEM lvitem;
 	lvitem.iItem = sel;
+	lvitem.iSubItem = 0;
 	lvitem.mask = LVIF_PARAM;
 	ListView_GetItem(GetDlgItem(g_hmainwnd, IDC_COMPLIST), &lvitem);
+	Package* pkg = reinterpret_cast< Package* >(lvitem.lParam);
 	Edit_SetText(GetDlgItem(g_hmainwnd, IDC_FULLDESC),
-	 reinterpret_cast< Package* >(lvitem.lParam)->m_description.c_str());
+	 pkg->m_description.c_str());
+	Static_SetText(GetDlgItem(g_hmainwnd, IDC_DESCTITLE),
+	 pkg->m_title.c_str());
+	ComboBox_ResetContent(GetDlgItem(g_hmainwnd, IDC_INSTVERSION));
+	if (pkg->m_versions.size() > 0)
+	{
+		EnableWindow(GetDlgItem(g_hmainwnd, IDC_INSTVERSION), TRUE);
+		std::string vstr;
+		for (std::vector< PkgVersion::Ref >::const_iterator it = pkg->m_versions.begin();
+		 it != pkg->m_versions.end();
+		 ++it)
+		{
+			if ((*it)->m_status == PSTATUS_ALPHA)
+				vstr = "Alpha: ";
+			else
+				vstr = "Stable: ";
+			vstr += (*it)->m_version;
+			ComboBox_AddString(GetDlgItem(g_hmainwnd, IDC_INSTVERSION),
+			 vstr.c_str());
+		}
+		pkg->m_selected_version = 0;
+		ComboBox_SetCurSel(GetDlgItem(g_hmainwnd, IDC_INSTVERSION), 0);
+	}
+	else
+	{
+		pkg->m_selected_version = -1;
+		EnableWindow(GetDlgItem(g_hmainwnd, IDC_INSTVERSION), FALSE);
+	}
+}
+
+
+extern "C" int VersionCompare(const char*, const char*);
+
+extern "C" void UI_OnStateCycle(int sel)
+{
+	LVITEM lvitem;
+	lvitem.iItem = sel;
+	lvitem.iSubItem = 0;
+	lvitem.mask = LVIF_PARAM;
+	ListView_GetItem(GetDlgItem(g_hmainwnd, IDC_COMPLIST), &lvitem);
+	Package* pkg = reinterpret_cast< Package* >(lvitem.lParam);
+	if (pkg->m_installed_version.length() > 0)
+	{
+		if (pkg->m_selected_action == ACT_INSTALL_VERSION)
+			pkg->m_selected_action = ACT_NO_CHANGE;
+		else
+			pkg->m_selected_action = ACT_INSTALL_VERSION;
+	}
+	else
+	{
+		if (pkg->m_selected_action == ACT_INSTALL_VERSION)
+			pkg->m_selected_action = ACT_NO_CHANGE;
+		else
+			pkg->m_selected_action = ACT_INSTALL_VERSION;
+	}
+	lvitem.mask = LVIF_IMAGE;
+	lvitem.iImage = pkg->GetStateImage(); 
+	ListView_SetItem(GetDlgItem(g_hmainwnd, IDC_COMPLIST), &lvitem);
 }
 
 
@@ -138,10 +207,19 @@ int CALLBACK LVSortCompare(LPARAM lp1, LPARAM lp2, LPARAM lpsort)
 		 );
 		break;
 	case 3:
-		ret = VersionCompare(
-		 reinterpret_cast< Package* >(lp1)->m_stable_version.c_str(),
-		 reinterpret_cast< Package* >(lp2)->m_stable_version.c_str()
-		 );
+		{
+			const Package& p1 = *(reinterpret_cast< Package* >(lp1));
+			const Package& p2 = *(reinterpret_cast< Package* >(lp2));
+			const char* p1v = (p1.m_versions.size() > 0)
+			 ? p1.m_versions.front()->m_version.c_str() : "";
+			const char* p2v = (p2.m_versions.size() > 0)
+			 ? p2.m_versions.front()->m_version.c_str() : "";
+			ret = VersionCompare(p1v, p2v);
+		}
+		break;
+	case 5:
+		ret = stricmp(reinterpret_cast< Package* >(lp1)->m_title.c_str(),
+		 reinterpret_cast< Package* >(lp2)->m_title.c_str());
 		break;
 	};
 	return ret * st->m_reverse;
@@ -165,6 +243,7 @@ extern "C" void UI_SortListView(int column)
 
 void UI::ResetLists()
 {
+	ListBox_SetCurSel(GetDlgItem(g_hmainwnd, IDC_CATLIST), 0);
 	int ct = ListBox_GetCount(GetDlgItem(g_hmainwnd, IDC_CATLIST));
 	for (; ct > 1; --ct)
 		ListBox_DeleteString(GetDlgItem(g_hmainwnd, IDC_CATLIST), ct - 1);

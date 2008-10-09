@@ -35,7 +35,7 @@ static void ValidateInstPath(HWND hdlg, const std::string& path)
 	if (path.length() > 0)
 	{
 		size_t i = path.find_last_of("/\\", path.length() - 2);
-		if (i != std::string::npos)
+		if (path[1] == ':' && i != std::string::npos)
 		{
 			std::string pdir = (i >= 4) ? path.substr(0, i) : path.substr(0, i + 1);
 			struct _stat st;
@@ -135,6 +135,17 @@ extern "C" void PrevInstCallback(const char* path)
 	prev_insts[path] = index;
 }
 
+static int CALLBACK InstBrowseProc
+ (HWND hwnd,
+  UINT uMsg,
+  LPARAM lParam,
+  LPARAM lpData)
+{
+	if (uMsg == BFFM_INITIALIZED)
+		SendMessage(hwnd, BFFM_SETSELECTION, TRUE, lpData);
+	return 0;
+}
+
 static BOOL CALLBACK InstSelProc
  (HWND hwndDlg,
   UINT uMsg,
@@ -147,7 +158,7 @@ static BOOL CALLBACK InstSelProc
 		{
 			g_hdlg = hwndDlg;
 			if (!g_inst_loc[0])
-				strcpy(g_inst_loc, "C:\\MinGW");
+				strcpy(g_inst_loc, "C:\\mingwgettest");
 			if (GetPrevInstalls(PrevInstCallback) > 0)
 			{
 				SendMessage(GetDlgItem(hwndDlg, IDC_PREVINSTLIST), LB_SETCURSEL,
@@ -187,13 +198,19 @@ static BOOL CALLBACK InstSelProc
 			return TRUE;
 		case IDC_BROWSENEWINST:
 			{
+				char path[MAX_PATH];
+				path[0] = 0;
+				Edit_GetText(GetDlgItem(hwndDlg, IDC_INSTPATH), path, MAX_PATH);
+				if (!path[0])
+					strcpy(path, "C:\\");
 				BROWSEINFO bi;
 				bi.hwndOwner = hwndDlg;
 				bi.pidlRoot = 0;
 				bi.pszDisplayName = 0;
 				bi.lpszTitle = "Select a Folder";
 				bi.ulFlags = BIF_RETURNONLYFSDIRS | BIF_NEWDIALOGSTYLE;
-				bi.lpfn = 0;
+				bi.lpfn = InstBrowseProc;
+				bi.lParam = reinterpret_cast< LPARAM >(path);
 				bi.iImage = 0;
 				LPITEMIDLIST pidl = SHBrowseForFolder(&bi);
 				if (pidl)

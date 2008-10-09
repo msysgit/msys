@@ -19,10 +19,10 @@ extern "C" int DLCallback
 	CallbackInfo* cbi = reinterpret_cast< CallbackInfo* >(clientp);
 	if (!cbi->total_sent)
 	{
-		cbi->next_callback(dltotal);
+		cbi->next_callback((size_t)dltotal);
 		cbi->total_sent = 1;
 	}
-	cbi->next_callback(dlnow);
+	cbi->next_callback((size_t)dlnow);
 	return 0;
 }
 
@@ -68,5 +68,5 @@ size_t DownloadFile
 
 	double dltotal = 0.0;
 	curl_easy_getinfo(curl, CURLINFO_SIZE_DOWNLOAD, &dltotal);
-	return dltotal;
+	return (size_t)dltotal;
 }

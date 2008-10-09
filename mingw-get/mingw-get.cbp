@@ -58,6 +58,7 @@
 		<Unit filename="download.cpp">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="getbindir.cpp" />
 		<Unit filename="inst_manager.cpp" />
 		<Unit filename="inst_manager.hpp" />
 		<Unit filename="instselect.cpp">
@@ -76,6 +77,9 @@
 		<Unit filename="multiuser.h" />
 		<Unit filename="package.cpp" />
 		<Unit filename="package.hpp" />
+		<Unit filename="pkg_const.h" />
+		<Unit filename="pkg_index.cpp" />
+		<Unit filename="pkg_index.hpp" />
 		<Unit filename="previnstalls.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -83,6 +87,9 @@
 		<Unit filename="resource.h" />
 		<Unit filename="resource.rc">
 			<Option compilerVar="WINDRES" />
+		</Unit>
+		<Unit filename="sash_wnd.c">
+			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="tinyxml\MODIFIED_TINYXML.txt" />
 		<Unit filename="tinyxml\tinystr.cpp" />
@@ -101,6 +108,7 @@
 		<Extensions>
 			<code_completion />
 			<debugger />
+			<envvars />
 		</Extensions>
 	</Project>
 </CodeBlocks_project_file>

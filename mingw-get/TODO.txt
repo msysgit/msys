@@ -1,2 +1,5 @@
 
  * Use GUI during installation
+ * Get manifest with http://mingw.cvs.sourceforge.net/*checkout*/mingw/mingw-get/blah.mft
+ * Toolbar icons
+ * Default directory %SystemDrive%\MinGW
