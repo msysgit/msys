@@ -25,8 +25,8 @@ public:
 	static const char* GetCategory(int cat);
 	static int CategoryIndex(const char* cat_id);
 
-	typedef std::list< RefType< Package >::Ref >::const_iterator
-	 PackageIter;
+	typedef std::map< std::string, RefType< Package >::Ref > StringPackageMap;
+	typedef StringPackageMap::const_iterator PackageIter;
 	static PackageIter Packages_Begin();
 	static PackageIter Packages_End();
 
@@ -38,8 +38,6 @@ private:
 	static std::vector< std::string > sm_index_categories;
 	typedef std::map< std::string, int > StringIntMap;
 	static StringIntMap sm_id_categories;
-	static std::list< RefType< Package >::Ref > sm_packages;
-	typedef std::map< std::string, RefType< Package >::Ref > StringPackageMap;
 	static StringPackageMap sm_id_packages;
 };
 

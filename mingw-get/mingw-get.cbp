@@ -64,9 +64,7 @@
 		<Unit filename="instselect.cpp">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="main.c">
-			<Option compilerVar="CC" />
-		</Unit>
+		<Unit filename="main.cpp" />
 		<Unit filename="mainwnd.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -100,8 +98,7 @@
 		<Unit filename="tinyxml\tinyxmlparser.cpp" />
 		<Unit filename="tracked_install.cpp" />
 		<Unit filename="tracked_install.hpp" />
-		<Unit filename="ui.hpp" />
-		<Unit filename="ui_windowed.cpp" />
+		<Unit filename="ui.cpp" />
 		<Unit filename="versioning.c">
 			<Option compilerVar="CC" />
 		</Unit>

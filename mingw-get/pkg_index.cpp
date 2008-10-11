@@ -16,7 +16,6 @@
 char PkgIndex::sm_lasterror[2048] = {0};
 std::vector< std::string > PkgIndex::sm_index_categories;
 PkgIndex::StringIntMap PkgIndex::sm_id_categories;
-std::list< Package::Ref >PkgIndex::sm_packages;
 PkgIndex::StringPackageMap PkgIndex::sm_id_packages;
 
 
@@ -52,13 +51,13 @@ int PkgIndex::CategoryIndex(const char* cat_id)
 
 PkgIndex::PackageIter PkgIndex::Packages_Begin()
 {
-	return sm_packages.begin();
+	return sm_id_packages.begin();
 }
 
 
 PkgIndex::PackageIter PkgIndex::Packages_End()
 {
-	return sm_packages.end();
+	return sm_id_packages.end();
 }
 
 
@@ -84,7 +83,6 @@ bool PkgIndex::LoadManifest(const std::string& mfile)
 			continue;
 		sm_id_categories[id] = sm_index_categories.size();
 		sm_index_categories.push_back(name);
-		UI::NotifyNewCategory(name);
 	}
 	for (TiXmlElement* package_el =
 	  TiXmlHandle(doc.RootElement()->FirstChildElement("package-collection")).
@@ -100,7 +98,6 @@ bool PkgIndex::LoadManifest(const std::string& mfile)
 			continue;
 		Package::Ref newpkg(new Package(id, package_el));
 		InsertPackage(newpkg);
-		UI::NotifyNewPackage(*newpkg);
 	}
 	return true;
 }

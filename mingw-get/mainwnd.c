@@ -90,11 +90,11 @@ static void InsertColumn
 
 void SelectInst(HINSTANCE, HWND);
 const char* Pkg_GetSubItemText(LPARAM, int);
-void UI_NotifyCategoryChange(int);
-void UI_SortListView(int);
-void UI_OnListViewSelect(int);
+void UI_OnCategoryChange(int, HWND);
+void UI_SortListView(int, HWND);
+void UI_OnListViewSelect(int, HWND);
 void DescWnd_SetHWND(HWND);
-void UI_OnStateCycle(int);
+void UI_OnStateCycle(int, HWND);
 const char* Pkg_GetInstalledVersion(LPARAM);
 int Pkg_GetSelectedAction(LPARAM);
 void Pkg_SelectAction(LPARAM, int);
@@ -197,7 +197,7 @@ static BOOL CALLBACK MainWndProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM 
 		case IDC_CATLIST:
 			if (HIWORD(wParam) == LBN_SELCHANGE)
 			{
-				UI_NotifyCategoryChange(ListBox_GetCurSel((HWND)lParam));
+				UI_OnCategoryChange(ListBox_GetCurSel((HWND)lParam), hwndDlg);
 				return TRUE;
 			}
 			break;
@@ -218,12 +218,12 @@ static BOOL CALLBACK MainWndProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM 
 				}
 				return 0;
 			case LVN_COLUMNCLICK:
-				UI_SortListView(((LPNMLISTVIEW)lParam)->iSubItem);
+				UI_SortListView(((LPNMLISTVIEW)lParam)->iSubItem, hwndDlg);
 				return 0;
 			case LVN_ITEMCHANGED:
 				if ((((LPNMLISTVIEW)lParam)->uChanged & LVIF_STATE)
 				 && (((LPNMLISTVIEW)lParam)->uNewState & LVIS_SELECTED))
-					UI_OnListViewSelect(((LPNMLISTVIEW)lParam)->iItem);
+					UI_OnListViewSelect(((LPNMLISTVIEW)lParam)->iItem, hwndDlg);
 				return 0;
 			case NM_CLICK:
 				{
@@ -237,7 +237,7 @@ static BOOL CALLBACK MainWndProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM 
 					if ((lvhti.flags & LVHT_ONITEMICON)
 					 && !(lvhti.flags & LVHT_ONITEMLABEL)
 					 && lvhti.iItem >= 0)
-						UI_OnStateCycle(lvhti.iItem);
+						UI_OnStateCycle(lvhti.iItem, hwndDlg);
 				}
 				return 0;
 			case NM_RCLICK:
@@ -406,16 +406,13 @@ static int ProcessQueuedMessages(HWND wnd)
 	{
 		if (msg.message == WM_QUIT)
 			return 1;
-		if (TranslateAccelerator(wnd, g_haccel, &msg))
+		if (!TranslateAccelerator(wnd, g_haccel, &msg))
 		{
-		}
-		else if (IsDialogMessage(wnd, &msg))
-		{
-		}
-		else
-		{
-			TranslateMessage(&msg);
-			DispatchMessage(&msg);
+			if (!IsDialogMessage(wnd, &msg))
+			{
+				TranslateMessage(&msg);
+				DispatchMessage(&msg);
+			}
 		}
 	}
 	return 0;
@@ -453,16 +450,13 @@ int MainMessageLoop(HWND wnd)
 	MSG msg;
 	while (GetMessage(&msg, NULL, 0, 0))
 	{
-		if (TranslateAccelerator(wnd, g_haccel, &msg))
+		if (!TranslateAccelerator(wnd, g_haccel, &msg))
 		{
-		}
-		else if (IsDialogMessage(wnd, &msg))
-		{
-		}
-		else
-		{
-			TranslateMessage(&msg);
-			DispatchMessage(&msg);
+			if (!IsDialogMessage(wnd, &msg))
+			{
+				TranslateMessage(&msg);
+				DispatchMessage(&msg);
+			}
 		}
 	}
 	return msg.wParam;

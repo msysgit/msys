@@ -272,9 +272,7 @@ static BOOL CALLBACK InstSelProc
 }
 
 
-extern "C" void SelectInst
- (HINSTANCE hinstance,
-  HWND hparent)
+extern "C" void SelectInst(HINSTANCE hinstance, HWND hparent)
 {
 	if (!DialogBox(hinstance, MAKEINTRESOURCE(IDD_INSTSEL), hparent,
 	 InstSelProc) || !g_inst_loc[0])

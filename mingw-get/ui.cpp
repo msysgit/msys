@@ -1,43 +1,22 @@
+/** \file ui.cpp
+ *
+ * Created: JohnE, 2008-10-11
+ */
 
-#include "ui.hpp"
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #include <windowsx.h>
 #include <commctrl.h>
 #include <climits>
-#include <list>
-#include "resource.h"
 #include "package.hpp"
 #include "pkg_index.hpp"
 #include "pkg_const.h"
+#include "resource.h"
 
 
-static HWND g_hmainwnd = 0;
-
-
-extern "C" HWND CreateMainWnd(HINSTANCE);
-extern "C" int MainMessageLoop(HWND);
-extern "C" void SelectInst(HINSTANCE, HWND);
-std::string GetBinDir();
-
-extern "C" int UI_Windowed(HINSTANCE hinstance)
+static void LVAddPackage(HWND hlist, const Package& pkg)
 {
-	g_hmainwnd = CreateMainWnd(hinstance);
-	if (!g_hmainwnd)
-		return 1;
-
-	PkgIndex::LoadManifest(GetBinDir() + "\\mingw_avail.mft");
-
-	SelectInst(hinstance, g_hmainwnd);
-
-	return MainMessageLoop(g_hmainwnd);
-}
-
-
-static void LVAddPackage(const Package& pkg)
-{
-	HWND hlist = GetDlgItem(g_hmainwnd, IDC_COMPLIST);
 	LVITEM lvi;
 	lvi.mask = LVIF_TEXT | LVIF_PARAM | LVIF_IMAGE;
 	lvi.iItem = INT_MAX;
@@ -56,15 +35,15 @@ static void LVAddPackage(const Package& pkg)
 	}
 	if (lvi.iItem == 0)
 	{
-		ListView_SetItemState(GetDlgItem(g_hmainwnd, IDC_COMPLIST), 0,
+		ListView_SetItemState(hlist, 0,
 		 LVIS_SELECTED | LVIS_FOCUSED, LVIS_SELECTED | LVIS_FOCUSED);
 	}
 }
 
 
-extern "C" void UI_NotifyCategoryChange(int sel)
+extern "C" void UI_OnCategoryChange(int sel, HWND hmainwnd)
 {
-	ListView_DeleteAllItems(GetDlgItem(g_hmainwnd, IDC_COMPLIST));
+	ListView_DeleteAllItems(GetDlgItem(hmainwnd, IDC_COMPLIST));
 	bool have_item = false;
 	if (sel == 0)
 	{
@@ -72,7 +51,7 @@ extern "C" void UI_NotifyCategoryChange(int sel)
 		 it != PkgIndex::Packages_End();
 		 ++it)
 		{
-			LVAddPackage(**it);
+			LVAddPackage(GetDlgItem(hmainwnd, IDC_COMPLIST), *it->second);
 			have_item = true;
 		}
 	}
@@ -82,46 +61,46 @@ extern "C" void UI_NotifyCategoryChange(int sel)
 		 it != PkgIndex::Packages_End();
 		 ++it)
 		{
-			if ((*it)->m_categories.count(sel - 1) > 0)
+			if (it->second->m_categories.count(sel - 1) > 0)
 			{
-				LVAddPackage(**it);
+				LVAddPackage(GetDlgItem(hmainwnd, IDC_COMPLIST), *it->second);
 				have_item = true;
 			}
 		}
 	}
 	if (have_item)
 	{
-		ListView_SetItemState(GetDlgItem(g_hmainwnd, IDC_COMPLIST), 0,
+		ListView_SetItemState(GetDlgItem(hmainwnd, IDC_COMPLIST), 0,
 		 LVIS_SELECTED | LVIS_FOCUSED, LVIS_SELECTED | LVIS_FOCUSED);
 	}
 	else
 	{
-		Static_SetText(GetDlgItem(g_hmainwnd, IDC_DESCTITLE), "");
-		Edit_SetText(GetDlgItem(g_hmainwnd, IDC_FULLDESC), "");
-		ComboBox_ResetContent(GetDlgItem(g_hmainwnd, IDC_INSTVERSION));
-		EnableWindow(GetDlgItem(g_hmainwnd, IDC_INSTVERSION), FALSE);
+		Static_SetText(GetDlgItem(hmainwnd, IDC_DESCTITLE), "");
+		Edit_SetText(GetDlgItem(hmainwnd, IDC_FULLDESC), "");
+		ComboBox_ResetContent(GetDlgItem(hmainwnd, IDC_INSTVERSION));
+		EnableWindow(GetDlgItem(hmainwnd, IDC_INSTVERSION), FALSE);
 	}
 }
 
 
 void DescWnd_SetDescription(const std::string&);
 
-extern "C" void UI_OnListViewSelect(int sel)
+extern "C" void UI_OnListViewSelect(int sel, HWND hmainwnd)
 {
 	LVITEM lvitem;
 	lvitem.iItem = sel;
 	lvitem.iSubItem = 0;
 	lvitem.mask = LVIF_PARAM;
-	ListView_GetItem(GetDlgItem(g_hmainwnd, IDC_COMPLIST), &lvitem);
+	ListView_GetItem(GetDlgItem(hmainwnd, IDC_COMPLIST), &lvitem);
 	Package* pkg = reinterpret_cast< Package* >(lvitem.lParam);
-	Edit_SetText(GetDlgItem(g_hmainwnd, IDC_FULLDESC),
+	Edit_SetText(GetDlgItem(hmainwnd, IDC_FULLDESC),
 	 pkg->m_description.c_str());
-	Static_SetText(GetDlgItem(g_hmainwnd, IDC_DESCTITLE),
+	Static_SetText(GetDlgItem(hmainwnd, IDC_DESCTITLE),
 	 pkg->m_title.c_str());
-	ComboBox_ResetContent(GetDlgItem(g_hmainwnd, IDC_INSTVERSION));
+	ComboBox_ResetContent(GetDlgItem(hmainwnd, IDC_INSTVERSION));
 	if (pkg->m_versions.size() > 0)
 	{
-		EnableWindow(GetDlgItem(g_hmainwnd, IDC_INSTVERSION), TRUE);
+		EnableWindow(GetDlgItem(hmainwnd, IDC_INSTVERSION), TRUE);
 		std::string vstr;
 		for (std::vector< PkgVersion::Ref >::const_iterator it = pkg->m_versions.begin();
 		 it != pkg->m_versions.end();
@@ -132,29 +111,29 @@ extern "C" void UI_OnListViewSelect(int sel)
 			else
 				vstr = "Stable: ";
 			vstr += (*it)->m_version;
-			ComboBox_AddString(GetDlgItem(g_hmainwnd, IDC_INSTVERSION),
+			ComboBox_AddString(GetDlgItem(hmainwnd, IDC_INSTVERSION),
 			 vstr.c_str());
 		}
 		pkg->m_selected_version = 0;
-		ComboBox_SetCurSel(GetDlgItem(g_hmainwnd, IDC_INSTVERSION), 0);
+		ComboBox_SetCurSel(GetDlgItem(hmainwnd, IDC_INSTVERSION), 0);
 	}
 	else
 	{
 		pkg->m_selected_version = -1;
-		EnableWindow(GetDlgItem(g_hmainwnd, IDC_INSTVERSION), FALSE);
+		EnableWindow(GetDlgItem(hmainwnd, IDC_INSTVERSION), FALSE);
 	}
 }
 
 
 extern "C" int VersionCompare(const char*, const char*);
 
-extern "C" void UI_OnStateCycle(int sel)
+extern "C" void UI_OnStateCycle(int sel, HWND hmainwnd)
 {
 	LVITEM lvitem;
 	lvitem.iItem = sel;
 	lvitem.iSubItem = 0;
 	lvitem.mask = LVIF_PARAM;
-	ListView_GetItem(GetDlgItem(g_hmainwnd, IDC_COMPLIST), &lvitem);
+	ListView_GetItem(GetDlgItem(hmainwnd, IDC_COMPLIST), &lvitem);
 	Package* pkg = reinterpret_cast< Package* >(lvitem.lParam);
 	if (pkg->m_installed_version.length() > 0)
 	{
@@ -172,7 +151,7 @@ extern "C" void UI_OnStateCycle(int sel)
 	}
 	lvitem.mask = LVIF_IMAGE;
 	lvitem.iImage = pkg->GetStateImage(); 
-	ListView_SetItem(GetDlgItem(g_hmainwnd, IDC_COMPLIST), &lvitem);
+	ListView_SetItem(GetDlgItem(hmainwnd, IDC_COMPLIST), &lvitem);
 }
 
 
@@ -226,7 +205,7 @@ int CALLBACK LVSortCompare(LPARAM lp1, LPARAM lp2, LPARAM lpsort)
 };
 
 
-extern "C" void UI_SortListView(int column)
+extern "C" void UI_SortListView(int column, HWND hmainwnd)
 {
 	static int cur_column = 0;
 
@@ -236,11 +215,12 @@ extern "C" void UI_SortListView(int column)
 		cur_column = column;
 
 	LVSortType st(cur_column % 6, (cur_column >= 6));
-	ListView_SortItems(GetDlgItem(g_hmainwnd, IDC_COMPLIST), LVSortCompare,
+	ListView_SortItems(GetDlgItem(hmainwnd, IDC_COMPLIST), LVSortCompare,
 	 reinterpret_cast< LPARAM >(&st));
 }
 
 
+#if 0
 void UI::ResetLists()
 {
 	ListBox_SetCurSel(GetDlgItem(g_hmainwnd, IDC_CATLIST), 0);
@@ -263,3 +243,4 @@ void UI::NotifyNewPackage(const Package& pkg)
 	if (sel <= 0 || pkg.m_categories.count(sel - 1) > 0)
 		LVAddPackage(pkg);
 }
+#endif
