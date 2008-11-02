@@ -3,7 +3,7 @@
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
-#include "pkg_index.hpp"
+#include "pkgindex.hpp"
 #include "pkg_const.h"
 
 

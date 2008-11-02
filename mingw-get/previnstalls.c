@@ -44,11 +44,8 @@ static int GetPrevInstByFolder(int folder, void (*callback)(const char*))
 
 int GetPrevInstalls(void (*callback)(const char*))
 {
-	int utype = GetAccountTypeHelper();
-	if (utype < 0)
-		return 0;
 	int icount = GetPrevInstByFolder(CSIDL_APPDATA, callback);
-	if (utype >= MU_POWER)
+	if (GetAccountTypeHelper() >= MU_POWER)
 		icount += GetPrevInstByFolder(CSIDL_COMMON_APPDATA, callback);
 	return icount;
 }

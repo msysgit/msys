@@ -54,17 +54,16 @@
 			<Add directory="$(#zlib)" />
 		</Linker>
 		<Unit filename="TODO.txt" />
-		<Unit filename="curl_init.cpp" />
-		<Unit filename="download.cpp">
+		<Unit filename="download.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="getbindir.cpp" />
-		<Unit filename="inst_manager.cpp" />
-		<Unit filename="inst_manager.hpp" />
-		<Unit filename="instselect.cpp">
+		<Unit filename="error.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="main.cpp" />
+		<Unit filename="error.hh" />
+		<Unit filename="getbindir.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="mainwnd.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -76,8 +75,8 @@
 		<Unit filename="package.cpp" />
 		<Unit filename="package.hpp" />
 		<Unit filename="pkg_const.h" />
-		<Unit filename="pkg_index.cpp" />
-		<Unit filename="pkg_index.hpp" />
+		<Unit filename="pkgindex.cpp" />
+		<Unit filename="pkgindex.hpp" />
 		<Unit filename="previnstalls.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -87,6 +86,9 @@
 			<Option compilerVar="WINDRES" />
 		</Unit>
 		<Unit filename="sash_wnd.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="selectinst.cpp">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="tinyxml\MODIFIED_TINYXML.txt" />
@@ -99,9 +101,10 @@
 		<Unit filename="tracked_install.cpp" />
 		<Unit filename="tracked_install.hpp" />
 		<Unit filename="ui.cpp" />
-		<Unit filename="versioning.c">
+		<Unit filename="versioncompare.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="winmain.cpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />

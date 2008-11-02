@@ -30,7 +30,7 @@ public:
 		return change.Revert();
 	}
 
-	TCHolderBase* Clone() const
+	virtual TCHolderBase* Clone() const
 	{
 		return new TCHolder< T >(change);
 	}

@@ -10,9 +10,13 @@
 #include <commctrl.h>
 #include <climits>
 #include "package.hpp"
-#include "pkg_index.hpp"
+#include "pkgindex.hpp"
 #include "pkg_const.h"
 #include "resource.h"
+#include "error.hh"
+
+
+extern HWND g_hmainwnd;
 
 
 static void LVAddPackage(HWND hlist, const Package& pkg)
@@ -220,27 +224,23 @@ extern "C" void UI_SortListView(int column, HWND hmainwnd)
 }
 
 
-#if 0
-void UI::ResetLists()
+void UI_RefreshCategoryList()
 {
 	ListBox_SetCurSel(GetDlgItem(g_hmainwnd, IDC_CATLIST), 0);
 	int ct = ListBox_GetCount(GetDlgItem(g_hmainwnd, IDC_CATLIST));
 	for (; ct > 1; --ct)
 		ListBox_DeleteString(GetDlgItem(g_hmainwnd, IDC_CATLIST), ct - 1);
 	ListView_DeleteAllItems(GetDlgItem(g_hmainwnd, IDC_COMPLIST));
+	for (int i = 0; i < PkgIndex::NumCategories(); ++i)
+	{
+		ListBox_AddString(GetDlgItem(g_hmainwnd, IDC_CATLIST),
+		 PkgIndex::GetCategory(i));
+	}
+	UI_OnCategoryChange(0, g_hmainwnd);
 }
 
 
-void UI::NotifyNewCategory(const char* name)
+extern "C" void LastError_MsgBox(const char* title)
 {
-	ListBox_AddString(GetDlgItem(g_hmainwnd, IDC_CATLIST), name);
+	MessageBox(g_hmainwnd, MGLastError(), title, MB_OK | MB_ICONERROR);
 }
-
-
-void UI::NotifyNewPackage(const Package& pkg)
-{
-	int sel = ListBox_GetCurSel(GetDlgItem(g_hmainwnd, IDC_CATLIST));
-	if (sel <= 0 || pkg.m_categories.count(sel - 1) > 0)
-		LVAddPackage(pkg);
-}
-#endif

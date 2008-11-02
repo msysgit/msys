@@ -9,10 +9,14 @@
 #include "pkg_const.h"
 
 
+extern HINSTANCE g_hinstance;
+
+
+HWND g_hmainwnd = 0;
+
 static int g_vert_grip_x = 150;
 static float g_horz_grip_prop = 0.5f;
 static HACCEL g_haccel;
-static HINSTANCE g_instance = 0;
 
 
 void TransToClient(HWND hwnd, RECT* rc)
@@ -31,27 +35,27 @@ void TransToClient(HWND hwnd, RECT* rc)
 }
 
 
-void NewVertSashPos(int pos, HWND mainwnd)
+void NewVertSashPos(int pos)
 {
 	g_vert_grip_x = pos;
 	RECT rc;
-	GetClientRect(mainwnd, &rc);
-	SendMessage(mainwnd, WM_SIZE, SIZE_RESTORED,
+	GetClientRect(g_hmainwnd, &rc);
+	SendMessage(g_hmainwnd, WM_SIZE, SIZE_RESTORED,
 	 MAKELPARAM(rc.right - rc.left, rc.bottom - rc.top));
 }
 
 
-void NewHorzSashPos(int pos, HWND mainwnd)
+void NewHorzSashPos(int pos)
 {
 	RECT tbrc, statrc, rc;
-	GetWindowRect(GetDlgItem(mainwnd, IDC_MAINTOOLBAR), &tbrc);
-	TransToClient(mainwnd, &tbrc);
-	GetWindowRect(GetDlgItem(mainwnd, IDC_STATBAR), &statrc);
-	TransToClient(mainwnd, &statrc);
-	GetClientRect(mainwnd, &rc);
+	GetWindowRect(GetDlgItem(g_hmainwnd, IDC_MAINTOOLBAR), &tbrc);
+	TransToClient(g_hmainwnd, &tbrc);
+	GetWindowRect(GetDlgItem(g_hmainwnd, IDC_STATBAR), &statrc);
+	TransToClient(g_hmainwnd, &statrc);
+	GetClientRect(g_hmainwnd, &rc);
 	g_horz_grip_prop = (float)(pos - (tbrc.bottom - tbrc.top) - 6) /
 	 ((rc.bottom - rc.top) - (tbrc.bottom - tbrc.top) - (statrc.bottom - statrc.top) - 6);
-	SendMessage(mainwnd, WM_SIZE, SIZE_RESTORED,
+	SendMessage(g_hmainwnd, WM_SIZE, SIZE_RESTORED,
 	 MAKELPARAM(rc.right - rc.left, rc.bottom - rc.top));
 }
 
@@ -88,7 +92,7 @@ static void InsertColumn
 }
 
 
-void SelectInst(HINSTANCE, HWND);
+void SelectInstallation();
 const char* Pkg_GetSubItemText(LPARAM, int);
 void UI_OnCategoryChange(int, HWND);
 void UI_SortListView(int, HWND);
@@ -99,6 +103,8 @@ const char* Pkg_GetInstalledVersion(LPARAM);
 int Pkg_GetSelectedAction(LPARAM);
 void Pkg_SelectAction(LPARAM, int);
 int Pkg_GetStateImage(LPARAM);
+int PkgIndex_DownloadUpdate();
+void LastError_MsgBox(const char*);
 
 static BOOL CALLBACK MainWndProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
@@ -117,16 +123,16 @@ static BOOL CALLBACK MainWndProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM 
 			HIMAGELIST il =
 			 ImageList_Create(24, 24, ILC_COLOR32 | ILC_MASK, 6, 0);
 			HBITMAP tbbuttons =
-			 LoadBitmap(g_instance, MAKEINTRESOURCE(IDB_TBBUTTONS));
+			 LoadBitmap(g_hinstance, MAKEINTRESOURCE(IDB_TBBUTTONS));
 			ImageList_AddMasked(il, tbbuttons, RGB(255, 0, 255));
 			DeleteObject(tbbuttons);
 			SendMessage(htb, TB_SETIMAGELIST, (WPARAM)0, (LPARAM)il);
 			TBBUTTON tbButtons[3] = {
-			 { 0, -1, TBSTATE_ENABLED, 
+			 { 0, -1, TBSTATE_ENABLED,
 			  TBSTYLE_BUTTON|TBSTYLE_AUTOSIZE, {0}, 0, (INT_PTR)"Update Lists" },
-			 { 1, -1, TBSTATE_ENABLED, 
+			 { 1, -1, TBSTATE_ENABLED,
 			  TBSTYLE_BUTTON|TBSTYLE_AUTOSIZE, {0}, 0, (INT_PTR)"Mark All Upgrades"},
-			 { 2, -1, 0, 
+			 { 2, -1, 0,
 			  TBSTYLE_BUTTON|TBSTYLE_AUTOSIZE, {0}, 0, (INT_PTR)"Apply"}
 			};
 			SendMessage(htb, TB_BUTTONSTRUCTSIZE,
@@ -151,7 +157,7 @@ static BOOL CALLBACK MainWndProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM 
 			 LVS_EX_FULLROWSELECT | LVS_EX_HEADERDRAGDROP);
 			il = ImageList_Create(16, 16, ILC_COLOR32 | ILC_MASK, 10, 0);
 			HBITMAP buttonsbmp =
-			 LoadBitmap(g_instance, MAKEINTRESOURCE(IDB_STATES));
+			 LoadBitmap(g_hinstance, MAKEINTRESOURCE(IDB_STATES));
 			ImageList_AddMasked(il, buttonsbmp, RGB(255, 0, 255));
 			DeleteObject(buttonsbmp);
 			(void)ListView_SetImageList(hlv, il, LVSIL_SMALL);
@@ -192,7 +198,11 @@ static BOOL CALLBACK MainWndProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM 
 			PostQuitMessage(0);
 			return TRUE;
 		case IDM_FILE_CHANGEINST:
-			SelectInst(g_instance, hwndDlg);
+			SelectInstallation();
+			return TRUE;
+		case IDM_SOURCES_UPDATELISTS:
+			if (!PkgIndex_DownloadUpdate())
+				LastError_MsgBox("Update Failure");
 			return TRUE;
 		case IDC_CATLIST:
 			if (HIWORD(wParam) == LBN_SELCHANGE)
@@ -419,29 +429,35 @@ static int ProcessQueuedMessages(HWND wnd)
 }
 
 
-int SashWnd_RegisterClasses(HINSTANCE);
+int SashWnd_RegisterClasses();
 
-HWND CreateMainWnd(HINSTANCE hInstance)
+int CreateMainWnd()
 {
-	g_instance = hInstance;
-
 	InitCommonControls();
 	OleInitialize(0);
 
-	if (!SashWnd_RegisterClasses(hInstance))
+	if (!SashWnd_RegisterClasses(g_hinstance))
+	{
+		MessageBox(0, "Couldn't register window classes for sashes.",
+		 "Windowing Failure", MB_OK | MB_ICONERROR);
 		return 0;
+	}
 
-	g_haccel = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDA_MAINACCEL));
+	g_haccel = LoadAccelerators(g_hinstance, MAKEINTRESOURCE(IDA_MAINACCEL));
 
-	HWND wnd = CreateDialog(hInstance, MAKEINTRESOURCE(IDD_MAINDLG), 0,
+	HWND wnd = CreateDialog(g_hinstance, MAKEINTRESOURCE(IDD_MAINDLG), 0,
      MainWndProc);
 	if (!wnd)
+	{
+		MessageBox(0, "Couldn't create the main window.", "Windowing Failure",
+		 MB_OK | MB_ICONERROR);
 		return 0;
+	}
 	ShowWindow(wnd, SW_SHOW);
 	if (ProcessQueuedMessages(wnd))
 		return 0;
 
-	return wnd;
+	return 1;
 }
 
 
