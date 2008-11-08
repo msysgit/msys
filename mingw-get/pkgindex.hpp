@@ -20,7 +20,6 @@ class PkgIndex
 public:
 	static void Clear();
 	static bool LoadIndex();
-	static bool SetInstallation(const char* inst_path);
 
 	static int NumCategories();
 	static const char* GetCategory(int cat);

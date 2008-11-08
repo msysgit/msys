@@ -9,8 +9,9 @@
 #include <string>
 #include <cstdarg>
 #include "tinyxml/tinyxml.h"
-#include "package.hpp"
+#include "package.hh"
 #include "error.hh"
+#include "getbindir.hh"
 
 
 std::vector< std::string > PkgIndex::sm_index_categories;
@@ -24,18 +25,6 @@ static const char* NonEmptyAttribute(const TiXmlElement* el, const char* name)
 	if (attr && attr[0])
 		return attr;
 	return 0;
-}
-
-
-extern "C" const char* GetBinDir();
-extern "C" size_t DownloadFile(const char*, const char*, void (*)(size_t));
-
-extern "C" int PkgIndex_DownloadUpdate()
-{
-	if (DownloadFile("http://localhost:1330/mingwinst/mingw_avail.mft",
-	 (std::string(GetBinDir()) + "\\mingw_avail.mft").c_str(), 0) <= 0)
-		return 0;
-	return 1;
 }
 
 
@@ -74,6 +63,7 @@ PkgIndex::PackageIter PkgIndex::Packages_End()
 
 bool PkgIndex::LoadIndex()
 {
+	Clear();
 	std::string mfile = std::string(GetBinDir()) + "\\mingw_avail.mft";
 	TiXmlDocument doc(mfile.c_str());
 	if (!doc.LoadFile())
@@ -111,12 +101,6 @@ bool PkgIndex::LoadIndex()
 		Package::Ref newpkg(new Package(id, package_el));
 		InsertPackage(newpkg);
 	}
-	return true;
-}
-
-
-bool PkgIndex::SetInstallation(const char* inst_path)
-{
 	return true;
 }
 

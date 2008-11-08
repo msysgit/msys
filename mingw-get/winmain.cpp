@@ -4,12 +4,9 @@
 #include <string>
 #include "pkgindex.hpp"
 #include <curl/curl.h>
-
-
-extern "C" int CreateMainWnd();
-extern "C" int MainMessageLoop();
-extern "C" void SelectInstallation();
-void UI_RefreshCategoryList();
+#include "mainwnd.hh"
+#include "ui.hh"
+#include "selectinst.hh"
 
 
 HINSTANCE g_hinstance;

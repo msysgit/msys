@@ -1,6 +1,12 @@
-#ifndef PACKAGE_HPP_INC
-#define PACKAGE_HPP_INC
+#ifndef PACKAGE_HH_INC
+#define PACKAGE_HH_INC
 
+
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+
+
+#ifdef __cplusplus
 
 #include <string>
 #include <set>
@@ -39,4 +45,20 @@ struct Package
 };
 
 
-#endif // PACKAGE_HPP_INC
+extern "C" {
+#endif // defined __cplusplus
+
+
+int Pkg_GetSelectedAction(LPARAM lv_lparam);
+const char* Pkg_GetInstalledVersion(LPARAM lv_lparam);
+const char* Pkg_GetSubItemText(LPARAM lv_lparam, int index);
+void Pkg_SelectAction(LPARAM lv_lparam, int action);
+int Pkg_GetStateImage(LPARAM lv_lparam);
+
+
+#ifdef __cplusplus
+} //extern "C"
+#endif
+
+
+#endif // PACKAGE_HH_INC

@@ -2,11 +2,8 @@
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #include "resource.h"
+#include "mainwnd.hh"
 
-
-void NewVertSashPos(int, HWND);
-void NewHorzSashPos(int, HWND);
-void TransToClient(HWND, RECT*);
 
 static LRESULT CALLBACK SashWndProc
  (HWND hwnd,
@@ -70,9 +67,9 @@ static LRESULT CALLBACK SashWndProc
 			POINT mpt; mpt.x = LOWORD(dwpos); mpt.y = HIWORD(dwpos);
 			ScreenToClient(GetParent(hwnd), &mpt);
 			if (br.x - tl.x < br.y - tl.y)
-				NewVertSashPos(mpt.x - drag_offset, GetParent(hwnd));
+				NewVertSashPos(mpt.x - drag_offset);
 			else
-				NewHorzSashPos(mpt.y - drag_offset, GetParent(hwnd));
+				NewHorzSashPos(mpt.y - drag_offset);
 		}
 		break;
 

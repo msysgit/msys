@@ -8,16 +8,14 @@
 #include <map>
 #include "resource.h"
 #include "error.hh"
-#include "pkgindex.hpp"
+#include "instmanager.hpp"
+#include "previnstalls.hh"
+#include "ui.hh"
+#include "winmain.hh"
+#include "mainwnd.hh"
 
 
-extern HINSTANCE g_hinstance;
-extern HWND g_hmainwnd;
-
-
-extern "C" {
 char g_inst_loc[MAX_PATH] = {0};
-}
 
 
 static HWND g_hdlg = 0;
@@ -55,8 +53,7 @@ static void ValidateInstPath(HWND hdlg, const std::string& path)
 				{
 					if (_S_ISDIR(st.st_mode))
 					{
-						if (_stat((dpath + "\\mingwpkg.mft").c_str(), 
-						 &st) == 0)
+						if (InstManager::InstExistsAt(dpath))
 						{
 							valid = 1;
 							g_createinst = FALSE;
@@ -131,8 +128,6 @@ static void ValidateInstPath(HWND hdlg, const std::string& path)
 	EnableWindow(GetDlgItem(hdlg, IDOK), valid ? TRUE : FALSE);
 }
 
-
-extern "C" int GetPrevInstalls(void (*)(const char*));
 
 extern "C" void PrevInstCallback(const char* path)
 {
@@ -277,14 +272,12 @@ static BOOL CALLBACK InstSelProc
 }
 
 
-extern "C" void LastError_MsgBox(const char*);
-
 extern "C" void SelectInstallation()
 {
 	if (!DialogBox(g_hinstance, MAKEINTRESOURCE(IDD_INSTSEL), g_hmainwnd,
 	 InstSelProc) || !g_inst_loc[0])
 		return;
-	if (!PkgIndex::SetInstallation(g_inst_loc))
+	if (!InstManager::Load(g_inst_loc))
 	{
 		LastError_MsgBox("Installation Failure");
 		return;

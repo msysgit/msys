@@ -1,4 +1,6 @@
 
+#include "mainwnd.hh"
+
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #include <windowsx.h>
@@ -7,12 +9,15 @@
 #include <ole2.h>
 #include "resource.h"
 #include "pkg_const.h"
-
-
-extern HINSTANCE g_hinstance;
+#include "package.hh"
+#include "selectinst.hh"
+#include "ui.hh"
+#include "sashwnd.hh"
+#include "winmain.hh"
 
 
 HWND g_hmainwnd = 0;
+
 
 static int g_vert_grip_x = 150;
 static float g_horz_grip_prop = 0.5f;
@@ -92,20 +97,6 @@ static void InsertColumn
 }
 
 
-void SelectInstallation();
-const char* Pkg_GetSubItemText(LPARAM, int);
-void UI_OnCategoryChange(int, HWND);
-void UI_SortListView(int, HWND);
-void UI_OnListViewSelect(int, HWND);
-void DescWnd_SetHWND(HWND);
-void UI_OnStateCycle(int, HWND);
-const char* Pkg_GetInstalledVersion(LPARAM);
-int Pkg_GetSelectedAction(LPARAM);
-void Pkg_SelectAction(LPARAM, int);
-int Pkg_GetStateImage(LPARAM);
-int PkgIndex_DownloadUpdate();
-void LastError_MsgBox(const char*);
-
 static BOOL CALLBACK MainWndProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	static int old_cli_width = 0, old_cli_height = 0;
@@ -128,11 +119,11 @@ static BOOL CALLBACK MainWndProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM 
 			DeleteObject(tbbuttons);
 			SendMessage(htb, TB_SETIMAGELIST, (WPARAM)0, (LPARAM)il);
 			TBBUTTON tbButtons[3] = {
-			 { 0, -1, TBSTATE_ENABLED,
+			 { 0, IDM_SOURCES_UPDATELISTS, TBSTATE_ENABLED,
 			  TBSTYLE_BUTTON|TBSTYLE_AUTOSIZE, {0}, 0, (INT_PTR)"Update Lists" },
 			 { 1, -1, TBSTATE_ENABLED,
 			  TBSTYLE_BUTTON|TBSTYLE_AUTOSIZE, {0}, 0, (INT_PTR)"Mark All Upgrades"},
-			 { 2, -1, 0,
+			 { 2, IDM_EDIT_APPLY, TBSTATE_ENABLED,
 			  TBSTYLE_BUTTON|TBSTYLE_AUTOSIZE, {0}, 0, (INT_PTR)"Apply"}
 			};
 			SendMessage(htb, TB_BUTTONSTRUCTSIZE,
@@ -201,13 +192,12 @@ static BOOL CALLBACK MainWndProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM 
 			SelectInstallation();
 			return TRUE;
 		case IDM_SOURCES_UPDATELISTS:
-			if (!PkgIndex_DownloadUpdate())
-				LastError_MsgBox("Update Failure");
+			UI_UpdateLists();
 			return TRUE;
 		case IDC_CATLIST:
 			if (HIWORD(wParam) == LBN_SELCHANGE)
 			{
-				UI_OnCategoryChange(ListBox_GetCurSel((HWND)lParam), hwndDlg);
+				UI_OnCategoryChange(ListBox_GetCurSel((HWND)lParam));
 				return TRUE;
 			}
 			break;
@@ -228,12 +218,12 @@ static BOOL CALLBACK MainWndProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM 
 				}
 				return 0;
 			case LVN_COLUMNCLICK:
-				UI_SortListView(((LPNMLISTVIEW)lParam)->iSubItem, hwndDlg);
+				UI_SortListView(((LPNMLISTVIEW)lParam)->iSubItem);
 				return 0;
 			case LVN_ITEMCHANGED:
 				if ((((LPNMLISTVIEW)lParam)->uChanged & LVIF_STATE)
 				 && (((LPNMLISTVIEW)lParam)->uNewState & LVIS_SELECTED))
-					UI_OnListViewSelect(((LPNMLISTVIEW)lParam)->iItem, hwndDlg);
+					UI_OnListViewSelect(((LPNMLISTVIEW)lParam)->iItem);
 				return 0;
 			case NM_CLICK:
 				{
@@ -247,7 +237,7 @@ static BOOL CALLBACK MainWndProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM 
 					if ((lvhti.flags & LVHT_ONITEMICON)
 					 && !(lvhti.flags & LVHT_ONITEMLABEL)
 					 && lvhti.iItem >= 0)
-						UI_OnStateCycle(lvhti.iItem, hwndDlg);
+						UI_OnStateCycle(lvhti.iItem);
 				}
 				return 0;
 			case NM_RCLICK:
@@ -429,8 +419,6 @@ static int ProcessQueuedMessages(HWND wnd)
 }
 
 
-int SashWnd_RegisterClasses();
-
 int CreateMainWnd()
 {
 	InitCommonControls();
@@ -445,30 +433,30 @@ int CreateMainWnd()
 
 	g_haccel = LoadAccelerators(g_hinstance, MAKEINTRESOURCE(IDA_MAINACCEL));
 
-	HWND wnd = CreateDialog(g_hinstance, MAKEINTRESOURCE(IDD_MAINDLG), 0,
+	g_hmainwnd = CreateDialog(g_hinstance, MAKEINTRESOURCE(IDD_MAINDLG), 0,
      MainWndProc);
-	if (!wnd)
+	if (!g_hmainwnd)
 	{
 		MessageBox(0, "Couldn't create the main window.", "Windowing Failure",
 		 MB_OK | MB_ICONERROR);
 		return 0;
 	}
-	ShowWindow(wnd, SW_SHOW);
-	if (ProcessQueuedMessages(wnd))
+	ShowWindow(g_hmainwnd, SW_SHOW);
+	if (ProcessQueuedMessages(g_hmainwnd))
 		return 0;
 
 	return 1;
 }
 
 
-int MainMessageLoop(HWND wnd)
+int MainMessageLoop()
 {
 	MSG msg;
 	while (GetMessage(&msg, NULL, 0, 0))
 	{
-		if (!TranslateAccelerator(wnd, g_haccel, &msg))
+		if (!TranslateAccelerator(g_hmainwnd, g_haccel, &msg))
 		{
-			if (!IsDialogMessage(wnd, &msg))
+			if (!IsDialogMessage(g_hmainwnd, &msg))
 			{
 				TranslateMessage(&msg);
 				DispatchMessage(&msg);

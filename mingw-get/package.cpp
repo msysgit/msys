@@ -1,10 +1,11 @@
 
-#include "package.hpp"
+#include "package.hh"
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #include "pkgindex.hpp"
 #include "pkg_const.h"
+#include "versioncompare.hh"
 
 
 extern "C" const char* Pkg_GetSubItemText(LPARAM lv_lparam, int index)
@@ -64,8 +65,6 @@ PkgVersion::PkgVersion(const char* ver, int status)
 {
 }
 
-
-extern "C" int VersionCompare(const char*, const char*);
 
 static bool PkgVersionOrder
  (const PkgVersion::Ref& p1,

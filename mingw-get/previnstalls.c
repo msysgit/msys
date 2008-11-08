@@ -3,7 +3,7 @@
 #include <windows.h>
 #include <shlobj.h>
 #include <stdio.h>
-#include "multiuser.h"
+#include "multiuser.hh"
 
 
 static int GetPrevInstByFolder(int folder, void (*callback)(const char*))

@@ -1,12 +1,13 @@
 
+#include "download.hh"
+
 #include <curl/curl.h>
 #include "error.hh"
 
 
 typedef struct CallbackInfo
 {
-	void (*next_callback)(size_t);
-	int total_sent;
+	int (*next_callback)(size_t, size_t);
 } CallbackInfo;
 
 int DLCallback
@@ -16,23 +17,17 @@ int DLCallback
   double ultotal,
   double ulnow)
 {
-	CallbackInfo* cbi = (CallbackInfo*)clientp;
-	if (!cbi->total_sent)
-	{
-		cbi->next_callback((size_t)dltotal);
-		cbi->total_sent = 1;
-	}
-	cbi->next_callback((size_t)dlnow);
-	return 0;
+	return ((CallbackInfo*)clientp)->next_callback((size_t)dltotal,
+	 (size_t)dlnow);
 }
 
 
-size_t DownloadFile
+int DownloadFile
  (const char* url,
   const char* local,
-  void (*prog_callback)(size_t))
+  int (*prog_callback)(size_t, size_t))
 {
-	size_t ret = 0;
+	int ret = 1;
 
 	CURL* curl = curl_easy_init();
 	if (curl)
@@ -42,40 +37,53 @@ size_t DownloadFile
 		char errbuf[CURL_ERROR_SIZE];
 		curl_easy_setopt(curl, CURLOPT_ERRORBUFFER, errbuf);
 
-		FILE* outfile = fopen(local, "wb");
+		char* tempf = malloc(strlen(local) + 8);
+		strcpy(tempf, local);
+		strcpy(tempf + strlen(local), ".dltemp");
+		FILE* outfile = fopen(tempf, "wb");
 		if (outfile)
 		{
 			curl_easy_setopt(curl, CURLOPT_WRITEDATA, outfile);
 
 			if (prog_callback)
 			{
+				curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 0);
 				curl_easy_setopt(curl, CURLOPT_PROGRESSFUNCTION, DLCallback);
 				CallbackInfo info;
 				info.next_callback = prog_callback;
-				info.total_sent = 0;
 				curl_easy_setopt(curl, CURLOPT_PROGRESSDATA, &info);
 			}
 			else
 				curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 1);
 
 			CURLcode success = curl_easy_perform(curl);
+
+			fclose(outfile);
+
 			if (success == 0)
 			{
-				double dltotal;
-				curl_easy_getinfo(curl, CURLINFO_SIZE_DOWNLOAD, &dltotal);
-				ret = dltotal;
+				if (MoveFileEx(tempf, local, MOVEFILE_REPLACE_EXISTING))
+					ret = 0;
+				else
+					MGSetError("Failed to rename '%s' as '%s'", tempf, local);
 			}
 			else
 			{
-				DeleteFile(local);
-				MGSetError("Failed to download '%s':\n%s", url, errbuf);
+				DeleteFile(tempf);
+				if (success == CURLE_ABORTED_BY_CALLBACK)
+				{
+					MGSetError("Download aborted by callback");
+					ret = 2;
+				}
+				else
+					MGSetError("Failed to download '%s':\n%s", url, errbuf);
 			}
 
-			fclose(outfile);
 		}
 		else
-			MGSetError("Couldn't open '%s' for writing.", local);
+			MGSetError("Couldn't open '%s' for writing.", tempf);
 
+		free(tempf);
 		curl_easy_cleanup(curl);
 	}
 	else

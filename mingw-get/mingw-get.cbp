@@ -57,6 +57,7 @@
 		<Unit filename="download.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="download.hh" />
 		<Unit filename="error.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -64,33 +65,40 @@
 		<Unit filename="getbindir.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="getbindir.hh" />
+		<Unit filename="instmanager.cpp" />
+		<Unit filename="instmanager.hpp" />
 		<Unit filename="mainwnd.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="mainwnd.hh" />
 		<Unit filename="mingw-get.manifest" />
 		<Unit filename="multiuser.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="multiuser.h" />
+		<Unit filename="multiuser.hh" />
 		<Unit filename="package.cpp" />
-		<Unit filename="package.hpp" />
+		<Unit filename="package.hh" />
 		<Unit filename="pkg_const.h" />
 		<Unit filename="pkgindex.cpp" />
 		<Unit filename="pkgindex.hpp" />
 		<Unit filename="previnstalls.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="previnstalls.hh" />
 		<Unit filename="ref.hpp" />
 		<Unit filename="resource.h" />
 		<Unit filename="resource.rc">
 			<Option compilerVar="WINDRES" />
 		</Unit>
-		<Unit filename="sash_wnd.c">
+		<Unit filename="sashwnd.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="sashwnd.hh" />
 		<Unit filename="selectinst.cpp">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="selectinst.hh" />
 		<Unit filename="tinyxml\MODIFIED_TINYXML.txt" />
 		<Unit filename="tinyxml\tinystr.cpp" />
 		<Unit filename="tinyxml\tinystr.h" />
@@ -101,10 +109,13 @@
 		<Unit filename="tracked_install.cpp" />
 		<Unit filename="tracked_install.hpp" />
 		<Unit filename="ui.cpp" />
+		<Unit filename="ui.hh" />
 		<Unit filename="versioncompare.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="versioncompare.hh" />
 		<Unit filename="winmain.cpp" />
+		<Unit filename="winmain.hh" />
 		<Extensions>
 			<code_completion />
 			<debugger />

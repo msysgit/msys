@@ -1,5 +1,8 @@
 
+#include "versioncompare.hh"
+
 #include <string.h>
+
 
 static int IsDigit(char ch)
 {
