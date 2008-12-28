@@ -65,29 +65,32 @@ int DownloadFile
 				if (MoveFileEx(tempf, local, MOVEFILE_REPLACE_EXISTING))
 					ret = 0;
 				else
-					MGSetError("Failed to rename '%s' as '%s'", tempf, local);
+					MGError("Failed to rename '%s' as '%s'", tempf, local);
 			}
 			else
 			{
 				DeleteFile(tempf);
 				if (success == CURLE_ABORTED_BY_CALLBACK)
 				{
-					MGSetError("Download aborted by callback");
+					MGError("Download aborted by callback");
 					ret = 2;
 				}
 				else
-					MGSetError("Failed to download '%s':\n%s", url, errbuf);
+				{
+					MGError(errbuf);
+					MGError("Failed to download '%s'", url);
+				}
 			}
 
 		}
 		else
-			MGSetError("Couldn't open '%s' for writing.", tempf);
+			MGError("Couldn't open '%s' for writing.", tempf);
 
 		free(tempf);
 		curl_easy_cleanup(curl);
 	}
 	else
-		MGSetError("Couldn't initialize CURL downloader.");
+		MGError("Couldn't initialize CURL downloader.");
 
 	return ret;
 }

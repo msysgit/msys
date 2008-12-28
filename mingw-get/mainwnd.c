@@ -14,12 +14,13 @@
 #include "ui.hh"
 #include "sashwnd.hh"
 #include "winmain.hh"
+#include "editreposdlg.hh"
 
 
 HWND g_hmainwnd = 0;
 
 
-static int g_vert_grip_x = 150;
+static int g_vert_grip_x = 175;
 static float g_horz_grip_prop = 0.5f;
 static HACCEL g_haccel;
 
@@ -99,17 +100,10 @@ static void InsertColumn
 
 static BOOL CALLBACK MainWndProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-	static int old_cli_width = 0, old_cli_height = 0;
-
 	switch(uMsg)
 	{
 	case WM_INITDIALOG:
 		{
-			RECT rc;
-			GetClientRect(hwndDlg, &rc);
-			old_cli_width = rc.right;
-			old_cli_height = rc.bottom;
-
 			HWND htb = GetDlgItem(hwndDlg, IDC_MAINTOOLBAR);
 			HIMAGELIST il =
 			 ImageList_Create(24, 24, ILC_COLOR32 | ILC_MASK, 6, 0);
@@ -139,9 +133,22 @@ static BOOL CALLBACK MainWndProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM 
 			SendMessage(hcb, CB_ADDSTRING, 0, (LPARAM)"Release Status");
 			SendMessage(hcb, CB_SETCURSEL, 0, 0);
 
-			HWND hcl = GetDlgItem(hwndDlg, IDC_CATLIST);
-			SendMessage(hcl, LB_ADDSTRING, 0, (LPARAM)"All");
-			SendMessage(hcl, LB_SETCURSEL, 0, 0);
+			//HWND hcl = GetDlgItem(hwndDlg, IDC_CATLIST);
+			//SendMessage(hcl, LB_ADDSTRING, 0, (LPARAM)"All");
+			//SendMessage(hcl, LB_SETCURSEL, 0, 0);
+			TVINSERTSTRUCT tvins;
+			tvins.item.mask = TVIF_TEXT | TVIF_PARAM;
+			tvins.item.pszText = (CHAR*)"All Packages";
+			tvins.item.cchTextMax = 199;
+			tvins.item.lParam = 1;
+			tvins.hInsertAfter = TVI_LAST;
+			tvins.hParent = TVI_ROOT;
+			SendMessage(
+			 GetDlgItem(hwndDlg, IDC_CATLIST),
+			 TVM_INSERTITEM,
+			 0,
+			 (LPARAM)(LPTVINSERTSTRUCT)&tvins
+			 );
 
 			HWND hlv = GetDlgItem(hwndDlg, IDC_COMPLIST);
 			ListView_SetExtendedListViewStyle(hlv,
@@ -193,6 +200,9 @@ static BOOL CALLBACK MainWndProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM 
 			return TRUE;
 		case IDM_SOURCES_UPDATELISTS:
 			UI_UpdateLists();
+			return TRUE;
+		case IDM_SOURCES_REPOSITORIES:
+			EditReposDlg();
 			return TRUE;
 		case IDC_CATLIST:
 			if (HIWORD(wParam) == LBN_SELCHANGE)

@@ -68,7 +68,7 @@ bool PkgIndex::LoadIndex()
 	TiXmlDocument doc(mfile.c_str());
 	if (!doc.LoadFile())
 	{
-		MGSetError("Couldn't load '%s' as XML", mfile.c_str());
+		MGError("Couldn't load '%s' as XML", mfile.c_str());
 		return false;
 	}
 	for (TiXmlElement* cat_el =

@@ -2,21 +2,14 @@
 #define ERROR_HH_INC
 
 
-extern char mg_last_error[];
-
-
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 
-void MGSetError(const char* fmt, ...);
-
-
-static inline const char* MGLastError()
-{
-	return mg_last_error;
-}
+void MGError(const char* fmt, ...);
+const char* const* MGGetErrors();
+void MGClearErrors();
 
 
 #ifdef __cplusplus

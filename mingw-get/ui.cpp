@@ -87,6 +87,7 @@ extern "C" void UI_OnCategoryChange(int sel)
 		Edit_SetText(GetDlgItem(g_hmainwnd, IDC_FULLDESC), "");
 		ComboBox_ResetContent(GetDlgItem(g_hmainwnd, IDC_INSTVERSION));
 		EnableWindow(GetDlgItem(g_hmainwnd, IDC_INSTVERSION), FALSE);
+		EnableWindow(GetDlgItem(g_hmainwnd, IDC_FULLDESC), FALSE);
 	}
 }
 
@@ -101,6 +102,7 @@ extern "C" void UI_OnListViewSelect(int sel)
 	Package* pkg = reinterpret_cast< Package* >(lvitem.lParam);
 	Edit_SetText(GetDlgItem(g_hmainwnd, IDC_FULLDESC),
 	 pkg->m_description.c_str());
+	EnableWindow(GetDlgItem(g_hmainwnd, IDC_FULLDESC), TRUE);
 	Static_SetText(GetDlgItem(g_hmainwnd, IDC_DESCTITLE),
 	 pkg->m_title.c_str());
 	ComboBox_ResetContent(GetDlgItem(g_hmainwnd, IDC_INSTVERSION));
@@ -225,15 +227,28 @@ extern "C" void UI_SortListView(int column)
 
 extern "C" void UI_RefreshCategoryList()
 {
-	ListBox_SetCurSel(GetDlgItem(g_hmainwnd, IDC_CATLIST), 0);
-	int ct = ListBox_GetCount(GetDlgItem(g_hmainwnd, IDC_CATLIST));
-	for (; ct > 1; --ct)
-		ListBox_DeleteString(GetDlgItem(g_hmainwnd, IDC_CATLIST), ct - 1);
+	//ListBox_SetCurSel(GetDlgItem(g_hmainwnd, IDC_CATLIST), 0);
+	//int ct = ListBox_GetCount(GetDlgItem(g_hmainwnd, IDC_CATLIST));
+	//for (; ct > 1; --ct)
+		//ListBox_DeleteString(GetDlgItem(g_hmainwnd, IDC_CATLIST), ct - 1);
 	ListView_DeleteAllItems(GetDlgItem(g_hmainwnd, IDC_COMPLIST));
 	for (int i = 0; i < PkgIndex::NumCategories(); ++i)
 	{
-		ListBox_AddString(GetDlgItem(g_hmainwnd, IDC_CATLIST),
-		 PkgIndex::GetCategory(i));
+		TVINSERTSTRUCT tvins;
+		tvins.item.mask = TVIF_TEXT | TVIF_PARAM;
+		tvins.item.pszText = const_cast< CHAR* >(PkgIndex::GetCategory(i));
+		tvins.item.cchTextMax = 199;
+		tvins.item.lParam = i + 1;
+		tvins.hInsertAfter = TVI_LAST;
+		tvins.hParent = TVI_ROOT;
+		SendMessage(
+		 GetDlgItem(g_hmainwnd, IDC_CATLIST),
+		 TVM_INSERTITEM,
+		 0,
+		 (LPARAM)(LPTVINSERTSTRUCT)&tvins
+		 );
+		//ListBox_AddString(GetDlgItem(g_hmainwnd, IDC_CATLIST),
+		 //PkgIndex::GetCategory(i));
 	}
 	UI_OnCategoryChange(0);
 }
@@ -241,7 +256,8 @@ extern "C" void UI_RefreshCategoryList()
 
 extern "C" void LastError_MsgBox(const char* title)
 {
-	MessageBox(g_hmainwnd, MGLastError(), title, MB_OK | MB_ICONERROR);
+	MessageBox(g_hmainwnd, MGGetErrors()[0], title, MB_OK | MB_ICONERROR);
+	MGClearErrors();
 }
 
 
@@ -249,6 +265,8 @@ struct ProgressUIInfo
 {
 	HWND m_hprogressdlg;
 	bool m_cancelsignal;
+	bool m_finished;
+	int m_result;
 	const char* m_dlgtitle;
 	int (*m_thread_func)();
 } g_progressinfo;
@@ -256,8 +274,16 @@ struct ProgressUIInfo
 static DWORD WINAPI UIProgressThread(LPVOID param)
 {
 	int result = ((int (*)())param)();
-	SendNotifyMessage(g_progressinfo.m_hprogressdlg, WM_USER, 0, result);
+	PostMessage(g_progressinfo.m_hprogressdlg, WM_USER + 2012, 0, result);
 	return 0;
+}
+
+extern "C" void UI_ProgressThread_NewLine(const char* txt)
+{
+	Static_SetText(GetDlgItem(g_progressinfo.m_hprogressdlg, IDC_ACTIONTEXT),
+	 txt);
+	ListBox_AddString(GetDlgItem(g_progressinfo.m_hprogressdlg, IDC_ACTIONLIST),
+	 txt);
 }
 
 static BOOL CALLBACK ProgressDlgProc
@@ -271,36 +297,106 @@ static BOOL CALLBACK ProgressDlgProc
 	case WM_INITDIALOG:
 		{
 			SetWindowText(hwndDlg, g_progressinfo.m_dlgtitle);
+			ShowWindow(GetDlgItem(hwndDlg, IDC_ACTIONLIST), FALSE);
 			g_progressinfo.m_hprogressdlg = hwndDlg;
 			g_progressinfo.m_cancelsignal = false;
+			g_progressinfo.m_finished = false;
 			HANDLE hthread = CreateThread(0, 0, UIProgressThread,
 			 (void*)g_progressinfo.m_thread_func, 0, 0);
 			if (hthread)
 				CloseHandle(hthread);
 			else
 			{
-				MGSetError("Failed to create worker thread");
+				MGError("Failed to create worker thread");
 				EndDialog(hwndDlg, -1);
 			}
 		}
 		return TRUE;
 
 	case WM_COMMAND:
-		switch(LOWORD(wParam))
+		switch (LOWORD(wParam))
 		{
-		case IDCANCEL:
-			g_progressinfo.m_cancelsignal = true;
-			//g_progressinfo.m_hprogressdlg = 0; EndDialog(hwndDlg, 0);
+		case IDC_SHOWDETAILS:
+			{
+				RECT wrc, crc;
+				GetWindowRect(hwndDlg, &wrc);
+				GetClientRect(hwndDlg, &crc);
+				ShowWindow(GetDlgItem(hwndDlg, IDC_ACTIONTEXT), FALSE);
+				ShowWindow(GetDlgItem(hwndDlg, IDC_ACTIONLIST), TRUE);
+				ShowWindow(GetDlgItem(hwndDlg, IDC_SHOWDETAILS), FALSE);
+				MoveWindow(hwndDlg, wrc.left, wrc.top, wrc.right - wrc.left,
+				 (static_cast< float >((crc.bottom - crc.top)) / 45.0f) * 150 + wrc.bottom - wrc.top - crc.bottom + crc.top,
+				 TRUE);
+				SetFocus(GetDlgItem(hwndDlg, IDC_PROGRESSEND));
+			}
+			return TRUE;
+		case IDC_PROGRESSEND:
+			if (g_progressinfo.m_finished)
+				EndDialog(hwndDlg, g_progressinfo.m_result);
+			else
+			{
+				EnableWindow(GetDlgItem(hwndDlg, IDC_PROGRESSEND), FALSE);
+				Button_SetText(GetDlgItem(hwndDlg, IDC_PROGRESSEND),
+				 "Please wait...");
+				g_progressinfo.m_cancelsignal = true;
+			}
 			return TRUE;
 		}
 		break;
 
-	case WM_USER:
-		g_progressinfo.m_hprogressdlg = 0; EndDialog(hwndDlg, lParam);
-		//if (lParam == 0)
-			//Static_SetText(GetDlgItem(hwndDlg, IDC_ACTIONTEXT), "Finished!");
-		//else
-			//Static_SetText(GetDlgItem(hwndDlg, IDC_ACTIONTEXT), MGLastError());
+	case WM_USER + 2012:
+		if (g_progressinfo.m_cancelsignal)
+			EndDialog(hwndDlg, lParam);
+		else
+		{
+			Button_SetText(GetDlgItem(hwndDlg, IDC_PROGRESSEND), "&OK");
+			g_progressinfo.m_result = lParam;
+			g_progressinfo.m_finished = true;
+			if (lParam == 0)
+				UI_ProgressThread_NewLine("Finished.");
+			else
+			{
+				for (int i = 0; MGGetErrors()[i]; ++i)
+				{
+					UI_ProgressThread_NewLine(
+					 (std::string("[Error] ") + MGGetErrors()[i]).c_str()
+					 );
+				}
+				MGClearErrors();
+			}
+		}
+		return TRUE;
+
+	case WM_SIZE:
+		{
+			int cli_height = HIWORD(lParam);
+
+			RECT btnrc;
+			GetWindowRect(GetDlgItem(hwndDlg, IDC_PROGRESSEND), &btnrc);
+			TransToClient(hwndDlg, &btnrc);
+			MoveWindow(GetDlgItem(hwndDlg, IDC_PROGRESSEND), btnrc.left,
+			 cli_height - (btnrc.bottom - btnrc.top) - 4,
+			 btnrc.right - btnrc.left, btnrc.bottom - btnrc.top, TRUE);
+
+			GetWindowRect(GetDlgItem(hwndDlg, IDC_SHOWDETAILS), &btnrc);
+			TransToClient(hwndDlg, &btnrc);
+			MoveWindow(GetDlgItem(hwndDlg, IDC_SHOWDETAILS), btnrc.left,
+			 cli_height - (btnrc.bottom - btnrc.top) - 4,
+			 btnrc.right - btnrc.left, btnrc.bottom - btnrc.top, TRUE);
+
+			RECT rc;
+			GetWindowRect(GetDlgItem(hwndDlg, IDC_ACTIONLIST), &rc);
+			TransToClient(hwndDlg, &rc);
+			MoveWindow(GetDlgItem(hwndDlg, IDC_ACTIONLIST), rc.left, rc.top,
+			 rc.right - rc.left,
+			 cli_height - (btnrc.bottom - btnrc.top) - rc.top - 16, TRUE);
+
+			GetWindowRect(GetDlgItem(hwndDlg, IDC_STATUSGRP), &rc);
+			TransToClient(hwndDlg, &rc);
+			MoveWindow(GetDlgItem(hwndDlg, IDC_STATUSGRP), rc.left, rc.top,
+			 rc.right - rc.left,
+			 cli_height - (btnrc.bottom - btnrc.top) - rc.top - 10, TRUE);
+		}
 		return TRUE;
 	}
 
@@ -331,30 +427,29 @@ static int ListDownloadCallback(size_t total, size_t current)
 	return UI_ProgressThread_IsCancelled() ? 1 : 0;
 }
 
-static int DownloadListThread()
+static int UpdateListThread()
 {
+	UI_ProgressThread_NewLine("Downloading updated manifest...");
 	int dlresult = DownloadFile(
 	 "http://localhost:1330/mingwinst/mingw_avail.mft",
 	 (std::string(GetBinDir()) + "\\mingw_avail.mft").c_str(),
 	 ListDownloadCallback
 	 );
-	if (dlresult > 0 && dlresult != 2)
-		dlresult = -dlresult;
-	return dlresult;
+	if (dlresult != 0)
+	{
+		if (dlresult > 0 && dlresult != 2)
+			dlresult = -dlresult;
+		return dlresult;
+	}
+	return 0;
 }
 
 extern "C" void UI_UpdateLists()
 {
-	if (UI_ThreadWithProgress(DownloadListThread, "Downloading Updated Lists") < 0)
-	{
-		LastError_MsgBox("Download Failure");
+	if (UI_ThreadWithProgress(UpdateListThread, "Download Updated Lists") != 0)
 		return;
-	}
 	if (!PkgIndex::LoadIndex())
-	{
-		LastError_MsgBox("Index Load Failure");
 		return;
-	}
 	UI_RefreshCategoryList();
 	return;
 }

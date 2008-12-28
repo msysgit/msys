@@ -58,9 +58,7 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="download.hh" />
-		<Unit filename="error.c">
-			<Option compilerVar="CC" />
-		</Unit>
+		<Unit filename="error.cpp" />
 		<Unit filename="error.hh" />
 		<Unit filename="getbindir.c">
 			<Option compilerVar="CC" />

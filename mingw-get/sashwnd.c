@@ -1,6 +1,6 @@
 
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>
+#include "sashwnd.hh"
+
 #include "resource.h"
 #include "mainwnd.hh"
 
@@ -11,56 +11,58 @@ static LRESULT CALLBACK SashWndProc
   WPARAM wParam,
   LPARAM lParam)
 {
-	static PAINTSTRUCT ps;
-	static HDC hdc;
-	static HPEN pen, oldpen;
-	static RECT tbrc, statrc, rc;
-	static POINT tl, br;
-	static int drag_offset;
+	static int drag_offset = 0;
 
 	switch (uMsg)
 	{
 	case WM_LBUTTONDOWN:
-		GetWindowRect(hwnd, &rc);
-		tl.x = rc.left; tl.y = rc.top; ScreenToClient(hwnd, &tl);
-		br.x = rc.right; br.y = rc.bottom; ScreenToClient(hwnd, &br);
-		if (br.x - tl.x < br.y - tl.y)
-			drag_offset = LOWORD(lParam) - tl.x;
-		else
-			drag_offset = HIWORD(lParam) - tl.y;
-
-		SetCapture(hwnd);
-
-		GetClientRect(GetParent(hwnd), &rc);
-		GetWindowRect(GetDlgItem(GetParent(hwnd), IDC_MAINTOOLBAR), &tbrc);
-		TransToClient(GetParent(hwnd), &tbrc);
-		GetWindowRect(GetDlgItem(GetParent(hwnd), IDC_STATBAR), &statrc);
-		TransToClient(GetParent(hwnd), &statrc);
-		if (br.x - tl.x < br.y - tl.y)
 		{
-			tl.x = rc.left + drag_offset;
-			tl.y = rc.top + (tbrc.bottom - tbrc.top) + 6;
-			br.x = rc.right + 1 + drag_offset - 8;
-			br.y = rc.bottom + 1 - (statrc.bottom - statrc.top);
-		}
-		else
-		{
-			tl.x = rc.left;
-			tl.y = rc.top + drag_offset  + (tbrc.bottom - tbrc.top) + 6;
-			br.x = rc.right + 1;
-			br.y = rc.bottom + 1 - (statrc.bottom - statrc.top) + drag_offset - 8;
-		}
-		ClientToScreen(GetParent(hwnd), &tl);
-		ClientToScreen(GetParent(hwnd), &br);
-		SetRect(&rc, tl.x, tl.y, br.x, br.y);
-		ClipCursor(&rc);
+			RECT rc;
+			GetWindowRect(hwnd, &rc);
+			POINT tl, br;
+			tl.x = rc.left; tl.y = rc.top; ScreenToClient(hwnd, &tl);
+			br.x = rc.right; br.y = rc.bottom; ScreenToClient(hwnd, &br);
+			if (br.x - tl.x < br.y - tl.y)
+				drag_offset = LOWORD(lParam) - tl.x;
+			else
+				drag_offset = HIWORD(lParam) - tl.y;
 
+			SetCapture(hwnd);
+
+			GetClientRect(GetParent(hwnd), &rc);
+			RECT tbrc;
+			GetWindowRect(GetDlgItem(GetParent(hwnd), IDC_MAINTOOLBAR), &tbrc);
+			TransToClient(GetParent(hwnd), &tbrc);
+			RECT statrc;
+			GetWindowRect(GetDlgItem(GetParent(hwnd), IDC_STATBAR), &statrc);
+			TransToClient(GetParent(hwnd), &statrc);
+			if (br.x - tl.x < br.y - tl.y)
+			{
+				tl.x = rc.left + drag_offset;
+				tl.y = rc.top + (tbrc.bottom - tbrc.top) + 6;
+				br.x = rc.right + 1 + drag_offset - 8;
+				br.y = rc.bottom + 1 - (statrc.bottom - statrc.top);
+			}
+			else
+			{
+				tl.x = rc.left;
+				tl.y = rc.top + drag_offset  + (tbrc.bottom - tbrc.top) + 6;
+				br.x = rc.right + 1;
+				br.y = rc.bottom + 1 - (statrc.bottom - statrc.top) + drag_offset - 8;
+			}
+			ClientToScreen(GetParent(hwnd), &tl);
+			ClientToScreen(GetParent(hwnd), &br);
+			SetRect(&rc, tl.x, tl.y, br.x, br.y);
+			ClipCursor(&rc);
+		}
 		return 0;
 
 	case WM_MOUSEMOVE:
 		if (wParam & MK_LBUTTON)
 		{
+			RECT rc;
 			GetWindowRect(hwnd, &rc);
+			POINT tl, br;
 			tl.x = rc.left; tl.y = rc.top; ScreenToClient(GetParent(hwnd), &tl);
 			br.x = rc.right; br.y = rc.bottom; ScreenToClient(GetParent(hwnd), &br);
 			DWORD dwpos = GetMessagePos();
@@ -80,14 +82,17 @@ static LRESULT CALLBACK SashWndProc
 
 	case WM_PAINT:
 		{
+			RECT rc;
 			GetWindowRect(hwnd, &rc);
+			POINT tl, br;
 			tl.x = rc.left; tl.y = rc.top; ScreenToClient(hwnd, &tl);
 			br.x = rc.right; br.y = rc.bottom; ScreenToClient(hwnd, &br);
 
-			hdc = BeginPaint(hwnd, &ps);
+			PAINTSTRUCT ps;
+			HDC hdc = BeginPaint(hwnd, &ps);
 
-			pen = CreatePen(PS_SOLID, 0, GetSysColor(COLOR_3DLIGHT));
-			oldpen = SelectObject(hdc, pen);
+			HPEN pen = CreatePen(PS_SOLID, 0, GetSysColor(COLOR_3DLIGHT));
+			HPEN oldpen = SelectObject(hdc, pen);
 			MoveToEx(hdc, tl.x, tl.y, 0);
 			if (br.x - tl.x < br.y - tl.y)
 				LineTo(hdc, tl.x, br.y);
