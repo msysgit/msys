@@ -49,11 +49,12 @@ static void LVAddPackage(HWND hlist, const Package& pkg)
 }
 
 
-extern "C" void UI_OnCategoryChange(int sel)
+extern "C" void UI_OnCategoryChange(int const* categories)
 {
 	ListView_DeleteAllItems(GetDlgItem(g_hmainwnd, IDC_COMPLIST));
 	bool have_item = false;
-	if (sel == 0)
+
+	if (*categories == 0)
 	{
 		for (PkgIndex::PackageIter it = PkgIndex::Packages_Begin();
 		 it != PkgIndex::Packages_End();
@@ -69,10 +70,14 @@ extern "C" void UI_OnCategoryChange(int sel)
 		 it != PkgIndex::Packages_End();
 		 ++it)
 		{
-			if (it->second->m_categories.count(sel - 1) > 0)
+			for (int const* cat_it = categories; *cat_it != -1; ++cat_it)
 			{
-				LVAddPackage(GetDlgItem(g_hmainwnd, IDC_COMPLIST), *it->second);
-				have_item = true;
+				if (it->second->m_categories.count(*cat_it - 1) > 0)
+				{
+					LVAddPackage(GetDlgItem(g_hmainwnd, IDC_COMPLIST),
+					 *it->second);
+					have_item = true;
+				}
 			}
 		}
 	}
@@ -227,14 +232,23 @@ extern "C" void UI_SortListView(int column)
 
 extern "C" void UI_RefreshCategoryList()
 {
-	//ListBox_SetCurSel(GetDlgItem(g_hmainwnd, IDC_CATLIST), 0);
-	//int ct = ListBox_GetCount(GetDlgItem(g_hmainwnd, IDC_CATLIST));
-	//for (; ct > 1; --ct)
-		//ListBox_DeleteString(GetDlgItem(g_hmainwnd, IDC_CATLIST), ct - 1);
 	ListView_DeleteAllItems(GetDlgItem(g_hmainwnd, IDC_COMPLIST));
+	TreeView_DeleteAllItems(GetDlgItem(g_hmainwnd, IDC_CATLIST));
+	TVINSERTSTRUCT tvins;
+	tvins.item.mask = TVIF_TEXT | TVIF_PARAM;
+	tvins.item.pszText = const_cast< CHAR* >("All Packages");
+	tvins.item.cchTextMax = 199;
+	tvins.item.lParam = 0;
+	tvins.hInsertAfter = TVI_LAST;
+	tvins.hParent = TVI_ROOT;
+	SendMessage(
+	 GetDlgItem(g_hmainwnd, IDC_CATLIST),
+	 TVM_INSERTITEM,
+	 0,
+	 (LPARAM)(LPTVINSERTSTRUCT)&tvins
+	 );
 	for (int i = 0; i < PkgIndex::NumCategories(); ++i)
 	{
-		TVINSERTSTRUCT tvins;
 		tvins.item.mask = TVIF_TEXT | TVIF_PARAM;
 		tvins.item.pszText = const_cast< CHAR* >(PkgIndex::GetCategory(i));
 		tvins.item.cchTextMax = 199;
@@ -247,10 +261,9 @@ extern "C" void UI_RefreshCategoryList()
 		 0,
 		 (LPARAM)(LPTVINSERTSTRUCT)&tvins
 		 );
-		//ListBox_AddString(GetDlgItem(g_hmainwnd, IDC_CATLIST),
-		 //PkgIndex::GetCategory(i));
 	}
-	UI_OnCategoryChange(0);
+	int cats[] = {0, -1};
+	UI_OnCategoryChange(cats);
 }
 
 

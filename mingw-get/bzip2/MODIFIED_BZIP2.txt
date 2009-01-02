@@ -1,0 +1,13 @@
+MODIFIED BZIP2
+
+This directory contains a modified version of bzip2 by Julian Seward.
+
+This modified version is distributed under the terms of the license contained in
+the file LICENSE. You should also read the file README, copied from the original
+bzip2 release.
+
+A number of files present in the original bzip2 release have not been
+redistributed.
+
+The following files were modified:
+ * bzlib.c

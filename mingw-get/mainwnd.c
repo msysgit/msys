@@ -207,7 +207,7 @@ static BOOL CALLBACK MainWndProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM 
 		case IDC_CATLIST:
 			if (HIWORD(wParam) == LBN_SELCHANGE)
 			{
-				UI_OnCategoryChange(ListBox_GetCurSel((HWND)lParam));
+				//UI_OnCategoryChange(ListBox_GetCurSel((HWND)lParam));
 				return TRUE;
 			}
 			break;

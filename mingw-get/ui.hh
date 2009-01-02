@@ -12,7 +12,7 @@ extern "C" {
 
 
 void UI_UpdateLists();
-void UI_OnCategoryChange(int sel);
+void UI_OnCategoryChange(int const* categories);
 void UI_SortListView(int column);
 void UI_OnListViewSelect(int sel);
 void UI_OnStateCycle(int sel);

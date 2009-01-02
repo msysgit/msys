@@ -37,6 +37,7 @@
 			<Add option="-DCURL_STATICLIB" />
 			<Add directory="$(#curl.include)" />
 			<Add directory="." />
+			<Add directory="zlib" />
 		</Compiler>
 		<Linker>
 			<Add library="curl" />
@@ -53,11 +54,105 @@
 			<Add directory="$(#curl.lib)" />
 			<Add directory="$(#zlib)" />
 		</Linker>
+		<Unit filename="7z\7zCrc.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="7z\7zCrc.h" />
+		<Unit filename="7z\Alloc.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="7z\Alloc.h" />
+		<Unit filename="7z\Archive\7z\7zAlloc.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="7z\Archive\7z\7zAlloc.h" />
+		<Unit filename="7z\Archive\7z\7zBuffer.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="7z\Archive\7z\7zBuffer.h" />
+		<Unit filename="7z\Archive\7z\7zDecode.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="7z\Archive\7z\7zDecode.h" />
+		<Unit filename="7z\Archive\7z\7zExtract.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="7z\Archive\7z\7zExtract.h" />
+		<Unit filename="7z\Archive\7z\7zHeader.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="7z\Archive\7z\7zHeader.h" />
+		<Unit filename="7z\Archive\7z\7zIn.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="7z\Archive\7z\7zIn.h" />
+		<Unit filename="7z\Archive\7z\7zItem.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="7z\Archive\7z\7zItem.h" />
+		<Unit filename="7z\Archive\7z\7zMethodID.h" />
+		<Unit filename="7z\Compress\Branch\BranchTypes.h" />
+		<Unit filename="7z\Compress\Branch\BranchX86.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="7z\Compress\Branch\BranchX86.h" />
+		<Unit filename="7z\Compress\Branch\BranchX86_2.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="7z\Compress\Branch\BranchX86_2.h" />
+		<Unit filename="7z\Compress\Huffman\HuffmanEncode.h" />
+		<Unit filename="7z\Compress\Lz\LzHash.h" />
+		<Unit filename="7z\Compress\Lz\MatchFinder.h" />
+		<Unit filename="7z\Compress\Lz\MatchFinderMt.h" />
+		<Unit filename="7z\Compress\Lzma\LzmaDecode.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="7z\Compress\Lzma\LzmaDecode.h" />
+		<Unit filename="7z\Compress\Lzma\LzmaStateDecode.h" />
+		<Unit filename="7z\Compress\Lzma\LzmaTypes.h" />
+		<Unit filename="7z\MODIFIED_LZMA.txt" />
+		<Unit filename="7z\Types.h" />
 		<Unit filename="TODO.txt" />
+		<Unit filename="archiveread.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="archiveread.hh" />
+		<Unit filename="archiveread7z.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="archiveread_impl.h" />
+		<Unit filename="archivereadtar.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="archivereadzip.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="bzip2\MODIFIED_BZIP2.txt" />
+		<Unit filename="bzip2\bzlib.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="bzip2\bzlib.h" />
+		<Unit filename="bzip2\bzlib_private.h" />
+		<Unit filename="bzip2\crctable.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="bzip2\decompress.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="bzip2\huffman.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="bzip2\randtable.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="download.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="download.hh" />
+		<Unit filename="editreposdlg.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="editreposdlg.hh" />
 		<Unit filename="error.cpp" />
 		<Unit filename="error.hh" />
 		<Unit filename="getbindir.c">
@@ -114,6 +209,56 @@
 		<Unit filename="versioncompare.hh" />
 		<Unit filename="winmain.cpp" />
 		<Unit filename="winmain.hh" />
+		<Unit filename="zlib\MODIFIED_ZLIB.txt" />
+		<Unit filename="zlib\adler32.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="zlib\contrib\minizip\crypt.h" />
+		<Unit filename="zlib\contrib\minizip\ioapi.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="zlib\contrib\minizip\ioapi.h" />
+		<Unit filename="zlib\contrib\minizip\unzip.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="zlib\contrib\minizip\unzip.h" />
+		<Unit filename="zlib\crc32.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="zlib\crc32.h" />
+		<Unit filename="zlib\deflate.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="zlib\deflate.h" />
+		<Unit filename="zlib\gzio.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="zlib\infback.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="zlib\inffast.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="zlib\inffast.h" />
+		<Unit filename="zlib\inffixed.h" />
+		<Unit filename="zlib\inflate.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="zlib\inflate.h" />
+		<Unit filename="zlib\inftrees.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="zlib\inftrees.h" />
+		<Unit filename="zlib\trees.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="zlib\trees.h" />
+		<Unit filename="zlib\zconf.h" />
+		<Unit filename="zlib\zlib.h" />
+		<Unit filename="zlib\zutil.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="zlib\zutil.h" />
 		<Extensions>
 			<code_completion />
 			<debugger />
