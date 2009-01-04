@@ -9,12 +9,13 @@
 #include <ole2.h>
 #include "resource.h"
 #include "pkg_const.h"
-#include "package.hh"
 #include "selectinst.hh"
-#include "ui.hh"
 #include "sashwnd.hh"
 #include "winmain.hh"
 #include "editreposdlg.hh"
+#include "ui_general.hh"
+#include "pkgindex.hh"
+#include "packagelist.hh"
 
 
 HWND g_hmainwnd = 0;
@@ -66,44 +67,14 @@ void NewHorzSashPos(int pos)
 }
 
 
-static void InsertColumn
- (HWND hlv,
-  const char* txt,
-  int index,
-  int fmt,
-  int width)
-{
-	int tlen = strlen(txt);
-	if (tlen >= 200)
-		return;
-	char* tcopy = malloc(tlen + 1);
-	strcpy(tcopy, txt);
-	LVCOLUMN lvc;
-	lvc.mask = LVCF_FMT | LVCF_WIDTH | LVCF_TEXT;
-	lvc.fmt = fmt;
-	if (width > 0)
-		lvc.cx = width;
-	else
-	{
-		SIZE sz;
-		if (GetTextExtentPoint32(GetDC(hlv), tcopy, tlen, &sz))
-			lvc.cx = sz.cx + 15;
-		else
-			lvc.cx = 100;
-	}
-	lvc.pszText = tcopy;
-	lvc.cchTextMax = tlen;
-	ListView_InsertColumn(hlv, index, &lvc);
-	free(tcopy);
-}
-
-
-static BOOL CALLBACK MainWndProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
+BOOL CALLBACK MainWndProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	switch(uMsg)
 	{
 	case WM_INITDIALOG:
 		{
+			g_hmainwnd = hwndDlg;
+
 			HWND htb = GetDlgItem(hwndDlg, IDC_MAINTOOLBAR);
 			HIMAGELIST il =
 			 ImageList_Create(24, 24, ILC_COLOR32 | ILC_MASK, 6, 0);
@@ -133,9 +104,6 @@ static BOOL CALLBACK MainWndProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM 
 			SendMessage(hcb, CB_ADDSTRING, 0, (LPARAM)"Release Status");
 			SendMessage(hcb, CB_SETCURSEL, 0, 0);
 
-			//HWND hcl = GetDlgItem(hwndDlg, IDC_CATLIST);
-			//SendMessage(hcl, LB_ADDSTRING, 0, (LPARAM)"All");
-			//SendMessage(hcl, LB_SETCURSEL, 0, 0);
 			TVINSERTSTRUCT tvins;
 			tvins.item.mask = TVIF_TEXT | TVIF_PARAM;
 			tvins.item.pszText = (CHAR*)"All Packages";
@@ -150,26 +118,7 @@ static BOOL CALLBACK MainWndProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM 
 			 (LPARAM)(LPTVINSERTSTRUCT)&tvins
 			 );
 
-			HWND hlv = GetDlgItem(hwndDlg, IDC_COMPLIST);
-			ListView_SetExtendedListViewStyle(hlv,
-			 LVS_EX_FULLROWSELECT | LVS_EX_HEADERDRAGDROP);
-			il = ImageList_Create(16, 16, ILC_COLOR32 | ILC_MASK, 10, 0);
-			HBITMAP buttonsbmp =
-			 LoadBitmap(g_hinstance, MAKEINTRESOURCE(IDB_STATES));
-			ImageList_AddMasked(il, buttonsbmp, RGB(255, 0, 255));
-			DeleteObject(buttonsbmp);
-			(void)ListView_SetImageList(hlv, il, LVSIL_SMALL);
-			SIZE sz;
-			sz.cx = 100;
-			HDC lvdc = GetDC(hlv);
-			GetTextExtentPoint32(lvdc, "sample string", 13, &sz);
-			ReleaseDC(hlv, lvdc);
-			InsertColumn(hlv, "", 0, LVCFMT_LEFT, 25);
-			InsertColumn(hlv, "Package", 1, LVCFMT_LEFT, sz.cx);
-			InsertColumn(hlv, "Installed Version", 2, LVCFMT_LEFT, 0);
-			InsertColumn(hlv, "Latest Version", 3, LVCFMT_LEFT, 0);
-			InsertColumn(hlv, "Size", 4, LVCFMT_RIGHT, 0);
-			InsertColumn(hlv, "Description", 5, LVCFMT_LEFT, sz.cx * 1.8);
+			PackageList_Create();
 
 			HFONT hFont = (HFONT)SendMessage(hwndDlg, WM_GETFONT, 0, 0);
 			LOGFONT lf = {0};
@@ -223,17 +172,19 @@ static BOOL CALLBACK MainWndProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM 
 			case LVN_GETDISPINFO:
 				{
 					((NMLVDISPINFO*)lParam)->item.pszText =
-					 (char*)Pkg_GetSubItemText(((NMLVDISPINFO*)lParam)->item.lParam,
-					  ((NMLVDISPINFO*)lParam)->item.iSubItem);
+					 (char*)PkgIndex_PackageGetSubItemText(
+					  ((NMLVDISPINFO*)lParam)->item.lParam,
+					  ((NMLVDISPINFO*)lParam)->item.iSubItem
+					  );
 				}
 				return 0;
 			case LVN_COLUMNCLICK:
-				UI_SortListView(((LPNMLISTVIEW)lParam)->iSubItem);
+				PackageList_Sort(((LPNMLISTVIEW)lParam)->iSubItem);
 				return 0;
 			case LVN_ITEMCHANGED:
 				if ((((LPNMLISTVIEW)lParam)->uChanged & LVIF_STATE)
 				 && (((LPNMLISTVIEW)lParam)->uNewState & LVIS_SELECTED))
-					UI_OnListViewSelect(((LPNMLISTVIEW)lParam)->iItem);
+					PackageList_OnSelect(((LPNMLISTVIEW)lParam)->iItem);
 				return 0;
 			case NM_CLICK:
 				{
@@ -247,7 +198,7 @@ static BOOL CALLBACK MainWndProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM 
 					if ((lvhti.flags & LVHT_ONITEMICON)
 					 && !(lvhti.flags & LVHT_ONITEMLABEL)
 					 && lvhti.iItem >= 0)
-						UI_OnStateCycle(lvhti.iItem);
+						PackageList_OnStateCycle(lvhti.iItem);
 				}
 				return 0;
 			case NM_RCLICK:
@@ -268,12 +219,13 @@ static BOOL CALLBACK MainWndProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM 
 						lvitem.mask = LVIF_PARAM;
 						ListView_GetItem(((LPNMHDR)lParam)->hwndFrom, &lvitem);
 						const char* instv =
-						 Pkg_GetInstalledVersion(lvitem.lParam);
+						 PkgIndex_PackageGetInstalledVersion(lvitem.lParam);
 						if (instv)
 							AppendMenu(menu, MF_SEPARATOR, -1, 0);
 						else
 						{
-							int act = Pkg_GetSelectedAction(lvitem.lParam);
+							int act =
+							 PkgIndex_PackageGetSelectedAction(lvitem.lParam);
 							if (act != ACT_NO_CHANGE)
 							{
 								AppendMenu(menu, MF_STRING,
@@ -296,15 +248,16 @@ static BOOL CALLBACK MainWndProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM 
 						switch (ret)
 						{
 						case 10000 + ACT_INSTALL_VERSION:
-							Pkg_SelectAction(lvitem.lParam,
+							PkgIndex_PackageSelectAction(lvitem.lParam,
 							 ACT_INSTALL_VERSION);
 							break;
 						case 10000 + ACT_NO_CHANGE:
-							Pkg_SelectAction(lvitem.lParam, ACT_NO_CHANGE);
+							PkgIndex_PackageSelectAction(lvitem.lParam,
+							 ACT_NO_CHANGE);
 							break;
 						}
 						lvitem.mask = LVIF_IMAGE;
-						lvitem.iImage = Pkg_GetStateImage(lvitem.lParam);
+						lvitem.iImage = PkgIndex_PackageGetStateImage(lvitem.lParam);
 						ListView_SetItem(((LPNMHDR)lParam)->hwndFrom, &lvitem);
 					}
 				}

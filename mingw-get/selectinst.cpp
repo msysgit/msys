@@ -10,9 +10,9 @@
 #include "error.hh"
 #include "instmanager.hpp"
 #include "previnstalls.hh"
-#include "ui.hh"
 #include "winmain.hh"
 #include "mainwnd.hh"
+#include "ui_general.hh"
 
 
 char g_inst_loc[MAX_PATH] = {0};

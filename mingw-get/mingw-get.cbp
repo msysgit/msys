@@ -145,6 +145,10 @@
 		<Unit filename="bzip2\randtable.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="categorytree.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="categorytree.hh" />
 		<Unit filename="download.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -170,15 +174,25 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="multiuser.hh" />
-		<Unit filename="package.cpp" />
-		<Unit filename="package.hh" />
+		<Unit filename="packagelist.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="packagelist.hh" />
+		<Unit filename="packageview.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="packageview.hh" />
 		<Unit filename="pkg_const.h" />
 		<Unit filename="pkgindex.cpp" />
-		<Unit filename="pkgindex.hpp" />
+		<Unit filename="pkgindex.hh" />
 		<Unit filename="previnstalls.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="previnstalls.hh" />
+		<Unit filename="progressthread.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="progressthread.hh" />
 		<Unit filename="ref.hpp" />
 		<Unit filename="resource.h" />
 		<Unit filename="resource.rc">
@@ -201,13 +215,17 @@
 		<Unit filename="tinyxml\tinyxmlparser.cpp" />
 		<Unit filename="tracked_install.cpp" />
 		<Unit filename="tracked_install.hpp" />
-		<Unit filename="ui.cpp" />
-		<Unit filename="ui.hh" />
+		<Unit filename="ui_general.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="ui_general.hh" />
 		<Unit filename="versioncompare.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="versioncompare.hh" />
-		<Unit filename="winmain.cpp" />
+		<Unit filename="winmain.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="winmain.hh" />
 		<Unit filename="zlib\MODIFIED_ZLIB.txt" />
 		<Unit filename="zlib\adler32.c">

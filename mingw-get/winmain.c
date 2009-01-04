@@ -1,10 +1,8 @@
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
-#include <string>
 #include <curl/curl.h>
 #include "mainwnd.hh"
-#include "ui.hh"
 #include "selectinst.hh"
 #include "categorytree.hh"
 #include "pkgindex.hh"
