@@ -252,14 +252,14 @@ malloc_init ()
 }
 
 extern "C" void
-__malloc_lock (struct _reent *)
+__malloc_lock ()
 {
   TRACE_IN;
   mprotect->acquire ();
 }
 
 extern "C" void
-__malloc_unlock (struct _reent *)
+__malloc_unlock ()
 {
   TRACE_IN;
   mprotect->release ();
