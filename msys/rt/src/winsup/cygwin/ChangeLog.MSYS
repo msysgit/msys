@@ -1,3 +1,11 @@
+2009.05.01  Cesar Strauss  <cestrauss@gmail.com>
+
+	* fork.cc (fork_parent): Remove unused argument from malloc_lock
+	argument.
+	* malloc.cc (malloc_lock, malloc_unlock): Ditto.
+	* winsup.h: Ditto.
+	Remove duplicate declarations of malloc_lock and malloc_unlock.
+
 2008.08.21  Cesar Strauss  <cestrauss@gmail.com>
 
 	* fhandler.cc (fhandler_disk_file::open): Store the full Windows
