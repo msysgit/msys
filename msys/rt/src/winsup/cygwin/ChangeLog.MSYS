@@ -1,4 +1,8 @@
-2009.05.01  Cesar Strauss  <cestrauss@gmail.com>
+2009.01.20  Cesar Strauss  <cestrauss@gmail.com>
+
+	* errno.cc (FILENAME_EXCED_RANGE): Map to ENAMETOOLONG.
+
+2009.01.05  Cesar Strauss  <cestrauss@gmail.com>
 
 	* fork.cc (fork_parent): Remove unused argument from malloc_lock
 	argument.
