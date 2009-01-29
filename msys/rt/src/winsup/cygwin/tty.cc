@@ -31,36 +31,32 @@ extern fhandler_tty_master *tty_master;
 extern "C" int
 grantpt (int fd)
 {
-  TRACE_IN;
+  TRACETTY;
   return 0;
 }
 
 extern "C" int
 unlockpt (int fd)
 {
-  TRACE_IN;
+  TRACETTY;
   return 0;
 }
 
 extern "C" int
 ttyslot (void)
 {
-  TRACE_IN;
+  TRACETTY;
   if (NOTSTATE (myself, PID_USETTY))
     return -1;
   return myself->ctty;
 }
 
+// tty_init is called for both PTY and TTY upon process start.
+// tty_init is not called for a native process.
 void __stdcall
 tty_init (void)
 {
-  TRACE_IN;
-#if 0
-# FIXME: Is this needed??  New Cygwin code.
-  if (!myself->ppid_handle && NOTSTATE (myself, PID_CYGPARENT))
-    cygheap->fdtab.get_debugger_info ();
-#endif
-
+  TRACETTY;
   if (NOTSTATE (myself, PID_USETTY))
     return;
   if (myself->ctty == -1)
@@ -74,15 +70,19 @@ tty_init (void)
 
 /* Create session's master tty */
 
+// FIXME: create_tty_master doesn't appear to be called at all.
+#if 1
 void __stdcall
 create_tty_master (int ttynum)
 {
-  TRACE_IN;
+  TRACETTY;
   tty_master = (fhandler_tty_master *)
     cygheap->fdtab.build_fhandler (-1, FH_TTYM, "/dev/ttym", ttynum);
+#if 1
   if (tty_master->init (ttynum))
     api_fatal ("Can't create master tty");
   else
+#endif
     {
       /* Log utmp entry */
       struct utmp our_utmp;
@@ -104,11 +104,14 @@ create_tty_master (int ttynum)
       login (&our_utmp);
     }
 }
+#endif
 
+// tty_terminate is used for both PTY and TTY and is called at process exit.
+// tty_terminate is not called for native process.
 void __stdcall
 tty_terminate (void)
 {
-  TRACE_IN;
+  TRACETTY;
   if (NOTSTATE (myself, PID_USETTY))
     return;
   cygwin_shared->tty.terminate ();
@@ -117,7 +120,7 @@ tty_terminate (void)
 int __stdcall
 attach_tty (int num)
 {
-  TRACE_IN;
+  TRACETTY;
   if (num != -1)
     {
       return cygwin_shared->tty.connect_tty (num);
@@ -130,7 +133,7 @@ attach_tty (int num)
 void
 tty_list::terminate (void)
 {
-  TRACE_IN;
+  TRACETTY;
   int ttynum = myself->ctty;
 
   /* Keep master running till there are connected clients */
@@ -143,7 +146,7 @@ tty_list::terminate (void)
 	 go away */
       for (int i = 0; ; i++)
 	{
-	  if (!t->slave_alive ())
+	  if (!t->alive (TTY_SLAVE_ALIVE))
 	    break;
 	  if (i >= 100)
 	    {
@@ -170,7 +173,7 @@ tty_list::terminate (void)
 int
 tty_list::connect_tty (int ttynum)
 {
-  TRACE_IN;
+  TRACETTY;
   if (ttynum < 0 || ttynum >= NTTYS)
     {
       termios_printf ("ttynum (%d) out of range", ttynum);
@@ -188,7 +191,7 @@ tty_list::connect_tty (int ttynum)
 void
 tty_list::init (void)
 {
-  TRACE_IN;
+  TRACETTY;
   for (int i = 0; i < NTTYS; i++)
     {
       ttys[i].init ();
@@ -204,7 +207,7 @@ tty_list::init (void)
 int
 tty_list::allocate_tty (int with_console)
 {
-  TRACE_IN;
+  TRACETTY;
   HWND console;
 
   /* FIXME: This whole function needs a protective mutex. */
@@ -303,7 +306,9 @@ tty_list::allocate_tty (int with_console)
   if (with_console)
     {
       termios_printf ("console %x associated with tty%d", console, freetty);
+#if 1
       create_tty_master (freetty);
+#endif
     }
   else
     termios_printf ("tty%d allocated", freetty);
@@ -311,23 +316,12 @@ tty_list::allocate_tty (int with_console)
 }
 
 BOOL
-tty::slave_alive ()
-{
-  TRACE_IN;
-  return alive (TTY_SLAVE_ALIVE);
-}
-
-BOOL
-tty::master_alive ()
-{
-  TRACE_IN;
-  return alive (TTY_MASTER_ALIVE);
-}
-
-BOOL
 tty::alive (const char *fmt)
 {
-  TRACE_IN;
+  /* tty::alive is used by pty to determine if event is still active.
+   * Output of debug info will continue to scroll even with no activity.
+  TRACETTY;
+  */
   HANDLE ev;
   char buf[sizeof (TTY_MASTER_ALIVE) + 16];
 
@@ -340,7 +334,7 @@ tty::alive (const char *fmt)
 HANDLE
 tty::create_inuse (const char *fmt)
 {
-  TRACE_IN;
+  TRACETTY;
   HANDLE h;
   char buf[sizeof (TTY_MASTER_ALIVE) + 16];
 
@@ -355,7 +349,7 @@ tty::create_inuse (const char *fmt)
 void
 tty::init (void)
 {
-  TRACE_IN;
+  TRACETTY;
   output_stopped = 0;
   setsid (0);
   pgid = 0;
@@ -368,7 +362,7 @@ tty::init (void)
 HANDLE
 tty::get_event (const char *fmt, BOOL manual_reset)
 {
-  TRACE_IN;
+  TRACETTY;
   HANDLE hev;
   char buf[40];
 
@@ -387,7 +381,7 @@ tty::get_event (const char *fmt, BOOL manual_reset)
 int
 tty::make_pipes (fhandler_pty_master *ptym)
 {
-  TRACE_IN;
+  TRACETTY;
   /* Create communication pipes */
 
   /* FIXME: should this be sec_none_nih? */
@@ -412,6 +406,11 @@ tty::make_pipes (fhandler_pty_master *ptym)
   DWORD pipe_mode = PIPE_NOWAIT;
   if (!SetNamedPipeHandleState (to_slave, &pipe_mode, NULL, NULL))
     termios_printf ("can't set to_slave to non-blocking mode");
+#if 0
+  // Do these help? - Not that I have found.
+  SetConsoleMode (from_slave, ENABLE_PROCESSED_OUTPUT | ENABLE_PROCESSED_INPUT);
+  SetConsoleMode (to_slave, ENABLE_PROCESSED_OUTPUT | ENABLE_PROCESSED_INPUT);
+#endif
   ptym->set_io_handle (from_slave);
   ptym->set_output_handle (to_slave);
   return TRUE;
@@ -420,7 +419,7 @@ tty::make_pipes (fhandler_pty_master *ptym)
 BOOL
 tty::common_init (fhandler_pty_master *ptym)
 {
-  TRACE_IN;
+  TRACETTY;
   /* Set termios information.  Force initialization. */
   ptym->tcinit (this, TRUE);
 

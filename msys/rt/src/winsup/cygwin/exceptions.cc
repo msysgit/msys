@@ -21,6 +21,7 @@ details. */
 #include "shared_info.h"
 #include "perprocess.h"
 #include "security.h"
+#include "cygwin_version.h"
 
 #define CALL_HANDLER_RETRY 20
 
@@ -197,10 +198,15 @@ exception (EXCEPTION_RECORD *e,  CONTEXT *in)
 
 #ifdef __i386__
 #define HAVE_STATUS
+  small_printf ("MSYS-%d.%d.%d Build:%s\r\n",
+	cygwin_version.dll_major / 1000, 
+	cygwin_version.dll_major % 1000, 
+	cygwin_version.dll_minor, 
+	cygwin_version.dll_build_date);
   if (exception_name)
     small_printf ("Exception: %s at eip=%08x\r\n", exception_name, in->Eip);
   else
-    small_printf ("Exception %d at eip=%08x\r\n", e->ExceptionCode, in->Eip);
+    small_printf ("Exception: %d at eip=%08x\r\n", e->ExceptionCode, in->Eip);
   small_printf ("eax=%08x ebx=%08x ecx=%08x edx=%08x esi=%08x edi=%08x\r\n",
 	      in->Eax, in->Ebx, in->Ecx, in->Edx, in->Esi, in->Edi);
   small_printf ("ebp=%08x esp=%08x program=%s\r\n",
@@ -894,9 +900,6 @@ setup_handler (int sig, void *handler, struct sigaction& siga)
 static BOOL WINAPI
 ctrl_c_handler (DWORD type)
 {
-  if (type == CTRL_LOGOFF_EVENT)
-    return TRUE;
-
   /* Return FALSE to prevent an "End task" dialog box from appearing
      for each Cygwin process window that's open when the computer
      is shut down or console window is closed. */
@@ -905,7 +908,7 @@ ctrl_c_handler (DWORD type)
       sig_send (NULL, SIGTERM);
       return FALSE;
     }
-  if (type == CTRL_CLOSE_EVENT)
+  if (type == CTRL_CLOSE_EVENT || type == CTRL_LOGOFF_EVENT)
     {
       sig_send (NULL, SIGHUP);
       return FALSE;

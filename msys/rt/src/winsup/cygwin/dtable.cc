@@ -39,6 +39,7 @@ static const NO_COPY DWORD std_consts[] = {STD_INPUT_HANDLE, STD_OUTPUT_HANDLE,
 void
 dtable_init (void)
 {
+  TRACE_IN;
   if (!cygheap->fdtab.size)
     cygheap->fdtab.extend (NOFILE_INCR);
 }
@@ -46,6 +47,7 @@ dtable_init (void)
 void __stdcall
 set_std_handle (int fd)
 {
+  TRACE_IN;
   if (fd == 0)
     SetStdHandle (std_consts[fd], cygheap->fdtab[fd]->get_handle ());
   else if (fd <= 2)
@@ -55,6 +57,7 @@ set_std_handle (int fd)
 void
 dtable::dec_console_fds ()
 {
+  TRACE_IN;
   if (console_fds > 0 && !--console_fds && myself->ctty != TTY_CONSOLE)
     FreeConsole ();
 }
@@ -62,6 +65,7 @@ dtable::dec_console_fds ()
 int
 dtable::extend (int howmuch)
 {
+  TRACE_IN;
   int new_size = size + howmuch;
   fhandler_base **newfds;
 
@@ -95,6 +99,7 @@ dtable::extend (int howmuch)
 void
 stdio_init (void)
 {
+  TRACE_IN;
   extern void set_console_ctty ();
   /* Set these before trying to output anything from strace.
      Also, always set them even if we're to pick up our parent's fds
@@ -136,6 +141,7 @@ stdio_init (void)
 int
 dtable::find_unused_handle (int start)
 {
+  TRACE_IN;
   AssertResourceOwner (LOCK_FD_LIST, READ_LOCK);
 
   do
@@ -152,6 +158,8 @@ dtable::find_unused_handle (int start)
 void
 dtable::release (int fd)
 {
+  TRACE_IN;
+  SetResourceLock (LOCK_FD_LIST, WRITE_LOCK|READ_LOCK, " dtable_release ");
   if (!not_open (fd))
     {
       switch (fds[fd]->get_device ())
@@ -166,12 +174,14 @@ dtable::release (int fd)
       delete fds[fd];
       fds[fd] = NULL;
     }
+  ReleaseResourceLock (LOCK_FD_LIST, WRITE_LOCK|READ_LOCK, " dtable_release ");
 }
 
 void
 dtable::init_std_file_from_handle (int fd, HANDLE handle,
 				  DWORD myaccess, const char *name)
 {
+  TRACE_IN;
   int bin;
 
   if (__fmode)
@@ -220,6 +230,7 @@ int
 cygwin_attach_handle_to_fd (char *name, int fd, HANDLE handle, mode_t bin,
 			      DWORD myaccess)
 {
+  TRACE_IN;
   if (fd == -1)
     fd = cygheap->fdtab.find_unused_handle ();
   fhandler_base *res = cygheap->fdtab.build_fhandler (fd, name, handle);
@@ -230,6 +241,7 @@ cygwin_attach_handle_to_fd (char *name, int fd, HANDLE handle, mode_t bin,
 fhandler_base *
 dtable::build_fhandler (int fd, const char *name, HANDLE handle)
 {
+  TRACE_IN;
   int unit;
   DWORD devn;
 
@@ -262,6 +274,7 @@ dtable::build_fhandler (int fd, const char *name, HANDLE handle)
 fhandler_base *
 dtable::build_fhandler (int fd, DWORD dev, const char *name, int unit)
 {
+  TRACE_IN;
   fhandler_base *fh;
   void *buf = ccalloc (HEAP_FHANDLER, 1, sizeof (fhandler_union) + 100);
 
@@ -340,6 +353,7 @@ dtable::build_fhandler (int fd, DWORD dev, const char *name, int unit)
 fhandler_base *
 dtable::dup_worker (fhandler_base *oldfh)
 {
+  TRACE_IN;
   fhandler_base *newfh = build_fhandler (-1, oldfh->get_device (), NULL);
   *newfh = *oldfh;
   newfh->set_io_handle (NULL);
@@ -359,6 +373,7 @@ dtable::dup_worker (fhandler_base *oldfh)
 int
 dtable::dup2 (int oldfd, int newfd)
 {
+  TRACE_IN;
   int res = -1;
   fhandler_base *newfh = NULL;	// = NULL to avoid an incorrect warning
 
@@ -424,6 +439,7 @@ done:
 select_record *
 dtable::select_read (int fd, select_record *s)
 {
+  TRACE_IN;
   if (not_open (fd))
     {
       set_errno (EBADF);
@@ -441,6 +457,7 @@ dtable::select_read (int fd, select_record *s)
 select_record *
 dtable::select_write (int fd, select_record *s)
 {
+  TRACE_IN;
   if (not_open (fd))
     {
       set_errno (EBADF);
@@ -458,6 +475,7 @@ dtable::select_write (int fd, select_record *s)
 select_record *
 dtable::select_except (int fd, select_record *s)
 {
+  TRACE_IN;
   if (not_open (fd))
     {
       set_errno (EBADF);
@@ -477,6 +495,7 @@ dtable::select_except (int fd, select_record *s)
 void
 dtable::fixup_before_fork (DWORD target_proc_id)
 {
+  TRACE_IN;
   SetResourceLock (LOCK_FD_LIST, WRITE_LOCK | READ_LOCK, "fixup_before_fork");
   fhandler_base *fh;
   for (size_t i = 0; i < size; i++)
@@ -491,6 +510,7 @@ dtable::fixup_before_fork (DWORD target_proc_id)
 void
 dtable::fixup_before_exec (DWORD target_proc_id)
 {
+  TRACE_IN;
   SetResourceLock (LOCK_FD_LIST, WRITE_LOCK | READ_LOCK, "fixup_before_exec");
   fhandler_base *fh;
   for (size_t i = 0; i < size; i++)
@@ -505,6 +525,7 @@ dtable::fixup_before_exec (DWORD target_proc_id)
 void
 dtable::fixup_after_exec (HANDLE parent)
 {
+  TRACE_IN;
   first_fd_for_open = 0;
   fhandler_base *fh;
   for (size_t i = 0; i < size; i++)
@@ -527,6 +548,7 @@ dtable::fixup_after_exec (HANDLE parent)
 void
 dtable::fixup_after_fork (HANDLE parent)
 {
+  TRACE_IN;
   fhandler_base *fh;
   for (size_t i = 0; i < size; i++)
     if ((fh = fds[i]) != NULL)
@@ -546,6 +568,7 @@ dtable::fixup_after_fork (HANDLE parent)
 int
 dtable::vfork_child_dup ()
 {
+  TRACE_IN;
   fhandler_base **newtable;
   SetResourceLock (LOCK_FD_LIST, WRITE_LOCK | READ_LOCK, "dup");
   newtable = (fhandler_base **) ccalloc (HEAP_ARGV, size, sizeof (fds[0]));
@@ -574,6 +597,7 @@ out:
 void
 dtable::vfork_parent_restore ()
 {
+  TRACE_IN;
   SetResourceLock (LOCK_FD_LIST, WRITE_LOCK | READ_LOCK, "restore");
 
   close_all_files ();
@@ -589,6 +613,7 @@ dtable::vfork_parent_restore ()
 void
 dtable::vfork_child_fixup ()
 {
+  TRACE_IN;
   if (!fds_on_hold)
     return;
   debug_printf ("here");

@@ -162,6 +162,13 @@ do_global_ctors (void (**in_pfunc)(), int force)
 os_type NO_COPY os_being_run;
 char NO_COPY osname[40];
 bool iswinnt;
+bool isVistaWOW64;
+
+/* Declare the function prototype for this WIN32 API call,
+   in case the w32api version used to build MSYS is too old. */
+#ifndef IsWow64Process
+  extern "C" BOOL WINAPI IsWow64Process(HANDLE,PBOOL);
+#endif
 
 /* set_os_type: Set global variable os_being_run with type of Win32
    operating system being run.  This information is used internally
@@ -179,12 +186,19 @@ set_os_type ()
   GetVersionEx (&os_version_info);
 
   iswinnt = 0;
+  isVistaWOW64 = 0;
   switch (os_version_info.dwPlatformId)
     {
       case VER_PLATFORM_WIN32_NT:
 	os_being_run = winNT;
 	os = "NT";
 	iswinnt = 1;
+	if(os_version_info.dwMajorVersion == 6)
+	  {
+	    BOOL is_wow64_proc = FALSE;
+	    if (IsWow64Process (GetCurrentProcess (), &is_wow64_proc))
+	      isVistaWOW64 = is_wow64_proc;
+	  }
 	break;
       case VER_PLATFORM_WIN32_WINDOWS:
 	if (os_version_info.dwMinorVersion == 0)
@@ -369,6 +383,7 @@ static int __stdcall
 globify (char *word, char **&argv, int &argc, int &argvlen)
 {
   TRACE_IN;
+  debug_printf("word: %s", word);
   if (*word != '~' && strpbrk (word, "?*[\"\'(){}") == NULL)
     return 0;
 
@@ -902,7 +917,6 @@ _dll_crt0 ()
   if (GetEnvironmentVariable ("CYGWIN_TESTING", envbuf, sizeof (envbuf) - 1))
     _cygwin_testing = 1;
 
-  char zeros[sizeof (fork_info->zero)] = {0};
 #ifdef DEBUGGING
   strace.microseconds ();
 #endif
@@ -923,8 +937,7 @@ _dll_crt0 ()
 		   &hMainThread, 0, FALSE, DUPLICATE_SAME_ACCESS);
 
   GetStartupInfo (&si);
-  if (si.cbReserved2 >= EXEC_MAGIC_SIZE &&
-      memcmp (fork_info->zero, zeros, sizeof (zeros)) == 0)
+  if (si.cbReserved2 >= EXEC_MAGIC_SIZE )
     {
       switch (fork_info->type)
 	{
