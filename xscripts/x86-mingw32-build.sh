@@ -1,6 +1,6 @@
 #!/bin/sh
 # x86-mingw32-build.sh -*- sh -*- -- vim: filetype=sh
-# $Id: x86-mingw32-build.sh,v 1.3 2008-01-13 18:16:53 mgdde Exp $
+# $Id: x86-mingw32-build.sh,v 1.4 2009-02-18 23:02:46 keithmarshall Exp $
 #
 # Script to guide the user through the build of a GNU/Linux hosted
 # MinGW cross-compiler for Win32.
@@ -98,18 +98,7 @@ $script: stage $STAGE: build $COMPONENT ..."
         for FILE in $GCC_LANGUAGE_OPTIONS
 	do
 	  case $GCC_LANGUAGE_SET in *$FILE*) ;; *) FILE=no ;; esac
-	  case $FILE in
-	    'c++') FILE='g++' ;;
-	    # d is not (yet) fully integrated with gcc
-	    # to support it anyway requires to apply a special patch
-	    d) FILE=no
-	      pushd gcc-*
-	      test -r ./gcc/d/setup-gcc.sh || pushd gcc && \
-	        $RUN prepare gdc-$GDC_VERSION && popd
-	      ./gcc/d/setup-gcc.sh
-	      popd ;;
-	    f77) FILE=g77 ;;
-	  esac
+	  case $FILE in 'c++') FILE='g++' ;; f77) FILE=g77 ;; esac
 	  test $FILE = no || $RUN prepare gcc-$FILE-$GCC_VERSION
 	done
       fi
@@ -170,4 +159,4 @@ cd "$WORKING_DIR/.."; eval $RUN $CLEAN_SLATE_ON_EXIT
 echo "done."
 exit 0
 
-# $RCSfile: x86-mingw32-build.sh,v $Revision: 1.3 $: end of file
+# $RCSfile: x86-mingw32-build.sh,v $Revision: 1.4 $: end of file

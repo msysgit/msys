@@ -1,5 +1,5 @@
 # x86-mingw32-build.sh.dialogue -*- sh -*- -- vim: filetype=sh
-# $Id: x86-mingw32-build.sh.dialogue,v 1.3 2008-01-13 18:16:53 mgdde Exp $
+# $Id: x86-mingw32-build.sh.dialogue,v 1.4 2009-02-18 23:02:46 keithmarshall Exp $
 #
 # Manage dialogue for interactive execution of x86-mingw32-build script.
 #
@@ -119,19 +119,6 @@ ask "
     gcc-java-$GCC_VERSION-src.tar.gz     (java)
     gcc-objc-$GCC_VERSION-src.tar.gz     (objc, i.e. Objective-C)
 
- There is experimental support for GDC, the GNU D-language compiler:--
-
-    gdc-$GDC_VERSION-src.tar.bz2            (D)
-
- (*) Note gdc does not yet build with dwarf-2 exception handling (dw2);
-     setjmp/longjmp (sjlj) is required
-
- This set of scripts currently does not support automated download of this
- file. If you wish to build gdc as well, you have to manually download the
- corresponding sources from
-
-    http://sourceforge.net/project/showfiles.php?group_id=154306
-
  Would you like me to download any of these optional language packages?
 " YES REPLY \?
 
@@ -142,13 +129,8 @@ for COMPONENT in $GCC_LANGUAGE_OPTIONS; do ask "\
   if isyes $REPLY
   then
     option GCC_LANGUAGE_SET $COMPONENT \,
-    case $COMPONENT in
-      c++) COMPONENT=g++ ;;
-      d) COMPONENT2=gdc-$GDC_VERSION-src.tar.bz2 ;;
-      f77) COMPONENT=g77 ;;
-    esac
-    if [ -n "$COMPONENT2" ]; then option DOWNLOAD $COMPONENT2
-    else option DOWNLOAD gcc-$COMPONENT-$GCC_VERSION-src.tar.gz; fi
+    case $COMPONENT in c++) COMPONENT=g++ ;; f77) COMPONENT=g77 ;; esac
+    option DOWNLOAD gcc-$COMPONENT-$GCC_VERSION-src.tar.gz
   fi
 done; }
 esac
@@ -420,4 +402,4 @@ ask "
 isyes $REPLY || die 1 "
 $script: build cancelled at user's request
 "
-# $RCSfile: x86-mingw32-build.sh.dialogue,v $Revision: 1.3 $: end of file
+# $RCSfile: x86-mingw32-build.sh.dialogue,v $Revision: 1.4 $: end of file
