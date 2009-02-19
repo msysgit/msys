@@ -1,3 +1,12 @@
+2009-02-19  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Fix MinGW-Bug[2031691]: Dry run may break subsequent build.
+	(Reported by Dave Korn <davek_cygwin@users.sourceforge.net>)
+
+	* x86-mingw32-build.sh (setbuilddir): Guard all usage with `$RUN'.
+	* x86-mingw32-build.sh.getopts [--dry-run] (BUILD_PLATFORM):
+	Pre-define; avoid invocation of `config.guess' at point of use.
+
 2009-02-18  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Relocate GDC support to experimental development branch; phase 2.

@@ -1,6 +1,6 @@
 #!/bin/sh
-# x86-mingw32-build.sh -*- sh -*- -- vim: filetype=sh
-# $Id: x86-mingw32-build.sh,v 1.4 2009-02-18 23:02:46 keithmarshall Exp $
+# x86-mingw32-build.sh -*- sh -*- vim: filetype=sh
+# $Id: x86-mingw32-build.sh,v 1.5 2009-02-19 19:02:27 keithmarshall Exp $
 #
 # Script to guide the user through the build of a GNU/Linux hosted
 # MinGW cross-compiler for Win32.
@@ -102,7 +102,7 @@ $script: stage $STAGE: build $COMPONENT ..."
 	  test $FILE = no || $RUN prepare gcc-$FILE-$GCC_VERSION
 	done
       fi
-      setbuilddir build-gcc .
+      $RUN setbuilddir build-gcc .
       $RUN ../gcc-*/configure --prefix="$INSTALL_DIR" --target="$TARGET" \
 	$GLOBAL_BASE_OPTIONS $GCC_BASE_OPTIONS --enable-languages=`
           case $STAGE in 1) echo c ;; 2) echo $GCC_LANGUAGE_SET ;; esac` \
@@ -135,7 +135,7 @@ $script: stage $STAGE: build $COMPONENT ..."
 	  ;;
       esac
       case $COMPONENT in mingw-runtime | w32api)
-	setbuilddir ${COMPONENT}-*
+	$RUN setbuilddir ${COMPONENT}-*
 	$RUN ../configure --prefix="$INSTALL_DIR" --host="$TARGET" \
           --build=${BUILD_PLATFORM=`../config.guess`} || die $? \
           "$unrecoverable configuring $COMPONENT"
@@ -159,4 +159,4 @@ cd "$WORKING_DIR/.."; eval $RUN $CLEAN_SLATE_ON_EXIT
 echo "done."
 exit 0
 
-# $RCSfile: x86-mingw32-build.sh,v $Revision: 1.4 $: end of file
+# $RCSfile: x86-mingw32-build.sh,v $Revision: 1.5 $: end of file
