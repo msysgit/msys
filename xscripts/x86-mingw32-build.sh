@@ -1,6 +1,6 @@
 #!/bin/sh
 # x86-mingw32-build.sh -*- sh -*- vim: filetype=sh
-# $Id: x86-mingw32-build.sh,v 1.5 2009-02-19 19:02:27 keithmarshall Exp $
+# $Id: x86-mingw32-build.sh,v 1.6 2009-02-21 19:33:49 keithmarshall Exp $
 #
 # Script to guide the user through the build of a GNU/Linux hosted
 # MinGW cross-compiler for Win32.
@@ -80,7 +80,8 @@ $script: stage $STAGE: build $COMPONENT ..."
 	$RUN prepare binutils-$BINUTILS_VERSION
 	$RUN setbuilddir binutils*
 	$RUN ../configure --prefix="$INSTALL_DIR" --target="$TARGET" \
-	  $GLOBAL_BASE_OPTIONS $BINUTILS_BASE_OPTIONS || die $? \
+	  $GLOBAL_BASE_OPTIONS $BINUTILS_BASE_OPTIONS \
+	  --with-sysroot="${INSTALL_DIR}" || die $? \
           "$unrecoverable configuring binutils"
       fi
       $RUN $MAKE CFLAGS="`echo $CFLAGS_FOR_BINUTILS`" \
@@ -159,4 +160,4 @@ cd "$WORKING_DIR/.."; eval $RUN $CLEAN_SLATE_ON_EXIT
 echo "done."
 exit 0
 
-# $RCSfile: x86-mingw32-build.sh,v $Revision: 1.5 $: end of file
+# $RCSfile: x86-mingw32-build.sh,v $Revision: 1.6 $: end of file

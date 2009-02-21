@@ -1,3 +1,16 @@
+2009-02-21  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Enable `sysroot' for binutils.
+
+	* x86-mingw32-build.sh (COMPONENT) [binutils]: Add `--with-sysroot'
+	option, when running `configure', placing the `sysroot' at...
+	(INSTALL_DIR): ...this path assignment.
+
+	* x86-mingw32-build.sh.conf (BUILD_COMPONENTS): Reschedule...
+	(headers): ...this as first component for installation, ahead of...
+	(binutils): ...this, which now needs the headers to be pre-installed
+	in the designated `sysroot' path, before it is built.
+
 2009-02-19  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Fix MinGW-Bug[2031691]: Dry run may break subsequent build.
