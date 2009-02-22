@@ -1,5 +1,5 @@
-# x86-mingw32-build.sh.batch -*- sh -*- -- vim: filetype=sh
-# $Id: x86-mingw32-build.sh.batch,v 1.2 2008-01-13 18:16:53 mgdde Exp $
+# x86-mingw32-build.sh.batch -*- sh -*- vim: filetype=sh
+# $Id: x86-mingw32-build.sh.batch,v 1.3 2009-02-22 15:18:25 keithmarshall Exp $
 #
 # Unattended mode setup for x86-mingw32-build.sh cross compiler build.
 #
@@ -27,40 +27,37 @@
 BUILD_METHOD=unattended
 . $script.mirrors
 
+select_newest()
+{
+  isyes $ALLOW_DOWNLOADS \
+    && option $1 "`enumerate $PACKAGE_DIR/$2- -src.tar.gz`" \
+    || eval $1='`enumerate $PACKAGE_DIR/$2- -src.tar.gz`'
+  option $1 "`enumerate $PACKAGE_DIR/${3-$2}- -${TARGET_OS}-src.tar.gz`"
+  eval 'newest $'$1
+}
+
 if isyes $USE_LATEST_VERSIONS
 then
-  if isyes $ALLOW_DOWNLOADS
-  then
-    option GCC_VERSION "`enumerate $PACKAGE_DIR/gcc-core- -src.tar.gz`"
-    option BINUTILS_VERSION "`enumerate $PACKAGE_DIR/binutils- -src.tar.gz`"
-    option RUNTIME_VERSION "`enumerate $PACKAGE_DIR/mingw-runtime- -src.tar.gz`"
-    option W32API_VERSION "`enumerate $PACKAGE_DIR/w32api- -src.tar.gz`"
-  else
-    GCC_VERSION=`enumerate $PACKAGE_DIR/gcc-core- -src.tar.gz`
-    BINUTILS_VERSION=`enumerate $PACKAGE_DIR/binutils- -src.tar.gz`
-    RUNTIME_VERSION=`enumerate $PACKAGE_DIR/mingw-runtime- -src.tar.gz`
-    W32API_VERSION=`enumerate $PACKAGE_DIR/w32api- -src.tar.gz`
-  fi
-  GCC_VERSION=`newest $GCC_VERSION`
-  BINUTILS_VERSION=`newest $BINUTILS_VERSION`
-  RUNTIME_VERSION=`newest $RUNTIME_VERSION`
-  W32API_VERSION=`newest $W32API_VERSION`
+  GCC_VERSION=`select_newest GCC_VERSION gcc-core`
+  BINUTILS_VERSION=`select_newest BINUTILS_VERSION binutils`
+  RUNTIME_VERSION=`select_newest RUNTIME_VERSION mingw-runtime mingwrt`
+  W32API_VERSION=`select_newest W32API_VERSION w32api`
 fi
 
 option GLOBAL_BASE_OPTIONS "$GLOBAL_USER_OPTIONS"
 
 case $BUILD_COMPONENTS in *gcc*)
   test -n "$GCC_VERSION" && \
-    option DOWNLOAD gcc-core-$GCC_VERSION-src.tar.gz
+    option DOWNLOAD gcc-core-$GCC_VERSION-${gcc_srctag-"src"}.tar.gz
   option GCC_BASE_OPTIONS "$GCC_USER_OPTIONS"
   for PACKAGE in $GCC_LANGUAGE_OPTIONS
   do
     FILE=$PACKAGE
     case $PACKAGE in 'c++') FILE='g++' ;; f77) FILE=g77 ;; esac
     if isyes $ALLOW_DOWNLOADS || \
-    test -f $PACKAGE_DIR/gcc-$FILE-$GCC_VERSION-src.tar.gz
+    test -f $PACKAGE_DIR/gcc-$FILE-$GCC_VERSION-${gcc_srctag-"src"}.tar.gz
     then
-      option DOWNLOAD gcc-$FILE-$GCC_VERSION-src.tar.gz
+      option DOWNLOAD gcc-$FILE-$GCC_VERSION-${gcc_srctag-"src"}.tar.gz
       option GCC_LANGUAGE_SET $PACKAGE ','
       case $PACKAGE in
         'c++') option GCC_BASE_OPTIONS \
@@ -72,22 +69,33 @@ case $BUILD_COMPONENTS in *gcc*)
   done ;;
 esac
 case $BUILD_COMPONENTS in *binutils*)
-  test -n "$BINUTILS_VERSION" && \
-    option DOWNLOAD binutils-$BINUTILS_VERSION-src.tar.gz
+  if test -n "$BINUTILS_VERSION"
+  then
+    option DOWNLOAD binutils-$BINUTILS_VERSION-${binutils_srctag-"src"}.tar.gz
+  fi
   option BINUTILS_BASE_OPTIONS "$BINUTILS_USER_OPTIONS" ;;
 esac
 case $BUILD_COMPONENTS in *mingw-runtime*)
-  test -n "$RUNTIME_VERSION" && \
-    option DOWNLOAD mingw-runtime-$RUNTIME_VERSION-src.tar.gz
+  if test -n "$RUNTIME_VERSION"
+  then
+    test `newest "$RUNTIME_VERSION" 3.15` = "$RUNTIME_VERSION" \
+      && mingwrt="mingwrt" mingwrt_srctag=${TARGET_OS-"mingw32"}"-src" \
+      || mingwrt="mingw-runtime"
+    option DOWNLOAD $mingwrt-$RUNTIME_VERSION-${mingwrt_srctag-"src"}.tar.gz
+  fi
   option RUNTIME_BASE_OPTIONS "$RUNTIME_USER_OPTIONS" ;;
 esac
 case $BUILD_COMPONENTS in *w32api*)
-  test -n "$W32API_VERSION" && \
-    option DOWNLOAD w32api-$W32API_VERSION-src.tar.gz
+  if test -n "$W32API_VERSION"
+  then
+    test `newest "$W32API_VERSION" 3.12` = "$W32API_VERSION" \
+      && w32api_srctag=${TARGET_OS-"mingw32"}"-src"
+    option DOWNLOAD w32api-$W32API_VERSION-${w32api_srctag-"src"}.tar.gz
+  fi
   option W32API_BASE_OPTIONS "$W32API_USER_OPTIONS" ;;
 esac
 
 . $script.detail > $script.log
 . $script.detail
 
-# $RCSfile: x86-mingw32-build.sh.batch,v $Revision: 1.2 $: end of file
+# $RCSfile: x86-mingw32-build.sh.batch,v $Revision: 1.3 $: end of file

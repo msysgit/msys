@@ -1,3 +1,42 @@
+2009-02-22  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Add support for new MinGW.org package naming conventions.
+
+	* x86-mingw32-build.sh (MINGWRT): New shell variable; define it
+	as the requisite package base name for `mingw-runtime' or `mingwrt',
+	which is determined by new `tarname' function; use it to resolve all
+	subsequent references to the `mingw-runtime' package.
+	(COMPONENT) [mingw-runtime]: Make it match `$MINGWRT'; build it for
+	whatever package base name that may be specified thereby.
+	(LEAN_BUILD) [isyes]: Purge all plausible `$MINGWRT' aliases.
+	(TARGET_OS): New shell variable; define it.
+	(TARGET): Use it.
+
+	* x86-mingw32-build.sh.functions (tarname): New function; it
+	identifies possible alternative source package names, including the
+	`mingwrt' vs. `mingw-runtime' distinction, and names qualified by
+	`$TARGET_OS' preceding the `src' suffix.
+	(enumerate): Include such package names, qualified by `$TARGET_OS'.
+	(choose): Use both of above, to display available package choices.
+	(incr, space): Simplify implementation, to avoid error messages.
+	(prepare): Accommodate `$TARGET_OS' qualified package names.
+
+	* x86-mingw32-build.sh.batch (select_newest): New locally defined
+	function; use it to facilitate package version selection when...
+	(USE_LATEST_VERSIONS) [isyes]: ...this is true.
+	(gcc_srctag, binutils_srctag, mingwrt_srctag, w32api_srctag): New
+	optionally defined shell variables; define as required; use them in
+	all package name references, with default value of "src".
+	(mingwrt): New shell variable; define it locally; use it as an
+	analogue of `$MINGWRT'.
+
+	* x86-mingw32-build.sh.dialogue (tarname): Use as appropriate.
+	(gcc_srctag, binutils_srctag, mingwrt_srctag, w32api_srctag): New
+	optionally defined shell variables; define and use them in same manner
+	as it is used in `x86-mingw32-build.sh.batch'.
+	(mingwrt): New shell variable; define and use it in same manner as it
+	is used in `x86-mingw32-build.sh.batch'.
+
 2009-02-21  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Enable `sysroot' for binutils.

@@ -1,6 +1,6 @@
 #!/bin/sh
 # x86-mingw32-build.sh -*- sh -*- vim: filetype=sh
-# $Id: x86-mingw32-build.sh,v 1.6 2009-02-21 19:33:49 keithmarshall Exp $
+# $Id: x86-mingw32-build.sh,v 1.7 2009-02-22 15:18:24 keithmarshall Exp $
 #
 # Script to guide the user through the build of a GNU/Linux hosted
 # MinGW cross-compiler for Win32.
@@ -31,7 +31,8 @@ test -r $0.sh.conf && script=$0.sh || script=$0
 . $script.conf
 . $script.getopts
 
-TARGET=${1-${TARGET-"${TARGET_CPU-i386}-mingw32"}}
+TARGET=${1-${TARGET-${TARGET_CPU-"i386"}-${TARGET_OS="mingw32"}}}
+TARGET_OS=${TARGET_OS-"`echo $TARGET | sed 's,^.*-mingw,mingw,'`"}
 
 assume BUILD_METHOD interactive
 test "$BUILD_METHOD" = interactive && BUILD_METHOD=dialogue || BUILD_METHOD=batch
@@ -117,8 +118,10 @@ $script: stage $STAGE: build $COMPONENT ..."
       ;;
 
     headers | mingw-runtime | w32api)
-      test -r mingw-runtime-*/configure || $RUN prepare mingw-runtime-$RUNTIME_VERSION
-      test -r w32api-*/configure || $RUN prepare w32api-$W32API_VERSION
+      MINGWRT=`tarname mingw-runtime \
+        $RUNTIME_VERSION src.tar.gz $PACKAGE_DIR | sed s',-[0-9].*,,'`
+      test -r $MINGWRT-*/configure || $RUN prepare $MINGWRT-$RUNTIME_VERSION
+      test -r w32api-*/configure || $RUN prepare "w32api-$W32API_VERSION"
       case $COMPONENT in
 	headers)
 	  $RUN mkdir -p "$INSTALL_DIR/include"
@@ -126,19 +129,20 @@ $script: stage $STAGE: build $COMPONENT ..."
 	    $RUN cd "$INSTALL_DIR" && $RUN ln -s . usr )
           test -e "$INSTALL_DIR/usr/local" || (
 	    $RUN cd "$INSTALL_DIR/usr" && $RUN ln -s . local )
-	  $RUN cp -r mingw-runtime-*/include "$INSTALL_DIR" || die $? \
+	  $RUN cp -r $MINGWRT-*/include "$INSTALL_DIR" || die $? \
             "$unrecoverable installing mingw-runtime headers"
 	  $RUN cp -r w32api-*/include "$INSTALL_DIR" || die $? \
             "$unrecoverable installing w32api headers"
 	  ;;
 	mingw-runtime)
+	  COMPONENT=$MINGWRT
           test -e w32api || $RUN ln -s w32api-* w32api
 	  ;;
       esac
-      case $COMPONENT in mingw-runtime | w32api)
+      case $COMPONENT in mingw-runtime | mingwrt | w32api)
 	$RUN setbuilddir ${COMPONENT}-*
 	$RUN ../configure --prefix="$INSTALL_DIR" --host="$TARGET" \
-          --build=${BUILD_PLATFORM=`../config.guess`} || die $? \
+          --build=${BUILD_PLATFORM="`../config.guess`"} || die $? \
           "$unrecoverable configuring $COMPONENT"
 	$RUN $MAKE CFLAGS="$CFLAGS_FOR_RUNTIME" \
           LDFLAGS="$LDFLAGS_FOR_RUNTIME" || die $? \
@@ -150,7 +154,8 @@ $script: stage $STAGE: build $COMPONENT ..."
       ;;
 
   esac; done
-  cd "$WORKING_DIR"; test $LEAN_BUILD && $RUN rm -rf mingw-runtime-* w32api-*
+  cd "$WORKING_DIR"
+  test $LEAN_BUILD && $RUN rm -rf mingw-runtime-* mingwrt-* w32api-*
   BUILD_COMPONENTS=`case $BUILD_COMPONENTS in *gcc*) echo gcc ;; esac`
 done
 
@@ -160,4 +165,4 @@ cd "$WORKING_DIR/.."; eval $RUN $CLEAN_SLATE_ON_EXIT
 echo "done."
 exit 0
 
-# $RCSfile: x86-mingw32-build.sh,v $Revision: 1.6 $: end of file
+# $RCSfile: x86-mingw32-build.sh,v $Revision: 1.7 $: end of file

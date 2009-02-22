@@ -1,5 +1,5 @@
-# x86-mingw32-build.sh.dialogue -*- sh -*- -- vim: filetype=sh
-# $Id: x86-mingw32-build.sh.dialogue,v 1.4 2009-02-18 23:02:46 keithmarshall Exp $
+# x86-mingw32-build.sh.dialogue -*- sh -*- vim: filetype=sh
+# $Id: x86-mingw32-build.sh.dialogue,v 1.5 2009-02-22 15:18:25 keithmarshall Exp $
 #
 # Manage dialogue for interactive execution of x86-mingw32-build script.
 #
@@ -43,7 +43,7 @@ ask "
 
     w32api      the runtime libraries supporting the Win32 API.
 
-    mingw-runtime
+    mingwrt (a.k.a. mingw-runtime)
                 additional libraries specific to the $TARGET target.
 
  For a first time installation, you should build all of the above.  On the
@@ -59,21 +59,28 @@ do ask >&2 " Would you like to build the \`quote $COMPONENT\` component?" \
 done`
 fi
 
+test `newest "$RUNTIME_VERSION" 3.15` = "$RUNTIME_VERSION" \
+  && mingwrt="mingwrt" mingwrt_srctag=${TARGET_OS-"mingw32"}"-src" \
+  || mingwrt="mingw-runtime"
+
+test `newest "$W32API_VERSION" 3.12` = "$W32API_VERSION" \
+  && w32api_srctag=${TARGET_OS-"mingw32"}"-src" \
+
 echo "
  Before proceeding to build the cross-compiler, the following packages must
  be downloaded to a local package directory of your choice:--
 "
 case $BUILD_COMPONENTS in *gcc*) echo "\
-    gcc-core-$GCC_VERSION-src.tar.gz"
+    gcc-core-$GCC_VERSION-${gcc_srctag-"src"}.tar.gz"
 esac
 case $BUILD_COMPONENTS in *binutils*) echo "\
-    binutils-$BINUTILS_VERSION-src.tar.gz"
+    binutils-$BINUTILS_VERSION-${binutils_srctag-"src"}.tar.gz"
 esac
 case $BUILD_COMPONENTS in *headers* | *mingw-runtime*) echo "\
-    mingw-runtime-$RUNTIME_VERSION-src.tar.gz"
+    $mingwrt-$RUNTIME_VERSION-${mingwrt_srctag-"src"}.tar.gz"
 esac
 case $BUILD_COMPONENTS in *headers* | *w32api*) echo "\
-    w32api-$W32API_VERSION-src.tar.gz"
+    w32api-$W32API_VERSION-${w32api_srctag-"src"}.tar.gz"
 esac
 ask "
  Each of these packages is obtainable from the MinGW project download page,
@@ -95,16 +102,16 @@ do ask "$INVALID_CHOICE `fixrange 1 2`" "1" REPLY \:; done
 if test $REPLY = 1
 then
   case $BUILD_COMPONENTS in *gcc*)
-    option DOWNLOAD gcc-core-$GCC_VERSION-src.tar.gz
+    option DOWNLOAD gcc-core-$GCC_VERSION-${gcc_srctag-"src"}.tar.gz
   esac
   case $BUILD_COMPONENTS in *binutils*)
-    option DOWNLOAD binutils-$BINUTILS_VERSION-src.tar.gz
+    option DOWNLOAD binutils-$BINUTILS_VERSION-${binutils_srctag-"src"}.tar.gz
   esac
   case $BUILD_COMPONENTS in *headers* | *mingw-runtime*)
-    option DOWNLOAD mingw-runtime-$RUNTIME_VERSION-src.tar.gz
+    option DOWNLOAD $mingwrt-$RUNTIME_VERSION-${mingwrt_srctag-"src"}.tar.gz
   esac
   case $BUILD_COMPONENTS in *headers* | *w32api*)
-    option DOWNLOAD w32api-$W32API_VERSION-src.tar.gz
+    option DOWNLOAD w32api-$W32API_VERSION-${w32api_srctag-"src"}.tar.gz
   esac
 
 case $BUILD_COMPONENTS in *gcc*)
@@ -113,11 +120,11 @@ ask "
  compiler only.  You may also require one or more of the following additional
  packages, if you wish to add support for other optional languages:--
 
-    gcc-ada-$GCC_VERSION-src.tar.gz      (ada)
-    gcc-g++-$GCC_VERSION-src.tar.gz      (C++)
-    gcc-g77-$GCC_VERSION-src.tar.gz      (f77, i.e. FORTRAN-77)
-    gcc-java-$GCC_VERSION-src.tar.gz     (java)
-    gcc-objc-$GCC_VERSION-src.tar.gz     (objc, i.e. Objective-C)
+    gcc-ada-$GCC_VERSION-${gcc_srctag-"src"}.tar.gz      (ada)
+    gcc-g++-$GCC_VERSION-${gcc_srctag-"src"}.tar.gz      (C++)
+    gcc-g77-$GCC_VERSION-${gcc_srctag-"src"}.tar.gz      (f77, i.e. FORTRAN-77)
+    gcc-java-$GCC_VERSION-${gcc_srctag-"src"}.tar.gz     (java)
+    gcc-objc-$GCC_VERSION-${gcc_srctag-"src"}.tar.gz     (objc, i.e. Objective-C)
 
  Would you like me to download any of these optional language packages?
 " YES REPLY \?
@@ -153,16 +160,16 @@ else echo "
 "
 ALLOW_DOWNLOADS=NO
 case $BUILD_COMPONENTS in *gcc*) echo "\
-    gcc-core-$GCC_VERSION-src.tar.gz"
+    gcc-core-$GCC_VERSION-${gcc_srctag-"src"}.tar.gz"
 esac
 case $BUILD_COMPONENTS in *binutils*) echo "\
-    binutils-$BINUTILS_VERSION-src.tar.gz"
+    binutils-$BINUTILS_VERSION-${binutils_srctag-"src"}.tar.gz"
 esac
 case $BUILD_COMPONENTS in *headers* | *mingw-runtime*) echo "\
-    mingw-runtime-$RUNTIME_VERSION-src.tar.gz"
+    $mingwrt-$RUNTIME_VERSION-${mingwrt_srctag-"src"}.tar.gz"
 esac
 case $BUILD_COMPONENTS in *headers* | *w32api*) echo "\
-    w32api-$W32API_VERSION-src.tar.gz"
+    w32api-$W32API_VERSION-${w32api_srctag-"src"}.tar.gz"
 esac
 case $BUILD_COMPONENTS in *gcc*) echo "
  In addition to these, you may also require any of these optional extra
@@ -170,14 +177,14 @@ case $BUILD_COMPONENTS in *gcc*) echo "
  in addition to \`C'; (if you chose an alternative \`gcc-core' version,
  then you must use the same version of these supplementary packages):--
 
-    gcc-ada-$GCC_VERSION-src.tar.gz      (ada)
-    gcc-g++-$GCC_VERSION-src.tar.gz      (C++)
-    gcc-g77-$GCC_VERSION-src.tar.gz      (f77, i.e. FORTRAN-77)
-    gcc-java-$GCC_VERSION-src.tar.gz     (java)
-    gcc-objc-$GCC_VERSION-src.tar.gz     (objc, i.e. Objective-C)
+    gcc-ada-$GCC_VERSION-${gcc_srctag-"src"}.tar.gz      (ada)
+    gcc-g++-$GCC_VERSION-${gcc_srctag-"src"}.tar.gz      (C++)
+    gcc-g77-$GCC_VERSION-${gcc_srctag-"src"}.tar.gz      (f77, i.e. FORTRAN-77)
+    gcc-java-$GCC_VERSION-${gcc_srctag-"src"}.tar.gz     (java)
+    gcc-objc-$GCC_VERSION-${gcc_srctag-"src"}.tar.gz     (objc, i.e. Objective-C)\
 "
 esac
-ask "\
+ask "
  In which directory will I find these compiler source packages?
 " "$PACKAGE_DIR" PACKAGE_DIR \?
 
@@ -206,7 +213,7 @@ do
   case $COMPONENT in 'c++') FILE='g++' ;; 'f77') FILE='g77' ;;
     *) FILE=$COMPONENT ;;
   esac
-  if test -r $PACKAGE_DIR/gcc-$FILE-$GCC_VERSION-src.tar.gz
+  if test -r $PACKAGE_DIR/gcc-$FILE-$GCC_VERSION-${gcc_srctag-"src"}.tar.gz
   then
     if isyes $REPLY
     then
@@ -336,7 +343,7 @@ do
   VERSION_TAG=`echo $COMPONENT | sed 's?^.*-??' | tr a-z A-Z`_VERSION
   test x$COMPONENT = xgcc && BASE_PACKAGE=gcc-core || BASE_PACKAGE=$COMPONENT
   choose $COMPONENT $VERSION_TAG $BASE_PACKAGE $PACKAGE_DIR src.tar.gz
-  eval 'option DOWNLOAD $BASE_PACKAGE-$'$VERSION_TAG'-src.tar.gz'
+  eval 'option DOWNLOAD `tarname $BASE_PACKAGE $'$VERSION_TAG' src.tar.gz $PACKAGE_DIR`'
   test x$COMPONENT = xgcc && for FILE in $EXTRA_DOWNLOADS
     do option DOWNLOAD gcc-$FILE-$GCC_VERSION-src.tar.gz
     done
@@ -402,4 +409,4 @@ ask "
 isyes $REPLY || die 1 "
 $script: build cancelled at user's request
 "
-# $RCSfile: x86-mingw32-build.sh.dialogue,v $Revision: 1.4 $: end of file
+# $RCSfile: x86-mingw32-build.sh.dialogue,v $Revision: 1.5 $: end of file
