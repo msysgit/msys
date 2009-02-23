@@ -1,5 +1,5 @@
-# x86-mingw32-build.sh.mirrors -*- sh -*- -- vim: filetype=sh
-# $Id: x86-mingw32-build.sh.mirrors,v 1.2 2008-01-13 18:16:53 mgdde Exp $
+# x86-mingw32-build.sh.mirrors -*- sh -*- vim: filetype=sh
+# $Id: x86-mingw32-build.sh.mirrors,v 1.3 2009-02-23 00:17:04 keithmarshall Exp $
 #
 # Identify a SourceForge Mirror Site, from which to download packages.
 #
@@ -62,7 +62,12 @@ then
   REPLY=`set $AVAILABLE_MIRRORS; shift $REPLY; echo $1`
   DOWNLOAD_HOST="http://$REPLY.dl.sourceforge.net/mingw"
 else
+  if test "$ALLOW_DOWNLOADS" = YES && test "$BUILD_METHOD" = unattended
+  then
+    echo "$script.conf: DOWNLOAD_HOST does not specify a vaild mirror"
+    echo "$script.mirrors: automatic download feature is disabled"
+  fi
   ALLOW_DOWNLOADS=NO
 fi
 
-# $RCSfile: x86-mingw32-build.sh.mirrors,v $Revision: 1.2 $: end of file
+# $RCSfile: x86-mingw32-build.sh.mirrors,v $Revision: 1.3 $: end of file

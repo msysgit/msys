@@ -1,5 +1,13 @@
 2009-02-22  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
+	Add diagnostic for invalid DOWNLOAD_HOST.
+
+	* x86-mingw32-build.sh.mirrors: Emit diagnostic message, in
+	`unattended' build mode, when `$DOWNLOAD_HOST' does not specify a
+	valid mirror, and downloads are enabled.
+
+2009-02-22  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
 	Add support for new MinGW.org package naming conventions.
 
 	* x86-mingw32-build.sh (MINGWRT): New shell variable; define it
@@ -33,7 +41,7 @@
 	* x86-mingw32-build.sh.dialogue (tarname): Use as appropriate.
 	(gcc_srctag, binutils_srctag, mingwrt_srctag, w32api_srctag): New
 	optionally defined shell variables; define and use them in same manner
-	as it is used in `x86-mingw32-build.sh.batch'.
+	as they are used in `x86-mingw32-build.sh.batch'.
 	(mingwrt): New shell variable; define and use it in same manner as it
 	is used in `x86-mingw32-build.sh.batch'.
 
