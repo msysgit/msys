@@ -1,11 +1,11 @@
 #!/bin/sh
 # x86-mingw32-build.sh -*- sh -*- vim: filetype=sh
-# $Id: x86-mingw32-build.sh,v 1.7 2009-02-22 15:18:24 keithmarshall Exp $
+# $Id: x86-mingw32-build.sh,v 1.8 2009-02-26 19:12:03 keithmarshall Exp $
 #
 # Script to guide the user through the build of a GNU/Linux hosted
 # MinGW cross-compiler for Win32.
 #
-# Copyright (C) 2006, MinGW Project
+# Copyright (C) 2006, 2009, MinGW Project
 # Written by Keith Marshall <keithmarshall@users.sourceforge.net>
 # 
 # This is the primary script for the x86-mingw32-build package.
@@ -31,13 +31,23 @@ test -r $0.sh.conf && script=$0.sh || script=$0
 . $script.conf
 . $script.getopts
 
+# Specify the TARGET identification prefix, to be assigned to the cross
+# compiler tool suite, and the operating system element, which may be used
+# to qualify source package names.
+#
 TARGET=${1-${TARGET-${TARGET_CPU-"i386"}-${TARGET_OS="mingw32"}}}
 TARGET_OS=${TARGET_OS-"`echo $TARGET | sed 's,^.*-mingw,mingw,'`"}
 
+# Check how the user wants to progress the build, (default is `interactive'),
+# then hand off package selection and set-up to the appropriate helper script.
+#
 assume BUILD_METHOD interactive
 test "$BUILD_METHOD" = interactive && BUILD_METHOD=dialogue || BUILD_METHOD=batch
 test -r $script.$BUILD_METHOD && . $script.$BUILD_METHOD
 
+# Check that all required packages are either available locally,
+# or can be downloaded from a source repository identified on set-up.
+#
 echo "
 $script: checking package availability ..."
 setbuilddir $PACKAGE_DIR .
@@ -57,6 +67,8 @@ $script: unable to continue"
   fi
 done
 
+# Prepare for building all selected packages and components.
+#
 prompt "
 $script: preparing the build tree... "
 eval $RUN $CLEAN_SLATE_AT_START
@@ -67,6 +79,16 @@ MAKE=${MAKE-"make"}
 PATH=$INSTALL_DIR/bin:$PATH
 unrecoverable="$script: unrecoverable error"
 
+# The following pair of variables are used when `making' the GCC components;
+# we initialise them here, to restrict the STAGE 1 build to creation of only
+# the C language compiler; they are subsequently reset, after completion of
+# that STAGE 1 build, to enable the building of any other selected language
+# components in STAGE 2.
+#
+ALL_GCC=all-gcc INSTALL_GCC=install-gcc
+
+# Progress the build, in two stages.
+#
 for STAGE in 1 2
 do for COMPONENT in $BUILD_COMPONENTS
   do echo "
@@ -94,9 +116,9 @@ $script: stage $STAGE: build $COMPONENT ..."
       ;;
 
     gcc)
-      test -r gcc-*/configure || $RUN prepare gcc-core-$GCC_VERSION
-      if test $STAGE -eq 2
+      if ! test -r gcc-*/configure
       then
+	$RUN prepare gcc-core-$GCC_VERSION
         for FILE in $GCC_LANGUAGE_OPTIONS
 	do
 	  case $GCC_LANGUAGE_SET in *$FILE*) ;; *) FILE=no ;; esac
@@ -105,16 +127,20 @@ $script: stage $STAGE: build $COMPONENT ..."
 	done
       fi
       $RUN setbuilddir build-gcc .
-      $RUN ../gcc-*/configure --prefix="$INSTALL_DIR" --target="$TARGET" \
-	$GLOBAL_BASE_OPTIONS $GCC_BASE_OPTIONS --enable-languages=`
-          case $STAGE in 1) echo c ;; 2) echo $GCC_LANGUAGE_SET ;; esac` \
-        --with-sysroot="$INSTALL_DIR" || die $? \
-        "$unrecoverable configuring gcc"
-      $RUN $MAKE CFLAGS="$CFLAGS_FOR_GCC" LDFLAGS="$LDFLAGS_FOR_GCC" || die $? \
-        "$unrecoverable building gcc"
-      $RUN $MAKE install || die $? \
+      if ! test -r ./config.status
+      then
+	$RUN ../gcc-*/configure --prefix="$INSTALL_DIR" --target="$TARGET" \
+	  $GLOBAL_BASE_OPTIONS $GCC_BASE_OPTIONS --with-sysroot="$INSTALL_DIR" \
+	  --enable-languages=$GCC_LANGUAGE_SET || die $? \
+	  "$unrecoverable configuring gcc"
+      fi
+      $RUN $MAKE CFLAGS="$CFLAGS_FOR_GCC" \
+        LDFLAGS="$LDFLAGS_FOR_GCC" $ALL_GCC || die $? \
+       	"$unrecoverable building gcc"
+      $RUN $MAKE $INSTALL_GCC || die $? \
         "$unrecoverable installing gcc"
       cd "$WORKING_DIR"; test $LEAN_BUILD && rm -rf build-gcc
+      ALL_GCC="" INSTALL_GCC=""
       ;;
 
     headers | mingw-runtime | w32api)
@@ -159,10 +185,12 @@ $script: stage $STAGE: build $COMPONENT ..."
   BUILD_COMPONENTS=`case $BUILD_COMPONENTS in *gcc*) echo gcc ;; esac`
 done
 
+# Clean up when done.
+#
 prompt "
 $script: cleaning up... "
 cd "$WORKING_DIR/.."; eval $RUN $CLEAN_SLATE_ON_EXIT
 echo "done."
 exit 0
 
-# $RCSfile: x86-mingw32-build.sh,v $Revision: 1.7 $: end of file
+# $RCSfile: x86-mingw32-build.sh,v $Revision: 1.8 $: end of file
