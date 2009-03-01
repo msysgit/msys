@@ -1,6 +1,6 @@
 #!/bin/sh
 # x86-mingw32-build.sh -*- sh -*- vim: filetype=sh
-# $Id: x86-mingw32-build.sh,v 1.8 2009-02-26 19:12:03 keithmarshall Exp $
+# $Id: x86-mingw32-build.sh,v 1.9 2009-03-01 16:20:09 keithmarshall Exp $
 #
 # Script to guide the user through the build of a GNU/Linux hosted
 # MinGW cross-compiler for Win32.
@@ -25,7 +25,7 @@
 # Software Foundation, 51 Franklin St - Fifth Floor, Boston, MA 02110-1301,
 # USA.
 
-CURDIR=`pwd`
+CURDIR=`pwd` PATH="$PATH:$CURDIR"
 test -r $0.sh.conf && script=$0.sh || script=$0
 . $script.functions
 . $script.conf
@@ -193,4 +193,4 @@ cd "$WORKING_DIR/.."; eval $RUN $CLEAN_SLATE_ON_EXIT
 echo "done."
 exit 0
 
-# $RCSfile: x86-mingw32-build.sh,v $Revision: 1.8 $: end of file
+# $RCSfile: x86-mingw32-build.sh,v $Revision: 1.9 $: end of file
