@@ -8,7 +8,7 @@
 #   http://www.mingw.org/msys.shtml
 #
 # File: which
-# $Id: which,v 1.3 2008/02/08 17:58:04 keithmarshall Exp $
+# $Id: which,v 1.4 2009/03/14 14:13:32 keithmarshall Exp $
 
 CMD=`IFS='\\/:'; set CMD $0; eval echo \$\{$#\}`
 if test $# -lt 1
@@ -43,12 +43,15 @@ do
 	if test "$LIST" != "$WHICH"
 	then
 	  # detect distinct `foo' and `foo.exe'
-	  INODE1=`ls -id "$LIST"` INODE2=`ls -id "$WHICH"`
+	  # (this needs IFS=<space>, to get the INODE numbers)
+	  IFS=" " INODE1=`ls -id "$LIST"` INODE2=`ls -id "$WHICH"`
 	  if test `set ref $INODE1; echo $2` != `set ref $INODE2; echo $2`
 	  then
 	    # `foo' matches first, followed by `foo.exe'
 	    test -z "$break" && echo "$LIST" || WHICH="$LIST"
 	  fi
+	  # reset IFS=<newline>, to get any further PROG names
+	  IFS=$'\n'
 	fi
 	echo "$WHICH"
 	$break

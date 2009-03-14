@@ -1,3 +1,10 @@
+2009.03.14  Keith Marshall  <keithmarshall@users.sf.net>
+
+	Bug fix in `which' check for `foo' and `foo.exe' equivalence.
+
+	* bin/which (IFS): Set it to `<space>', when checking for duplicate
+	`foo' vs. `foo.exe' inode numbers; reset to `<newline>' otherwise.
+
 2008.02.08  Keith Marshall  <keithmarshall@users.sf.net>
 
 	* bin/which: Set IFS to handle spaces in path names.
