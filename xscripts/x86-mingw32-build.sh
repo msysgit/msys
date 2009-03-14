@@ -1,6 +1,6 @@
 #!/bin/sh
 # x86-mingw32-build.sh -*- sh -*- vim: filetype=sh
-# $Id: x86-mingw32-build.sh,v 1.9 2009-03-01 16:20:09 keithmarshall Exp $
+# $Id: x86-mingw32-build.sh,v 1.10 2009-03-14 22:24:27 keithmarshall Exp $
 #
 # Script to guide the user through the build of a GNU/Linux hosted
 # MinGW cross-compiler for Win32.
@@ -140,7 +140,10 @@ $script: stage $STAGE: build $COMPONENT ..."
       $RUN $MAKE $INSTALL_GCC || die $? \
         "$unrecoverable installing gcc"
       cd "$WORKING_DIR"; test $LEAN_BUILD && rm -rf build-gcc
-      ALL_GCC="" INSTALL_GCC=""
+      #
+      # Redefine `make' goals for STAGE 2 build...
+      #
+      ALL_GCC="" INSTALL_GCC="install"
       ;;
 
     headers | mingw-runtime | w32api)
@@ -193,4 +196,4 @@ cd "$WORKING_DIR/.."; eval $RUN $CLEAN_SLATE_ON_EXIT
 echo "done."
 exit 0
 
-# $RCSfile: x86-mingw32-build.sh,v $Revision: 1.9 $: end of file
+# $RCSfile: x86-mingw32-build.sh,v $Revision: 1.10 $: end of file

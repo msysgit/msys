@@ -1,3 +1,9 @@
+2009-03-14  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Fix STAGE 2 `make install' failure; (reported by Oliver Bock).
+
+	* x86-mingw32-build.sh (INSTALL_GCC): Set it correctly for STAGE 2.
+
 2009-03-01  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Locate script components in `$CURDIR' implicitly.
