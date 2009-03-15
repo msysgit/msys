@@ -1,9 +1,9 @@
 # x86-mingw32-build.sh.dialogue -*- sh -*- vim: filetype=sh
-# $Id: x86-mingw32-build.sh.dialogue,v 1.5 2009-02-22 15:18:25 keithmarshall Exp $
+# $Id: x86-mingw32-build.sh.dialogue,v 1.6 2009-03-15 13:05:54 keithmarshall Exp $
 #
 # Manage dialogue for interactive execution of x86-mingw32-build script.
 #
-# Copyright (C) 2006, MinGW Project
+# Copyright (C) 2006, 2009, MinGW Project
 # Written by Keith Marshall <keithmarshall@users.sourceforge.net>
 #
 # This file is a component of the x86-mingw32-build script; it is not
@@ -409,4 +409,4 @@ ask "
 isyes $REPLY || die 1 "
 $script: build cancelled at user's request
 "
-# $RCSfile: x86-mingw32-build.sh.dialogue,v $Revision: 1.5 $: end of file
+# $RCSfile: x86-mingw32-build.sh.dialogue,v $Revision: 1.6 $: end of file

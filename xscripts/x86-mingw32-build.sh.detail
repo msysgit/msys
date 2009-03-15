@@ -1,9 +1,9 @@
-# x86-mingw32-build.sh.detail -*- sh -*- -- vim: filetype=sh
-# $Id: x86-mingw32-build.sh.detail,v 1.2 2008-01-13 18:16:53 mgdde Exp $
+# x86-mingw32-build.sh.detail -*- sh -*- vim: filetype=sh
+# $Id: x86-mingw32-build.sh.detail,v 1.3 2009-03-15 13:05:54 keithmarshall Exp $
 #
 # Display details of the current cross compiler build configuration.
 #
-# Copyright (C) 2006, MinGW Project
+# Copyright (C) 2006, 2009, MinGW Project
 # Written by Keith Marshall <keithmarshall@users.sourceforge.net>
 #
 # This file is a component of the x86-mingw32-build script; it is not
@@ -52,4 +52,4 @@ test -n "`echo $W32API_BASE_OPTIONS`" && { echo "
 $script: w32api specific build options ..."
 for OPTION in $W32API_BASE_OPTIONS; do echo " $OPTION"; done; }
 
-# $RCSfile: x86-mingw32-build.sh.detail,v $Revision: 1.2 $: end of file
+# $RCSfile: x86-mingw32-build.sh.detail,v $Revision: 1.3 $: end of file

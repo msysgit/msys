@@ -1,9 +1,9 @@
 # x86-mingw32-build.sh.hosts -- vim: filetype=config
-# $Id: x86-mingw32-build.sh.hosts,v 1.1 2006-11-05 23:26:55 keithmarshall Exp $
+# $Id: x86-mingw32-build.sh.hosts,v 1.2 2009-03-15 13:05:54 keithmarshall Exp $
 #
 # List of known SourceForge Mirror Sites, hosting packages for download.
 #
-# Copyright (C) 2006, MinGW Project
+# Copyright (C) 2006, 2009, MinGW Project
 # Written by Keith Marshall <keithmarshall@users.sourceforge.net>
 #
 # This file is a component of the x86-mingw32-build script; it is not
@@ -46,8 +46,8 @@
 # The following appeared in Earnie's original `portmaker' configuration;
 # today, they don't seem to work for me (KDM, 24-Oct-2006).
 #
-# citkit      RU                                 Asia?
-# cogent      US                                 North America
-# voxel       US                                 North America
+# citkit         RU                                 Asia?
+# cogent         US                                 North America
+# voxel          US                                 North America
 
-# $RCSfile: x86-mingw32-build.sh.hosts,v $Revision: 1.1 $: end of file
+# $RCSfile: x86-mingw32-build.sh.hosts,v $Revision: 1.2 $: end of file

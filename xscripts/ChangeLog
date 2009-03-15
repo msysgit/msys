@@ -1,5 +1,26 @@
 2009-03-15  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
+	Prepare version 1.0, release candidate #1.
+
+	* All files: Update copyright notices; include year 2009.
+
+	* x86-mingw32-build.sh.version (PACKAGE_VERSION_MAJOR): Set it to 1.
+	(PACKAGE_VERSION_MINOR): Leave unchanged, set to 0.
+	(PACKAGE_VERSION_PATCH): Leave as empty string.
+	(SNAPSHOT): Reset to empty string.
+
+	* x86-mingw32-build.sh.conf: Use latest available packages:
+	(GCC_VERSION): Update to current stable release: 3.4.5-20060117-2.
+	(BINUTILS_VERSION): Update to current stable release: 2.19.1.
+	(RUNTIME_VERSION): Update to current stable release: 3.15.2.
+	(W32API_VERSION): Update to current stable release: 3.13.
+	(INSTALL_DIR): Make it `$HOME/mingw32' by default.
+
+	* x86-mingw32-build.sh.hosts: Layout adjustment.
+	* x86-mingw32-build.sh.mirrors: Typo; s/vaild/valid/.
+
+2009-03-15  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
 	Adapt package tarball names to new MinGW.org conventions.
 
 	* Makefile (PACKAGE_NAME): New macro; define it, replacing...

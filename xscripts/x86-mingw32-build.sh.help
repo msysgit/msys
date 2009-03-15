@@ -1,9 +1,9 @@
-# x86-mingw32-build.sh.help -*- sh -*- -- vim: filetype=sh
-# $Id: x86-mingw32-build.sh.help,v 1.2 2008-01-13 18:16:53 mgdde Exp $
+# x86-mingw32-build.sh.help -*- sh -*- vim: filetype=sh
+# $Id: x86-mingw32-build.sh.help,v 1.3 2009-03-15 13:05:54 keithmarshall Exp $
 #
 # Help text definitions for x86-mingw32-build.sh script.
 #
-# Copyright (C) 2006, MinGW Project
+# Copyright (C) 2006, 2009, MinGW Project
 # Written by Keith Marshall <keithmarshall@users.sourceforge.net>
 #
 # This file is a component of the x86-mingw32-build script; it is not
@@ -125,4 +125,4 @@ case $match in
 esac
 exit 0
 
-# $RCSfile: x86-mingw32-build.sh.help,v $Revision: 1.2 $: end of file
+# $RCSfile: x86-mingw32-build.sh.help,v $Revision: 1.3 $: end of file

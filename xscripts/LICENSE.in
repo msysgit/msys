@@ -1,7 +1,7 @@
 .ig
 LICENSE.in for x86-mingw32-build.sh
 
-Copyright (C) 2006, MinGW Project  <http://www.mingw.org>
+Copyright (C) 2006, 2009, MinGW Project  <http://www.mingw.org>
 Written by Keith Marshall <keithmarshall@users.sourceforge.net>
 
 x86-mingw32-build is free software; you can redistribute it and/or modify
@@ -24,7 +24,7 @@ to generate the LICENSE file.
 ..
 .so README.tmac
 .LP
-$Id: LICENSE.in,v 1.1 2006-11-05 23:26:34 keithmarshall Exp $
+$Id: LICENSE.in,v 1.2 2009-03-15 13:05:54 keithmarshall Exp $
 .LP
 .nf
 LICENSE for x86-mingw32-build script package
@@ -67,5 +67,5 @@ at your option,
 choose GPL Version 2,
 or any later version.
 .LP
-# $RCSfile: LICENSE.in,v $Revision: 1.1 $: end of file
+# $RCSfile: LICENSE.in,v $Revision: 1.2 $: end of file
 .pl 0
