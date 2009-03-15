@@ -1,10 +1,10 @@
 # Makefile for x86-mingw32-build.sh script package
-# $Id: Makefile,v 1.1 2006-11-07 19:57:12 keithmarshall Exp $
+# $Id: Makefile,v 1.2 2009-03-15 09:36:45 keithmarshall Exp $
 #
 # Automates updates of generated files from the x86-mingw32-build CVS
 # (xscripts), and creates distribution tarballs.
 #
-# Copyright (C) 2006, MinGW Project
+# Copyright (C) 2006, 2009, MinGW Project
 # Written by Keith Marshall <keithmarshall@users.sourceforge.net>
 # 
 # This is the primary script for the x86-mingw32-build package.
@@ -24,14 +24,15 @@
 # Software Foundation, 51 Franklin St - Fifth Floor, Boston, MA 02110-1301,
 # USA.
 
-PACKAGE_TAG = x86-mingw32-build.sh
-SHOW_VERSION = $(SHOW_VERSION_CMD) $(VERSION_FLAGS) SNAPSHOT=$(SNAPSHOT)
-SHOW_VERSION_CMD = $(SHELL) ${srcdir}/x86-mingw32-build.sh.version --echo
+PACKAGE_NAME = x86-mingw32-build
+PACKAGE_SCRIPTS = $(PACKAGE_NAME).sh*
+SHOW_VERSION = $(SHOW_VERSION_CMD) --echo $(VERSION_FLAGS)
+SHOW_VERSION_CMD = $(SHELL) ${srcdir}/x86-mingw32-build.sh.version
 UPDATE_VERSION = sed s",<version>,`$(SHOW_VERSION)`,"
 NROFF = nroff -Tascii
 
 GENERATED_FILES = README AUTHORS LICENSE
-DISTFILES = ${srcdir}/COPYING $(GENERATED_FILES) ${srcdir}/$(PACKAGE_TAG)*
+DISTFILES = ${srcdir}/COPYING $(GENERATED_FILES) ${srcdir}/$(PACKAGE_SCRIPTS)
 DEVELOPER_DISTFILES = ${srcdir}/*.in ${srcdir}/*.tmac ${srcdir}/Makefile
 
 all: $(GENERATED_FILES)
@@ -63,7 +64,7 @@ clean:
 	$(RM) $(GENERATED_FILES) *~
 
 distclean: clean
-	$(RM) -r $(PACKAGE_TAG)-* tmp
+	$(RM) -r $(PACKAGE_NAME)-* tmp
 	$(RM) *.gz *.bz2 *.log
 
 # We create distributions comprising two tarballs;
@@ -74,29 +75,29 @@ distclean: clean
 # allow the user to override this, by specifying "ZIPMODE=gz", so that
 # gzip compression is used instead.
 
-TARBALL = $(PACKAGE_TAG)-`$(SHOW_VERSION) SNAPSHOT=$(SNAPSHOT)`
+TARBALL = $(PACKAGE_NAME)-`$(SHOW_VERSION) SNAPSHOT=$(SNAPSHOT)`
 ZIPMODE = .bz2
 
 %.tar.gz: %.tar; gzip -c $< > $@
 %.tar.bz2: %.tar; bzip2 -c $< > $@
 
-%-devel.tar:
+%-dev.tar: $(DEVELOPER_DISTFILES)
 	$(RM) -r $*; mkdir $*
 	$(LN_S) $(DEVELOPER_DISTFILES) $*
 	tar chf $@ $*
 	$(RM) -r $*
 
-%.tar:
+%-sh.tar: $(DISTFILES)
 	$(RM) README; $(MAKE) README
-	$(RM) -r $(PACKAGE_TAG)-* $* tmp; mkdir tmp
+	$(RM) -r $(PACKAGE_NAME)-* $* tmp; mkdir tmp
 	$(LN_S) $(DISTFILES) tmp; mv tmp $*
-	cd $*; $(RM) $(PACKAGE_TAG).log
+	cd $*; $(RM) $(PACKAGE_NAME).log
 	tar chf $@ $*
 	$(RM) -r $*
 
 dist: basic-dist devel-dist
-basic-dist: AUTHORS LICENSE; $(MAKE) $(TARBALL).tar$(ZIPMODE)
-devel-dist: ; $(MAKE) $(TARBALL)-devel.tar$(ZIPMODE)
+basic-dist: ; $(MAKE) $(TARBALL)-sh.tar$(ZIPMODE)
+devel-dist: ; $(MAKE) $(TARBALL)-dev.tar$(ZIPMODE)
 
 # One day, we might have this package install some scripts,
 # but for now, there is nothing to install.
@@ -104,4 +105,4 @@ devel-dist: ; $(MAKE) $(TARBALL)-devel.tar$(ZIPMODE)
 install: install-scripts
 install-scripts:
 
-# $RCSfile: Makefile,v $Revision: 1.1 $: end of file
+# $RCSfile: Makefile,v $Revision: 1.2 $: end of file

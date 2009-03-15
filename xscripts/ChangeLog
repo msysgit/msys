@@ -1,3 +1,20 @@
+2009-03-15  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Adapt package tarball names to new MinGW.org conventions.
+
+	* Makefile (PACKAGE_NAME): New macro; define it, replacing...
+	(PACKAGE_TAG): ...this, without `.sh' suffix, now unused; delete it.
+	(SHOW_VERSION, SHOW_VERSION_CMD): Adjust to suit.
+	(PACKAGE_SCRIPTS): New macro; define it.
+	(DISTFILES): Use it.
+	(TARBALL): Redefine it; use `PACKAGE_NAME'.
+	(%-devel.tar): Obsolete target name; replace it...
+	(%-dev.tar): ...with this.
+	(devel-dist): Use it; create `$PACKAGE_NAME-$VERSION-dev.tar.$ZIPMODE'
+	(%.tar): Obsolete target name; replace it ...
+	(%-sh.tar): ...with this; use `PACKAGE_NAME'.
+	(basic-dist): Use it; create `$PACKAGE_NAME-$VERSION-sh.tar.$ZIPMODE'
+
 2009-03-14  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Fix STAGE 2 `make install' failure; (reported by Oliver Bock).
