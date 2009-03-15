@@ -1,5 +1,13 @@
 2009-03-15  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
+	Defend against apparent success of failed SourceForge download.
+
+	* x86-mingw32-build.sh (manifest, keep): New shell local variables;
+	use them to track package directory content, detect false download,
+	and remove phantom dowload files.
+
+2009-03-15  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
 	Prepare version 1.0, release candidate #1.
 
 	* All files: Update copyright notices; include year 2009.
