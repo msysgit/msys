@@ -1,5 +1,12 @@
 2009.04.06  Cesar Strauss  <cestrauss@gmail.com>
 
+	Add share directory to output.
+	* script/msysrls.sh: Copy files into share directory.
+	(share_LIST): New variable.
+	* var/msys/share.dat: New file.
+
+2009.04.06  Cesar Strauss  <cestrauss@gmail.com>
+
 	* script/msysrls.sh: Allow override of local variables by reading
 	configuration files.
 

@@ -66,6 +66,7 @@ doc_LIST="`cat ${datastore}/doc.dat` MSYS-${VERSION}-changes.rtf"
 misc_LIST="`cat ${datastore}/misc.dat`"
 pi_LIST="`cat ${datastore}/pi.dat`"
 script_LIST="`cat ${datastore}/script.dat`"
+share_LIST="`cat ${datastore}/share.dat`"
 
 if [ ! -d ${RLSDEPOT} ]
 then
@@ -87,6 +88,16 @@ done
 for I in ${dll_LIST}
 do
   cp ${istore}/bin/${I} ${RLSDEPOT}/bin/
+done
+
+if [ ! -d ${RLSDEPOT}/share ]
+then
+  mkdir ${RLSDEPOT}/share
+fi
+
+for I in ${share_LIST}
+do
+  cp -r ${istore}/share/${I} ${RLSDEPOT}/share/
 done
 
 if [ ! -d ${RLSDEPOT}/doc/msys ]
