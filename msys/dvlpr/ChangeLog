@@ -1,5 +1,10 @@
 2009.04.06  Cesar Strauss  <cestrauss@gmail.com>
 
+	* script/msysrls.sh: Compress tarball with gzip instead of bzip2.
+	(PACKAGE_NAME): Use .gz extension instead of .bz2.
+
+2009.04.06  Cesar Strauss  <cestrauss@gmail.com>
+
 	Add share directory to output.
 	* script/msysrls.sh: Copy files into share directory.
 	(share_LIST): New variable.
