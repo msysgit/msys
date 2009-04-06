@@ -1,5 +1,9 @@
 2009.04.06  Cesar Strauss  <cestrauss@gmail.com>
 
+	* script/msysrls.sh (SNAPDATE): Don't use dots as date separators.
+
+2009.04.06  Cesar Strauss  <cestrauss@gmail.com>
+
 	* script/msysrls.sh: Compress tarball with gzip instead of bzip2.
 	(PACKAGE_NAME): Use .gz extension instead of .bz2.
 
