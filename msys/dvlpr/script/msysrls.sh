@@ -59,6 +59,11 @@ noarchstore=${STOREROOT}/noarch
 miscstore=${STOREROOT}/misc
 datastore=${STOREROOT}/var
 
+INFOBEFOREFILE=`cmd //c echo ${RLSDEPOT}/doc/msys/MSYS-${VERSION}-changes.rtf`
+INFOAFTERFILE=`cmd //c echo ${RLSDEPOT}/doc/msys/MSYS_WELCOME.rtf`
+LICENSEFILE=`cmd //c echo ${RLSDEPOT}/doc/msys/MSYS_LICENSE.rtf`
+RLSSOURCEDIR=`cmd //c echo $RLSDEPOT`
+
 exe_LIST="`cat ${datastore}/exe.dat`"
 etc_LIST="`cat ${datastore}/etc.dat`"
 dll_LIST="`cat ${datastore}/dll.dat`"
@@ -153,3 +158,21 @@ then
 fi
 
 (cd ${RLSDEPOT} && tar -zcf ${RLSOUTPUTDIR}/${PACKAGE_NAME} *)
+
+RLSOUTPUTDIR=`cmd //c echo "${RLSOUTPUTDIR}"`
+
+cat ${noarchstore}/msys.iss.in | \
+  sed -c \
+      -e "s/@VERSION@/$VERSION/g" \
+      -e "s/@ARC@/$ARC/g" \
+      -e "s/@SNAPDATE@/$SNAPDATE/g" \
+      -e "s/@SUBVERSION@/$SUBVERSION/g" \
+      -e "s%@LICENSEFILE@%${LICENSEFILE}%g" \
+      -e "s%@INFOBEFOREFILE@%${INFOBEFOREFILE}%g" \
+      -e "s%@INFOAFTERFILE@%${INFOAFTERFILE}%g" \
+      -e "s%@RLSSOURCEDIR@%${RLSSOURCEDIR}%g" \
+      -e "s%@RLSOUTPUTDIR@%${RLSOUTPUTDIR}%g" \
+  > /tmp/msys$$.iss
+
+iscc "/tmp/msys$$.iss"
+rm -f /tmp/msys$$.iss
