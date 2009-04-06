@@ -1,5 +1,10 @@
 2009.04.06  Cesar Strauss  <cestrauss@gmail.com>
 
+	* script/msysrls.sh: Allow override of local variables by reading
+	configuration files.
+
+2009.04.06  Cesar Strauss  <cestrauss@gmail.com>
+
 	* script/msysrls.sh (STOREROOT, RLSROOT): Make relative to the current
 	working directory.
 	(DEPOTROOT): New variable.

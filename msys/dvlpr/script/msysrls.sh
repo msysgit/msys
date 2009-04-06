@@ -25,6 +25,17 @@ SNAPDATE=\-`date +%Y.%m.%d`
 #SNAPDATE=
 SUBVERSION=\-1
 #SUBVERSION=
+
+if [ -f /etc/msysrlsbld.pref ]
+then
+  source /etc/msysrlsbld.pref
+fi
+
+if [ -f ${HOME}/msysrlsbld.pref ]
+then
+  source ${HOME}/msysrlsbld.pref
+fi
+
 #END User changeable values section.
 
 VERSION=${MAJORVER}.${MINORVER}.${PATCHVER}
