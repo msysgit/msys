@@ -1,3 +1,10 @@
+2009.04.06  Cesar Strauss  <cestrauss@gmail.com>
+
+	* script/msysrls.sh (STOREROOT, RLSROOT): Make relative to the current
+	working directory.
+	(DEPOTROOT): New variable.
+	(RLSDEPOT): Use DEPOTROOT
+
 2009.03.14  Keith Marshall  <keithmarshall@users.sf.net>
 
 	Bug fix in `which' check for `foo' and `foo.exe' equivalence.
