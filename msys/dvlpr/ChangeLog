@@ -1,5 +1,9 @@
 2009.04.06  Cesar Strauss  <cestrauss@gmail.com>
 
+	* script/msysrls.sh (SNAPDATE): Change to release candidate.
+
+2009.04.06  Cesar Strauss  <cestrauss@gmail.com>
+
 	* src/msysrls.sh: Generate the installer again.
 	(INFOBEFOREFILE,INFOAFTERFILE): New variables to be passed to the
 	installer script.
