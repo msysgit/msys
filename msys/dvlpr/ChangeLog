@@ -1,5 +1,10 @@
 2009.04.06  Cesar Strauss  <cestrauss@gmail.com>
 
+	* script/msys.iss.in ([types],[components],[files]): Remove "i386"
+	setup type.
+
+2009.04.06  Cesar Strauss  <cestrauss@gmail.com>
+
 	* script/msysrls.sh (SNAPDATE): Change to release candidate.
 
 2009.04.06  Cesar Strauss  <cestrauss@gmail.com>
