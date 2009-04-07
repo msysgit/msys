@@ -1,5 +1,12 @@
 2009.04.06  Cesar Strauss  <cestrauss@gmail.com>
 
+	* script/msys.iss.in ([Icons]): Use pretty icon for the MSYS terminal
+	shortcut.
+	* ico/msys.ico: Replace with a prettier version.
+	Thanks to mlhutch for providing the new icon.
+
+2009.04.06  Cesar Strauss  <cestrauss@gmail.com>
+
 	* script/msys.iss.in ([types],[components],[files]): Remove "i386"
 	setup type.
 

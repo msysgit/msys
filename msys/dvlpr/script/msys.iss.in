@@ -151,9 +151,9 @@ Source: @RLSSOURCEDIR@\*; DestDir: "{app}";  Flags: recursesubdirs; CopyMode: al
 ;EXAMPLES:
 ;Name: "{group}\My Program"; Filename: "{app}\MYPROG.EXE"; WorkingDir: "{app}"
 
-Name: "{group}\MSYS\msys"; Filename: "{app}\msys.bat"; WorkingDir: "{app}\bin";  IconFilename: "{app}\m.ico"
+Name: "{group}\MSYS\msys"; Filename: "{app}\msys.bat"; WorkingDir: "{app}\bin";  IconFilename: "{app}\msys.ico"
 Name: "{group}\MSYS\uninstall"; Filename: "{app}\uninstall\unins000.exe"; WorkingDir: "\"; IconFilename: "{app}\uninstall\unins000.exe"
-Name: "{userdesktop}\MSYS"; Filename: "{app}\msys.bat"; WorkingDir: "{app}\bin";  IconFilename: "{app}\m.ico"
+Name: "{userdesktop}\MSYS"; Filename: "{app}\msys.bat"; WorkingDir: "{app}\bin";  IconFilename: "{app}\msys.ico"
 
 [INI]
 ;This section
