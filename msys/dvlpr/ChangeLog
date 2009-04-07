@@ -1,5 +1,11 @@
 2009.04.06  Cesar Strauss  <cestrauss@gmail.com>
 
+	* doc/msys/MSYS-1.0.11-changes.rtf: Update.
+	* doc/msys/README.rtf: Update location of wiki pages.
+	Remove mention of rxvt as the default terminal.
+
+2009.04.06  Cesar Strauss  <cestrauss@gmail.com>
+
 	* script/msysbld.sh: New tool to drive automated builds.
 
 2009.04.06  Cesar Strauss  <cestrauss@gmail.com>

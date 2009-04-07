@@ -65,13 +65,13 @@ Working with other products:\par
 \f0\fs20 This is also advantageous if you find that your program isn\rquote t working with RXVT correctly.  RXVT uses PTY emulation and it is often the case that controlling the stdio of a native program isn\rquote t functional.  There is no known cure for this PTY issue and I have stopped looking for one.  The above script method is the way you start the processes that don\rquote t flush their buffers or cause I/O blocking on the standard I/O channels.\par
 \b\i\par
 Other documentation:\b0\i0\par
-Be sure to read the MSYS_ series.  I have tried to document how I'm changing the cygwin code to allow us to use it with MSYS.  These can be found in the /doc/msys directory, or you can find them in the /usr/doc/msys directory.  You will also find HOWTO documentation at http://www.mingw.org/MinGWiki/ so please read it.\par
+Be sure to read the MSYS_ series.  I have tried to document how I'm changing the cygwin code to allow us to use it with MSYS.  These can be found in the /doc/msys directory, or you can find them in the /usr/doc/msys directory.  You will also find HOWTO documentation at http://www.mingw.org/wiki/MinGWiki/ so please read it.\par
 \par
 \b\i Using binaries with different runtimes:\b0\i0\par
 You can't use Cygwin binaries at all and if you try you'll most likely just cause the processes to "hang".  You can use Win32 native binaries but you should put them into the /mingw/bin or your /usr/local/bin directory tree.  If you wish to replace an MSYS binary with a native win32 version then delete or rename the /bin version.\par
 \page\par
 \b\i Effective use of the clipboard:\par
-\b0\i0 You may use the clipboard with MSYS.  When using rxvt (the default installation) as the terminal, just selecting with data with click and drag of the mouse, copies the data to the clipboard.  To paste the clipboard data in the rxvt terminal you can Shift and Left Click or press both mouse buttons if 3 button mouse emulation is on or press the mouse wheel.  To copy the highlighted data to your favorite windows email client the you use the paste options for that program, typically Ctrl-V.  You can also use interesting bash shell commands such as `cat /dev/clipboard > /tmp/foo' or `less -f /dev/clipboard'.  Data entered into the clipboard by non-MSYS programs can also be used by MSYS programs and vice versa.\b\i\par
+\b0\i0 You may use the clipboard with MSYS.  When using rxvt as the terminal, just selecting with data with click and drag of the mouse, copies the data to the clipboard.  To paste the clipboard data in the rxvt terminal you can Shift and Left Click or press both mouse buttons if 3 button mouse emulation is on or press the mouse wheel.  To copy the highlighted data to your favorite windows email client the you use the paste options for that program, typically Ctrl-V.  You can also use interesting bash shell commands such as `cat /dev/clipboard > /tmp/foo' or `less -f /dev/clipboard'.  Data entered into the clipboard by non-MSYS programs can also be used by MSYS programs and vice versa.\b\i\par
 \par
 Bug Reports:\b0\i0\par
 See http://www.mingw.org/MinGWiki/index.php/BugReports\par
