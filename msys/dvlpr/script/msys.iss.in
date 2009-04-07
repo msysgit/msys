@@ -98,8 +98,6 @@ WizardStyle=modern
 ;Name: "compact"; Description: "Compact installation"
 ;Name: "custom"; Description: "Custom installation"; Flags: iscustom
 
-Name: "i386"; Description: "Installation for i386 based CPUs (Works for all x86 based CPUs >= i386)"
-
 [Components]
 ;This section
 ;1) is optional.
@@ -108,8 +106,6 @@ Name: "i386"; Description: "Installation for i386 based CPUs (Works for all x86 
 ;EXAMPLES:
 ;Name: "main"; Description: "Main Files"; Types: full compact custom; Flags: fixed
 ;Name: "help"; Description: "Help Files"; Types: full
-
-Name: "i386"; Description: "i386 install"; Types: "i386"
 
 [Tasks]
 ;This section
@@ -144,7 +140,7 @@ Name: "{app}\mingw"; Flags: uninsalwaysuninstall
 ;Source: "README.TXT"; DestDir: "{app}"; Flags: isreadme
 
 ;REMEMBER Source: @RLSSOURCEDIR@\*; DestDir: "{app}";  Components: "i386";  Flags: recursesubdirs skipifsourcedoesntexist; CopyMode: alwaysoverwrite
-Source: @RLSSOURCEDIR@\*; DestDir: "{app}";  Components: "i386";  Flags: recursesubdirs; CopyMode: alwaysoverwrite
+Source: @RLSSOURCEDIR@\*; DestDir: "{app}";  Flags: recursesubdirs; CopyMode: alwaysoverwrite
 
 [Icons]
 ;This section
