@@ -1,5 +1,11 @@
 2009.04.06  Cesar Strauss  <cestrauss@gmail.com>
 
+	Make the Windows console the default MSYS terminal.
+	* script/msys.iss.in ([Icons]): Add -norxvt to msys.bat invocation.
+	Add a separate shortcut for the rxvt terminal.
+
+2009.04.06  Cesar Strauss  <cestrauss@gmail.com>
+
 	* script/msys.iss.in ([Icons]): Use pretty icon for the MSYS terminal
 	shortcut.
 	* ico/msys.ico: Replace with a prettier version.
