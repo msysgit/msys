@@ -1,4 +1,5 @@
 basename.exe 
+bash.exe
 bzip2.exe 
 cat.exe 
 chmod.exe 
@@ -13,6 +14,7 @@ dirname.exe
 env.exe
 expr.exe 
 false.exe 
+file.exe
 find.exe 
 fold.exe 
 gawk.exe 
@@ -24,17 +26,20 @@ info.exe
 infokey.exe
 install.exe 
 install-info.exe
+join.exe
 less.exe 
 ln.exe
 ls.exe 
+lzma.exe
 m4.exe 
 make.exe
 makeinfo.exe 
 md5sum.exe 
 mkdir.exe 
-mount.exe 
+msysmnt.exe 
 mv.exe 
 od.exe 
+paste.exe
 patch.exe 
 sort.exe 
 stty.exe
@@ -55,7 +60,11 @@ touch.exe
 tr.exe 
 uname.exe 
 uniq.exe 
-vim.exe 
 wc.exe 
 xargs.exe
+install.exe.manifest
+install-info.exe.manifest
+patch.exe.manifest
+mount
+umount
 

@@ -1,5 +1,37 @@
 2009.04.06  Cesar Strauss  <cestrauss@gmail.com>
 
+	Update distributed files.
+	* bin/d2u: New tool.
+	* bin/u2d: New tool.
+	* bin/install.exe.manifest: Delete, provided by coreutils.
+	* bin/install-info.exe.manifest: Delete, provided by texinfo.
+	* bin/patch.exe.manifest: Delete, provided by coreutils.
+	* bin/ln: Delete, provided by coreutils.
+	* bin/ex, bin/rvi, bin/rview, bin/rvim, bin/vi, bin/view: Delete, as
+	vim was moved to the DTK.
+	* etc/inputrc.default: New default keybindings.
+	* var/msys/dll.dat (msys-bz2-1.dll): Add, needed by bzip2.
+	* var/msys/etc.dat (inputrc.default): Add, improve key bindings.
+	* var/msys/exe.dat (bash.exe): Add, provides a /bin/bash for scripts
+	that need it.
+	(file.exe, join.exe, paste.exe): Add, improve libtool support.
+	(lzma.exe): Add, needed by tar.
+	(mount.exe): Rename to msysmnt.exe, replaced by mount/umount scripts.
+	(msysmnt.exe): New name for mount.exe
+	(mount, umount): Replaces mount.exe.
+	(install.exe.manifest, patch.exe.manifest): Provided by coreutils,
+	move from script.dat.
+	(install-info.exe.manifest): Provided by texinfo, move from
+	script.dat.
+	(vim.exe): Delete, moved to the MSYS DTK.
+	* var/msys/script.dat (u2d, d2u): New tools.
+	(install.exe.manifest, patch.exe.manifest): Provided with coreutils,
+	move from script.dat.
+	(install-info.exe.manifest): Provided with texinfo, move from
+	script.dat.
+
+2009.04.06  Cesar Strauss  <cestrauss@gmail.com>
+
 	Make the Windows console the default MSYS terminal.
 	* script/msys.iss.in ([Icons]): Add -norxvt to msys.bat invocation.
 	Add a separate shortcut for the rxvt terminal.
