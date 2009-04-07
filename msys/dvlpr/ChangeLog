@@ -1,5 +1,9 @@
 2009.04.06  Cesar Strauss  <cestrauss@gmail.com>
 
+	* script/msysbld.sh: New tool to drive automated builds.
+
+2009.04.06  Cesar Strauss  <cestrauss@gmail.com>
+
 	Update distributed files.
 	* bin/d2u: New tool.
 	* bin/u2d: New tool.
