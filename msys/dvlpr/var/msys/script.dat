@@ -3,9 +3,9 @@ bunzip2
 cls
 clsb
 cmd 
+d2u
 echo 
 egrep 
-ex 
 fgrep 
 ftp 
 gunzip
@@ -13,15 +13,7 @@ lnkcnv
 msysinfo
 printf 
 pwd
-rvi 
-rview 
-rvim 
 start
 texi2dvi
-vi 
-view 
+u2d
 which
-install.exe.manifest
-install-info.exe.manifest
-patch.exe.manifest
-
