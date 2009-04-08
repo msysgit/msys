@@ -1,3 +1,11 @@
+2009.04.08  Keith Marshall  <keithmarshall@users.sf.net>
+
+	Establish native console as delault shell container.
+
+	* bin/msys.bat (MSYSCON): Define variable explicitly...
+	[-rxvt | --rxvt] (rxvt.exe): ...as this, if CLI option specified;
+	[-norxvt | --norxvt | unspecified] (sh.exe): ...else this.
+
 2009.04.06  Cesar Strauss  <cestrauss@gmail.com>
 
 	* doc/msys/MSYS-1.0.11-changes.rtf: Update.
