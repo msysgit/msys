@@ -1,2 +1,0 @@
-
-File "/oname=$PLUGINSDIR\%path%" "archives\%path%"

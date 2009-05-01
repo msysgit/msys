@@ -1,4 +1,0 @@
-# mingwPORT.exports
-# Used to export variables for use by configure and or make.
-
-export CFLAGS CXXFLAGS

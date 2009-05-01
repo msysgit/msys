@@ -1,2 +1,0 @@
-
-tdminstall::RegisterInnerArchive /NOUNLOAD "%path%"

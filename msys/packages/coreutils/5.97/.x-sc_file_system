@@ -1,7 +1,0 @@
-ChangeLog
-Makefile.maint
-NEWS
-config-log
-po/
-src/df.c
-src/stat.c
