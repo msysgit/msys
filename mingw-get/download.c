@@ -7,7 +7,8 @@
 
 typedef struct CallbackInfo
 {
-	int (*next_callback)(size_t, size_t);
+	int (*next_callback)(size_t, size_t, void*);
+	void* callback_param;
 } CallbackInfo;
 
 int DLCallback
@@ -18,14 +19,15 @@ int DLCallback
   double ulnow)
 {
 	return ((CallbackInfo*)clientp)->next_callback((size_t)dltotal,
-	 (size_t)dlnow);
+	 (size_t)dlnow, ((CallbackInfo*)clientp)->callback_param);
 }
 
 
 int DownloadFile
  (const char* url,
   const char* local,
-  int (*prog_callback)(size_t, size_t))
+  int (*prog_callback)(size_t, size_t, void*),
+  void* callback_param)
 {
 	int ret = 1;
 
@@ -51,6 +53,7 @@ int DownloadFile
 				curl_easy_setopt(curl, CURLOPT_PROGRESSFUNCTION, DLCallback);
 				CallbackInfo info;
 				info.next_callback = prog_callback;
+				info.callback_param = callback_param;
 				curl_easy_setopt(curl, CURLOPT_PROGRESSDATA, &info);
 			}
 			else

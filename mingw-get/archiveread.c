@@ -73,7 +73,9 @@ int ArchiveRead_ExtractEntryToBase
  (ArchiveReader* reader,
   char const* base_path)
 {
-	return ((ArchiveReaderStruct*)reader)->internal_extract_entry_to_base(reader, base_path);
+	return ((ArchiveReaderStruct*)reader)->internal_extract_entry_to_base(
+	 reader, base_path
+	 );
 }
 
 

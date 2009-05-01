@@ -17,7 +17,8 @@ extern "C" {
 int DownloadFile
  (const char* url,
   const char* local,
-  int (*prog_callback)(size_t, size_t));
+  int (*prog_callback)(size_t, size_t, void*),
+  void* callback_param);
 
 
 #ifdef __cplusplus

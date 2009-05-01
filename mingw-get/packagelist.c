@@ -186,14 +186,8 @@ void PackageList_SetCategories(const int* categories)
 {
 	ListView_DeleteAllItems(g_hpackagelist);
 
-	if (*categories == -1)
-	{
-		PackageView_SetPackage(-1);
-		return;
-	}
-
 	int have_item = 0;
-	if (*categories == 0)
+	if (*categories == -1)
 	{
 		int i = 0;
 		for (; i < PkgIndex_NumPackages(); ++i)

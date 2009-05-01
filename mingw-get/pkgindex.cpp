@@ -163,12 +163,19 @@ extern "C" int PkgIndex_Load()
 			const char* name = NonEmptyAttribute(cat_el, "name");
 			if (!name)
 				continue;
-			g_pkgindex.headings.back().second.push_back(
-			 g_pkgindex.categories.size()
-			 );
-			g_pkgindex.category_ids[id] = g_pkgindex.categories.size();
-			g_pkgindex.categories.push_back(std::make_pair(std::string(id),
-			 std::string(name)));
+			StringIntMap::const_iterator found =
+			 g_pkgindex.category_ids.find(id);
+			if (found != g_pkgindex.category_ids.end())
+				g_pkgindex.headings.back().second.push_back(found->second);
+			else
+			{
+				g_pkgindex.headings.back().second.push_back(
+				 g_pkgindex.categories.size()
+				 );
+				g_pkgindex.category_ids[id] = g_pkgindex.categories.size();
+				g_pkgindex.categories.push_back(std::make_pair(std::string(id),
+				 std::string(name)));
+			}
 		}
 		g_pkgindex.headings.back().second.push_back(-1);
 	}

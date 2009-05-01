@@ -16,6 +16,7 @@
 #include "ui_general.hh"
 #include "pkgindex.hh"
 #include "packagelist.hh"
+#include "categorytree.hh"
 
 
 HWND g_hmainwnd = 0;
@@ -100,7 +101,7 @@ BOOL CALLBACK MainWndProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 			HWND hcb = GetDlgItem(hwndDlg, IDC_CATTYPE);
 			SendMessage(hcb, CB_ADDSTRING, 0, (LPARAM)"Category");
-			SendMessage(hcb, CB_ADDSTRING, 0, (LPARAM)"State");
+			SendMessage(hcb, CB_ADDSTRING, 0, (LPARAM)"Installed");
 			SendMessage(hcb, CB_ADDSTRING, 0, (LPARAM)"Release Status");
 			SendMessage(hcb, CB_SETCURSEL, 0, 0);
 
@@ -153,19 +154,22 @@ BOOL CALLBACK MainWndProc(HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		case IDM_SOURCES_REPOSITORIES:
 			EditReposDlg();
 			return TRUE;
-		case IDC_CATLIST:
-			if (HIWORD(wParam) == LBN_SELCHANGE)
-			{
-				//UI_OnCategoryChange(ListBox_GetCurSel((HWND)lParam));
-				return TRUE;
-			}
-			break;
 		}
 		break;
 
 	case WM_NOTIFY:
 		switch (((LPNMHDR)lParam)->idFrom)
 		{
+		case IDC_CATLIST:
+			{
+				int retval;
+				if (CategoryTree_WM_NOTIFY(hwndDlg, wParam, lParam, &retval))
+				{
+					SetWindowLong(hwndDlg, DWL_MSGRESULT, retval);
+					return TRUE;
+				}
+			}
+			break;
 		case IDC_COMPLIST:
 			switch (((LPNMHDR)lParam)->code)
 			{

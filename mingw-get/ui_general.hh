@@ -12,6 +12,7 @@ extern "C" {
 
 
 void UI_UpdateLists();
+void UI_ApplyChanges();
 
 void LastError_MsgBox(const char* title);
 

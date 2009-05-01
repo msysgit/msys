@@ -385,65 +385,71 @@ int ArchiveReadTar_ExtractEntryToBase
 	 READERTAR(reader)->entry_path);
 
 	if (ArchiveReadTar_EntryIsDirectory(reader))
-		return ArchiveRead_EnsureDirectory(fullpath, strlen(base_path));
-
-	int rmostsep = strlen(fullpath) - 1;
-	while (rmostsep > 0
-	 && fullpath[rmostsep] != '/' && fullpath[rmostsep] != '\\')
-		--rmostsep;
-	if (rmostsep > 0)
 	{
-		char save = fullpath[rmostsep];
-		fullpath[rmostsep] = 0;
 		if (!ArchiveRead_EnsureDirectory(fullpath, strlen(base_path)))
-		{
-			ArchiveRead_SetError((ArchiveReaderStruct*)reader,
-			 "Failed to create directory '%s' for extraction", fullpath);
 			return 0;
-		}
-		fullpath[rmostsep] = save;
 	}
-
-	char tmppath[PATH_MAX + 1];
-	snprintf(tmppath, PATH_MAX + 1, "%s.tmp", fullpath);
-
-	FILE* outfile = fopen(tmppath, "wb");
-	if (!outfile)
+	else
 	{
-		ArchiveRead_SetError((ArchiveReaderStruct*)reader,
-		 "Failed to open file '%s' for output", tmppath);
-		return 0;
-	}
+		int rmostsep = strlen(fullpath) - 1;
+		while (rmostsep > 0
+		 && fullpath[rmostsep] != '/' && fullpath[rmostsep] != '\\')
+			--rmostsep;
+		if (rmostsep > 0)
+		{
+			char save = fullpath[rmostsep];
+			fullpath[rmostsep] = 0;
+			if (!ArchiveRead_EnsureDirectory(fullpath, strlen(base_path)))
+			{
+				ArchiveRead_SetError((ArchiveReaderStruct*)reader,
+				 "Failed to create directory '%s' for extraction", fullpath);
+				return 0;
+			}
+			fullpath[rmostsep] = save;
+		}
 
-	char buf[BLOCKSIZE];
-	while (READERTAR(reader)->entry_data > 0)
-	{
-		if (DecompressRead(READERTAR(reader), buf, BLOCKSIZE) != BLOCKSIZE)
+		char tmppath[PATH_MAX + 1];
+		snprintf(tmppath, PATH_MAX + 1, "%s.tmp", fullpath);
+
+		FILE* outfile = fopen(tmppath, "wb");
+		if (!outfile)
 		{
 			ArchiveRead_SetError((ArchiveReaderStruct*)reader,
-			 "Failed to read %d bytes from decompression stream", BLOCKSIZE);
-			fclose(outfile);
-			remove(tmppath);
+			 "Failed to open file '%s' for output", tmppath);
 			return 0;
 		}
-		int write = (READERTAR(reader)->entry_data < BLOCKSIZE) ?
-		 READERTAR(reader)->entry_data : BLOCKSIZE;
-		if (fwrite(buf, 1, write, outfile) != write)
+
+		char buf[BLOCKSIZE];
+		while (READERTAR(reader)->entry_data > 0)
 		{
-			ArchiveRead_SetError((ArchiveReaderStruct*)reader,
-			 "Failed to write %d bytes to '%s'", write, tmppath);
-			fclose(outfile);
-			remove(tmppath);
-			return 0;
+			if (DecompressRead(READERTAR(reader), buf, BLOCKSIZE) != BLOCKSIZE)
+			{
+				ArchiveRead_SetError((ArchiveReaderStruct*)reader,
+				 "Failed to read %d bytes from decompression stream", BLOCKSIZE);
+				fclose(outfile);
+				remove(tmppath);
+				return 0;
+			}
+			int write = (READERTAR(reader)->entry_data < BLOCKSIZE) ?
+			 READERTAR(reader)->entry_data : BLOCKSIZE;
+			if (fwrite(buf, 1, write, outfile) != write)
+			{
+				ArchiveRead_SetError((ArchiveReaderStruct*)reader,
+				 "Failed to write %d bytes to '%s'", write, tmppath);
+				fclose(outfile);
+				remove(tmppath);
+				return 0;
+			}
+			READERTAR(reader)->entry_data -= write;
 		}
-		READERTAR(reader)->entry_data -= write;
+		fclose(outfile);
+
+		remove(fullpath);
+		rename(tmppath, fullpath);
+
+		setfiletime(fullpath, READERTAR(reader)->entry_time);
 	}
-	fclose(outfile);
 
-	remove(fullpath);
-	rename(tmppath, fullpath);
-
-	setfiletime(fullpath, READERTAR(reader)->entry_time);
 	chmod(fullpath, READERTAR(reader)->entry_mode);
 
 	return 1;

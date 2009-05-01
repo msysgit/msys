@@ -109,76 +109,81 @@ int ArchiveRead7z_ExtractEntryToBase
 	 READER7Z(reader)->db.Database.Files[READER7Z(reader)->entry].Name);
 
 	if (ArchiveRead7z_EntryIsDirectory(reader))
-		return ArchiveRead_EnsureDirectory(fullpath, strlen(base_path));
-
-	int rmostsep = strlen(fullpath) - 1;
-	while (rmostsep > 0
-	 && fullpath[rmostsep] != '/' && fullpath[rmostsep] != '\\')
-		--rmostsep;
-	if (rmostsep > 0)
 	{
-		char save = fullpath[rmostsep];
-		fullpath[rmostsep] = 0;
 		if (!ArchiveRead_EnsureDirectory(fullpath, strlen(base_path)))
-		{
-			ArchiveRead_SetError((ArchiveReaderStruct*)reader,
-			 "Failed to create directory '%s' for extraction", fullpath);
 			return 0;
-		}
-		fullpath[rmostsep] = save;
 	}
-
-	if (!READER7Z(reader)->instream.filep)
+	else
 	{
-		READER7Z(reader)->instream.filep =
-		 fopen(READER7Z(reader)->path, "rb");
+		int rmostsep = strlen(fullpath) - 1;
+		while (rmostsep > 0
+		 && fullpath[rmostsep] != '/' && fullpath[rmostsep] != '\\')
+			--rmostsep;
+		if (rmostsep > 0)
+		{
+			char save = fullpath[rmostsep];
+			fullpath[rmostsep] = 0;
+			if (!ArchiveRead_EnsureDirectory(fullpath, strlen(base_path)))
+			{
+				ArchiveRead_SetError((ArchiveReaderStruct*)reader,
+				 "Failed to create directory '%s' for extraction", fullpath);
+				return 0;
+			}
+			fullpath[rmostsep] = save;
+		}
+
 		if (!READER7Z(reader)->instream.filep)
 		{
+			READER7Z(reader)->instream.filep =
+			 fopen(READER7Z(reader)->path, "rb");
+			if (!READER7Z(reader)->instream.filep)
+			{
+				ArchiveRead_SetError((ArchiveReaderStruct*)reader,
+				 "Failed to reopen file '%s' for entry extraction",
+				 READER7Z(reader)->path);
+				return 0;
+			}
+		}
+
+		size_t offset, outSizeProcessed;
+		SZ_RESULT res = SzExtract(&(READER7Z(reader)->instream.sz_stream),
+		 &(READER7Z(reader)->db), READER7Z(reader)->entry,
+		 &(READER7Z(reader)->blockIndex),
+		 &(READER7Z(reader)->outBuffer),
+		 &(READER7Z(reader)->outBufferSize), &offset, &outSizeProcessed,
+		 &g_allocImp, &g_allocTempImp);
+		if (res == SZE_CRC_ERROR)
+		{
 			ArchiveRead_SetError((ArchiveReaderStruct*)reader,
-			 "Failed to reopen file '%s' for entry extraction",
-			 READER7Z(reader)->path);
+			 "Bad CRC for entry '%s'",
+			 READER7Z(reader)->db.Database.Files[READER7Z(reader)->entry].Name);
 			return 0;
 		}
-	}
+		else if (res != SZ_OK)
+		{
+			ArchiveRead_SetError((ArchiveReaderStruct*)reader,
+			 "7zlib failed to unpack entry '%s'",
+			 READER7Z(reader)->db.Database.Files[READER7Z(reader)->entry].Name);
+			return 0;
+		}
 
-	size_t offset, outSizeProcessed;
-	SZ_RESULT res = SzExtract(&(READER7Z(reader)->instream.sz_stream),
-	 &(READER7Z(reader)->db), READER7Z(reader)->entry,
-	 &(READER7Z(reader)->blockIndex),
-	 &(READER7Z(reader)->outBuffer),
-	 &(READER7Z(reader)->outBufferSize), &offset, &outSizeProcessed,
-	 &g_allocImp, &g_allocTempImp);
-	if (res == SZE_CRC_ERROR)
-	{
-		ArchiveRead_SetError((ArchiveReaderStruct*)reader,
-		 "Bad CRC for entry '%s'",
-		 READER7Z(reader)->db.Database.Files[READER7Z(reader)->entry].Name);
-		return 0;
-	}
-	else if (res != SZ_OK)
-	{
-		ArchiveRead_SetError((ArchiveReaderStruct*)reader,
-		 "7zlib failed to unpack entry '%s'",
-		 READER7Z(reader)->db.Database.Files[READER7Z(reader)->entry].Name);
-		return 0;
-	}
+		char tmppath[PATH_MAX + 1];
+		snprintf(tmppath, PATH_MAX + 1, "%s.tmp", fullpath);
 
-	char tmppath[PATH_MAX + 1];
-	snprintf(tmppath, PATH_MAX + 1, "%s.tmp", fullpath);
+		FILE* outfile = fopen(tmppath, "wb");
+		if (!outfile)
+		{
+			ArchiveRead_SetError((ArchiveReaderStruct*)reader,
+			 "Failed to open output file '%s'", tmppath);
+			return 0;
+		}
+		fwrite(READER7Z(reader)->outBuffer + offset, 1, outSizeProcessed,
+		 outfile);
+		fclose(outfile);
 
-	FILE* outfile = fopen(tmppath, "wb");
-	if (!outfile)
-	{
-		ArchiveRead_SetError((ArchiveReaderStruct*)reader,
-		 "Failed to open output file '%s'", tmppath);
-		return 0;
+		remove(fullpath);
+		rename(tmppath, fullpath);
 	}
-	fwrite(READER7Z(reader)->outBuffer + offset, 1, outSizeProcessed,
-	 outfile);
-	fclose(outfile);
-
-	remove(fullpath);
-	rename(tmppath, fullpath);
 
 	if (READER7Z(reader)->db.Database.Files[READER7Z(reader)->entry].AreAttributesDefined)
 		SetFileAttributes(fullpath, READER7Z(reader)->db.Database.Files[READER7Z(reader)->entry].Attributes);
@@ -222,6 +227,7 @@ void* ArchiveRead7z_OpenFile(char const* file)
 	SZ_RESULT ret = SzArchiveOpen(&instream.sz_stream, &reader->db, &g_allocImp,
 	 &g_allocTempImp);
 	fclose(instream.filep);
+	instream.filep = 0;
 	if (ret != SZ_OK)
 	{
 		ArchiveRead_SetError(&reader->base,

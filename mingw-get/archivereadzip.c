@@ -117,84 +117,90 @@ int ArchiveReadZip_ExtractEntryToBase
 	 READERZIP(reader)->entry_path);
 
 	if (ArchiveReadZip_EntryIsDirectory(reader))
-		return ArchiveRead_EnsureDirectory(fullpath, strlen(base_path));
-
-	int rmostsep = strlen(fullpath) - 1;
-	while (rmostsep > 0
-	 && fullpath[rmostsep] != '/' && fullpath[rmostsep] != '\\')
-		--rmostsep;
-	if (rmostsep > 0)
 	{
-		char save = fullpath[rmostsep];
-		fullpath[rmostsep] = 0;
 		if (!ArchiveRead_EnsureDirectory(fullpath, strlen(base_path)))
+			return 0;
+	}
+	else
+	{
+		int rmostsep = strlen(fullpath) - 1;
+		while (rmostsep > 0
+		 && fullpath[rmostsep] != '/' && fullpath[rmostsep] != '\\')
+			--rmostsep;
+		if (rmostsep > 0)
+		{
+			char save = fullpath[rmostsep];
+			fullpath[rmostsep] = 0;
+			if (!ArchiveRead_EnsureDirectory(fullpath, strlen(base_path)))
+			{
+				ArchiveRead_SetError((ArchiveReaderStruct*)reader,
+				 "Failed to create directory '%s' for extraction", fullpath);
+				return 0;
+			}
+			fullpath[rmostsep] = save;
+		}
+
+		if (unzOpenCurrentFile(READERZIP(reader)->zf) != UNZ_OK)
 		{
 			ArchiveRead_SetError((ArchiveReaderStruct*)reader,
-			 "Failed to create directory '%s' for extraction", fullpath);
+			 "minizip couldn't open entry '%s' for extraction",
+			 READERZIP(reader)->entry_path);
 			return 0;
 		}
-		fullpath[rmostsep] = save;
-	}
 
-	if (unzOpenCurrentFile(READERZIP(reader)->zf) != UNZ_OK)
-	{
-		ArchiveRead_SetError((ArchiveReaderStruct*)reader,
-		 "minizip couldn't open entry '%s' for extraction",
-		 READERZIP(reader)->entry_path);
-		return 0;
-	}
+		char tmppath[PATH_MAX + 1];
+		snprintf(tmppath, PATH_MAX + 1, "%s.tmp", fullpath);
 
-	char tmppath[PATH_MAX + 1];
-	snprintf(tmppath, PATH_MAX + 1, "%s.tmp", fullpath);
-
-	FILE* outfile = fopen(tmppath, "wb");
-	if (!outfile)
-	{
-		ArchiveRead_SetError((ArchiveReaderStruct*)reader,
-		 "Failed to open file '%s' for output", tmppath);
-		unzCloseCurrentFile(READERZIP(reader)->zf);
-		return 0;
-	}
-
-	int const buf_size = 1024 * 1024;
-	char* buf = malloc(buf_size);
-	int read;
-	while ((read = unzReadCurrentFile(READERZIP(reader)->zf, buf, buf_size)) > 0)
-	{
-		if (fwrite(buf, 1, read, outfile) != read)
+		FILE* outfile = fopen(tmppath, "wb");
+		if (!outfile)
 		{
 			ArchiveRead_SetError((ArchiveReaderStruct*)reader,
-			 "Failed to write %d bytes to '%s'", read, tmppath);
-			free(buf);
-			fclose(outfile);
-			remove(tmppath);
+			 "Failed to open file '%s' for output", tmppath);
 			unzCloseCurrentFile(READERZIP(reader)->zf);
 			return 0;
 		}
-	}
-	free(buf);
-	fclose(outfile);
 
-	int close_result = unzCloseCurrentFile(READERZIP(reader)->zf);
-	if (read < 0)
-	{
-		ArchiveRead_SetError((ArchiveReaderStruct*)reader,
-		 "minizip error extracting entry '%s'", READERZIP(reader)->entry_path);
-		remove(tmppath);
-		return 0;
-	}
-	if (close_result == UNZ_CRCERROR)
-	{
-		ArchiveRead_SetError((ArchiveReaderStruct*)reader,
-		 "Bad CRC extracting entry '%s'", READERZIP(reader)->entry_path);
-		remove(tmppath);
-		return 0;
+		int const buf_size = 1024 * 1024;
+		char* buf = malloc(buf_size);
+		int read;
+		while ((read = unzReadCurrentFile(READERZIP(reader)->zf, buf, buf_size)) > 0)
+		{
+			if (fwrite(buf, 1, read, outfile) != read)
+			{
+				ArchiveRead_SetError((ArchiveReaderStruct*)reader,
+				 "Failed to write %d bytes to '%s'", read, tmppath);
+				free(buf);
+				fclose(outfile);
+				remove(tmppath);
+				unzCloseCurrentFile(READERZIP(reader)->zf);
+				return 0;
+			}
+		}
+		free(buf);
+		fclose(outfile);
+
+		int close_result = unzCloseCurrentFile(READERZIP(reader)->zf);
+		if (read < 0)
+		{
+			ArchiveRead_SetError((ArchiveReaderStruct*)reader,
+			 "minizip error extracting entry '%s'", READERZIP(reader)->entry_path);
+			remove(tmppath);
+			return 0;
+		}
+		if (close_result == UNZ_CRCERROR)
+		{
+			ArchiveRead_SetError((ArchiveReaderStruct*)reader,
+			 "Bad CRC extracting entry '%s'", READERZIP(reader)->entry_path);
+			remove(tmppath);
+			return 0;
+		}
+
+		remove(fullpath);
+		rename(tmppath, fullpath);
+
+		setfiletime(fullpath, READERZIP(reader)->entry_info.dosDate);
 	}
 
-	remove(fullpath);
-	rename(tmppath, fullpath);
-
-	setfiletime(fullpath, READERZIP(reader)->entry_info.dosDate);
 	SetFileAttributes(fullpath, READERZIP(reader)->entry_info.external_fa);
 
 	return 1;

@@ -33,6 +33,7 @@
 			<Add option="-Wall" />
 			<Add option="-pipe" />
 			<Add option="-mthreads" />
+			<Add option="-fno-exceptions" />
 			<Add option="-D_WIN32_IE=0x0400" />
 			<Add option="-DCURL_STATICLIB" />
 			<Add directory="$(#curl.include)" />
@@ -41,7 +42,6 @@
 		</Compiler>
 		<Linker>
 			<Add library="curl" />
-			<Add library="z" />
 			<Add library="shfolder" />
 			<Add library="shell32" />
 			<Add library="gdi32" />
@@ -52,7 +52,6 @@
 			<Add library="wsock32" />
 			<Add library="wldap32" />
 			<Add directory="$(#curl.lib)" />
-			<Add directory="$(#zlib)" />
 		</Linker>
 		<Unit filename="7z\7zCrc.c">
 			<Option compilerVar="CC" />
