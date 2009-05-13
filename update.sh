@@ -12,5 +12,7 @@ do
 done &&
 $HOME/cvs2svn/cvs2git --blobfile=msys.blobs --dumpfile=msys.dump \
 	--username=dscho cvsclone/ > out.cvs2git 2>&1 &&
-cat msys.blobs msys.dump | git fast-import > out.fast-import 2>&1 ||
+cat msys.blobs msys.dump | git fast-import > out.fast-import 2>&1 &&
+git push --all origin &&
+git push --tags origin ||
 echo "Failure importing"
