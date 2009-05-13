@@ -76,3 +76,6 @@ diff, diff3 and head to the distribution.
 --removed in version 1.0.4--
 Requirement that the path must begin with /.
 bash from the distribution.
+
+--removed in version 1.0.11--
+Requirement that /bin and /usr/bin are reserved for MSYS programs only.
