@@ -34,6 +34,7 @@ fi
 
 if [ ! -d "$HOME" ]; then
   mkdir -p "$HOME"
+  cp /etc/inputrc.default "$HOME"/.inputrc
 fi
 
 if [ "x$HISTFILE" == "x/.bash_history" ]; then

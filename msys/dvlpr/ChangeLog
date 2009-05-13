@@ -1,5 +1,9 @@
 2009.05.12  Cesar Strauss  <cestrauss@gmail.com>
 
+	* etc/profile: Install the default keybindings on a new home dir.
+
+2009.05.12  Cesar Strauss  <cestrauss@gmail.com>
+
 	Further shortcut update.
 
 	* script/msys.iss.in ([Icons]): Add -rxvt to the rxvt shortcut.
