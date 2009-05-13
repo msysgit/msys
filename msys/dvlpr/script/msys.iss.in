@@ -152,7 +152,7 @@ Source: @RLSSOURCEDIR@\*; DestDir: "{app}";  Flags: recursesubdirs; CopyMode: al
 ;Name: "{group}\My Program"; Filename: "{app}\MYPROG.EXE"; WorkingDir: "{app}"
 
 Name: "{group}\MSYS\MSYS"; Filename: "{app}\msys.bat"; Parameters: "-norxvt"; WorkingDir: "{app}\bin";  IconFilename: "{app}\msys.ico"
-Name: "{group}\MSYS\MSYS (rxvt)"; Filename: "{app}\msys.bat"; WorkingDir: "{app}\bin";  IconFilename: "{app}\msys.ico"
+Name: "{group}\MSYS\MSYS (rxvt)"; Filename: "{app}\msys.bat"; Parameters: "-rxvt"; WorkingDir: "{app}\bin";  IconFilename: "{app}\msys.ico"
 Name: "{group}\MSYS\uninstall"; Filename: "{app}\uninstall\unins000.exe"; WorkingDir: "\"; IconFilename: "{app}\uninstall\unins000.exe"
 Name: "{userdesktop}\MSYS"; Filename: "{app}\msys.bat"; Parameters: "-norxvt"; WorkingDir: "{app}\bin";  IconFilename: "{app}\msys.ico"
 
