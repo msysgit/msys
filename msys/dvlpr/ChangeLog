@@ -1,3 +1,11 @@
+2009.05.12  Cesar Strauss  <cestrauss@gmail.com>
+
+	Further documentation updates.
+
+	* doc/msys/MSYS_LICENSE.rtf: Update location of wiki pages.
+	* doc/msys/MSYS_VS_CYGWIN: Update for 1.0.11.
+	* doc/msys/MSYS_WELCOME.rtf: ditto.
+
 2009.04.08  Keith Marshall  <keithmarshall@users.sf.net>
 
 	Establish native console as delault shell container.
