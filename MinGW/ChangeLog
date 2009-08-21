@@ -1,3 +1,19 @@
+2009.08.21  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Support installation of MinGW Runtime from new distribution,
+	with separate development and DLL components.
+
+	* mingw.nsi (PRODUCT_VERSION): Increment to 5.1.5.
+	(runtimeDLL): New variable; declare it; assign to...
+	(SecRuntimeDLL): ...this new section; process it.
+	(INIfiles): Update all references; make them match...
+	(inifiles): ...this actual directory name.
+
+	* MinGW_LICENSE.rtf: Update for new PRODUCT_VERSION.
+
+	* mingw.ini (Filename): Update to match PRODUCT_VERSION.
+	(runtimeDLL): Assign it.
+
 2008.05.14  Chris Sutcliffe  <ir0nh34d@users.sf.net>
 
 	* mingw.ini: Update to latest mingw32-make and binutils.
