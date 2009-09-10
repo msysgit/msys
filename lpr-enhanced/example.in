@@ -1,0 +1,133 @@
+# sample-printcap
+##
+#
+# sample printer configuration for MSYS/Cygwin "lp" and "lpr" commands ...
+# contributed by Keith Marshall <keithmarshall@users.sourceforge.net>
+#
+# the format of this file closely follows that of BSD printcap ...
+# but only a subset of the BSD standard is currently implemented, viz. ...
+#
+#   -  each printer configuration record occupies ONE LOGICAL line
+#      in the configuration file
+#   -  a LOGICAL line may be extended over multiple PHYSICAL lines,
+#      by placing "\" as the last character on all but the last
+#      PHYSICAL line
+#   -  comment lines may be introduced, by placing "#" as the first
+#      non-blank character on the line
+#   -  each printer configuration record comprises a list of colon (":")
+#      separated configuration data fields
+#   -  the LOGICAL printer name occupies the FIRST field of the
+#      configuration record; there MUST be NO leading colon
+#   -  alternate printer names are supported, by specifing the name
+#      field as a "|" separated list of alternate names; common usage
+#      specifies:
+#          primary-name|alt-name-1|...|alt-name-n|description
+#   -  additional configuration data fields, following the printer
+#      name field, specify configuration parameters with ONE
+#      "parameter=value" pair per field; parameters currently
+#      supported by "lp" and "lpr" are restricted to:
+#          :lp=output stream path of local printer:
+#          :rp=share name of remote printer:
+#          :rm=machine name for remote printer host:
+#          :lf=full path name of log file for spooling error messages:
+#          :sd=path to directory where spool files are written:
+#          :ld=start of job leader string to initialise printer:
+#          :if=inline filter for file formatting and spooling:
+#          :of=output filter for job dispatch:
+#          :pw#output page width as characters per line:
+#          :pl#output page length as lines per page:
+#          :ff=form feed string; default=\014:
+#          :fo: ; boolean to force form feed at start of job
+#          :fq: ; boolean to force form feed at end of job
+#          :sf: ; boolean to suppress form feed between output files
+#          :tr=end of job trailer string to reset printer:
+#   -  any arbitrary parameter, which is not listed above, may be
+#      specified, but will be silently ignored
+#
+# in addition to the standard printcap implementation, as described above,
+# the system default printer is specified by including the special name
+# "<default>" as an alternate name for any ONE configured printer;
+# additionally, the implementation supports the following non-standard
+# printcap attributes:
+#
+#   -  :bg: boolean, set by default; use :bg@: to spool in foreground
+#
+#   -  :lm#margin columns:
+#           number of character width columns used for left margin
+#
+#   -  :mi=margin indicator: 
+#           flag char to pass "lm" to "if", as in "$if -$mi$lm ..."
+#           defaults to "i"; (WARNING: set :mi=o: if :if=/bin/pr ...:)
+#
+# CAUTION:
+#   string arguments to "ff", "ld" and "tr" parameters are represented in a
+#   form suitable for interpretation by "echo -en"; they CANNOT contain
+#   embedded ":" or "|" characters; however these may be represented using
+#   the octal escape notation, as "\072" and "\174" respectively
+#
+##
+#
+# sample printer configurations follow ...
+#
+##
+
+##
+# remote colour LaserJet set up for A4 paper ...
+# with 85 characters per line @ 12 cpi, 64 lines per page @ 6 lpi ...
+# ( may need enhanced "if" to handle colour ) ...
+
+LPT1|PRINTER1|Print Room Colour LaserJet 4550:\
+	:rm=printserver:\
+	:rp=PRINTER1:\
+	:of=/usr/bin/unix2dos --unix2dos:\
+	:if=/bin/pr -e -h"$FILE":sf:lm#8:mi=o:\
+	:ld=\033E\033&l0O\033(s1B\033&l6d3E\033&k4S\033&a0L:\
+	:pl#64:\
+	:pw#85:\
+	:tr=\0339:
+
+##
+# B/W LaserJet set up as system default, using A4 paper ...
+# with 85 characters per line @ 12 cpi, 64 lines per page @ 6 lpi ...
+# ( note that Cygwin allows UNC path to reference remote printer as local ) ...
+
+LPT2|PRINTER2|Local LaserJet 4100|<default>:\
+	:lp=//printserver/PRINTER2:\
+	:of=/usr/bin/unix2dos --unix2dos:\
+	:if=/bin/pr -e -h"$FILE":sf:lm#8:mi=o:\
+	:ld=\033E\033&l0O\033(s1B\033&l6d3E\033&k4S\033&a0L:\
+	:pl#64:\
+	:pw#85:\
+	:tr=\0339:
+
+##
+# on screen print previewer ...
+# set up to mimic the page layout of the default printer ...
+# but with output to the screen, via the "less" pager ...
+
+PREVIEW|TTY|OnScreen Previewer:\
+	:lp=/dev/tty:bg@:\
+	:if=/bin/pr -e -h"$FILE":mi=o:\
+	:of=/bin/less -S:\
+	:pl#64:pw#85:sf:
+
+##
+# zero output device ...
+# discards ALL printer output; can be useful while debugging filters ...
+
+DISCARD|NUL|NULL|Bit Bucket (useful for system testing):\
+	:lp=/dev/null:
+
+##
+# output to file ...
+# captures printer output in file "/usr/spool/lp/debug/output" ...
+# to assist in debugging of filters ...
+
+DEBUG|Capture Output to Debugging File:\
+	:lp=/dev/null:
+	:if=/bin/pr -e -h"$FILE":sf:lm#8:mi=o:\
+	:of=/usr/bin/tee /usr/spool/lp/debug/output:\
+	:pl=64:pw=85:
+
+##
+# sample-printcap: end of file

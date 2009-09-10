@@ -1,0 +1,25 @@
+README for lpr-1.0.1-MSYS
+=========================
+
+Contributed by Keith Marshall <keithmarshall@users.sourceforge.net>
+Hereby donated to the public domain.
+
+This package provides a rudimentary emulation of a UNIX System-V `lp', or BSD
+`lpr' command line interface to a MS-Windows print spooler; it is suitable for
+use with MSYS or with Cygwin.
+
+This is free software.  There is no warranty of any kind, not even any implied
+warranty of merchantibility, nor of fitness for any particular purpose; the
+author will, at no time, accept liability for damage of any kind, however
+caused, resulting from the use of this software.
+
+To install this software, simply extract the tarball into the root of your
+MSYS or Cygwin directory tree, and copy or link the `/usr/spool/lp/bin/lpr'
+script to `/usr/bin/lp' and/or to `/usr/bin/lpr'.  You will also need to
+create a `/etc/printcap' file, based on `/usr/spool/lp/config/example', and
+adjusted to suit your printer spool configuration; (if your system supports
+file linking, you may also choose to keep a linked copy of `/etc/printcap' in
+`/usr/spool/lp/config/.active', or on any system, to use this as a exclusive
+alternative configuration file).
+
+Usage instructions are included, as comments, within the `lpr' script itself.

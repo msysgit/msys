@@ -1,0 +1,11 @@
+2009-09-10  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Initial import, based on files from lpr-1.0.1-msys.tar.gz
+
+	* usr/spool/lp/bin/lpr: Original script file...
+	* lpr-enhanced.sh: ...renamed to this.
+
+	* usr/spool/lp/config/example: Original sample configuration...
+	* example.in: ...renamed to this.
+
+	* usr/spool/lp/config/README: Original file, moved to top directory.
