@@ -1,11 +1,57 @@
+2009-09-11  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Incorporate Charles Wilson's 2009-08-28 updates, excluding automake.
+	Include some additional minor bug-fixes and enhancements.
+
+	* configure.ac: Exclude automake specifics.
+	* install-sh: New file, copied from autoconf-2.63 sources.
+	* m4/, build-aux/: Omit directories, and all content.
+	* Makefile.am, NEWS: Omit.
+	* Makefile.in: New file.
+
+	* README: Elaborate installation instructions.
+
+	* lpr-enhanced.sh (-#): Escape `\#' in case identification.
+	(PACKAGE_TARNAME, PACKAGE_VERSION): Add; use autoconf substitutions.
+	(prefix, exec_prefix): Do not define; remove all references.
+	(PRINTER): Make this environment variable setting override...
+	(LPDEST): ...this one, when emulating BSD `lpr'.
+
 2009-09-10  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
-	Initial import, based on files from lpr-1.0.1-msys.tar.gz
+	Initial CVS import, based on files from lpr-1.0.1-msys.tar.gz
 
-	* usr/spool/lp/bin/lpr: Original script file...
-	* lpr-enhanced.sh: ...renamed to this.
+	* usr/spool/lp/bin/lpr: Original script file, moved...
+	* lpr-enhanced.sh: ...and renamed to this.
 
-	* usr/spool/lp/config/example: Original sample configuration...
-	* example.in: ...renamed to this.
+	* usr/spool/lp/config/example: Original sample configuration, moved...
+	* example.in: ...and renamed to this.
 
 	* usr/spool/lp/config/README: Original file, moved to top directory.
+
+2009-08-28  Charles Wilson  <mingw@cwilson.fastmail.fm>
+
+	Prepare for repackaging, using autotools.
+
+	* COPYING: New file.
+	* Makefile.am: New file.
+	* configure.ac: New file.
+	* AUTHORS: New file.
+	* NEWS: New file.
+	* usr/spool/lp/config/README: Move to top directory, as...
+	* README: ...this; modify paths to better mimic standard paths;
+	update build/install instructions for autotooled release.
+	* usr/spool/lp/bin/lpr: Move to top directory; rename to...
+	* lpr-enhanced.sh: ...this; make paths sensitive to configure vars.
+	* usr/spool/lp/config/example: Move to top directory; rename to...
+	* example.in: ...this; make paths sensitive to configure vars.
+	* .cvsignore: New file.
+	* .gitignore: New file.
+	* m4/.cvsignore: New file.
+	* m4/.gitignore: New file.
+	* build-aux/.cvsignore: New file.
+	* build-aux/.gitignore: New file.
+
+2007-09-12  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	lpr-1.0.1 released.

@@ -1,0 +1,13 @@
+*.a
+*.o
+*.obj
+*.dll
+*.diff
+stamp-*
+INSTALL
+Makefile
+configure
+config.h.in
+aclocal.m4
+autom4te.cache
+NEWS

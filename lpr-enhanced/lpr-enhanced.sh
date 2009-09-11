@@ -1,6 +1,6 @@
 #! /bin/bash
 #-------------------------------------------------------------------------------
-# lpr.sh v1.0.1, Copyright (C) 2002, 2007 by Keith Marshall
+# @PACKAGE_TARNAME@.sh v@PACKAGE_VERSION@; Public Domain.
 #-------------------------------------------------------------------------------
 #
 # Shell script for use under MSYS or Cygwin, providing a daemonless emulation
@@ -10,15 +10,15 @@
 #
 # Description:
 #
-# This script is typically installed as "/usr/bin/lp", with support files in
-# "/usr/spool/lp".  All printer specific configuration is established in the
-# file  "/usr/spool/lp/config/.active";  this may  typically  be  linked  to
-# "/etc/printcap";  (symlinked for Cygwin;  hard linked for MSYS on NTFS; if
-# preferred, just use /etc/printcap, especially with MSYS on FAT-32).
+# This script is typically installed as "@bindir@/lp" and/or "@bindir@/lpr", 
+# with support files in "@localstatedir@/spool/lp".  All printer specific configuration
+# is established in the file "@localstatedir@/spool/lp/config/.active"; this may typically
+# be linked to "@sysconfdir@/printcap"; (symlinked for Cygwin; hard linked for MSYS on
+# NTFS; if preferred, just use @sysconfdir@/printcap, especially with MSYS on FAT-32).
 #
-# A sample configuration is provided in "/usr/spool/lp/config/example".
+# A sample configuration is provided in "@localstatedir@/spool/lp/config/example".
 #
-# When  invoked  as  "lpr",   this  implementation  currently  supports  the
+# When invoked as "lpr", this implementation currently supports the
 # following subset of the standard capabilities of BSD "lpr" ...
 #
 #    lpr [-P PRINTER] [-cdfgntv] file ...
@@ -28,40 +28,40 @@
 #       -P PRINTER      specifies the printer to be used; if not supplied
 #                       the values of the environment variables LDPEST or
 #                       else PRINTER are substituted, in that order; if a
-#                       printer still has not been identified,  then  the
-#                       default set in "/usr/spool/lp/config/.active"  is
+#                       printer still has not been identified, then the
+#                       default set in "@localstatedir@/spool/lp/config/.active" is
 #                       used.
 #
 #       -c              selects a filter for printing "cifplot" formatted
-#                       output  data,  when a filter for this purpose  is
+#                       output data, when a filter for this purpose is
 #                       defined in the printer configuration.
 #
-#       -d              selects  a  filter  for  printing  "tex"   device
-#                       independent output data,  when a filter for  this
+#       -d              selects a filter for printing "tex" device
+#                       independent output data, when a filter for this
 #                       purpose is defined in the printer configuration.
 #
-#       -f              selects  a filter for printing output  data  with
-#                       FORTRAN  carriage control formatting  attributes,
-#                       when a filter for this purpose is defined in  the 
+#       -f              selects a filter for printing output data with
+#                       FORTRAN carriage control formatting attributes,
+#                       when a filter for this purpose is defined in the 
 #                       printer configuration.
 #
-#       -g              selects a filter for printing plot format  output
-#                       data,  when a filter for this purpose is  defined
+#       -g              selects a filter for printing plot format output
+#                       data, when a filter for this purpose is defined
 #                       in the printer configuration.
 #
 #       -n              selects a filter for printing "ditroff" formatted
-#                       output  data,  when a filter for this purpose  is
+#                       output data, when a filter for this purpose is
 #                       defined in the printer configuration.
 #
-#       -t              selects a filter for printing  "troff"  formatted
-#                       output  data,  when a filter for this purpose  is
+#       -t              selects a filter for printing "troff" formatted
+#                       output data, when a filter for this purpose is
 #                       defined in the printer configuration.
 #
 #       -v              selects a filter for printing raster image output
-#                       data,  when a filter for this purpose is  defined
+#                       data, when a filter for this purpose is defined
 #                       in the printer configuration.
 #
-#    other "lpr" options,  as described on the relevant "man" page,  may  be
+#    other "lpr" options, as described on the relevant "man" page, may be
 #    specified; they will be silently ignored.
 #
 # When invoked as "lp", this implementation currently supports the following
@@ -74,17 +74,17 @@
 #       -d PRINTER      specifies the printer to be used; if not supplied
 #                       the values of the environment variables LDPEST or
 #                       else PRINTER are substituted, in that order; if a
-#                       printer still has not been identified,  then  the
-#                       default set in "/usr/spool/lp/config/.active"  is
+#                       printer still has not been identified, then the
+#                       default set in "/usr/spool/lp/config/.active" is
 #                       used.
 #
 #       -o OPTIONS      specifies options to be passed to the filter used
-#                       to format files for output;  these are passed  as
+#                       to format files for output; these are passed as
 #                       typed, without validation.
 #
 #       -s              suppress informational messages.
 #
-#    other  "lp" options,  as described on the relevant "man" page,  may  be
+#    other "lp" options, as described on the relevant "man" page, may be
 #    specified; they will be silently ignored.
 #
 #-------------------------------------------------------------------------------
@@ -92,13 +92,13 @@
 # first identify the base path ...
 # for the spool file system used by "lp" ...
 #
-  SPOOL=/usr/spool/lp
+  SPOOL=@localstatedir@/spool/lp
 #
 # and also the location of the printer configuration file ...
 # (default is $SPOOL/config/.active, with fall back to /etc/printcap) ...
 #
   LP_CONFIG_FILE=$SPOOL/config/.active
-  test -r $LP_CONFIG_FILE || LP_CONFIG_FILE=/etc/printcap
+  test -r $LP_CONFIG_FILE || LP_CONFIG_FILE=@sysconfdir@/printcap
 #
 # establish the default printer ...
 # inheriting any "$PRINTER" setting from the environment ...
@@ -124,8 +124,10 @@
   then
 #
 #   when invoked as "lpr" ...
-#   then we must honour the BSD option set ...
+#   then we must honour the BSD option set, and $PRINTER should
+#   not be influenced by System V's $LPDEST setting ...
 #
+    LPDEST=$PRINTER
     while getopts 1:2:3:4:"#":cC:dfghi:J:lmnpP:rstT:U:vw: opt
     do
       case $opt in
@@ -133,7 +135,7 @@
 	2) ;;
 	3) ;;
 	4) ;;
-	#) ;;
+       \#) ;;
 	c) IF=cf ;;
 	C) ;;
 	d) IF=df ;;

@@ -1,0 +1,198 @@
+# @configure_input@
+# Makefile for MSYS/Cygwin lpr-enhanced package.
+
+PACKAGE_TARNAME = @PACKAGE_TARNAME@
+PACKAGE_VERSION = @PACKAGE_VERSION@
+
+# Written by Keith Marshall  <keithmarshall@users.sourceforge.net>
+# Hereby donated to the public domain.
+#
+# This is free software.  It is provided `as is', in the hope that it
+# may be useful.  There is NO WARRANTY of ANY KIND; not even an implied
+# warranty of MERCHANTABILITY, nor of FITNESS for ANY PARTICULAR PURPOSE.
+# At no time will the author accept liability for damages, however caused,
+# resulting from the use of this software.
+
+SUBSYSTEM_NAME = msys
+SUBSYSTEM_VERSION = 1.0.11
+
+SUBSYSTEM = $(SUBSYSTEM_NAME)-$(SUBSYSTEM_VERSION)
+
+SRC_DISTFILES = ChangeLog $(LIC_DISTFILES) $(DOC_DISTFILES) \
+  configure configure.ac Makefile.in install-sh lpr-enhanced.sh example.in
+
+BIN_DISTFILES = lpr-enhanced example
+DOC_DISTFILES = README
+LIC_DISTFILES = AUTHORS COPYING
+
+srcdir = @srcdir@
+abs_top_srcdir = @abs_top_srcdir@
+
+VPATH = $(srcdir)
+
+prefix = @prefix@
+exec_prefix = @exec_prefix@
+
+bindir = @bindir@
+datarootdir = @datarootdir@
+sysconfdir = @sysconfdir@
+localstatedir = @localstatedir@
+docdir = @docdir@
+
+# Conventionally, the `all' target is the default, to build everything;
+# in this case, that comprises the files needed for a binary distribution.
+#
+all: $(BIN_DISTFILES)
+
+# All files in the binary distribution are scripts; they are provided in
+# template form, requiring only to have some substitutions resolved by the
+# following sed script.
+#
+MAKE_ALL_SED_SCRIPT = \
+  -e 's,@'PACKAGE_TARNAME'@,$(PACKAGE_TARNAME),g' \
+  -e 's,@'PACKAGE_VERSION'@,$(PACKAGE_VERSION),g' \
+  -e 's,@'localstatedir'@,$(localstatedir),g' \
+  -e 's,@'sysconfdir'@,$(sysconfdir),g' \
+  -e 's,@'bindir'@,$(bindir),g'
+
+# Most templates require substitution alone...
+#
+%: %.in
+	sed $(MAKE_ALL_SED_SCRIPT) $< > $@
+
+# but, shell scripts should also be made executable.
+#
+%: %.sh
+	sed $(MAKE_ALL_SED_SCRIPT) $< > $@
+	chmod 755 $@
+
+# Installation...
+# This is conventionally done by `make install' or `make install-strip';
+# We have nothing to strip, so `install' and `install-strip' may be synonyms.
+#
+install install-strip: installdirs install-lpr-basic install-lpr-enhanced
+
+MKDIR_P = @MKDIR_P@
+INSTALL = @INSTALL@
+INSTALL_SCRIPT = @INSTALL_SCRIPT@
+INSTALL_DATA = @INSTALL_DATA@
+LN_S = @LN_S@
+
+# The directories we need, to support our standard installation...
+#
+installdirs:
+	$(MKDIR_P) ${bindir} ${sysconfdir}
+	$(MKDIR_P) $(localstatedir)/spool/lp/config
+	$(MKDIR_P) $(localstatedir)/spool/lp/debug
+	$(MKDIR_P) $(localstatedir)/spool/lp/filter
+	$(MKDIR_P) $(localstatedir)/spool/lp/log
+	$(MKDIR_P) $(localstatedir)/spool/lp/tmp
+
+# If the user has cygutils' `lpr.exe' installed, we move it out of the way.
+#
+install-lpr-basic:
+	if test -e ${bindir}/lpr.exe; then \
+	  rm -f ${bindir}/lpr-basic.exe; \
+	  mv ${bindir}/lpr.exe ${bindir}/lpr-basic.exe; \
+	fi
+
+# Installation of deliverables from this package.
+#
+install-lpr-enhanced: all installdirs
+	$(INSTALL_SCRIPT) lpr-enhanced ${bindir}
+	cd ${bindir}; $(LN_S) lpr-enhanced lpr; $(LN_S) lpr-enhanced lp
+	$(INSTALL_DATA) example ${localstatedir}/spool/lp/config
+	$(INSTALL_DATA) example ${sysconfdir}/printcap
+
+# 'uninstall' reverses the effect of an `install', removing those files
+# we installed in ${bindir} and ${sysconfdir}, together with the local state
+# directories normally associated exclusively with them; it also reinstates
+# cygutils' `lpr.exe', if it appears to have been moved out of the way.
+#
+uninstall:
+	rm -rf ${localstatedir}/spool/lp
+	test rmdir ${localstatedir}/spool || true
+	rm -f ${bindir}/lpr-enhanced ${bindir}/lpr ${bindir}/lp
+	if test -e ${bindir}/lpr-basic.exe; then \
+	  rm -f ${bindir}/lpr.exe; \
+	  mv ${bindir}/lpr-basic.exe ${bindir}/lpr.exe; \
+	fi
+
+# Distribution...
+# We must provide, at least, a source distribution package; we also
+# accommodate, within a full distribution bundle, a preconfigured binary
+# installation image, together with supporting documentation and licence
+# packages, conforming to mingw.org packaging standards.
+#
+dist: srcdist bindist licdist docdist
+
+MK_TAR = tar chf -
+ZIPCMD = lzma -c
+ZIPEXT = tar.lzma
+
+DISTNAME = $(SRC_DISTDIR)$(SNAPSHOT)-$(SUBSYSTEM)
+
+SRC_DISTDIR = $(PACKAGE_TARNAME)-$(PACKAGE_VERSION)
+DOC_DISTDIR = ${docdir}/$(PACKAGE_VERSION)$(SNAPSHOT)
+
+STAGED = ./tmp
+
+srcdist:
+	rm -rf ${SRC_DISTDIR}
+	mkdir ${SRC_DISTDIR}
+	cd ${SRC_DISTDIR}; \
+	  for file in $(SRC_DISTFILES); \
+	    do $(LN_S) ${abs_top_srcdir}/$$file .; \
+	    done
+	$(MK_TAR) ${SRC_DISTDIR} | $(ZIPCMD) > $(DISTNAME)-src.$(ZIPEXT)
+	rm -rf ${SRC_DISTDIR}
+
+bindist: all
+	$(MAKE) -$(MAKEFLAGS) prefix="" bindist-recursive
+
+bindist-recursive:
+	rm -rf $(STAGED)
+	$(MAKE) -$(MAKEFLAGS) prefix=`pwd`/$(STAGED) install-lpr-enhanced
+	cd $(STAGED)${bindir}; rm -f lp lpr
+	(cd $(STAGED); $(MK_TAR) *) | $(ZIPCMD) > $(DISTNAME)-bin.$(ZIPEXT)
+	rm -rf $(STAGED)
+
+licdist:
+	$(MAKE) -$(MAKEFLAGS) prefix="" licdist-recursive
+
+licdist-recursive:
+	rm -rf $(STAGED)
+	$(MKDIR_P) $(STAGED)${DOC_DISTDIR}
+	cd $(STAGED)${DOC_DISTDIR}; \
+	  for file in $(LIC_DISTFILES); \
+	    do $(LN_S) ${abs_top_srcdir}/$$file .; \
+	    done
+	(cd $(STAGED); $(MK_TAR) *) | $(ZIPCMD) > $(DISTNAME)-lic.$(ZIPEXT)
+	rm -rf $(STAGED)
+
+docdist:
+	$(MAKE) -$(MAKEFLAGS) prefix="" docdist-recursive
+
+docdist-recursive:
+	rm -rf $(STAGED)
+	$(MKDIR_P) $(STAGED)${DOC_DISTDIR}
+	cd $(STAGED)${DOC_DISTDIR}; \
+	  for file in $(DOC_DISTFILES); \
+	    do $(LN_S) ${abs_top_srcdir}/$$file .; \
+	    done
+	(cd $(STAGED); $(MK_TAR) *) | $(ZIPCMD) > $(DISTNAME)-doc.$(ZIPEXT)
+	rm -rf $(STAGED)
+
+# Source and build tree clean-up...
+#
+clean:
+	rm -f $(BIN_DISTFILES)
+
+distclean: clean
+	rm -f config.status config.log Makefile
+
+maintainer-clean: distclean
+	rm -rf autom4te.cache
+	rm -f configure *.$(ZIPEXT)
+
+# Makefile.in: end of file

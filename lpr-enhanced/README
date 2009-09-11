@@ -1,25 +1,69 @@
-README for lpr-1.0.1-MSYS
-=========================
+README for lpr-enhanced-1.0.2
+=============================
 
 Contributed by Keith Marshall <keithmarshall@users.sourceforge.net>
 Hereby donated to the public domain.
 
 This package provides a rudimentary emulation of a UNIX System-V `lp', or BSD
 `lpr' command line interface to a MS-Windows print spooler; it is suitable for
-use with MSYS or with Cygwin.
+use with MSYS or with Cygwin. It provides more features than the simplistic
+`lpr.exe' distributed with the cygutils package for both Cygwin and MSYS, but
+requires additional configuration; lpr.exe does its simple job out of the box.
 
 This is free software.  There is no warranty of any kind, not even any implied
 warranty of merchantibility, nor of fitness for any particular purpose; the
 author will, at no time, accept liability for damage of any kind, however
 caused, resulting from the use of this software.
 
-To install this software, simply extract the tarball into the root of your
-MSYS or Cygwin directory tree, and copy or link the `/usr/spool/lp/bin/lpr'
-script to `/usr/bin/lp' and/or to `/usr/bin/lpr'.  You will also need to
-create a `/etc/printcap' file, based on `/usr/spool/lp/config/example', and
-adjusted to suit your printer spool configuration; (if your system supports
-file linking, you may also choose to keep a linked copy of `/etc/printcap' in
-`/usr/spool/lp/config/.active', or on any system, to use this as a exclusive
-alternative configuration file).
+This software is provided in the forms of both source code and binary packages,
+(for use on MSYS); however, the most convenient method of installation is from
+the source code package.  To install the software in this recommended manner,
+unpack the source distribution and execute (in the usual manner[*]):
 
-Usage instructions are included, as comments, within the `lpr' script itself.
+  $ configure
+  $ make all install
+
+[*] For a typical system configuration, the following configure arguments are
+recommended:
+
+  $ configure --prefix=/usr --localstatedir=/var --sysconfdir=/etc
+
+Note that installing from source code, in this manner, installs the script as
+`${exec_prefix}/bin/lpr-enhanced', and also creates copies, (symbolic links on
+Cygwin), providing appropriate functionality via scripts with the alternative
+names `${exec_prefix}/bin/lp' and `${exec_prefix}/bin/lpr'.  Additionally, to
+avoid a potential conflict with the Cygwin (and MSYS) `lpr.exe', installed as
+part of the `cygutils' package on those platforms, if this program is already
+installed as `${exec_prefix}/bin/lpr.exe', it will be renamed to eliminate the
+conflict, as `${exec_prefix}/bin/lpr-basic.exe'.
+
+On the other hand, if you choose to install the binary package, you should be
+aware that it has been packaged for installation based on standard MSYS path
+conventions, (i.e. `/' and `/usr' represent the same physical directory), and
+you should unpack the distribution into your MSYS root directory.  You should
+also note that, while the script is installed as `/bin/lpr-enhanced', (also to
+be found as `/usr/bin/lpr-enhanced'), neither of the alternatively named copies
+of the script is installed, nor is any already installed `/bin/lpr.exe' moved
+out of the way.  Thus, to deploy the installed software for use (in place of
+the cygutils lpr.exe), after installation you must also do:
+
+  $ cd /usr/bin
+  $ mv lpr.exe lpr-basic.exe
+  $ <LN> lpr-enhanced lp
+  $ <LN> lpr-enhanced lpr
+
+where <LN> is 'ln -f', 'ln -fs', or 'cp', as desired.  (You really want to
+avoid having both `lpr' and `lpr.exe' installed into the same directory; doing
+so may lead to a number of problems with cygwin-1.7 and cygwin-1.5 when the
+CYGWIN=transparent_exe option is set; it may also cause problems with MSYS).
+
+Finally, regardless of which installation method you have chosen, you must
+manually set up the printer definitions for your environment.  Typically, this
+involves creating (or modifying) an `/etc/printcap' file, based on the sample
+in `/var/spool/lp/config/example', and adjusted to suit your printer spool
+configuration; (if your system supports file linking, you may also choose to
+keep a linked copy of `/etc/printcap' in `/var/spool/lp/config/.active', or
+on any system, to use this as an exclusive alternative configuration file).
+
+Usage instructions are included, as comments, within the `lpr-enhanced'
+script itself.

@@ -120,13 +120,13 @@ DISCARD|NUL|NULL|Bit Bucket (useful for system testing):\
 
 ##
 # output to file ...
-# captures printer output in file "/usr/spool/lp/debug/output" ...
+# captures printer output in file "@localstatedir@/spool/lp/debug/output" ...
 # to assist in debugging of filters ...
 
 DEBUG|Capture Output to Debugging File:\
 	:lp=/dev/null:
 	:if=/bin/pr -e -h"$FILE":sf:lm#8:mi=o:\
-	:of=/usr/bin/tee /usr/spool/lp/debug/output:\
+	:of=/usr/bin/tee @localstatedir@/spool/lp/debug/output:\
 	:pl=64:pw=85:
 
 ##
