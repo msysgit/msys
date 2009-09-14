@@ -1,3 +1,10 @@
+2009-09-14  Charles Wilson  <cwilso11@users.sourceforge.net>
+
+	Rename documentation files to follow GCS (part 1)
+	* Readme: Removed.
+	* News: Removed.
+	* Authors: Removed.
+
 2002-12-28  Manu B  <manubee@users.sourceforge.net>
 
 	* lib/getopt-mingw.diff: Renamed to getopt-1.12-mingw.diff.
@@ -14,7 +21,7 @@
 	(CWinApp::_GetOpt): New -d option.
 	(CWinApp::_Msys): Set MSYSTEM environment variable and rxvt
 	colors, depending if we run MSYS DVLPR or not.
-	
+
 2002-12-22  Manu B  <manubee@users.sourceforge.net>
 
 	* ChangeLog started: MSYS Here version 0.1a.
