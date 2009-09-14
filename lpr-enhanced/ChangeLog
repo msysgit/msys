@@ -1,3 +1,8 @@
+2009-09-14  Charles Wilson  <mingw@cwilson.fastmail.fm>
+
+	* Makefile.in (bindist-recursive): Explicitly set `localstatedir' and
+	`sysconfdir' for staged installation.
+
 2009-09-11  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Incorporate Charles Wilson's 2009-08-28 updates, excluding automake.

@@ -150,9 +150,17 @@ srcdist:
 bindist: all
 	$(MAKE) -$(MAKEFLAGS) prefix="" bindist-recursive
 
+# To create a binary distribution, we perform a regular installation into
+# a local staging directory, overriding the configured `prefix'; note that
+# we must also override `localstatedir' and `sysconfdir', since these are
+# likely to have been configured independently of `prefix'.
+#
 bindist-recursive:
 	rm -rf $(STAGED)
-	$(MAKE) -$(MAKEFLAGS) prefix=`pwd`/$(STAGED) install-lpr-enhanced
+	$(MAKE) $(MFLAGS) prefix=`pwd`/$(STAGED) \
+	  localstatedir=`pwd`/$(STAGED)${localstatedir} \
+	  sysconfdir=`pwd`/$(STAGED)${sysconfdir} \
+	  install-lpr-enhanced
 	cd $(STAGED)${bindir}; rm -f lp lpr
 	(cd $(STAGED); $(MK_TAR) *) | $(ZIPCMD) > $(DISTNAME)-bin.$(ZIPEXT)
 	rm -rf $(STAGED)
