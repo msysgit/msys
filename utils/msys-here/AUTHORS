@@ -1,0 +1,12 @@
+Manu B  <manubee@users.sourceforge.net>
+	msys-here
+
+Manu B  <manubee@users.sourceforge.net>
+	libwinui
+
+Christopher Faylor  <cgf@cygwin.com>
+	Cygwin implemtation of getopt, as adapted
+
+Charles Wilson  <cwilso11@users.sourceforge.net>
+	Build infrastructure
+	msys-here-config

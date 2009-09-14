@@ -1,0 +1,10 @@
+0.2 -- 2009 Sep 13
+==================
+* Integrated into mingw-utils build chain
+* new msys-here-config script	
+
+0.1a -- 2002 Dec 22
+==================
+* Original public domain release
+* First import into mingw-utils CVS repository
+

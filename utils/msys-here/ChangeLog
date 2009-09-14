@@ -1,5 +1,12 @@
 2009-09-14  Charles Wilson  <cwilso11@users.sourceforge.net>
 
+	Rename documentation files to follow GCS (part 2)
+	* README: New.
+	* NEWS: New.
+	* AUTHORS: New.
+
+2009-09-14  Charles Wilson  <cwilso11@users.sourceforge.net>
+
 	Rename documentation files to follow GCS (part 1)
 	* Readme: Removed.
 	* News: Removed.

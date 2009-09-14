@@ -1,0 +1,48 @@
+/**************************************************************************
+*	Readme for MSYS Here
+*
+*	License:	Public domain. (except BSD getopt)
+*			2002 Manu B.
+*
+*	MSYS home:
+*			http://www.mingw.org/
+*
+**************************************************************************/
+
+1. About this software:
+	MSYS Here is a loader for an MSYS environment.
+	
+2. Installation:
+	Standard configure && make && make install. However, to
+	create a "staging" tree suitable for creating a binary
+	package that satisfies the MinGW Packaging Standard, it
+	is recommended that the msys-here project be configured
+	and compiled as part of the overall 'mingw-utils' project.
+
+	In that case, the following options are recommended (to
+	be performed in the mingw-utils directory, not here in the
+	mingw-utils/msys-here directory.
+
+	$ configure --prefix=`cd /mingw && pwd -W` \
+		--docdir=\${prefix}/share/doc/mingw-utils/0.2 \
+		--enable-subproject-docdir
+	$ make
+	$ make install prefix=/tmp/mingw-utils-0.2
+
+	Alternatively, instead of manually creating a "staging"
+	tree, after a successful build, you can use the following
+	rules (again, from the parent mingw-utils directory):
+
+	$ make srcdist bindist licdist docdist
+
+3. Configuration:
+	From an msys shell, run
+	$ msys-here-config
+
+	Use -h to see the various options controlling whether
+	to install msys-here as an Explorer context menu item
+	for only the current user, for all users, and other features.
+
+	msys-here-config can also be used to remove msys-here from
+	your system.	
+	
