@@ -1,5 +1,30 @@
 2009-09-14  Charles Wilson  <cwilso11@users.sourceforge.net>
 
+	Remove drmingw; it now has its own development site
+	at http://code.google.com/p/jrfonseca/wiki/DrMingw
+	* drmingw/bucomm.h, drmingw/budbg.h, drmingw/COPYING,
+	drmingw/COPYING.LIB, drmingw/debug.c, drmingw/debug.h,
+	drmingw/debugger.c, drmingw/debugger.h, drmingw/debugx.c,
+	drmingw/dialog.c, drmingw/dialog.h, drmingw/doc/drmingw.html,
+	drmingw/doc/drmingw.reg, drmingw/doc/exception-nt.gif,
+	drmingw/doc/install.gif, drmingw/doc/sample.gif, drmingw/exchndl.c,
+	drmingw/icon.ico, drmingw/ieee.c, drmingw/ieee.h,
+	drmingw/include/aout/aout64.h, drmingw/include/aout/stab.def,
+	drmingw/include/aout/stab_gnu.h, drmingw/include/coff/internal.h,
+	drmingw/include/demangle.h, drmingw/include/dis-asm.h,
+	drmingw/include/filenames.h, drmingw/include/getopt.h,
+	drmingw/include/libcoff.h, drmingw/include/libiberty.h,
+	drmingw/include/safe-ctype.h, drmingw/log.c, drmingw/log.h,
+	drmingw/main.c, drmingw/Makefile.am, drmingw/misc.c,
+	drmingw/misc.h, drmingw/module.c, drmingw/module.h,
+	drmingw/prdbg.c, drmingw/rdcoff.c, drmingw/rddbg.c,
+	drmingw/resource.h, drmingw/resource.rc, drmingw/samples/exchndl2.cxx,
+	drmingw/samples/test-segv.cxx, drmingw/samples/test-segv.txt,
+	drmingw/samples/test.c, drmingw/samples/testcpp.cxx,
+	drmingw/stabs.c, drmingw/symbols.c, drmingw/symbols.h: Removed.
+
+2009-09-14  Charles Wilson  <cwilso11@users.sourceforge.net>
+
 	Silence build warnings, improve build system.
 	* .cvsignore: Update.
 	* Makefile.am: More build system refinements.
