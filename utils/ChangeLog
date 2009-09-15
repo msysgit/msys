@@ -1,5 +1,16 @@
 2009-09-14  Charles Wilson  <cwilso11@users.sourceforge.net>
 
+	Remove dos2unix and unix2dos: equivalent versions
+	provided by the msys and mingw ports of 'cygutils'
+	* dos2unix/COPYING, dos2unix/dos2unix.1
+	dos2unix/dos2unix.c, dos2unix/dos2unix.h
+	dos2unix/Makefile.am: Removed.
+	* unix2dos/COPYING, unix2dos/Makefile.am,
+	unix2dos/unix2dos.1, unix2dos/unix2dos.c
+	unix2dos/unix2dos.h: Removed.
+
+2009-09-14  Charles Wilson  <cwilso11@users.sourceforge.net>
+
 	Remove drmingw; it now has its own development site
 	at http://code.google.com/p/jrfonseca/wiki/DrMingw
 	* drmingw/bucomm.h, drmingw/budbg.h, drmingw/COPYING,
