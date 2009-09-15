@@ -1,0 +1,17 @@
+0.4
+============================
+* Removed drmingw. Get updated binaries and source from
+  http://code.google.com/p/jrfonseca/wiki/DrMingw
+* Removed dos2unix and unix2dos: Get updated versions from the
+      cygutils-dos2unix-*-mingw32-bin
+      cygutils-dos2unix-*-msys-*-bin
+  packages, available from the MinGW download site.
+* Removed pexports. Now available separately, from the MinGW
+  download site:
+      pexports-*-mingw32-bin
+* Added msys-here. Does not yet work reliably.
+* Internal: rework build system.
+
+0.3
+============================
+Baseline release for news

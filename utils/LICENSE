@@ -1,0 +1,13 @@
+Summary:
+	redir		GPLv2+
+	reimp		GPLv2+
+	res2coff	Public Domain
+	dsw2mak		GPLv2+
+	a2dll		GPL
+
+	dos2unix [*]	2-clause BSD
+	unix2dos [*]	2-clause BSD
+	drmingw	 [*]	GPLv2, LGPLv2.1
+	pexports [*]	GPLv2
+
+[*] Removed

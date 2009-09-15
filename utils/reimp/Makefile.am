@@ -2,6 +2,6 @@ bin_PROGRAMS = reimp
 
 reimp_SOURCES = ar.c reimp.c reimp.h util.c
 
-docdir = $(prefix)/doc/reimp
+reimp_docdir = $(docdir)/reimp
 
-doc_DATA = README
+reimp_doc_DATA = README

@@ -1,8 +1,8 @@
-bin_SCRIPTS = a2dll dsw2mak
+nodist_bin_SCRIPTS = a2dll dsw2mak
 
-EXTRA_DIST = a2dll.html static2dll_howto.txt
+scripts_docdir = $(docdir)/a2dll
 
-install-exec-local:
-	$(mkinstalldirs) $(DESTDIR)$(prefix)/doc/a2dll
-	$(INSTALL_DATA) $(srcdir)/a2dll.html $(DESTDIR)$(prefix)/doc/a2dll/a2dll.html
-	$(INSTALL_DATA) $(srcdir)/static2dll_howto.txt $(DESTDIR)$(prefix)/doc/a2dll/static2dll_howto.txt
+scripts_doc_DATA = a2dll.html static2dll_howto.txt
+
+EXTRA_DIST = $(scripts_doc_DATA)
+

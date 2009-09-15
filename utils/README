@@ -1,0 +1,21 @@
+This is mingw-utils, a collection of utilities (hopefully)
+useful for MinGW and MSYS installations. It contains:
+
+  redir     A utility for redirecting stderr within dain bramaged CMD boxes
+  reimp     Converts certain MS-format import libraries to GNU format
+  res2coff  Converts .res resource files to .o object format [*]
+  a2dll     Create a DLL from a static archive [**]
+  dsw2mak   Create gcc-compatible GNU makefiles from Visual Studio 6,0 workspaces
+  msys-here Launch an msys window from a Windows Explorer context menu
+
+[*] possibly obsoleted by modern incarnations of windres
+
+The following were once provided by older versions of mingw-utils,
+but are now provided by other packages or sites.
+
+  drmingw   A JIT exception handler for Windows that can display debugging info.
+            Now provided by http://code.google.com/p/jrfonseca/wiki/DrMingw
+  dos2unix  Converts line endings. Superseded by cygutils-dos2unix package
+  unix2dos  Ditto
+  pexports  Create .def file listing symbols from DLLS. Now provided separately.
+

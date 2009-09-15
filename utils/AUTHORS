@@ -1,2 +1,30 @@
-José Fonseca <jrfonseca@users.sourceforge.net>
+General contributors:
 Soren M. Andersen <libertador@flashmail.com>
+Charles Wilson <cwilso11@users.sourceforge.net>
+José Fonseca <jrfonseca@users.sourceforge.net>
+
+Original Authors:
+Anders Norlander <anorland@hem2.passagen.se>
+	reimp
+	pexports [*]
+
+DJ Delorie
+	redir
+
+Paul Sokolovsky
+	a2dll
+
+Pedro A. Aranda  <paag@tid.es>
+	res2coff
+
+Benjamin Lin
+Bernd Johannes Wuebben
+Christian Wurll
+	dos2unix [*]
+	unix2dos [*]
+
+José Fonseca <jrfonseca@users.sourceforge.net>
+	drmingw  [*]
+	dsw2mak
+
+[*] removed

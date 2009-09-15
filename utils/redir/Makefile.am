@@ -2,6 +2,6 @@ bin_PROGRAMS = redir
 
 redir_SOURCES = redir.c
 
-docdir = $(prefix)/doc/redir
+redir_docdir = $(docdir)/redir
 
-doc_DATA = README
+redir_doc_DATA = README

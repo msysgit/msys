@@ -1,14 +1,20 @@
-# Process this file with autoconf 2.53 or better to produce a configure script.
+# Process this file with autoconf 2.63 or better to produce a configure script.
+AC_PREREQ(2.63)
 
-AC_INIT(mingw-utils,0.3)
-AC_PREREQ(2.53)
-AM_INIT_AUTOMAKE(1.7 no-define)
-AC_CONFIG_SRCDIR(Makefile.am)
-AM_CONFIG_HEADER(config.h)
+AC_INIT(mingw-utils,0.4)
+AC_CONFIG_SRCDIR([Makefile.am])
+AC_CONFIG_AUX_DIR([build-aux])
+AC_CONFIG_MACRO_DIR([m4])
+AM_CONFIG_HEADER([config.h])
+AM_INIT_AUTOMAKE([1.11 silent-rules no-define no-dist-gzip dist-lzma])
 AM_MAINTAINER_MODE
+
+# Subpackages
+AC_CONFIG_SUBDIRS([msys-here])
 
 # Checks for programs.
 AC_PROG_CC
+AM_PROG_CC_C_O
 AC_PROG_CXX
 AC_PROG_INSTALL
 AC_PROG_MAKE_SET
@@ -17,12 +23,6 @@ AC_PROG_RANLIB
 
 AC_PROG_LEX
 AC_PROG_YACC
-
-AC_ARG_VAR(WINDRES, [Windows Resource compiler tool path])
-AC_PATH_TOOL(WINDRES,windres,
-	[AC_MSG_WARN(Could not find a windres tool in your PATH. Will not be able to compile drmingw.)]
-)
-AC_SUBST(WINDRES)
 
 # Checks for header files.
 AC_HEADER_STDC
@@ -46,15 +46,12 @@ AC_CHECK_FUNCS(utime)
 
 AC_CONFIG_FILES([
 Makefile
-dos2unix/Makefile
-drmingw/Makefile
-pexports/Makefile
 redir/Makefile
 reimp/Makefile
 res2coff/Makefile
 scripts/Makefile
-scripts/a2dll
-scripts/dsw2mak
-unix2dos/Makefile
 ])
+AC_CONFIG_FILES([scripts/a2dll], [chmod +x scripts/a2dll])
+AC_CONFIG_FILES([scripts/dsw2mak], [chmod +x scripts/dsw2mak])
+
 AC_OUTPUT

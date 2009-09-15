@@ -1,0 +1,3 @@
+Evaluate reimp, a2dll, dsw2mak, res2coff: remove?
+If so, then make msys-here stand-alone and retire mingw-utils?
+redir is probably useful tho.

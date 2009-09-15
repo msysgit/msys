@@ -1,3 +1,34 @@
+2009-09-14  Charles Wilson  <cwilso11@users.sourceforge.net>
+
+	Restructure for forthcoming 0.4 release.
+	* AUTHORS: Update.
+	* README: Update.
+	* LICENSE: New.
+	* INSTALL: Removed.
+	* NEWS: Add actual content.
+	* README: Ditto.
+	* TODO: New.
+	* .cvsignore: New.
+	* autogen.sh: Running configure is optional (-c). Update
+	for automake-1.11. Echo commands. Invoke msys-here/autogen.sh
+	* Makefile.am: Rewrite. Add msys-here.
+	* configure.ac: Don't build dos2unix, unix2dos, drmingw, or
+	pexports. Ensure built scripts are executable. No longer look
+	for windres. Update to automake-1.11. Add msys-here.
+	* build-aux: New directory.
+	* build-aux/.cvsignore: New.
+	* m4: New directory.
+	* m4/.cvsignore: New.
+	* redir/Makefile.am: Consolidate docdirs.
+	* reimp/Makefile.am: Consolidate docdirs.
+	* res2coff/Makefile.am: Consolidate docdirs.
+	* scripts/Makefile.am: Consolidate docdirs. Use modern idioms to
+	build and install scripts and documentation.
+	* redir/.cvsignore: New.
+	* reimp/.cvsignore: New.
+	* res2coff/.cvsignore: New.
+	* scripts/.cvsignore: New.
+
 2003-11-25 18:18  jrfonseca
 
 	* drmingw/: bucomm.h, budbg.h, debug.c, debug.h, debugx.c,
