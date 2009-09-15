@@ -24,7 +24,7 @@
 	mingw-utils/msys-here directory.
 
 	$ configure --prefix=`cd /mingw && pwd -W` \
-		--docdir=\${prefix}/share/doc/mingw-utils/0.2 \
+		--docdir=\${prefix}/share/doc/mingw-utils/0.4 \
 		--enable-subproject-docdir
 	$ make
 	$ make install prefix=/tmp/mingw-utils-0.2
@@ -33,7 +33,7 @@
 	tree, after a successful build, you can use the following
 	rules (again, from the parent mingw-utils directory):
 
-	$ make srcdist bindist licdist docdist
+	$ make sdist bdist
 
 3. Configuration:
 	From an msys shell, run

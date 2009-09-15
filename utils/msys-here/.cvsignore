@@ -1,5 +1,9 @@
 *.obj
 *.dll
+*.gz
+*.bz2
+*.lzma
+*.xz
 stamp-*
 INSTALL
 Makefile

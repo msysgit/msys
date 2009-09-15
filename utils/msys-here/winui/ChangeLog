@@ -1,5 +1,9 @@
 2009-09-14  Charles Wilson  <cwilso11@users.sourceforge.net>
 
+	* .cvsignore: Update.
+
+2009-09-14  Charles Wilson  <cwilso11@users.sourceforge.net>
+
 	Fix compile warnings and errors.
 	* .cvsignore: New.
 	* winui/Makefile.am: New.

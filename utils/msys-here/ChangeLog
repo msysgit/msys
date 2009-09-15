@@ -1,5 +1,15 @@
 2009-09-14  Charles Wilson  <cwilso11@users.sourceforge.net>
 
+	Minor corrections to build machinery.
+	* Makefile.am: Distribute setup/registry.template. Install
+	AUTHORS and NEWS.
+	* README: Update.
+	* .cvsignore: Update.
+	* lib/.cvsignore: Update.
+	* src/.cvsignore: Update.
+
+2009-09-14  Charles Wilson  <cwilso11@users.sourceforge.net>
+
 	Extensive revisions to modernize build process.
 	* .cvsignore: New.
 	* COPYING: New.
