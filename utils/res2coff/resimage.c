@@ -316,12 +316,12 @@ int Check32bitResourceFile(PRESOURCEHEAD FileBuf)
 void SortUnnamedResources(void)
 {
   int type;
-  
-  int ResourceCmp(PRESOURCEHEAD *a,PRESOURCEHEAD *b)
+
+  int ResourceCmp(const void *a,const void *b)
     {
-      int AName = ((*a)->Name) >> 16;
-      int BName = ((*b)->Name) >> 16;
-      
+      int AName = ((*(PRESOURCEHEAD*)a)->Name) >> 16;
+      int BName = ((*(PRESOURCEHEAD*)b)->Name) >> 16;
+
       return AName-BName;
     }
 

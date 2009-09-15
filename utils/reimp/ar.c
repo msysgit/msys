@@ -1,5 +1,6 @@
 #include <reimp.h>
 #include <ctype.h>
+#include <string.h>
 
 #define LONG_NAMES_NAME "//              "
 char *long_names = NULL;

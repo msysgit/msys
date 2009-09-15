@@ -19,3 +19,28 @@ but are now provided by other packages or sites.
   unix2dos  Ditto
   pexports  Create .def file listing symbols from DLLS. Now provided separately.
 
+
+
+Compiling
+=========
+To build mingw-utils from source, you need only do the standard
+   $ configure
+   $ make
+   $ make install
+
+However, the following configure arguments are recommended:
+   $ configure --prefix=`cd /mingw && pwd -W` \
+               --docdir=\${prefix}/share/doc/mingw-utils/0.4 \
+               --enable-subproject-docdir
+   $ make
+
+To install into a temporary staging directory, do not use DESTDIR.
+Instead, override prefix as follows:
+   $ make install prefix=/tmp/mingw-utils-staging
+
+Alternatively, instead of manually creating a "staging"
+tree, after a successful build, you can use the following
+rules to create MinGW-standard installation packages:
+
+	$ make sdist bdist
+

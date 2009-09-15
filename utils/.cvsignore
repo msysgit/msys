@@ -3,7 +3,13 @@
 *.obj
 *.dll
 *.diff
+*.list
+*.lzma
+*.gz
+*.bz2
+*.xz
 stamp-*
+INSTALL
 Makefile
 Makefile.in
 aclocal.m4
@@ -11,7 +17,7 @@ autom4te.cache
 config.h
 config.h.in
 config.log
-confdef.h
+confdefs.h
 config.status
 configure
 depcomp

@@ -1,5 +1,17 @@
 2009-09-14  Charles Wilson  <cwilso11@users.sourceforge.net>
 
+	Silence build warnings, improve build system.
+	* .cvsignore: Update.
+	* Makefile.am: More build system refinements.
+	* README: Document build and installation.
+	* redir/redir.c (run_program): Silence build warnings.
+	* reimp/ar.c: Ditto.
+	* reimp/reimp.c (create_implib): Ditto.
+	* reimp/util.c: Ditto.
+	* res2coff/resimage.c (SortUnnamedResources::ResourceCmp): Ditto.
+
+2009-09-14  Charles Wilson  <cwilso11@users.sourceforge.net>
+
 	Restructure for forthcoming 0.4 release.
 	* AUTHORS: Update.
 	* README: Update.

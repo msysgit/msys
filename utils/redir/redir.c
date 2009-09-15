@@ -146,9 +146,9 @@ unquoted_argv(int argc, char *argv[], char *reuse)
 }
 
 static int
-run_program(int argc, char *argv[])
+run_program(int argc, char **argv)
 {
-  return spawnvp (P_WAIT, argv[1], argv+1);
+  return spawnvp (P_WAIT, *(argv+1), (const char * const *)(argv+1));
 }
 
 int

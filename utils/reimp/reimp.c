@@ -493,7 +493,7 @@ create_implib (struct def_file *def, void *arg)
   argv[4] = lib_name;
   argv[6] = def_name;
   argv[8] = def->dllname;
-  r = spawnvp (P_WAIT, argv[0], argv);
+  r = spawnvp (P_WAIT, argv[0], (const char * const *)argv);
   if (r == -1)
     error (1, argv[0]);
 
