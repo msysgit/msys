@@ -10,6 +10,7 @@
 	compilable also with MSVC. Disable Wow64 file system redirection
 	when running as a 32-bit process on 64-bit Windows. Bump version
 	to 0.44.
+	* Makefile: New.
 	* pe.h: Not needed, removed.
 	* hparse.h: Remove generated file.
 
