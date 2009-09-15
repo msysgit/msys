@@ -41,49 +41,55 @@ C parser, there are probably many conditions when it will fail
 (especially complex parameter types), although I it works fine for me.
 Please do not report bugs, but feel free to send patches.
 
-CHANGES FROM 0.43:
+RELEASE 0.45
 =================
+* Incorporate patches from 0.44-1-mingw32 release
 
-Handle also 64-bit executables. Make it work also if built as 64-bit
-code. Remove all gcc -Wall warnings. Make it compilable also with
-MSVC.Disable Wow64 file system redirection when running as a 32-bit
-process on 64-bit Windows. Distribute just sources.
+RELEASE 0.44
+=================
+* Handle also 64-bit executables. Make it work also if built as 64-bit
+  code. Remove all gcc -Wall warnings. Make it compilable also with
+  MSVC. Disable Wow64 file system redirection when running as a 32-bit
+  process on 64-bit Windows. Distribute just sources.
 
-CHANGES FROM 0.42:
+RELEASE 0.43
 =================
 * There were bug which led to wrong subcategorizing of symbols as
-code/data. I thought it was fixed in version on the site, but it turns
-out that almost year there was wrong version. I greatly apologize to
-everyone whom it cause problems and confusion.
+  code/data. I thought it was fixed in version on the site, but it turns
+  out that almost year there was wrong version. I greatly apologize to
+  everyone whom it cause problems and confusion.
 
-CHANGES FROM 0.41:
+RELEASE 0.42
 =================
 * Data/non-data symbols are now distinguished.
 
-CHANGES FROM 0.4:
+RELEASE 0.41
 =================
 * The header parser now accepts all kinds of parameters.
 
-CHANGES FROM 0.3:
+RELEASE 0.4
 =================
 * Function pointer parameters are now handled
 * Handling of function attributes improved
 * It is no longer always necessary to include windows.h for headers
-that required it but did not include it themselves.
+  that required it but did not include it themselves.
 
-CHANGES FROM 0.2:
+RELEASE 0.3
 =================
 * Completely rewritten parser (the previous one was *very* bad).
-It is now possible to generate .DEF files for windows system
-dlls (kernel32,user32,gdi32,shell32 etc)
+  It is now possible to generate .DEF files for windows system
+  dlls (kernel32,user32,gdi32,shell32 etc)
 * Enhanced symbol handling (symbols are sorted in a tree).
 
-CHANGES FROM 0.1:
+RELEASE 0.2
 =================
 * Fixed bug with unnamed parameters that are pointers.
 * Extra whitespace is no longer printed
 * Binary versions available for mingw32 and cygwin32
 
+RELEASE 0.1
+=================
+* Initial release.
 Pexports, Copyright (C) 1998 Anders Norlander
 This program has ABSOLUTELY NO WARRANTY; This is free software, and you are
 welcome to redistribute it under certain conditions; see COPYING

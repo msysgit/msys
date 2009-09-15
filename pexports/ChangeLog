@@ -1,5 +1,12 @@
 2009-09-15  Charles Wilson  <cwilso11@users.sourceforge.net>
 
+	Slight build improvements.
+	* README: Update.
+	* Makefile: Rewrite dist rule to create a .tar.lzma instead
+	of a .zip (and don't create a tarbomb). 
+
+2009-09-15  Charles Wilson  <cwilso11@users.sourceforge.net>
+
 	Package 0.44-1-mingw32 fixes.
 	* pexports.c (main): Fix typo in usage statement.
 	* pexports.h: Ensure ULONGLONG is defined.
