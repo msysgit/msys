@@ -1,12 +1,21 @@
 2009-09-14  Charles Wilson  <cwilso11@users.sourceforge.net>
 
+	Remove pexports from mingw-utils; it is now a top-level module
+	* pexports/AUTHORS, pexports/ChangeLog, pexports/COPYING,
+	pexports/hlex.l, pexports/hparse.h, pexports/hparse.y,
+	pexports/Makefile.am, pexports/pe.h, pexports/pexports.c,
+	pexports/pexports.h. pexports/README, pexports/str_tree.c,
+	pexports/str_tree.h: Removed.
+
+2009-09-14  Charles Wilson  <cwilso11@users.sourceforge.net>
+
 	Remove dos2unix and unix2dos: equivalent versions
 	provided by the msys and mingw ports of 'cygutils'
-	* dos2unix/COPYING, dos2unix/dos2unix.1
-	dos2unix/dos2unix.c, dos2unix/dos2unix.h
+	* dos2unix/COPYING, dos2unix/dos2unix.1,
+	dos2unix/dos2unix.c, dos2unix/dos2unix.h,
 	dos2unix/Makefile.am: Removed.
 	* unix2dos/COPYING, unix2dos/Makefile.am,
-	unix2dos/unix2dos.1, unix2dos/unix2dos.c
+	unix2dos/unix2dos.1, unix2dos/unix2dos.c,
 	unix2dos/unix2dos.h: Removed.
 
 2009-09-14  Charles Wilson  <cwilso11@users.sourceforge.net>
