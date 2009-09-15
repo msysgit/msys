@@ -1,5 +1,13 @@
+2009-09-15  Charles Wilson  <cwilso11@users.sourceforge.net>
+
+	Package 0.44-1-mingw32 fixes.
+	* pexports.c (main): Fix typo in usage statement.
+	* pexports.h: Ensure ULONGLONG is defined.
+	* Makefile: Force use of flex and bison, not lex and yacc.
+
 2008-08-31  Tor Lillqvist  <tml@novell.com>
 
+	Release 0.44. Add support for 64-bit executables.
 	* hlex.l
 	* hparse.y
 	* pexports.h
@@ -13,6 +21,7 @@
 	* Makefile: New.
 	* pe.h: Not needed, removed.
 	* hparse.h: Remove generated file.
+	* Makefile.am: Removed.
 
 2002-11-08  Luke Dunstan  <infidel@users.sourceforge.net>
 

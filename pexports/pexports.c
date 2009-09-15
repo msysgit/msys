@@ -146,7 +146,7 @@ main(int argc, char *argv[])
              "This program is free software; you may redistribute it under the terms of\n"
              "the GNU General Public License.  This program has absolutely no warranty.\n"
 
-             "\nUsage: %s [-v] [-n] [-h header] [-p preprocessor] dll\n"
+             "\nUsage: %s [-v] [-o] [-h header] [-p preprocessor] dll\n"
              "  -h\tparse header\n"
              "  -o\tprint ordinals\n"
              "  -p\tset preprocessor program\n"

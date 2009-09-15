@@ -1,4 +1,6 @@
 CC=gcc -Wall
+LEX=flex
+YACC=bison
 
 DISTFILES=README COPYING ChangeLog Makefile hlex.l hparse.y pexports.h pexports.c str_tree.c str_tree.h
 

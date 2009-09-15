@@ -26,7 +26,11 @@ typedef unsigned int DWORD;
 typedef unsigned char BYTE;
 typedef void* PVOID;
 typedef long LONG;
+#if defined(__MINGW32__) || defined(_MSC_VER)
 typedef unsigned __int64 ULONGLONG;
+#else
+typedef unsigned long long ULONGLONG;
+#endif
 typedef int BOOL;
 typedef void* HMODULE;
 #ifdef _WIN64
