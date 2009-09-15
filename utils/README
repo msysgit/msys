@@ -1,23 +1,37 @@
-This is mingw-utils, a collection of utilities (hopefully)
-useful for MinGW and MSYS installations. It contains:
+This is mingw-utils, a collection of utilities (hopefully) useful for
+MinGW and MSYS installations. It contains:
 
-  redir     A utility for redirecting stderr within dain bramaged CMD boxes
-  reimp     Converts certain MS-format import libraries to GNU format
-  res2coff  Converts .res resource files to .o object format [*]
-  a2dll     Create a DLL from a static archive [**]
-  dsw2mak   Create gcc-compatible GNU makefiles from Visual Studio 6,0 workspaces
-  msys-here Launch an msys window from a Windows Explorer context menu
+      redir     A utility for redirecting stderr within CMD boxes
+      reimp     Converts certain MS-format import libs to GNU format
+  [1] res2coff  Converts .res resource files to .o object format
+  [2] a2dll     Create a DLL from a static archive
+      dsw2mak   Create gcc-compatible GNU Makefiles from Visual Studio
+                6.0 workspaces
+  [3] msys-here Launch an msys window from a Windows Explorer
+                context menu
 
-[*] possibly obsoleted by modern incarnations of windres
+For more information on each tool, see the additional documentation
+under C:\MinGW\share\doc\mingw-utils
+
+[1] Possibly obsoleted by modern incarnations of windres.
+[2] Not all DLLs created in this way will be functional. Use at your
+    own risk.
+[3] This initial release is not guaranteed to work. It is included
+    in hopes of spurring outside assistance: Patches Thoughtfully
+    Considered.
 
 The following were once provided by older versions of mingw-utils,
 but are now provided by other packages or sites.
 
-  drmingw   A JIT exception handler for Windows that can display debugging info.
-            Now provided by http://code.google.com/p/jrfonseca/wiki/DrMingw
-  dos2unix  Converts line endings. Superseded by cygutils-dos2unix package
-  unix2dos  Ditto
-  pexports  Create .def file listing symbols from DLLS. Now provided separately.
+  drmingw   A JIT exception handler for Windows that can display
+            debugging info. Now provided by
+            http://code.google.com/p/jrfonseca/wiki/DrMingw
+
+  dos2unix  These two tools convert line endings, but have been
+  unix2dos  superseded by the cygutils-dos2unix package
+
+  pexports  Create .def file listing symbols from DLLS. Now
+            provided separately.
 
 
 

@@ -36,3 +36,7 @@ bdist: staging lic.list
 	mv /tmp/$(PACKAGE)-$(VERSION)-$(PKGREL)-$(SUBSYSTEM)-doc.tar.lzma .
 	rm -rf $(instdir)
 
+# Ensure AC_CONFIG_MACRO_DIR is distributed, even if empty
+dist-hook:
+	$(MKDIR_P) $(top_distdir)/m4
+

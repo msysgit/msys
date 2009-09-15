@@ -1,3 +1,11 @@
+2009-09-15  Charles Wilson  <cwilso11@users.sourceforge.net>
+
+	Release 0.4
+	* README: Update.
+	* Makefile.am: Ensure AC_CONFIG_MACRO_DIR is distributed,
+	even if empty.
+	* configure.ac: Update.
+
 2009-09-14  Charles Wilson  <cwilso11@users.sourceforge.net>
 
 	Remove pexports from mingw-utils; it is now a top-level module

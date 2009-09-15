@@ -1,7 +1,7 @@
 # Process this file with autoconf 2.63 or better to produce a configure script.
 AC_PREREQ(2.63)
 
-AC_INIT(mingw-utils,0.4)
+AC_INIT([mingw-utils],[0.4],[http://www.mingw.org/bugs.shtml])
 AC_CONFIG_SRCDIR([Makefile.am])
 AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_MACRO_DIR([m4])
