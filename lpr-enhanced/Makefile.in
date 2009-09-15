@@ -137,6 +137,10 @@ DOC_DISTDIR = ${docdir}/$(PACKAGE_VERSION)$(SNAPSHOT)
 
 STAGED = ./tmp
 
+# The source distribution is created by replicating the distributable
+# files from our working source directory, into an appropriately named
+# local directory, and packaging that.
+#
 srcdist:
 	rm -rf ${SRC_DISTDIR}
 	mkdir ${SRC_DISTDIR}
@@ -147,15 +151,12 @@ srcdist:
 	$(MK_TAR) ${SRC_DISTDIR} | $(ZIPCMD) > $(DISTNAME)-src.$(ZIPEXT)
 	rm -rf ${SRC_DISTDIR}
 
-bindist: all
-	$(MAKE) -$(MAKEFLAGS) prefix="" bindist-recursive
-
 # To create a binary distribution, we perform a regular installation into
 # a local staging directory, overriding the configured `prefix'; note that
 # we must also override `localstatedir' and `sysconfdir', since these are
 # likely to have been configured independently of `prefix'.
 #
-bindist-recursive:
+bindist: all
 	rm -rf $(STAGED)
 	$(MAKE) $(MFLAGS) prefix=`pwd`/$(STAGED) \
 	  localstatedir=`pwd`/$(STAGED)${localstatedir} \
@@ -165,10 +166,11 @@ bindist-recursive:
 	(cd $(STAGED); $(MK_TAR) *) | $(ZIPCMD) > $(DISTNAME)-bin.$(ZIPEXT)
 	rm -rf $(STAGED)
 
+# Conversely, the licence and other documentation file distributions are
+# created, by simply replicating the source files in an appropriately named
+# local staging directory, much as for the source distribution.
+#
 licdist:
-	$(MAKE) -$(MAKEFLAGS) prefix="" licdist-recursive
-
-licdist-recursive:
 	rm -rf $(STAGED)
 	$(MKDIR_P) $(STAGED)${DOC_DISTDIR}
 	cd $(STAGED)${DOC_DISTDIR}; \
@@ -179,9 +181,6 @@ licdist-recursive:
 	rm -rf $(STAGED)
 
 docdist:
-	$(MAKE) -$(MAKEFLAGS) prefix="" docdist-recursive
-
-docdist-recursive:
 	rm -rf $(STAGED)
 	$(MKDIR_P) $(STAGED)${DOC_DISTDIR}
 	cd $(STAGED)${DOC_DISTDIR}; \

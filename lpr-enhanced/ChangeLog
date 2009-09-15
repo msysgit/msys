@@ -1,3 +1,10 @@
+2009-09-15  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	* Makefile.in (bindist, docdist, licdist): Construct distribution
+	tarballs directly, so eliminating...
+	(bindist-recursive, docdist-recursive, licdist-recursive): ...these
+	redundantly recursive goals respectively; remove them.
+
 2009-09-14  Charles Wilson  <mingw@cwilson.fastmail.fm>
 
 	* Makefile.in (bindist-recursive): Explicitly set `localstatedir' and
