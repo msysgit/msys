@@ -1,5 +1,21 @@
 2009-09-15  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
+	Make `install' / `uninstall' procedures more robust.
+
+	* Makefile.in (install-lpr-basic): Check for `lpr-basic.exe' as a
+	symbolic link; don't leave it dangling.  Otherwise, don't overwrite it
+	if both it and `lpr.exe' exist; instead use `lpr-orig.exe' as backup
+	name for `lpr.exe', overwriting this alternative if required.
+	(install-lpr-enhanced): Don't clobber `${sysconfdir}/printcap' if it
+	is already present; don't ever include it in...
+	(bindist): ...this.
+	(uninstall): Correct syntactical misuse of `test rmdir ...'.
+	Don't remove `${sysconfdir}/printcap', if it differs from the copy
+	installed as `${localstatedir}/spool/lp/config.example'; reflect
+	backup name changes applied in `install-lpr-basic'.
+
+2009-09-15  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
 	Reorganise file assignment to documentation / licence distributions.
 
 	* Makefile.in (DOC_DISTFILES): Add `AUTHORS', removing it from...
