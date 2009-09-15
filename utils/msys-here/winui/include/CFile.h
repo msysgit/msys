@@ -89,13 +89,13 @@ class CIniFile : public CFile {
 
 	bool	Open(const char *filename, const char *mode);
 	bool	Close(void);
-	bool	GetSection(char *sectionName);
-	bool	GetString(char *destData, char *keyName, char *defData, size_t maxLen);
-	int	GetInt(char *key, int defVal);
+	bool	GetSection(const char *sectionName);
+	bool	GetString(char *destData, const char *keyName, const char *defData, size_t maxLen);
+	int	GetInt(const char *key, int defVal);
 
 	private:   
-	char	*FindSection(char *sectionName, char *curr);
-	bool	FindData(char *destData, char *keyName, char *defData, size_t maxLen, char *curr);
+	char	*FindSection(const char *sectionName, char *curr);
+	bool	FindData(char *destData, const char *keyName, const char *defData, size_t maxLen, char *curr);
 	size_t CpyString(char *destData, const char *curr, size_t maxLen);
 	char	*SkipUnwanted(char *curr);
 

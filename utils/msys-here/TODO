@@ -1,0 +1,13 @@
+mingw-utils-0.4 is a maintainance release, which 
+simply incorporates msys-here and ensures that it
+builds without error. However, msys-here appears
+to be broken -- so...fix the actual operation.
+
+Right now, msys-here is an odd mix of restricted
+behavior selection (rxvt or sh, normal msys or msys-dvlpr --
+but can't use bash explicitly, or console2), some that
+can be selected by command-line option, hardcoded defaults
+(sh will always be invoked as a login shell, rxvt will always
+be invoked with -sl 2500 and Courier-12 font, etc), and .ini
+file customizations (console colors).
+This makes no sense. Fix it.

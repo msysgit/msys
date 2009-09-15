@@ -14,7 +14,6 @@
 #include <ctype.h>
 #include "CFile.h"
 
-
 bool Winify(char *src){
 	while (*src){
 		if (*src == '/')
@@ -365,7 +364,7 @@ bool CIniFile::Close(void){
 return FClose();
 }
 
-bool CIniFile::GetSection(char *sectionName){
+bool CIniFile::GetSection(const char *sectionName){
 	/*	Resets section pointer and search "sectionName".	*/
 	_sect = NULL;
 
@@ -397,7 +396,7 @@ return false;
 //	GetPrivateProfileString(sectionName, keyName, defData, 
 //						destData, maxLen, fileName);
 //******************************************************
-bool CIniFile::GetString(char *destData, char *keyName, char *defData, size_t maxLen){
+bool CIniFile::GetString(char *destData, const char *keyName, const char *defData, size_t maxLen){
 	/*	Search "keyName" and copies the value to "destData".
 		Returns true if successfull, false otherwise. 			*/
 
@@ -423,7 +422,7 @@ bool CIniFile::GetString(char *destData, char *keyName, char *defData, size_t ma
 return false;
 }
 
-int CIniFile::GetInt(char *key, int defVal){
+int CIniFile::GetInt(const char *key, int defVal){
 	char integer[12];
 	if (GetString(integer, key, "", sizeof(integer)))
 		return atoi(integer);
@@ -433,7 +432,7 @@ int CIniFile::GetInt(char *key, int defVal){
 
 
 // Private members.
-char *CIniFile::FindSection(char *sectionName, char *curr){
+char *CIniFile::FindSection(const char *sectionName, char *curr){
 	/*	Search the section through one line of text.
 		Returns a pointer to the section if successful, NULL otherwise.
 		This procedure increments current pointer to the end of line.	*/
@@ -480,7 +479,7 @@ char *CIniFile::FindSection(char *sectionName, char *curr){
 return NULL;
 }
 
-bool CIniFile::FindData(char *destData, char *keyName, char *defData, size_t maxLen, char *curr){
+bool CIniFile::FindData(char *destData, const char *keyName, const char *defData, size_t maxLen, char *curr){
 	/*	Search "keyName" through one line of text.
 		Returns true if successful, false otherwise.
 		This procedure increments current pointer to the end of line.	*/

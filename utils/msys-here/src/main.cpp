@@ -16,10 +16,13 @@
 #include "main.h"
 #include "rsrc.h"
 #include "getopt.h"
+#include <string>
 
-#define APP_NAME "MSYS Here"
-#define INI_FILE_NAME "\\msys.ini"
-#define MSYS_DVLPR "MSYSTEM=MSYS"
+#define APP_NAME_VAL      "MSYS Here"
+#define INI_FILE_NAME     "\\msys.ini"
+#define MSYS_DVLPR        "MSYSTEM=MSYS"
+
+static char APP_NAME_buf[] = APP_NAME_VAL;
 
 /* Globals */
 CWinApp winApp;
@@ -68,8 +71,8 @@ int CWinApp::Run(void){
 
 	/*	1. Check if a valid shell lives in /bin.	*/
 	if (!_ShellFound(_msysDir)){
-		MsgBox(0, MB_ICONERROR, APP_NAME,
-			"Cannot find a shell in your MSYS environment:\n%s", _msysDir);
+		std::string localMsg("Cannot find a shell in your MSYS environment:\n%s");
+		MsgBox(0, MB_ICONERROR, APP_NAME_buf, localMsg.c_str(), _msysDir);
 		return 1;
 	}
 
@@ -144,8 +147,8 @@ bool CWinApp::_ReadIniFile(void){
 	}
 
 	// [Msys] section.
-	IniFile.GetSection(	"Msys");
-	_startRxvt = IniFile.GetInt(	"StartRxvt", 1);
+	IniFile.GetSection("Msys");
+	_startRxvt = IniFile.GetInt("StartRxvt", 1);
 
 	// [RxvtColors] section.
 	IniFile.GetSection(	"RxvtColors");

@@ -1,12 +1,22 @@
+2009-09-14  Charles Wilson  <cwilso11@users.sourceforge.net>
+
+	Fix compile warnings and errors.
+	* .cvsignore: New.
+	* winui/Makefile.am: New.
+	* include/CFile.h: Use const where appropriate, to avoid warnings.
+	* include/winui.h: Remove redundant definitions now in w32api.
+	* src/CFile.cpp: Ripple from changes in CFile.h.
+
 2002-12-26  Manu B  <manubee@users.sourceforge.net>
+
 	* include/winui.h (CSingleInstance): New class.
 	(CChrono): All members become inline.
 	(SetName): Removed.
- 
+
 2002-12-21  Manu B  <manubee@users.sourceforge.net>
-	
+
 	* include/winui.h: Rely on MinGW headers.
-	
+
 2002-12-06  Manu B  <manubee@users.sourceforge.net>
 
 	* src/CFile.cpp: Moved from Visual-MinGW.

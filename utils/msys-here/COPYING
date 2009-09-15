@@ -1,0 +1,11 @@
+License for MSYS Here
+=====================
+
+Public domain. 2002 Manu B.
+
+getopt implementation is BSD (4 clause as written, but
+  per ftp://ftp.cs.berkeley.edu/pub/4bsd/README.Impt.License.Change the
+  Director of the Office of Technology Licensing of the University of
+  California officially rescinded the advertising clause on July 22nd, 1999.
+  He states that clause 3 is "hereby deleted in its entirety."
+

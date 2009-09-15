@@ -1,0 +1,42 @@
+Windows Registry Editor Version 5.00
+
+@@I@@[@@HIVE@@\Directory\shell\MsysHere]
+@@I@@@="&Msys Here"
+@@I@@
+@@I@@[@@HIVE@@\Directory\shell\MsysHere\command]
+@@I@@@="@@MSYSHERE@@ -h \"%1\""
+@@I@@
+@@I@@[@@HIVE@@\Drive\shell\MsysHere]
+@@I@@@="&Msys Here"
+@@I@@
+@@I@@[@@HIVE@@\Drive\shell\MsysHere\command]
+@@I@@@="@@MSYSHERE@@ -h \"%1\""
+@@I@@
+@@I@@[@@HIVE@@\Directory\shell\MsysDvlpr]
+@@I@@@="&Msys Dvlpr"
+@@I@@
+@@I@@[@@HIVE@@\Directory\shell\MsysDvlpr\command]
+@@I@@@="@@MSYSHERE@@ -d -h \"%1\""
+@@I@@
+@@I@@[@@HIVE@@\Drive\shell\MsysDvlpr]
+@@I@@@="&Msys Dvlpr"
+@@I@@
+@@I@@[@@HIVE@@\Drive\shell\MsysDvlpr\command]
+@@I@@@="@@MSYSHERE@@ -d -h \"%1\""
+@@I@@
+@@U@@[-@@HIVE@@\Directory\shell\MsysHere\command]
+@@U@@
+@@U@@[-@@HIVE@@\Directory\shell\MsysHere]
+@@U@@
+@@U@@[-@@HIVE@@\Drive\shell\MsysHere\command]
+@@U@@
+@@U@@[-@@HIVE@@\Drive\shell\MsysHere]
+@@U@@
+@@U@@[-@@HIVE@@\Directory\shell\MsysDvlpr\command]
+@@U@@
+@@U@@[-@@HIVE@@\Directory\shell\MsysDvlpr]
+@@U@@
+@@U@@[-@@HIVE@@\Drive\shell\MsysDvlpr\command]
+@@U@@
+@@U@@[-@@HIVE@@\Drive\shell\MsysDvlpr]
+@@U@@

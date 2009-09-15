@@ -16,37 +16,6 @@
 #include <commctrl.h>
 #include "CList.h"
 
-// missing in MinGW headers: ListView_SetExtendedListViewStyleEx, NMMOUSE.
-// TODO: submit missing defines.
-#ifdef __MINGW32__
-typedef struct tagNMMOUSE {
-	NMHDR   hdr;
-	DWORD_PTR dwItemSpec;
-	DWORD_PTR dwItemData;
-	POINT   pt;
-	LPARAM  dwHitInfo;
-} NMMOUSE, FAR* LPNMMOUSE;
-
-typedef struct tagTVDISPINFOA {
-    NMHDR hdr;
-    TVITEMA item;
-} NMTVDISPINFOA, FAR *LPNMTVDISPINFOA;
-
-typedef struct tagTVDISPINFOW {
-    NMHDR hdr;
-    TVITEMW item;
-} NMTVDISPINFOW, FAR *LPNMTVDISPINFOW;
-
-#ifdef UNICODE
-#define NMTVDISPINFO            NMTVDISPINFOW
-#define LPNMTVDISPINFO          LPNMTVDISPINFOW
-#else
-#define NMTVDISPINFO            NMTVDISPINFOA
-#define LPNMTVDISPINFO          LPNMTVDISPINFOA
-#endif
-#endif /* __MINGW32__ */
-
-
 /*	WinUI tools 1.0.
 	TODO: should be moved to a dedicated module containing
 	all tips and tricks.							*/

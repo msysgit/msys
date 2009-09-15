@@ -1,0 +1,132 @@
+#!/bin/bash -e
+# MSYS-HERE-CONFIG: install/uninstall the msys-here Explorer context menu
+
+PROGNAME=$(basename $0)
+_tdir=$(dirname $0)
+PROGDIR=$(cd $_tdir ; pwd)
+prefix=@prefix@
+TEMPLATEFILE=@datarootdir@/@PACKAGE@/registry.template
+TARGETNAME=msys-here.exe
+
+usage="Usage: $PROGNAME [-h] [-i|-u] [-a|-c] [-n] [-p] [-v]"
+do_help() {
+  echo "${PROGNAME} [-h] [-i|-u] [-a|-c] [-n] [-p] [-v]"
+  echo "install or uninstall the msys-here Explorer context menu"
+  echo "  -h    show this help"
+  echo "  -i    install the context menu (default)"
+  echo "  -u    uninstall the context menu"
+  echo "  -a    all users [HKEY_CLASSES_ROOT]"
+  echo "  -c    current user only [HKEY_CURRENT_USER] (default)"
+  echo "  -n    dry-run: don't modify the registry"
+  echo "  -p    pause for user input, before exiting"
+  echo "  -v    verbose messages"
+  echo "Note that for -a to work, you may need to launch this script"
+  echo "using "'`'"runas' and/or do so from an shell with elevated"
+  echo "privileges, depending on your OS. Even -c may require similar"
+  echo "measures."
+}
+
+# displays error message and exits
+error() {
+        case $? in
+                0) local errorcode=1 ;;
+                *) local errorcode=$? ;;
+        esac
+
+        echo -e "\e[1;31m*** ERROR:\e[0;0m ${1:-no error message provided}" 1>&2;
+        exit ${errorcode};
+}
+# displays information message
+warning() {
+        echo -e "\e[1;33m*** Warning:\e[0;0m ${1}" 1>&2;
+}
+# displays information message
+inform() {
+        echo -e "\e[1;32m*** Info:\e[0;0m ${1}" 1>&2;
+}
+
+opt_iu=0 # install
+opt_ca=0 # current usea
+opt_n=
+opt_p=
+opt_v=
+while getopts ":hiucanpv" options; do
+  case $options in
+    h  ) do_help; exit 0;;
+    i  ) opt_iu=0;;
+    u  ) opt_iu=1;;
+    c  ) opt_ca=0;;
+    a  ) opt_ca=1;;
+    n  ) opt_n=yes;;
+    p  ) opt_p=yes;;
+    v  ) opt_v=yes;;
+    \? ) echo $usage; exit 0;;
+    *  ) echo $usage 1>&2; exit 1;;
+  esac
+done
+
+shift $(($OPTIND - 1))
+if [ $# -gt 0 ]
+then
+  error "too many arguments"
+fi
+
+if [ ! -f ${TEMPLATEFILE} ]
+then
+  error "Could not find registry template file: ${TEMPLATEFILE}"
+fi
+
+TMPFILE="${TMPDIR:=/tmp}/msys_here_$$"
+# Assure the file is removed at program termination
+# or after we received a signal:
+trap 'rm -f "$TMPFILE" >/dev/null 2>&1' 0
+trap "exit 2" 1 2 3 13 15
+
+if [ -x "/${TARGETNAME}" ]
+then
+  TGT=$(cd / && pwd -W)/${TARGETNAME}
+elif [ -x "/bin/${TARGETNAME}" ]
+then
+  TGT=$(cd /bin && pwd -W)/${TARGETNAME}
+else
+  error "Could not locate ${TARGETNAME}"
+fi
+TGT=$(echo "${TGT}" | sed -e 's|/|\\\\\\\\|g')
+
+if [ "x$opt_ca" = "x0" ]
+then # current user
+  HIVE='HKEY_CURRENT_USER\\Software\\Classes'
+else # all users
+  HIVE=HKEY_CLASSES_ROOT
+fi
+
+if [ "x$opt_iu" = "x0" ]
+then # install
+  sed -e "s|@@MSYSHERE@@|${TGT}|" -e "s|@@HIVE@@|${HIVE}|" \
+	-e "s|^@@I@@||" -e "/^@@U@@/d" \
+	< ${TEMPLATEFILE} > ${TMPFILE} ||\
+	error "Could not customize registry file ${TMPFILE}"
+else # uninstall
+  sed -e  "s|@@HIVE@@|${HIVE}|" -e "s|^@@U@@||" -e "/^@@I@@/d" \
+	< ${TEMPLATEFILE} > ${TMPFILE} ||\
+	error "Could not customize registry file ${TMPFILE}"
+fi
+
+if [ -n "$opt_n" -o -n "$opt_v" ]
+then
+  cat ${TMPFILE}
+fi
+
+if [ -z "$opt_n" ]
+then
+  echo "here!"
+  regedit.exe //s "${TMPFILE}" || error "Failed to merge registry data"
+fi
+
+inform "Success!"
+if [ -n "$opt_p" ]
+then
+  echo -n "Press <ENTER>..."
+  read DUMMY
+fi
+

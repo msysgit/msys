@@ -1,5 +1,26 @@
 2009-09-14  Charles Wilson  <cwilso11@users.sourceforge.net>
 
+	Extensive revisions to modernize build process.
+	* .cvsignore: New.
+	* COPYING: New.
+	* TODO: New.
+	* Makefile.am: Rewrite.
+	* autogen.sh: Running configure is optional (-c). Update
+	for automake-1.11. Echo commands.
+	* configure.in: Renamed to...
+	* configure.ac: this. Rewrite.
+	* lib/Makefile.am: New.
+	* lib/.cvsignore: New.
+	* setup/explorer.reg: Removed.
+	* setup/.cvsignore: New.
+	* setup/msys-here-config.in: New.
+	* setup/registry.template: New.
+	* src/.cvsignore: New.
+	* src/main.cpp: Fix compile warnings.
+	* src/Makefile.am: New.
+
+2009-09-14  Charles Wilson  <cwilso11@users.sourceforge.net>
+
 	Rename documentation files to follow GCS (part 2)
 	* README: New.
 	* NEWS: New.
