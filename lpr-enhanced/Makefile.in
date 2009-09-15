@@ -22,8 +22,8 @@ SRC_DISTFILES = ChangeLog $(LIC_DISTFILES) $(DOC_DISTFILES) \
   configure configure.ac Makefile.in install-sh lpr-enhanced.sh example.in
 
 BIN_DISTFILES = lpr-enhanced example
-DOC_DISTFILES = README
-LIC_DISTFILES = AUTHORS COPYING
+DOC_DISTFILES = README AUTHORS
+LIC_DISTFILES = COPYING
 
 srcdir = @srcdir@
 abs_top_srcdir = @abs_top_srcdir@

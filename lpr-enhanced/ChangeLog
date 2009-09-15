@@ -1,5 +1,12 @@
 2009-09-15  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
+	Reorganise file assignment to documentation / licence distributions.
+
+	* Makefile.in (DOC_DISTFILES): Add `AUTHORS', removing it from...
+	(LIC_DISTFILES): ...this.
+
+2009-09-15  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
 	* Makefile.in (bindist, docdist, licdist): Construct distribution
 	tarballs directly, so eliminating...
 	(bindist-recursive, docdist-recursive, licdist-recursive): ...these
