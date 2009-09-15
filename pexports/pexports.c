@@ -1,6 +1,5 @@
 #include <string.h>
 #include <stdlib.h>
-#include <unistd.h>
 #include <errno.h>
 #include <sys/stat.h>
 
@@ -11,17 +10,16 @@
 #define PATH_MAX 260
 #endif
 
-#ifdef __MINGW32__
-/* mingw32 uses ';' instead if ':' */
+#ifdef _WIN32
 #define PATH_SEPARATOR ';'
 #else
 #define PATH_SEPARATOR ':'
 #endif
 
 /* get pointer to section header n */
-#define IMAGE_SECTION_HDR(n) ((PIMAGE_SECTION_HEADER) ((DWORD) nt_hdr + \
+#define IMAGE_SECTION_HDR(n) ((PIMAGE_SECTION_HEADER) ((char *) nt_hdr32 + \
                                     4 + sizeof(IMAGE_FILE_HEADER) + \
-                                    nt_hdr->FileHeader.SizeOfOptionalHeader + \
+                                    nt_hdr32->FileHeader.SizeOfOptionalHeader + \
                                     n * sizeof(IMAGE_SECTION_HEADER)))
 
 /* convert relative virtual address to a useable pointer */
@@ -32,32 +30,33 @@ typedef struct str_list {
   struct str_list *next;
 } str_list;
 
+extern void yyparse(void);
+
 static void *xmalloc(size_t count);
-static void cleanup(void);
 static void add_path_list(char *path);
 static const char *find_file(const char *name);
 static void str_list_add(str_list **head, const char *s);
-static void str_list_free(str_list **head);
 static void parse_headers();
 static void dump_symbol(char *name, int ord, DWORD rva);
 
-const char mz_sign[2] = {'M','Z'};
-const char pe_sign[4] = {'P','E','\0','\0'};
-const char exp_sign[6] = {'.','e','d','a','t','a'};
+static const char mz_sign[2] = {'M','Z'};
+static const char pe_sign[4] = {'P','E','\0','\0'};
+static const char exp_sign[6] = {'.','e','d','a','t','a'};
 
-PIMAGE_DOS_HEADER dos_hdr;
-PIMAGE_NT_HEADERS nt_hdr;
+static PIMAGE_DOS_HEADER dos_hdr;
+static PIMAGE_NT_HEADERS32 nt_hdr32;
+static PIMAGE_NT_HEADERS64 nt_hdr64;
 
-char *filename = NULL;
-char *program_name;
-char *cpp = "gcc -E -xc-header";
+static char *filename = NULL;
+static char *program_name;
+static char *cpp = "gcc -E -xc-header";
 
 str_tree *symbols = NULL;
-str_list *inc_path = NULL;
-str_list *header_files = NULL;
+static str_list *inc_path = NULL;
+static str_list *header_files = NULL;
 
-int verbose = 0;
-int ordinal_flag = 0;
+static int verbose = 0;
+static int ordinal_flag = 0;
 
 extern FILE *yyin;
 
@@ -67,15 +66,38 @@ main(int argc, char *argv[])
   PIMAGE_SECTION_HEADER section;
   DWORD exp_rva;
   int i;
+#if defined(_WIN32) && !defined(_WIN64)
+
+  /* If running on 64-bit Windows and built as a 32-bit process, try
+   * disable Wow64 file system redirection, so that we can open DLLs
+   * in the real system32 folder if requested.
+   */
+
+  PVOID old_redirection;
+
+  HMODULE kernel32;
+
+  extern __declspec(dllimport) HMODULE __stdcall GetModuleHandleA(char *name);
+  extern __declspec(dllimport) PVOID __stdcall GetProcAddress(HMODULE module, char *name);
+
+  BOOL (__stdcall *pWow64DisableWow64FsRedirection) (PVOID *old_value);
+
+  kernel32 = GetModuleHandleA("kernel32.dll");
+  pWow64DisableWow64FsRedirection = GetProcAddress(kernel32, "Wow64DisableWow64FsRedirection");
+
+  if (pWow64DisableWow64FsRedirection)
+    pWow64DisableWow64FsRedirection(&old_redirection);
+#endif
 
   program_name = argv[0];
-
-  atexit(cleanup);
 
   /* add standard include paths */
   add_path_list(getenv("C_INCLUDE_PATH"));
   add_path_list(getenv("CPLUS_INCLUDE_PATH"));
+#if 0
+  /* since when does PATH have anything to do with headers? */
   add_path_list(getenv("PATH"));
+#endif
 
   /* parse command line */
   for ( i = 1; i < argc; i++ )
@@ -120,6 +142,7 @@ main(int argc, char *argv[])
     {
       printf("PExports %d.%d Copyright 1998, Anders Norlander\n"
       	     "Changed 1999, Paul Sokolovsky\n"
+      	     "Changed 2008, Tor Lillqvist\n"
              "This program is free software; you may redistribute it under the terms of\n"
              "the GNU General Public License.  This program has absolutely no warranty.\n"
 
@@ -128,7 +151,9 @@ main(int argc, char *argv[])
              "  -o\tprint ordinals\n"
              "  -p\tset preprocessor program\n"
              "  -v\tverbose mode\n"
-             "\nReport bugs to anorland@hem2.passagen.se or Paul.Sokolovsky@technologist.com\n",
+             "\nReport bugs to anorland@hem2.passagen.se,\n"
+	     "Paul.Sokolovsky@technologist.com\n"
+	     "or tml@iki.fi\n",
              VER_MAJOR, VER_MINOR,
              program_name);
       return 1;
@@ -146,22 +171,30 @@ main(int argc, char *argv[])
       return 1;
     }
 
-  nt_hdr = (PIMAGE_NT_HEADERS) ((DWORD) dos_hdr + dos_hdr->e_lfanew);
+  nt_hdr32 = (PIMAGE_NT_HEADERS32) ((char *) dos_hdr + dos_hdr->e_lfanew);
+  nt_hdr64 = (PIMAGE_NT_HEADERS64) nt_hdr32;
   
-  exp_rva = nt_hdr->OptionalHeader.DataDirectory[0].VirtualAddress;
+  if (nt_hdr32->FileHeader.Machine == IMAGE_FILE_MACHINE_I386)
+    exp_rva = nt_hdr32->OptionalHeader.DataDirectory[0].VirtualAddress;
+  else
+    exp_rva = nt_hdr64->OptionalHeader.DataDirectory[0].VirtualAddress;
 
-  section = IMAGE_SECTION_HDR(0);
-
-  /* Look for export section */
-  for (i = 0; i < nt_hdr->FileHeader.NumberOfSections; i++, section++)
+  if (verbose)
     {
-      if (verbose)
+      for (i = 0; i < nt_hdr32->FileHeader.NumberOfSections; i++)
         {
-          printf("; %8s: RVA: %08x, File offset: %08x\n",
+	  section = IMAGE_SECTION_HDR(i);
+          printf("; %-8.8s: RVA: %08x, File offset: %08x\n",
                  section->Name,
                  section->VirtualAddress,
                  section->PointerToRawData);
         }
+    }
+
+  /* Look for export section */
+  for (i = 0; i < nt_hdr32->FileHeader.NumberOfSections; i++)
+    {
+      section = IMAGE_SECTION_HDR(i);
       if (memcmp(section->Name, exp_sign, sizeof(exp_sign)) == 0)
         dump_exports(section->VirtualAddress);
       else if ((exp_rva >= section->VirtualAddress) && 
@@ -180,19 +213,13 @@ dump_exports(DWORD exports_rva)
   PIMAGE_SECTION_HEADER section;
   PIMAGE_EXPORT_DIRECTORY exports;
   char *export_name;
-  PWORD ordinal_table;
-  char **name_table;
+  WORD *ordinal_table;
+  DWORD *name_table;
   DWORD *function_table;
   int i;
   static int first = 1;
-  DWORD exports_end;
 
   section = find_section(exports_rva);
-
-  if (nt_hdr->OptionalHeader.DataDirectory[0].Size == 0)
-    exports_end = section->VirtualAddress + section->SizeOfRawData;
-  else
-    exports_end = exports_rva + nt_hdr->OptionalHeader.DataDirectory[0].Size;
 
   if (verbose)
     printf("; Reading exports from section: %s\n",
@@ -202,8 +229,8 @@ dump_exports(DWORD exports_rva)
 
   /* set up various pointers */
   export_name = RVA_TO_PTR(exports->Name,char*);
-  ordinal_table = RVA_TO_PTR(exports->AddressOfNameOrdinals,PWORD);
-  name_table = RVA_TO_PTR(exports->AddressOfNames,char**);
+  ordinal_table = RVA_TO_PTR(exports->AddressOfNameOrdinals,WORD*);
+  name_table = RVA_TO_PTR(exports->AddressOfNames,DWORD*);
   function_table = RVA_TO_PTR(exports->AddressOfFunctions,void*);
 
   if (verbose)
@@ -212,7 +239,8 @@ dump_exports(DWORD exports_rva)
       printf("; Ordinal base: %d\n", exports->Base);
       printf("; Ordinal table RVA: %08x\n",
               exports->AddressOfNameOrdinals);
-      printf("; Name table RVA: %08x\n", exports->AddressOfNames);
+      printf("; Name table RVA: %07x\n",
+	     exports->AddressOfNames);
       printf("; Export address table RVA: %08x\n",
              exports->AddressOfFunctions);
     }
@@ -237,7 +265,7 @@ dump_exports(DWORD exports_rva)
   for (i = 0; i < exports->NumberOfFunctions; i++)
     {
       if ( (function_table[i] >= exports_rva) && 
-           (function_table[i] < exports_end))
+           (function_table[i] <= (section->VirtualAddress + section->SizeOfRawData)))
         {
           dump_symbol(strchr(RVA_TO_PTR(function_table[i],char*), '.')+1,
                       i + exports->Base,
@@ -250,13 +278,14 @@ dump_exports(DWORD exports_rva)
     }
 }
 
-static void dump_symbol(char *name, int ord, DWORD rva)
+static void
+dump_symbol(char *name, int ord, DWORD rva)
 {
   char s[256];
   str_tree *symbol = str_tree_find(symbols, name);
   /* if a symbol was found, emit size of stack */
   if (symbol)
-    sprintf(s, "%s@%d", name, (int) symbol->extra);
+    sprintf(s, "%s@%"INT_PTR_FORMAT, name, (INT_PTR) symbol->extra);
   else
     sprintf(s, "%s", name);
   
@@ -269,8 +298,9 @@ static void dump_symbol(char *name, int ord, DWORD rva)
   {
     PIMAGE_SECTION_HEADER s=find_section(rva);
 
-/* Stupid msvc doesn't have .bss section, it spews uninitilized data
-   to no section */
+    /* Stupid msvc doesn't have .bss section, it spews uninitilized data
+     * to no section
+     */
     if (!s) { printf(" DATA"); if (verbose) printf (" ; no section"); }
     else
     {
@@ -289,7 +319,7 @@ find_section(DWORD rva)
 {
   int i;
   PIMAGE_SECTION_HEADER section = IMAGE_SECTION_HDR(0);
-  for (i = 0; i < nt_hdr->FileHeader.NumberOfSections; i++, section++)
+  for (i = 0; i < nt_hdr32->FileHeader.NumberOfSections; i++, section++)
     if ((rva >= section->VirtualAddress) && 
         (rva <= (section->VirtualAddress + section->SizeOfRawData)))
       return section;
@@ -297,48 +327,60 @@ find_section(DWORD rva)
 }
 
 /* convert rva to pointer into loaded file */
-DWORD
+void *
 rva_to_ptr(DWORD rva)
 {
   PIMAGE_SECTION_HEADER section = find_section(rva);
   if (section->PointerToRawData == 0)
-    return 0;
+    return NULL;
   else
-    return ((DWORD) dos_hdr + (DWORD) rva - (section->VirtualAddress - section->PointerToRawData));
+    return ((char *) dos_hdr + rva - (section->VirtualAddress - section->PointerToRawData));
 }
 
 /* Load a portable executable into memory */
 PIMAGE_DOS_HEADER
 load_pe_image(const char *filename)
 {
+#ifdef _MSC_VER
+  struct _stat32 st;
+#else
   struct stat st;
+#endif
   PIMAGE_DOS_HEADER phdr;
   FILE *f;
-
+  
   if (stat(filename, &st) == -1)
-    return NULL;
+    {
+      perror("stat");
+      return NULL;
+    }
 
   phdr = (PIMAGE_DOS_HEADER) xmalloc(st.st_size);
   
   f = fopen(filename, "rb");
+
   if (f == NULL)
     {
+      perror("fopen");
       free(phdr);
       return NULL;
     }
 
   if (fread(phdr, st.st_size, 1, f) != 1)
     {
+      perror("fread");
       free(phdr);
       phdr = NULL;
     }
   else if (memcmp(mz_sign, phdr, sizeof(mz_sign)) != 0)
     {
+      fprintf(stderr, "No MZ signature\n");
       free(phdr);
       phdr = NULL;
     }
   else if (memcmp((char *) phdr + phdr->e_lfanew, pe_sign, sizeof(pe_sign)) != 0)
     {
+      fprintf(stderr, "No PE signature\n");
       free(phdr);
       phdr = NULL;
     }
@@ -351,6 +393,11 @@ load_pe_image(const char *filename)
 void
 parse_headers()
 {
+#ifdef _MSC_VER
+#define popen _popen
+#define pclose _pclose
+#endif
+
   str_list *header;
   char *cpp_cmd;
   int len;
@@ -417,7 +464,8 @@ parse_headers()
 }
 
 /* allocate memory; abort on failure */
-static void *xmalloc(size_t count)
+static void 
+*xmalloc(size_t count)
 {
   void *p = malloc(count);
   if (p == NULL)
@@ -428,16 +476,9 @@ static void *xmalloc(size_t count)
   return p;
 }
 
-/* clean up */
-static void cleanup(void)
-{
-  str_tree_free(&symbols);
-  str_list_free(&inc_path);
-  str_list_free(&header_files);
-}
-
 /* add string to end of list */
-static void str_list_add(str_list **head, const char *s)
+static void
+str_list_add(str_list **head, const char *s)
 {
   str_list *node = xmalloc(sizeof(str_list));
   node->s = strdup(s);
@@ -455,22 +496,9 @@ static void str_list_add(str_list **head, const char *s)
     }
 }
 
-/* free memory used by string list */
-static void str_list_free(str_list **head)
-{
-  str_list *node = *head;
-  while (node)
-    {
-      str_list *tmp = node->next;
-      free(node->s);
-      free(node);
-      node = tmp;
-    }
-  *head = NULL;
-}
-
 /* find a file in include path */
-static const char *find_file(const char *name)
+static const char *
+find_file(const char *name)
 {
   static char fullname[PATH_MAX];
   FILE *f = fopen(name, "r");
@@ -498,7 +526,8 @@ static const char *find_file(const char *name)
 }
 
 /* add a environment-style path list to list of include paths */
-static void add_path_list(char *path)
+static void
+add_path_list(char *path)
 {
   char *p = path;
   if (!p)

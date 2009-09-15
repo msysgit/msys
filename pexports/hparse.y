@@ -1,10 +1,16 @@
 %{
+#include <string.h>
+#include <stdio.h>
 
 #include "pexports.h"
 
 
 static int inc_flag = 1;
 static int arg_size = 0;
+
+extern int yylex(void);
+
+static void yyerror(char *s);
 
 #define INC_ARGS(n) arg_size += (inc_flag ? n : 0)
 %}
@@ -75,11 +81,11 @@ parameter_declaration
             INC_ARGS(8);
           else if (strcmp($1, "RECT") == 0)
             INC_ARGS(16);
-          else if (strcasecmp($1, "float") == 0)
+          else if (strcmp($1, "float") == 0)
             INC_ARGS(sizeof(float));
           else if (strcmp($1, "double") == 0)
             INC_ARGS(sizeof(double));
-          else if (strcasecmp($1, "void") != 0)
+          else if (strcmp($1, "void") != 0)
             INC_ARGS(4);
         }
         ;
@@ -90,10 +96,8 @@ parameter_list
         ;
 
 %%
-#include <stdio.h>
-
-yyerror(s)
-char *s;
+static void
+yyerror(char *s)
 {
   /* ignore error */
   arg_size = 0;
