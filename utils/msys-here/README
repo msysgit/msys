@@ -10,7 +10,13 @@
 **************************************************************************/
 
 1. About this software:
-	MSYS Here is a loader for an MSYS environment.
+	MSYS Here is a loader for an MSYS environment. It is a bit
+	of an anomaly, because it is "msys"-related, but is itself
+	a purely native, win32 application. Also, as an integrated
+	component of the 'mingw-utils' suite, it is typically and
+	by default installed into the /mingw/bin (that is, C:\MinGW\bin)
+	directory, rather than into the regular /bin (that is,
+	C:\msys\1.0\bin) directory like most msys-related applications.
 	
 2. Installation:
 	Standard configure && make && make install. However, to
@@ -42,7 +48,8 @@
 	Use -h to see the various options controlling whether
 	to install msys-here as an Explorer context menu item
 	for only the current user, for all users, and other features.
+	To install for all users, you may need to run msys-here-config
+	as an Administrator.
 
 	msys-here-config can also be used to remove msys-here from
-	your system.	
-	
+	your system.

@@ -5,6 +5,7 @@ PROGNAME=$(basename $0)
 _tdir=$(dirname $0)
 PROGDIR=$(cd $_tdir ; pwd)
 prefix=@prefix@
+exec_prefix=@exec_prefix@
 TEMPLATEFILE=@datarootdir@/@PACKAGE@/registry.template
 TARGETNAME=msys-here.exe
 
@@ -50,14 +51,17 @@ opt_ca=0 # current usea
 opt_n=
 opt_p=
 opt_v=
+iumessage="install"
+camessage="current user"
+nmessage=""
 while getopts ":hiucanpv" options; do
   case $options in
     h  ) do_help; exit 0;;
-    i  ) opt_iu=0;;
-    u  ) opt_iu=1;;
-    c  ) opt_ca=0;;
-    a  ) opt_ca=1;;
-    n  ) opt_n=yes;;
+    i  ) opt_iu=0; iumessage="install";;
+    u  ) opt_iu=1; iumessage="uninstall";;
+    c  ) opt_ca=0; camessage="current user";;
+    a  ) opt_ca=1; camessage="all users";;
+    n  ) opt_n=yes; nmessage="(TEST MODE; NO ACTION TAKEN) ";;
     p  ) opt_p=yes;;
     v  ) opt_v=yes;;
     \? ) echo $usage; exit 0;;
@@ -82,13 +86,18 @@ TMPFILE="${TMPDIR:=/tmp}/msys_here_$$"
 trap 'rm -f "$TMPFILE" >/dev/null 2>&1' 0
 trap "exit 2" 1 2 3 13 15
 
-if [ -x "/${TARGETNAME}" ]
+TGT=
+for d in "/" "/bin/" "/mingw/" "/mingw/bin/" "@bindir@/"
+do
+  if [ -x "${d}${TARGETNAME}" ]
+  then
+    TGT=$(cd "${d}" && pwd -W)/${TARGETNAME}
+    break
+  fi
+done
+
+if [ -z "$TGT" ]
 then
-  TGT=$(cd / && pwd -W)/${TARGETNAME}
-elif [ -x "/bin/${TARGETNAME}" ]
-then
-  TGT=$(cd /bin && pwd -W)/${TARGETNAME}
-else
   error "Could not locate ${TARGETNAME}"
 fi
 TGT=$(echo "${TGT}" | sed -e 's|/|\\\\\\\\|g')
@@ -119,11 +128,10 @@ fi
 
 if [ -z "$opt_n" ]
 then
-  echo "here!"
   regedit.exe //s "${TMPFILE}" || error "Failed to merge registry data"
 fi
 
-inform "Success!"
+inform "${nmessage}Successfully ${iumessage}ed msys-here for ${camessage}."
 if [ -n "$opt_p" ]
 then
   echo -n "Press <ENTER>..."
