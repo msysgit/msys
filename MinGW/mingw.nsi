@@ -6,7 +6,7 @@
 
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "MinGW"
-!define PRODUCT_VERSION "5.1.4"
+!define PRODUCT_VERSION "5.1.5"
 !define PRODUCT_PUBLISHER "MinGW"
 !define PRODUCT_WEB_SITE "http://www.mingw.org"
 !define PRODUCT_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}"
@@ -110,6 +110,7 @@ var Install
 var Package
 
 var runtime
+var runtimeDLL
 var W32API
 var binutils
 var Core
@@ -126,6 +127,9 @@ InstType "Full"
 SectionGroup /e "MinGW base tools" SecBase
 
   Section runtime SecRuntime
+    SectionIn 1 2 3
+  SectionEnd
+  Section runtime SecRuntimeDLL
     SectionIn 1 2 3
   SectionEnd
   Section w32api SecW32API
@@ -166,6 +170,10 @@ Section -installComponents
 
   push ${SecRuntime}
   push $runtime
+  Call DownloadIfNeeded
+
+  push ${SecRuntimeDLL}
+  push $runtimeDLL
   Call DownloadIfNeeded
 
   push ${SecW32API}
@@ -209,7 +217,7 @@ Section -installComponents
   IntCmp $Updating 1 skipwrite +1
   
   CreateDirectory $INSTDIR
-  File /oname=$INSTDIR\installed.ini INIfiles\installed.ini
+  File /oname=$INSTDIR\installed.ini inifiles\installed.ini
 
   WriteINIStr $INSTDIR\installed.ini "settings"  "installtype" $Package
 
@@ -217,6 +225,11 @@ skipwrite:
   push ${SecRuntime}
   push $runtime
   push "runtime"
+  Call ExtractTarball
+
+  push ${SecRuntimeDLL}
+  push $runtimeDLL
+  push "runtimeDLL"
   Call ExtractTarball
 
   push ${SecW32API}
@@ -358,7 +371,7 @@ launch:
 
 extractINI:
   ; extract built in ini file
-  File /oname=$EXEDIR\mingw.ini INIfiles\mingw.ini
+  File /oname=$EXEDIR\mingw.ini inifiles\mingw.ini
   ReadINIStr $R1 "$EXEDIR\mingw.ini" "mingw" "Build"
 
 downloadINI:
@@ -418,6 +431,7 @@ Finish:
 
 first_install:
   SectionSetText ${SecRuntime} ""
+  SectionSetText ${SecRuntimeDLL} ""
   SectionSetText ${SecW32API} ""
   SectionSetText ${SecBinutils} ""
   SectionSetText ${SecCore} ""
@@ -649,6 +663,14 @@ findUpdates:
   ${StrTok} $R1 $R0 "|" 1 0
   SectionSetSize ${SecRuntime} $R1
 
+  ReadINIStr $R0 "$EXEDIR\mingw.ini" $Package "runtimeDLL"
+  ${If} $R0 == ""
+    ReadINIStr $R0 "$EXEDIR\mingw.ini" current "runtimeDLL"
+  ${EndIf}
+  ${StrTok} $runtimeDLL $R0 "|" 0 0
+  ${StrTok} $R1 $R0 "|" 1 0
+  SectionSetSize ${SecRuntimeDLL} $R1
+
   ReadINIStr $R0 "$EXEDIR\mingw.ini" $Package "w32api"
   ${If} $R0 == ""
     ReadINIStr $R0 "$EXEDIR\mingw.ini" current "w32api"
@@ -715,6 +737,12 @@ findUpdates:
   push $R0
   push $runtime
   push ${SecRuntime}
+  call CheckVersion
+  
+  ReadINIStr $R0 "$INSTDIR\installed.ini" "components" "runtimeDLL"
+  push $R0
+  push $runtimeDLL
+  push ${SecRuntimeDLL}
   call CheckVersion
   
   ReadINIStr $R0 "$INSTDIR\installed.ini" "components" "w32api"
