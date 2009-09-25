@@ -6,7 +6,7 @@
 
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "MinGW"
-!define PRODUCT_VERSION "5.1.5"
+!define PRODUCT_VERSION "5.1.6"
 !define PRODUCT_PUBLISHER "MinGW"
 !define PRODUCT_WEB_SITE "http://www.mingw.org"
 !define PRODUCT_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}"
@@ -596,7 +596,7 @@ Function DownloadIfNeeded
 
   DetailPrint "Downloading $Name"
 
-  inetc::get /POPUP /CAPTION "Downloading $Name" /RESUME "Your connection appears to have dropped out. Reconnect your dial up or check your IE proxy settings." "http://downloads.sourceforge.net/mingw/$DownloadName" "$EXEDIR\$Name" /END
+  inetc::get /POPUP "" /CAPTION "Downloading $Name" /RESUME "Your connection appears to have dropped out. Reconnect your dial up or check your IE proxy settings." "http://downloads.sourceforge.net/mingw/$DownloadName" "$EXEDIR\$Name" /END
   Pop $0
   StrCmp $0 "OK" DownLoadOK
 

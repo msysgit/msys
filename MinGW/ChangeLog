@@ -1,3 +1,16 @@
+2009.09.25  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Correct syntax error, per MinGW-bug 2861359
+	Release as MinGW-5.1.6.exe
+
+	* mingw.nsi (PRODUCT_VERSION): Increment to 5.1.6.
+	(inetc::get): Add "" argument to /POPUP.
+
+	* MinGW_LICENSE.rtf: Update for new PRODUCT_VERSION.
+
+	* mingw.ini (Build): Increment to 12.
+	(Filename): Update to match PRODUCT_VERSION.
+
 2009.08.21  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Support installation of MinGW Runtime from new distribution,
