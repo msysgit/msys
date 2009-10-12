@@ -1,5 +1,13 @@
 2009-10-12  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
+	Add pkginfo implementation.
+
+	* src, src/pkginfo: New directories.
+	* src/pkginfo/pkginfo.h, src/pkginfo/pkginfo.l: New files.
+	* src/pkginfo/driver.c: New file.
+
+2009-10-12  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
 	Create tdm-branch.
 
 	* All files (tdm-branch): Assign new branch tag.
