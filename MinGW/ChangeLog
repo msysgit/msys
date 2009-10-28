@@ -1,3 +1,7 @@
+2009.10.27  Chris Sutcliffe  <ir0nh34d@users.sourceforge.net>
+
+	* inifiles/mingw.ini: Updated current for make and binutils.
+
 2009.09.25  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Correct syntax error, per MinGW-bug 2861359
