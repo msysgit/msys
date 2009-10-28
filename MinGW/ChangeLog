@@ -1,3 +1,7 @@
+2009.10.28  Chris Sutcliffe  <ir0nh34d@users.sourceforge.net>
+
+	* inifiles/mingw.ini: Updated make to new naming standard.
+
 2009.10.27  Chris Sutcliffe  <ir0nh34d@users.sourceforge.net>
 
 	* inifiles/mingw.ini: Updated current for make and binutils.
