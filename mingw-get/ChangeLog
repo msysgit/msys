@@ -1,3 +1,9 @@
+2009-10-30  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Add GPL-v3 licensing terms.
+
+	* COPYING: New file, sourced from gnu.org.
+
 2009-10-12  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Add pkginfo implementation.
