@@ -1,3 +1,10 @@
+2009-10-31  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Set up build mechanism.
+
+	* configure.ac, Makefile.in: New files.
+	* .cvsignore (configure, autom4te.cache): Add to ignored files.
+
 2009-10-30  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Add GPL-v3 licensing terms.

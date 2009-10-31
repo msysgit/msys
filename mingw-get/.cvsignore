@@ -1,4 +1,2 @@
-bin
-obj
-mingw-get.layout
-mingw-get.depend
+configure autom4te.cache
+bin obj mingw-get.layout mingw-get.depend
