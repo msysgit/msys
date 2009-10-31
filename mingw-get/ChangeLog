@@ -1,5 +1,14 @@
 2009-10-31  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
+	Add CLI loader stub.
+
+	* src/clistub.c: New file.
+	* Makefile.in: Add build rule for it; build as...
+	(mingw-get.exe): ...this; also add to...
+	(clean): ...this goal.
+
+2009-10-31  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
 	Set up build mechanism.
 
 	* configure.ac, Makefile.in: New files.

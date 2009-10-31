@@ -1,6 +1,6 @@
 # @configure_input@
 #
-# $Id: Makefile.in,v 1.1 2009-10-31 21:08:41 keithmarshall Exp $
+# $Id: Makefile.in,v 1.2 2009-10-31 23:38:07 keithmarshall Exp $
 #
 # Written by Keith Marshall <keithmarshall@users.sourceforge.net>
 # Copyright (C) 2009, MinGW Project
@@ -52,16 +52,19 @@ LIBS = @LIBS@
 %.$(OBJEXT): %.cpp
 	$(CXX) -c $(CPPFLAGS) $(CXXFLAGS) -o $@ $<
 
-all: pkginfo$(EXEEXT)
+all: pkginfo$(EXEEXT) mingw-get$(EXEEXT)
 
 pkginfo$(EXEEXT):  driver.$(OBJEXT) pkginfo.$(OBJEXT)
 	$(CC) -o $@ $(CFLAGS) $(LDFLAGS) $+
+
+mingw-get$(EXEEXT): clistub.$(OBJEXT)
+	$(CXX) -o $@ $(CXXFLAGS) $(LDFLAGS) $+
 
 driver.$(OBJEXT):  pkginfo.h
 pkginfo.$(OBJEXT): pkginfo.l pkginfo.h
 
 clean:
-	rm -f *.$(OBJEXT) *.dll pkginfo$(EXEEXT)
+	rm -f *.$(OBJEXT) *.dll pkginfo$(EXEEXT) mingw-get$(EXEEXT)
 
 distclean: clean
 	rm -f config.* Makefile
