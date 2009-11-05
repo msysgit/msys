@@ -1,3 +1,16 @@
+2009-11-05  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Correct some identified TinyXML issues.
+
+	* tinyxml/tinyxml.h (IsWhiteSpace): Add FIXME annotation to flag
+	probable redundancy of checks for '\n' and '\r'.
+	* tinyxml/tinyxmlparser.cpp: Revert John E's 2008-08-09 change; remove
+	all such redundancies in IsWhiteSpace() calls throughout.
+
+	* tinyxml/tinyxml.cpp (TiXmlAttribute::SetDoubleValue): Correct format
+	specification in sprintf()/snprintf() calls; "%lf" is invalid; replace
+	with "%f".
+
 2009-10-31  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Add CLI loader stub.

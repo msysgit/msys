@@ -22,10 +22,6 @@ must not be misrepresented as being the original software.
 distribution.
 */
 
-/* Modified: JohnE, 2008-08-09
- * Add parentheses to fix GCC -Wall warning
- */
-
 #include <ctype.h>
 #include <stddef.h>
 
@@ -350,7 +346,7 @@ const char* TiXmlBase::SkipWhiteSpace( const char* p, TiXmlEncoding encoding )
 				continue;
 			}
 
-			if ( IsWhiteSpace( *p ) || *p == '\n' || *p =='\r' )		// Still using old rules for white space.
+			if ( IsWhiteSpace( *p ) )
 				++p;
 			else
 				break;
@@ -358,7 +354,7 @@ const char* TiXmlBase::SkipWhiteSpace( const char* p, TiXmlEncoding encoding )
 	}
 	else
 	{
-		while ( ( *p && IsWhiteSpace( *p ) ) || *p == '\n' || *p =='\r' )
+		while ( *p && IsWhiteSpace( *p ) )
 			++p;
 	}
 
@@ -1450,7 +1446,7 @@ const char* TiXmlAttribute::Parse( const char* p, TiXmlParsingData* data, TiXmlE
 		// its best, even without them.
 		value = "";
 		while (    p && *p											// existence
-				&& !IsWhiteSpace( *p ) && *p != '\n' && *p != '\r'	// whitespace
+				&& !IsWhiteSpace( *p )		// whitespace
 				&& *p != '/' && *p != '>' )							// tag end
 		{
 			if ( *p == SINGLE_QUOTE || *p == DOUBLE_QUOTE ) {

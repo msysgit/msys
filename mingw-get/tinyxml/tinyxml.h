@@ -290,6 +290,11 @@ protected:
 	static const char* SkipWhiteSpace( const char*, TiXmlEncoding encoding );
 	inline static bool IsWhiteSpace( char c )		
 	{ 
+		// FIXME: Explicit tests for '\n' and '\r' seem redundant here;
+		// POSIX requires isspace() to match both of these characters as
+		// white space anyway; is there any know implementation which
+		// does not comply with this requirement?
+		//
 		return ( isspace( (unsigned char) c ) || c == '\n' || c == '\r' ); 
 	}
 	inline static bool IsWhiteSpace( int c )
