@@ -1,3 +1,10 @@
+2009-11-11  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Create diagnostic message handler for CLI usage.
+
+	* src/dmh.h: New header file; it defines the public interface.
+	* src/dmh.cpp: New file; it implements the message handler.
+
 2009-11-05  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Correct some identified TinyXML issues.
