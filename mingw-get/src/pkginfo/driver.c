@@ -1,7 +1,7 @@
 /*
  * driver.c
  *
- * $Id: driver.c,v 1.1 2009-10-12 21:35:29 keithmarshall Exp $
+ * $Id: driver.c,v 1.2 2009-11-12 22:33:26 keithmarshall Exp $
  *
  * Written by Keith Marshall <keithmarshall@users.sourceforge.net>
  * Copyright (C) 2009, MinGW Project
@@ -33,6 +33,7 @@
  *
  */
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "pkginfo.h"
 
