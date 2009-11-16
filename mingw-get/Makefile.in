@@ -1,6 +1,6 @@
 # @configure_input@
 #
-# $Id: Makefile.in,v 1.2 2009-10-31 23:38:07 keithmarshall Exp $
+# $Id: Makefile.in,v 1.3 2009-11-16 21:54:30 keithmarshall Exp $
 #
 # Written by Keith Marshall <keithmarshall@users.sourceforge.net>
 # Copyright (C) 2009, MinGW Project
@@ -33,7 +33,7 @@ CPPFLAGS = @CPPFLAGS@ $(INCLUDES)
 CXX = @CXX@
 CXXFLAGS = $(CFLAGS)
 
-INCLUDES = -I ${srcdir}/src -I ${srcdir}/src/pkginfo
+INCLUDES = -I ${srcdir}/src -I ${srcdir}/src/pkginfo -I ${srcdir}/tinyxml
 
 LEX = @LEX@
 
@@ -46,13 +46,20 @@ EXEEXT = @EXEEXT@
 LDFLAGS = @LDFLAGS@
 LIBS = @LIBS@
 
+CORE_DLL_OBJECTS = climain.$(OBJEXT) \
+   pkgexec.$(OBJEXT) pkginfo.$(OBJEXT) pkgspec.$(OBJEXT) \
+   tinyxml.$(OBJEXT) tinyxmlparser.$(OBJEXT) \
+   tinystr.$(OBJEXT) tinyxmlerror.$(OBJEXT) \
+   mkpath.$(OBJEXT)  xmlfile.$(OBJEXT) \
+   vercmp.$(OBJEXT)  dmh.$(OBJEXT)
+
 %.$(OBJEXT): %.c
 	$(CC) -c $(CPPFLAGS) $(CFLAGS) -o $@ $<
 
 %.$(OBJEXT): %.cpp
 	$(CXX) -c $(CPPFLAGS) $(CXXFLAGS) -o $@ $<
 
-all: pkginfo$(EXEEXT) mingw-get$(EXEEXT)
+all: pkginfo$(EXEEXT) mingw-get$(EXEEXT) mingw-get-0.dll
 
 pkginfo$(EXEEXT):  driver.$(OBJEXT) pkginfo.$(OBJEXT)
 	$(CC) -o $@ $(CFLAGS) $(LDFLAGS) $+
@@ -60,8 +67,26 @@ pkginfo$(EXEEXT):  driver.$(OBJEXT) pkginfo.$(OBJEXT)
 mingw-get$(EXEEXT): clistub.$(OBJEXT)
 	$(CXX) -o $@ $(CXXFLAGS) $(LDFLAGS) $+
 
+mingw-get-0.dll: $(CORE_DLL_OBJECTS)
+	$(CXX) -shared -o $@ $(CXXFLAGS) $(LDFLAGS) $+ $(LIBS)
+
+dmh.$(OBJEXT):     dmh.h
+climain.$(OBJEXT): pkgbase.h pkgtask.h dmh.h
+pkgexec.$(OBJEXT): pkgbase.h pkgtask.h mkpath.h dmh.h
+pkgspec.$(OBJEXT): pkgbase.h pkginfo.h vercmp.h
+
+# Dependencies for stand alone pkginfo tool;
+# (the pkginfo object is also required by the core DLL)...
+#
 driver.$(OBJEXT):  pkginfo.h
 pkginfo.$(OBJEXT): pkginfo.l pkginfo.h
+
+# TinyXML dependencies...
+#
+tinyxml.$(OBJEXT): tinyxml.h
+tinyxmlerror.$(OBJEXT): tinyxml.h
+tinyxmlparser.$(OBJEXT): tinyxml.h
+tinystr.$(OBJEXT): tinyxml.h
 
 clean:
 	rm -f *.$(OBJEXT) *.dll pkginfo$(EXEEXT) mingw-get$(EXEEXT)

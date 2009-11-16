@@ -1,3 +1,17 @@
+2009-11-16  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Add XML database bindings and preliminary action executive for CLI.
+
+	* src/pkgbase.h, src/pkgtask.h,
+	src/mkpath.h, src/vercmp.h: New header files.
+
+	* src/climain.cpp, src/pkgexec.cpp, src/pkgspec.cpp,
+	src/mkpath.c, src/vercmp.cpp, src/xmlfile.c: New files.
+
+	* Makefile.in (CORE_DLL_OBJECTS): Define initial set of files...
+	(mingw-get-0.dll): ...build them into this new DLL target; add it...
+	(all): ...as prerequisite for this primary build goal.
+
 2009-11-12  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Avoid some potential GCC warnings.
