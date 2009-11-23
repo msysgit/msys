@@ -1,6 +1,6 @@
 # @configure_input@
 #
-# $Id: Makefile.in,v 1.3 2009-11-16 21:54:30 keithmarshall Exp $
+# $Id: Makefile.in,v 1.4 2009-11-23 20:44:23 keithmarshall Exp $
 #
 # Written by Keith Marshall <keithmarshall@users.sourceforge.net>
 # Copyright (C) 2009, MinGW Project
@@ -44,13 +44,14 @@ OBJEXT = @OBJEXT@
 EXEEXT = @EXEEXT@
 
 LDFLAGS = @LDFLAGS@
-LIBS = @LIBS@
+LIBS = -Wl,-Bstatic -lz -lbz2 -llzma -Wl,-Bdynamic -lwininet
 
 CORE_DLL_OBJECTS = climain.$(OBJEXT) \
-   pkgexec.$(OBJEXT) pkginfo.$(OBJEXT) pkgspec.$(OBJEXT) \
+   pkgbind.$(OBJEXT) pkginet.$(OBJEXT) pkgstrm.$(OBJEXT) pkgname.$(OBJEXT) \
+   pkgexec.$(OBJEXT) pkgfind.$(OBJEXT) pkginfo.$(OBJEXT) pkgspec.$(OBJEXT) \
+   mkpath.$(OBJEXT)  xmlfile.$(OBJEXT) keyword.$(OBJEXT) \
    tinyxml.$(OBJEXT) tinyxmlparser.$(OBJEXT) \
    tinystr.$(OBJEXT) tinyxmlerror.$(OBJEXT) \
-   mkpath.$(OBJEXT)  xmlfile.$(OBJEXT) \
    vercmp.$(OBJEXT)  dmh.$(OBJEXT)
 
 %.$(OBJEXT): %.c
@@ -71,9 +72,15 @@ mingw-get-0.dll: $(CORE_DLL_OBJECTS)
 	$(CXX) -shared -o $@ $(CXXFLAGS) $(LDFLAGS) $+ $(LIBS)
 
 dmh.$(OBJEXT):     dmh.h
-climain.$(OBJEXT): pkgbase.h pkgtask.h dmh.h
-pkgexec.$(OBJEXT): pkgbase.h pkgtask.h mkpath.h dmh.h
-pkgspec.$(OBJEXT): pkgbase.h pkginfo.h vercmp.h
+climain.$(OBJEXT): pkgbase.h pkgtask.h tinyxml.h tinystr.h dmh.h
+
+pkgname.$(OBJEXT): pkgbase.h dmh.h
+pkgfind.$(OBJEXT): pkgbase.h tinyxml.h tinystr.h
+pkgbind.$(OBJEXT): pkgbase.h tinyxml.h tinystr.h dmh.h
+pkgexec.$(OBJEXT): pkgbase.h pkgtask.h tinyxml.h tinystr.h mkpath.h dmh.h
+pkgspec.$(OBJEXT): pkgbase.h pkginfo.h tinyxml.h tinystr.h vercmp.h
+pkginet.$(OBJEXT): pkgbase.h pkgtask.h pkgstrm.h mkpath.h dmh.h
+pkgstrm.$(OBJEXT): pkgstrm.h
 
 # Dependencies for stand alone pkginfo tool;
 # (the pkginfo object is also required by the core DLL)...
@@ -83,10 +90,10 @@ pkginfo.$(OBJEXT): pkginfo.l pkginfo.h
 
 # TinyXML dependencies...
 #
-tinyxml.$(OBJEXT): tinyxml.h
-tinyxmlerror.$(OBJEXT): tinyxml.h
-tinyxmlparser.$(OBJEXT): tinyxml.h
-tinystr.$(OBJEXT): tinyxml.h
+tinyxml.$(OBJEXT): tinyxml.h tinystr.h
+tinyxmlerror.$(OBJEXT): tinyxml.h tinystr.h
+tinyxmlparser.$(OBJEXT): tinyxml.h tinystr.h
+tinystr.$(OBJEXT): tinystr.h
 
 clean:
 	rm -f *.$(OBJEXT) *.dll pkginfo$(EXEEXT) mingw-get$(EXEEXT)

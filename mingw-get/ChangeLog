@@ -1,3 +1,18 @@
+2009-11-23  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Add package download and repository synchronisation machinery.
+
+	* src/pkgstrm.h: New header file.
+
+	* src/pkgbind.cpp, src/pkginet.cpp, src/pkgstrm.cpp,
+	src/pkgfind.cpp, src/pkgname.cpp, src/keyword.c: New files.
+	* Makefile.in (CORE_DLL_OBJECTS): Add build goals for them.
+
+	* xml: New directory.
+
+	* src/climain.cpp (climain): Establish repository bindings from...
+	* xml/profile.xml: ...this new configuration file.
+
 2009-11-16  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Add XML database bindings and preliminary action executive for CLI.

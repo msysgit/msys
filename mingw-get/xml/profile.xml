@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<!-- profile.xml -->
+
+<profile project="MinGW" application="mingw-get">
+  <!--
+    $Id: profile.xml,v 1.1 2009-11-23 20:44:25 keithmarshall Exp $
+
+    Written by Keith Marshall  <keithmarshall@users.sourceforge.net>
+    Copyright (C) 2009, MinGW Project
+
+
+    Master configuration profile for mingw-get.
+
+    This is free software.  Permission is granted to copy, modify and
+    redistribute this software, under the provisions of the GNU General
+    Public License, Version 3, (or, at your option, any later version),
+    as published by the Free Software Foundation; see the file COPYING
+    for licensing details.
+
+    Note, in particular, that this software is provided "as is", in the
+    hope that it may prove useful, but WITHOUT WARRANTY OF ANY KIND; not
+    even an implied WARRANTY OF MERCHANTABILITY, nor of FITNESS FOR ANY
+    PARTICULAR PURPOSE.  Under no circumstances will the author, or the
+    MinGW Project, accept liability for any damages, however caused,
+    arising from the use of this software.
+  -->
+
+  <repository uri="http://prdownloads.sourceforge.net/mingw/%F.xml.lzma?download">
+    <!--
+      The "repository" specification identifies the URI where package
+      list catalogues may be downloaded; each catalogue download URI is
+      identified by substituting the catalogue name for the "%F" field
+      in the uri specification.
+
+      FIXME: package lists specified here will inhibit searching of any
+      master index maintained on the repository server.  At present, the
+      master index search facility is unsupported, so only these locally
+      specified package lists will be loaded; remove them when the index
+      search feature becomes available, to enable master index search.
+    -->
+    <package-list catalogue="mingw-base" />
+  </repository>
+
+  <system-map id="default">
+    <!--
+      The system map specifies the installation paths for each managed
+      subsystem.  Multiple system maps are supported, provided each is
+      given a unique "id" attribute; each specifies an "installation",
+      comprising a collection of subsystems, each of which in turn is
+      associated with a specific "sysroot path".
+      
+      Each individual "sysroot path" defines one installation of one
+      specific subsystem; parallel installations may be supported by
+      assigning distinct paths to two or more sysroot specifications
+      for the same subsystem; each such sysroot specification must
+      then be assigned to a distinct system-map.
+
+      Any single sysroot definition may be shared by any number of
+      system-maps, simply by duplicating that definition within each;
+      however, each system-map may contain only one sysroot definition
+      for each individual subsystem.
+
+      Only one system map may be active at any time.  Unless otherwise
+      specified by user selection, the first encountered is accepted as
+      default, irrespective of its actual "id" attribute value.
+    -->
+    <sysroot subsystem="mingw32" path="c:/mingw" />
+    <sysroot subsystem="MSYS" path="c:/msys/1.0" />
+  </system-map>
+
+</profile>
+<!-- $RCSfile: profile.xml,v $: end of file -->
