@@ -1,3 +1,7 @@
+2009.11.29  Chris Sutcliffe  <ir0nh34d@users.sourceforge.net>
+
+	* inifiles/mingw.ini: Updated current for mingwrt.
+
 2009.11.22  Chris Sutcliffe  <ir0nh34d@users.sourceforge.net>
 
 	* inifiles/mingw.ini: Updated current for w32api.
