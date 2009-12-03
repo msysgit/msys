@@ -1,3 +1,12 @@
+2009-12-03  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Update to accommodate new package releases.
+
+	* .cvsignore (tmp): Add local working directory name.
+
+	* x86-mingw32-build.sh.conf: Update to current releases of...
+	(BINUTILS_VERSION, RUNTIME_VERSION, W32API_VERSION): these.
+
 2009-03-16  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	x86-mingw32-build version 1.0 (candidate #1) released.
