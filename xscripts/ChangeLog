@@ -1,3 +1,16 @@
+2009-12-06  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Adapt download URI template for SourceForge's new FRS structure.
+
+	* x86-mingw32-build.sh.conf (DOWNLOAD_HOST): Set to permalink base
+	address, whence qualified mirror download URIs may be generated.
+	(DOWNLOAD_OPTIONS): New parameter; initialise it.
+
+	* x86-mingw32-build.sh.mirrors (DOWNLOAD_OPTIONS): Assign user
+	specified choice of download mirror host.
+
+	* x86-mingw32-build.sh (DOWNLOAD_OPTIONS): Use it.
+
 2009-12-03  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Update to accommodate new package releases.

@@ -1,6 +1,6 @@
 #!/bin/sh
 # x86-mingw32-build.sh -*- sh -*- vim: filetype=sh
-# $Id: x86-mingw32-build.sh,v 1.11 2009-03-15 23:28:22 keithmarshall Exp $
+# $Id: x86-mingw32-build.sh,v 1.12 2009-12-06 17:26:08 keithmarshall Exp $
 #
 # Script to guide the user through the build of a GNU/Linux hosted
 # MinGW cross-compiler for Win32.
@@ -68,7 +68,7 @@ do
     # name, bearing no resemblance to the file requested.
     #
     ( manifest=`echo *`
-      $RUN wget $DOWNLOAD_HOST/$FILE && \
+      $RUN wget $DOWNLOAD_HOST/$FILE$DOWNLOAD_OPTIONS && \
       { test -f $FILE || \
 	{ for file in `echo *`
 	  do
@@ -216,4 +216,4 @@ cd "$WORKING_DIR/.."; eval $RUN $CLEAN_SLATE_ON_EXIT
 echo "done."
 exit 0
 
-# $RCSfile: x86-mingw32-build.sh,v $Revision: 1.11 $: end of file
+# $RCSfile: x86-mingw32-build.sh,v $Revision: 1.12 $: end of file
