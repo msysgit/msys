@@ -1,3 +1,13 @@
+2009-12-16  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Add status checking for Internet URL connections.
+
+	* src/pkginet.cpp (pkgInternetAgent::QueryStatus): New method.
+	(pkgInternetStreamingAgent::Get): Use it; set `dl_status' as return
+	value, deferring failure diagnostics to callers, i.e. to...
+	(pkgXmlDocument::SyncRepositories): ...this, and to...
+	(pkgActionItem::DownloadArchiveFiles): ...this.
+
 2009-11-23  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Add package download and repository synchronisation machinery.

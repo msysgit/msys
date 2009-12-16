@@ -1,7 +1,7 @@
 /*
  * pkginet.cpp
  *
- * $Id: pkginet.cpp,v 1.1 2009-11-23 20:44:25 keithmarshall Exp $
+ * $Id: pkginet.cpp,v 1.2 2009-12-16 20:09:00 keithmarshall Exp $
  *
  * Written by Keith Marshall <keithmarshall@users.sourceforge.net>
  * Copyright (C) 2009, MinGW Project
@@ -72,6 +72,13 @@ class pkgInternetAgent
     inline HINTERNET OpenURL( const char *URL )
     {
       return InternetOpenUrl( SessionHandle, URL, NULL, 0, 0, 0 );
+    }
+    inline DWORD QueryStatus( HINTERNET id )
+    {
+      DWORD ok, idx = 0, len = sizeof( ok );
+      if( HttpQueryInfo( id, HTTP_QUERY_FLAG_NUMBER | HTTP_QUERY_STATUS_CODE, &ok, &len, &idx ) )
+	return ok;
+      return 0;
     }
     inline int Read( HINTERNET dl, char *buf, size_t max, DWORD *count )
     {
@@ -207,6 +214,12 @@ int set_transit_path( const char *path, const char *file, char *buf = NULL )
 
 int pkgInternetStreamingAgent::Get( const char *from_url )
 {
+  /* Download a file from the specified internet URL.
+   *
+   * Before download commences, we accept that this may fail...
+   */
+  dl_status = 0;
+
   /* Set up a "transit-file" to receive the downloaded content.
    */
   char transit_file[set_transit_path( dest_template, filename )];
@@ -220,10 +233,13 @@ int pkgInternetStreamingAgent::Get( const char *from_url )
      */
     if( (dl_host = pkgDownloadAgent.OpenURL( from_url )) != NULL )
     {
-      /* With the download transaction fully specified, we may
-       * request processing of the file transfer...
-       */
-      dl_status = TransferData( fd );
+      if( pkgDownloadAgent.QueryStatus( dl_host ) == HTTP_STATUS_OK )
+      {
+	/* With the download transaction fully specified, we may
+	 * request processing of the file transfer...
+	 */
+	dl_status = TransferData( fd );
+      }
 
       /* We are done with the URL handle; close it.
        */
@@ -241,15 +257,10 @@ int pkgInternetStreamingAgent::Get( const char *from_url )
        */
       rename( transit_file, dest_file );
     else
-    {
-      /* ...otherwise, report failure...
-       */
-      dmh_notify( DMH_ERROR, "%s: download failed\n", from_url );
-
-      /* ...and discard the incomplete "transit-file".
+      /* ...otherwise, we discard the incomplete "transit-file",
+       * leaving the caller to diagnose the failure.
        */
       unlink( transit_file );
-    }
   }
 
   /* Report success or failure to the caller...
@@ -294,15 +305,17 @@ void pkgActionItem::DownloadArchiveFiles( pkgActionItem *current )
 	  const char *mirror = get_host_info( current->selection, "mirror" );
 	  char package_url[mkpath( NULL, url_template, package_name, mirror )];
 	  mkpath( package_url, url_template, package_name, mirror );
-//	  dmh_printf( "requesting %s ...\n", package_url );
-	  download.Get( package_url );
+	  if( ! (download.Get( package_url ) > 0) )
+	    dmh_notify( DMH_ERROR,
+		"Get package: %s: download failed\n", package_url
+	      );
 	}
 	else
 	  /* Cannot download; the repository catalogue didn't specify a
 	   * template, from which to construct a download URL...
 	   */
 	  dmh_notify( DMH_ERROR,
-	      "%s: no URL specified for download\n", package_name
+	      "Get package: %s: no URL specified for download\n", package_name
 	    );
       }
     }
@@ -433,7 +446,10 @@ void pkgXmlDocument::SyncRepository( const char *name, pkgXmlNode *repository )
       const char *mirror = repository->GetPropVal( "mirror", NULL );
       char catalogue_url[mkpath( NULL, url_template, name, mirror )];
       mkpath( catalogue_url, url_template, name, mirror );
-      download.Get( catalogue_url );
+      if( download.Get( catalogue_url ) <= 0 )
+	dmh_notify( DMH_ERROR,
+	    "Sync Repository: %s: download failed\n", catalogue_url
+	  );
     }
 
     /* We will only replace our current working copy of this catalogue,
