@@ -2,7 +2,7 @@
 /*
  * pkgtask.h
  *
- * $Id: pkgtask.h,v 1.1 2009-11-16 21:54:30 keithmarshall Exp $
+ * $Id: pkgtask.h,v 1.2 2009-12-17 17:35:12 keithmarshall Exp $
  *
  * Written by Keith Marshall <keithmarshall@users.sourceforge.net>
  * Copyright (C) 2009, MinGW Project
@@ -31,9 +31,12 @@
 enum
 {
   action_none = 0,
+
   action_remove,
   action_install,
   action_upgrade,
+
+  action_update,
 
   end_of_actions
 };
@@ -44,6 +47,7 @@ enum
 #define ACTION_REMOVE   (unsigned long)(action_remove)
 #define ACTION_INSTALL  (unsigned long)(action_install)
 #define ACTION_UPGRADE  (unsigned long)(action_upgrade)
+#define ACTION_UPDATE   (unsigned long)(action_update)
 
 #define STRICTLY_GT	ACTION_MASK + 1
 #define STRICTLY_LT	STRICTLY_GT << 1

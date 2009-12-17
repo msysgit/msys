@@ -1,3 +1,23 @@
+2009-12-17  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Add CLI support for "update" action.
+
+	* src/pkgtask.h (ACTION_UPDATE): Define it, derived from...
+	(action_update): ...this new entry in anonymous enumeration.
+	
+	* src/pkgexec.cpp (action_name): Add "update" keyword identification.
+
+	* src/pkgbase.h: Typo in comment; s/xwXmlDocument/wxXmlDocument/.
+	(pkgXmlDocument::BindRepositories): Add `force_update' parameter...
+	* src/pkgbind.cpp (pkgXmlDocument::BindRepositories): Use it to...
+	(pkgXmlDocument::SyncRepository): ...invoke this method when passed as
+	a `true' flag, in addition to (as previously) first time reference.
+
+	* src/climain.cpp (climain): Interpret "update" keyword for...
+	[ACTION_UPDATE]: ...passing state as `force_update' parameter to...
+	(pkgXmlDocument::BindRepositories): ...this method, then...
+	[!ACTION_UPDATE]: Follow with normal action processing.
+
 2009-12-16  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Add status checking for Internet URL connections.

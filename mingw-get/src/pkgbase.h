@@ -2,7 +2,7 @@
 /*
  * pkgbase.h
  *
- * $Id: pkgbase.h,v 1.1 2009-11-16 21:54:30 keithmarshall Exp $
+ * $Id: pkgbase.h,v 1.2 2009-12-17 17:35:12 keithmarshall Exp $
  *
  * Written by Keith Marshall <keithmarshall@users.sourceforge.net>
  * Copyright (C) 2009, MinGW Project
@@ -193,7 +193,7 @@ class pkgXmlDocument : public TiXmlDocument
      */
     inline pkgXmlDocument( const char* name )
     {
-      /* tinyxml has a similar constructor, but unlike xwXmlDocument,
+      /* tinyxml has a similar constructor, but unlike wxXmlDocument,
        * it DOES NOT automatically load the document; force it.
        */
       LoadFile( name );
@@ -235,7 +235,7 @@ class pkgXmlDocument : public TiXmlDocument
     /* Method to merge content from repository-specific package lists
      * into the central XML package database.
      */
-    pkgXmlNode* BindRepositories();
+    pkgXmlNode* BindRepositories( bool );
 
     /* Method to locate the XML database entry for a named package.
      */

@@ -1,7 +1,7 @@
 /*
  * pkgbind.cpp
  *
- * $Id: pkgbind.cpp,v 1.1 2009-11-23 20:44:25 keithmarshall Exp $
+ * $Id: pkgbind.cpp,v 1.2 2009-12-17 17:35:12 keithmarshall Exp $
  *
  * Written by Keith Marshall <keithmarshall@users.sourceforge.net>
  * Copyright (C) 2009, MinGW Project
@@ -32,7 +32,7 @@
 #include "dmh.h"
 #include "pkgbase.h"
 
-pkgXmlNode *pkgXmlDocument::BindRepositories()
+pkgXmlNode *pkgXmlDocument::BindRepositories( bool force_update )
 {
   /* Identify the repositories specified in the application profile,
    * and merge their associated package distribution lists into the
@@ -71,9 +71,9 @@ pkgXmlNode *pkgXmlDocument::BindRepositories()
 	{
 	  /* Check for a locally cached copy of the "package-list" file...
 	   */
-	  if( access( dfile, F_OK ) != 0 )
+	  if( force_update || (access( dfile, F_OK ) != 0) )
 	    /*
-	     * When no local copy is available...
+	     * When performing an "update", or if no local copy is available...
 	     * Force a "sync", to fetch a copy from the public host.
 	     */
 	    SyncRepository( dname, repository );

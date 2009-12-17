@@ -1,7 +1,7 @@
 /*
  * pkgexec.cpp
  *
- * $Id: pkgexec.cpp,v 1.1 2009-11-16 21:54:30 keithmarshall Exp $
+ * $Id: pkgexec.cpp,v 1.2 2009-12-17 17:35:12 keithmarshall Exp $
  *
  * Written by Keith Marshall <keithmarshall@users.sourceforge.net>
  * Copyright (C) 2009, MinGW Project
@@ -42,7 +42,9 @@ EXTERN_C const char *action_name( unsigned long index )
     "no change",	/* unused; zero cannot test true in a bitwise test  */
     "remove",		/* remove a previously installed package	    */
     "install",		/* install a new package			    */
-    "upgrade"		/* update previously installed packages		    */
+    "upgrade",		/* upgrade previously installed packages	    */
+
+    "update"		/* update local copy of repository catalogues	    */
   };
 
   /* For specified "index", return a pointer to the associated keyword,
