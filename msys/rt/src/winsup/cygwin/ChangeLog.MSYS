@@ -1,3 +1,8 @@
+2009.12.28  Cesar Strauss  <cestrauss@gmail.com>
+
+	* msys_symlink.cc (msys_symlink): Return correct value on failure (-1).
+	Fixes a perl issue reported by Ralf Wildenhues.
+
 2009.12.28  Peter Hayward  <peterhayward@users.sourceforge.net>
 
 	Fix Win9x permission issues, resolves bug #2853975.
