@@ -143,12 +143,20 @@ _unlink (const char *ourname)
 
   lasterr = GetLastError ();
 
-  /* Windows 9x seems to report ERROR_ACCESS_DENIED rather than sharing
-     violation.  So, set lasterr to ERROR_SHARING_VIOLATION in this case
-     to simplify tests. */
+  /* Windows 9x seems to report ERROR_ACCESS_DENIED
+        rather than sharing violation. */
   if (!iswinnt && lasterr == ERROR_ACCESS_DENIED
       && !win32_name.isremote ())
-    lasterr = ERROR_SHARING_VIOLATION;
+    {
+      /* Due to limited sharing permissions on 9x there is no way
+         to mark an open file for deletion on closure. Adding it to
+         the "to be deleted" queue should result in it being deleted
+         after it is closed */
+
+      cygwin_shared->delqueue.queue_file (win32_name);
+      syscall_printf ("file queued for deletion");
+      goto ok;
+    }
 
   syscall_printf ("couldn't delete file, err %d", lasterr);
   goto err;
