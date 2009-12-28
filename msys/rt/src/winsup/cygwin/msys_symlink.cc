@@ -59,7 +59,7 @@ msys_symlink (const char * topath, const char * frompath)
   if (stat (frompath, sb_frompath))
     {
       debug_printf("Failed stat");
-      return 1;
+      return -1;
     }
 
   if (stat (topath, sb_topath))
@@ -72,7 +72,7 @@ msys_symlink (const char * topath, const char * frompath)
       else
 	{
 	  debug_printf("error: %d", errno);
-	  return 1;
+	  return -1;
 	}
     }
   else
@@ -109,7 +109,7 @@ msys_symlink (const char * topath, const char * frompath)
 	  if (!CreateDirectoryEx(w_frompath, w_topath, NULL))
 	    {
 	      debug_printf("CreateDirectoryEx(%s, %s, 0) failed", w_frompath, w_topath);
-	      return 1;
+	      return -1;
 	    }
 	  strcpy(dir_created, "./\0");
 	  strcat(dir_created, w_topath);
@@ -117,7 +117,7 @@ msys_symlink (const char * topath, const char * frompath)
       else
 	{
 	  set_errno(EEXIST);
-	  return 1;
+	  return -1;
 	}
 	{
 	  char findpath[MAX_PATH+2];
@@ -144,18 +144,18 @@ msys_symlink (const char * topath, const char * frompath)
 		    strcat(tofile, "/");
 		strcat(tofile, dHfile->cFileName);
 		if (msys_symlink (tofile, fromfile))
-		    return 1;
+		    return -1;
 	      }
 	    findfiles = FindNextFile (dH, dHfile);
 	    debug_printf("dHfile(4): %s", dHfile->cFileName);
 	  }
 	if (GetLastError() != ERROR_NO_MORE_FILES)
-	    return 1;
+	    return -1;
     }
   else
     {
       if (!CopyFile (w_frompath, w_topath, FALSE))
-	  return 1;
+	  return -1;
     }
 
   return 0;
