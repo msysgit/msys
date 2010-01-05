@@ -1,3 +1,14 @@
+2010.01.05  Cesar Strauss  <cestrauss@gmail.com>
+
+	Improve symlink emulation.
+	* msys_symlink.cc: Document MSYS symlink semantics.
+	(msys_symlink): When the source path is relative, append it to the
+ 	directory component of the destination. 
+	Return failure if the destination exists, as per POSIX.
+	Use path_conv instead of msys_p2w().
+	Factor out the recursive copy operation to ...
+	(RecursiveCopy): ... this new function.
+
 2009.12.28  Cesar Strauss  <cestrauss@gmail.com>
 
 	* msys_symlink.cc (msys_symlink): Return correct value on failure (-1).
