@@ -1,162 +1,253 @@
 /* msys_symlink.c
  * Copyright (C) 2002, Earnie Boyd
+ *               2010, Cesar Strauss
  * This file is a part of MSYS.
  * ***************************************************************************/
 
+/*
+  Native w32 applications have no notion of POSIX-style symlinks. On the
+  other hand, it is natural to assume that useful scripts and tools have
+  come to rely on their existence. So, having some sort of symlink
+  emulation makes it easier to port them to MSYS, provided they are
+  transparent to w32 applications. One approximation that works in pratice
+  is to replace symlink creation with a copy operation.
+
+  The semantics of the symlink operation under MSYS are as follow:
+  1) The original source is copied to the destination.
+  2) In case of a directory, a deep copy is performed.
+  3) If the source path is relative, it is taken relative to the
+     directory of the destination.
+
+  The following are the differences with respect to standard symlink
+  behaviour:
+  1) The original source must already exist at symlink creation time.
+  2) Modifying the contents of the original source does not affect the
+     destination and vice-versa.
+  3) When creating a symlink pointing to a component of the symlink own
+     path, the deep copy operation avoids descending into the newly created
+     tree, to avoid infinite recursion.
+     For instance:
+     $ mkdir foo
+     $ ln -s .. foo/bar
+     On POSIX, you can dereference foo/bar/foo/bar/...
+     On MSYS, it stops after foo/bar/foo
+  4) When doing a deep copy operation, the directory traversal is done
+     in the w32 domain. As a result, it does not traverse mount points
+     found within the directory hierarchy.
+     For instance: if foo/mnt is a mount point, then ls -s foo bar does
+     not copy the contents of foo/mnt.
+*/
+
 #include "msys_symlink.h"
 #include "winsup.h"
+#include "security.h"
+#include "fhandler.h"
+#include "path.h"
+#include <ctype.h>
 #if !DO_CPP_NEW
 #include <stdlib.h>
 #endif
+
+/*
+  Create a deep copy of frompath as topath, while avoiding descending in
+  origpath.
+*/
+static int
+RecursiveCopy (char * frompath, char * topath, const char * origpath)
+{
+#if DO_CPP_NEW
+  struct _WIN32_FIND_DATAA *dHfile = new struct _WIN32_FIND_DATAA;
+#else
+  struct _WIN32_FIND_DATAA *dHfile = (struct _WIN32_FIND_DATAA *) malloc (sizeof (struct _WIN32_FIND_DATAA));
+#endif
+  HANDLE dH;
+  BOOL findfiles;
+  int frompos = strlen (frompath);
+  int topos = strlen (topath);
+  int res = -1;
+
+  debug_printf("RecursiveCopy (%s, %s)", frompath, topath);
+
+  /* Create the destination directory */
+  if (!CreateDirectoryEx (frompath, topath, NULL))
+    {
+      debug_printf("CreateDirectoryEx(%s, %s, 0) failed", frompath, topath);
+      __seterrno ();
+      goto done;
+    }
+  /* Descend into the source directory */
+  if (frompos + 2 >= MAX_PATH || topos + 1 >= MAX_PATH)
+    {
+      set_errno (ENAMETOOLONG);
+      goto done;
+    }
+  strcat (frompath, "\\*");
+  strcat (topath, "\\");
+  dH = FindFirstFile (frompath, dHfile);
+  debug_printf("dHfile(1): %s", dHfile->cFileName);
+  findfiles = FindNextFile (dH, dHfile);
+  debug_printf("dHfile(2): %s", dHfile->cFileName);
+  findfiles = FindNextFile (dH, dHfile);
+  while (findfiles)
+    {
+      /* Append the directory item filename to both source and destination */
+      int filelen = strlen (dHfile->cFileName);
+      debug_printf("dHfile(3): %s", dHfile->cFileName);
+      if (frompos + 1 + filelen >= MAX_PATH ||
+          topos + 1 + filelen >= MAX_PATH)
+        {
+          set_errno (ENAMETOOLONG);
+          goto done;
+        }
+      strcpy (&frompath[frompos+1], dHfile->cFileName);
+      strcpy (&topath[topos+1], dHfile->cFileName);
+      debug_printf("%s -> %s", frompath, topath);
+      if (dHfile->dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
+        {
+          /* Recurse into the child directory */
+          debug_printf("%s <-> %s", frompath, origpath);
+          if (strcmp (frompath, origpath)) // avoids endless recursion
+            if (RecursiveCopy (frompath, topath, origpath))
+              goto done;
+        }
+      else
+        {
+          /* Just copy the file */
+          if (!CopyFile (frompath, topath, FALSE))
+            {
+              __seterrno ();
+              goto done;
+            }
+        }
+      findfiles = FindNextFile (dH, dHfile);
+    }
+  if (GetLastError() != ERROR_NO_MORE_FILES)
+    {
+      __seterrno ();
+      goto done;
+    }
+  res = 0;
+
+done:
+#if DO_CPP_NEW
+  delete dHfile;
+#else
+  free (dHfile);
+#endif
+  return res;
+}
 
 extern "C"
 int
 msys_symlink (const char * topath, const char * frompath)
 {
-
-  char wtopath[MAX_PATH] = "\0";
-  char wfrompath[MAX_PATH] = "\0";
-  static char dir_created[MAX_PATH];
-  char *w_topath = wtopath;
-  char *w_frompath = wfrompath;
 #if DO_CPP_NEW
   struct stat *sb_frompath = new struct stat;
   struct stat *sb_topath = new struct stat;
-  struct _WIN32_FIND_DATAA *dHfile = new struct _WIN32_FIND_DATAA;
 #else
   struct stat *sb_frompath = (struct stat *) malloc (sizeof (struct stat));
   struct stat *sb_topath = (struct stat *) malloc (sizeof (struct stat));
-  struct _WIN32_FIND_DATAA *dHfile = (struct _WIN32_FIND_DATAA *) malloc (sizeof (struct _WIN32_FIND_DATAA));
 #endif
-  int existing_destination;
-  int destination_isdir;
-  int src_isdir;
-  HANDLE dH;
-  BOOL findfiles;
-  BOOL frompath_needs_slash;
-  BOOL topath_needs_slash;
-  char fromfile[MAX_PATH];
-  char tofile[MAX_PATH];
-  /*
-   * FIXME: Use relavent switches.
-   * FIXME: remove this comment.
-  x.dereference = DEREF_NEVER;
-  x.preserve_owner_and_group = 1;
-  x.preserve_chmod_bits = 1;
-  x.preserve_timestamps = 1;
-  x.require_preserve = 1;
-  x.recursive = 1;
-  x.copy_as_regular = 0;
-  x.umask_kill = ~ (mode_t) 0;
-  x.xstat = lstat;
-  */
+  char real_frompath[MAX_PATH];
+  int res = -1;
 
   debug_printf("msys_symlink (%s, %s)", frompath, topath);
 
-  frompath_needs_slash = FALSE;
-  topath_needs_slash = FALSE;
+  if (strlen (frompath) >= MAX_PATH || strlen (topath) >= MAX_PATH)
+    {
+      set_errno (ENAMETOOLONG);
+      goto done;
+    }
 
-  if (stat (frompath, sb_frompath))
+  if (isabspath (frompath))
+    strcpy (real_frompath, frompath);
+  else
+    /* Find the real source path, relative
+       to the directory of the destination */
+    {
+      /* Determine the character position of the last path component */
+      int pos = strlen (topath);
+      while (--pos >= 0)
+        if (isdirsep (topath[pos]))
+          break;
+      /* Append the source path to the directory
+         component of the destination */
+      if (pos+1+strlen(frompath) >= MAX_PATH)
+        {
+          set_errno(ENAMETOOLONG);
+          goto done;
+        }
+      strcpy (real_frompath, topath);
+      strcpy (&real_frompath[pos+1], frompath);
+    }
+
+  debug_printf("real_frompath: %s", real_frompath);
+
+  /* As a MSYS limitation, the source path must exist. */
+  if (stat (real_frompath, sb_frompath))
     {
       debug_printf("Failed stat");
-      return -1;
+      goto done;
     }
-
+  /* As per POSIX, the destination must not exist */
   if (stat (topath, sb_topath))
     {
-      if (errno == ENOENT)
-	{
-	  existing_destination = 0;
-	  debug_printf("no existing destination");
-	}
+      if (errno != ENOENT)
+        {
+          debug_printf("error: %d", errno);
+          goto done;
+        }
       else
-	{
-	  debug_printf("error: %d", errno);
-	  return -1;
-	}
+        set_errno (0);
     }
   else
     {
-      existing_destination = 1;
-      debug_printf("existing destination");
+      set_errno(EEXIST);
+      goto done;
     }
-
-  src_isdir = S_ISDIR(sb_frompath->st_mode);
-  destination_isdir = S_ISDIR(sb_topath->st_mode) | src_isdir;
-
   {
-    char *tptr;
-    if (*(tptr = strchr (frompath, '\0') -1) != '/')
-	frompath_needs_slash = TRUE;
+    /* Find the w32 equivalent of the source and destination */
+    path_conv w_frompath (real_frompath, PC_SYM_NOFOLLOW | PC_FULL);
+    if (w_frompath.error)
+      {
+        set_errno (w_frompath.error);
+        goto done;
+      }
+    path_conv w_topath (topath, PC_SYM_NOFOLLOW | PC_FULL);
+    if (w_topath.error)
+      {
+        set_errno (w_topath.error);
+        goto done;
+      }
+    
+    debug_printf("w32 paths: %s , %s",w_frompath.get_win32 (),w_topath.get_win32 ());
+
+    if (S_ISDIR (sb_frompath->st_mode))
+      /* Start a deep recursive directory copy */
+      {
+        char origpath[MAX_PATH];
+        strcpy (origpath, w_topath.get_win32 ());
+        return RecursiveCopy (w_frompath.get_win32 (), w_topath.get_win32 (), origpath);
+      }
     else
-	*tptr = '\0';
-    if (*(tptr = strchr (topath, '\0') -1) != '/')
-	topath_needs_slash - TRUE;
-    else
-	*tptr = '\0';
+      /* Just copy the file */
+      {
+        if (!CopyFile (w_frompath, w_topath, FALSE))
+          {
+            __seterrno ();
+            goto done;
+          }
+      }
   }
+  res = 0;
 
-  FIXME; // w_frompath and w_topath are resource leaks.
-  w_frompath = msys_p2w(frompath);
-  debug_printf("w_frompath: %s", w_frompath);
-  w_topath = msys_p2w(topath);
-  debug_printf("w_topath: %s", w_topath);
-
-  if (destination_isdir)
-    {
-      if (!existing_destination)
-	{
-	  if (!CreateDirectoryEx(w_frompath, w_topath, NULL))
-	    {
-	      debug_printf("CreateDirectoryEx(%s, %s, 0) failed", w_frompath, w_topath);
-	      return -1;
-	    }
-	  strcpy(dir_created, "./\0");
-	  strcat(dir_created, w_topath);
-	}
-      else
-	{
-	  set_errno(EEXIST);
-	  return -1;
-	}
-	{
-	  char findpath[MAX_PATH+2];
-	  strcpy(findpath, w_frompath);
-	  strcat(findpath, "/*");
-	  dH = FindFirstFile(findpath, dHfile);
-	  debug_printf("dHfile(1): %s", dHfile->cFileName);
-	  findfiles = FindNextFile (dH, dHfile);
-	  debug_printf("dHfile(2): %s", dHfile->cFileName);
-	  findfiles = FindNextFile (dH, dHfile);
-	  debug_printf("dHfile(3): %s", dHfile->cFileName);
-	}
-	while (findfiles)
-	  {
-	    strcpy(fromfile, w_frompath);
-	    if (frompath_needs_slash)
-		strcat(fromfile, "/");
-	    strcat(fromfile, dHfile->cFileName);
-	    debug_printf("%s <-> %s", fromfile, dir_created);
-	    if (strcmp (fromfile, dir_created))
-	      {
-		strcpy(tofile, w_topath);
-		//if (topath_needs_slash)
-		    strcat(tofile, "/");
-		strcat(tofile, dHfile->cFileName);
-		if (msys_symlink (tofile, fromfile))
-		    return -1;
-	      }
-	    findfiles = FindNextFile (dH, dHfile);
-	    debug_printf("dHfile(4): %s", dHfile->cFileName);
-	  }
-	if (GetLastError() != ERROR_NO_MORE_FILES)
-	    return -1;
-    }
-  else
-    {
-      if (!CopyFile (w_frompath, w_topath, FALSE))
-	  return -1;
-    }
-
-  return 0;
+done:
+#if DO_CPP_NEW
+  delete sb_frompath;
+  delete sb_topath;
+#else
+  free (sb_frompath);
+  free (sb_topath);
+#endif
+  return res;
 }
