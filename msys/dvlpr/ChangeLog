@@ -1,3 +1,11 @@
+2010.05.01  Cesar Strauss  <cestrauss@gmail.com>
+
+	* doc/msys/MSYS_LICENSE: Remove mention of specific DLL versions
+	from documentation.
+	* doc/msys/MSYS_WELCOME: ditto
+	* doc/msys/README.rtf: ditto
+	Document MSYS symlink semantics.
+
 2009.05.12  Cesar Strauss  <cestrauss@gmail.com>
 
 	* etc/profile: Install the default keybindings on a new home dir.

@@ -1,9 +1,8 @@
 {\rtf1\ansi\ansicpg1252\deff0\deflang1033\deflangfe1033{\fonttbl{\f0\fmodern\fprq1\fcharset0 Courier New;}{\f1\fmodern\fprq1\fcharset0 Lucida Console;}}
-{\*\generator Msftedit 5.41.15.1507;}\viewkind4\uc1\pard\nowidctlpar\tx2610\b\i\f0\fs20 File:\b0\tab\i0 README\par
+{\*\generator Msftedit 5.41.15.1515;}\viewkind4\uc1\pard\nowidctlpar\tx2610\b\i\f0\fs20 File:\b0\tab\i0 README\par
 \b\i Copyright (C):\b0\i0\tab 2001, 2002, 2006\par
   Earnie Boyd  <earnie@users.sf.net>\par
 \b\i Distribution:\b0\i0\tab See MSYS_LICENSE\par
-\b\i MSYS Revision:\b0\i0\tab @VERSION@\par
 \pard\nowidctlpar\qc\tx2610\i\par
 \pard\nowidctlpar\b Preface:\b0\i0\par
 Ok, you have installed msys and now you're reading this to understand how to get started.  However, I must first explain some important facts about Msys.  Msys file system bindings (mounts) are automatic and happens as described in table 1.  These automatic file system bindings are not changable by the user.  User defined file system bindings can be created by specifying them in the /etc/fstab directory as explained in table 2.\par
@@ -69,12 +68,31 @@ Be sure to read the MSYS_ series.  I have tried to document how I'm changing the
 \par
 \b\i Using binaries with different runtimes:\b0\i0\par
 You can't use Cygwin binaries at all and if you try you'll most likely just cause the processes to "hang".  You can use Win32 native binaries but you should put them into the /mingw/bin or your /usr/local/bin directory tree.  If you wish to replace an MSYS binary with a native win32 version then delete or rename the /bin version.\par
-\page\par
-\b\i Effective use of the clipboard:\par
+\page\b\i Symlinks\par
+\b0\i0 Native w32 applications have no notion of POSIX-style symlinks. On the other hand, it is natural to assume that useful scripts and tools have come to rely on their existence. So, having some sort of symlink emulation makes it easier to port them to MSYS, provided they are transparent to w32 applications. One approximation that works in pratice is to replace symlink creation with a copy operation. \par
+\par
+The semantics of the symlink operation under MSYS are as follow:\par
+1) The original source is copied to the destination.\par
+2) In case of a directory, a deep copy is performed.\par
+3) If the source path is relative, it is taken relative to the directory of the destination.\par
+\par
+The following are the differences with respect to standard symlink behaviour: \par
+1) The original source must already exist at symlink creation time.\par
+2) Modifying the contents of the original source does not affect the destination and vice-versa.\par
+3) When creating a symlink pointing to a component of the symlink own path, the deep copy operation avoids descending into the newly created tree, to avoid infinite recursion.\par
+For instance:\par
+$ mkdir foo\par
+$ ln -s .. foo/bar\par
+On POSIX, you can dereference foo/bar/foo/bar/...\par
+On MSYS, it stops after foo/bar/foo\par
+4) When doing a deep copy operation, the directory traversal is done in the w32 domain. As a result, it does not traverse mount points found within the directory hierarchy.\par
+For instance: if foo/mnt is a mount point, then ls -s foo bar does not copy the contents of foo/mnt.\par
+\b\i\par
+Effective use of the clipboard:\par
 \b0\i0 You may use the clipboard with MSYS.  When using rxvt as the terminal, just selecting with data with click and drag of the mouse, copies the data to the clipboard.  To paste the clipboard data in the rxvt terminal you can Shift and Left Click or press both mouse buttons if 3 button mouse emulation is on or press the mouse wheel.  To copy the highlighted data to your favorite windows email client the you use the paste options for that program, typically Ctrl-V.  You can also use interesting bash shell commands such as `cat /dev/clipboard > /tmp/foo' or `less -f /dev/clipboard'.  Data entered into the clipboard by non-MSYS programs can also be used by MSYS programs and vice versa.\b\i\par
 \par
 Bug Reports:\b0\i0\par
-See http://www.mingw.org/MinGWiki/index.php/BugReports\par
+See http://www.mingw.org/bugs.shtml\par
 \par
 \b\i User Posts:\b0\i0\par
 MinGW-msys@lists.sf.net\par
