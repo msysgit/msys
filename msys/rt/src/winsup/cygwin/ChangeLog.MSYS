@@ -1,5 +1,9 @@
 2010.01.05  Cesar Strauss  <cestrauss@gmail.com>
 
+	* include/cygwin/version.h: Increment version to 1.0.12.
+
+2010.01.05  Cesar Strauss  <cestrauss@gmail.com>
+
 	Improve symlink emulation.
 	* msys_symlink.cc: Document MSYS symlink semantics.
 	(msys_symlink): When the source path is relative, append it to the
