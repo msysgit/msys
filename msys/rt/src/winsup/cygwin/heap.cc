@@ -25,8 +25,6 @@ details. */
 
 static unsigned page_const;
 
-extern "C" size_t getpagesize ();
-
 /* Initialize the heap at process start up.  */
 
 void

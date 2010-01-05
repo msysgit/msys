@@ -42,10 +42,12 @@ details. */
 	 changes to the DLL and is mainly informative in nature. */
 
   /* The current cygwin version is 1.3.3 */
-  /* The current msys version is 1.0.9 */
+  /* The current msys version is 1.0.12 */
 
 #define CYGWIN_VERSION_DLL_MAJOR 1000
-#define CYGWIN_VERSION_DLL_MINOR 9
+#define CYGWIN_VERSION_DLL_MINOR 12
+#define DLL_VERSION_MAJOR 1000
+#define DLL_VERSION_MINOR 12
 
       /* Major numbers before CYGWIN_VERSION_DLL_EPOCH are
 	 incompatible. */
@@ -162,7 +164,7 @@ details. */
 	The full names include the CYGWIN_VERSION_SHARED_DATA version
 	as well as this identifier. */
 
-#define CYGWIN_VERSION_DLL_IDENTIFIER	"cygwin1"
+#define CYGWIN_VERSION_DLL_IDENTIFIER	"msys-1.0"
 
      /* The Cygwin mount table interface in the Win32 registry also
 	has a version number associated with it in case that is

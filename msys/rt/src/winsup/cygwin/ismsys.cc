@@ -13,6 +13,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "winsup.h"
+#include "host_dependent.h"
 
 #define FILEERROR(A) fprintf (stderr, (A))
 
@@ -90,8 +91,14 @@ IsMsys (const char *File)
     TRACE_IN;
     debug_printf("%s", File);
     HANDLE fh =
-      CreateFile (File, GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL,
-	  OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
+      CreateFile (File
+		 , GENERIC_READ
+		 , host_dependent.shared     // host dependent flags
+		 , NULL
+		 , OPEN_EXISTING
+		 , FILE_ATTRIBUTE_NORMAL
+		 , NULL
+		 );
     if (fh == INVALID_HANDLE_VALUE)
       {
 	fprintf (stderr, " - Cannot open");
@@ -104,6 +111,7 @@ IsMsys (const char *File)
       {
 	TRACE_IN;
 	delete[] PE_Signature;
+	CloseHandle (fh);
 	return false;
       }
     delete[] PE_Signature;
