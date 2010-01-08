@@ -1,9 +1,9 @@
 # @configure_input@
 #
-# $Id: Makefile.in,v 1.4 2009-11-23 20:44:23 keithmarshall Exp $
+# $Id: Makefile.in,v 1.5 2010-01-08 17:44:16 keithmarshall Exp $
 #
 # Written by Keith Marshall <keithmarshall@users.sourceforge.net>
-# Copyright (C) 2009, MinGW Project
+# Copyright (C) 2009, 2010, MinGW Project
 #
 #
 # Makefile template for mingw-get
@@ -65,7 +65,7 @@ all: pkginfo$(EXEEXT) mingw-get$(EXEEXT) mingw-get-0.dll
 pkginfo$(EXEEXT):  driver.$(OBJEXT) pkginfo.$(OBJEXT)
 	$(CC) -o $@ $(CFLAGS) $(LDFLAGS) $+
 
-mingw-get$(EXEEXT): clistub.$(OBJEXT)
+mingw-get$(EXEEXT): clistub.$(OBJEXT) version.$(OBJEXT)
 	$(CXX) -o $@ $(CXXFLAGS) $(LDFLAGS) $+
 
 mingw-get-0.dll: $(CORE_DLL_OBJECTS)
@@ -99,6 +99,6 @@ clean:
 	rm -f *.$(OBJEXT) *.dll pkginfo$(EXEEXT) mingw-get$(EXEEXT)
 
 distclean: clean
-	rm -f config.* Makefile
+	rm -f config.* version.c Makefile
 
 # $RCSfile: Makefile.in,v $: end of file

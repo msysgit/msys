@@ -1,10 +1,10 @@
 /*
  * clistub.c
  *
- * $Id: clistub.c,v 1.2 2009-11-12 22:33:26 keithmarshall Exp $
+ * $Id: clistub.c,v 1.3 2010-01-08 17:44:21 keithmarshall Exp $
  *
  * Written by Keith Marshall <keithmarshall@users.sourceforge.net>
- * Copyright (C) 2009, MinGW Project
+ * Copyright (C) 2009, 2010, MinGW Project
  *
  *
  * Initiation stub for command line invocation of mingw-get
@@ -35,6 +35,7 @@
 #include <stdlib.h>
 #include <libgen.h>
 #include <process.h>
+#include <getopt.h>
 
 #define EXIT_FATAL  EXIT_FAILURE + 1
 
@@ -154,12 +155,55 @@ wchar_t *AppPathNameW( const wchar_t *relpath )
   return retpath;
 }
 
+extern const char *version_identification;
+
 int main( int argc, char **argv )
 {
+  wchar_t *approot;		/* where this application is installed */
+
+  if( argc > 1 )
+  {
+    /* The user specified arguments on the command line...
+     * Interpret any which specify processing options for this application,
+     * (these are all specified in GNU `long only' style).
+     */
+    struct option options[] =
+    {
+      /* Option Name		  Argument Category    Store To   Return Value
+       * ----------------------   ------------------   --------   ------------
+       */
+      { "version",		  no_argument,	       NULL,	  'V'	       },
+
+      /* This list must be terminated by a null definition...
+       */
+      { NULL, 0, NULL, 0 }
+    };
+
+    int opt, offset;
+    while( (opt = getopt_long_only( argc, argv, "V", options, &offset )) != -1 )
+      switch( opt )
+      {
+	case 'V':
+	  /* This is a request to display the version of the application;
+	   * emit the requisite informational message, and quit.
+	   */
+	  printf( version_identification );
+	  return 0;
+
+	default:
+	  /* User specified an invalid or unsupported option...
+	   */
+	  if( opt != '?' )
+	    fprintf( stderr, "%s: option '-%s' not yet supported\n",
+		basename( *argv ), options[offset].name
+	      );
+	  return EXIT_FAILURE;
+      }
+  }
+
   /* Establish the installation path for the mingw-get application...
    */
-  wchar_t *approot = AppPathNameW( NULL );
-  if( approot != NULL )
+  if( (approot = AppPathNameW( NULL )) != NULL )
   {
     /* ...and set up the APPROOT environment variable to refer to
      * the associated installation prefix...

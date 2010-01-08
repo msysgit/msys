@@ -1,0 +1,16 @@
+/*
+ * @configure_input@
+ *
+ * $Id: version.c.in,v 1.1 2010-01-08 17:44:20 keithmarshall Exp $
+ *
+ */
+const char *version_identification =
+"@PACKAGE_NAME@ version @PACKAGE_VERSION@\n"
+"Copyright (C) @YEARS_OF_ISSUE@, @COPYRIGHT_HOLDER@\n"
+"\n"
+"This is free software; see the product documentation, or source code,\n"
+"for copying and redistribution conditions.  There is NO WARRANTY; not\n"
+"even an implied WARRANTY OF MERCHANTABILITY, nor of FITNESS FOR ANY\n"
+"PARTICULAR PURPOSE.\n\n";
+
+/* $RCSfile: version.c.in,v $: end of file */

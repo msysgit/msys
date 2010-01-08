@@ -1,3 +1,24 @@
+2010-01-08  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	Add CLI version reporting option.
+
+	* configure.ac: Update copyright notice for new year.
+	(COPYRIGHT_HOLDER): New AC_SUBST variable; define it.
+	(YEARS_OF_ISSUE): New AC_SUBST variable; define it.
+	(AC_CONFIG_FILES): Add `version.c'; source it from...
+
+	* version.c.in: ...this new file.
+
+	* Makefile.in: Update copyright notice for new year.
+	(mingw-get$(EXEEXT)): Add dependency on `version.$(OBJEXT)'.
+	(distclean): Add `version.c'.
+
+	* configure: Regenerated.
+
+	* src/clistub.c: Update copyright notice for new year.
+	(options): New array of `struct option'; define and use it as the
+	reference for `argv' parsing with `getopt_long_only()'.
+
 2009-12-17  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	Add CLI support for "update" action.
