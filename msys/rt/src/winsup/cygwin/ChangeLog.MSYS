@@ -1,3 +1,12 @@
+2010.01.11  Cesar Strauss  <cestrauss@gmail.com>
+
+	Merge gcc-3 improvements from cygwin.
+	2002-11-26  Thomas Pfaff  <tpfaff@gmx.net>
+	* cxx.cc: New file. Implement new, new[], delete and delete[]
+	operators and  __cxa_pure_virtual if compiled by gcc >=3.
+	* Makefile.in (DLL_OFILES): Add cxx.o.
+	Remove libstdc++.a from cygwin1.dll link step.
+
 2010.01.05  Cesar Strauss  <cestrauss@gmail.com>
 
 	* include/cygwin/version.h: Increment version to 1.0.12.
@@ -7,7 +16,7 @@
 	Improve symlink emulation.
 	* msys_symlink.cc: Document MSYS symlink semantics.
 	(msys_symlink): When the source path is relative, append it to the
- 	directory component of the destination. 
+	directory component of the destination.
 	Return failure if the destination exists, as per POSIX.
 	Use path_conv instead of msys_p2w().
 	Factor out the recursive copy operation to ...
