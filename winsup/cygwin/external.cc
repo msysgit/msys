@@ -107,6 +107,40 @@ get_cygdrive_prefixes (char *user, char *system)
   return res;
 }
 
+/*
+ * Cygwin-specific wrapper for win32 ExitProcess and TerminateProcess.
+ * It ensures that the correct exit code, derived from the specified
+ * status value, will be made available to this process's parent (if
+ * that parent is also a cygwin process). If useTerminateProcess is
+ * true, then TerminateProcess(GetCurrentProcess(),...) will be used;
+ * otherwise, ExitProcess(...) is called.
+ *
+ * Used by startup code for cygwin processes which is linked statically
+ * into applications, and is not part of the cygwin DLL -- which is why
+ * this interface is exposed. "Normal" programs should use ANSI exit(),
+ * ANSI abort(), or POSIX _exit(), rather than this function -- because
+ * calling ExitProcess or TerminateProcess, even through this wrapper,
+ * skips much of the cygwin process cleanup code.
+ */
+
+static void
+exit_process (UINT status, bool useTerminateProcess)
+{
+/*
+  ...cygwin-1.7 code...
+  pid_t pid = getpid ();
+  external_pinfo * ep = fillout_pinfo (pid, 1);
+  DWORD dwpid = ep ? ep->dwProcessId : pid;
+  pinfo p (pid, PID_MAP_RW);
+  if ((dwpid == GetCurrentProcessId()) && (p->pid == ep->pid))
+    p.set_exit_code ((DWORD)status);
+*/
+  if (useTerminateProcess)
+    TerminateProcess (GetCurrentProcess(), status);
+  /* avoid 'else' clause to silence warning */
+  ExitProcess (status);
+}
+
 extern "C" DWORD
 cygwin_internal (cygwin_getinfo_types t, ...)
 {
@@ -166,6 +200,13 @@ cygwin_internal (cygwin_getinfo_types t, ...)
 	  char *system_flags = va_arg (arg, char *);
 	  return get_cygdrive_info (user, system, user_flags, system_flags);
 	}
+
+      case CW_EXIT_PROCESS:
+        {
+          UINT status = va_arg (arg, UINT);
+          int useTerminateProcess = va_arg (arg, int);
+          exit_process (status, !!useTerminateProcess); /* no return */
+        }
 
       default:
 	return (DWORD) -1;
