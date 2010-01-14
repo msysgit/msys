@@ -8,10 +8,12 @@ This software is a copyrighted work licensed under the terms of the
 Cygwin license.  Please consult the file "CYGWIN_LICENSE" for
 details. */
 
+#define _WIN32_WINNT 0x400
 #include "winsup.h"
 #include "cygerrno.h"
 #include <sys/errno.h>
 #include <winnls.h>
+#include "cygthread.h"
 
 /********************** String Helper Functions ************************/
 
@@ -159,5 +161,44 @@ UINT
 get_cp ()
 {
   return current_codepage == ansi_cp ? GetACP() : GetOEMCP();
+}
+
+extern "C" int
+low_priority_sleep (DWORD secs)
+{
+  HANDLE thisthread = GetCurrentThread ();
+  int curr_prio = GetThreadPriority (thisthread);
+  bool staylow;
+  if (secs != INFINITE)
+    staylow = false;
+  else
+    {
+      secs = 0;
+      staylow = true;
+    }
+
+  if (!secs)
+    {
+      for (int i = 0; i < 3; i++)
+        SwitchToThread ();
+    }
+  else
+    {
+      int new_prio;
+      if (GetCurrentThreadId () == cygthread::main_thread_id)
+        new_prio = THREAD_PRIORITY_LOWEST;
+      else
+        new_prio = GetThreadPriority (hMainThread);
+
+      if (curr_prio != new_prio)
+        /* Force any threads in normal priority to be scheduled */
+        SetThreadPriority (thisthread, new_prio);
+      Sleep (secs);
+
+      if (!staylow && curr_prio != new_prio)
+        SetThreadPriority (thisthread, curr_prio);
+    }
+
+  return curr_prio;
 }
 
