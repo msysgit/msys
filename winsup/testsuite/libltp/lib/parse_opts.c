@@ -734,9 +734,9 @@ int counter;
 	     */
 	    if ( STD_LD_recfun ) {
 		if ( Debug )
-		    printf("calling usc_recressive_func(0, %d, &STD_bigstack)\n", 
+		    printf("calling usc_recressive_func(0, %d, *STD_bigstack)\n", 
 		        STD_LD_recfun);
-		usc_recressive_func(0, STD_LD_recfun, &STD_bigstack);
+		usc_recressive_func(0, STD_LD_recfun, *STD_bigstack);
 	    }
 
 	    ct=get_current_time();
@@ -764,9 +764,9 @@ int counter;
 
     if ( STD_LP_recfun ) {
 	if ( Debug )
-	    printf("calling usc_recressive_func(0, %d, &STD_bigstack)\n", 
+	    printf("calling usc_recressive_func(0, %d, *STD_bigstack)\n", 
 	        STD_LP_recfun);
-	usc_recressive_func(0, STD_LP_recfun, &STD_bigstack);
+	usc_recressive_func(0, STD_LP_recfun, *STD_bigstack);
     }
 
     if ( STD_LP_sbrk ) {

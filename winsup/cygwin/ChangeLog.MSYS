@@ -1,3 +1,30 @@
+2010.01.12  Charles Wilson  <mingw@cwilson.fastmail.fm>
+
+	Other assorted changes ported from cygwin
+	* Makefile.in: Add $(W32API_LDFLAGS) to link step, to allow
+	linking against installed w32api.
+	* autoload.cc: Synchronize with modern cygwin.
+	* cygheap.cc (_csbrk): Avoid warning (with gcc3).
+	* cygthread.h: Make main_thread_id public.
+	* cygwin.sc: Bring closer to modern cygwin (and use
+	correct idioms for recent binutils). Add DWARF2 debugging
+	sections.
+	* dcrt0.cc (_dll_crt0): Avoid warning (with gcc3).
+	* errno.cc: No need for dllexport on sys_err objects,
+	so silence warning (gcc3).
+	* fhandler_socket.cc (fixup_before_fork_exec, fixup_after_fork,
+	dup, set_close_on_exec): Use different method for initing
+	winsock (required by cygwin.sc changes).
+	* miscfuncs.cc (low_priority_sleep): New function.
+	* net.cc (cygwin_gethostname): Fix call to wsock function gethostname.
+	* security.cc (get_group_sidlist): Modern w32api no longer defines
+	a QuadPart member of UUID structure, so use alternate method to
+	convert to long long.
+	* winbase.h: Synchronize with modern cygwin version (save the most
+	recent changes to ilockexch/ilockcmpexch).
+	* winsup.h: Moved declaration of low_priority_sleep() to...
+	* miscfuncs.h: here. New file.
+
 2010.01.11  Cesar Strauss  <cestrauss@gmail.com>
 
 	Merge gcc-3 improvements from cygwin.

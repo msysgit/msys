@@ -955,10 +955,10 @@ _dll_crt0 ()
 	    }
 	  default:
 #if defined (__MSYS__)
-	    fork_info = NULL;
+	    si.lpReserved2 = NULL; /* fork_info = NULL; */
 #else /* !__MSYS__ */
 	    if (_cygwin_testing)
-	      fork_info = NULL;
+	      si.lpReserved2 = NULL; /* fork_info = NULL; */
 	    else if ((fork_info->type & PROC_MAGIC_MASK) == PROC_MAGIC_GENERIC)
 	      api_fatal ("conflicting versions of cygwin1.dll detected.  Use only the most recent version.\n");
 #endif /* !__MSYS__ */
