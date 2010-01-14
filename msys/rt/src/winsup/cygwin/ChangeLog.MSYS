@@ -1,5 +1,21 @@
 2010.01.12  Charles Wilson  <mingw@cwilson.fastmail.fm>
 
+	Add pseudo-reloc support; implement CW_EXIT_PROCESS.
+	* lib/_cygwin_crt0_common.cc (_msys_crt0_common): Call
+	_pei386_runtime_relocator.
+	* lib/pseudo-reloc.c: New file (imported from cygwin).
+
+	2009-10-05  Charles Wilson  <cygwin@cwilson.fastmail.fm>
+	Add cygwin wrapper for ExitProcess and TerminateProcess.
+	* include/sys/cygwin.h: Declare new cygwin_getinfo_type
+	CW_EXIT_PROCESS.
+	* external.cc (exit_process): New function.
+	(cygwin_internal): Handle CW_EXIT_PROCESS.
+	* include/cygwin/version.h: Bump CYGWIN_VERSION_API_MINOR
+	to 47 to reflect the above change. 
+
+2010.01.12  Charles Wilson  <mingw@cwilson.fastmail.fm>
+
 	Other assorted changes ported from cygwin
 	* Makefile.in: Add $(W32API_LDFLAGS) to link step, to allow
 	linking against installed w32api.
