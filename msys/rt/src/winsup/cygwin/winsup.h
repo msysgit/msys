@@ -250,8 +250,6 @@ extern "C" void __malloc_unlock ();
 class path_conv;
 int __stdcall stat_worker (const char *name, struct __stat64 *buf, int nofollow,
 			   path_conv *pc = NULL) __attribute__ ((regparm (3)));
-int __stdcall low_priority_sleep (DWORD) __attribute__ ((regparm (1)));
-#define SLEEP_0_STAY_LOW INFINITE
 
 /**************************** Exports ******************************/
 

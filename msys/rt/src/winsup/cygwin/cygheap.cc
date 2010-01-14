@@ -166,7 +166,7 @@ _csbrk (int sbs)
     }
 
   lastheap = cygheap_max;
-  (char *) cygheap_max += sbs;
+  cygheap_max = ((char *)cygheap_max) + sbs;
   void *heapalign = (void *) pagetrunc (lastheap);
 
   if (!needalloc)
