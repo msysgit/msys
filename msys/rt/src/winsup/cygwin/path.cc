@@ -3249,12 +3249,10 @@ msys_p2w (char const * const path)
 	      // Check for single letter option with a
 	      // path argument attached, eg -I/include */
 	      //
-	      sspath = (char *)spath;
-	      sspath++;
-	      sspath++;
-	      if (*sspath == '/')
+	      if (spath[1] && spath[2] == '/')
 		{
 		  debug_printf("spath = %s", spath);
+		  sspath = spath + 2;
 		  char *swin32_path = msys_p2w (sspath);
 		  if (swin32_path == sspath)
 		    {

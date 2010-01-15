@@ -1,5 +1,10 @@
 2010.01.15  Cesar Strauss  <cestrauss@gmail.com>
 
+	* path.cc (msys_p2w): Check for end-of-string before "/"
+	for an argument beginning with "-".
+
+2010.01.15  Cesar Strauss  <cestrauss@gmail.com>
+
 	* path.cc (msys_p2w): Improve documentation.
 
 2010.01.15  Cesar Strauss  <cestrauss@gmail.com>
