@@ -1,5 +1,9 @@
 2010.01.15  Cesar Strauss  <cestrauss@gmail.com>
 
+	* path.cc (msys_p2w): Improve documentation.
+
+2010.01.15  Cesar Strauss  <cestrauss@gmail.com>
+
 	Add sanity checks to avoid possible crash.
 	* ismsys.cc (GetFileDataStr): null-terminate the return data.
 	(IsMsys): Bound-check the pointer passed to strcmp.
