@@ -2975,6 +2975,10 @@ ScrubRetpath (char * const retpath)
 /* Cover functions to the path conversion routines.
    These are exported to the world as cygwin_foo by cygwin.din.  */
 
+//
+// The returned pointer should be freed with free unless,
+// as it turns out, it is equal to the input pointer.
+//
 extern "C"
 char *
 msys_p2w (char const * const path)
@@ -2992,10 +2996,17 @@ msys_p2w (char const * const path)
 
   debug_printf("msys_p2w (%s)", path);
 
+  //
+  // copy of the path string that we can overwrite
+  //
   char *spath = (char *)alloca (pathlen + 1);
   memcpy (spath, path, pathlen + 1);
+  
   char * sspath;
-  // retpath will be what sets win32_path before exiting.
+  
+  //
+  // retpath contains the converted path string to be returned
+  //
   char *retpath = (char *)malloc(((MAX_PATH - pathlen) > 0) ? 
       MAX_PATH : pathlen + MAX_PATH);
   memset (retpath, 0, MAX_PATH);
@@ -3175,6 +3186,10 @@ msys_p2w (char const * const path)
 	  // Just a normal POSIX path.
 	  //
 	  {
+	    //
+	    // Convert only up to a ".." path component, and
+	    // keep all what follows as is.
+	    //
 	    sspath = strchr (spath, '.');
 	    if (sspath && *(sspath - 1) == '/' && *(sspath + 1) == '.')
 	      {
@@ -3230,6 +3245,10 @@ msys_p2w (char const * const path)
 	    }
 	  else
 	    {
+	      //
+	      // Check for single letter option with a
+	      // path argument attached, eg -I/include */
+	      //
 	      sspath = (char *)spath;
 	      sspath++;
 	      sspath++;
