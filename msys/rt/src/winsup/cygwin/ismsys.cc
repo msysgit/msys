@@ -66,7 +66,7 @@ static char *
 GetFileDataStr(HANDLE fh, int offset, unsigned long bytes2get)
 {
     TRACE_IN;
-    char *FileData = new char [bytes2get];
+    char *FileData = new char [bytes2get+1];
     unsigned bytesread;
 
     if (SetFilePointer (fh, offset, 0, FILE_BEGIN) == INVALID_SET_FILE_POINTER
@@ -82,6 +82,8 @@ GetFileDataStr(HANDLE fh, int offset, unsigned long bytes2get)
 	exit (1);
       }
 
+    FileData[bytes2get] = 0;
+      
     return FileData;
 }
 
@@ -140,6 +142,12 @@ IsMsys (const char *File)
 	ID *impdata = (ID *)PE_Import;
 	for (int I=0; impdata[I].name; I++)
 	  {
+	    if (impdata[I].name < PE_ImportRva ||
+	        impdata[I].name - PE_ImportRva >= PE_ImportDataSz)
+	      {
+		debug_printf("Unrecognized PE format");
+		break;
+	      }
 	    if (!strcmp((char *) PE_Import + impdata[I].name - PE_ImportRva,
 		  "msys-1.0.dll"))
 	      {
