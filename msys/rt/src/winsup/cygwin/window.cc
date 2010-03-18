@@ -30,6 +30,7 @@ static NO_COPY HWND ourhwnd = NULL;
 static LRESULT CALLBACK
 WndProc (HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
+  TRACE_IN;
 #ifndef NOSTRACE
   strace.wm (uMsg, wParam, lParam);
 #endif
@@ -72,6 +73,7 @@ static HANDLE window_started;
 static DWORD WINAPI
 Winmain (VOID *)
 {
+  TRACE_IN;
   MSG msg;
   WNDCLASS wc;
   static NO_COPY char classname[] = "CygwinWndClass";
@@ -109,19 +111,30 @@ Winmain (VOID *)
       return FALSE;
     }
 
+#if 0
+  // I don't think these are needed.
+  ShowWindow (ourhwnd, SW_SHOW);
+  UpdateWindow (ourhwnd);
+#endif
+
   /* Start the message loop. */
 
   while (GetMessage (&msg, ourhwnd, 0, 0) == TRUE)
     {
+      // FIXME: Should we use DispatchMessage instead of TranslateMessage.
+      //TranslateMessage (&msg);
       DispatchMessage (&msg);
     }
 
+  /* FIXME: If this MessageBox never appears then this code is never executed */
+  MessageBox(ourhwnd, "If this MessageBox is visible send email to\nmingw-users@lists.sf.net with a submit of \"FIXME MB\"", "FIXME", 0);
   return msg.wParam;
 }
 
 HWND __stdcall
 gethwnd ()
 {
+  TRACE_IN;
   if (ourhwnd != NULL)
     return ourhwnd;
 
@@ -146,6 +159,7 @@ gethwnd ()
 void __stdcall
 window_terminate ()
 {
+  TRACE_IN;
   if (ourhwnd)
     SendMessage (ourhwnd, WM_DESTROY, 0, 0);
 }
@@ -154,6 +168,7 @@ extern "C"
 int
 setitimer (int which, const struct itimerval *value, struct itimerval *oldvalue)
 {
+  TRACE_IN;
   UINT elapse;
 
   if (which != ITIMER_REAL)
@@ -199,6 +214,7 @@ extern "C"
 int
 getitimer (int which, struct itimerval *value)
 {
+  TRACE_IN;
   UINT elapse, val;
 
   if (which != ITIMER_REAL)
@@ -230,6 +246,7 @@ extern "C"
 unsigned int
 alarm (unsigned int seconds)
 {
+  TRACE_IN;
   int ret;
   struct itimerval newt, oldt;
 

@@ -73,7 +73,7 @@ errmap[] =
   X (BUSY,			EBUSY),
   X (ALREADY_EXISTS,		EEXIST),
   X (NO_SIGNAL_SENT,		EIO),
-  X (FILENAME_EXCED_RANGE,	EINVAL),
+  X (FILENAME_EXCED_RANGE,	ENAMETOOLONG),
   X (META_EXPANSION_TOO_LONG,	EINVAL),
   X (INVALID_SIGNAL_NUMBER,	EINVAL),
   X (THREAD_1_INACTIVE,		EINVAL),
@@ -145,7 +145,8 @@ seterrno (const char *file, int line)
 
 extern char *_user_strerror _PARAMS ((int));
 
-const NO_COPY char __declspec(dllexport) * const _sys_errlist[]=
+extern "C" {
+const char * const _sys_errlist[] NO_COPY =
 {
 /*      NOERROR 0       */ "No error",
 /*	EPERM 1		*/ "Not super-user",
@@ -287,8 +288,9 @@ const NO_COPY char __declspec(dllexport) * const _sys_errlist[]=
 /* ECASECLASH 137 */ "Filename exists with different case"
 };
 
-int const NO_COPY __declspec(dllexport) _sys_nerr =
+const int _sys_nerr NO_COPY =
   sizeof (_sys_errlist) / sizeof (_sys_errlist[0]);
+};
 
 /* FIXME: Why is strerror() a long switch and not just:
 	return sys_errlist[errnum];

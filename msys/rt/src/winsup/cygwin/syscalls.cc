@@ -51,6 +51,7 @@ SYSTEM_INFO system_info;
 void __stdcall
 close_all_files (void)
 {
+  TRACE_IN;
   SetResourceLock (LOCK_FD_LIST, WRITE_LOCK | READ_LOCK, "close_all_files");
 
   fhandler_base *fh;
@@ -68,6 +69,7 @@ close_all_files (void)
 static BOOL __stdcall
 check_ttys_fds (void)
 {
+  TRACE_IN;
   int res = FALSE;
   SetResourceLock (LOCK_FD_LIST, WRITE_LOCK | READ_LOCK, "close_all_files");
   fhandler_base *fh;
@@ -84,6 +86,7 @@ check_ttys_fds (void)
 extern "C" int
 _unlink (const char *ourname)
 {
+  TRACE_IN;
   int res = -1;
   sigframe thisframe (mainthread);
 
@@ -120,87 +123,43 @@ _unlink (const char *ourname)
       goto done;
     }
 
-  /* Check for shortcut as symlink condition. */
-  if (atts & FILE_ATTRIBUTE_READONLY)
-    {
-      int len = strlen (win32_name);
-      if (len > 4 && strcasematch (win32_name + len - 4, ".lnk"))
-	SetFileAttributes (win32_name, atts & ~FILE_ATTRIBUTE_READONLY);
-    }
-
   DWORD lasterr;
   lasterr = 0;
-  for (int i = 0; i < 2; i++)
+  BOOL x;
+  int i;
+  i = 0;
+  (void) chmod (win32_name, 0777);
+  x = DeleteFile (win32_name);
+  while (!x && GetLastError () == ERROR_ACCESS_DENIED && i < 32)
     {
-      if (DeleteFile (win32_name))
-	{
-	  syscall_printf ("DeleteFile succeeded");
-	  goto ok;
-	}
-
-      lasterr = GetLastError ();
-      if (i || lasterr != ERROR_ACCESS_DENIED || win32_name.issymlink ())
-	break;		/* Couldn't delete it. */
-
-      /* if access denied, chmod to be writable, in case it is not,
-	 and try again */
-      (void) chmod (win32_name, 0777);
+      usleep (128 * ++i); // Wait for file to be closed
+      x = DeleteFile (win32_name);
+    }
+  if (x)
+    {
+      syscall_printf ("DeleteFile succeeded");
+      goto ok;
     }
 
-  /* Windows 9x seems to report ERROR_ACCESS_DENIED rather than sharing
-     violation.  So, set lasterr to ERROR_SHARING_VIOLATION in this case
-     to simplify tests. */
+  lasterr = GetLastError ();
+
+  /* Windows 9x seems to report ERROR_ACCESS_DENIED
+        rather than sharing violation. */
   if (!iswinnt && lasterr == ERROR_ACCESS_DENIED
       && !win32_name.isremote ())
-    lasterr = ERROR_SHARING_VIOLATION;
-
-  /* Tried to delete file by normal DeleteFile and by resetting protection
-     and then deleting.  That didn't work.
-
-     There are two possible reasons for this:  1) The file may be opened and
-     Windows is not allowing it to be deleted, or 2) We may not have permissions
-     to delete the file.
-
-     So, first assume that it may be 1) and try to remove the file using the
-     Windows FILE_FLAG_DELETE_ON_CLOSE semantics.  This seems to work only
-     spottily on Windows 9x/Me but it does seem to work reliably on NT as
-     long as the file doesn't exist on a remote drive. */
-
-  bool delete_on_close_ok;
-
-  delete_on_close_ok  = !win32_name.isremote () && iswinnt;
-
-  /* Attempt to use "delete on close" semantics to handle removing
-     a file which may be open. */
-  HANDLE h;
-  h = CreateFile (win32_name, GENERIC_READ, FILE_SHARE_READ, &sec_none_nih,
-		  OPEN_EXISTING, FILE_FLAG_DELETE_ON_CLOSE, 0);
-  if (h == INVALID_HANDLE_VALUE)
     {
-      if (GetLastError () == ERROR_FILE_NOT_FOUND)
-	goto ok;
-    }
-  else
-    {
-      CloseHandle (h);
-      syscall_printf ("CreateFile/CloseHandle succeeded");
-      /* Everything is fine if the file has disappeared or if we know that the
-	 FILE_FLAG_DELETE_ON_CLOSE will eventually work. */
-      if (GetFileAttributes (win32_name) == (DWORD) -1 || delete_on_close_ok)
-	goto ok;	/* The file is either gone already or will eventually be
-			   deleted by the OS. */
-    }
+      /* Due to limited sharing permissions on 9x there is no way
+         to mark an open file for deletion on closure. Adding it to
+         the "to be deleted" queue should result in it being deleted
+         after it is closed */
 
-  /* FILE_FLAGS_DELETE_ON_CLOSE was a bust.  If this is a sharing
-     violation, then queue the file for deletion when the process
-     exits.  Otherwise, punt. */
-  if (lasterr != ERROR_SHARING_VIOLATION)
-    goto err;
+      cygwin_shared->delqueue.queue_file (win32_name);
+      syscall_printf ("file queued for deletion");
+      goto ok;
+    }
 
   syscall_printf ("couldn't delete file, err %d", lasterr);
-
-  /* Add file to the "to be deleted" queue. */
-  cygwin_shared->delqueue.queue_file (win32_name);
+  goto err;
 
  /* Success condition. */
  ok:
@@ -220,6 +179,7 @@ _unlink (const char *ourname)
 extern "C" int
 remove (const char *ourname)
 {
+  TRACE_IN;
   path_conv win32_name (ourname, PC_SYM_NOFOLLOW | PC_FULL);
 
   if (win32_name.error)
@@ -239,6 +199,7 @@ remove (const char *ourname)
 extern "C" pid_t
 _getpid ()
 {
+  TRACE_IN;
   return myself->pid;
 }
 
@@ -246,6 +207,7 @@ _getpid ()
 extern "C" pid_t
 getppid ()
 {
+  TRACE_IN;
   return myself->ppid;
 }
 
@@ -253,6 +215,7 @@ getppid ()
 extern "C" pid_t
 setsid (void)
 {
+  TRACE_IN;
   if (myself->pgid != _getpid ())
     {
       if (myself->ctty == TTY_CONSOLE &&
@@ -272,6 +235,7 @@ setsid (void)
 extern "C" ssize_t
 _read (int fd, void *ptr, size_t len)
 {
+  TRACE_IN;
   int res;
   fhandler_base *fh;
   extern int sigcatchers;
@@ -485,7 +449,7 @@ _open (const char *unix_path, int flags, ...)
 	set_errno (ENMFILE);
       else if ((fh = cygheap->fdtab.build_fhandler (fd, unix_path, NULL)) == NULL)
 	res = -1;		// errno already set
-      else if (!fh->open (unix_path, flags, (mode & 07777) & ~cygheap->umask))
+      else if (!fh->open (unix_path, flags | O_BINARY, (mode & 07777) & ~cygheap->umask))
 	{
 	  cygheap->fdtab.release (fd);
 	  res = -1;
@@ -543,6 +507,7 @@ _close (int fd)
     {
       SetResourceLock (LOCK_FD_LIST,WRITE_LOCK|READ_LOCK," close");
       res = cygheap->fdtab[fd]->close ();
+      fsync(fd);
       cygheap->fdtab.release (fd);
       ReleaseResourceLock (LOCK_FD_LIST,WRITE_LOCK|READ_LOCK," close");
     }
@@ -1050,8 +1015,7 @@ suffix_info stat_suffixes[] =
 
 /* Cygwin internal */
 static int
-stat_worker (const char *caller, const char *name, struct stat *buf,
-	     int nofollow)
+stat_worker (const char *caller, const char *name, struct stat *buf, int nofollow)
 {
   int res = -1;
   int oret = 1;
@@ -1066,10 +1030,9 @@ stat_worker (const char *caller, const char *name, struct stat *buf,
 
   MALLOC_CHECK;
 
-  debug_printf ("stat_worker (%s (%s, %p) %s, %d)", caller, name, buf, buf, nofollow);
+  debug_printf ("stat_worker (%s (%s, %p) %s)", caller, name, buf, buf, nofollow);
 
-  path_conv real_path (name, (nofollow ? PC_SYM_NOFOLLOW : PC_SYM_FOLLOW) |
-					 PC_FULL, stat_suffixes);
+  path_conv real_path (name, (nofollow ? PC_SYM_NOFOLLOW : PC_SYM_FOLLOW) | PC_FULL, stat_suffixes);
 
   if (real_path.error)
     {
@@ -1082,9 +1045,11 @@ stat_worker (const char *caller, const char *name, struct stat *buf,
 
   memset (buf, 0, sizeof (struct stat));
 
-  if (real_path.is_device ())
-    return stat_dev (real_path.get_devn (), real_path.get_unitn (),
+  if (real_path.is_device ()) {
+    res = stat_dev (real_path.get_devn (), real_path.get_unitn (),
 		     hash_path_name (0, real_path.get_win32 ()), buf);
+    goto done;
+  }
 
   atts = real_path.file_attributes ();
 
@@ -1097,15 +1062,15 @@ stat_worker (const char *caller, const char *name, struct stat *buf,
 	&& dtype != DRIVE_NO_ROOT_DIR
 	&& dtype != DRIVE_UNKNOWN)))
     {
-      oret = fh.open (real_path, O_RDONLY | O_BINARY | O_DIROPEN |
-				 (nofollow ? O_NOSYMLINK : 0), 0);
+      oret = fh.open (real_path, O_RDONLY | O_BINARY | O_DIROPEN | 
+				(nofollow ? O_NOSYMLINK : 0), 0);
       /* If we couldn't open the file, try a "query open" with no permissions.
 	 This will allow us to determine *some* things about the file, at least. */
       if (!oret)
 	{
 	  fh.set_query_open (TRUE);
-	  oret = fh.open (real_path, O_RDONLY | O_BINARY | O_DIROPEN |
-				     (nofollow ? O_NOSYMLINK : 0), 0);
+	  oret = fh.open (real_path, O_RDONLY | O_BINARY | O_DIROPEN | 
+				(nofollow ? O_NOSYMLINK : 0), 0);
 	}
       /* Check a special case here. If ntsec is ON it happens
 	 that a process creates a file using mode 000 to disallow
@@ -1117,8 +1082,8 @@ stat_worker (const char *caller, const char *name, struct stat *buf,
 	  && !attribute && uid == myself->uid && gid == myself->gid)
 	{
 	  set_file_attribute (TRUE, real_path, 0400);
-	  oret = fh.open (real_path, O_RDONLY | O_BINARY | O_DIROPEN |
-				     (nofollow ? O_NOSYMLINK : 0), 0);
+	  oret = fh.open (real_path, O_RDONLY | O_BINARY | O_DIROPEN | 
+				(nofollow ? O_NOSYMLINK : 0), 0);
 	  set_file_attribute (TRUE, real_path.get_win32 (), 0);
 	}
       if (oret)
@@ -1198,6 +1163,7 @@ stat_worker (const char *caller, const char *name, struct stat *buf,
 extern "C" int
 _stat (const char *name, struct stat *buf)
 {
+  TRACE_IN;
   sigframe thisframe (mainthread);
   return stat_worker ("stat", name, buf, 0);
 }
@@ -1206,6 +1172,7 @@ _stat (const char *name, struct stat *buf)
 extern "C" int
 lstat (const char *name, struct stat *buf)
 {
+  TRACE_IN;
   sigframe thisframe (mainthread);
   return stat_worker ("lstat", name, buf, 1);
 }
@@ -1215,6 +1182,7 @@ extern int acl_access (const char *, int);
 extern "C" int
 access (const char *fn, int flags)
 {
+  TRACE_IN;
   sigframe thisframe (mainthread);
   // flags were incorrectly specified
   if (flags & ~ (F_OK|R_OK|W_OK|X_OK))
@@ -1286,6 +1254,7 @@ done:
 extern "C" int
 _rename (const char *oldpath, const char *newpath)
 {
+  TRACE_IN;
   sigframe thisframe (mainthread);
   int res = 0;
   char *lnk_suffix = NULL;
@@ -1357,6 +1326,18 @@ _rename (const char *oldpath, const char *newpath)
 		   && GetLastError () != ERROR_FILE_EXISTS))
     goto done;
 
+  /* FIXME: SEE FIXME at top of delqueue.cc
+   * This usleep is required to help eliminate the nasty behaviour of the OS
+   * having the file open when during the unlink process.  The file is marked
+   * for delete on close which causes access violation when opening the file
+   * again.  The usleep is an attempt to slow down the return to the calling
+   * function because the rm program will stat the file again to determine if
+   * the ulink failed or not and raise an error.  The fix will be to cause the
+   * stat function to return a non existant file error if the file is marked
+   * for deletion and to cause the creation of a file with the same name to
+   * rename the file marked for deletion if it still exists.
+   */
+  usleep (640); // Wait for file to be closed.
   if (iswinnt)
     {
       if (MoveFileEx (real_old.get_win32 (), real_new.get_win32 (),
@@ -1419,6 +1400,7 @@ done:
 extern "C" int
 system (const char *cmdstring)
 {
+  TRACE_IN;
   sigframe thisframe (mainthread);
   int res;
   const char* command[4];
@@ -1455,6 +1437,7 @@ system (const char *cmdstring)
 extern "C" int
 setdtablesize (int size)
 {
+  TRACE_IN;
   if (size <= (int)cygheap->fdtab.size || cygheap->fdtab.extend (size - cygheap->fdtab.size))
     return 0;
 
@@ -1464,12 +1447,14 @@ setdtablesize (int size)
 extern "C" int
 getdtablesize ()
 {
+  TRACE_IN;
   return cygheap->fdtab.size > OPEN_MAX ? cygheap->fdtab.size : OPEN_MAX;
 }
 
 extern "C" size_t
 getpagesize ()
 {
+  TRACE_IN;
   if (!system_info.dwPageSize)
     GetSystemInfo (&system_info);
   return (int) system_info.dwPageSize;
@@ -1478,6 +1463,7 @@ getpagesize ()
 static int
 check_posix_perm (const char *fname, int v)
 {
+  TRACE_IN;
   extern int allow_ntea, allow_ntsec, allow_smbntsec;
 
   /* Windows 95/98/ME don't support file system security at all. */
@@ -1492,7 +1478,7 @@ check_posix_perm (const char *fname, int v)
   if (!allow_ntsec)
     return 0;
 
-  char *root = rootdir (strcpy (new char [(strlen (fname))], fname));
+  char *root = rootdir (strcpy ((char *)alloca (strlen (fname) + 1), fname));
 
   if (!allow_smbntsec
       && ((root[0] == '\\' && root[1] == '\\')
@@ -1513,6 +1499,7 @@ check_posix_perm (const char *fname, int v)
 extern "C" long int
 fpathconf (int fd, int v)
 {
+  TRACE_IN;
   if (cygheap->fdtab.not_open (fd))
     {
       set_errno (EBADF);
@@ -1565,6 +1552,7 @@ fpathconf (int fd, int v)
 extern "C" long int
 pathconf (const char *file, int v)
 {
+  TRACE_IN;
   switch (v)
     {
     case _PC_PATH_MAX:
@@ -1608,6 +1596,7 @@ pathconf (const char *file, int v)
 extern "C" char *
 ttyname (int fd)
 {
+  TRACE_IN;
   if (cygheap->fdtab.not_open (fd) || !cygheap->fdtab[fd]->is_tty ())
     {
       return 0;
@@ -1618,6 +1607,7 @@ ttyname (int fd)
 extern "C" char *
 ctermid (char *str)
 {
+  TRACE_IN;
   static NO_COPY char buf[16];
   if (str == NULL)
     str = buf;
@@ -1632,6 +1622,7 @@ ctermid (char *str)
 extern "C" int
 _cygwin_istext_for_stdio (int fd)
 {
+  TRACE_IN;
   syscall_printf ("_cygwin_istext_for_stdio (%d)\n", fd);
   if (CYGWIN_VERSION_OLD_STDIO_CRLF_HANDLING)
     {
@@ -1672,6 +1663,7 @@ static int setmode_file;
 static int
 setmode_helper (FILE *f)
 {
+  TRACE_IN;
   if (fileno (f) != setmode_file)
     return 0;
   syscall_printf ("setmode: file was %s now %s\n",
@@ -1687,6 +1679,7 @@ setmode_helper (FILE *f)
 extern "C" int
 getmode (int fd)
 {
+  TRACE_IN;
   if (cygheap->fdtab.not_open (fd))
     {
       set_errno (EBADF);
@@ -1702,6 +1695,7 @@ getmode (int fd)
 extern "C" int
 setmode (int fd, int mode)
 {
+  TRACE_IN;
   if (cygheap->fdtab.not_open (fd))
     {
       set_errno (EBADF);
@@ -1758,6 +1752,7 @@ setmode (int fd, int mode)
 extern "C" int
 ftruncate (int fd, off_t length)
 {
+  TRACE_IN;
   sigframe thisframe (mainthread);
   int res = -1;
 
@@ -1796,6 +1791,7 @@ ftruncate (int fd, off_t length)
 extern "C" int
 truncate (const char *pathname, off_t length)
 {
+  TRACE_IN;
   sigframe thisframe (mainthread);
   int fd;
   int res = -1;
@@ -1817,6 +1813,7 @@ truncate (const char *pathname, off_t length)
 extern "C" long
 get_osfhandle (int fd)
 {
+  TRACE_IN;
   long res = -1;
 
   if (cygheap->fdtab.not_open (fd))
@@ -1831,6 +1828,7 @@ get_osfhandle (int fd)
 extern "C" int
 statfs (const char *fname, struct statfs *sfs)
 {
+  TRACE_IN;
   sigframe thisframe (mainthread);
   if (!sfs)
     {
@@ -1851,6 +1849,15 @@ statfs (const char *fname, struct statfs *sfs)
       return -1;
     }
 
+  _ULARGE_INTEGER fba, tnb, tfa;
+
+  if (!GetDiskFreeSpaceEx (root, &fba, &tnb, &tfa))
+    {
+      fba.QuadPart = (unsigned long long)freec * spc * bps;
+      tnb.QuadPart = (unsigned long long)totalc * spc * bps;
+      tfa.QuadPart = (unsigned long long)freec * spc * bps;
+    }
+
   DWORD vsn, maxlen, flags;
 
   if (!GetVolumeInformation (root, NULL, 0, &vsn, &maxlen, &flags, NULL, 0))
@@ -1860,8 +1867,9 @@ statfs (const char *fname, struct statfs *sfs)
     }
   sfs->f_type = flags;
   sfs->f_bsize = spc*bps;
-  sfs->f_blocks = totalc;
-  sfs->f_bfree = sfs->f_bavail = freec;
+  sfs->f_blocks = tnb.QuadPart / sfs->f_bsize;
+  sfs->f_bavail = fba.QuadPart / sfs->f_bsize;
+  sfs->f_bfree = tfa.QuadPart / sfs->f_bsize;
   sfs->f_files = -1;
   sfs->f_ffree = -1;
   sfs->f_fsid = vsn;
@@ -1872,6 +1880,7 @@ statfs (const char *fname, struct statfs *sfs)
 extern "C" int
 fstatfs (int fd, struct statfs *sfs)
 {
+  TRACE_IN;
   sigframe thisframe (mainthread);
   if (cygheap->fdtab.not_open (fd))
     {
@@ -1886,6 +1895,7 @@ fstatfs (int fd, struct statfs *sfs)
 extern "C" int
 setpgid (pid_t pid, pid_t pgid)
 {
+  TRACE_IN;
   sigframe thisframe (mainthread);
   int res = -1;
   if (pid == 0)
@@ -1928,6 +1938,7 @@ out:
 extern "C" pid_t
 getpgid (pid_t pid)
 {
+  TRACE_IN;
   sigframe thisframe (mainthread);
   if (pid == 0)
     pid = getpid ();
@@ -1944,6 +1955,7 @@ getpgid (pid_t pid)
 extern "C" int
 setpgrp (void)
 {
+  TRACE_IN;
   sigframe thisframe (mainthread);
   return setpgid (0, 0);
 }
@@ -1951,6 +1963,7 @@ setpgrp (void)
 extern "C" pid_t
 getpgrp (void)
 {
+  TRACE_IN;
   sigframe thisframe (mainthread);
   return getpgid (0);
 }
@@ -1958,6 +1971,7 @@ getpgrp (void)
 extern "C" char *
 ptsname (int fd)
 {
+  TRACE_IN;
   sigframe thisframe (mainthread);
   if (cygheap->fdtab.not_open (fd))
     {
@@ -1971,6 +1985,7 @@ ptsname (int fd)
 extern "C" int
 regfree ()
 {
+  TRACE_IN;
   return 0;
 }
 
@@ -1983,6 +1998,7 @@ regfree ()
 extern "C" int
 mknod (const char *_path, mode_t mode, dev_t dev)
 {
+  TRACE_IN;
   set_errno (ENOSYS);
   return -1;
 }
@@ -1990,6 +2006,7 @@ mknod (const char *_path, mode_t mode, dev_t dev)
 extern "C" int
 mkfifo (const char *_path, mode_t mode)
 {
+  TRACE_IN;
   set_errno (ENOSYS);
   return -1;
 }
@@ -1998,6 +2015,7 @@ mkfifo (const char *_path, mode_t mode)
 extern "C" int
 setgid (gid_t gid)
 {
+  TRACE_IN;
   int ret = setegid (gid);
   if (!ret)
     cygheap->user.real_gid = myself->gid;
@@ -2008,6 +2026,7 @@ setgid (gid_t gid)
 extern "C" int
 setuid (uid_t uid)
 {
+  TRACE_IN;
   int ret = seteuid (uid);
   if (!ret)
     cygheap->user.real_uid = myself->uid;
@@ -2021,6 +2040,7 @@ extern struct passwd *internal_getlogin (cygheap_user &user);
 extern "C" int
 seteuid (uid_t uid)
 {
+  TRACE_IN;
   sigframe thisframe (mainthread);
   if (iswinnt)
     {
@@ -2236,6 +2256,7 @@ seteuid (uid_t uid)
 extern "C" int
 setegid (gid_t gid)
 {
+  TRACE_IN;
   sigframe thisframe (mainthread);
   if (iswinnt)
     {
@@ -2282,6 +2303,7 @@ setegid (gid_t gid)
 extern "C" int
 chroot (const char *newroot)
 {
+  TRACE_IN;
   sigframe thisframe (mainthread);
   int ret = -1;
   path_conv path (newroot, PC_SYM_FOLLOW | PC_FULL);
@@ -2312,6 +2334,7 @@ done:
 extern "C" int
 creat (const char *path, mode_t mode)
 {
+  TRACE_IN;
   sigframe thisframe (mainthread);
   return open (path, O_WRONLY | O_CREAT | O_TRUNC, mode);
 }
@@ -2319,12 +2342,14 @@ creat (const char *path, mode_t mode)
 extern "C" void
 __assertfail ()
 {
+  TRACE_IN;
   exit (99);
 }
 
 extern "C" int
 getw (FILE *fp)
 {
+  TRACE_IN;
   sigframe thisframe (mainthread);
   int w, ret;
   ret = fread (&w, sizeof (int), 1, fp);
@@ -2334,6 +2359,7 @@ getw (FILE *fp)
 extern "C" int
 putw (int w, FILE *fp)
 {
+  TRACE_IN;
   sigframe thisframe (mainthread);
   int ret;
   ret = fwrite (&w, sizeof (int), 1, fp);
@@ -2345,6 +2371,7 @@ putw (int w, FILE *fp)
 extern "C" int
 wcscmp (const wchar_t *s1, const wchar_t *s2)
 {
+  TRACE_IN;
   while (*s1  && *s1 == *s2)
     {
       s1++;
@@ -2357,6 +2384,7 @@ wcscmp (const wchar_t *s1, const wchar_t *s2)
 extern "C" size_t
 wcslen (const wchar_t *s1)
 {
+  TRACE_IN;
   int l = 0;
   while (s1[l])
     l++;
@@ -2369,6 +2397,7 @@ wcslen (const wchar_t *s1)
 extern "C" int
 wprintf (const char *fmt, ...)
 {
+  TRACE_IN;
   va_list ap;
   int ret;
 
@@ -2381,6 +2410,7 @@ wprintf (const char *fmt, ...)
 extern "C" int
 vhangup ()
 {
+  TRACE_IN;
   set_errno (ENOSYS);
   return -1;
 }
@@ -2388,6 +2418,7 @@ vhangup ()
 extern "C" _PTR
 memccpy (_PTR out, const _PTR in, int c, size_t len)
 {
+  TRACE_IN;
   const char *inc = (char *) in;
   char *outc = (char *) out;
 
@@ -2405,6 +2436,7 @@ memccpy (_PTR out, const _PTR in, int c, size_t len)
 extern "C" int
 nice (int incr)
 {
+  TRACE_IN;
   sigframe thisframe (mainthread);
   DWORD priority[] =
     {
@@ -2453,6 +2485,7 @@ nice (int incr)
 extern "C" int
 ffs (int i)
 {
+  TRACE_IN;
   static const unsigned char table[] =
     {
       0,1,2,2,3,3,3,3,4,4,4,4,4,4,4,4,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,
@@ -2475,6 +2508,7 @@ ffs (int i)
 extern "C" void
 login (struct utmp *ut)
 {
+  TRACE_IN;
   sigframe thisframe (mainthread);
   register int fd;
   int currtty = ttyslot ();
@@ -2500,6 +2534,7 @@ FIXME (cgf): huh?
 extern "C" int
 logout (char *line)
 {
+  TRACE_IN;
   sigframe thisframe (mainthread);
   int res = 0;
   HANDLE ut_fd;

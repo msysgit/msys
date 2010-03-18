@@ -65,7 +65,7 @@ mingw_source:=$(updir)/mingw
 utils_build:=$(bupdir)/utils
 utils_source:=$(updir)/utils
 
-INCLUDES:=-I. -I$(cygwin_source)/include -I$(cygwin_source) -I$(newlib_source)/libc/sys/cygwin -I$(newlib_source)/libc/include -I$(w32api_include)
+INCLUDES:=-I. -I$(cygwin_source)/include -I$(cygwin_source) -I$(newlib_source)/libc/sys/cygwin -I$(newlib_source)/libc/include -I$(w32api_include) $(W32API_CPPFLAGS)
 ifdef CONFIG_DIR
 INCLUDES+=-I$(CONFIG_DIR)
 endif

@@ -26,6 +26,8 @@ details. */
 #include "shared_info.h"
 #include "host_dependent.h"
 
+extern int normalize_posix_path (const char *, char *);
+
 static NO_COPY int CHUNK_SIZE = 1024; /* Used for crlf conversions */
 
 static NO_COPY char fhandler_disk_dummy_name[] = "some disk file";
@@ -174,7 +176,10 @@ fhandler_base::set_name (const char *unix_path, const char *win32_path, int unit
   if (unix_path == NULL || !*unix_path)
     return;
 
-  unix_path_name = cstrdup (unix_path);
+  char norm_unix_path[MAX_PATH];
+  (void) normalize_posix_path (unix_path, norm_unix_path);
+  
+  unix_path_name = cstrdup (norm_unix_path);
   if (unix_path_name == NULL)
     {
       system_printf ("fatal error. strdup failed");
@@ -413,6 +418,38 @@ fhandler_base::open (int flags, mode_t mode)
 		  &sa, creation_distribution,
 		  file_attributes);
 
+  /* FIXME:
+   * When a DeleteFile happens in unlink and the file is still open it is
+   * marked for deletetion on close.  If the closing handles aren't complete
+   * the CreateFile open will if ERROR_ACCESS_DENIED.  The usleep is set to
+   * wait on the FS to catch up.  However, I am sure there must be a better
+   * method.
+   */
+  if (x == INVALID_HANDLE_VALUE && GetLastError () == ERROR_ACCESS_DENIED) {
+    usleep (1280);
+    x = CreateFileA (get_win32_name (), access, shared,
+		     &sa, creation_distribution,
+		     file_attributes,
+		     0);
+  }
+  /* Give more time if necessary */
+  if (x == INVALID_HANDLE_VALUE && GetLastError () == ERROR_ACCESS_DENIED) {
+    usleep (1280);
+    x = CreateFileA (get_win32_name (), access, shared,
+		     &sa, creation_distribution,
+		     file_attributes,
+		     0);
+  }
+  /* And one more time if necessary */
+  if (x == INVALID_HANDLE_VALUE && GetLastError () == ERROR_ACCESS_DENIED) {
+    usleep (1280);
+    x = CreateFileA (get_win32_name (), access, shared,
+		     &sa, creation_distribution,
+		     file_attributes,
+		     0);
+  }
+  /* At this point assume it is really ACCESS_DENIED. */
+
   if (x == INVALID_HANDLE_VALUE)
     {
       if (GetLastError () == ERROR_INVALID_HANDLE)
@@ -422,13 +459,20 @@ fhandler_base::open (int flags, mode_t mode)
       goto done;
     }
 
-  /* Attributes may be set only if a file is _really_ created.
-     This code is now only used for ntea here since the files
-     security attributes are set in CreateFile () now. */
+  // Attributes may be set only if a file is _really_ created.
   if (flags & O_CREAT && get_device () == FH_DISK
-      && GetLastError () != ERROR_ALREADY_EXISTS
-      && !allow_ntsec && allow_ntea)
-    set_file_attribute (has_acls (), get_win32_name (), mode);
+      && GetLastError () != ERROR_ALREADY_EXISTS)
+    {
+      if (mode & (S_IWUSR | S_IWGRP | S_IWOTH))
+	file_attributes &= ~FILE_ATTRIBUTE_READONLY;
+      else
+	file_attributes |= FILE_ATTRIBUTE_READONLY;
+
+      if (S_ISLNK (mode) || S_ISSOCK (mode))
+	file_attributes |= FILE_ATTRIBUTE_SYSTEM;
+
+      SetFileAttributes (get_win32_name (), file_attributes);
+    }
 
   namehash = hash_path_name (0, get_win32_name ());
   set_io_handle (x);
@@ -720,63 +764,6 @@ fhandler_base::lseek (off_t offset, int whence)
 
   debug_printf ("lseek (%s, %d, %d)", unix_path_name, offset, whence);
 
-#if 0	/* lseek has no business messing about with text-mode stuff */
-
-  if (!get_r_binary ())
-    {
-      int newplace;
-
-      if (whence == 0)
-	{
-	  newplace = offset;
-	}
-      else if (whence ==1)
-	{
-	  newplace = rpos +  offset;
-	}
-      else
-	{
-	  /* Seek from the end of a file.. */
-	  if (rsize == -1)
-	    {
-	      /* Find the size of the file by reading till the end */
-
-	      char b[CHUNK_SIZE];
-	      while (read (b, sizeof (b)) > 0)
-		;
-	      rsize = rpos;
-	    }
-	  newplace = rsize + offset;
-	}
-
-      if (rpos > newplace)
-	{
-	  SetFilePointer (handle, 0, 0, 0);
-	  rpos = 0;
-	}
-
-      /* You can never shrink something more than 50% by turning CRLF into LF,
-	 so we binary chop looking for the right place */
-
-      while (rpos < newplace)
-	{
-	  char b[CHUNK_SIZE];
-	  size_t span = (newplace - rpos) / 2;
-	  if (span == 0)
-	    span = 1;
-	  if (span > sizeof (b))
-	    span = sizeof (b);
-
-	  debug_printf ("lseek (%s, %d, %d) span %d, rpos %d newplace %d",
-		       name, offset, whence,span,rpos, newplace);
-	  read (b, span);
-	}
-
-      debug_printf ("Returning %d", newplace);
-      return newplace;
-    }
-#endif	/* end of deleted code dealing with text mode */
-
   DWORD win32_whence = whence == SEEK_SET ? FILE_BEGIN
 		       : (whence == SEEK_CUR ? FILE_CURRENT : FILE_END);
 
@@ -850,6 +837,7 @@ rootdir(char *full_path)
    * \\server\share... -> \\server\share\
    * else current drive.
    */
+  debug_printf("%s", full_path);
   char *root = full_path;
 
   if (full_path[1] == ':')
@@ -1279,9 +1267,7 @@ fhandler_disk_file::open (const char *path, int flags, mode_t mode)
   TRACE_IN;
   syscall_printf ("(%s, %p)", path, flags);
 
-  /* O_NOSYMLINK is an internal flag for implementing lstat, nothing more. */
-  path_conv real_path (path, (flags & O_NOSYMLINK) ?
-			     PC_SYM_NOFOLLOW : PC_SYM_FOLLOW);
+  path_conv real_path (path, PC_FULL | ((flags & O_NOSYMLINK) ? PC_SYM_NOFOLLOW : PC_SYM_FOLLOW));
 
   if (real_path.error &&
       (flags & O_NOSYMLINK || real_path.error != ENOENT

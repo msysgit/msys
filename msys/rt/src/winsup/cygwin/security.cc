@@ -454,6 +454,9 @@ get_user_primary_group (WCHAR *wlogonserver, const char *user,
   return retval;
 }
 
+/* Convert LARGE_INTEGER into long long */
+#define get_ll(pl)  (((long long) (pl).HighPart << 32) | (pl).LowPart)
+
 static BOOL
 get_group_sidlist (const char *logonserver, cygsidlist &grp_list,
 		   cygsid &usersid, cygsid &pgrpsid,
@@ -504,7 +507,7 @@ get_group_sidlist (const char *logonserver, cygsidlist &grp_list,
 	  grp_list += well_known_interactive_sid;
 	  grp_list += well_known_authenticated_users_sid;
 	}
-      if (auth_luid.QuadPart != 999) /* != SYSTEM_LUID */
+      if (get_ll (auth_luid) != 999) /* != SYSTEM_LUID */
 	{
 	  char buf[64];
 	  __small_sprintf (buf, "S-1-5-5-%u-%u", auth_luid.HighPart,

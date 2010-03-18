@@ -35,6 +35,7 @@ extern int cygwin_win32_to_posix_path_list_buf_size (const char *);
 extern int cygwin_posix_to_win32_path_list (const char *, char *);
 extern int cygwin_posix_to_win32_path_list_buf_size (const char *);
 extern int cygwin_conv_to_win32_path (const char *, char *);
+extern char * msys_p2w (char const * const);
 extern int cygwin_conv_to_full_win32_path (const char *, char *);
 extern int cygwin_conv_to_posix_path (const char *, char *);
 extern int cygwin_conv_to_full_posix_path (const char *, char *);
@@ -64,7 +65,8 @@ typedef enum
     CW_GET_CYGDRIVE_PREFIXES,
     CW_GETPINFO_FULL,
     CW_INIT_EXCEPTIONS,
-    CW_GET_CYGDRIVE_INFO
+    CW_GET_CYGDRIVE_INFO,
+    CW_EXIT_PROCESS
   } cygwin_getinfo_types;
 
 #define CW_NEXTPID	0x80000000	// or with pid to get next one

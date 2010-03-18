@@ -37,16 +37,18 @@ static DWORD WINAPI process_ioctl (void *);		// Ioctl requests thread
 fhandler_tty_master::fhandler_tty_master (const char *name, int unit) :
 	fhandler_pty_master (name, FH_TTYM, unit)
 {
-  TRACE_IN;
+  TRACETTY;
   set_cb (sizeof *this);
   console = NULL;
   hThread = NULL;
 }
 
+#if 1
+ // FIXME: This appears not to be needed.
 int
 fhandler_tty_master::init (int ntty)
 {
-  TRACE_IN;
+  TRACETTY;
   HANDLE h;
   termios_printf ("Creating master for tty%d", ntty);
 
@@ -101,6 +103,7 @@ fhandler_tty_master::init (int ntty)
 
   return 0;
 }
+#endif
 
 #ifdef DEBUGGING
 static class mutex_stack
@@ -118,7 +121,7 @@ DWORD
 fhandler_tty_common::__acquire_output_mutex (const char *fn, int ln,
 					   DWORD ms)
 {
-  TRACE_IN;
+  TRACETTY;
   if (strace.active)
     strace.prntf (_STRACE_TERMIOS, fn, "(%d): tty output_mutex: waiting %d ms", ln, ms);
   DWORD res = WaitForSingleObject (output_mutex, ms);
@@ -141,7 +144,7 @@ fhandler_tty_common::__acquire_output_mutex (const char *fn, int ln,
 void
 fhandler_tty_common::__release_output_mutex (const char *fn, int ln)
 {
-  TRACE_IN;
+  TRACETTY;
   if (ReleaseMutex (output_mutex))
     {
 #ifndef DEBUGGING
@@ -162,7 +165,7 @@ fhandler_tty_common::__release_output_mutex (const char *fn, int ln)
 void
 fhandler_pty_master::doecho (const void *str, DWORD len)
 {
-  TRACE_IN;
+  TRACETTY;
   acquire_output_mutex (INFINITE);
   if (!WriteFile (get_ttyp ()->to_master, str, len, &len, NULL))
     termios_printf ("Write to %p failed, %E", get_ttyp ()->to_master);
@@ -173,7 +176,7 @@ fhandler_pty_master::doecho (const void *str, DWORD len)
 int
 fhandler_pty_master::accept_input ()
 {
-  TRACE_IN;
+  TRACETTY;
   DWORD bytes_left, written;
   DWORD n;
   DWORD rc;
@@ -219,7 +222,7 @@ fhandler_pty_master::accept_input ()
 static DWORD WINAPI
 process_input (void *)
 {
-  TRACE_IN;
+  TRACETTY;
   char rawbuf[INP_BUFFER_SIZE];
 
   while (1)
@@ -233,8 +236,10 @@ process_input (void *)
 BOOL
 fhandler_pty_master::hit_eof ()
 {
-  TRACE_IN;
-  if (get_ttyp ()->was_opened && !get_ttyp ()->slave_alive ())
+  /* hit_eof is a constant poll in an endless loop.
+  TRACETTY;
+  */
+  if (get_ttyp ()->was_opened && !get_ttyp ()->alive (TTY_SLAVE_ALIVE))
     {
       /* We have the only remaining open handle to this pty, and
 	 the slave pty has been opened at least once.  We treat
@@ -250,154 +255,134 @@ fhandler_pty_master::hit_eof ()
 int
 fhandler_pty_master::process_slave_output (char *buf, size_t len, int pktmode_on)
 {
-  TRACE_IN;
+  // The code for this function was refactored to remove GOTO.  Other things
+  // may have also changed in trying to resolve the PTY issue still ongoing.
+  // Should we be badly broken, I suggest starting with the the original code
+  // and refactor again to remove the GOTO.
+  TRACETTY;
   size_t rlen;
-  char outbuf[OUT_BUFFER_SIZE + 1];
-  DWORD n;
+  //char outbuf[OUT_BUFFER_SIZE + 1];
+  char * outbuf;
+  DWORD CharsRead;
   int column = 0;
   int rc = 0;
+  char *optr = buf;
+
+  outbuf = (char *)malloc(len * sizeof (char));
+  memset (outbuf, len, 0);
 
   if (len == 0)
-    goto out;
+    debug_printf("process_slave_output called with zero length");
 
-  if (need_nl)
+  while (!hit_eof () && len != 0)
     {
-      /* We need to return a left over \n character, resulting from
-	 \r\n conversion.  Note that we already checked for FLUSHO and
-	 output_stopped at the time that we read the character, so we
-	 don't check again here.  */
-      buf[0] = '\n';
-      need_nl = 0;
-      rc = 1;
-      goto out;
-    }
+      if (need_nl)
+      {
+	/* We need to return a left over \n character, resulting from
+	   \r\n conversion.  Note that we already checked for FLUSHO and
+	   output_stopped at the time that we read the character, so we
+	   don't check again here.  */
+	*optr++ = '\n';
+	need_nl = 0;
+      } else {
 
 
-  for (;;)
-    {
-      /* Set RLEN to the number of bytes to read from the pipe.  */
-      rlen = len;
-      if (get_ttyp ()->ti.c_oflag & OPOST && get_ttyp ()->ti.c_oflag & ONLCR)
+	/* Set RLEN to the number of bytes to read from the pipe.  */
+	rlen = len;
+	if (get_ttyp ()->ti.c_oflag & OPOST && get_ttyp ()->ti.c_oflag & ONLCR)
+	  {
+	    /* We are going to expand \n to \r\n, so don't read more than
+	       half of the number of bytes requested.  */
+	    rlen = (rlen / 2) + 1;
+	  }
+	//FIXME: Shouldn't rlen > sizeof outbuf be an error!!
+	//Perhaps we should dynamically allocate the memory for outbuf?
+	if (rlen > sizeof outbuf)
+	  rlen = sizeof outbuf;
+
+	ReadFile (get_io_handle (), outbuf, rlen, &CharsRead, NULL);
+	if (CharsRead >= 0)
 	{
-	  /* We are going to expand \n to \r\n, so don't read more than
-	     half of the number of bytes requested.  */
-	  rlen /= 2;
-	  if (rlen == 0)
-	    rlen = 1;
-	}
-      if (rlen > sizeof outbuf)
-	rlen = sizeof outbuf;
+	  debug_printf ("Read %d of %d", CharsRead, rlen);
 
-      HANDLE handle = get_io_handle ();
+	  termios_printf ("bytes read %u", CharsRead);
+	  get_ttyp ()->write_error = 0;
+	  if (output_done_event != NULL)
+	    SetEvent (output_done_event);
 
-      n = 0; // get_readahead_into_buffer (outbuf, len);
-      if (!n)
-	{
-	  /* Doing a busy wait like this is quite inefficient, but nothing
-	     else seems to work completely.  Windows should provide some sort
-	     of overlapped I/O for pipes, or something, but it doesn't.  */
-	  while (1)
+	  if (get_ttyp ()->ti.c_lflag & FLUSHO)
+	    continue;
+
+	  if (pktmode_on)
+	    *optr++ = TIOCPKT_DATA;
+
+	  if (!(get_ttyp ()->ti.c_oflag & OPOST))	// post-process output
 	    {
-	      if (!PeekNamedPipe (handle, NULL, 0, NULL, &n, NULL))
-		goto err;
-	      if (n > 0)
-		break;
-	      if (hit_eof ())
-		goto out;
-	      if (n == 0 && is_nonblocking ())
-		{
-		  set_errno (EAGAIN);
-		  rc = -1;
-		  break;
-		}
-
-	      Sleep (10);
+	      memcpy (optr, outbuf, CharsRead);
+	      optr += CharsRead;
 	    }
-
-	  if (ReadFile (handle, outbuf, rlen, &n, NULL) == FALSE)
-	    goto err;
-	}
-
-      termios_printf ("bytes read %u", n);
-      get_ttyp ()->write_error = 0;
-      if (output_done_event != NULL)
-	SetEvent (output_done_event);
-
-      if (get_ttyp ()->ti.c_lflag & FLUSHO)
-	continue;
-
-      char *optr;
-      optr = buf;
-      if (pktmode_on)
-	*optr++ = TIOCPKT_DATA;
-
-      if (!(get_ttyp ()->ti.c_oflag & OPOST))	// post-process output
-	{
-	  memcpy (optr, outbuf, n);
-	  optr += n;
-	}
-      else					// raw output mode
-	{
-	  char *iptr = outbuf;
-
-	  while (n--)
+	  else					// raw output mode
 	    {
-	      switch (*iptr)
-		{
-		case '\r':
-		  if ((get_ttyp ()->ti.c_oflag & ONOCR) && column == 0)
-		    {
-		      iptr++;
-		      continue;
-		    }
-		  if (get_ttyp ()->ti.c_oflag & OCRNL)
-		    *iptr = '\n';
-		  else
-		    column = 0;
-		  break;
-		case '\n':
-		  if (get_ttyp ()->ti.c_oflag & ONLCR)
-		    {
-		      *optr++ = '\r';
-		      column = 0;
-		    }
-		  if (get_ttyp ()->ti.c_oflag & ONLRET)
-		    column = 0;
-		  break;
-		default:
-		  column++;
-		  break;
-		}
+	      char *iptr = outbuf;
 
-	      /* Don't store data past the end of the user's buffer.  This
-		 can happen if the user requests a read of 1 byte when
-		 doing \r\n expansion.  */
-	      if (optr - buf >= (int) len)
+	      while (CharsRead--)
 		{
-		  if (*iptr != '\n' || n != 0)
-		    system_printf ("internal error: %d unexpected characters", n);
-		  need_nl = 1;
-		  break;
-		}
+		  switch (*iptr)
+		    {
+		    case '\r':
+		      if ((get_ttyp ()->ti.c_oflag & ONOCR) && column == 0)
+			{
+			  iptr++;
+			  continue;
+			}
+		      if (get_ttyp ()->ti.c_oflag & OCRNL)
+			*iptr = '\n';
+		      else
+			column = 0;
+		      break;
+		    case '\n':
+		      if (get_ttyp ()->ti.c_oflag & ONLCR)
+			{
+			  *optr++ = '\r';
+			  column = 0;
+			}
+		      if (get_ttyp ()->ti.c_oflag & ONLRET)
+			column = 0;
+		      break;
+		    default:
+		      column++;
+		      break;
+		    }
 
-	      *optr++ = *iptr++;
+		  /* Don't store data past the end of the user's buffer.  This
+		     can happen if the user requests a read of 1 byte when
+		     doing \r\n expansion.  */
+		  if (optr - buf >= (int) len)
+		    {
+		      if (*iptr != '\n' || CharsRead != 0)
+			system_printf ("internal error: %d unexpected characters", CharsRead);
+		      need_nl = 1;
+		      break;
+		    }
+
+		  *optr++ = *iptr++;
+		}
 	    }
+	} else {
+	  if (GetLastError () != ERROR_BROKEN_PIPE)
+	  {
+	    __seterrno ();
+	    rc = -1;
+	    debug_printf ("process_slave_output error, %E");
+	    break;
+	  }
 	}
+      }
       rc = optr - buf;
       break;
-
-    err:
-      if (GetLastError () == ERROR_BROKEN_PIPE)
-	rc = 0;
-      else
-	{
-	  __seterrno ();
-	  rc = -1;
-	}
-      break;
     }
 
-out:
+  free (outbuf);
   termios_printf ("returning %d", rc);
   return rc;
 }
@@ -405,7 +390,7 @@ out:
 static DWORD WINAPI
 process_output (void *)
 {
-  TRACE_IN;
+  TRACETTY;
   char buf[OUT_BUFFER_SIZE*2];
 
   for (;;)
@@ -432,7 +417,7 @@ process_output (void *)
 static DWORD WINAPI
 process_ioctl (void *)
 {
-  TRACE_IN;
+  TRACETTY;
   while (1)
     {
       WaitForSingleObject (tty_master->ioctl_request_event, INFINITE);
@@ -450,7 +435,7 @@ process_ioctl (void *)
 fhandler_tty_slave::fhandler_tty_slave (int num, const char *name) :
 	fhandler_tty_common (FH_TTYS, name, num)
 {
-  TRACE_IN;
+  TRACETTY;
   set_cb (sizeof *this);
   ttynum = num;
   /* FIXME: This is wasteful.  We should rewrite the set_name path to eliminate the
@@ -465,7 +450,7 @@ fhandler_tty_slave::fhandler_tty_slave (int num, const char *name) :
 fhandler_tty_slave::fhandler_tty_slave (const char *name) :
 	fhandler_tty_common (FH_TTYS, name, 0)
 {
-  TRACE_IN;
+  TRACETTY;
   set_cb (sizeof *this);
   inuse = NULL;
 }
@@ -475,7 +460,7 @@ fhandler_tty_slave::fhandler_tty_slave (const char *name) :
 int
 fhandler_tty_slave::open (const char *, int flags, mode_t)
 {
-  TRACE_IN;
+  TRACETTY;
   tcinit (cygwin_shared->tty[ttynum]);
 
   attach_tty (ttynum);
@@ -579,7 +564,7 @@ fhandler_tty_slave::open (const char *, int flags, mode_t)
 void
 fhandler_tty_slave::init (HANDLE, DWORD a, mode_t)
 {
-  TRACE_IN;
+  TRACETTY;
   int mode = 0;
 
   a &= GENERIC_READ | GENERIC_WRITE;
@@ -596,7 +581,7 @@ fhandler_tty_slave::init (HANDLE, DWORD a, mode_t)
 int
 fhandler_tty_slave::write (const void *ptr, size_t len)
 {
-  TRACE_IN;
+  TRACETTY;
   DWORD n, towrite = len;
 
   termios_printf ("tty%d, write(%x, %d)", ttynum, ptr, len);
@@ -651,15 +636,14 @@ fhandler_tty_slave::write (const void *ptr, size_t len)
 int
 fhandler_tty_slave::read (void *ptr, size_t len)
 {
-  TRACE_IN;
-  DWORD n;
+  TRACETTY;
   int totalread = 0;
   int vmin = INT_MAX;
   int vtime = 0;	/* Initialized to prevent -Wuninitialized warning */
   size_t readlen;
-  DWORD bytes_in_pipe;
+  DWORD CharsInPipe;
+  DWORD CharsRead;
   char buf[INP_BUFFER_SIZE];
-  char peek_buf[INP_BUFFER_SIZE];
   DWORD time_to_wait;
   DWORD rc;
   HANDLE w4[2];
@@ -713,43 +697,34 @@ fhandler_tty_slave::read (void *ptr, size_t len)
 	  termios_printf ("failed to acquire input mutex after input event arrived");
 	  break;
 	}
-      if (!PeekNamedPipe (get_handle (), peek_buf, sizeof(peek_buf), &bytes_in_pipe, NULL, NULL))
+      if (!PeekNamedPipe (get_handle (), NULL, 0, NULL, &CharsInPipe, NULL))
 	{
 	  termios_printf ("PeekNamedPipe failed, %E");
 	  _raise (SIGHUP);
-	  bytes_in_pipe = 0;
+	  CharsInPipe = 0;
 	}
-      readlen = min (bytes_in_pipe, min (len, sizeof (buf)));
+      readlen = min (CharsInPipe, min (len, sizeof (buf)));
       if (readlen)
 	{
 	  termios_printf ("reading %d bytes (vtime %d)", readlen, vtime);
-	  if (ReadFile (get_handle (), buf, readlen, &n, NULL) == FALSE)
+	  if (ReadFile (get_handle (), buf, readlen, &CharsRead, NULL) == FALSE)
 	    {
 	      termios_printf ("read failed, %E");
 	      _raise (SIGHUP);
 	    }
-	  /* MSDN states that 5th prameter can be used to determine total
-	     number of bytes in pipe, but for some reason this number doesn't
-	     change after successful read. So we have to peek into the pipe
-	     again to see if input is still available */
-	  if (!PeekNamedPipe (get_handle (), peek_buf, 1, &bytes_in_pipe, NULL, NULL))
+	  if (CharsRead)
 	    {
-	      termios_printf ("PeekNamedPipe failed, %E");
-	      _raise (SIGHUP);
-	      bytes_in_pipe = 0;
-	    }
-	  if (n)
-	    {
-	      len -= n;
-	      totalread += n;
-	      memcpy (ptr, buf, n);
-	      ptr = (char *) ptr + n;
+	      len -= CharsRead;
+	      totalread += CharsRead;
+	      memcpy (ptr, buf, CharsRead);
+	      ptr = (char *) ptr + CharsRead;
 	    }
 	}
 
-      if (!bytes_in_pipe)
+      //FIXME: Why is this PeekNamedPipe needed?
+      PeekNamedPipe (get_handle (), NULL, 0, NULL, &CharsInPipe, NULL);
+      if (!CharsInPipe)
 	ResetEvent (input_available_event);
-
       ReleaseMutex (input_mutex);
 
       if (get_ttyp ()->read_retval < 0)	// read error
@@ -793,7 +768,7 @@ fhandler_tty_slave::read (void *ptr, size_t len)
 int
 fhandler_tty_common::dup (fhandler_base *child)
 {
-  TRACE_IN;
+  TRACETTY;
   fhandler_tty_slave *fts = (fhandler_tty_slave *) child;
   int errind;
 
@@ -891,7 +866,7 @@ err:
 int
 fhandler_tty_slave::tcgetattr (struct termios *t)
 {
-  TRACE_IN;
+  TRACETTY;
   *t = get_ttyp ()->ti;
   return 0;
 }
@@ -899,7 +874,7 @@ fhandler_tty_slave::tcgetattr (struct termios *t)
 int
 fhandler_tty_slave::tcsetattr (int, const struct termios *t)
 {
-  TRACE_IN;
+  TRACETTY;
   acquire_output_mutex (INFINITE);
   get_ttyp ()->ti = *t;
   release_output_mutex ();
@@ -909,14 +884,14 @@ fhandler_tty_slave::tcsetattr (int, const struct termios *t)
 int
 fhandler_tty_slave::tcflush (int)
 {
-  TRACE_IN;
+  TRACETTY;
   return 0;
 }
 
 int
 fhandler_tty_slave::ioctl (unsigned int cmd, void *arg)
 {
-  TRACE_IN;
+  TRACETTY;
   termios_printf ("ioctl (%x)", cmd);
 
   if (myself->pgid && get_ttyp ()->getpgid () != myself->pgid &&
@@ -979,7 +954,7 @@ out:
 fhandler_pty_master::fhandler_pty_master (const char *name, DWORD devtype, int unit) :
 	fhandler_tty_common (devtype, name, unit)
 {
-  TRACE_IN;
+  TRACETTY;
   set_cb (sizeof *this);
   ioctl_request_event = NULL;
   ioctl_done_event = NULL;
@@ -990,7 +965,7 @@ fhandler_pty_master::fhandler_pty_master (const char *name, DWORD devtype, int u
 int
 fhandler_pty_master::open (const char *, int flags, mode_t)
 {
-  TRACE_IN;
+  TRACETTY;
   ttynum = cygwin_shared->tty.allocate_tty (0);
   if (ttynum < 0)
     return 0;
@@ -1007,7 +982,7 @@ fhandler_pty_master::open (const char *, int flags, mode_t)
 int
 fhandler_tty_common::close ()
 {
-  TRACE_IN;
+  TRACETTY;
   if (output_done_event && !CloseHandle (output_done_event))
     termios_printf ("CloseHandle (output_done_event), %E");
   if (ioctl_done_event && !CloseHandle (ioctl_done_event))
@@ -1022,7 +997,7 @@ fhandler_tty_common::close ()
     termios_printf ("CloseHandle (input_mutex<%p>), %E", input_mutex);
 
   /* Send EOF to slaves if master side is closed */
-  if (!get_ttyp ()->master_alive ())
+  if (!get_ttyp ()->alive (TTY_MASTER_ALIVE))
     {
       termios_printf ("no more masters left. sending EOF" );
       SetEvent (input_available_event);
@@ -1043,14 +1018,14 @@ fhandler_tty_common::close ()
 int
 fhandler_pty_master::close ()
 {
-  TRACE_IN;
+  TRACETTY;
 #if 0
   while (accept_input () > 0)
     continue;
 #endif
   this->fhandler_tty_common::close ();
 
-  if (!get_ttyp ()->master_alive ())
+  if (!get_ttyp ()->alive (TTY_MASTER_ALIVE))
     {
       termios_printf ("freeing tty%d (%d)", ttynum, get_ttyp ()->ntty);
 #if 0
@@ -1072,7 +1047,7 @@ fhandler_pty_master::close ()
 int
 fhandler_pty_master::write (const void *ptr, size_t len)
 {
-  TRACE_IN;
+  TRACETTY;
   (void) line_edit ((char *) ptr, len);
   return len;
 }
@@ -1080,14 +1055,14 @@ fhandler_pty_master::write (const void *ptr, size_t len)
 int
 fhandler_pty_master::read (void *ptr, size_t len)
 {
-  TRACE_IN;
+  TRACETTY;
   return process_slave_output ((char *) ptr, len, pktmode);
 }
 
 int
 fhandler_pty_master::tcgetattr (struct termios *t)
 {
-  TRACE_IN;
+  TRACETTY;
   *t = cygwin_shared->tty[ttynum]->ti;
   return 0;
 }
@@ -1095,7 +1070,7 @@ fhandler_pty_master::tcgetattr (struct termios *t)
 int
 fhandler_pty_master::tcsetattr (int, const struct termios *t)
 {
-  TRACE_IN;
+  TRACETTY;
   cygwin_shared->tty[ttynum]->ti = *t;
   return 0;
 }
@@ -1103,14 +1078,14 @@ fhandler_pty_master::tcsetattr (int, const struct termios *t)
 int
 fhandler_pty_master::tcflush (int)
 {
-  TRACE_IN;
+  TRACETTY;
   return 0;
 }
 
 int
 fhandler_pty_master::ioctl (unsigned int cmd, void *arg)
 {
-  TRACE_IN;
+  TRACETTY;
   switch (cmd)
     {
       case TIOCPKT:
@@ -1136,7 +1111,7 @@ fhandler_pty_master::ioctl (unsigned int cmd, void *arg)
 char *
 fhandler_pty_master::ptsname (void)
 {
-  TRACE_IN;
+  TRACETTY;
   static char buf[32];
 
   __small_sprintf (buf, "/dev/tty%d", ttynum);
@@ -1146,7 +1121,7 @@ fhandler_pty_master::ptsname (void)
 void
 fhandler_tty_common::set_close_on_exec (int val)
 {
-  TRACE_IN;
+  TRACETTY;
 #ifndef DEBUGGING
   this->fhandler_base::set_close_on_exec (val);
 #else
@@ -1173,7 +1148,7 @@ fhandler_tty_common::set_close_on_exec (int val)
 void
 fhandler_tty_common::fixup_after_fork (HANDLE parent)
 {
-  TRACE_IN;
+  TRACETTY;
   this->fhandler_termios::fixup_after_fork (parent);
   if (output_done_event)
     fork_fixup (parent, output_done_event, "output_done_event");
@@ -1199,7 +1174,7 @@ fhandler_tty_common::fixup_after_fork (HANDLE parent)
 void
 fhandler_pty_master::set_close_on_exec (int val)
 {
-  TRACE_IN;
+  TRACETTY;
   this->fhandler_tty_common::set_close_on_exec (val);
 
   /* FIXME: There is a console handle leak here. */
@@ -1215,7 +1190,7 @@ fhandler_pty_master::set_close_on_exec (int val)
 void
 fhandler_tty_master::fixup_after_fork (HANDLE child)
 {
-  TRACE_IN;
+  TRACETTY;
   this->fhandler_pty_master::fixup_after_fork (child);
   console->fixup_after_fork (child);
 }
@@ -1223,7 +1198,7 @@ fhandler_tty_master::fixup_after_fork (HANDLE child)
 void
 fhandler_tty_master::fixup_after_exec (HANDLE)
 {
-  TRACE_IN;
+  TRACETTY;
   console->close ();
   init_console ();
   return;
@@ -1232,7 +1207,7 @@ fhandler_tty_master::fixup_after_exec (HANDLE)
 int
 fhandler_tty_master::init_console ()
 {
-  TRACE_IN;
+  TRACETTY;
   console = (fhandler_console *) cygheap->fdtab.build_fhandler (-1, FH_CONSOLE, "/dev/ttym");
   if (console == NULL)
     return -1;
