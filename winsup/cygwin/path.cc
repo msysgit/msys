@@ -3190,10 +3190,10 @@ msys_p2w (char const * const path)
 	    // Convert only up to a ".." path component, and
 	    // keep all what follows as is.
 	    //
-	    sspath = strchr (spath, '.');
-	    if (sspath && *(sspath - 1) == '/' && *(sspath + 1) == '.')
+	    sspath = strstr (spath, "/..");
+	    if (sspath)
 	      {
-		*(sspath - 1) = '\0';
+		*sspath = '\0';
 		char *swin32_path = msys_p2w (spath);
 		if (swin32_path == spath)
 		  {
@@ -3202,7 +3202,7 @@ msys_p2w (char const * const path)
 		  }
 		retpathcpy (swin32_path);
 		retpathcat ("/");
-		retpathcat (sspath);
+		retpathcat (sspath+1);
 		free (swin32_path);
 		return ScrubRetpath (retpath);
 	      }
