@@ -1,3 +1,8 @@
+2010.03.21  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	* bin/mount, bin/umount: New in CVS; scripts required by Cesar's
+	2009.04.06 distribution update.
+
 2010.05.01  Cesar Strauss  <cestrauss@gmail.com>
 
 	* doc/msys/MSYS_LICENSE: Remove mention of specific DLL versions
