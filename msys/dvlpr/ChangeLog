@@ -1,3 +1,13 @@
+2010.03.24  Keith Marshall  <keithmarshall@users.sourceforge.net>
+
+	* bin/mount: Add MSYS publication history; update copyright notice.
+	[--replace]: New command option; when inserted as the first argument,
+	preceding mount-point or windows-path and mount-point, it first forces
+	or simulates an invocation of `umount', as necessary, to release the
+	specified mount-point.
+
+	* bin/umount: Add MSYS publication history; update copyright notice.
+
 2010.03.21  Keith Marshall  <keithmarshall@users.sourceforge.net>
 
 	* bin/mount, bin/umount: New in CVS; scripts required by Cesar's
