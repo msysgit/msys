@@ -1,3 +1,7 @@
+2010.03.29  Charles Wilson  <mingw@cwilson.fastmail.fm>
+
+	* include/netdb.h: Declare rcmd, rexec, and rresvport.
+
 2010.01.15  Cesar Strauss  <cestrauss@gmail.com>
 
 	* path.cc (msys_p2w): Check for end-of-string before "/"
