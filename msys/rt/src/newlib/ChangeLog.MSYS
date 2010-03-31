@@ -1,3 +1,7 @@
+2010.03.29  Charles Wilson  <mingw@cwilson.fastmail.fm>
+
+	* libc/include/sys/unistd.h: Declare fchdir and getdomainname.
+
 2003.07.29  Earnie Boyd  <earnie@users.sf.net>
 
 	* libc/stdlib/mallocr.c (DEFAULT_TOP_PAD): Assign a new value.

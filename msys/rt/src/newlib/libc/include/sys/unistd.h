@@ -36,11 +36,17 @@ int     _EXFUN(execv, (const char *__path, char * const __argv[] ));
 int     _EXFUN(execve, (const char *__path, char * const __argv[], char * const __envp[] ));
 int     _EXFUN(execvp, (const char *__file, char * const __argv[] ));
 int     _EXFUN(fchmod, (int __fildes, mode_t __mode ));
+#if defined(__CYGWIN__) || defined(__MSYS__) || defined(__rtems__) || defined(__SPU__)
+int     _EXFUN(fchdir, (int __fildes));
+#endif
 int     _EXFUN(fchown, (int __fildes, uid_t __owner, gid_t __group ));
 pid_t   _EXFUN(fork, (void ));
 long    _EXFUN(fpathconf, (int __fd, int __name ));
 int     _EXFUN(fsync, (int __fd));
 char    _EXFUN(*getcwd, (char *__buf, size_t __size ));
+#if defined(__CYGWIN__) || defined(__MSYS__)
+int     _EXFUN(getdomainname ,(char *__name, size_t __len));
+#endif
 gid_t   _EXFUN(getegid, (void ));
 uid_t   _EXFUN(geteuid, (void ));
 gid_t   _EXFUN(getgid, (void ));
