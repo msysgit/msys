@@ -1,3 +1,14 @@
+2010.05.07  Dave Korn  <dave.korn.cygwin@gmail.com>
+
+	* lib/pseudo-reloc.c (memskip_t): New struct and typedef.
+	(__write_memory): Accept an optional memskip_t argument and avoid
+	writing to any memory ranges mentioned in the linked list.
+	(do_pseudo_reloc): Accept an optional memskip_t argument and pass
+	it through in all calls to __write_memory.
+	(_pei386_runtime_relocator): When reapplying relocs in a forked
+	child process, avoid doubly-relocating the .data and .bss sections
+	that were copied from the parent.
+
 2010.05.07  Charles Wilson  <mingw@cwilson.fastmail.fm>
 
 	* net.cc (getdomainname): Align signature with
