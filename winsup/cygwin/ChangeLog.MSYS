@@ -1,3 +1,8 @@
+2010.05.07  Charles Wilson  <mingw@cwilson.fastmail.fm>
+
+	* net.cc (getdomainname): Align signature with
+	declaration in include/netdb.h.
+
 2010.03.29  Charles Wilson  <mingw@cwilson.fastmail.fm>
 
 	* include/netdb.h: Declare rcmd, rexec, and rresvport.
