@@ -78,6 +78,20 @@ typedef struct {
   DWORD version;
 } runtime_pseudo_reloc_v2;
 
+/* This trivial struct is passed right down through do_pseudo_reloc
+   to __write_memory where it is used to avoid re-relocating those
+   memory areas that we know will have been pre-relocated by copying
+   from the parent of a forked child process.  Since there will only
+   ever be two ranges it's not worth worrying hugely about making it
+   efficient so a simple singly-linked list will do; if we ever start
+   encountering user applications with more than a few hundred or so
+   pseudo-relocs, there might come a time to rethink this.  */
+typedef struct memskip {
+  DWORD start;
+  DWORD end;
+  const struct memskip *next;
+} memskip_t;
+
 static void ATTRIBUTE_NORETURN
 __report_error (const char *msg, ...)
 {
@@ -169,13 +183,20 @@ __report_error (const char *msg, ...)
  * is folded into the (writable) .data when --enable-auto-import.
  */
 static void
-__write_memory (void *addr, const void *src, size_t len)
+__write_memory (void *addr, const void *src, size_t len, const memskip_t *skipranges)
 {
   MEMORY_BASIC_INFORMATION b;
   DWORD oldprot;
 
   if (!len)
     return;
+
+  while (skipranges)
+    {
+      if ((skipranges->start <= (DWORD)addr) && (skipranges->end > (DWORD)addr))
+	return;
+      skipranges = skipranges->next;
+    }
 
   if (!VirtualQuery (addr, &b, sizeof(b)))
     {
@@ -198,7 +219,7 @@ __write_memory (void *addr, const void *src, size_t len)
 #define RP_VERSION_V2 1
 
 static void
-do_pseudo_reloc (void * start, void * end, void * base)
+do_pseudo_reloc (void * start, void * end, void * base, const memskip_t *skipranges)
 {
   ptrdiff_t addr_imp, reldata;
   ptrdiff_t reloc_target = (ptrdiff_t) ((char *)end - (char*)start);
@@ -259,7 +280,7 @@ do_pseudo_reloc (void * start, void * end, void * base)
 	  DWORD newval;
 	  reloc_target = (ptrdiff_t) base + o->target;
 	  newval = (*((DWORD*) reloc_target)) + o->addend;
-	  __write_memory ((void *) reloc_target, &newval, sizeof(DWORD));
+	  __write_memory ((void *) reloc_target, &newval, sizeof(DWORD), skipranges);
 	}
       return;
     }
@@ -337,17 +358,17 @@ do_pseudo_reloc (void * start, void * end, void * base)
       switch ((r->flags & 0xff))
 	{
          case 8:
-           __write_memory ((void *) reloc_target, &reldata, 1);
+           __write_memory ((void *) reloc_target, &reldata, 1, skipranges);
 	   break;
 	 case 16:
-           __write_memory ((void *) reloc_target, &reldata, 2);
+           __write_memory ((void *) reloc_target, &reldata, 2, skipranges);
 	   break;
 	 case 32:
-           __write_memory ((void *) reloc_target, &reldata, 4);
+           __write_memory ((void *) reloc_target, &reldata, 4, skipranges);
 	   break;
 #ifdef _WIN64
 	 case 64:
-           __write_memory ((void *) reloc_target, &reldata, 8);
+           __write_memory ((void *) reloc_target, &reldata, 8, skipranges);
 	   break;
 #endif
 	}
@@ -357,11 +378,57 @@ do_pseudo_reloc (void * start, void * end, void * base)
 void
 _pei386_runtime_relocator (void)
 {
+  /* We only want to apply the pseudo-relocs once, so we use this once-only
+     guard variable - no need for complex serialisation or synchronisation
+     here, as we're in early start-up (if an exe) or at process attach time
+     (if a dll) and we'll be implicitly running single-threaded anyway.
+
+     However, when we fork a process, the OS creates fresh mappings of all
+     the image files, so the pseudo-relocs all get wiped out and we need
+     to reapply them; hence, the guard variable is NO_COPY, so that it
+     starts from zero again in the forked child, and we apply the relocs
+     again.  */
   static NO_COPY int was_init = 0;
+  /* But it isn't quite that simple.  During fork startup the parent and
+     child co-operate to synchronize the memory: code in the Cygwin DLL
+     copies across all the (non-read-only) data and bss sections of the
+     exe and loaded dlls, not to mention heap and stack areas; this is
+     how all the variables in the child end up with the same content as
+     the parent, but it effectively pre-applies any pseudo-relocs that
+     point into those regions for us, as their effect has been copied
+     from the parent.  We need to avoid re-applying them when we fork
+     or the data will end up doubly-relocated and pointing randomly into
+     space, which is obviously a problem.  So we also have a once-only
+     guard variable that does *not* use the NO_COPY attribute; this
+     guard variable won't be reset on a fork but will remain set from
+     the parent, letting us infer that we are re-applying pseudo-relocs
+     in a child process rather than applying them for the first time
+     in an entirely newly-created process.  */
+  static char was_forked = 0;
+  /* In that case, we want to avoid applying any pseudo-relocs that we
+     know will already have been copied, pre-applied, from the parent's
+     .data and .bss sections.  See the references to child_proc_info in
+     dcrt0.cc#dll_crt0_1(), and fork.cc#fork_parent() for the details.
+     We take advantage here of the fact that this code is part of the
+     winsup/cygwin/lib/ runtime library startup code, linked as a static
+     object into each exe and dll rather than being part of the Cygwin DLL
+     itself; this means we can simply look at the linker-supplied labels
+     marking the start and end of our own .data and .bss sections to know
+     which memory areas to avoid re-relocating, and don't have to worry
+     about any complicated mechanism for the DLL to inform us which memory
+     areas it copied.  Phew!  */
+  extern char _data_start__, _data_end__, _bss_start__, _bss_end__;
+  static const memskip_t skipchain[2] = {
+    { .start = (DWORD)&_data_start__, .end = (DWORD)&_data_end__, .next = &skipchain[1] },
+    { .start = (DWORD)&_bss_start__, .end = (DWORD)&_bss_end__, .next = 0 }
+  };
+
   if (was_init)
     return;
   ++was_init;
   do_pseudo_reloc (&__RUNTIME_PSEUDO_RELOC_LIST__,
 		   &__RUNTIME_PSEUDO_RELOC_LIST_END__,
-		   &__MINGW_LSYMBOL(_image_base__));
+		   &__MINGW_LSYMBOL(_image_base__),
+		   was_forked ? skipchain : NULL);
+  was_forked = 1;
 }
