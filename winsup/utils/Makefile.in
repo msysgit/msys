@@ -60,7 +60,7 @@ MINGW_LDLIBS:=
 MINGW_DEP_LDLIBS:=
 ALL_LDFLAGS:=-B$(newlib_build)/libc/ -B$(newlib_build)/libm/ -B$(w32api_lib)/ \
 	     $(LDFLAGS) $(ALL_LDLIBS)
-MINGW_LDFLAGS:=-B/usr/lib/mingw $(MINGW_LIB)
+MINGW_LDFLAGS:=-B/usr/lib/mingw -static-libgcc -static-libstdc++ $(MINGW_LIB)
 
 PROGS:=mount$(EXEEXT) ps$(EXEEXT) \
        cygpath$(EXEEXT) cygcheck$(EXEEXT) \
