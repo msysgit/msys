@@ -1,3 +1,8 @@
+2010.01.15  Cesar Strauss  <cestrauss@gmail.com>
+
+	* include/cygwin/version.h: Increment version to 1.0.15.
+	* winsup/cygwin/cygwin.din: Change DLL base address to 0x60800000.
+
 2010.05.07  Dave Korn  <dave.korn.cygwin@gmail.com>
 
 	* lib/pseudo-reloc.c (memskip_t): New struct and typedef.
@@ -17,6 +22,15 @@
 2010.03.29  Charles Wilson  <mingw@cwilson.fastmail.fm>
 
 	* include/netdb.h: Declare rcmd, rexec, and rresvport.
+
+
+2010.01.18  Cesar Strauss  <cestrauss@gmail.com>
+
+	Fix path translation in presence of components with dots.
+
+	* path.cc (msys_p2w): Search the whole string for a ".."
+	component, instead of stopping at the first ".".
+	* include/cygwin/version.h: Increment version to 1.0.14.
 
 2010.01.15  Cesar Strauss  <cestrauss@gmail.com>
 
