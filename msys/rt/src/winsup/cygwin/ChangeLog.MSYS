@@ -1,4 +1,10 @@
-2010.01.15  Cesar Strauss  <cestrauss@gmail.com>
+2010.08.12  Cesar Strauss  <cestrauss@gmail.com>
+
+	Fix a race condition when determining if a pid is valid.
+	2002-01-19  Christopher Faylor  <cgf@redhat.com>
+	* sigproc.cc (proc_exists): Change existence criteria.
+
+2010.07.06  Cesar Strauss  <cestrauss@gmail.com>
 
 	* include/cygwin/version.h: Increment version to 1.0.15.
 	* winsup/cygwin/cygwin.din: Change DLL base address to 0x60800000.

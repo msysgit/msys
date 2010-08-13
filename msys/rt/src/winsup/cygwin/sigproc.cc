@@ -209,7 +209,7 @@ BOOL __stdcall
 proc_exists (_pinfo *p)
 {
   TRACE_IN;
-  return p && !(p->process_state & (PID_INITIALIZING | PID_EXITED));
+  return p && !(p->process_state & PID_EXITED);
 }
 
 /* Return 1 if this is one of our children, zero otherwise.
