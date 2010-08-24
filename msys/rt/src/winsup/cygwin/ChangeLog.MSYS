@@ -1,3 +1,9 @@
+2010.08.23  Ladislav Michl  <ladis@users.sourceforge.net>
+
+	* msys_symlink.cc (msys_symlink): Swap argument order to match POSIX.
+	Run the cleanup code after RecursiveCopy, to fix a memory leak.
+	* path.cc (symlink): Swap msys_symlink arguments to match msys_symlink.
+
 2010.08.12  Cesar Strauss  <cestrauss@gmail.com>
 
 	Fix a race condition when determining if a pid is valid.
