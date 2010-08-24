@@ -2370,10 +2370,8 @@ int
 symlink (const char *topath, const char *frompath)
 {
   TRACE_IN;
-    int res;
-    debug_printf("symlink (%s, %s)", topath, frompath);
-    res = msys_symlink (frompath, topath);
-    return res;
+  debug_printf("symlink (%s, %s)", topath, frompath);
+  return msys_symlink (topath, frompath);
 }
 
 #ifdef NEW_SUFFIX_METHOD
