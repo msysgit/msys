@@ -1,3 +1,8 @@
+2010.09.04  Charles Wilson  <mingw@cwilson.fastmail.fm>
+
+	* path.cc (msys_p2w): Support conversion of @file
+	arguments.
+
 2010.08.23  Ladislav Michl  <ladis@users.sourceforge.net>
 
 	* msys_symlink.cc (msys_symlink): Swap argument order to match POSIX.
