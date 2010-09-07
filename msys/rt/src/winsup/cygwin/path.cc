@@ -3136,10 +3136,10 @@ msys_p2w (char const * const path)
       if ((sspath > 0)
 	   && (strchr (spath, '/') > 0)
 	   // 
-	   // Prevent strings beginning with -, ", or ' from being processed,
+	   // Prevent strings beginning with -, ", ', or @ from being processed,
 	   // remember that this is a recursive routine.
 	   // 
-	   && (strchr ("-\"\'", spath[0]) == 0)
+	   && (strchr ("-\"\'@", spath[0]) == 0)
 	   // 
 	   // Prevent ``foo:echo /bar/baz'' from being considered a path list.
 	   // 
@@ -3272,6 +3272,42 @@ msys_p2w (char const * const path)
 		  debug_printf("returning: %s", path);
 		  return ((char *)path);
 		}
+	    }
+	  break;
+	case '@':
+	  //
+	  // here we check for POSIX paths as attributes to a response
+	  // file argument (@file). This is specifically to support
+	  // MinGW binutils and gcc.
+	  //
+	  sspath = spath + 1;
+	  if (IsAbsWin32Path (sspath))
+	    {
+	      debug_printf("returning: %s", path);
+	      return (char *)path;
+	    }
+	  if (spath[1] == '/')
+	    {
+	      debug_printf("spath = %s", spath);
+	      char *swin32_path = msys_p2w (sspath);
+	      if (swin32_path == sspath)
+		{
+		  debug_printf("returning: %s", path);
+		  return ((char *)path);
+		}
+	      sspath = (char *)spath;
+	      sspath++;
+	      *sspath = '\0';
+	      retpathcpy (spath);
+	      *sspath = '/';
+	      retpathcat (swin32_path);
+	      free (swin32_path);
+	      return ScrubRetpath (retpath);
+	    }
+	  else
+	    {
+	      debug_printf("returning: %s", path);
+	      return ((char *)path);
 	    }
 	  break;
 	case '"':
