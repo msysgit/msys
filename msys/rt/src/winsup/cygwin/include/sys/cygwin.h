@@ -66,7 +66,8 @@ typedef enum
     CW_GETPINFO_FULL,
     CW_INIT_EXCEPTIONS,
     CW_GET_CYGDRIVE_INFO,
-    CW_EXIT_PROCESS
+    CW_EXIT_PROCESS,
+    CW_SYNC_WINENV
   } cygwin_getinfo_types;
 
 #define CW_NEXTPID	0x80000000	// or with pid to get next one
