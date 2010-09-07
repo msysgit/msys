@@ -1,5 +1,16 @@
 2010.09.04  Charles Wilson  <mingw@cwilson.fastmail.fm>
 
+	* environ.cc (forced_winenv_vars): Ensure that HOMEDRIVE,
+	HOMEPATH, PATH, USERDOMAIN, USERNAME, USERPROFILE, and WINDIR
+	environment variables exist.
+	* external.cc (sync_winenv): New function.
+	(cygwin_internal): Ensure that va_arg is cleaned up before
+	return. Set errno on bad call. Support new CW_SYNC_WINENV option.
+	* include/cygwin/version.h: Bump API version number.
+	* include/sys/cygwin.h: Define CW_SYNC_WINENV.
+
+2010.09.04  Charles Wilson  <mingw@cwilson.fastmail.fm>
+
 	* path.cc (msys_p2w): Support conversion of @file
 	arguments.
 

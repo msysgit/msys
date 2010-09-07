@@ -787,11 +787,18 @@ env_sort (const void *a, const void *b)
 /* Keep this list in upper case and sorted */
 static const NO_COPY char* forced_winenv_vars [] =
   {
+    "HOMEDRIVE",
+    "HOMEPATH",
+    "PATH",
 #if __MSYS__
     "MSYSTEM",
 #endif /* __MSYS__ */
     "SYSTEMDRIVE",
     "SYSTEMROOT",
+    "USERDOMAIN",
+    "USERNAME",
+    "USERPROFILE",
+    "WINDIR",
     NULL
   };
 
