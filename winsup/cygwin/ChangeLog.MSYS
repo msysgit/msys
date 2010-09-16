@@ -1,3 +1,11 @@
+2010.09.16  Cesar Strauss  <cestrauss@gmail.com>
+
+	Be more robust when dealing with ambiguous paths and mount points.
+	* dir.cc (opendir): Avoid calling stat with a Windows path.
+	* path.cc (sort_by_native_name): As a last resort, sort
+	by posix path.
+	Fix typo in comments (POSIX vs. native).
+
 2010.09.04  Charles Wilson  <mingw@cwilson.fastmail.fm>
 
 	* environ.cc (forced_winenv_vars): Ensure that HOMEDRIVE,
