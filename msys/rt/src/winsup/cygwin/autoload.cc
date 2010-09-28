@@ -9,8 +9,11 @@ Cygwin license.  Please consult the file "CYGWIN_LICENSE" for
 details. */
 
 #include "winsup.h"
+#include "miscfuncs.h"
 #define USE_SYS_TYPES_FD_SET
 #include <winsock2.h>
+
+bool NO_COPY wsock_started;
 
 /* Macro for defining "auto-load" functions.
  * Note that this is self-modifying code *gasp*.
@@ -56,29 +59,37 @@ details. */
    additional initialization routine to call prior to calling the first
    function.  */
 #define LoadDLLprime(dllname, init_also) __asm__ ("	\n\
-  .section	." #dllname "_info,\"w\"		\n\
-  .linkonce						\n\
-  .long		std_dll_init				\n\
+.ifndef " #dllname "_primed				\n\
+  .section	.data_cygwin_nocopy,\"w\"		\n\
+  .align	4					\n\
+."#dllname "_info:					\n\
+  .long		_std_dll_init				\n\
   .long		0					\n\
   .long		-1					\n\
   .long		" #init_also "				\n\
   .asciz	\"" #dllname "\"			\n\
   .text							\n\
+  .set		" #dllname "_primed, 1			\n\
+.endif							\n\
 ");
 
 /* Create a "decorated" name */
 #define mangle(name, n) #name "@" #n
 
-/* Standard DLL load macro.  Invokes a fatal warning if the function isn't
+/* Standard DLL load macro.  May invoke a fatal error if the function isn't
    found. */
-#define LoadDLLfunc(name, n, dllname) LoadDLLfuncEx (name, n, dllname, 0)
-#define LoadDLLfuncEx(name, n, dllname, notimp) LoadDLLfuncEx2(name, n, dllname, notimp, 0)
+#define LoadDLLfunc(name, n, dllname) \
+  LoadDLLfuncEx (name, n, dllname, 0)
+#define LoadDLLfuncEx(name, n, dllname, notimp) \
+  LoadDLLfuncEx2(name, n, dllname, notimp, 0)
+#define LoadDLLfuncEx2(name, n, dllname, notimp, err) \
+  LoadDLLfuncEx3(name, n, dllname, notimp, err, 0)
 
 /* Main DLL setup stuff. */
-#define LoadDLLfuncEx2(name, n, dllname, notimp, err) \
+#define LoadDLLfuncEx3(name, n, dllname, notimp, err, fn) \
   LoadDLLprime (dllname, dll_func_load)			\
   __asm__ ("						\n\
-  .section	." #dllname "_text,\"wx\"		\n\
+  .section	." #dllname "_autoload_text,\"wx\"	\n\
   .global	_" mangle (name, n) "			\n\
   .global	_win32_" mangle (name, n) "		\n\
   .align	8					\n\
@@ -87,11 +98,11 @@ _win32_" mangle (name, n) ":				\n\
   .byte		0xe9					\n\
   .long		-4 + 1f - .				\n\
 1:movl		(2f),%eax				\n\
-  call		*(%eax)					\n\
+   call		*(%eax)					\n\
 2:.long		." #dllname "_info			\n\
-  .long		(" #n "+" #notimp ") | " #err "<<16	\n\
-  .asciz	\"" #name "\"				\n\
-  .text							\n\
+   .long		(" #n "+" #notimp ") | (((" #err ") & 0xff) <<16) | (((" #fn ") & 0xff) << 24)	\n\
+   .asciz	\"" #name "\"				\n\
+   .text							\n\
 ");
 
 /* DLL loader helper functions used during initialization. */
@@ -106,13 +117,11 @@ extern "C" void dll_func_load () __asm__ ("dll_func_load");
    functions from this DLL.  */
 extern "C" void dll_chain () __asm__ ("dll_chain");
 
-/* called by the secondary initialization function to call dll_func_load. */
-extern "C" void dll_chain1 () __asm__ ("dll_chain1");
-
 extern "C" {
 
 /* FIXME: This is not thread-safe? */
 __asm__ ("								\n\
+	 .text								\n\
 msg1:									\n\
 	.ascii	\"couldn't dynamically determine load address for '%s' (handle %p), %E\\0\"\n\
 									\n\
@@ -132,7 +141,7 @@ noload:									\n\
 	pushl	%eax		# First argument			\n\
 	call	_SetLastError@4	# Set it				\n\
 	popl	%eax		# Get back argument			\n\
-	shrl	$16,%eax	# return value in high order word	\n\
+	sarl	$16,%eax	# return value in high order word	\n\
 	jmp	*%edx		# Return				\n\
 1:									\n\
 	movl	(%edx),%eax	# Handle value				\n\
@@ -165,12 +174,6 @@ gotit:									\n\
 	.global	dll_chain						\n\
 dll_chain:								\n\
 	pushl	%eax		# Restore 'return address'		\n\
-	movl	(%eax),%eax	# Get address of DLL info block		\n\
-	movl	$dll_func_load,(%eax) # Just load func now		\n\
-	jmp	*%edx		# Jump to next init function		\n\
-									\n\
-dll_chain1:								\n\
-	pushl	%eax		# Restore 'return address'		\n\
 	jmp	*%edx		# Jump to next init function		\n\
 ");
 
@@ -201,8 +204,7 @@ union retchain
 };
 
 /* The standard DLL initialization routine. */
-static long long std_dll_init () __asm__ ("std_dll_init") __attribute__ ((unused));
-static long long
+__attribute__ ((used, noinline)) static long long
 std_dll_init ()
 {
   HANDLE h;
@@ -214,13 +216,18 @@ std_dll_init ()
     do
       {
 	InterlockedDecrement (&dll->here);
-	Sleep (0);
+	low_priority_sleep (0);
       }
     while (InterlockedIncrement (&dll->here));
   else if (!dll->handle)
     {
+      unsigned fpu_control = 0;
+      __asm__ __volatile__ ("fnstcw %0": "=m" (fpu_control));
       if ((h = LoadLibrary (dll->name)) != NULL)
-	dll->handle = h;
+	{
+	  __asm__ __volatile__ ("fldcw %0": : "m" (fpu_control));
+	  dll->handle = h;
+	}
       else if (!(func->decoration & 1))
 	api_fatal ("could not load %s, %E", dll->name);
       else
@@ -241,36 +248,25 @@ std_dll_init ()
 }
 
 /* Initialization function for winsock stuff. */
-static long long wsock_init () __asm__ ("wsock_init") __attribute__ ((unused, regparm(1)));
-bool NO_COPY wsock_started = 0;
-static long long
+WSADATA NO_COPY wsadata;
+__attribute__ ((used, noinline, regparm(1))) static long long
 wsock_init ()
 {
   static LONG NO_COPY here = -1L;
   struct func_info *func = (struct func_info *) __builtin_return_address (0);
   struct dll_info *dll = func->dll;
 
-  __asm__ ("						\n\
-	.section .ws2_32_info				\n\
-	.equ	_ws2_32_handle,.ws2_32_info + 4		\n\
-	.global _ws2_32_handle				\n\
-	.section .wsock32_info				\n\
-	.equ	_wsock32_handle,.wsock32_info + 4	\n\
-	.global	_wsock32_handle				\n\
-	.text						\n\
-  ");
-
   while (InterlockedIncrement (&here))
     {
       InterlockedDecrement (&here);
-      Sleep (0);
+      low_priority_sleep (0);
     }
 
   if (!wsock_started && (winsock_active || winsock2_active))
     {
-      /* Don't use autoload to load WSAStartup to eliminate recursion. */
       int (*wsastartup) (int, WSADATA *);
 
+      /* Don't use autoload to load WSAStartup to eliminate recursion. */
       wsastartup = (int (*)(int, WSADATA *))
 		   GetProcAddress ((HMODULE) (dll->handle), "WSAStartup");
       if (wsastartup)
@@ -290,22 +286,22 @@ wsock_init ()
 	}
     }
 
-  InterlockedDecrement (&here);
-
-  /* Kludge alert.  Redirects the return address to dll_chain1. */
+  /* Kludge alert.  Redirects the return address to dll_chain. */
   __asm__ __volatile__ ("		\n\
-	movl	$dll_chain1,4(%ebp)	\n\
+	movl	$dll_chain,4(%ebp)	\n\
   ");
 
+  InterlockedDecrement (&here);
+
   volatile retchain ret;
-  /* Set "arguments for dll_chain1. */
+  /* Set "arguments for dll_chain. */
   ret.low = (long) dll_func_load;
   ret.high = (long) func;
   return ret.ll;
 }
 
-LoadDLLprime (wsock32, wsock_init)
-LoadDLLprime (ws2_32, wsock_init)
+LoadDLLprime (wsock32, _wsock_init)
+LoadDLLprime (ws2_32, _wsock_init)
 
 LoadDLLfunc (AccessCheck, 32, advapi32)
 LoadDLLfunc (AddAccessAllowedAce, 16, advapi32)
@@ -505,9 +501,11 @@ LoadDLLfuncEx (GetConsoleWindow, 0, kernel32, 1)
 LoadDLLfuncEx (GetSystemTimes, 12, kernel32, 1)
 LoadDLLfuncEx2 (IsDebuggerPresent, 0, kernel32, 1, 1)
 LoadDLLfunc (IsProcessorFeaturePresent, 4, kernel32);
+LoadDLLfuncEx (IsWow64Process, 8, kernel32, 1);
 LoadDLLfuncEx (Process32First, 8, kernel32, 1)
 LoadDLLfuncEx (Process32Next, 8, kernel32, 1)
 LoadDLLfuncEx (SignalObjectAndWait, 16, kernel32, 1)
+LoadDLLfuncEx (SwitchToThread, 0, kernel32, 1)
 LoadDLLfunc (TryEnterCriticalSection, 4, kernel32)
 
 LoadDLLfuncEx (waveOutGetNumDevs, 0, winmm, 1)

@@ -1,3 +1,602 @@
+2010.09.28  Cesar Strauss  <cestrauss@gmail.com>
+
+	* include/cygwin/version.h: Increment version to 1.0.16.
+
+2010.09.16  Cesar Strauss  <cestrauss@gmail.com>
+
+	Be more robust when dealing with ambiguous paths and mount points.
+	* dir.cc (opendir): Avoid calling stat with a Windows path.
+	* path.cc (sort_by_native_name): As a last resort, sort
+	by posix path.
+	Fix typo in comments (POSIX vs. native).
+
+2010.09.04  Charles Wilson  <mingw@cwilson.fastmail.fm>
+
+	* environ.cc (forced_winenv_vars): Ensure that HOMEDRIVE,
+	HOMEPATH, PATH, USERDOMAIN, USERNAME, USERPROFILE, and WINDIR
+	environment variables exist.
+	* external.cc (sync_winenv): New function.
+	(cygwin_internal): Ensure that va_arg is cleaned up before
+	return. Set errno on bad call. Support new CW_SYNC_WINENV option.
+	* include/cygwin/version.h: Bump API version number.
+	* include/sys/cygwin.h: Define CW_SYNC_WINENV.
+
+2010.09.04  Charles Wilson  <mingw@cwilson.fastmail.fm>
+
+	* path.cc (msys_p2w): Support conversion of @file
+	arguments.
+
+2010.08.23  Ladislav Michl  <ladis@users.sourceforge.net>
+
+	* msys_symlink.cc (msys_symlink): Swap argument order to match POSIX.
+	Run the cleanup code after RecursiveCopy, to fix a memory leak.
+	* path.cc (symlink): Swap msys_symlink arguments to match msys_symlink.
+
+2010.08.12  Cesar Strauss  <cestrauss@gmail.com>
+
+	Fix a race condition when determining if a pid is valid.
+	2002-01-19  Christopher Faylor  <cgf@redhat.com>
+	* sigproc.cc (proc_exists): Change existence criteria.
+
+2010.07.06  Cesar Strauss  <cestrauss@gmail.com>
+
+	* include/cygwin/version.h: Increment version to 1.0.15.
+	* winsup/cygwin/cygwin.din: Change DLL base address to 0x60800000.
+
+2010.05.07  Dave Korn  <dave.korn.cygwin@gmail.com>
+
+	* lib/pseudo-reloc.c (memskip_t): New struct and typedef.
+	(__write_memory): Accept an optional memskip_t argument and avoid
+	writing to any memory ranges mentioned in the linked list.
+	(do_pseudo_reloc): Accept an optional memskip_t argument and pass
+	it through in all calls to __write_memory.
+	(_pei386_runtime_relocator): When reapplying relocs in a forked
+	child process, avoid doubly-relocating the .data and .bss sections
+	that were copied from the parent.
+
+2010.05.07  Charles Wilson  <mingw@cwilson.fastmail.fm>
+
+	* net.cc (getdomainname): Align signature with
+	declaration in include/netdb.h.
+
+2010.03.29  Charles Wilson  <mingw@cwilson.fastmail.fm>
+
+	* include/netdb.h: Declare rcmd, rexec, and rresvport.
+
+
+2010.01.18  Cesar Strauss  <cestrauss@gmail.com>
+
+	Fix path translation in presence of components with dots.
+
+	* path.cc (msys_p2w): Search the whole string for a ".."
+	component, instead of stopping at the first ".".
+	* include/cygwin/version.h: Increment version to 1.0.14.
+
+2010.01.15  Cesar Strauss  <cestrauss@gmail.com>
+
+	* path.cc (msys_p2w): Check for end-of-string before "/"
+	for an argument beginning with "-".
+
+2010.01.15  Cesar Strauss  <cestrauss@gmail.com>
+
+	* path.cc (msys_p2w): Improve documentation.
+
+2010.01.15  Cesar Strauss  <cestrauss@gmail.com>
+
+	Add sanity checks to avoid possible crash.
+	* ismsys.cc (GetFileDataStr): null-terminate the return data.
+	(IsMsys): Bound-check the pointer passed to strcmp.
+
+2010.01.15  Cesar Strauss  <cestrauss@gmail.com>
+
+	* include/cygwin/version.h: Increment version to 1.0.13.
+
+2010.01.12  Charles Wilson  <mingw@cwilson.fastmail.fm>
+
+	Add pseudo-reloc support; implement CW_EXIT_PROCESS.
+	* lib/_cygwin_crt0_common.cc (_msys_crt0_common): Call
+	_pei386_runtime_relocator.
+	* lib/pseudo-reloc.c: New file (imported from cygwin).
+
+	2009-10-05  Charles Wilson  <cygwin@cwilson.fastmail.fm>
+	Add cygwin wrapper for ExitProcess and TerminateProcess.
+	* include/sys/cygwin.h: Declare new cygwin_getinfo_type
+	CW_EXIT_PROCESS.
+	* external.cc (exit_process): New function.
+	(cygwin_internal): Handle CW_EXIT_PROCESS.
+	* include/cygwin/version.h: Bump CYGWIN_VERSION_API_MINOR
+	to 47 to reflect the above change. 
+
+2010.01.12  Charles Wilson  <mingw@cwilson.fastmail.fm>
+
+	Other assorted changes ported from cygwin
+	* Makefile.in: Add $(W32API_LDFLAGS) to link step, to allow
+	linking against installed w32api.
+	* autoload.cc: Synchronize with modern cygwin.
+	* cygheap.cc (_csbrk): Avoid warning (with gcc3).
+	* cygthread.h: Make main_thread_id public.
+	* cygwin.sc: Bring closer to modern cygwin (and use
+	correct idioms for recent binutils). Add DWARF2 debugging
+	sections.
+	* dcrt0.cc (_dll_crt0): Avoid warning (with gcc3).
+	* errno.cc: No need for dllexport on sys_err objects,
+	so silence warning (gcc3).
+	* fhandler_socket.cc (fixup_before_fork_exec, fixup_after_fork,
+	dup, set_close_on_exec): Use different method for initing
+	winsock (required by cygwin.sc changes).
+	* miscfuncs.cc (low_priority_sleep): New function.
+	* net.cc (cygwin_gethostname): Fix call to wsock function gethostname.
+	* security.cc (get_group_sidlist): Modern w32api no longer defines
+	a QuadPart member of UUID structure, so use alternate method to
+	convert to long long.
+	* winbase.h: Synchronize with modern cygwin version (save the most
+	recent changes to ilockexch/ilockcmpexch).
+	* winsup.h: Moved declaration of low_priority_sleep() to...
+	* miscfuncs.h: here. New file.
+
+2010.01.11  Cesar Strauss  <cestrauss@gmail.com>
+
+	Merge gcc-3 improvements from cygwin.
+	2002-11-26  Thomas Pfaff  <tpfaff@gmx.net>
+	* cxx.cc: New file. Implement new, new[], delete and delete[]
+	operators and  __cxa_pure_virtual if compiled by gcc >=3.
+	* Makefile.in (DLL_OFILES): Add cxx.o.
+	Remove libstdc++.a from cygwin1.dll link step.
+
+2010.01.05  Cesar Strauss  <cestrauss@gmail.com>
+
+	* include/cygwin/version.h: Increment version to 1.0.12.
+
+2010.01.05  Cesar Strauss  <cestrauss@gmail.com>
+
+	Improve symlink emulation.
+	* msys_symlink.cc: Document MSYS symlink semantics.
+	(msys_symlink): When the source path is relative, append it to the
+	directory component of the destination.
+	Return failure if the destination exists, as per POSIX.
+	Use path_conv instead of msys_p2w().
+	Factor out the recursive copy operation to ...
+	(RecursiveCopy): ... this new function.
+
+2009.12.28  Cesar Strauss  <cestrauss@gmail.com>
+
+	* msys_symlink.cc (msys_symlink): Return correct value on failure (-1).
+	Fixes a perl issue reported by Ralf Wildenhues.
+
+2009.12.28  Peter Hayward  <peterhayward@users.sourceforge.net>
+
+	Fix Win9x permission issues, resolves bug #2853975.
+	* ismsys.cc: Add #include "host_dependent.h".
+	(IsMsys): Replace sharing flags with "host_dependent.shared".
+	* syscalls.cc (_unlink): Reinstate "delqueue" method for
+	unlinking open files.
+
+2009.01.20  Cesar Strauss  <cestrauss@gmail.com>
+
+	* errno.cc (FILENAME_EXCED_RANGE): Map to ENAMETOOLONG.
+
+2009.01.05  Cesar Strauss  <cestrauss@gmail.com>
+
+	* fork.cc (fork_parent): Remove unused argument from malloc_lock
+	argument.
+	* malloc.cc (malloc_lock, malloc_unlock): Ditto.
+	* winsup.h: Ditto.
+	Remove duplicate declarations of malloc_lock and malloc_unlock.
+
+2008.08.21  Cesar Strauss  <cestrauss@gmail.com>
+
+	* fhandler.cc (fhandler_disk_file::open): Store the full Windows
+	path in the file handle, so generated inode numbers are consistent.
+
+2008.08.07  Cesar Strauss  <cestrauss@gmail.com>
+
+	* regexp/regexp.c (debug_printf): Remove definition.
+	(regcomp): Avoid output of debug info.
+	(reg): Ditto.
+	(regbranch): Ditto.
+	(regpiece): Ditto.
+	(regatom): Ditto.
+	(regnode): Ditto.
+	(regc): Ditto.
+	(reginsert): Ditto.
+	(regtail): Ditto.
+	(regoptail): Ditto.
+	(regexec): Ditto.
+	(regtry): Ditto.
+	(regmatch): Ditto.
+	(regrepeat): Ditto.
+	(regnext): Ditto.
+
+2008.05.11  Cesar Strauss  <cestrauss@gmail.com>
+
+	Improve the fchdir and opendir implementations.
+	* fhandler.cc (normalize_posix_path): declare extern.
+	(fhandler_base::set_name): Store the full path in the file handle.
+	* path.cc (fchdir): Remove code to store the full path in handle.
+	* dir.cc (opendir): Avoid using native paths when calling our "open"
+	implementation.
+
+2007.11.01  Cesar Strauss  <cestrauss@gmail.com>
+
+	Avoid a space at the end of command-line.
+	* spawn.cc (spawn_guts): Add the space before each command-line
+	argument, not after.
+
+2007.07.28  Cesar Strauss  <cestrauss@gmail.com>
+
+	Work around a bug in Vista 64 which failed to copy the child_info
+	structure properly. Thanks to: Oscar Bonilla, jdrasch and madwizard.
+	Closes bug #1674783 and patch #1729798.
+
+	* autoload.cc (IsWow64Process): Add auto-load function.
+	* child_info.h (child_info::msv_count): Rename from "zero".
+	(child_info_spawn::filler): Add filler bytes.
+	(child_info_fork::filler): Ditto.
+	(init_child_info): Add new parameter.
+	* dcrt0.cc (_dll_crt0): Remove "zero" check.
+	(set_os_type): Detect Vista WOW64.
+	* sigproc.cc (init_child_info): Add new parameter.
+	Initialize msv_count.
+	* fork.cc (fork_parent): Adjust cbReserved2 not to take the filler
+	bytes into account. Pass the structure size to init_child_info.
+	* spawn.cc (spawn_guts): Ditto
+	* winsup.h (isVistaWOW64): Add new flag.
+
+2007.01.12  Earnie Boyd  <earnie@users.sf.net>
+
+	* dir.cc (rmdir): Add usleep kludge for ACCESS_DENIED errors.
+	* fhandler.cc (fhandler_base:open): Ditto.
+	* dtable.cc (dtable::release): Add resource lock/unlock for.
+	* syscalls.cc (_unlink): Rework usleep kludge for speed.
+	(_close): Add fsync(fd) before releasing descriptor.
+	Remove usleep kludge because of speed.
+	(stat_worker): Remove secondary exit path.
+	(_rename): Add usleep kludge.
+	
+2007.01.09  Earnie Boyd  <earnie@users.sf.net>
+
+	* include/pthread.h (PTHREAD_RWLOCK_INITIALIZER): Give constant value.
+	* syscalls.cc (_close): Add a usleep before returning to allow rename
+	to function properly.
+	(_ulink): Clarify FIXME comment.
+
+2006.12.29  Howard Chu <highlandsun@users.sf.net>
+
+	* exceptions.cc (ctrl_c_handler): Handle CTRL_LOGOFF_EVENT too,
+	since that's sent during a Shutdown. Resolves Tracker #1174106.
+
+2006.08.07  Earnie Boyd <earnie@users.sf.net>
+
+	* ismsys.cc (IsMsys): Add FILE_SHARE_DELETE to sharing permissions.
+	Add a missing CloseHandle.
+	* syscalls.cc (_unlink): Remove unneeded code based on current
+	information from MSDN.  Add usleep and FIXME to allow system utilities
+	and rm a better chance to interact.
+
+2006.07.26  Earnie Boyd <earnie@users.sf.net>
+
+	* dir.cc (opendir): Revert PC_SYM_NOFOLLOW change.
+	* fhandler.cc (fhandler_disk_file::open): Ditto.
+	* path.cc (chdir): Ditto.
+	(cygwin_conv_to_full_win32_path): Ditto.
+	(realpath): Ditto.
+	* sec_acl.cc (acl_worker): Ditto.
+	* spawn.cc (perhaps_suffix): Ditto.
+	* syscalls.cc (chown): Ditto.
+	(fchown): Ditto.
+	(stat_worker): Ditto.  Also revert nofollow change.
+	(_stat): Revert nofollow change.
+	(_lstat): Ditto.
+	(pathconf): Revert PC_SYM_NOFOLLOW change.
+	(statfs): Ditto.
+	(chroot): Ditto.
+	* winsup.h (stat_worker): Revert nofollow change.
+	
+2006.04.27  Earnie Boyd <earnie@users.sf.net>
+
+	* environ.cc: Add MUNGEPREFIX preprocessor variable.
+	(_addenv): Use MUNGEPREFIX to conditionally add auto conversion of the
+	"prefix" environment variable.
+	(environ_init): Ditto.
+	* fhandler.cc (fhandler_disk_file:open): Revert 2005.07.05
+	Max T. Woodbury change.
+
+2006.04.23  Earnie Boyd <earnie@users.sf.net>
+
+	* fhandler_console.cc (set_console_state_for_spawn): Add FIXME.
+	* fhandler_tty.cc (fhandler_tty_master::init): Reinstate code
+	with FIXME.
+	(fhandler_pty_master::hit_eof): Add Comment.
+	(fhandler_tty_slave::read): Remove OutputDebugString.
+	* path.cc (msys_p2w): Add explicit typing.
+	(suffix_scan::): Reinstate previous code and conditionalize
+	with NEW_SUFFIX_METHOD being defined.
+	* path.h (suffix_scan::): Ditto.
+	* spawn.cc (std_suffixes): Readd suffix_info "".
+	* syscalls.cc (stat_suffixes): Ditto.
+	(stat_worker): Add O_NOSYMLINK flag to fh.open.
+	* tty.cc (create_tty_master): Reinstate.
+	(tty_list::allocate_tty): Remove OutputDebugString. Reinstate call of
+	create_tty_master.
+	(tty::make_pipes): Remove SetConsoleMode for from_slave and to_slave
+	with comment.
+	* window.cc (Winmain): Remove ShowWindow, UpdateWindow and reinstate
+	DispatchMessage instead of TranslateMessage with FIXME comment.
+
+2005.10.03  Earnie Boyd <earnie@users.sf.net>
+
+	* fork.cc (fork_parent): Add GENERIC_READ and FILE_SHARE_READ attributes
+	for stdout.
+
+2005.07.05  Max T. Woodbury <mtew@users.sf.net>
+
+	* fhandler.cc (fhandler_disk_file::open): Fake successful open on 
+	directories for !iswinnt.
+
+2005.07.02  Max T. Woodbury  <mtew@users.sf.net>
+
+	* syscalls.cc (statfs): Allow for bigger disks.
+
+2005.05.13  Earnie Boyd <earnie@users.sf.net>
+
+	* winsup.h: Define TRACETTY.
+	* fhander_tty.cc: Use TRACETTY instead of TRACE_IN throughout.
+	(fhandler_tty_master::init): Comment out an unneeded(?) function.
+	(fhandler_pty_master::hit_eof): Remove TRACETTY as hit_eof is
+	constantly called making the trace data useless.
+	(fhandler_pty_master::process_slave_output): Dynamicly allocate output
+	buffer based on size of request.  Restructure code for easier reading.
+	(fhandler_tty_slave::read): Removed peek_buf.  Renamed variable n to
+	CharsRead.  Renamed bytes_in_pipe to CharsInPipe for consistency.
+	* tty.cc: Use TRACETTY instead of TRACE_IN throughout.
+	(create_tty_master): Remove call to tty_master->init.
+	(tty_list::allocate_tty): Remove call to create_tty_master.
+	(tty::slave_alive): Remove.
+	(tty::master_alive): Remove.
+	(tty::alive): Removed TRACETTY as alive is constantly called making the
+	trace data useless.
+	(tty::make_pipes): Added SetConsoleMode calls for from_slave and
+	to_slave handles.
+	* tty.h (tty::slave_alive): Removed.
+	(tty::master_alive): Ditto.
+	(tty::exists): Use alive instead of slave_alive.
+	* spawn.cc (spawn_guts): Avoid setting up for a MSYS dependent child
+	when it isn't.
+	
+2005.05.11  Earnie Boyd <earnie@users.sf.net>
+
+	* include/wchar.h (size_t): Define.
+	(FILE): Ditto.
+
+2005-05-06  Earnie Boyd <earnie@users.sf.net>
+
+	* cygheap.cc (init_cheap): Add TRACE_IN.
+	* fhandler_console.cc (set_console_state_for_spawn): Try to make good
+	use of it for PTY.  Renamed variable h to hconin.
+	* fhandler_tty.cc (fhandler_pty_master::process_slave_output): Reformat
+	code for easier reading.
+	(fhandler_tty_slave::read): Ditto.
+	* select.cc (fhandler_tty_common::ready_for_read): Remove unused code.
+	Add debug info.
+
+2005-05-03  Earnie Boyd <earnie@users.sf.net>
+
+	* syscalls.cc (_open): Add O_BINARY flag.
+	* cygheap.cc (init_cheap): Add system_printf to capture true Win32
+	error.  Thanks to Scott Michel (pingbak @ sf . net).
+	* fhandler_tty (fhandler_pty_master::process_slave_output): Clean up.
+	(fhandler_tty_slave::read): Use common variable CharsInPipe.
+	Remove variable peek_buf. Remove unnecessary reading and peeking of
+	the pipe.
+
+2005-03-29  Earnie Boyd <earnie@users.sf.net>
+
+	* environ.cc (_addenv): Look for variable name prefix and set value
+	to win32 path.
+	(environ_init): Ditto.
+
+2004-09-05  Earnie Boyd <earnie@users.sf.net>
+
+	* fhandler_console.cc: Add TRACE_IN throughout.
+	* fhandler_termios.cc: Ditto.
+	* fhandler_tty.cc (process_slave_output): Rename variable n to 
+	CharsInPipe.
+	* spawn.cc (spawn_guts): Add a FIXME and remove a FIXME.
+	* winsup.h (TRACE_IN): Recode so that it could live without DEBUGGING
+	set.
+	* fhandler_console.cc (set_console_state_for_spawn): Always return 0.
+	Add a FIXME item.
+
+2004-09-05  Andres Rand <lothar@hot.ee>
+
+	* path.cc (set_flags_from_win32_path): Return PC_FULL as default
+	flag for paths not found in fstab mountpoints.
+
+2004-04-30  Earnie Boyd  <earnie@users.sf.net>
+
+	* Makefile.in (new-$(DLL_NAME)): Add -luser32 to link command.
+	* window.cc: Add TRACE_IN throughout.
+	(Winmain): Revert the changes from 04-22.  Add a FIXME MessageBox.
+	* path.cc (msys_p2w): Add recognition of path after comma in switch.
+
+2004-04-22  Earnie Boyd  <earnie@users.sf.net>
+
+	* window.cc (Winmain): Add typical Windows messaging API.
+
+2004-04-06  Earnie Boyd  <earnie@users.sf.net>
+
+	* fhandler.cc (fhandler_base::lseek): Remove filtered out code.
+	* syscalls.cc: Add TRACE_IN throughout.
+	* winsup.h (TRACE_IN): Modify so that -DTRACING can be defined without
+	-DDEBUGGING to limit the amount of data.
+	NOTE: ../utils/strace.cc needs to be modified to recognize TRACE_IN as
+	acceptable string for display.
+
+2004-03-30  Earnie Boyd  <earnie@users.sf.net>
+
+	* fhandler.cc (fhandler_base::open): Correct issue for setting file
+	attributes.
+	* path.cc (mount_info::read_mounts2): Remove hard mount points for /bin
+	and /usr/bin; resolves FIXME-1.0.
+	* path.h (iscygexec): Remove use of path_flags and PATH_CYGWIN_EXEC;
+	resolves FIXME-1.0.
+
+2004-03-29  Earnie Boyd  <earnie@users.sf.net>
+
+	* winsup.h (stat_worker): Remove "int nofollow" argument from
+	declaration.
+	* fhandler.cc: Ensure that PC_SYM_NOFOLLOW attribute is used throughout.
+	* sec_acl.cc: Ditto.
+	* path.cc: Ditto.
+	(NEW_PATH_METHOD): Remove define and relative old code.
+	(NO_SYMLINK): Ditto.
+	(suffix_scan::next): Remove.
+	(suffix_scan::add): Readd.
+	(Suffix_scan::del): Ditto.
+	* path.h (suffix_scan::next): Remove.
+	(suffix_scan::add): Readd.
+	(suffix_scan::del): Ditto.
+	* spawn.cc (std_suffixes[]): Remove suffix_info for "".
+	(perhaps_suffix): Revert to previous method.
+	* syscalls.cc: Ensure that PC_SYM_NOFOLLOW attribute is used throughout.
+	(stat_suffixes): Remove suffix_info for "".
+	(stat_worker): Remove "int nofollow" argument.
+
+2004-03-18  Earnie Boyd  <earnie@users.sf.net>
+
+	* path.cc (msys_p2w): Modify debug messages.
+	* spawn.cc (perhaps_suffix): Recode.
+	* winsup.h: Include "cygwin/version.h".
+	* include/cygwin/version.h (DLL_VERSION_MAJOR): New constant name.
+	Will be used to replace CYGWIN_VERSION_DLL_MAJOR.
+	(DLL_VERSION_MINOR): Ditto.
+
+2004-03-17  Earnie Boyd  <earnie@users.sf.net>
+
+	* include/cygwin/version.h: Increment version to 1.0.11.
+	(CYGWIN_VERSION_DLL_IDENTIFIER): Change value to "msys-1.0".
+
+2004-03-15  Earnie Boyd  <earnie@users.sf.net>
+
+	* dcrt0.cc (build_argv): Revert previous change due to
+	sf.net/tracker/?func=detail&aid=915874&group_id=2435&atid=102435.
+
+2004-03-10  Wayne Scott  <wscott@bitmover.com>
+
+	* path.cc (normalize_posix_path): Remove serialization of previous path
+	data and current path data to fix bug causing ``mkdir -p A/A/A/A'' to
+	fail.
+
+2004-03-10  Earnie Boyd  <earnie@users.sf.net>
+
+	* dcrt0.cc (globify): Add debug_printf output.
+	(build_argv): Adjust quoted string algorithm.
+	* fhandler.cc (rootdir): Add debug_printf output.
+	* path.cc (ScrubRetpath): Ditto.
+	(msys_p2w): Ditto.
+	Adjust quoted string algorithm.
+	(cygwin_conv_to_win32_path): Add debug_printf output.
+	* syscalls.cc (stat_woerker): Add TRACE_IN.
+	(_stat): Ditto.
+	
+2004-02-24  Earnie Boyd  <earnie@users.sf.net>
+
+	* cygerrno.h: Include errno.h.
+	* cygheap.c (_cygheap_start): Move definition from here.
+	* cygheap.h (_cygheap_start): To here.
+	* debug.cc (add_handle): Add parameter.
+	* debug.h (add_handle): Ditto.
+	(ProtectHandleINH, ProtectHandle1INH, ProtectHandle2INH): New 
+	definitions.
+	* dtable.cc: Add TRACE_IN throughout.
+	* miscfuncs.cc: Include winnls.h.
+	(get_cp): New function.
+	* include/cygwin/socket.h (SOMAXCONN): Modify value 
+	from 5 to 0x7fffffff.
+	(MSG_WINMASK): New constant.
+	(MSG_NOSIGNAL): Ditto.
+	(IPTOS_LOWDELAY, IPTOS_THROUGHPUT, IPTOS_RELIABILITY): Filter
+	definition based on IPTOS_LOWDELAY being defined or not.
+	(TCP_NODELAY, TCP_MAXSEG): Filter definition based on TCP_NODELAY
+	being defined or not.
+	
+2003-10-11  Earnie Boyd  <earnie@users.sf.net>
+
+	* environ.cc (winenv): Use msys_p2w() for win32 path translation.
+	* heap.cc: Remove unused declaration of getpagesize().
+	* spawn.cc (spawn_guts): Remove win32 path translation (now in winenv).
+
+2003-07-29  Earnie Boyd  <earnie@users.sf.net>
+
+	* include/cygwin/version.h: Bump MINOR version to 10.
+
+2003-07-07  Earnie Boyd  <earnie@users.sf.net>
+
+	* path.cc (msys_p2w): Correction for ``foo=c:/bar'' constructs.
+
+2003-07-01  Luke Dunstan <infidel@users.sf.net>
+
+	* syscalls.cc (check_posix_perm): Off by one allocation of memory for
+	char *root.
+
+2003-06-30  Earnie Boyd  <earnie@users.sf.net>
+
+	* environ.cc: Add debug_printf throughout.
+	(winenv): Add a FIXME workaround that reverses the value of keep_posix.
+	Add a stab in the dark pad of (MAX_PATH * 256) to the malloc of the
+	envblock pointer (Note: this is likely to be removed).
+	* malloc.cc: Add malloc_printf throughout.  Add TRACE_IN throughout.
+	* msys.h (debugnow): New macro intended for more immediate debugging
+	and not meant to be left in the source (Note: must -Ddebugger to make
+	the macro useful).
+	* msys_symlink.cc: Add include of winsup.h.
+	(msys_symlink): Add a FIXME to identify a resource leak.
+	* path.cc (check_sysfile): Deleted.
+	(symlink_info::check): Add initialization of HANDLE h to stop warning.
+	(IsAbsWin32Path): Recode.
+	(ScrubRetpath): New static function used by msys_p2w.
+	(msys_p2w): Streamline the code and use ScrubRetpath if the path has
+	changed else just retpath.  Also, protect the argument values from
+	changing.
+	* path.h (path_conv::iscygexec): Add recognition of an msys dependent
+	executable via use of IsMsys function.
+	* spawn.cc: Move char *envblockarg to global space and make static.
+	(spawn_guts): Remove use of IsMsys() function.
+	Streamline newargv population.
+	Streamline envblock and envblockarg population.
+	Use envblockarg in the CreateProcess function instead of envblock.
+	Remove child->copysigs (myself) call.
+	* sync.cc (muto::~muto): Comment out.
+	* sync.h (~muto): Ditto.
+	* syscalls.cc (check_posix_perm): Use alloca instead of new operator.
+	* winsup.h (TRACE_IN): Add a TRACING filter to make it work.
+	(IsMsys): Change the declaration.
+	* include/sys/cygwin.h (msys_p2w): Ditto.
+	
+2003-06-16  Earnie Boyd  <earnie@users.sf.net>
+
+	* path.cc (cygwin_conv_to_win32_path): Copy data to win32_path, don't
+	change the pointer value.
+	* spawn.cc (spawn_guts): Free tmpbuf if needed.  Ditto for wpath.
+	Set envblockarg to contain 0 for it's length.
+
+2003-06-13  Earnie Boyd  <earnie@users.sf.net>
+
+	* environ.cc:  Remove DO_CPP_NEW filters througout.
+	* exceptions.cc (exception): Output version and build date info to the
+	stackdump file.
+	* msys_symlink.cc (msys_symlink): Use msys_p2w() instead of
+	cygwin_conv_to_win32_path().
+	* spawn.cc (spawn_guts): Ditto.
+	* path.cc (msys_p2w): New function (copy previous
+	cygwin_conv_to_win32_path and heavily modify).
+	(cygwin_conv_to_win32_path): Remove contents and use msys_p2w.
+	include/sys/cygwin.h (msys_p2w): Add declaration.
+
+2003-06-11  Earnie Boyd  <earnie@users.sf.net>
+
+	* spawn.cc (spawn_guts): Use malloc instead of cmalloc for envblock.
+
 2003-06-03  Earnie Boyd  <earnie@users.sf.net>
 
 	* spawn.cc: Correct malloc size algorithm and insure that pointers are

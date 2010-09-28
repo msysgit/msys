@@ -209,7 +209,7 @@ BOOL __stdcall
 proc_exists (_pinfo *p)
 {
   TRACE_IN;
-  return p && !(p->process_state & (PID_INITIALIZING | PID_EXITED));
+  return p && !(p->process_state & PID_EXITED);
 }
 
 /* Return 1 if this is one of our children, zero otherwise.
@@ -845,11 +845,32 @@ subproc_init (void)
    by fork/spawn/exec. */
 
 void __stdcall
-init_child_info (DWORD chtype, child_info *ch, pid_t pid, HANDLE subproc_ready)
+init_child_info (DWORD chtype, child_info *ch, unsigned ch_size, pid_t pid, HANDLE subproc_ready)
 {
   TRACE_IN;
   memset (ch, 0, sizeof *ch);
   ch->cb = sizeof *ch;
+  /*
+   * Work around what appears to be a bug in Vista 64-bit. The problem
+   * is related to how fork passes information to the child. Basically
+   * the child_info struct * is put in the lpReserved2 field of the
+   * STARTUPINFO struct that gets passed to CreateProcess(). In all
+   * versions of Windows, the size of the data to be passed is in the
+   * cbReserved2 field of the same structure, except on Vista 64-bit.
+   *
+   * It seems that WOW64 (the 32-bit emulation layer of 64-bit Vista)
+   * expects the size of the data passed in lpReserved2 to be the first
+   * word in that same pointer, only it expects the size in "elements"
+   * of a BYTE[] and HANDLE[] arrays (the MS C runtime has this
+   * convention).
+   *
+   * We work around it by filling in the size as (sizeof struct)/5 and
+   * zero padding the end of the child_info_* structs. 
+   */
+  if (isVistaWOW64)
+    ch->msv_count = ch_size / 5;
+  else
+    ch->msv_count = 0;
   ch->type = chtype;
   ch->cygpid = pid;
   ch->subproc_ready = subproc_ready;

@@ -18,11 +18,11 @@ class cygthread
   LPTHREAD_START_ROUTINE func;
   VOID *arg;
   bool is_freerange;
-  static DWORD main_thread_id;
   static bool exiting;
   static DWORD WINAPI stub (VOID *);
   static DWORD WINAPI simplestub (VOID *);
  public:
+  static DWORD main_thread_id;
   static const char * name (DWORD = 0);
   cygthread (LPTHREAD_START_ROUTINE, LPVOID, const char *);
   cygthread () {};

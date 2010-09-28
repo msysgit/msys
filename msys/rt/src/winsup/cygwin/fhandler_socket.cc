@@ -159,23 +159,18 @@ fhandler_socket::check_peer_secret_event (struct sockaddr_in* peer, int* secret)
 void
 fhandler_socket::fixup_before_fork_exec (DWORD win_proc_id)
 {
-  int ret = 1;
-
-  if (prot_info_ptr &&
-      (ret = WSADuplicateSocketA (get_socket (), win_proc_id, prot_info_ptr)))
-    {
-      debug_printf ("WSADuplicateSocket error");
-      set_winsock_errno ();
-    }
-  if (!ret && ws2_32_handle)
-    {
-      debug_printf ("WSADuplicateSocket went fine, dwServiceFlags1=%d",
-		    prot_info_ptr->dwServiceFlags1);
-    }
-  else
+  if (!winsock2_active)
     {
       fhandler_base::fixup_before_fork_exec (win_proc_id);
       debug_printf ("Without Winsock 2.0");
+    }
+  else if (!WSADuplicateSocketA (get_socket (), win_proc_id, prot_info_ptr))
+    debug_printf ("WSADuplicateSocket went fine, dwServiceFlags1=%d",
+         prot_info_ptr->dwServiceFlags1);
+  else
+    {
+      debug_printf ("WSADuplicateSocket error");
+      set_winsock_errno ();
     }
 }
 
@@ -186,8 +181,8 @@ fhandler_socket::fixup_after_fork (HANDLE parent)
 
   debug_printf ("WSASocket begin, dwServiceFlags1=%d",
 		prot_info_ptr->dwServiceFlags1);
-  if (prot_info_ptr &&
-      (new_sock = WSASocketA (FROM_PROTOCOL_INFO,
+
+  if ((new_sock = WSASocketA (FROM_PROTOCOL_INFO,
 			      FROM_PROTOCOL_INFO,
 			      FROM_PROTOCOL_INFO,
 			      prot_info_ptr, 0, 0)) == INVALID_SOCKET)
@@ -195,16 +190,17 @@ fhandler_socket::fixup_after_fork (HANDLE parent)
       debug_printf ("WSASocket error");
       set_winsock_errno ();
     }
-  if (new_sock != INVALID_SOCKET && ws2_32_handle)
-    {
-      debug_printf ("WSASocket went fine");
-      set_io_handle ((HANDLE) new_sock);
-    }
-  else
+  else if (!new_sock && !winsock2_active)
     {
       fhandler_base::fixup_after_fork (parent);
       debug_printf ("Without Winsock 2.0");
     }
+  else
+    {
+      debug_printf ("WSASocket went fine %p", new_sock);
+      set_io_handle ((HANDLE) new_sock);
+    }
+
   if (secret_event)
     fork_fixup (parent, secret_event, "secret_event");
 }
@@ -216,7 +212,7 @@ fhandler_socket::dup (fhandler_base *child)
   fhs->addr_family = addr_family;
   fhs->set_io_handle (get_io_handle ());
   fhs->fixup_before_fork_exec (GetCurrentProcessId ());
-  if (ws2_32_handle)
+  if (winsock2_active)
     {
       fhs->fixup_after_fork (hMainProc);
       return 0;
@@ -447,8 +443,7 @@ fhandler_socket::fcntl (int cmd, void *arg)
 void
 fhandler_socket::set_close_on_exec (int val)
 {
-  extern WSADATA wsadata;
-  if (wsadata.wVersion < 512) /* < Winsock 2.0 */
+  if (!winsock2_active) /* < Winsock 2.0 */
     set_inheritance (get_handle (), val);
   set_close_on_exec_flag (val);
   debug_printf ("set close_on_exec for %s to %d", get_name (), val);

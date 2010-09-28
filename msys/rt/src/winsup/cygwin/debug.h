@@ -48,6 +48,9 @@ int __stdcall iscygthread ();
 # define ProtectHandle(h) do {} while (0)
 # define ProtectHandle1(h,n) do {} while (0)
 # define ProtectHandle2(h,n) do {} while (0)
+# define ProtectHandleINH(h) do {} while (0)
+# define ProtectHandle1INH(h,n) do {} while (0)
+# define ProtectHandle2INH(h,n) do {} while (0)
 # define debug_init() do {} while (0)
 # define setclexec_pid(h, b) do {} while (0)
 # define debug_fixup_after_fork() do {} while (0)
@@ -70,9 +73,12 @@ int __stdcall iscygthread ();
 # define ProtectHandle(h) add_handle (__PRETTY_FUNCTION__, __LINE__, (h), #h)
 # define ProtectHandle1(h, n) add_handle (__PRETTY_FUNCTION__, __LINE__, (h), #n)
 # define ProtectHandle2(h, n) add_handle (__PRETTY_FUNCTION__, __LINE__, (h), n)
+# define ProtectHandleINH(h) add_handle (__PRETTY_FUNCTION__, __LINE__, (h), #h, 1)
+# define ProtectHandle1INH(h, n) add_handle (__PRETTY_FUNCTION__, __LINE__, (h), #n, 1)
+# define ProtectHandle2INH(h, n) add_handle (__PRETTY_FUNCTION__, __LINE__, (h), n, 1)
 
 void debug_init ();
-void __stdcall add_handle (const char *, int, HANDLE, const char *)
+void __stdcall add_handle (const char *, int, HANDLE, const char *, bool = false)
   __attribute__ ((regparm (3)));
 BOOL __stdcall close_handle (const char *, int, HANDLE, const char *, BOOL)
   __attribute__ ((regparm (3)));

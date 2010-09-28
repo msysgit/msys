@@ -1,3 +1,9 @@
+2010.07.06  Cesar Strauss  <cestrauss@gmail.com>
+
+	Avoid a dependency of strace on the MinGW GCC shared runtimes.
+
+	* Makefile.in (MINGW_LDFLAGS): Use static GCC runtime libraries.
+
 2003.02.12  Earnie Boyd  <earnie@users.sf.net>
 
 	* Makefile.in (dumper): Remove including dependency parts.

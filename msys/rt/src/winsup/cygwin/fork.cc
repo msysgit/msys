@@ -372,9 +372,9 @@ fork_parent (HANDLE& hParent, dll *&first_dll,
 
   /* If we don't have a console, then don't create a console for the
      child either.  */
-  HANDLE console_handle = CreateFileA ("CONOUT$", GENERIC_WRITE,
-				       FILE_SHARE_WRITE, &sec_none_nih,
-				       OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL,
+  HANDLE console_handle = CreateFileA ("CONOUT$", GENERIC_WRITE|GENERIC_READ,
+				       FILE_SHARE_READ|FILE_SHARE_WRITE, &sec_none_nih,
+				       OPEN_EXISTING, NULL,
 				       NULL);
 
   if (console_handle != INVALID_HANDLE_VALUE && console_handle != 0)
@@ -428,7 +428,7 @@ fork_parent (HANDLE& hParent, dll *&first_dll,
   ProtectHandle (subproc_ready);
   ProtectHandle (forker_finished);
 
-  init_child_info (PROC_FORK1, &ch, 1, subproc_ready);
+  init_child_info (PROC_FORK1, &ch, sizeof(ch), 1, subproc_ready);
 
   ch.forker_finished = forker_finished;
 
@@ -436,7 +436,7 @@ fork_parent (HANDLE& hParent, dll *&first_dll,
 
   si.cb = sizeof (STARTUPINFO);
   si.lpReserved2 = (LPBYTE)&ch;
-  si.cbReserved2 = sizeof(ch);
+  si.cbReserved2 = sizeof(ch) - 4; // Do not count the filler bytes
 
   /* Remove impersonation */
   if (cygheap->user.impersonated && cygheap->user.token != INVALID_HANDLE_VALUE)
@@ -464,7 +464,7 @@ fork_parent (HANDLE& hParent, dll *&first_dll,
   char sa_buf[1024];
   syscall_printf ("CreateProcess (%s, %s, 0, 0, 1, %x, 0, 0, %p, %p)",
 		  myself->progname, myself->progname, c_flags, &si, &pi);
-  __malloc_lock (_reent_clib ());
+  __malloc_lock ();
   cygheap_setup_for_child (&ch);
   rc = CreateProcess (myself->progname, /* image to run */
 		      myself->progname, /* what we send in arg0 */
@@ -560,7 +560,7 @@ fork_parent (HANDLE& hParent, dll *&first_dll,
 		  dll_data_start, dll_data_end,
 		  dll_bss_start, dll_bss_end, NULL);
 
-  __malloc_unlock (_reent_clib ());
+  __malloc_unlock ();
   MALLOC_CHECK;
   if (!rc)
     goto cleanup;

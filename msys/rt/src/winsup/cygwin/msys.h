@@ -28,4 +28,17 @@ class auto_lock
     CRITICAL_SECTION &lock;
 };
 
+#include <stdio.h>
+#ifdef debugger
+#define debugnow(x,y) \
+    { \
+      char *a = (char *)malloc (80 + strlen ((x))); \
+      sprintf(a, "%s@%d[%x] %s", __FILE__, __LINE__, y, (x)); \
+      OutputDebugString (a); \
+      free (a); \
+    }
+#else
+#define debugnow(x,y)
+#endif
+
 #endif

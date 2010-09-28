@@ -7,6 +7,12 @@ This software is a copyrighted work licensed under the terms of the
 Cygwin license.  Please consult the file "CYGWIN_LICENSE" for
 details. */
 
+#ifndef MUNGEPREFIX
+#define MUNGEPREFIX 0 // If not zero will cause environment variable named
+		      // "prefix" to be set to its win32 absolute value by 
+		      // default.
+#endif
+
 #include "winsup.h"
 #include <errno.h>
 #include <stdlib.h>
@@ -78,6 +84,7 @@ void
 win_env::add_cache (const char *in_posix, const char *in_native)
 {
   TRACE_IN;
+  debug_printf("called by %x", ((int *)&in_posix)[-1]);
   posix = (char *) realloc (posix, strlen (in_posix) + 1);
   strcpy (posix, in_posix);
   if (in_native)
@@ -206,7 +213,7 @@ envsize (const char * const *in_envp, int debug_print)
   const char * const *envp;
   for (envp = in_envp; *envp; envp++)
     if (debug_print)
-      debug_printf ("%s", *envp);
+      debug_printf ("(%d) %s", (envp - in_envp), *envp);
   return (1 + envp - in_envp) * sizeof (const char *);
 }
 
@@ -221,6 +228,10 @@ _addenv (const char *name, const char *value, int overwrite)
   int offset;
   char *p;
 
+#if MUNGEPREFIX
+  if (!strcmp (name, "prefix"))
+    value = msys_p2w (value);
+#endif
   unsigned int valuelen = strlen (value);
   if ((p = my_findenv (name, &offset)))
     {				/* Already exists. */
@@ -735,6 +746,10 @@ environ_init (char **envp, int envc)
 	sawTERM = 1;
       if (*newp == 'C' && strncmp (newp, "CYGWIN=", sizeof("CYGWIN=") - 1) == 0)
 	parse_options (newp + sizeof("CYGWIN=") - 1);
+#if MUNGEPREFIX
+      if (*newp == 'p' && strncmp (newp, "prefix=", 6) == 0)
+	_addenv ("prefix", newp + 6, 1);
+#endif
       if (*eq && conv_start_chars[(unsigned char)envp[i][0]])
 	posify (envp + i, *++eq ? eq : --eq);
       debug_printf ("%p: %s", envp[i], envp[i]);
@@ -772,11 +787,18 @@ env_sort (const void *a, const void *b)
 /* Keep this list in upper case and sorted */
 static const NO_COPY char* forced_winenv_vars [] =
   {
+    "HOMEDRIVE",
+    "HOMEPATH",
+    "PATH",
 #if __MSYS__
     "MSYSTEM",
 #endif /* __MSYS__ */
     "SYSTEMDRIVE",
     "SYSTEMROOT",
+    "USERDOMAIN",
+    "USERNAME",
+    "USERPROFILE",
+    "WINDIR",
     NULL
   };
 
@@ -790,6 +812,16 @@ char * __stdcall
 winenv (const char * const *envp, int keep_posix)
 {
   TRACE_IN;
+  FIXME;
+  // For some reason keep_posix appears to be reversed in the logic flow.
+  // I'm adding this reversing algorithm because I've just spent days of time
+  // chasing a bug that kept leading me here.
+  keep_posix = keep_posix ? 0 : 1;
+  // The meaning of keep_posix is supposed to allow a msys dll dependent binary
+  // from needing to convert the environment to win32 format.  A ``FIXME'' in
+  // the spawn.cc (spawn_guts) function asks why we need to call this function
+  // for an msys dll dependent process anyway.  This function needs fixed.
+
   int srcplen, envc, envblocklen;
   const char * const *srcp;
   const char **dstp;
@@ -799,9 +831,10 @@ winenv (const char * const *envp, int keep_posix)
   debug_printf ("envp %p, keep_posix %d", envp, keep_posix);
 
   envblocklen = 0;
-
   for (envc = 0; envp[envc]; envc++)
     continue;
+
+  debug_printf ("envc = %d", envc);
 
   const char *newenvp[envc + 1 + FORCED_WINENV_SIZE];
 
@@ -814,22 +847,14 @@ winenv (const char * const *envp, int keep_posix)
 	*dstp = *srcp;
       else
 	{
-#if DO_CPP_NEW
-	  tptr = new char  [strlen (conv->native) + 1];
-#else
 	  tptr = (char *) alloca (strlen (conv->native) + 1);
-#endif
 	  strcpy (tptr, conv->native);
 	  *dstp = tptr;
 	}
       envblocklen += strlen (*dstp) + 1;
       if ((*dstp)[0] == '!' && isdrive ((*dstp) + 1) && (*dstp)[3] == '=')
 	{
-#if DO_CPP_NEW
-	  tptr = new char [strlen (*dstp) + 1];
-#else
 	  tptr = (char *) alloca (strlen (*dstp) + 1);
-#endif
 	  strcpy (tptr, *dstp);
 	  *tptr = '=';
 	  *dstp = tptr;
@@ -844,11 +869,7 @@ winenv (const char * const *envp, int keep_posix)
     if (!saw_forced_winenv[i])
       {
 	srcplen = strlen (forced_winenv_vars[i]);
-#if DO_CPP_NEW
-	tptr = new char [srcplen + MAX_PATH + 1];
-#else
 	tptr = (char *) alloca (srcplen + MAX_PATH + 1);
-#endif
 	strcpy (tptr, forced_winenv_vars[i]);
 	strcat (tptr, "=");
 	if (!GetEnvironmentVariable (forced_winenv_vars[i], tptr + srcplen + 1, MAX_PATH))
@@ -870,17 +891,21 @@ winenv (const char * const *envp, int keep_posix)
 
   /* Create an environment block suitable for passing to CreateProcess.  */
   char *ptr, *envblock;
-#if DO_CPP_NEW
-  envblock = new char [envblocklen + 2 + (MAX_PATH * 256)];
-#else
-  //envblock = (char *) malloc (envblocklen + 2 + (MAX_PATH * 256));
-  envblock = (char *) malloc (envblocklen + 2);
-#endif
+  envblock = (char *) malloc (envblocklen + 2 + (MAX_PATH * 256));
   for (srcp = newenvp, ptr = envblock; *srcp; srcp++)
     {
+     if (keep_posix) {
+      char * w32path = msys_p2w(*srcp);
+      srcplen = strlen (w32path);
+      memcpy (ptr, w32path, srcplen + 1);
+      if (w32path != *srcp)
+        free (w32path);
+      ptr += srcplen + 1;
+     } else {
       srcplen = strlen(*srcp);
       memcpy (ptr, *srcp, srcplen + 1); 
       ptr += srcplen + 1;
+     }
     }
   *ptr = '\0';		/* Two null bytes at the end */
 

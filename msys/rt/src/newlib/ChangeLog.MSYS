@@ -1,3 +1,20 @@
+2010.03.29  Charles Wilson  <mingw@cwilson.fastmail.fm>
+
+	* libc/include/sys/unistd.h: Declare fchdir and getdomainname.
+
+2003.07.29  Earnie Boyd  <earnie@users.sf.net>
+
+	* libc/stdlib/mallocr.c (DEFAULT_TOP_PAD): Assign a new value.
+
+2003.06.13  Earnie Boyd  <earnie@users.sf.net>
+
+	* libc/stdlib/mallocr.c: Update with new version from newlib.
+
+2003.06.13  Earnie Boyd  <earnie@users.sf.net>
+
+	* libc/stdlib/mallocr.c: Remove needless filter check for ! __MSYS__.
+	Make sure _WIN32 and WIN32 are undefined for __MSYS__.
+
 2003.04.18  Earnie Boyd  <earnie@users.sf.net>
 
 	* libc/include/sys/errno.h (_sys_nerr): Add _CONST modifier.

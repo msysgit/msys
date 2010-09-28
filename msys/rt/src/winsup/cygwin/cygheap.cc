@@ -45,15 +45,16 @@ struct cygheap_entry
 
 extern "C" {
 static void __stdcall _cfree (void *ptr) __attribute__((regparm(1)));
-extern void *_cygheap_start;
 }
 
 inline static void
 init_cheap ()
 {
+  TRACE_IN;
   cygheap = (init_cygheap *) VirtualAlloc ((void *) &_cygheap_start, CYGHEAPSIZE, MEM_RESERVE, PAGE_NOACCESS);
   if (!cygheap)
     {
+      system_printf ("VirtualAlloc pointer is null, %E");
       MEMORY_BASIC_INFORMATION m;
       if (!VirtualQuery ((LPCVOID) &_cygheap_start, &m, sizeof m))
 	system_printf ("couldn't get memory info, %E");
@@ -165,7 +166,7 @@ _csbrk (int sbs)
     }
 
   lastheap = cygheap_max;
-  (char *) cygheap_max += sbs;
+  cygheap_max = ((char *)cygheap_max) + sbs;
   void *heapalign = (void *) pagetrunc (lastheap);
 
   if (!needalloc)

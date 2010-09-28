@@ -21,13 +21,26 @@ details. */
   #define __INSIDE_MSYS__ 1
 #endif
 
+#include "cygwin/version.h"
+
 #define HMMM(HUM) debug_printf("%s-%d: %s", "HMMM", __LINE__, (HUM))
 #if DEBUGGING
 # define FIXME debug_printf("FIXME - %s (%s): %d", __FILE__, __FUNCTION__, __LINE__)
-# define TRACE_IN debug_printf("TRACE_IN: %s, %d", __FILE__, __LINE__)
 #else
 # define FIXME
+#endif
+#if TRACING
+# define TRACE_IN {char TrcInBuf[256]; __small_sprintf(TrcInBuf, "TRACE_IN: %s, %d, %s", __FILE__, __LINE__, __PRETTY_FUNCTION__); OutputDebugString (TrcInBuf);}
+#else
 # define TRACE_IN
+#endif
+
+#if TRACETTY
+# undef TRACETTY
+# define TRACETTY {char TrcInBuf[256]; __small_sprintf(TrcInBuf, "TRACETTY: %s, %d, %s", __FILE__, __LINE__, __PRETTY_FUNCTION__); OutputDebugString (TrcInBuf);}
+#else
+# undef TRACETTY
+# define TRACETTY
 #endif
 
 #define alloca __builtin_alloca
@@ -45,6 +58,7 @@ details. */
 
 #include <sys/types.h>
 #include <sys/strace.h>
+#include <fcntl.h>
 
 extern const char case_folded_lower[];
 #define cyg_tolower(c) (case_folded_lower[(unsigned char)(c)])
@@ -81,6 +95,7 @@ extern "C" DWORD WINAPI GetLastError (void);
 enum os_type {winNT = 1, win95, win98, winME, win32s, unknown};
 extern os_type os_being_run;
 extern bool iswinnt;
+extern bool isVistaWOW64;
 
 enum codepage_type {ansi_cp, oem_cp};
 extern codepage_type current_codepage;
@@ -229,17 +244,12 @@ extern "C" void __api_fatal (const char *, ...) __attribute__ ((noreturn));
 extern "C" int __small_sprintf (char *dst, const char *fmt, ...) /*__attribute__ ((regparm (2)))*/;
 extern "C" int __small_vsprintf (char *dst, const char *fmt, va_list ap) /*__attribute__ ((regparm (3)))*/;
 
-extern "C" void __malloc_lock (struct _reent *);
-extern "C" void __malloc_unlock (struct _reent *);
-
-extern "C" void __malloc_lock (struct _reent *);
-extern "C" void __malloc_unlock (struct _reent *);
+extern "C" void __malloc_lock ();
+extern "C" void __malloc_unlock ();
 
 class path_conv;
 int __stdcall stat_worker (const char *name, struct __stat64 *buf, int nofollow,
 			   path_conv *pc = NULL) __attribute__ ((regparm (3)));
-int __stdcall low_priority_sleep (DWORD) __attribute__ ((regparm (1)));
-#define SLEEP_0_STAY_LOW INFINITE
 
 /**************************** Exports ******************************/
 
@@ -283,7 +293,7 @@ extern BOOL display_title;
 extern HANDLE hMainThread;
 extern HANDLE hMainProc;
 
-extern bool IsMsys (const char *);
+extern bool IsMsys (char const * const);
 
 #define winsock2_active (wsadata.wVersion >= 512)
 #define winsock_active (wsadata.wVersion <= 512)

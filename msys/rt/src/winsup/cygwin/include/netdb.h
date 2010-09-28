@@ -158,6 +158,10 @@ void		setnetent (int);
 void		setprotoent (int);
 void		setservent (int);
 void		setrpcent (int);
+int		rcmd (char **, unsigned short, const char *, const char *,
+		      const char *, int *);
+int		rexec (char **, unsigned short, char *, char *, char *, int *);
+int		rresvport (int *);
 #endif
 
 #ifdef __cplusplus

@@ -91,7 +91,7 @@ opendir (const char *dirname)
       goto failed;
     }
 
-  if (stat (real_dirname, &statbuf) == -1)
+  if (stat (dirname, &statbuf) == -1)
     goto failed;
 
   if (!(statbuf.st_mode & S_IFDIR))
@@ -128,7 +128,7 @@ opendir (const char *dirname)
     }
   strcpy (dir->__d_dirname, real_dirname.get_win32 ());
   dir->__d_dirent->d_version = __DIRENT_VERSION;
-  dir->__d_dirent->d_fd = open (dir->__d_dirname, O_RDONLY | O_DIROPEN);
+  dir->__d_dirent->d_fd = open (dirname, O_RDONLY | O_DIROPEN);
   /* FindFirstFile doesn't seem to like duplicate /'s. */
   len = strlen (dir->__d_dirname);
   if (len == 0 || SLASH_P (dir->__d_dirname[len - 1]))
@@ -390,34 +390,45 @@ rmdir (const char *dir)
 					      ~FILE_ATTRIBUTE_READONLY);
 
   debug_printf("RemoveDirectoryA (%s)", real_dir.get_win32 ());
-  if (RemoveDirectoryA (real_dir.get_win32 ()))
-    {
-      /* RemoveDirectory on a samba drive doesn't return an error if the
-	 directory can't be removed because it's not empty. Checking for
-	 existence afterwards keeps us informed about success. */
-      if (GetFileAttributesA (real_dir.get_win32 ()) != (DWORD) -1)
-	set_errno (ENOTEMPTY);
-      else
-	res = 0;
-    }
-  else
-    {
-      if (GetLastError() == ERROR_ACCESS_DENIED)
-	{
-	  /* On 9X ERROR_ACCESS_DENIED is returned if you try to remove
-	     a non-empty directory. */
-	  if (!iswinnt)
-	    set_errno (ENOTEMPTY);
-	  else
-	    __seterrno ();
-	}
-      else
-	__seterrno ();
 
-      /* If directory still exists, restore R/O attribute. */
-      if (real_dir.file_attributes () & FILE_ATTRIBUTE_READONLY)
-	SetFileAttributes (real_dir.get_win32 (), real_dir.file_attributes ());
+  {
+    int i = 0;
+    BOOL x = RemoveDirectoryA (real_dir.get_win32());
+
+    while (x && GetLastError () == ERROR_DIR_NOT_EMPTY && i < 32) {
+      usleep (128 * ++i); // Allow processing time for removed files.
+      x = RemoveDirectoryA (real_dir.get_win32());
     }
+
+    if (x)
+      {
+	/* RemoveDirectory on a samba drive doesn't return an error if the
+	   directory can't be removed because it's not empty. Checking for
+	   existence afterwards keeps us informed about success. */
+	if (GetFileAttributesA (real_dir.get_win32 ()) != (DWORD) -1)
+	  set_errno (ENOTEMPTY);
+	else
+	  res = 0;
+      }
+    else
+      {
+	if (GetLastError() == ERROR_ACCESS_DENIED)
+	  {
+	    /* On 9X ERROR_ACCESS_DENIED is returned if you try to remove
+	       a non-empty directory. */
+	    if (!iswinnt)
+	      set_errno (ENOTEMPTY);
+	    else
+	      __seterrno ();
+	  }
+	else
+	  __seterrno ();
+
+	/* If directory still exists, restore R/O attribute. */
+	if (real_dir.file_attributes () & FILE_ATTRIBUTE_READONLY)
+	  SetFileAttributes (real_dir.get_win32 (), real_dir.file_attributes ());
+      }
+  }
 
 done:
   syscall_printf ("%d = rmdir (%s)", res, dir);

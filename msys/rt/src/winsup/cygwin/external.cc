@@ -18,8 +18,11 @@ details. */
 #include "pinfo.h"
 #include <exceptions.h>
 #include "shared_info.h"
+#include "cygerrno.h"
 #include "cygwin_version.h"
 #include "perprocess.h"
+#include "environ.h"
+#include <stdlib.h>
 
 static external_pinfo *
 fillout_pinfo (pid_t pid, int winpid)
@@ -107,56 +110,127 @@ get_cygdrive_prefixes (char *user, char *system)
   return res;
 }
 
+/* Copy cygwin environment variables to the Windows environment. */
+static void
+sync_winenv ()
+{
+  char *envblock = NULL;
+
+  envblock = winenv (__cygwin_environ, 0);
+  char *p = envblock;
+
+  if (!p)
+    return;
+  while (*p)
+    {
+      char *eq = strchr (p, '=');
+      if (eq)
+       {
+         *eq = '\0';
+         SetEnvironmentVariable (p, ++eq);
+         p = eq;
+       }
+      p = strchr (p, '\0') + 1;
+    }
+  free (envblock);
+}
+
+/*
+ * Cygwin-specific wrapper for win32 ExitProcess and TerminateProcess.
+ * It ensures that the correct exit code, derived from the specified
+ * status value, will be made available to this process's parent (if
+ * that parent is also a cygwin process). If useTerminateProcess is
+ * true, then TerminateProcess(GetCurrentProcess(),...) will be used;
+ * otherwise, ExitProcess(...) is called.
+ *
+ * Used by startup code for cygwin processes which is linked statically
+ * into applications, and is not part of the cygwin DLL -- which is why
+ * this interface is exposed. "Normal" programs should use ANSI exit(),
+ * ANSI abort(), or POSIX _exit(), rather than this function -- because
+ * calling ExitProcess or TerminateProcess, even through this wrapper,
+ * skips much of the cygwin process cleanup code.
+ */
+
+static void
+exit_process (UINT status, bool useTerminateProcess)
+{
+/*
+  ...cygwin-1.7 code...
+  pid_t pid = getpid ();
+  external_pinfo * ep = fillout_pinfo (pid, 1);
+  DWORD dwpid = ep ? ep->dwProcessId : pid;
+  pinfo p (pid, PID_MAP_RW);
+  if ((dwpid == GetCurrentProcessId()) && (p->pid == ep->pid))
+    p.set_exit_code ((DWORD)status);
+*/
+  if (useTerminateProcess)
+    TerminateProcess (GetCurrentProcess(), status);
+  /* avoid 'else' clause to silence warning */
+  ExitProcess (status);
+}
+
 extern "C" DWORD
 cygwin_internal (cygwin_getinfo_types t, ...)
 {
   va_list arg;
+  DWORD res = (DWORD) -1;
   va_start (arg, t);
 
   switch (t)
     {
       case CW_LOCK_PINFO:
-	return 1;
+	res = 1;
+	break;
 
       case CW_UNLOCK_PINFO:
-	return 1;
+	res = 1;
+	break;
 
       case CW_GETTHREADNAME:
-	return (DWORD) threadname (va_arg (arg, DWORD));
+	res = (DWORD) threadname (va_arg (arg, DWORD));
+	break;
 
       case CW_SETTHREADNAME:
 	{
 	  char *name = va_arg (arg, char *);
 	  regthread (name, va_arg (arg, DWORD));
-	  return 1;
+	  res = 1;
 	}
+	break;
 
       case CW_GETPINFO:
-	return (DWORD) fillout_pinfo (va_arg (arg, DWORD), 0);
+	res = (DWORD) fillout_pinfo (va_arg (arg, DWORD), 0);
+	break;
 
       case CW_GETVERSIONINFO:
-	return (DWORD) cygwin_version_strings;
+	res = (DWORD) cygwin_version_strings;
+	break;
 
       case CW_USER_DATA:
-	return (DWORD) &__cygwin_user_data;
+	res = (DWORD) &__cygwin_user_data;
+	break;
 
       case CW_PERFILE:
 	perfile_table = va_arg (arg, struct __cygwin_perfile *);
-	return 0;
+	res = 0;
+	break;
 
       case CW_GET_CYGDRIVE_PREFIXES:
 	{
 	  char *user = va_arg (arg, char *);
 	  char *system = va_arg (arg, char *);
-	  return get_cygdrive_prefixes (user, system);
+	  res = get_cygdrive_prefixes (user, system);
 	}
+	break;
 
       case CW_GETPINFO_FULL:
-	return (DWORD) fillout_pinfo (va_arg (arg, pid_t), 1);
+	res = (DWORD) fillout_pinfo (va_arg (arg, pid_t), 1);
+	break;
 
       case CW_INIT_EXCEPTIONS:
 	init_exceptions ((exception_list *) arg);
-	return 0;
+	res = 0;
+	break;
 
       case CW_GET_CYGDRIVE_INFO:
 	{
@@ -164,10 +238,27 @@ cygwin_internal (cygwin_getinfo_types t, ...)
 	  char *system = va_arg (arg, char *);
 	  char *user_flags = va_arg (arg, char *);
 	  char *system_flags = va_arg (arg, char *);
-	  return get_cygdrive_info (user, system, user_flags, system_flags);
+	  res = get_cygdrive_info (user, system, user_flags, system_flags);
 	}
+	break;
+
+      case CW_EXIT_PROCESS:
+        {
+          UINT status = va_arg (arg, UINT);
+          int useTerminateProcess = va_arg (arg, int);
+          exit_process (status, !!useTerminateProcess); /* no return */
+        }
+
+      case CW_SYNC_WINENV:
+        sync_winenv ();
+        res = 0;
+	break;
 
       default:
-	return (DWORD) -1;
+	res = (DWORD) -1;
+	set_errno (ENOSYS);
+	break;
     }
+  va_end (arg);
+  return res;
 }

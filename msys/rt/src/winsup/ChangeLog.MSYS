@@ -1,3 +1,8 @@
+2010.01.12  Charles Wilson  <mingw@cwilson.fastmail.fm>
+
+	* Makefile.common: Add $(W32API_CPPFLAGS) to INCLUDES,
+	to allow linking against installed w32api.
+
 2003.04.18  Earnie Boyd  <earnie@users.sf.net>
 
 	* Add inclusion definition for /usr/include/c++/3.2.2 so that c++

@@ -19,11 +19,13 @@ details. */
 #include <iphlpapi.h>
 
 #include <stdlib.h>
+#define gethostname cygwin_gethostname
+#include <unistd.h>
+#undef gethostname
 #include <netdb.h>
 #include <fcntl.h>
 #define USE_SYS_TYPES_FD_SET
 #include <winsock2.h>
-#include <unistd.h>
 #include "cygerrno.h"
 #include "security.h"
 #include "fhandler.h"
@@ -114,8 +116,6 @@ wsock_event::wait (int socket, LPDWORD flags)
   event = NULL;
   return ret;
 }
-
-WSADATA wsadata;
 
 /* Cygwin internal */
 static SOCKET __stdcall
@@ -996,10 +996,10 @@ cygwin_getservbyport (int port, const char *proto)
 extern "C" int
 cygwin_gethostname (char *name, size_t len)
 {
-  int PASCAL win32_gethostname (char*, int);
+  sig_dispatch_pending (0);
+  sigframe thisframe (mainthread);
 
-  if (wsock32_handle == NULL ||
-      win32_gethostname (name, len) == SOCKET_ERROR)
+  if (gethostname (name, len))
     {
       DWORD local_len = len;
 
@@ -1517,7 +1517,7 @@ cygwin_send (int fd, const void *buf, int len, unsigned int flags)
 
 /* getdomainname: standards? */
 extern "C" int
-getdomainname (char *domain, int len)
+getdomainname (char *domain, size_t len)
 {
   /*
    * This works for Win95 only if the machine is configured to use MS-TCP.
