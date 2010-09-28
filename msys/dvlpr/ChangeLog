@@ -1,3 +1,8 @@
+2010.09.28  Cesar Strauss  <cestrauss@gmail.com>
+
+	* bin/msys.bat [-mintty | --mintty]: New command options for using
+	mintty as the shell container.
+
 2010.07.06  Cesar Strauss  <cestrauss@gmail.com>
 
 	* bin/cmd (COMSPEC): Avoid unneeded slash conversion.
