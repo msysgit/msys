@@ -1,3 +1,8 @@
+2011.03.31  Charles Wilson  <mingw@cwilson.fastmail.fm>
+
+	* syscall.cc (_close): Avoid calling fsync() on file descriptor
+	we just closed.
+
 2010.09.28  Cesar Strauss  <cestrauss@gmail.com>
 
 	* include/cygwin/version.h: Increment version to 1.0.16.
