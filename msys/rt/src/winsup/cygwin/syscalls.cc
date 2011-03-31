@@ -507,7 +507,6 @@ _close (int fd)
     {
       SetResourceLock (LOCK_FD_LIST,WRITE_LOCK|READ_LOCK," close");
       res = cygheap->fdtab[fd]->close ();
-      fsync(fd);
       cygheap->fdtab.release (fd);
       ReleaseResourceLock (LOCK_FD_LIST,WRITE_LOCK|READ_LOCK," close");
     }
