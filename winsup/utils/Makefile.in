@@ -64,7 +64,7 @@ MINGW_LDFLAGS:=-B/usr/lib/mingw -static-libgcc -static-libstdc++ $(MINGW_LIB)
 
 PROGS:=mount$(EXEEXT) ps$(EXEEXT) \
        cygpath$(EXEEXT) cygcheck$(EXEEXT) \
-       strace$(EXEEXT)
+       strace$(EXEEXT) error-mode$(EXEEXT)
 
 CLEAN_PROGS:=$(PROGS)
 
@@ -89,6 +89,14 @@ ifdef VERBOSE
 else
 	@echo $(MINGW_CC) $c -o $(@D)/$(basename $@)$o $(MINGW_CFLAGS) ... $^;\
 	$(MINGW_CC) $c -o $(@D)/$(basename $@)$o $(MINGW_CFLAGS) $<
+endif
+
+error-mode.exe: error-mode.c $(MINGW_DEP_LDLIBS)
+ifdef VERBOSE
+	$(MINGW_CC) -o $@ ${wordlist 1,2,$^} $(MINGW_CFLAGS) ${filter-out -static-libstdc++, $(MINGW_CFLAGS) $(MINGW_LDFLAGS)}
+else
+	@echo $(MINGW_CC) -o $@ ${wordlist 1,2,$^} ${filter-out -static-libstdc++, ${filter-out -B%, $(MINGW_CFLAGS) $(MINGW_LDFLAGS)}};\
+	$(MINGW_CC) -o $@ ${wordlist 1,2,$^} ${filter-out -static-libstdc++, $(MINGW_CFLAGS) $(MINGW_LDFLAGS)}
 endif
 
 clean:

@@ -1,3 +1,16 @@
+2011.04.01  Peter Rosin  <peda@lysator.liu.se>
+	    Cesar Strauss  <cestrauss@gmail.com>
+
+	Allow the error mode to be overridden.
+	* dcrt0.cc (children_error_mode): New global variable.
+	(dll_crt0_1): Make the error mode inheritable if the
+	SEM_FAILCRITICALERRORS flag was set on entry. Also make sure
+	that other error mode flags are not destroyed when setting
+	SEM_FAILCRITICALERRORS.
+	* winsup.h (children_error_mode): Define.
+	* spawn.cc (spawn_guts): Don't request the default error mode when
+	creating new processes if the error mode is inheritable.
+
 2011.03.31  Charles Wilson  <mingw@cwilson.fastmail.fm>
 
 	* syscall.cc (_close): Avoid calling fsync() on file descriptor

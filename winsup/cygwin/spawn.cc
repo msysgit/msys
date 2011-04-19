@@ -613,8 +613,8 @@ spawn_guts (HANDLE hToken, const char * prog_arg, const char *const *argv,
   si.hStdError = handle (2, 1); /* Get output handle */
   si.cb = sizeof (si);
 
-  int flags = CREATE_DEFAULT_ERROR_MODE | GetPriorityClass (hMainProc);
-
+  int flags = children_error_mode | GetPriorityClass (hMainProc);
+  
   //FIXME: Is there good reason for this code?
   if (mode == _P_DETACH || !set_console_state_for_spawn ())
     flags |= DETACHED_PROCESS;
