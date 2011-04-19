@@ -1,3 +1,7 @@
+2011.04.18  Cesar Strauss  <cestrauss@gmail.com>
+
+	* include/cygwin/version.h: Increment version to 1.0.17.
+
 2011.04.01  Peter Rosin  <peda@lysator.liu.se>
 	    Cesar Strauss  <cestrauss@gmail.com>
 
