@@ -1,3 +1,11 @@
+2011.04.01  Peter Rosin  <peda@lysator.liu.se>
+	    Cesar Strauss  <cestrauss@gmail.com>
+
+	* error-mode.c: New file (and utility) sets inheritable error
+	handling mode for Windows exceptions like GPF, which may otherwise
+	result in Win32 popups.
+	* Makefile.in: Add error-mode.
+
 2010.07.06  Cesar Strauss  <cestrauss@gmail.com>
 
 	Avoid a dependency of strace on the MinGW GCC shared runtimes.

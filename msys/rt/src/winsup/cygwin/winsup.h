@@ -299,4 +299,7 @@ extern bool IsMsys (char const * const);
 #define winsock_active (wsadata.wVersion <= 512)
 extern struct WSAData wsadata;
 
+/* CREATE_DEFAULT_ERROR_MODE if SEM_FAILCRITICALERRORS was unset on init */
+extern UINT children_error_mode;
+
 #endif /* defined __cplusplus */
