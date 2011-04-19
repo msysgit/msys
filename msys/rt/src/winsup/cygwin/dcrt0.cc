@@ -121,6 +121,8 @@ extern "C"
 char *old_title;
 char title_buf[TITLESIZE + 1];
 
+UINT children_error_mode;
+
 static void
 do_global_dtors (void)
 {
@@ -762,7 +764,9 @@ dll_crt0_1 ()
   memory_init ();
   cygheap->fdtab.vfork_child_fixup ();
 
-  (void) SetErrorMode (SEM_FAILCRITICALERRORS);
+  UINT old_error_mode = SetErrorMode (SEM_FAILCRITICALERRORS);
+  /* Restore other flags to what was there before */
+  SetErrorMode (old_error_mode | SEM_FAILCRITICALERRORS);
 
   /* Initialize events. */
   events_init ();
@@ -798,6 +802,12 @@ dll_crt0_1 ()
 
   /* Initialize our process table entry. */
   pinfo_init (envp, envc);
+
+  /* Record if future children should inherit the error mode. */
+  if (old_error_mode & SEM_FAILCRITICALERRORS)
+    children_error_mode = 0; /* inherits the error mode */
+  else
+    children_error_mode = CREATE_DEFAULT_ERROR_MODE;
 
   if (!old_title && GetConsoleTitle (title_buf, TITLESIZE))
       old_title = title_buf;
