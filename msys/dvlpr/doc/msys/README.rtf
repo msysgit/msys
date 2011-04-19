@@ -91,6 +91,10 @@ For instance: if foo/mnt is a mount point, then ls -s foo bar does not copy the 
 Effective use of the clipboard:\par
 \b0\i0 You may use the clipboard with MSYS.  When using rxvt as the terminal, just selecting with data with click and drag of the mouse, copies the data to the clipboard.  To paste the clipboard data in the rxvt terminal you can Shift and Left Click or press both mouse buttons if 3 button mouse emulation is on or press the mouse wheel.  To copy the highlighted data to your favorite windows email client the you use the paste options for that program, typically Ctrl-V.  You can also use interesting bash shell commands such as `cat /dev/clipboard > /tmp/foo' or `less -f /dev/clipboard'.  Data entered into the clipboard by non-MSYS programs can also be used by MSYS programs and vice versa.\b\i\par
 \par
+\b\i Handling pop-up error dialog boxes:\par
+\b0\i0 Sometimes, executing an automated testsuite (like libtool's) may trigger unwanted pop-up error dialog boxes. 
+The error-mode tool can be used to temporarily turn off these pop-ups. See ``error-mode --help'' for further info.\par
+\par
 Bug Reports:\b0\i0\par
 See http://www.mingw.org/bugs.shtml\par
 \par
