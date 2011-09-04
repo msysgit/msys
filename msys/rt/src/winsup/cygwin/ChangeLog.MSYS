@@ -1,3 +1,13 @@
+2011.06.21  Teemu Nätkinniemi  <tnatkinn>
+
+	* Import Cygwin 1.3.4
+	* Backport wincap.cc, wincap.h and ntdll.h from Cygwin 1.5.25-15
+	* wincap.cc backport bugfixes from Cygwin CVS and add support for
+	Windows 7
+	* ntdll.h (_PROCESSINFOCLASS) backport WOW64 fixes from Cygwin
+	HEAD
+	* ismsys.cc (IsMsys) use wincap capability
+
 2011.04.18  Cesar Strauss  <cestrauss@gmail.com>
 
 	* include/cygwin/version.h: Increment version to 1.0.17.

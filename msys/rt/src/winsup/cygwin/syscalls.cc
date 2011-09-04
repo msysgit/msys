@@ -145,7 +145,7 @@ _unlink (const char *ourname)
 
   /* Windows 9x seems to report ERROR_ACCESS_DENIED
         rather than sharing violation. */
-  if (!iswinnt && lasterr == ERROR_ACCESS_DENIED
+  if (wincap.access_denied_on_delete () && lasterr == ERROR_ACCESS_DENIED
       && !win32_name.isremote ())
     {
       /* Due to limited sharing permissions on 9x there is no way
@@ -573,8 +573,14 @@ _link (const char *a, const char *b)
     }
 
   /* Try to make hard link first on Windows NT */
-  if (iswinnt)
+  if (wincap.has_hard_links ())
     {
+      if (CreateHardLinkA (real_b.get_win32 (), real_a.get_win32 (), NULL))
+	{
+	  res = 0;
+	  goto done;
+	}
+
       HANDLE hFileSource;
 
       WIN32_STREAM_ID StreamId;
@@ -690,7 +696,7 @@ chown_worker (const char *name, unsigned fmode, uid_t uid, gid_t gid)
   if (check_null_empty_str_errno (name))
     return -1;
 
-  if (!iswinnt)    // real chown only works on NT
+  if (!wincap.has_security ())  // real chown only works on NT
     res = 0;			// return zero (and do nothing) under Windows 9x
   else
     {
@@ -1057,7 +1063,7 @@ stat_worker (const char *caller, const char *name, struct stat *buf, int nofollo
   dtype = real_path.get_drive_type ();
 
   if ((atts == -1 || ! (atts & FILE_ATTRIBUTE_DIRECTORY) ||
-       (iswinnt
+       (wincap.can_open_directories ()
 	&& dtype != DRIVE_NO_ROOT_DIR
 	&& dtype != DRIVE_UNKNOWN)))
     {
@@ -1337,7 +1343,7 @@ _rename (const char *oldpath, const char *newpath)
    * rename the file marked for deletion if it still exists.
    */
   usleep (640); // Wait for file to be closed.
-  if (iswinnt)
+  if (wincap.has_move_file_ex ())
     {
       if (MoveFileEx (real_old.get_win32 (), real_new.get_win32 (),
 		      MOVEFILE_REPLACE_EXISTING))
@@ -1466,7 +1472,7 @@ check_posix_perm (const char *fname, int v)
   extern int allow_ntea, allow_ntsec, allow_smbntsec;
 
   /* Windows 95/98/ME don't support file system security at all. */
-  if (!iswinnt)
+  if (!wincap.has_security ())
     return 0;
 
   /* ntea is ok for supporting permission bits but it doesn't support
@@ -2041,7 +2047,7 @@ seteuid (uid_t uid)
 {
   TRACE_IN;
   sigframe thisframe (mainthread);
-  if (iswinnt)
+  if (wincap.has_security ())
     {
       char orig_username[UNLEN + 1];
       char orig_domain[INTERNET_MAX_HOST_NAME_LENGTH + 1];
@@ -2257,7 +2263,7 @@ setegid (gid_t gid)
 {
   TRACE_IN;
   sigframe thisframe (mainthread);
-  if (iswinnt)
+  if (wincap.has_security ())
     {
       if (gid != (gid_t) -1)
 	{
