@@ -13,7 +13,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "winsup.h"
-#include "host_dependent.h"
 
 #define FILEERROR(A) fprintf (stderr, (A))
 
@@ -95,7 +94,7 @@ IsMsys (const char *File)
     HANDLE fh =
       CreateFile (File
 		 , GENERIC_READ
-		 , host_dependent.shared     // host dependent flags
+		 , wincap.shared ()    // host dependent flags
 		 , NULL
 		 , OPEN_EXISTING
 		 , FILE_ATTRIBUTE_NORMAL

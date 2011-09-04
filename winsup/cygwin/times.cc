@@ -56,7 +56,7 @@ times (struct tms * buf)
   /* Ticks is in milliseconds, convert to our ticks. Use long long to prevent
      overflow. */
   clock_t tc = (clock_t) ((long long) ticks * CLOCKS_PER_SEC / 1000);
-  if (iswinnt)
+  if (wincap.has_get_process_times ())
     {
       GetProcessTimes (hMainProc, &creation_time, &exit_time,
 		       &kernel_time, &user_time);
@@ -459,11 +459,11 @@ utimes (const char *path, struct timeval *tvp)
     }
 
   /* MSDN suggests using FILE_FLAG_BACKUP_SEMANTICS for accessing
-     the times of directories.  FIXME: what about Win95??? */
+     the times of directories.  */
   /* Note: It's not documented in MSDN that FILE_WRITE_ATTRIBUTES is
      sufficient to change the timestamps... */
   HANDLE h = CreateFileA (win32.get_win32 (),
-			  iswinnt ? FILE_WRITE_ATTRIBUTES : GENERIC_WRITE,
+			  FILE_WRITE_ATTRIBUTES,
 			  FILE_SHARE_READ | FILE_SHARE_WRITE,
 			  &sec_none_nih,
 			  OPEN_EXISTING,
