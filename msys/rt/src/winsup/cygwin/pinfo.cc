@@ -76,7 +76,6 @@ set_myself (pid_t pid, HANDLE h)
 #endif
   if (strace.active)
     {
-      extern char osname[];
       strace.prntf (1, NULL, "**********************************************");
       strace.prntf (1, NULL, "Program name: %s (%d)", myself->progname, myself->pid);
       strace.prntf (1, NULL, "App version:  %d.%d, api: %d.%d",
@@ -87,7 +86,7 @@ set_myself (pid_t pid, HANDLE h)
 		       cygwin_version.api_major, cygwin_version.api_minor);
       strace.prntf (1, NULL, "DLL build:    %s", cygwin_version.dll_build_date);
       strace.prntf (1, NULL, "Shared ID:    %s", cygwin_version.shared_id);
-      strace.prntf (1, NULL, "OS version:   Windows %s", osname);
+      strace.prntf (1, NULL, "OS version:   Windows %s", wincap.osname ());
       strace.prntf (1, NULL, "**********************************************");
     }
 
@@ -400,7 +399,7 @@ winpids::init (bool winpid)
 DWORD
 winpids::enum_init (bool winpid)
 {
-  if (iswinnt)
+  if (wincap.is_winnt ())
     enum_processes = &winpids::enumNT;
   else
     enum_processes = &winpids::enum9x;

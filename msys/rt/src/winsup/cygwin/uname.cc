@@ -21,14 +21,13 @@ uname (struct utsname *name)
 {
   DWORD len;
   SYSTEM_INFO sysinfo;
-  extern char osname[];
   char *snp = strstr  (cygwin_version.dll_build_date, "SNP");
   char msystem[128];
 
   memset (name, 0, sizeof (*name));
   if (! GetEnvironmentVariable("MSYSTEM", msystem, sizeof (msystem)))
       strcpy (msystem, "MINGW32");
-  __small_sprintf (name->sysname, "%s_%s", msystem, osname);
+  __small_sprintf (name->sysname, "%s_%s", msystem, wincap.osname ());
 
   GetSystemInfo (&sysinfo);
 

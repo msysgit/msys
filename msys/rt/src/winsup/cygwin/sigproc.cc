@@ -850,27 +850,31 @@ init_child_info (DWORD chtype, child_info *ch, unsigned ch_size, pid_t pid, HAND
   TRACE_IN;
   memset (ch, 0, sizeof *ch);
   ch->cb = sizeof *ch;
-  /*
-   * Work around what appears to be a bug in Vista 64-bit. The problem
-   * is related to how fork passes information to the child. Basically
-   * the child_info struct * is put in the lpReserved2 field of the
-   * STARTUPINFO struct that gets passed to CreateProcess(). In all
-   * versions of Windows, the size of the data to be passed is in the
-   * cbReserved2 field of the same structure, except on Vista 64-bit.
-   *
-   * It seems that WOW64 (the 32-bit emulation layer of 64-bit Vista)
-   * expects the size of the data passed in lpReserved2 to be the first
-   * word in that same pointer, only it expects the size in "elements"
-   * of a BYTE[] and HANDLE[] arrays (the MS C runtime has this
-   * convention).
-   *
-   * We work around it by filling in the size as (sizeof struct)/5 and
-   * zero padding the end of the child_info_* structs. 
-   */
-  if (isVistaWOW64)
-    ch->msv_count = ch_size / 5;
-  else
-    ch->msv_count = 0;
+
+  /* It appears that when running under WOW64 on Vista 64, the first DWORD
+     value in the datastructure lpReserved2 is pointing to (msv_count in
+     Cygwin), has to reflect the size of that datastructure as used in the
+     Microsoft C runtime (a count value, counting the number of elements in
+     two subsequent arrays, BYTE[count and HANDLE[count]), even though the C
+     runtime isn't used.  Otherwise, if msv_count is 0 or too small, the
+     datastructure gets overwritten.
+
+     This seems to be a bug in Vista's WOW64, which apparently copies the
+     lpReserved2 datastructure not using the cbReserved2 size information,
+     but using the information given in the first DWORD within lpReserved2
+     instead.  32 bit Windows and former WOW64 don't care if msv_count is 0
+     or a sensible non-0 count value.  However, it's not clear if a non-0
+     count doesn't result in trying to evaluate the content, so we do this
+     really only for Vista 64 for now.
+
+     Note: It turns out that a non-zero value *does* harm operation on
+     XP 64 and 2K3 64.
+
+     The value is sizeof (child_info_*) / 5 which results in a count which
+     covers the full datastructure, plus not more than 4 extra bytes.  This
+     is ok as long as the child_info structure is cosily stored within a bigger
+     datastructure. */
+  ch->msv_count = wincap.needs_count_in_si_lpres2 () ? ch_size / 5 : 0;
   ch->type = chtype;
   ch->cygpid = pid;
   ch->subproc_ready = subproc_ready;
