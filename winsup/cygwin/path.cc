@@ -1664,8 +1664,35 @@ mount_info::read_mounts_thread (LPVOID thrdParam)
 	    | FILE_NOTIFY_CHANGE_LAST_WRITE);
     if (ffcnH == INVALID_HANDLE_VALUE)
       {
+	/* /etc is missing. Monitor the root directory until it is created */
 	debug_printf("/etc path change notification failure, %s\n", etcPath);
-	ExitProcess (1);
+	HANDLE root_ffcnH = FindFirstChangeNotification (info->RootPath, true,
+		  FILE_NOTIFY_CHANGE_FILE_NAME
+		| FILE_NOTIFY_CHANGE_DIR_NAME
+		| FILE_NOTIFY_CHANGE_SIZE
+		| FILE_NOTIFY_CHANGE_LAST_WRITE);
+	if (root_ffcnH == INVALID_HANDLE_VALUE)
+	  {
+	    debug_printf("root path change notification failure, %s\n", info->RootPath);
+	    return (0);
+	  }
+	do
+	  {
+	    FindNextChangeNotification (root_ffcnH);
+	    if (WaitForSingleObject (root_ffcnH, INFINITE) == WAIT_OBJECT_0)
+	      ffcnH = FindFirstChangeNotification (etcPath, true,
+		    FILE_NOTIFY_CHANGE_FILE_NAME
+		  | FILE_NOTIFY_CHANGE_DIR_NAME
+		  | FILE_NOTIFY_CHANGE_SIZE
+		  | FILE_NOTIFY_CHANGE_LAST_WRITE);
+	  }
+	while (ffcnH == INVALID_HANDLE_VALUE);
+	FindCloseChangeNotification(root_ffcnH);
+	/* /etc was just created or moved into place.
+           To be safe, try reading /etc/fstab now. */
+	auto_lock mounts_lock(info->lock);
+	info->nmounts = 0;
+	info->read_mounts2 ();
       }
     do {
 	FindNextChangeNotification (ffcnH);
