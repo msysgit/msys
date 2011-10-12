@@ -1,3 +1,11 @@
+2011.10.12  Cesar Strauss  <cestrauss@gmail.com>
+
+	* passwd.cc (read_etc_passwd): If HOME is not set, base the default
+	user home directory on the current user name, instead of falling back
+	to "/".
+	(search_for): If the input user name is unknown, return NULL instead
+	of returning a default entry.
+
 2011.06.21  Teemu Nätkinniemi  <tnatkinn>
 
 	* Import Cygwin 1.3.4
