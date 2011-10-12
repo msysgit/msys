@@ -140,12 +140,19 @@ read_etc_passwd ()
 	    free (passwd_buf);
 	    curr_lines = max_lines = 0;
 	  }
-
-	    debug_printf ("Emulating /etc/passwd");
-	    snprintf (linebuf, sizeof (linebuf), "%s::%u:%u::%s:/bin/sh", cygheap->user.name (),
-		      DEFAULT_UID, DEFAULT_GID, getenv ("HOME") ?: "/");
-	    add_pwd_line (linebuf);
-	    passwd_state = emulated;
+	  debug_printf ("Emulating /etc/passwd");
+	  snprintf (linebuf, sizeof (linebuf), "%s::%u:%u::",
+		    cygheap->user.name (), DEFAULT_UID, DEFAULT_GID);
+	  if ( getenv ("HOME") )
+	    strcat (linebuf, getenv ("HOME"));
+	  else
+	    {
+	      strcat (linebuf, "/home/");
+	      strcat (linebuf, cygheap->user.name ());
+	    }
+	  strcat (linebuf, ":/bin/sh");
+	  add_pwd_line (linebuf);
+	  passwd_state = emulated;
       }
 
   pthread_mutex_unlock (&etc_passwd_mutex);
@@ -157,13 +164,10 @@ static struct passwd *
 search_for (uid_t uid, const char *name)
 {
   struct passwd *res = 0;
-  struct passwd *default_pw = 0;
 
   for (int i = 0; i < curr_lines; i++)
     {
       res = passwd_buf + i;
-      if (res->pw_uid == DEFAULT_UID)
-	default_pw = res;
       /* on Windows NT user names are case-insensitive */
       if (name)
 	{
@@ -173,13 +177,6 @@ search_for (uid_t uid, const char *name)
       else if (uid == res->pw_uid)
 	return res;
     }
-
-  /* Return default passwd entry if passwd is emulated or it's a
-     request for the current user. */
-  if (passwd_state != loaded
-      || (!name && uid == myself->uid)
-      || (name && strcasematch (name, cygheap->user.name ())))
-    return default_pw;
 
   return NULL;
 }
