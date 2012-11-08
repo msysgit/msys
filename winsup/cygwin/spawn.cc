@@ -532,7 +532,7 @@ spawn_guts (HANDLE hToken, const char * prog_arg, const char *const *argv,
 	  a = i ? newargv[i] : (char *) real_path;
 	  HMMM(a);
 	  int len = strlen (a);
-	  if (len != 0 && !strpbrk (a, " \t\n\r\""))
+	  if (len != 0 && !strpbrk (a, " \t\n\r\"*?"))
 	    one_line.add (a, len);
 	  else
 	    {

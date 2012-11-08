@@ -1,3 +1,8 @@
+2012.11.07  Cesar Strauss  <cestrauss@gmail.com>
+
+	* spawn.cc (spawn_guts): Enable quoting of globbing characters
+	on the command-line of native applications.
+
 2011.10.12  Fabian Greffrath  <fabian+mingw@greffrath.com>
 	    Cesar Strauss  <cestrauss@gmail.com>
 
