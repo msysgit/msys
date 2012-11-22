@@ -1,3 +1,7 @@
+2012.11.21  Cesar Strauss  <cestrauss@gmail.com>
+
+	* include/cygwin/version.h: Increment version to 1.0.18.
+
 2012.11.07  Cesar Strauss  <cestrauss@gmail.com>
 
 	* spawn.cc (spawn_guts): Enable quoting of globbing characters
