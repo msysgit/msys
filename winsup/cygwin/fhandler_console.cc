@@ -904,18 +904,8 @@ fhandler_console::fhandler_console (const char *name) :
   nModifiers = 0;
   insert_mode = use_mouse = raw_win32_keyboard_mode = FALSE;
   /* Set the mask that determines if an input keystroke is modified by
-     META.  We set this based on the keyboard layout language loaded
-     for the current thread.  The left <ALT> key always generates
-     META, but the right <ALT> key only generates META if we are using
-     an English keyboard because many "international" keyboards
-     replace common shell symbols ('[', '{', etc.) with accented
-     language-specific characters (umlaut, accent grave, etc.).  On
-     these keyboards right <ALT> (called AltGr) is used to produce the
-     shell symbols and should not be interpreted as META. */
+     META. */
   meta_mask = LEFT_ALT_PRESSED;
-  if (PRIMARYLANGID (LOWORD (GetKeyboardLayout (0))) == LANG_ENGLISH)
-    meta_mask |= RIGHT_ALT_PRESSED;
-
 }
 
 #define FOREGROUND_ATTR_MASK (FOREGROUND_RED | FOREGROUND_GREEN | \

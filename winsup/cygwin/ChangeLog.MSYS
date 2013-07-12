@@ -1,3 +1,11 @@
+2013.07.11  Kirill Smelkov <kirr@landau.phys.spbu.ru>
+
+	Don't pull user32.dll & friends just to detect whether right alt
+	should be used as meta.
+
+	* autoload.cc: Remove GetKeyboardLayout autoload.
+	* fhandler_console.cc: Avoid calling GetKeyboardLayout.
+
 2012.11.21  Cesar Strauss  <cestrauss@gmail.com>
 
 	* include/cygwin/version.h: Increment version to 1.0.18.
