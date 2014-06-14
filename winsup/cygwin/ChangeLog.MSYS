@@ -1,3 +1,10 @@
+2014.06.14  Cesar Strauss  <cestrauss@gmail.com>
+
+	Import a Cygwin fix for the incorrect use of a pipe capability flag.
+	Fri Sep 14 00:18:52 2001  Christopher Faylor <cgf at cygnus.com>
+	* fhandler.h (fhandler_pipe::is_slow): Return true only if pipes are
+	reliable (i.e., not Win9x).
+
 2013.07.11  Kirill Smelkov <kirr@landau.phys.spbu.ru>
 
 	Don't pull user32.dll & friends just to detect whether right alt
